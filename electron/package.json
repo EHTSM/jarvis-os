@@ -1,0 +1,81 @@
+{
+  "name": "jarvis-desktop",
+  "version": "1.0.0",
+  "description": "JARVIS - Self-Evolving AI Assistant Desktop Application",
+  "main": "main.js",
+  "homepage": "./",
+  "author": "JARVIS Team",
+  "license": "MIT",
+  "scripts": {
+    "start": "concurrently \"npm run dev\" \"wait-on http://localhost:3001 && electron .\"",
+    "dev": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "electron-dev": "cross-env ELECTRON_START_URL=http://localhost:3001 electron .",
+    "build-app": "npm run build && electron-builder --publish=never",
+    "build-app-mac": "npm run build && electron-builder -m",
+    "build-app-linux": "npm run build && electron-builder -l",
+    "build-app-win": "npm run build && electron-builder -w",
+    "lint": "eslint src",
+    "test": "react-scripts test --watchAll=false"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "electron-is-dev": "^2.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "react-speech-recognition": "^4.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "cross-env": "^7.0.3",
+    "electron": "^41.2.1",
+    "electron-builder": "^26.8.1",
+    "wait-on": "^7.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "build": {
+    "appId": "com.jarvis.desktop",
+    "productName": "JARVIS",
+    "files": [
+      "build/**/*",
+      "electron/**/*",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.utilities",
+      "icon": "electron/assets/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "electron/assets/icon.png"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "electron/assets/icon.ico"
+    }
+  }
+}
