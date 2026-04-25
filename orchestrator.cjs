@@ -1,11 +1,11 @@
 const axios = require("axios");
 const { plannerAgent } = require("./agents/planner.cjs");
-const executor = require("./agents/executor.cjs");
+const { executorAgent } = require("./agents/executor.cjs");
 const { memoryAgent, getMemoryState, clearMemoryState } = require("./agents/memory.cjs");
 const { scheduleTask } = require("./scheduler.cjs");
 const { ContextEngine } = require("./agents/contextEngine.cjs");
 const { LearningSystem } = require("./agents/learningSystem.cjs");
-const { VoiceAgent } = require("./agents/voiceAgent.cjs");
+const VoiceAgent = require("./agents/voiceAgent.cjs");
 const { DesktopAgent } = require("./agents/desktopAgent.cjs");
 const { AgentFactory } = require("./agents/agentFactory.cjs");
 const { EvolutionEngine } = require("./agents/evolutionEngine.cjs");

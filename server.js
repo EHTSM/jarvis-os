@@ -1,20 +1,18 @@
-import express from "express";
+const express = require("express");
 const app = express();
 app.use(express.json());
-import cron from "node-cron";
-import orchestratorModule from "./orchestrator.cjs";
-import dotenv from "dotenv";
+const cron = require("node-cron");
+const orchestratorModule = require("./orchestrator.cjs");
+const dotenv = require("dotenv");
 dotenv.config();
 const token = process.env.TELEGRAM_TOKEN;
 console.log("TOKEN:", token);
-import fetch from "node-fetch";
-import fs from "fs";
-import path from "path";
-import axios from "axios";
-import schedulerModule from "./scheduler.cjs";
-import commandParserModule from "./commandParser.cjs";
-const MasterAgentManager = require('./agents/MasterAgentManager.cjs');
-import TelegramBot from "node-telegram-bot-api";
+const fetch = require("node-fetch");
+const fs = require("fs");
+const axios = require("axios");
+const schedulerModule = require("./scheduler.cjs");
+const commandParserModule = require("./commandParser.cjs");
+const TelegramBot = require("node-telegram-bot-api");
 
 
 
@@ -944,8 +942,7 @@ let masterAgentManager = null;
 // Initialize 500-agent system
 async function initializeMasterAgentManager() {
     try {
-        const module = await import('./agents/MasterAgentManager.js');
-        const MasterAgentManager = module.default;
+        const MasterAgentManager = require("./agents/MasterAgentManager.cjs");
 
         masterAgentManager = new MasterAgentManager();
         await masterAgentManager.initialize();
