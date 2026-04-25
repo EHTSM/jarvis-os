@@ -1,10 +1,8 @@
 const { toolAgent } = require("./tool.cjs");
-const { VoiceAgent } = require("./voiceAgent.cjs");
+const VoiceAgent = require("./voiceAgent.cjs");
 const voiceAgent = new VoiceAgent();
 const { DesktopAgent } = require("./desktopAgent.cjs");
 const { AgentFactory } = require("./agentFactory.cjs");
-module.exports = { executorAgent };
-
 
 // Singleton instances
 const desktopAgent = new DesktopAgent();
@@ -217,3 +215,4 @@ async function executorAgent(task) {
     }
 }
 
+module.exports = { executorAgent };
