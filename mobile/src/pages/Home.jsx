@@ -128,9 +128,6 @@ export default function Home() {
       // Persist JARVIS reply
       if (user) saveChatMessage(user.uid, "jarvis", reply).catch(() => {});
 
-      if (res.intent && !["unknown","blocked","mobile"].includes(res.intent)) {
-        push("meta", `intent: ${res.intent}  ·  mode: ${res.mode}`);
-      }
     } catch (err) {
       push("error", err.message);
     } finally {

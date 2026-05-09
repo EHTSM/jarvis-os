@@ -135,13 +135,9 @@ async function _runOnboarding() {
         const result = await wa.sendMessage(
             lead.phone,
             `Welcome${lead.name ? " " + lead.name : ""}!\n\n` +
-            `Your JARVIS AI system is now ACTIVE.\n\n` +
-            `Send me any command:\n` +
-            `• Open YouTube\n` +
-            `• Search AI news\n` +
-            `• Set a reminder\n` +
-            `• Get my leads\n\n` +
-            `What would you like to automate first?`
+            `Your JARVIS AI is now ACTIVE.\n\n` +
+            `I'll follow up with your leads automatically and help close clients.\n\n` +
+            `Reply with anything to get started.`
         );
         if (result.success) {
             st.sent++;
@@ -226,13 +222,9 @@ async function triggerFulfillment(phone, name) {
     await wa.sendMessage(
         phone,
         `Payment confirmed! Welcome${name ? " " + name : ""}!\n\n` +
-        `JARVIS AI is now ACTIVE for you.\n\n` +
-        `Try these commands:\n` +
-        `• "Open YouTube"\n` +
-        `• "Search latest news"\n` +
-        `• "Set reminder in 10 minutes"\n` +
-        `• "Generate payment link"\n\n` +
-        `Your AI automation engine is ready. What shall we automate first?`
+        `JARVIS AI is now ACTIVE.\n\n` +
+        `I'll automatically follow up with every lead you add, send payment links, and help close clients.\n\n` +
+        `Reply with anything to get started.`
     );
 
     _crm().updateLead(phone, {
@@ -272,4 +264,4 @@ function stop() {
     logger.info("[Automation] Engine stopped");
 }
 
-module.exports = { start, stop, triggerFulfillment, sendManualFollowUp };
+module.exports = { start, stop, triggerFulfillment, sendManualFollowUp, getStats };

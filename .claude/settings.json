@@ -247,7 +247,23 @@
       "Bash(curl -s 'http://localhost:5050/context/history?limit=3')",
       "Bash(node --check /Users/ehtsm/jarvis-os/agents/evolutionEngine.cjs)",
       "Bash(node --check /Users/ehtsm/jarvis-os/ecosystem.config.cjs)",
-      "Bash(curl -s -X POST http://localhost:5050/jarvis -H 'Content-Type: application/json' -d '{\"input\":\"__TRACKED_VAR__\"}')"
+      "Bash(curl -s -X POST http://localhost:5050/jarvis -H 'Content-Type: application/json' -d '{\"input\":\"__TRACKED_VAR__\"}')",
+      "Bash(curl -s http://localhost:5050/index.html)",
+      "Bash(grep -v \"^$\")",
+      "Bash(pm2 --version)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('name:', d.get\\('name'\\)\\); print\\('version:', d.get\\('version'\\)\\); print\\('scripts:', list\\(d.get\\('scripts',{}\\).keys\\(\\)\\)\\)\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(k,':',v\\) for k,v in d.get\\('scripts',{}\\).items\\(\\)]\")",
+      "Bash(bash deploy/monitor.sh)",
+      "Bash(xcrun simctl *)",
+      "Read(//Users/ehtsm/Library/Caches/com.microsoft.VSCode.ShipIt/**)",
+      "Read(//Users/ehtsm/Library/Android/sdk/system-images/**)",
+      "Read(//Users/ehtsm/Library/Android/sdk/build-tools/**)",
+      "Bash(npm cache *)",
+      "Bash(rm -rf ~/Library/Caches/com.microsoft.VSCode.ShipIt/update.*)",
+      "Bash(rm -rf ~/Library/Caches/node-gyp)",
+      "Bash(rm -rf ~/Library/Caches/electron)",
+      "Bash(curl -sf http://localhost:5050/health)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('PM2 health:', d['status'], '| uptime:', d['uptime_seconds'],'s'\\)\")"
     ]
   }
 }

@@ -1,0 +1,238 @@
+/* ── Toggle button (collapsed state) ──────────────────────────── */
+.acf-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.acf-toggle:hover {
+  border-color: var(--accent);
+  background: var(--surface2);
+}
+
+.acf-toggle-icon {
+  font-size: 18px;
+  line-height: 1;
+  color: var(--accent);
+}
+
+/* ── Form container ───────────────────────────────────────────── */
+.acf-form {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.acf-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.acf-form-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.acf-close {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.acf-close:hover { color: var(--text); background: var(--surface2); }
+
+/* ── Fields ───────────────────────────────────────────────────── */
+.acf-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.acf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.acf-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.acf-req { color: var(--accent); }
+
+.acf-input {
+  padding: 10px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.acf-input:focus { border-color: var(--accent); outline: none; }
+.acf-input::placeholder { color: var(--text-dim); }
+.acf-textarea { resize: vertical; min-height: 64px; }
+
+.acf-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ── Error ────────────────────────────────────────────────────── */
+.acf-error {
+  font-size: 13px;
+  color: var(--danger);
+  background: rgba(255, 82, 82, 0.08);
+  border: 1px solid rgba(255, 82, 82, 0.25);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+/* ── Action buttons ───────────────────────────────────────────── */
+.acf-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.acf-submit {
+  flex: 1;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.acf-submit:disabled { opacity: 0.4; cursor: default; }
+.acf-submit:not(:disabled):hover { opacity: 0.88; }
+
+.acf-cancel {
+  padding: 12px 18px;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.acf-cancel:hover { border-color: var(--text-dim); color: var(--text); }
+
+/* ── Success state ────────────────────────────────────────────── */
+.acf-success {
+  background: var(--surface);
+  border: 1px solid var(--success);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.acf-success-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.acf-check {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--success);
+  color: #000;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.acf-success-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.acf-success-sub   { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+
+/* ── Schedule ─────────────────────────────────────────────────── */
+.acf-schedule {
+  background: var(--surface2);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.acf-sched-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.acf-sched-list  { display: flex; flex-direction: column; gap: 8px; }
+
+.acf-sched-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.acf-sched-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.acf-sched-label { flex: 1; font-size: 13px; color: var(--text); }
+.acf-sched-when  { font-size: 12px; color: var(--accent2); font-weight: 600; white-space: nowrap; }
+
+.acf-add-another {
+  padding: 9px 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+  align-self: flex-start;
+}
+.acf-add-another:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Mobile ───────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .acf-row-2 { grid-template-columns: 1fr; }
+  .acf-input { font-size: 16px; /* prevent iOS zoom */ }
+}

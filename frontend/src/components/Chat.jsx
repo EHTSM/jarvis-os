@@ -1,22 +1,33 @@
 import React from "react";
 import "./Chat.css";
 
+const ROLE_LABELS = {
+  user:   "You",
+  jarvis: "JARVIS",
+  system: "system",
+  error:  "error"
+};
+
 const ROLE_COLORS = {
   user:   "#6c63ff",
   jarvis: "#00d4ff",
   system: "#8888aa",
-  meta:   "#ffab40",
   error:  "#ff5252"
 };
 
 function Message({ msg }) {
+  if (msg.role === "system") {
+    return <div className="msg msg--system">{msg.text}</div>;
+  }
+
   const color = ROLE_COLORS[msg.role] || "#ccc";
+  const label = ROLE_LABELS[msg.role] || msg.role;
   const ts    = new Date(msg.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   return (
     <div className={`msg msg--${msg.role}`}>
       <div className="msg-header">
-        <span className="msg-role" style={{ color }}>{msg.role === "jarvis" ? "JARVIS" : msg.role.toUpperCase()}</span>
+        <span className="msg-role" style={{ color }}>{label}</span>
         <span className="msg-time">{ts}</span>
       </div>
       <div className="msg-body">{msg.text}</div>
@@ -24,52 +35,42 @@ function Message({ msg }) {
   );
 }
 
+const QUICK_ACTIONS = [
+  { label: "Add a lead",            cmd: "Add a new lead"                },
+  { label: "Generate payment link", cmd: "Generate a payment link"        },
+  { label: "Show my clients",       cmd: "Show me all my leads"           },
+  { label: "Send follow-up",        cmd: "Send a follow-up to my leads"   },
+  { label: "What can JARVIS do?",   cmd: "What can you do for my business?" },
+];
+
 export default function Chat({
   messages, input, loading, online,
-  suggestions, inputRef, endRef,
-  onInput, onSend, onKey, onSuggestionClick, onClear
+  inputRef, endRef,
+  onInput, onSend, onKey, onClear
 }) {
-  const quickCmds = [
-    "Open YouTube", "Search AI news", "What time is it",
-    "Get leads", "How much does it cost?", "Open VS Code"
-  ];
-
   return (
     <div className="chat">
-      {/* Messages */}
       <div className="chat-messages">
         {messages.map(m => <Message key={m.id} msg={m} />)}
         {loading && (
           <div className="msg msg--jarvis">
-            <div className="msg-header"><span className="msg-role" style={{ color: "#00d4ff" }}>JARVIS</span></div>
+            <div className="msg-header">
+              <span className="msg-role" style={{ color: "#00d4ff" }}>JARVIS</span>
+            </div>
             <div className="msg-body typing"><span /><span /><span /></div>
           </div>
         )}
         <div ref={endRef} />
       </div>
 
-      {/* Quick commands */}
       <div className="quick-cmds">
-        {quickCmds.map(c => (
-          <button key={c} className="quick-btn" onClick={() => onSend(c)}>
-            {c}
+        {QUICK_ACTIONS.map(a => (
+          <button key={a.cmd} className="quick-btn" onClick={() => onSend(a.cmd)}>
+            {a.label}
           </button>
         ))}
       </div>
 
-      {/* Evolution suggestions */}
-      {suggestions.length > 0 && (
-        <div className="suggestions">
-          <span className="sugg-label">Suggestions:</span>
-          {suggestions.slice(0, 3).map((s, i) => (
-            <button key={i} className="sugg-btn" onClick={() => onSuggestionClick(s)}>
-              {s.description || s.type || `Suggestion ${i + 1}`}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Input */}
       <div className="chat-input-row">
         <input
           ref={inputRef}
@@ -77,12 +78,12 @@ export default function Chat({
           value={input}
           onChange={e => onInput(e.target.value)}
           onKeyDown={onKey}
-          placeholder={online ? "Type a command or question..." : "Backend offline..."}
+          placeholder={online ? "Ask JARVIS anything…" : "Connecting…"}
           disabled={!online || loading}
           autoFocus
         />
         <button className="send-btn" onClick={onSend} disabled={!online || loading || !input.trim()}>
-          {loading ? "..." : "Send"}
+          {loading ? "…" : "Send"}
         </button>
         <button className="clear-btn" onClick={onClear} title="Clear chat">✕</button>
       </div>

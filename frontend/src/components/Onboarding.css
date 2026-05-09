@@ -1,0 +1,135 @@
+.onboarding {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  padding: 24px;
+}
+
+.onboarding-inner {
+  max-width: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ob-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.ob-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ob-step-label {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.ob-progress-track {
+  height: 3px;
+  background: var(--surface2);
+  border-radius: 2px;
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+
+.ob-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.ob-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ob-question {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+
+.ob-input {
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 15px;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.ob-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.ob-input::placeholder {
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+.ob-btn {
+  padding: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  width: 100%;
+}
+
+.ob-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.ob-btn:not(:disabled):hover {
+  opacity: 0.88;
+}
+
+.ob-back {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 0;
+  text-align: left;
+  transition: color 0.2s;
+}
+
+.ob-back:hover {
+  color: var(--accent);
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .ob-question { font-size: 20px; }
+  .ob-input    { font-size: 16px; /* prevents iOS zoom */ }
+}

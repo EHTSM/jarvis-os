@@ -1,114 +1,152 @@
 import React from "react";
 import "./Logs.css";
 
-function Bar({ label, value, total, color }) {
-  const pct = total > 0 ? Math.round((value / total) * 100) : 0;
+function _timeAgo(isoStr) {
+  if (!isoStr) return "never";
+  const diffMs = Date.now() - new Date(isoStr).getTime();
+  const mins   = Math.floor(diffMs / 60_000);
+  if (mins < 1)  return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24)  return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
+}
+
+const TIER_META = {
+  "10min":      { label: "10-min touch",      icon: "⚡", desc: "First contact — new leads" },
+  "6hr":        { label: "6-hour follow-up",  icon: "🔁", desc: "Warm leads re-engagement"   },
+  "24hr":       { label: "Daily follow-up",   icon: "📅", desc: "Morning check-in sequence"  },
+  "3day":       { label: "3-day reminder",    icon: "📣", desc: "Last-chance conversion"     },
+  "onboarding": { label: "Onboarding",        icon: "🎉", desc: "New paid customers"         },
+  "upsell":     { label: "Upsell trigger",    icon: "💎", desc: "Hot leads — active today"   },
+};
+
+function AutoCard({ tierKey, data }) {
+  const meta = TIER_META[tierKey] || { label: tierKey, icon: "•", desc: "" };
+  const { sent = 0, attempts = 0, failed = 0, lastRun } = data;
+  const rate = attempts > 0 ? Math.round((sent / attempts) * 100) : null;
+
   return (
-    <div className="bar-row">
-      <span className="bar-label">{label}</span>
-      <div className="bar-track">
-        <div className="bar-fill" style={{ width: `${pct}%`, background: color }} />
+    <div className="act-card">
+      <div className="act-card-top">
+        <span className="act-icon">{meta.icon}</span>
+        <div className="act-card-info">
+          <span className="act-label">{meta.label}</span>
+          <span className="act-desc">{meta.desc}</span>
+        </div>
+        <span className="act-ago">{_timeAgo(lastRun)}</span>
       </div>
-      <span className="bar-count">{value}</span>
+      <div className="act-card-stats">
+        <div className="act-stat">
+          <span className="act-stat-val" style={{ color: "var(--success)" }}>{sent}</span>
+          <span className="act-stat-lbl">Sent</span>
+        </div>
+        {failed > 0 && (
+          <div className="act-stat">
+            <span className="act-stat-val" style={{ color: "var(--danger)" }}>{failed}</span>
+            <span className="act-stat-lbl">Failed</span>
+          </div>
+        )}
+        {rate !== null && (
+          <div className="act-stat">
+            <span className="act-stat-val" style={{ color: rate >= 50 ? "var(--success)" : "var(--text-dim)" }}>
+              {rate}%
+            </span>
+            <span className="act-stat-lbl">Success</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-export default function Logs({ metrics }) {
-  if (!metrics) {
-    return (
-      <div className="logs logs--empty">
-        <div className="logs-empty-msg">Waiting for backend metrics…</div>
+function PipelineRow({ label, value, color, of: total }) {
+  const pct = total > 0 ? Math.round((value / total) * 100) : 0;
+  return (
+    <div className="pipe-row">
+      <span className="pipe-label">{label}</span>
+      <div className="pipe-track">
+        <div className="pipe-fill" style={{ width: `${pct}%`, background: color }} />
       </div>
-    );
-  }
+      <span className="pipe-val" style={{ color }}>{value}</span>
+    </div>
+  );
+}
 
-  const { requests = 0, errors = 0, paymentLinks = 0, waSent = 0, byIntent = {}, byMode = {}, uptime = 0, crm } = metrics;
+export default function Activity({ opsData, stats }) {
+  const autoStats = opsData?.automation || null;
+  const hasAuto   = autoStats && Object.keys(autoStats).length > 0;
+  const crm       = stats || opsData?.crm || null;
 
-  const intentTotal = Object.values(byIntent).reduce((a, b) => a + b, 0);
-  const modeTotal   = Object.values(byMode).reduce((a, b)   => a + b, 0);
-
-  const intentColors = { payment: "#00e676", search: "#00d4ff", greeting: "#6c63ff", intelligence: "#ffab40", crm: "#ff4081", execution: "#ff9800" };
-  const modeColors   = { sales: "#00e676", execution: "#00d4ff", intelligence: "#6c63ff" };
-
-  const upStr = uptime ? `${Math.floor(uptime / 60)}m ${uptime % 60}s` : "—";
+  // Totals for automation
+  const totalSent    = hasAuto ? Object.values(autoStats).reduce((s, d) => s + (d.sent    || 0), 0) : 0;
+  const totalFailed  = hasAuto ? Object.values(autoStats).reduce((s, d) => s + (d.failed  || 0), 0) : 0;
 
   return (
     <div className="logs">
-      {/* Key metrics row */}
-      <div className="log-metrics">
-        <div className="log-metric">
-          <div className="log-metric-val">{requests}</div>
-          <div className="log-metric-lbl">Requests</div>
-        </div>
-        <div className="log-metric log-metric--danger">
-          <div className="log-metric-val">{errors}</div>
-          <div className="log-metric-lbl">Errors</div>
-        </div>
-        <div className="log-metric log-metric--success">
-          <div className="log-metric-val">{paymentLinks}</div>
-          <div className="log-metric-lbl">Pay Links</div>
-        </div>
-        <div className="log-metric log-metric--accent">
-          <div className="log-metric-val">{waSent}</div>
-          <div className="log-metric-lbl">WA Sent</div>
-        </div>
-        <div className="log-metric">
-          <div className="log-metric-val">{upStr}</div>
-          <div className="log-metric-lbl">Uptime</div>
-        </div>
-      </div>
 
-      <div className="log-sections">
-        {/* Intent breakdown */}
-        <div className="log-section">
-          <h3 className="log-section-title">Intent Breakdown</h3>
-          {Object.entries(byIntent).length === 0
-            ? <p className="log-none">No data yet.</p>
-            : Object.entries(byIntent)
-                .sort((a, b) => b[1] - a[1])
-                .map(([k, v]) => (
-                  <Bar key={k} label={k} value={v} total={intentTotal} color={intentColors[k] || "#888"} />
-                ))
-          }
+      {/* ── Summary strip ──────────────────────────────────────────── */}
+      {hasAuto && (
+        <div className="act-summary">
+          <div className="act-sum-item">
+            <span className="act-sum-val" style={{ color: "var(--accent2)" }}>{totalSent}</span>
+            <span className="act-sum-lbl">Messages sent</span>
+          </div>
+          <div className="act-sum-sep" />
+          <div className="act-sum-item">
+            <span className="act-sum-val" style={{ color: "var(--success)" }}>{crm?.paid ?? 0}</span>
+            <span className="act-sum-lbl">Clients converted</span>
+          </div>
+          <div className="act-sum-sep" />
+          <div className="act-sum-item">
+            <span className="act-sum-val" style={{ color: totalFailed > 0 ? "var(--danger)" : "var(--text-dim)" }}>
+              {totalFailed}
+            </span>
+            <span className="act-sum-lbl">Delivery failures</span>
+          </div>
         </div>
+      )}
 
-        {/* Mode breakdown */}
-        <div className="log-section">
-          <h3 className="log-section-title">Mode Breakdown</h3>
-          {Object.entries(byMode).length === 0
-            ? <p className="log-none">No data yet.</p>
-            : Object.entries(byMode)
-                .sort((a, b) => b[1] - a[1])
-                .map(([k, v]) => (
-                  <Bar key={k} label={k} value={v} total={modeTotal} color={modeColors[k] || "#888"} />
-                ))
-          }
-        </div>
+      {/* ── Automation sequences ────────────────────────────────────── */}
+      <div className="log-section-wrap">
+        <h3 className="log-section-title">Follow-up Sequences</h3>
 
-        {/* CRM snapshot */}
-        {crm && (
-          <div className="log-section">
-            <h3 className="log-section-title">CRM Snapshot</h3>
-            {[
-              { label: "Total",      value: crm.total      ?? 0, color: "#e0e0e0" },
-              { label: "New",        value: crm.new        ?? 0, color: "#6c63ff" },
-              { label: "Hot",        value: crm.hot        ?? 0, color: "#ffab40" },
-              { label: "Paid",       value: crm.paid       ?? 0, color: "#00e676" },
-              { label: "Onboarded",  value: crm.onboarded  ?? 0, color: "#00d4ff" }
-            ].map(r => (
-              <div key={r.label} className="crm-row">
-                <span className="crm-dot" style={{ background: r.color }} />
-                <span className="crm-label">{r.label}</span>
-                <span className="crm-val">{r.value}</span>
-              </div>
+        {!hasAuto ? (
+          <div className="act-empty">
+            <p className="act-empty-title">No activity yet</p>
+            <p className="act-empty-sub">
+              Add leads and connect WhatsApp — JARVIS will start automating follow-ups immediately.
+            </p>
+          </div>
+        ) : (
+          <div className="act-cards">
+            {Object.entries(autoStats).map(([key, data]) => (
+              <AutoCard key={key} tierKey={key} data={data} />
             ))}
-            {crm.revenue != null && (
-              <div className="crm-revenue">Revenue: ₹{crm.revenue}</div>
-            )}
           </div>
         )}
       </div>
+
+      {/* ── Lead pipeline ───────────────────────────────────────────── */}
+      {crm && crm.total > 0 && (
+        <div className="log-section-wrap">
+          <h3 className="log-section-title">Lead Pipeline</h3>
+          <div className="log-section-inner">
+            <PipelineRow label="New"       value={crm.new      ?? 0} color="var(--accent)"  of={crm.total} />
+            <PipelineRow label="Hot"       value={crm.hot      ?? 0} color="var(--warning)" of={crm.total} />
+            <PipelineRow label="Paid"      value={crm.paid     ?? 0} color="var(--success)" of={crm.total} />
+            <PipelineRow label="Onboarded" value={crm.onboarded ?? 0} color="var(--accent2)" of={crm.total} />
+            {crm.revenue != null && (
+              <div className="pipe-revenue">
+                Total revenue: <strong style={{ color: "var(--success)" }}>
+                  ₹{crm.revenue.toLocaleString("en-IN")}
+                </strong>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
