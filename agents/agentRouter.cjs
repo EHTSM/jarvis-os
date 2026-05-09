@@ -1,17 +1,27 @@
-import fs from "fs";
+const devAgent = require("./devAgent.cjs");
+const marketingAgent = require("./marketingAgent.cjs");
+const automationAgent = require("./automationAgent.cjs");
+const researchAgent = require("./researchAgent.cjs");
 
-export async function agentRouter(task) {
+function agentRouter(taskType) {
 
-  const agentName = task.replace(/[^a-zA-Z]/g, "") + "Agent";
-  const filePath = `./agents/generated/${agentName}.js`;
+    if (["code", "build", "fix_bug"].includes(taskType)) {
+        return devAgent;
+    }
 
-  // 🔥 CHECK IF EXISTS
-  if (fs.existsSync(filePath)) {
-    const agentModule = await import(`./generated/${agentName}.js`);
-    return agentModule[agentName]();
-  }
+    if (["post", "content", "instagram", "whatsapp"].includes(taskType)) {
+        return marketingAgent;
+    }
 
-  // ❌ not found
-  console.log("⚠️ Unknown task:", task);
-  return null;
+    if (["automation", "workflow"].includes(taskType)) {
+        return automationAgent;
+    }
+
+    if (["research", "analyze"].includes(taskType)) {
+        return researchAgent;
+    }
+
+    return null;
 }
+
+module.exports = agentRouter;

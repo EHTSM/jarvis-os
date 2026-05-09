@@ -9,11 +9,13 @@ const { promisify } = require("util");
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
+const FormData = require("form-data");
 
 const execAsync = promisify(exec);
 
 class VoiceAgent {
     constructor() {
+            console.log("VoiceAgent initialized");
         this.voiceEnabled = process.platform === "darwin"; // macOS only for now
         this.whisperApiKey = process.env.OPENAI_API_KEY;
         this.voiceSettings = {
@@ -154,6 +156,7 @@ class VoiceAgent {
         this.voiceSettings.rate = rate;
         console.log(`🎤 Voice set to: ${voice} (rate: ${rate})`);
     }
+
+    module.exports = VoiceAgent;
 }
 
-module.exports = VoiceAgent;

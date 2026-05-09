@@ -36,6 +36,18 @@ async function toolAgent(task) {
                 url: result.url
             };
         }
+        
+        case "open_url": {
+    const url = task.url;
+
+    exec(`open "${url}"`);
+
+    return {
+        type: "open_url",
+        message: `Opening ${task.label}`,
+        url
+    };
+}
 
         case "search": {
             const query = task.payload?.query || "";

@@ -3,11 +3,8 @@
   "name": "jarvis-os",
   
   "version": "1.0.0",
-
   
   "description": "Jarvis AI System",
-
-  
   
   "main": "server.js",
   
@@ -36,6 +33,9 @@
   "groq-sdk": "^1.1.2",
   
     
+  "https-proxy-agent": "^9.0.0",
+  
+    
   "node-cron": "^4.2.1",
   
     
@@ -50,7 +50,5 @@
     
   "robotjs": "^0.7.0"
   
-  
   }
-  
 }

@@ -14,7 +14,13 @@ if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
 }
 
+
+
+
+
 class LearningSystem {
+
+    
     constructor() {
         this.learningData = this.loadLearning();
         this.sessionStats = {
@@ -23,6 +29,19 @@ class LearningSystem {
             suggestions_given: 0
         };
     }
+
+learnMoneyPattern(input, result) {
+    console.log("📈 Learning:", input, result);
+
+    // Store simple pattern
+    this.learningData.commandHistory.push({
+        timestamp: new Date().toISOString(),
+        input,
+        result
+    });
+
+    this.saveLearning();
+}
 
     /**
      * Load learning data from persistent storage
@@ -58,7 +77,7 @@ class LearningSystem {
             console.error("❌ Failed to save learning data:", error.message);
         }
     }
-
+  
     /**
      * Analyze executed command and update learning
      */
@@ -374,7 +393,7 @@ class LearningSystem {
         return this.learningData;
     }
 }
-
+const learningSystem = new LearningSystem();
 module.exports = {
     LearningSystem
 };
