@@ -1,0 +1,46 @@
+{
+  "demo2": {
+    "habits": [
+      {
+        "id": "habit-mohbkusb-wd2",
+        "name": "Morning Run",
+        "frequency": "daily",
+        "category": "health",
+        "target": 1,
+        "streak": 1,
+        "bestStreak": 1,
+        "totalCompletions": 1,
+        "createdAt": "2026-04-27T14:55:59.963Z"
+      },
+      {
+        "id": "habit-mohbkusc-nmv",
+        "name": "Read 20 pages",
+        "frequency": "daily",
+        "category": "growth",
+        "target": 1,
+        "streak": 1,
+        "bestStreak": 1,
+        "totalCompletions": 1,
+        "createdAt": "2026-04-27T14:55:59.964Z"
+      }
+    ],
+    "logs": [
+      {
+        "id": "hlog-mohbkusc-9xm",
+        "habitId": "habit-mohbkusb-wd2",
+        "count": 1,
+        "note": "",
+        "date": "Mon Apr 27 2026",
+        "loggedAt": "2026-04-27T14:55:59.964Z"
+      },
+      {
+        "id": "hlog-mohbkusd-1fv",
+        "habitId": "habit-mohbkusc-nmv",
+        "count": 1,
+        "note": "",
+        "date": "Mon Apr 27 2026",
+        "loggedAt": "2026-04-27T14:55:59.965Z"
+      }
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "timestamp": "2026-05-09T20:24:15.068Z",
+    "input": "get my leads",
+    "taskCount": 1,
+    "taskTypes": [
+      "money_flow"
+    ],
+    "resultCount": 1,
+    "executedBy": "moneyEngine",
+    "duration": 11,
+    "processedBy": "moneyEngine"
+  },
+  {
+    "timestamp": "2026-05-09T20:24:22.305Z",
+    "input": "every 30 minutes check crm stats",
+    "taskCount": 1,
+    "taskTypes": [
+      "queue_task"
+    ],
+    "resultCount": 1,
+    "executedBy": "System",
+    "duration": 15,
+    "processedBy": "System"
+  },
+  {
+    "timestamp": "2026-05-09T20:24:22.325Z",
+    "input": "in 5 minutes run health check",
+    "taskCount": 1,
+    "taskTypes": [
+      "queue_task"
+    ],
+    "resultCount": 1,
+    "executedBy": "System",
+    "duration": 2,
+    "processedBy": "System"
+  },
+  {
+    "timestamp": "2026-05-09T20:25:00.548Z",
+    "input": "what can you do?",
+    "taskCount": 1,
+    "taskTypes": [
+      "ai"
+    ],
+    "resultCount": 1,
+    "executedBy": "Groq AI",
+    "duration": 841,
+    "processedBy": "Groq AI"
+  },
+  {
+    "timestamp": "2026-05-09T20:26:28.128Z",
+    "input": "what time is it",
+    "taskCount": 1,
+    "taskTypes": [
+      "time"
+    ],
+    "resultCount": 1,
+    "executedBy": "System",
+    "duration": 9,
+    "processedBy": "System"
+  },
+  {
+    "timestamp": "2026-05-09T20:42:05.510Z",
+    "input": "what time is it",
+    "taskCount": 1,
+    "taskTypes": [
+      "time"
+    ],
+    "resultCount": 1,
+    "executedBy": "System",
+    "duration": 18,
+    "processedBy": "System"
+  }
+]

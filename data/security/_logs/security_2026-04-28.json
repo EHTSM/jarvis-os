@@ -1,0 +1,65 @@
+[
+  {
+    "id": "sl-moikf654-rf6",
+    "agent": "privacyManagerPro",
+    "userId": "u1",
+    "eventType": "pii_scan",
+    "threatLevel": "INFO",
+    "detail": {
+      "textLength": 58
+    },
+    "timestamp": "2026-04-28T11:51:17.464Z"
+  },
+  {
+    "id": "sl-moikf656-4di",
+    "agent": "phishingDetector",
+    "userId": "u1",
+    "eventType": "phishing_url_detected",
+    "threatLevel": "CRITICAL",
+    "detail": {
+      "url": "http://192.168.1.1/login?verify=account",
+      "score": 6,
+      "threat": "CRITICAL"
+    },
+    "timestamp": "2026-04-28T11:51:17.466Z"
+  },
+  {
+    "id": "sl-moikf657-cyg",
+    "agent": "fraudDetectionSystem",
+    "userId": "u1",
+    "eventType": "transaction_analyzed",
+    "threatLevel": "LOW",
+    "detail": {
+      "transactionId": "txn-moikf656-k9c",
+      "amount": 500,
+      "threatLevel": "LOW"
+    },
+    "timestamp": "2026-04-28T11:51:17.467Z"
+  },
+  {
+    "id": "sl-moikf658-kuk",
+    "agent": "malwareScanner",
+    "userId": "u1",
+    "eventType": "file_scanned",
+    "threatLevel": "INFO",
+    "detail": {
+      "fileName": "report.pdf",
+      "flagCount": 0
+    },
+    "timestamp": "2026-04-28T11:51:17.468Z"
+  },
+  {
+    "id": "sl-moikf659-zxk",
+    "agent": "transactionMonitor",
+    "userId": "u1",
+    "eventType": "transaction_normal",
+    "threatLevel": "LOW",
+    "detail": {
+      "transactionId": "txn-moikf659-sxc",
+      "amount": 1000,
+      "alertLevel": "LOW",
+      "rules": []
+    },
+    "timestamp": "2026-04-28T11:51:17.469Z"
+  }
+]

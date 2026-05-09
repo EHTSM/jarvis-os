@@ -1,0 +1,22 @@
+[
+  {
+    "txId": "tx_1777398509222_battq",
+    "adminId": "admin",
+    "recipientId": "u9",
+    "amount": 2000,
+    "reason": "bonus",
+    "currency": "MVC",
+    "type": "mint",
+    "timestamp": "2026-04-28T17:48:29.222Z"
+  },
+  {
+    "txId": "tx_1777398509222_mqeed",
+    "fromUserId": "u9",
+    "toUserId": "u10",
+    "amount": 100,
+    "fee": 2.5,
+    "currency": "MVC",
+    "type": "transfer",
+    "timestamp": "2026-04-28T17:48:29.222Z"
+  }
+]

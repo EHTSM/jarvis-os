@@ -1,50 +1,29 @@
 #!/bin/bash
+# JARVIS startup — backend only (production).
+# For development with frontend hot-reload: npm run dev
 
-# 🔥 JARVIS Clean Startup Script
-# Ensures proper port assignment and clean startup
+set -e
+cd "$(dirname "$0")"
 
-echo "🧹 Cleaning up old processes..."
-pkill -f "node server.js" 2>/dev/null
-pkill -f "react-scripts" 2>/dev/null
-pkill -f "electron" 2>/dev/null
-sleep 2
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo " JARVIS OS — starting backend"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-echo ""
-echo "════════════════════════════════════════════════════════════════"
-echo "🚀 JARVIS STARTUP SEQUENCE"
-echo "════════════════════════════════════════════════════════════════"
-echo ""
+# Ensure .env exists
+if [ ! -f .env ]; then
+  echo "[ERROR] .env not found. Copy .env.example and fill in your keys."
+  exit 1
+fi
 
-# Start Backend
-echo "📦 Starting Backend Server (Port 3000)..."
-cd /Users/ehtsm
-node server.js &
-BACKEND_PID=$!
-echo "✅ Backend PID: $BACKEND_PID"
+# Create logs dir if needed
+mkdir -p logs
 
-sleep 3
+# Kill any process holding port 5050
+if lsof -ti:5050 >/dev/null 2>&1; then
+  echo "[Startup] Killing existing process on port 5050..."
+  kill "$(lsof -ti:5050)" 2>/dev/null || true
+  sleep 1
+fi
 
-# Start Frontend
-echo ""
-echo "💻 Starting Electron + React (Port 3001)..."
-cd /Users/ehtsm/electron
-PORT=3001 npm start &
-ELECTRON_PID=$!
-echo "✅ Electron PID: $ELECTRON_PID"
-
-echo ""
-echo "════════════════════════════════════════════════════════════════"
-echo "🎯 JARVIS Systems Online!"
-echo "════════════════════════════════════════════════════════════════"
-echo ""
-echo "📊 Status:"
-echo "   Backend:   http://localhost:3000"
-echo "   Frontend:  Electron Window (should auto-open)"
-echo "   React Dev: http://localhost:3001 (internal)"
-echo ""
-echo "🎤 Ready for voice commands!"
-echo ""
-echo "To stop, press Ctrl+C"
-echo ""
-
-wait $BACKEND_PID $ELECTRON_PID
+echo "[Startup] Launching backend/server.js on port 5050..."
+node backend/server.js

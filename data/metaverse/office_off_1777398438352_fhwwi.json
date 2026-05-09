@@ -1,0 +1,39 @@
+{
+  "officeId": "off_1777398438352_fhwwi",
+  "worldId": "wld_1777398438340_t0kjm",
+  "officeName": "StartupHQ",
+  "ownerId": "u2",
+  "teamSize": 20,
+  "rooms": [
+    {
+      "roomId": "room_1777398438352_r0gtw",
+      "type": "open_floor",
+      "capacity": 10,
+      "tools": [
+        "whiteboard",
+        "screen_share"
+      ],
+      "occupants": []
+    },
+    {
+      "roomId": "room_1777398438352_dmmfp",
+      "type": "meeting_room",
+      "capacity": 10,
+      "tools": [
+        "whiteboard",
+        "screen_share"
+      ],
+      "occupants": []
+    }
+  ],
+  "announcements": [
+    {
+      "id": "ann_1777398438357_gh72w",
+      "userId": "u2",
+      "message": "Team standup in 5!",
+      "priority": "high",
+      "postedAt": "2026-04-28T17:47:18.357Z"
+    }
+  ],
+  "createdAt": "2026-04-28T17:47:18.352Z"
+}

@@ -94,16 +94,25 @@ async function orchestrator(input) {
     const contextData = contextEngine.getContextSummary();
     const contextPrompt = contextEngine.getContextPrompt();
 
-    // Enhanced planner with context — use enrichedInput for better task parsing
-    const tasks = plannerAgent(enrichedInput, contextData);
+    // Planner always works on raw input — enrichedInput is for AI calls only
+    const tasks = plannerAgent(input, contextData);
     const results = [];
     const logs = [];
+    console.log(`[Planner] input="${input.slice(0,60)}" → ${tasks.length} task(s): ${tasks.map(t=>t.type).join(", ")}`);
 
     // 💰 MONEY INTENT DETECTION
     const moneyIntent = await moneyEngine(input);
 
     if (moneyIntent) {
         logs.push(`💰 Money intent detected: ${moneyIntent.type}`);
+        const moneyDuration = Date.now() - startTime;
+        const moneyTask = [{ type: "money_flow" }];
+        try {
+            contextEngine.addConversation(input, moneyTask, [{ success: true }], { processedBy: "moneyEngine", duration: moneyDuration });
+        } catch {}
+        try {
+            learningSystem.analyzeCommand(input, moneyTask, [{ success: true }], { success: true, duration: moneyDuration });
+        } catch {}
 
         return {
             success: true,
@@ -134,7 +143,16 @@ async function orchestrator(input) {
 
         logs.push(`Task ${taskIndex}/${tasks.length}: Processing type="${task.type}" label="${task.label}"`);
 
+        console.log(`[Executor] step ${taskIndex}/${tasks.length} type="${task.type}" payload="${JSON.stringify(task.payload||{}).slice(0,60)}"`);
         let taskResult = await executorAgent(task);
+
+        // ── Stop pipeline on hard failure ────────────────────────
+        if (taskResult && taskResult.success === false && !taskResult.type?.includes("ai")) {
+            logs.push(`Step ${taskIndex} FAILED (${task.type}): ${taskResult.result || taskResult.error || "unknown error"} — pipeline stopped`);
+            console.log(`[Executor] step ${taskIndex} FAILED — stopping pipeline`);
+            results.push({ task, result: taskResult, failed: true });
+            break;
+        }
 
         if (taskResult && taskResult.type === "trigger") {
             // ✅ HANDLE TRIGGER SCHEDULING
@@ -161,9 +179,11 @@ async function orchestrator(input) {
         } else if (taskResult === null) {
             logs.push(`Task ${taskIndex} delegated to AI`);
             const contextMessages = generateMemoryMessages();
-            // Add context-aware system prompt
             const systemPrompt = contextPrompt || "You are Jarvis AI with memory and context awareness. You plan tasks, execute safe actions, and answer unknown queries using AI.";
-            const aiResponse = await callGroqAI(task.payload.query || input, contextMessages, systemPrompt);
+            // Use enrichedInput (with RAG context) for AI calls — raw input for intent parsing
+            const aiQuery = task.payload?.query || enrichedInput || input;
+            console.log(`[Executor] ai fallback for task="${task.type}" query="${aiQuery.slice(0,60)}"`);
+            const aiResponse = await callGroqAI(aiQuery, contextMessages, systemPrompt);
             taskResult = {
                 type: "ai",
                 result: aiResponse
@@ -174,54 +194,7 @@ async function orchestrator(input) {
             logs.push(`Task ${taskIndex} executed: ${task.type}`);
         }
 
-        // Accumulate result for this task - each task gets its own result entry
         results.push({ task, result: taskResult });
-        // 🧠 ANALYZER PHASE
-let analysis = null;
-try {
-    analysis = analyzerAgent({
-        input,
-        task,
-        result: taskResult
-    });
-    logs.push(`🧠 Analysis: ${JSON.stringify(analysis)}`);
-} catch (e) {
-    logs.push(`⚠️ Analyzer failed: ${e.message}`);
-}
-
-// 🎯 DECISION PHASE
-let decision = null;
-try {
-    decision = decisionAgent({
-        input,
-        task,
-        result: taskResult,
-        analysis
-    });
-    logs.push(`🎯 Decision: ${JSON.stringify(decision)}`);
-} catch (e) {
-    logs.push(`⚠️ Decision failed: ${e.message}`);
-}
-
-//
-
-// 🔁 AUTO ACTION BASED ON DECISION
-if (decision && decision.next_action) {
-    logs.push(`🔁 Auto-executing next action: ${decision.next_action}`);
-
-    const autoTask = {
-        type: decision.next_action,
-        payload: decision.payload || {}
-    };
-
-    const autoResult = await executorAgent(autoTask);
-
-    results.push({
-        task: autoTask,
-        result: autoResult,
-        auto: true
-    });
-}
     }
 
     logs.push(`Completed all ${tasks.length} task(s) successfully`);
@@ -296,6 +269,7 @@ if (decision && decision.next_action) {
         // Index immediately for future vector search
         vectorSearch.index(saved);
         logs.push("💾 Memory saved");
+        console.log(`[Memory] saved — taskType="${primaryTask?.type}" success=${interactionSuccess}`);
     } catch (memErr) {
         logs.push(`⚠️  Memory save failed: ${memErr.message}`);
     }
@@ -337,8 +311,65 @@ if (decision && decision.next_action) {
     };
 }
 
+async function gateway(_mode, opts = {}) {
+    const input = opts.input || "";
+    console.log(`[Gateway] received input="${input.slice(0,60)}"`);
+
+    const result = await orchestrator(input);
+
+    function extractText(res) {
+        if (!res) return "";
+        return (typeof res.result  === "string" && res.result.trim()  ? res.result  : "") ||
+               (typeof res.reply   === "string" && res.reply.trim()   ? res.reply   : "") ||
+               (typeof res.message === "string" && res.message.trim() ? res.message : "");
+    }
+
+    // Priority 1: specific agent results (research, leads, browser, etc.) — not generic AI
+    const NON_AI_TYPES = [
+        "research", "dev", "terminal", "task_queue", "queue_task",
+        "open_google", "open_youtube", "open_chatgpt", "open_github",
+        "open_twitter", "open_linkedin", "open_url", "search", "web_search",
+        "browser", "leads", "voice", "desktop", "system", "agent_factory"
+    ];
+    let reply = "";
+    let replySource = "none";
+    for (const r of (result.results || [])) {
+        if (NON_AI_TYPES.includes(r.result?.type) || NON_AI_TYPES.includes(r.task?.type)) {
+            const text = extractText(r.result);
+            if (text) { reply = text; replySource = r.result?.type || r.task?.type; break; }
+        }
+    }
+    // Priority 2: any non-empty result
+    if (!reply) {
+        for (const r of (result.results || [])) {
+            const text = extractText(r.result);
+            if (text) { reply = text; replySource = r.result?.type || "unknown"; break; }
+        }
+    }
+
+    // Multi-step: build a numbered step summary instead of single result
+    const allResults = result.results || [];
+    if (allResults.length > 1) {
+        const steps = allResults.map((r, i) => {
+            const text   = extractText(r.result) || r.result?.error || "no output";
+            const status = r.result?.success === false ? "✗" : "✓";
+            return `${status} Step ${i + 1} [${r.task?.type || "?"}]: ${text.slice(0, 120)}`;
+        });
+        const failed  = allResults.find(r => r.failed);
+        const summary = failed
+            ? `Stopped at step ${allResults.indexOf(failed) + 1} — ${steps.join("\n")}`
+            : steps.join("\n");
+        reply = summary;
+        replySource = "multi-step";
+    }
+
+    console.log(`[Gateway] returning source="${replySource}" steps=${allResults.length} reply_len=${reply.length}`);
+    return { ...result, reply, response: reply, steps: allResults.length };
+}
+
 module.exports = {
     orchestrator,
+    gateway,
     getMemoryState,
     clearMemoryState,
     contextEngine,
@@ -350,5 +381,4 @@ module.exports = {
     executorAgent,
     analyzerAgent,
     decisionAgent,
-   
 };

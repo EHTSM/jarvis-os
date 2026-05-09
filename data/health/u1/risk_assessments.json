@@ -1,0 +1,27 @@
+[
+  {
+    "id": "rsk-moi0tgpf-d92",
+    "userId": "u1",
+    "riskScore": 9,
+    "riskLevel": "MEDIUM",
+    "riskLabel": "Moderate risk — schedule a check-up",
+    "bmi": null,
+    "riskFactors": [
+      "Age 50 — increased baseline risk",
+      "Smoking — significant cardiovascular and cancer risk",
+      "No regular exercise",
+      "Existing hypertension"
+    ],
+    "advice": [
+      "Quitting smoking is the single most impactful change for long-term health. Seek support from a doctor.",
+      "Aim for 150 minutes of moderate exercise per week (e.g., 30 min brisk walk 5x/week)."
+    ],
+    "recommendedScreenings": [
+      "Annual blood pressure and cholesterol check",
+      "Blood sugar / HbA1c screening for diabetes",
+      "Colorectal cancer screening",
+      "Lung health assessment"
+    ],
+    "assessedAt": "2026-04-28T02:42:32.019Z"
+  }
+]

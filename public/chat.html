@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<body style="background:#0f172a;color:white;font-family:sans-serif">
+
+<h2>Jarvis Chat ⚡</h2>
+
+<input id="msg" placeholder="Type..." style="width:300px;padding:10px;">
+<button onclick="send()">Send</button>
+
+<pre id="out"></pre>
+
+<script>
+async function send() {
+  const input = document.getElementById("msg").value;
+
+  const res = await fetch("/jarvis", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ input, mode: "general" })
+  });
+
+  const data = await res.json();
+  document.getElementById("out").innerText += "\n> " + input + "\n" + data.reply + "\n";
+}
+</script>
+<button onclick="voice()">🎤 Speak</button>
+
+<script>
+function voice() {
+  fetch("/voice-start");
+}
+</script>
+</body>
+</html>

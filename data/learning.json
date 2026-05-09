@@ -1,36 +1,102 @@
 {
   "frequency": {
-    "open_google": 12,
-    "time": 5,
-    "search": 2,
+    "open_google": 13,
+    "time": 10,
+    "search": 4,
     "remind_in": 3,
-    "ai": 24,
-    "open_app": 12,
-    "type_text": 1,
-    "press_key": 1,
+    "ai": 42,
+    "open_app": 19,
+    "type_text": 2,
+    "press_key": 4,
     "speak": 3,
-    "open_youtube": 2,
+    "open_youtube": 3,
     "create_agent": 15,
     "list_agents": 10,
-    "execute_agent": 5
+    "execute_agent": 5,
+    "research": 9,
+    "dev": 6,
+    "terminal": 15,
+    "queue_task": 12,
+    "open_twitter": 2,
+    "open_instagram": 1,
+    "open_stackoverflow": 1,
+    "open_whatsapp": 1,
+    "open_url": 2,
+    "web_search": 1,
+    "date": 1,
+    "money_flow": 1
   },
   "patterns": [
     {
       "signature": "ai",
-      "count": 24,
+      "count": 32,
       "examples": [
-        "hello",
-        "tell me a joke",
-        "hello",
-        "hello",
-        "vscodeopen ",
-        "write instagram post about business",
-        "write instagram post about business",
         "instagram automation",
         "instagram automation",
-        "instagram automation"
+        "copy",
+        "paste",
+        "hello",
+        "hello",
+        "hello jarvis",
+        "I want to automate my business",
+        "Set a reminder",
+        "what can you do?"
       ],
       "first_seen": "2026-04-06T01:04:49.474Z",
+      "learned": true
+    },
+    {
+      "signature": "open_app",
+      "count": 15,
+      "examples": [
+        "open github",
+        "open vs code",
+        "open calculator",
+        "open mail",
+        "open safari",
+        "open vscode",
+        "open vscode",
+        "open discord",
+        "open discord",
+        "open vscode"
+      ],
+      "first_seen": "2026-04-06T01:24:01.321Z",
+      "learned": true
+    },
+    {
+      "signature": "terminal",
+      "count": 15,
+      "examples": [
+        "run pwd",
+        "run git status",
+        "run rm -rf /tmp/test",
+        "run pwd",
+        "run pwd",
+        "run ls",
+        "run pwd",
+        "run pwd",
+        "run pwd",
+        "run pwd"
+      ],
+      "first_seen": "2026-05-07T21:16:04.289Z",
+      "learned": true
+    },
+    {
+      "signature": "queue_task",
+      "count": 12,
+      "examples": [
+        "every 1 minute run pwd",
+        "tomorrow run ls",
+        "tomorrow run npm install",
+        "tomorrow run ls",
+        "tomorrow run git status",
+        "in 5 minutes run ls",
+        "in 2 minutes run ls",
+        "tomorrow run ls",
+        "every 30 minutes check crm stats",
+        "in 5 minutes run health check"
+      ],
+      "first_seen": "2026-05-07T21:23:32.354Z",
       "learned": true
     },
     {
@@ -70,21 +136,20 @@
       "learned": true
     },
     {
-      "signature": "open_app",
-      "count": 10,
+      "signature": "time",
+      "count": 9,
       "examples": [
-        "open chrome",
-        "open gmail",
-        "open chrome",
-        "open chrome",
-        "open calender",
-        "open github",
-        "open vs code",
-        "open calculator",
-        "open mail",
-        "open safari"
+        "tell me the time",
+        "what is the current time",
+        "what time is it ",
+        "what time is this",
+        "what time is it",
+        "what time is it",
+        "What time is it",
+        "what time is it",
+        "what time is it"
       ],
-      "first_seen": "2026-04-06T01:24:01.321Z",
+      "first_seen": "2026-04-06T01:04:42.969Z",
       "learned": true
     },
     {
@@ -127,15 +192,27 @@
       "learned": true
     },
     {
-      "signature": "time",
+      "signature": "press_key",
       "count": 4,
       "examples": [
-        "tell me the time",
-        "what is the current time",
-        "what time is it ",
-        "what time is this"
+        "press enter",
+        "press enter",
+        "press space",
+        "press enter"
       ],
-      "first_seen": "2026-04-06T01:04:42.969Z",
+      "first_seen": "2026-04-06T01:24:01.326Z",
+      "learned": true
+    },
+    {
+      "signature": "dev",
+      "count": 4,
+      "examples": [
+        "create a simple express api server",
+        "create a simple express api server",
+        "build a utility function to validate email addresses",
+        "create express server"
+      ],
+      "first_seen": "2026-05-07T19:05:50.009Z",
       "learned": true
     },
     {
@@ -150,13 +227,75 @@
       "learned": true
     },
     {
+      "signature": "research",
+      "count": 3,
+      "examples": [
+        "research top AI automation tools",
+        "research nodejs performance monitoring",
+        "research nodejs"
+      ],
+      "first_seen": "2026-05-07T17:06:52.037Z",
+      "learned": true
+    },
+    {
       "signature": "search",
-      "count": 2,
+      "count": 3,
       "examples": [
         "search for weather",
-        "search for news"
+        "search for news",
+        "search nodejs tutorial"
       ],
       "first_seen": "2026-04-06T01:04:42.973Z",
+      "learned": true
+    },
+    {
+      "signature": "open_app+dev",
+      "count": 2,
+      "examples": [
+        "open vscode and create a simple express api server",
+        "open nonexistent_app_xyz and create a react component"
+      ],
+      "first_seen": "2026-05-07T21:01:45.026Z",
+      "learned": false
+    },
+    {
+      "signature": "open_youtube",
+      "count": 2,
+      "examples": [
+        "open youtube",
+        "open youtube"
+      ],
+      "first_seen": "2026-04-07T12:36:41.588Z",
+      "learned": false
+    },
+    {
+      "signature": "open_twitter",
+      "count": 2,
+      "examples": [
+        "open twitter",
+        "open twitter"
+      ],
+      "first_seen": "2026-05-07T22:29:42.883Z",
+      "learned": false
+    },
+    {
+      "signature": "open_url",
+      "count": 2,
+      "examples": [
+        "open youtube",
+        "open whatsapp"
+      ],
+      "first_seen": "2026-05-07T23:23:13.498Z",
+      "learned": false
+    },
+    {
+      "signature": "type_text",
+      "count": 2,
+      "examples": [
+        "type hello world",
+        "type hello world"
+      ],
+      "first_seen": "2026-04-06T01:24:01.324Z",
       "learned": false
     },
     {
@@ -166,24 +305,6 @@
         "open google and tell me time"
       ],
       "first_seen": "2026-04-06T01:04:42.750Z",
-      "learned": false
-    },
-    {
-      "signature": "type_text",
-      "count": 1,
-      "examples": [
-        "type hello world"
-      ],
-      "first_seen": "2026-04-06T01:24:01.324Z",
-      "learned": false
-    },
-    {
-      "signature": "press_key",
-      "count": 1,
-      "examples": [
-        "press enter"
-      ],
-      "first_seen": "2026-04-06T01:24:01.326Z",
       "learned": false
     },
     {
@@ -214,12 +335,93 @@
       "learned": false
     },
     {
-      "signature": "open_youtube",
+      "signature": "ai+research",
       "count": 1,
       "examples": [
-        "open youtube"
+        "research top AI automation tools"
       ],
-      "first_seen": "2026-04-07T12:36:41.588Z",
+      "first_seen": "2026-05-07T16:43:27.741Z",
+      "learned": false
+    },
+    {
+      "signature": "ai+ai+research+ai+research",
+      "count": 1,
+      "examples": [
+        "research top AI automation tools"
+      ],
+      "first_seen": "2026-05-07T16:45:17.259Z",
+      "learned": false
+    },
+    {
+      "signature": "ai+ai+research+ai+ai+ai+research+ai+research",
+      "count": 1,
+      "examples": [
+        "research top AI automation tools"
+      ],
+      "first_seen": "2026-05-07T16:46:02.832Z",
+      "learned": false
+    },
+    {
+      "signature": "open_google+search",
+      "count": 1,
+      "examples": [
+        "open google and search for AI automation tools"
+      ],
+      "first_seen": "2026-05-07T21:01:53.163Z",
+      "learned": false
+    },
+    {
+      "signature": "open_instagram",
+      "count": 1,
+      "examples": [
+        "open instagram"
+      ],
+      "first_seen": "2026-05-07T22:29:42.971Z",
+      "learned": false
+    },
+    {
+      "signature": "open_stackoverflow",
+      "count": 1,
+      "examples": [
+        "open stackoverflow"
+      ],
+      "first_seen": "2026-05-07T22:29:43.043Z",
+      "learned": false
+    },
+    {
+      "signature": "open_whatsapp",
+      "count": 1,
+      "examples": [
+        "open whatsapp"
+      ],
+      "first_seen": "2026-05-07T22:29:43.114Z",
+      "learned": false
+    },
+    {
+      "signature": "web_search",
+      "count": 1,
+      "examples": [
+        "search consolidation"
+      ],
+      "first_seen": "2026-05-07T23:23:13.736Z",
+      "learned": false
+    },
+    {
+      "signature": "date",
+      "count": 1,
+      "examples": [
+        "today"
+      ],
+      "first_seen": "2026-05-07T23:23:14.056Z",
+      "learned": false
+    },
+    {
+      "signature": "money_flow",
+      "count": 1,
+      "examples": [
+        "get my leads"
+      ],
+      "first_seen": "2026-05-09T20:24:15.068Z",
       "learned": false
     }
   ],
@@ -1006,49 +1208,731 @@
       ],
       "success": true,
       "duration": 1474
+    },
+    {
+      "timestamp": "2026-05-07T16:43:27.741Z",
+      "input": "research top AI automation tools",
+      "tasks": [
+        "ai",
+        "research"
+      ],
+      "success": true,
+      "duration": 2042
+    },
+    {
+      "timestamp": "2026-05-07T16:45:17.259Z",
+      "input": "research top AI automation tools",
+      "tasks": [
+        "ai",
+        "ai",
+        "research",
+        "ai",
+        "research"
+      ],
+      "success": true,
+      "duration": 3912
+    },
+    {
+      "timestamp": "2026-05-07T16:46:02.832Z",
+      "input": "research top AI automation tools",
+      "tasks": [
+        "ai",
+        "ai",
+        "research",
+        "ai",
+        "ai",
+        "ai",
+        "research",
+        "ai",
+        "research"
+      ],
+      "success": true,
+      "duration": 9669
+    },
+    {
+      "timestamp": "2026-05-07T17:06:52.037Z",
+      "input": "research top AI automation tools",
+      "tasks": [
+        "research"
+      ],
+      "success": true,
+      "duration": 1774
+    },
+    {
+      "timestamp": "2026-05-07T19:05:50.009Z",
+      "input": "create a simple express api server",
+      "tasks": [
+        "dev"
+      ],
+      "success": true,
+      "duration": 1774
+    },
+    {
+      "timestamp": "2026-05-07T19:07:14.102Z",
+      "input": "create a simple express api server",
+      "tasks": [
+        "dev"
+      ],
+      "success": true,
+      "duration": 1390
+    },
+    {
+      "timestamp": "2026-05-07T19:08:48.597Z",
+      "input": "build a utility function to validate email addresses",
+      "tasks": [
+        "dev"
+      ],
+      "success": true,
+      "duration": 491
+    },
+    {
+      "timestamp": "2026-05-07T20:40:38.363Z",
+      "input": "press enter",
+      "tasks": [
+        "press_key"
+      ],
+      "success": true,
+      "duration": 65
+    },
+    {
+      "timestamp": "2026-05-07T20:40:38.444Z",
+      "input": "press space",
+      "tasks": [
+        "press_key"
+      ],
+      "success": true,
+      "duration": 27
+    },
+    {
+      "timestamp": "2026-05-07T20:40:39.251Z",
+      "input": "copy",
+      "tasks": [
+        "ai"
+      ],
+      "success": true,
+      "duration": 792
+    },
+    {
+      "timestamp": "2026-05-07T20:40:39.698Z",
+      "input": "paste",
+      "tasks": [
+        "ai"
+      ],
+      "success": true,
+      "duration": 429
+    },
+    {
+      "timestamp": "2026-05-07T21:01:45.026Z",
+      "input": "open vscode and create a simple express api server",
+      "tasks": [
+        "open_app",
+        "dev"
+      ],
+      "success": true,
+      "duration": 1541
+    },
+    {
+      "timestamp": "2026-05-07T21:01:53.163Z",
+      "input": "open google and search for AI automation tools",
+      "tasks": [
+        "open_google",
+        "search"
+      ],
+      "success": true,
+      "duration": 186
+    },
+    {
+      "timestamp": "2026-05-07T21:01:53.206Z",
+      "input": "open nonexistent_app_xyz and create a react component",
+      "tasks": [
+        "open_app",
+        "dev"
+      ],
+      "success": false,
+      "duration": 27
+    },
+    {
+      "timestamp": "2026-05-07T21:16:04.289Z",
+      "input": "run pwd",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 15
+    },
+    {
+      "timestamp": "2026-05-07T21:16:10.030Z",
+      "input": "run ls",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 23
+    },
+    {
+      "timestamp": "2026-05-07T21:16:15.766Z",
+      "input": "create folder test-folder",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 10
+    },
+    {
+      "timestamp": "2026-05-07T21:23:32.354Z",
+      "input": "tomorrow run git status",
+      "tasks": [
+        "queue_task"
+      ],
+      "success": true,
+      "duration": 7
+    },
+    {
+      "timestamp": "2026-05-07T21:30:56.383Z",
+      "input": "tomorrow run git status",
+      "tasks": [
+        "queue_task"
+      ],
+      "success": true,
+      "duration": 7
+    },
+    {
+      "timestamp": "2026-05-07T21:31:39.354Z",
+      "input": "every 1 minute run pwd",
+      "tasks": [
+        "queue_task"
+      ],
+      "success": true,
+      "duration": 7
+    },
+    {
+      "timestamp": "2026-05-07T21:40:58.905Z",
+      "input": "run pwd",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 12
+    },
+    {
+      "timestamp": "2026-05-07T21:40:58.941Z",
+      "input": "run git status",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 22
+    },
+    {
+      "timestamp": "2026-05-07T21:40:59.069Z",
+      "input": "tomorrow run ls",
+      "tasks": [
+        "queue_task"
+      ],
+      "success": true,
+      "duration": 3
+    },
+    {
+      "timestamp": "2026-05-07T21:49:06.757Z",
+      "input": "run pwd",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 16
+    },
+    {
+      "timestamp": "2026-05-07T21:49:06.798Z",
+      "input": "run git status",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 28
+    },
+    {
+      "timestamp": "2026-05-07T21:49:07.036Z",
+      "input": "tomorrow run npm install",
+      "tasks": [
+        "queue_task"
+      ],
+      "success": true,
+      "duration": 3
+    },
+    {
+      "timestamp": "2026-05-07T21:49:11.732Z",
+      "input": "research nodejs performance monitoring",
+      "tasks": [
+        "research"
+      ],
+      "success": true,
+      "duration": 4686
+    },
+    {
+      "timestamp": "2026-05-07T21:55:14.552Z",
+      "input": "run rm -rf /tmp/test",
+      "tasks": [
+        "terminal"
+      ],
+      "success": false,
+      "duration": 7
+    },
+    {
+      "timestamp": "2026-05-07T22:09:02.137Z",
+      "input": "run pwd",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 19
+    },
+    {
+      "timestamp": "2026-05-07T22:09:06.441Z",
+      "input": "research nodejs",
+      "tasks": [
+        "research"
+      ],
+      "success": true,
+      "duration": 4273
+    },
+    {
+      "timestamp": "2026-05-07T22:09:06.455Z",
+      "input": "tomorrow run ls",
+      "tasks": [
+        "queue_task"
+      ],
+      "success": true,
+      "duration": 2
+    },
+    {
+      "timestamp": "2026-05-07T22:27:59.527Z",
+      "input": "run pwd",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 15
+    },
+    {
+      "timestamp": "2026-05-07T22:28:05.489Z",
+      "input": "tomorrow run git status",
+      "tasks": [
+        "queue_task"
+      ],
+      "success": true,
+      "duration": 4
+    },
+    {
+      "timestamp": "2026-05-07T22:28:14.157Z",
+      "input": "open vscode",
+      "tasks": [
+        "open_app"
+      ],
+      "success": true,
+      "duration": 90
+    },
+    {
+      "timestamp": "2026-05-07T22:29:42.883Z",
+      "input": "open twitter",
+      "tasks": [
+        "open_twitter"
+      ],
+      "success": true,
+      "duration": 170
+    },
+    {
+      "timestamp": "2026-05-07T22:29:42.971Z",
+      "input": "open instagram",
+      "tasks": [
+        "open_instagram"
+      ],
+      "success": true,
+      "duration": 72
+    },
+    {
+      "timestamp": "2026-05-07T22:29:43.043Z",
+      "input": "open stackoverflow",
+      "tasks": [
+        "open_stackoverflow"
+      ],
+      "success": true,
+      "duration": 60
+    },
+    {
+      "timestamp": "2026-05-07T22:29:43.114Z",
+      "input": "open whatsapp",
+      "tasks": [
+        "open_whatsapp"
+      ],
+      "success": true,
+      "duration": 59
+    },
+    {
+      "timestamp": "2026-05-07T22:30:06.246Z",
+      "input": "run ls",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 16
+    },
+    {
+      "timestamp": "2026-05-07T22:51:00.134Z",
+      "input": "open youtube",
+      "tasks": [
+        "open_youtube"
+      ],
+      "success": true,
+      "duration": 76
+    },
+    {
+      "timestamp": "2026-05-07T22:51:00.213Z",
+      "input": "search nodejs tutorial",
+      "tasks": [
+        "search"
+      ],
+      "success": true,
+      "duration": 65
+    },
+    {
+      "timestamp": "2026-05-07T22:51:00.304Z",
+      "input": "open vscode",
+      "tasks": [
+        "open_app"
+      ],
+      "success": true,
+      "duration": 78
+    },
+    {
+      "timestamp": "2026-05-07T22:51:00.427Z",
+      "input": "open twitter",
+      "tasks": [
+        "open_twitter"
+      ],
+      "success": true,
+      "duration": 108
+    },
+    {
+      "timestamp": "2026-05-07T22:51:22.407Z",
+      "input": "run pwd",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 12
+    },
+    {
+      "timestamp": "2026-05-07T22:51:22.419Z",
+      "input": "in 5 minutes run ls",
+      "tasks": [
+        "queue_task"
+      ],
+      "success": true,
+      "duration": 2
+    },
+    {
+      "timestamp": "2026-05-07T23:02:30.819Z",
+      "input": "open discord",
+      "tasks": [
+        "open_app"
+      ],
+      "success": false,
+      "duration": 23
+    },
+    {
+      "timestamp": "2026-05-07T23:02:30.837Z",
+      "input": "run pwd",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 6
+    },
+    {
+      "timestamp": "2026-05-07T23:23:13.498Z",
+      "input": "open youtube",
+      "tasks": [
+        "open_url"
+      ],
+      "success": true,
+      "duration": 184
+    },
+    {
+      "timestamp": "2026-05-07T23:23:13.546Z",
+      "input": "open discord",
+      "tasks": [
+        "open_app"
+      ],
+      "success": false,
+      "duration": 22
+    },
+    {
+      "timestamp": "2026-05-07T23:23:13.640Z",
+      "input": "open whatsapp",
+      "tasks": [
+        "open_url"
+      ],
+      "success": true,
+      "duration": 71
+    },
+    {
+      "timestamp": "2026-05-07T23:23:13.736Z",
+      "input": "search consolidation",
+      "tasks": [
+        "web_search"
+      ],
+      "success": true,
+      "duration": 73
+    },
+    {
+      "timestamp": "2026-05-07T23:23:13.848Z",
+      "input": "open vscode",
+      "tasks": [
+        "open_app"
+      ],
+      "success": true,
+      "duration": 98
+    },
+    {
+      "timestamp": "2026-05-07T23:23:13.973Z",
+      "input": "type hello world",
+      "tasks": [
+        "type_text"
+      ],
+      "success": true,
+      "duration": 114
+    },
+    {
+      "timestamp": "2026-05-07T23:23:14.012Z",
+      "input": "press enter",
+      "tasks": [
+        "press_key"
+      ],
+      "success": true,
+      "duration": 27
+    },
+    {
+      "timestamp": "2026-05-07T23:23:14.034Z",
+      "input": "what time is it",
+      "tasks": [
+        "time"
+      ],
+      "success": true,
+      "duration": 2
+    },
+    {
+      "timestamp": "2026-05-07T23:23:14.056Z",
+      "input": "today",
+      "tasks": [
+        "date"
+      ],
+      "success": true,
+      "duration": 3
+    },
+    {
+      "timestamp": "2026-05-07T23:23:14.085Z",
+      "input": "run pwd",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 15
+    },
+    {
+      "timestamp": "2026-05-07T23:23:14.142Z",
+      "input": "in 2 minutes run ls",
+      "tasks": [
+        "queue_task"
+      ],
+      "success": true,
+      "duration": 6
+    },
+    {
+      "timestamp": "2026-05-08T05:55:28.412Z",
+      "input": "hello",
+      "tasks": [
+        "ai"
+      ],
+      "success": true,
+      "duration": 1505
+    },
+    {
+      "timestamp": "2026-05-08T05:55:57.612Z",
+      "input": "run pwd",
+      "tasks": [
+        "terminal"
+      ],
+      "success": true,
+      "duration": 13
+    },
+    {
+      "timestamp": "2026-05-08T05:56:04.287Z",
+      "input": "create express server",
+      "tasks": [
+        "dev"
+      ],
+      "success": true,
+      "duration": 421
+    },
+    {
+      "timestamp": "2026-05-08T06:06:37.129Z",
+      "input": "tomorrow run ls",
+      "tasks": [
+        "queue_task"
+      ],
+      "success": true,
+      "duration": 10
+    },
+    {
+      "timestamp": "2026-05-08T09:11:44.924Z",
+      "input": "hello",
+      "tasks": [
+        "ai"
+      ],
+      "success": true,
+      "duration": 308
+    },
+    {
+      "timestamp": "2026-05-08T09:11:44.956Z",
+      "input": "what time is it",
+      "tasks": [
+        "time"
+      ],
+      "success": true,
+      "duration": 3
+    },
+    {
+      "timestamp": "2026-05-08T09:16:11.504Z",
+      "input": "hello jarvis",
+      "tasks": [
+        "ai"
+      ],
+      "success": true,
+      "duration": 439
+    },
+    {
+      "timestamp": "2026-05-08T12:55:40.703Z",
+      "input": "I want to automate my business",
+      "tasks": [
+        "ai"
+      ],
+      "success": true,
+      "duration": 1099
+    },
+    {
+      "timestamp": "2026-05-08T12:58:08.470Z",
+      "input": "Set a reminder",
+      "tasks": [
+        "ai"
+      ],
+      "success": true,
+      "duration": 999
+    },
+    {
+      "timestamp": "2026-05-08T12:58:27.404Z",
+      "input": "What time is it",
+      "tasks": [
+        "time"
+      ],
+      "success": true,
+      "duration": 3
+    },
+    {
+      "timestamp": "2026-05-09T20:24:15.068Z",
+      "input": "get my leads",
+      "tasks": [
+        "money_flow"
+      ],
+      "success": true,
+      "duration": 11
+    },
+    {
+      "timestamp": "2026-05-09T20:24:22.304Z",
+      "input": "every 30 minutes check crm stats",
+      "tasks": [
+        "queue_task"
+      ],
+      "success": true,
+      "duration": 15
+    },
+    {
+      "timestamp": "2026-05-09T20:24:22.325Z",
+      "input": "in 5 minutes run health check",
+      "tasks": [
+        "queue_task"
+      ],
+      "success": true,
+      "duration": 2
+    },
+    {
+      "timestamp": "2026-05-09T20:25:00.547Z",
+      "input": "what can you do?",
+      "tasks": [
+        "ai"
+      ],
+      "success": true,
+      "duration": 841
+    },
+    {
+      "timestamp": "2026-05-09T20:26:28.126Z",
+      "input": "what time is it",
+      "tasks": [
+        "time"
+      ],
+      "success": true,
+      "duration": 9
+    },
+    {
+      "timestamp": "2026-05-09T20:42:05.509Z",
+      "input": "what time is it",
+      "tasks": [
+        "time"
+      ],
+      "success": true,
+      "duration": 18
     }
   ],
   "habits": {},
   "successRate": {
     "open_google": {
-      "success": 12,
-      "total": 12
+      "success": 13,
+      "total": 13
     },
     "time": {
-      "success": 5,
-      "total": 5
+      "success": 10,
+      "total": 10
     },
     "search": {
-      "success": 2,
-      "total": 2
+      "success": 4,
+      "total": 4
     },
     "remind_in": {
       "success": 3,
       "total": 3
     },
     "ai": {
-      "success": 24,
-      "total": 24
+      "success": 42,
+      "total": 42
     },
     "open_app": {
-      "success": 4,
-      "total": 12
+      "success": 8,
+      "total": 19
     },
     "type_text": {
-      "success": 0,
-      "total": 1
+      "success": 1,
+      "total": 2
     },
     "press_key": {
-      "success": 0,
-      "total": 1
+      "success": 3,
+      "total": 4
     },
     "speak": {
       "success": 2,
       "total": 3
     },
     "open_youtube": {
-      "success": 1,
-      "total": 2
+      "success": 2,
+      "total": 3
     },
     "create_agent": {
       "success": 5,
@@ -1061,7 +1945,55 @@
     "execute_agent": {
       "success": 0,
       "total": 5
+    },
+    "research": {
+      "success": 9,
+      "total": 9
+    },
+    "dev": {
+      "success": 5,
+      "total": 6
+    },
+    "terminal": {
+      "success": 14,
+      "total": 15
+    },
+    "queue_task": {
+      "success": 12,
+      "total": 12
+    },
+    "open_twitter": {
+      "success": 2,
+      "total": 2
+    },
+    "open_instagram": {
+      "success": 1,
+      "total": 1
+    },
+    "open_stackoverflow": {
+      "success": 1,
+      "total": 1
+    },
+    "open_whatsapp": {
+      "success": 1,
+      "total": 1
+    },
+    "open_url": {
+      "success": 2,
+      "total": 2
+    },
+    "web_search": {
+      "success": 1,
+      "total": 1
+    },
+    "date": {
+      "success": 1,
+      "total": 1
+    },
+    "money_flow": {
+      "success": 1,
+      "total": 1
     }
   },
-  "lastUpdated": "2026-04-14T13:00:33.760Z"
+  "lastUpdated": "2026-05-09T20:42:05.509Z"
 }

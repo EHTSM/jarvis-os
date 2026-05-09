@@ -1,0 +1,32 @@
+[
+  {
+    "id": "dao-moikf65a-4bw",
+    "name": "TestDAO",
+    "type": "protocol",
+    "typeName": "Protocol DAO",
+    "description": "Governs open-source protocol rules and upgrades",
+    "tokenSymbol": "GOV",
+    "members": [
+      {
+        "userId": "u1",
+        "role": "FOUNDER",
+        "votingWeight": 1,
+        "joinedAt": "2026-04-28T11:51:17.470Z"
+      }
+    ],
+    "treasury": {
+      "balance": 0,
+      "currency": "SIMULATION",
+      "transactions": []
+    },
+    "governanceRules": {
+      "proposalThreshold": 1,
+      "quorumPct": 0.5,
+      "votingPeriodDays": 7,
+      "timelockDays": 2
+    },
+    "status": "ACTIVE",
+    "createdBy": "u1",
+    "createdAt": "2026-04-28T11:51:17.470Z"
+  }
+]

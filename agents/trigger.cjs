@@ -57,12 +57,6 @@ function extractAction(text) {
 }
 
 function triggerAgent(input) {
-  return { success: true, input };
-}
-
-module.exports = { triggerAgent };
-
-function triggerAgent(input) {
     const lowerInput = input.toLowerCase().trim();
 
     // Pattern 1: "remind me in X time"

@@ -1,18 +1,44 @@
 /**
  * contextEngine: Maintains conversation context and historical awareness
- * Tracks last 10 conversations for context-aware responses
+ * Tracks last 10 conversations for context-aware responses, persisted to disk.
  */
+
+const fs   = require("fs");
+const path = require("path");
+
+const CONTEXT_FILE = path.join(__dirname, "../data/context-history.json");
+const DISK_MAX     = 50;  // keep more on disk than in active memory
 
 class ContextEngine {
     constructor() {
-        this.conversationHistory = [];
         this.maxHistorySize = 10;
+        this.conversationHistory = this._load();
         this.currentSession = {
             startTime: new Date(),
             queryCount: 0,
             tasks: [],
             patterns: []
         };
+    }
+
+    _load() {
+        try {
+            if (fs.existsSync(CONTEXT_FILE)) {
+                const raw = JSON.parse(fs.readFileSync(CONTEXT_FILE, "utf8"));
+                if (Array.isArray(raw)) return raw.slice(-this.maxHistorySize);
+            }
+        } catch {}
+        return [];
+    }
+
+    _save() {
+        try {
+            const dir = path.dirname(CONTEXT_FILE);
+            if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+            // Persist up to DISK_MAX entries
+            const toWrite = this.conversationHistory.slice(-DISK_MAX);
+            fs.writeFileSync(CONTEXT_FILE, JSON.stringify(toWrite, null, 2));
+        } catch {}
     }
 
     /**
@@ -32,15 +58,14 @@ class ContextEngine {
 
         this.conversationHistory.push(conversation);
 
-        // Maintain max history size
         if (this.conversationHistory.length > this.maxHistorySize) {
             this.conversationHistory.shift();
         }
 
-        // Update session stats
         this.currentSession.queryCount++;
         this.currentSession.tasks.push(...tasks.map(t => t.type));
 
+        this._save();
         return conversation;
     }
 
@@ -168,6 +193,7 @@ class ContextEngine {
             tasks: [],
             patterns: []
         };
+        this._save();
     }
 
     /**

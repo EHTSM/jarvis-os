@@ -1,26 +1,12 @@
-const devAgent = require("./devAgent.cjs");
-const marketingAgent = require("./marketingAgent.cjs");
 const automationAgent = require("./automationAgent.cjs");
-const researchAgent = require("./researchAgent.cjs");
 
+// Only route task types where the target agent has an .execute() method.
+// devAgent/marketingAgent/researchAgent don't expose .execute — they are
+// called directly by executor handlers, not through this router.
 function agentRouter(taskType) {
-
-    if (["code", "build", "fix_bug"].includes(taskType)) {
-        return devAgent;
-    }
-
-    if (["post", "content", "instagram", "whatsapp"].includes(taskType)) {
-        return marketingAgent;
-    }
-
     if (["automation", "workflow"].includes(taskType)) {
         return automationAgent;
     }
-
-    if (["research", "analyze"].includes(taskType)) {
-        return researchAgent;
-    }
-
     return null;
 }
 

@@ -1,0 +1,112 @@
+[
+  {
+    "sessionId": "ts_1777378657605_qz39b",
+    "goal": "Build an AI-powered learning platform",
+    "domain": "auto-detected",
+    "thoughts": [
+      {
+        "id": "tht_1777378657598_zn1gb",
+        "frame": "First Principles",
+        "frameId": "TF01",
+        "thought": "[First Principles] Regarding \"Build an AI-powered learning platform\": Break down to the most fundamental truths. What are the irreducible components? Domain lens (technology): consider automation.",
+        "lens": "technology",
+        "confidence": 67,
+        "generatedAt": "2026-04-28T12:17:37.598Z"
+      },
+      {
+        "id": "tht_1777378657605_4uig9",
+        "frame": "Inversion",
+        "frameId": "TF02",
+        "thought": "[Inversion] Regarding \"Build an AI-powered learning platform\": Invert the problem. What would make this definitely fail? Now avoid those things. Domain lens (technology): consider data.",
+        "lens": "technology",
+        "confidence": 62,
+        "generatedAt": "2026-04-28T12:17:37.605Z"
+      },
+      {
+        "id": "tht_1777378657605_qqiin",
+        "frame": "Analogy",
+        "frameId": "TF03",
+        "thought": "[Analogy] Regarding \"Build an AI-powered learning platform\": What does this resemble in nature, history, or another domain? Apply that structure. Domain lens (technology): consider ai.",
+        "lens": "technology",
+        "confidence": 92,
+        "generatedAt": "2026-04-28T12:17:37.605Z"
+      },
+      {
+        "id": "tht_1777378657605_q6per",
+        "frame": "Systems Thinking",
+        "frameId": "TF04",
+        "thought": "[Systems Thinking] Regarding \"Build an AI-powered learning platform\": What are the feedback loops? What inputs, outputs, and unintended consequences exist? Domain lens (technology): consider network effect.",
+        "lens": "technology",
+        "confidence": 82,
+        "generatedAt": "2026-04-28T12:17:37.605Z"
+      },
+      {
+        "id": "tht_1777378657605_a91fi",
+        "frame": "Opportunity Cost",
+        "frameId": "TF05",
+        "thought": "[Opportunity Cost] Regarding \"Build an AI-powered learning platform\": What are you giving up by pursuing this? What else could those resources achieve? Domain lens (technology): consider scalability.",
+        "lens": "technology",
+        "confidence": 90,
+        "generatedAt": "2026-04-28T12:17:37.605Z"
+      }
+    ],
+    "count": 5,
+    "duplicate": false,
+    "createdAt": "2026-04-28T12:17:37.605Z"
+  },
+  {
+    "sessionId": "ts_1777378657616_qsvl5",
+    "goal": "Build an AI-powered personalised learning platform that adapts to each student",
+    "domain": "auto-detected",
+    "thoughts": [
+      {
+        "id": "tht_1777378657616_jp9ui",
+        "frame": "First Principles",
+        "frameId": "TF01",
+        "thought": "[First Principles] Regarding \"Build an AI-powered personalised learning platform that adapts to each student\": Break down to the most fundamental truths. What are the irreducible components? Domain lens (technology): consider automation.",
+        "lens": "technology",
+        "confidence": 69,
+        "generatedAt": "2026-04-28T12:17:37.616Z"
+      },
+      {
+        "id": "tht_1777378657616_usfb8",
+        "frame": "Inversion",
+        "frameId": "TF02",
+        "thought": "[Inversion] Regarding \"Build an AI-powered personalised learning platform that adapts to each student\": Invert the problem. What would make this definitely fail? Now avoid those things. Domain lens (technology): consider data.",
+        "lens": "technology",
+        "confidence": 69,
+        "generatedAt": "2026-04-28T12:17:37.616Z"
+      },
+      {
+        "id": "tht_1777378657616_iz7k3",
+        "frame": "Analogy",
+        "frameId": "TF03",
+        "thought": "[Analogy] Regarding \"Build an AI-powered personalised learning platform that adapts to each student\": What does this resemble in nature, history, or another domain? Apply that structure. Domain lens (technology): consider ai.",
+        "lens": "technology",
+        "confidence": 70,
+        "generatedAt": "2026-04-28T12:17:37.616Z"
+      },
+      {
+        "id": "tht_1777378657616_sc46j",
+        "frame": "Systems Thinking",
+        "frameId": "TF04",
+        "thought": "[Systems Thinking] Regarding \"Build an AI-powered personalised learning platform that adapts to each student\": What are the feedback loops? What inputs, outputs, and unintended consequences exist? Domain lens (technology): consider network effect.",
+        "lens": "technology",
+        "confidence": 85,
+        "generatedAt": "2026-04-28T12:17:37.616Z"
+      },
+      {
+        "id": "tht_1777378657616_by6pn",
+        "frame": "Opportunity Cost",
+        "frameId": "TF05",
+        "thought": "[Opportunity Cost] Regarding \"Build an AI-powered personalised learning platform that adapts to each student\": What are you giving up by pursuing this? What else could those resources achieve? Domain lens (technology): consider scalability.",
+        "lens": "technology",
+        "confidence": 65,
+        "generatedAt": "2026-04-28T12:17:37.616Z"
+      }
+    ],
+    "count": 5,
+    "duplicate": false,
+    "createdAt": "2026-04-28T12:17:37.616Z"
+  }
+]

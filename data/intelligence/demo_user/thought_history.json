@@ -1,0 +1,57 @@
+[
+  {
+    "sessionId": "ts_1777378731198_nt0pe",
+    "goal": "Create a self-improving AI tutoring system that personalises learning for each student",
+    "domain": "auto-detected",
+    "thoughts": [
+      {
+        "id": "tht_1777378731194_ajr0e",
+        "frame": "First Principles",
+        "frameId": "TF01",
+        "thought": "[First Principles] Regarding \"Create a self-improving AI tutoring system that personalises learning for each student\": Break down to the most fundamental truths. What are the irreducible components? Domain lens (technology): consider automation.",
+        "lens": "technology",
+        "confidence": 93,
+        "generatedAt": "2026-04-28T12:18:51.194Z"
+      },
+      {
+        "id": "tht_1777378731198_claez",
+        "frame": "Inversion",
+        "frameId": "TF02",
+        "thought": "[Inversion] Regarding \"Create a self-improving AI tutoring system that personalises learning for each student\": Invert the problem. What would make this definitely fail? Now avoid those things. Domain lens (technology): consider data.",
+        "lens": "technology",
+        "confidence": 92,
+        "generatedAt": "2026-04-28T12:18:51.198Z"
+      },
+      {
+        "id": "tht_1777378731198_0xjid",
+        "frame": "Analogy",
+        "frameId": "TF03",
+        "thought": "[Analogy] Regarding \"Create a self-improving AI tutoring system that personalises learning for each student\": What does this resemble in nature, history, or another domain? Apply that structure. Domain lens (technology): consider ai.",
+        "lens": "technology",
+        "confidence": 81,
+        "generatedAt": "2026-04-28T12:18:51.198Z"
+      },
+      {
+        "id": "tht_1777378731198_le8qh",
+        "frame": "Systems Thinking",
+        "frameId": "TF04",
+        "thought": "[Systems Thinking] Regarding \"Create a self-improving AI tutoring system that personalises learning for each student\": What are the feedback loops? What inputs, outputs, and unintended consequences exist? Domain lens (technology): consider network effect.",
+        "lens": "technology",
+        "confidence": 86,
+        "generatedAt": "2026-04-28T12:18:51.198Z"
+      },
+      {
+        "id": "tht_1777378731198_ga1rp",
+        "frame": "Opportunity Cost",
+        "frameId": "TF05",
+        "thought": "[Opportunity Cost] Regarding \"Create a self-improving AI tutoring system that personalises learning for each student\": What are you giving up by pursuing this? What else could those resources achieve? Domain lens (technology): consider scalability.",
+        "lens": "technology",
+        "confidence": 79,
+        "generatedAt": "2026-04-28T12:18:51.198Z"
+      }
+    ],
+    "count": 5,
+    "duplicate": false,
+    "createdAt": "2026-04-28T12:18:51.198Z"
+  }
+]

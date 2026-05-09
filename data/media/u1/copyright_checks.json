@@ -1,0 +1,111 @@
+[
+  {
+    "id": "cr-moic9hyi-w8a",
+    "userId": "u1",
+    "contentId": "c1",
+    "assetType": "audio",
+    "assetName": "trending bollywood song",
+    "license": "UNKNOWN",
+    "label": "T-Series",
+    "flags": [
+      {
+        "type": "no_license",
+        "risk": "HIGH",
+        "note": "No license specified — do not publish without clearing rights"
+      },
+      {
+        "type": "major_label",
+        "risk": "HIGH",
+        "note": "\"T-Series\" content is likely ContentID-claimed"
+      },
+      {
+        "type": "keyword_risk",
+        "risk": "MEDIUM",
+        "note": "Bollywood tracks are usually claimed by T-Series/Zee/YRF"
+      }
+    ],
+    "riskLevel": "HIGH",
+    "approved": false,
+    "checkedAt": "2026-04-28T08:02:55.914Z"
+  },
+  {
+    "id": "cr-moic9hyj-mh2",
+    "userId": "u1",
+    "contentId": "c1",
+    "assetType": "audio",
+    "assetName": "pixabay_ambient.mp3",
+    "license": "CC0",
+    "flags": [
+      {
+        "type": "safe_license",
+        "note": "License \"CC0\" is cleared for use"
+      }
+    ],
+    "riskLevel": "LOW",
+    "approved": true,
+    "checkedAt": "2026-04-28T08:02:55.915Z"
+  },
+  {
+    "id": "cr-moic9yf2-e0g",
+    "userId": "u1",
+    "contentId": "c1",
+    "assetType": "audio",
+    "assetName": "pixabay.mp3",
+    "license": "CC0",
+    "flags": [
+      {
+        "type": "safe_license",
+        "note": "License \"CC0\" is cleared for use"
+      }
+    ],
+    "riskLevel": "LOW",
+    "approved": true,
+    "checkedAt": "2026-04-28T08:03:17.246Z"
+  },
+  {
+    "id": "cr-moicacrd-yjh",
+    "userId": "u1",
+    "contentId": "c1",
+    "assetType": "audio",
+    "assetName": "trending bollywood song",
+    "license": "UNKNOWN",
+    "label": "T-Series",
+    "flags": [
+      {
+        "type": "no_license",
+        "risk": "HIGH",
+        "note": "No license specified — do not publish without clearing rights"
+      },
+      {
+        "type": "major_label",
+        "risk": "HIGH",
+        "note": "\"T-Series\" content is likely ContentID-claimed"
+      },
+      {
+        "type": "keyword_risk",
+        "risk": "MEDIUM",
+        "note": "Bollywood tracks are usually claimed by T-Series/Zee/YRF"
+      }
+    ],
+    "riskLevel": "HIGH",
+    "approved": false,
+    "checkedAt": "2026-04-28T08:03:35.833Z"
+  },
+  {
+    "id": "cr-moicacrd-m2q",
+    "userId": "u1",
+    "contentId": "c1",
+    "assetType": "audio",
+    "assetName": "pixabay.mp3",
+    "license": "CC0",
+    "flags": [
+      {
+        "type": "safe_license",
+        "note": "License \"CC0\" is cleared for use"
+      }
+    ],
+    "riskLevel": "LOW",
+    "approved": true,
+    "checkedAt": "2026-04-28T08:03:35.833Z"
+  }
+]

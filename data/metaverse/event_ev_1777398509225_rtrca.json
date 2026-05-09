@@ -1,0 +1,31 @@
+{
+  "eventId": "ev_1777398509225_rtrca",
+  "hostId": "u2",
+  "eventName": "Metaverse Summit",
+  "eventType": "conference",
+  "worldId": "wld_1777398509224_n6ff6",
+  "description": null,
+  "startAt": "2026-04-28T18:48:29.224Z",
+  "endAt": null,
+  "maxAttendees": 200,
+  "ticketTiers": [
+    {
+      "tier": "free",
+      "price": 0,
+      "supply": 500,
+      "sold": 1,
+      "currency": "MVC"
+    }
+  ],
+  "attendees": [
+    {
+      "userId": "u3",
+      "tier": "free",
+      "ticketId": "tkt_1777398509225_w2g42",
+      "joinedAt": "2026-04-28T17:48:29.225Z"
+    }
+  ],
+  "status": "live",
+  "createdAt": "2026-04-28T17:48:29.225Z",
+  "updatedAt": "2026-04-28T17:48:29.225Z"
+}

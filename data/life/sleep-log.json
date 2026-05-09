@@ -1,0 +1,47 @@
+[
+  {
+    "id": "sleep-mohbklcx-2vb",
+    "userId": "demo",
+    "bedtime": "23:00",
+    "wakeTime": "07:00",
+    "duration": 8,
+    "quality": 4,
+    "notes": "",
+    "estimated": {
+      "lightSleep": 4,
+      "deepSleep": 2,
+      "remSleep": 2
+    },
+    "loggedAt": "2026-04-27T14:55:47.745Z"
+  },
+  {
+    "id": "sleep-mohbklcz-ha4",
+    "userId": "demo",
+    "bedtime": "23:30",
+    "wakeTime": "06:30",
+    "duration": 7,
+    "quality": 3,
+    "notes": "",
+    "estimated": {
+      "lightSleep": 3.5,
+      "deepSleep": 1.8,
+      "remSleep": 1.8
+    },
+    "loggedAt": "2026-04-27T14:55:47.747Z"
+  },
+  {
+    "id": "sleep-mohbklcz-c0f",
+    "userId": "demo",
+    "bedtime": "22:00",
+    "wakeTime": "07:00",
+    "duration": 9,
+    "quality": 5,
+    "notes": "",
+    "estimated": {
+      "lightSleep": 4.5,
+      "deepSleep": 2.3,
+      "remSleep": 2.3
+    },
+    "loggedAt": "2026-04-27T14:55:47.747Z"
+  }
+]

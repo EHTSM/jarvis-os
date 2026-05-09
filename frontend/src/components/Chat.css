@@ -1,0 +1,150 @@
+.chat {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  padding: 0;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.msg {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  animation: fadeIn 0.2s ease;
+}
+
+.msg--user   { align-self: flex-end; background: #1e1a3a; border-color: #3a2e6e; }
+.msg--jarvis { align-self: flex-start; background: #0d1f2a; border-color: #1a3a4a; }
+.msg--system { align-self: center; font-size: 12px; background: transparent; border: none; color: var(--text-dim); }
+.msg--meta   { align-self: flex-start; font-size: 11px; background: transparent; border: none; color: var(--warning); }
+.msg--error  { align-self: flex-start; border-color: #4a1a1a; background: #1a0a0a; }
+
+.msg-header  { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 11px; }
+.msg-role    { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.msg-time    { color: var(--text-dim); }
+.msg-body    { font-size: 14px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+
+/* Typing indicator */
+.typing { display: flex; gap: 5px; align-items: center; padding: 4px 0; }
+.typing span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent2);
+  animation: bounce 1.2s infinite;
+}
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30%            { transform: translateY(-6px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Quick commands */
+.quick-cmds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 20px 6px;
+  border-top: 1px solid var(--border);
+}
+.quick-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+  background: var(--surface2);
+  color: var(--text-dim);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.quick-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+/* Suggestions */
+.suggestions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 20px;
+  flex-wrap: wrap;
+}
+.sugg-label { font-size: 11px; color: var(--text-dim); white-space: nowrap; }
+.sugg-btn {
+  padding: 3px 10px;
+  font-size: 12px;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+.sugg-btn:hover { background: var(--accent); color: #fff; }
+
+/* Input */
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+.chat-input {
+  flex: 1;
+  padding: 10px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+.chat-input:focus { border-color: var(--accent); }
+.chat-input::placeholder { color: var(--text-dim); }
+
+.send-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-weight: 600;
+  border-radius: var(--radius);
+  font-size: 14px;
+  transition: opacity 0.2s;
+}
+.send-btn:disabled { opacity: 0.4; cursor: default; }
+.send-btn:not(:disabled):hover { opacity: 0.85; }
+
+.clear-btn {
+  padding: 10px 12px;
+  background: var(--surface2);
+  color: var(--text-dim);
+  border-radius: var(--radius);
+  font-size: 13px;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.clear-btn:hover { color: var(--danger); border-color: var(--danger); }
+
+/* ── Mobile ────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .chat-messages  { padding: 12px; gap: 8px; }
+  .msg            { max-width: 95%; }
+  .chat-input-row { padding: 8px 12px; gap: 6px; }
+  .chat-input     { font-size: 16px; /* prevents iOS zoom */ }
+  .send-btn       { padding: 10px 14px; font-size: 13px; }
+  .quick-cmds     { padding: 8px 12px; gap: 5px; }
+  .quick-btn      { font-size: 11px; padding: 4px 8px; }
+}

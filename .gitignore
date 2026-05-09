@@ -1,8 +1,37 @@
+# Dependencies
 node_modules/
 node_modules copy/
+frontend/node_modules/
+mobile/node_modules/
+
+# Environment — NEVER commit real keys
 .env
+.env.local
+.env.production
+
+# Logs
 *.log
+logs/pm2-out.log
+logs/pm2-err.log
+
+# Data — keep git out of user data
+data/leads.json
+data/task-queue.json
+data/memory-store.json
+data/learning.json
+data/learning-patterns.json
+
+# Backups
+backups/
+
+# Legacy / junk
 *.backup
 *.save
 dist/
-build/
+
+# Frontend — build IS committed so VPS doesn't need npm
+# frontend/build   ← intentionally NOT ignored
+
+# OS
+.DS_Store
+Thumbs.db

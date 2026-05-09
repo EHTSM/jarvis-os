@@ -1,0 +1,576 @@
+[
+  {
+    "id": "log_1777398404106_mttd4",
+    "agent": "metaverseBuilder",
+    "userId": "u1",
+    "action": "world_created",
+    "detail": {
+      "worldId": "wld_1777398404095_r1fox",
+      "worldType": "social",
+      "theme": "futuristic"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:46:44.106Z"
+  },
+  {
+    "id": "log_1777398404109_sbb3i",
+    "agent": "worldGenerator3D",
+    "userId": "wld_1777398404095_r1fox",
+    "action": "scene_generated",
+    "detail": {
+      "sceneId": "sc_1777398404109_nwm63",
+      "objectCount": 17
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:46:44.109Z"
+  },
+  {
+    "id": "log_1777398404109_zb7w0",
+    "agent": "avatarController3D",
+    "userId": "u1",
+    "action": "avatar_created",
+    "detail": {
+      "worldId": "wld_1777398404095_r1fox",
+      "avatarId": "av_1777398404109_1lioy",
+      "model": "humanoid"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:46:44.109Z"
+  },
+  {
+    "id": "log_1777398404110_hxdzp",
+    "agent": "avatarController3D",
+    "userId": "u1",
+    "action": "avatar_moved",
+    "detail": {
+      "worldId": "wld_1777398404095_r1fox",
+      "position": {
+        "x": 5,
+        "y": 0,
+        "z": 3
+      }
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:46:44.110Z"
+  },
+  {
+    "id": "log_1777398404110_9jilf",
+    "agent": "vrInteractionAgent",
+    "userId": "u1",
+    "action": "vr_interaction",
+    "detail": {
+      "worldId": "wld_1777398404095_r1fox",
+      "inputType": "controller_button",
+      "eventType": "grab",
+      "targetObjectId": "obj_123"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:46:44.110Z"
+  },
+  {
+    "id": "log_1777398404112_pcshw",
+    "agent": "avatarController3D",
+    "userId": "u1",
+    "action": "avatar_left",
+    "detail": {
+      "worldId": "wld_1777398404095_r1fox"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:46:44.112Z"
+  },
+  {
+    "id": "log_1777398438352_ng231",
+    "agent": "metaverseBuilder",
+    "userId": "u2",
+    "action": "world_created",
+    "detail": {
+      "worldId": "wld_1777398438340_t0kjm",
+      "worldType": "office",
+      "theme": "corporate"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:47:18.352Z"
+  },
+  {
+    "id": "log_1777398438353_junua",
+    "agent": "virtualOfficeAI",
+    "userId": "u2",
+    "action": "office_created",
+    "detail": {
+      "officeId": "off_1777398438352_fhwwi",
+      "worldId": "wld_1777398438340_t0kjm"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:47:18.353Z"
+  },
+  {
+    "id": "log_1777398438357_z03tj",
+    "agent": "virtualOfficeAI",
+    "userId": "u2",
+    "action": "presence_updated",
+    "detail": {
+      "officeId": "off_1777398438352_fhwwi",
+      "status": "available",
+      "roomId": "room1"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:47:18.357Z"
+  },
+  {
+    "id": "log_1777398438358_vayrs",
+    "agent": "virtualOfficeAI",
+    "userId": "u2",
+    "action": "announcement_posted",
+    "detail": {
+      "officeId": "off_1777398438352_fhwwi",
+      "priority": "high"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:47:18.358Z"
+  },
+  {
+    "id": "log_1777398438359_gbsle",
+    "agent": "metaverseBuilder",
+    "userId": "u2",
+    "action": "world_created",
+    "detail": {
+      "worldId": "wld_1777398438359_py7vl",
+      "worldType": "classroom",
+      "theme": "corporate"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:47:18.359Z"
+  },
+  {
+    "id": "log_1777398438359_q3upt",
+    "agent": "virtualClassroom",
+    "userId": "u2",
+    "action": "classroom_created",
+    "detail": {
+      "classroomId": "cls_1777398438359_7mqr7",
+      "subject": "Blockchain"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:47:18.359Z"
+  },
+  {
+    "id": "log_1777398438360_zeujk",
+    "agent": "virtualClassroom",
+    "userId": "s1",
+    "action": "student_enrolled",
+    "detail": {
+      "classroomId": "cls_1777398438359_7mqr7"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:47:18.360Z"
+  },
+  {
+    "id": "log_1777398438361_39eow",
+    "agent": "virtualClassroom",
+    "userId": "u2",
+    "action": "session_started",
+    "detail": {
+      "classroomId": "cls_1777398438359_7mqr7",
+      "sessionTitle": "Intro to NFTs",
+      "mediaType": "slide_deck"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:47:18.361Z"
+  },
+  {
+    "id": "log_1777398438361_mlkhw",
+    "agent": "virtualClassroom",
+    "userId": "s1",
+    "action": "assignment_submitted",
+    "detail": {
+      "classroomId": "cls_1777398438359_7mqr7",
+      "sessionId": "ses_1777398438361_pvcys"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:47:18.361Z"
+  },
+  {
+    "id": "log_1777398509215_7nr75",
+    "agent": "digitalMarketplace",
+    "userId": "u2",
+    "action": "asset_listed",
+    "detail": {
+      "listingId": "lst_1777398509205_u8vdw",
+      "category": "avatar",
+      "price": 50,
+      "currency": "MVC"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.215Z"
+  },
+  {
+    "id": "log_1777398509218_b965x",
+    "agent": "digitalMarketplace",
+    "userId": "u3",
+    "action": "asset_purchased",
+    "detail": {
+      "listingId": "lst_1777398509205_u8vdw",
+      "quantity": 1,
+      "totalCost": 50,
+      "currency": "MVC"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.218Z"
+  },
+  {
+    "id": "log_1777398509218_g4uw1",
+    "agent": "nftGeneratorAI",
+    "userId": "u2",
+    "action": "nft_collection_created",
+    "detail": {
+      "collectionId": "col_1777398509218_reul7",
+      "maxSupply": 1000
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.218Z"
+  },
+  {
+    "id": "log_1777398509219_utw6y",
+    "agent": "nftGeneratorAI",
+    "userId": "u2",
+    "action": "nft_generated",
+    "detail": {
+      "tokenId": "nft_1777398509218_uu24z",
+      "rarity": "common",
+      "standard": "ERC-721"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.219Z"
+  },
+  {
+    "id": "log_1777398509220_4fhwp",
+    "agent": "nftTradingAgent",
+    "userId": "u2",
+    "action": "nft_listed",
+    "detail": {
+      "orderId": "ord_1777398509219_1ff8e",
+      "tokenId": "nft_1777398509218_uu24z",
+      "price": 100,
+      "orderType": "fixed_price"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.220Z"
+  },
+  {
+    "id": "log_1777398509220_395ju",
+    "agent": "nftTradingAgent",
+    "userId": "u3",
+    "action": "nft_sold",
+    "detail": {
+      "orderId": "ord_1777398509219_1ff8e",
+      "tokenId": "nft_1777398509218_uu24z",
+      "price": 100
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.220Z"
+  },
+  {
+    "id": "log_1777398509221_u2jj8",
+    "agent": "virtualLandManager",
+    "userId": "u2",
+    "action": "land_claimed",
+    "detail": {
+      "worldId": "wld_t1",
+      "plotId": "plot_1777398509221_ipz21",
+      "area": 100,
+      "zone": "commercial"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.221Z"
+  },
+  {
+    "id": "log_1777398509221_p64a2",
+    "agent": "virtualLandManager",
+    "userId": "u2",
+    "action": "land_listed",
+    "detail": {
+      "plotId": "plot_1777398509221_ipz21",
+      "salePrice": 500,
+      "currency": "MVC"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.221Z"
+  },
+  {
+    "id": "log_1777398509221_p4yws",
+    "agent": "virtualCurrencySystem",
+    "userId": "u9",
+    "action": "wallet_created",
+    "detail": {
+      "initialBalance": 500
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.221Z"
+  },
+  {
+    "id": "log_1777398509222_geeg4",
+    "agent": "virtualCurrencySystem",
+    "userId": "admin",
+    "action": "mvc_minted",
+    "detail": {
+      "recipientId": "u9",
+      "amount": 2000,
+      "reason": "bonus"
+    },
+    "level": "WARN",
+    "timestamp": "2026-04-28T17:48:29.222Z"
+  },
+  {
+    "id": "log_1777398509222_n67e9",
+    "agent": "virtualCurrencySystem",
+    "userId": "u9",
+    "action": "mvc_transferred",
+    "detail": {
+      "toUserId": "u10",
+      "amount": 100,
+      "fee": 2.5
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.222Z"
+  },
+  {
+    "id": "log_1777398509222_jwyi1",
+    "agent": "gestureRecognition",
+    "userId": "u2",
+    "action": "gesture_recognised",
+    "detail": {
+      "gesture": "wave",
+      "action": "emote_wave",
+      "confidence": 0.918
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.222Z"
+  },
+  {
+    "id": "log_1777398509223_br1hv",
+    "agent": "motionCaptureAgent",
+    "userId": "u2",
+    "action": "mocap_frame_ingested",
+    "detail": {
+      "worldId": "wld_t1",
+      "jointsDetected": 2,
+      "confidence": 0.118
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.223Z"
+  },
+  {
+    "id": "log_1777398509224_md0kp",
+    "agent": "metaverseBuilder",
+    "userId": "u2",
+    "action": "world_created",
+    "detail": {
+      "worldId": "wld_1777398509224_n6ff6",
+      "worldType": "event",
+      "theme": "futuristic"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.224Z"
+  },
+  {
+    "id": "log_1777398509225_z3wvt",
+    "agent": "virtualEventManager",
+    "userId": "u2",
+    "action": "event_created",
+    "detail": {
+      "eventId": "ev_1777398509225_rtrca",
+      "eventType": "conference",
+      "startAt": "2026-04-28T18:48:29.224Z"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.225Z"
+  },
+  {
+    "id": "log_1777398509225_og9m1",
+    "agent": "virtualEventManager",
+    "userId": "u3",
+    "action": "ticket_purchased",
+    "detail": {
+      "eventId": "ev_1777398509225_rtrca",
+      "tier": "free",
+      "price": 0
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.225Z"
+  },
+  {
+    "id": "log_1777398509225_ja3tj",
+    "agent": "virtualEventManager",
+    "userId": "u2",
+    "action": "event_status_updated",
+    "detail": {
+      "eventId": "ev_1777398509225_rtrca",
+      "status": "live"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.225Z"
+  },
+  {
+    "id": "log_1777398509226_4pw1h",
+    "agent": "metaverseEconomyAI",
+    "userId": "system",
+    "action": "economy_snapshot",
+    "detail": {
+      "worldId": "global",
+      "volume24h": 2100
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.226Z"
+  },
+  {
+    "id": "log_1777398509226_p2av2",
+    "agent": "metaverseEconomyAI",
+    "userId": "system",
+    "action": "economy_simulated",
+    "detail": {
+      "scenarioName": "Low fee policy"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.226Z"
+  },
+  {
+    "id": "log_1777398509226_8hp7a",
+    "agent": "crossWorldSync",
+    "userId": "u2",
+    "action": "state_exported",
+    "detail": {
+      "worldId": "wld_t1",
+      "dataTypes": [
+        "wallet_balance",
+        "inventory"
+      ],
+      "snapshotId": "snap_1777398509226_klsww"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.226Z"
+  },
+  {
+    "id": "log_1777398509226_i9m2v",
+    "agent": "crossWorldSync",
+    "userId": "u2",
+    "action": "friend_add",
+    "detail": {
+      "friendId": "u3"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.226Z"
+  },
+  {
+    "id": "log_1777398509227_1hgef",
+    "agent": "digitalAssetManager",
+    "userId": "u2",
+    "action": "asset_uploaded",
+    "detail": {
+      "assetId": "ast_1777398509227_9jg81",
+      "assetType": "avatar_skin",
+      "fileSizeMB": 5.2
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.227Z"
+  },
+  {
+    "id": "log_1777398509227_24eeb",
+    "agent": "digitalAssetManager",
+    "userId": "u2",
+    "action": "asset_deleted",
+    "detail": {
+      "assetId": "ast_1777398509227_9jg81"
+    },
+    "level": "WARN",
+    "timestamp": "2026-04-28T17:48:29.227Z"
+  },
+  {
+    "id": "log_1777398509228_n4xb3",
+    "agent": "virtualSecurityAI",
+    "userId": "u3",
+    "action": "threat_reported",
+    "detail": {
+      "reportId": "rpt_1777398509228_91t9p",
+      "targetId": "u_badactor",
+      "threatType": "griefing",
+      "severity": "HIGH"
+    },
+    "level": "WARN",
+    "timestamp": "2026-04-28T17:48:29.228Z"
+  },
+  {
+    "id": "log_1777398509232_4zlg2",
+    "agent": "metaverseBuilder",
+    "userId": "u2",
+    "action": "world_created",
+    "detail": {
+      "worldId": "wld_1777398509232_amcam",
+      "worldType": "sandbox",
+      "theme": "space"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.232Z"
+  },
+  {
+    "id": "log_1777398509232_0tefn",
+    "agent": "realitySimulationEngine",
+    "userId": "system",
+    "action": "physics_set",
+    "detail": {
+      "worldId": "wld_1777398509232_amcam",
+      "preset": "low_gravity"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.232Z"
+  },
+  {
+    "id": "log_1777398509233_q4rj9",
+    "agent": "realitySimulationEngine",
+    "userId": "system",
+    "action": "weather_set",
+    "detail": {
+      "worldId": "wld_1777398509232_amcam",
+      "weatherState": "rain",
+      "intensity": 0.7
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.233Z"
+  },
+  {
+    "id": "log_1777398509234_37rry",
+    "agent": "realitySimulationEngine",
+    "userId": "system",
+    "action": "time_cycle_set",
+    "detail": {
+      "worldId": "wld_1777398509232_amcam",
+      "cycle": "day_night",
+      "speedMultiplier": 2
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.234Z"
+  },
+  {
+    "id": "log_1777398509235_mzrr2",
+    "agent": "arOverlayAgent",
+    "userId": "u2",
+    "action": "ar_overlay_created",
+    "detail": {
+      "overlayId": "ar_1777398509234_rdgej",
+      "overlayType": "info_panel",
+      "anchorType": "world_anchor"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.235Z"
+  },
+  {
+    "id": "log_1777398509235_00ir1",
+    "agent": "arOverlayAgent",
+    "userId": "u2",
+    "action": "ar_overlay_removed",
+    "detail": {
+      "overlayId": "ar_1777398509234_rdgej"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:48:29.235Z"
+  }
+]

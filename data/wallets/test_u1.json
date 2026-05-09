@@ -1,0 +1,24 @@
+{
+  "userId": "test_u1",
+  "balance": 750,
+  "currency": "INR",
+  "transactions": [
+    {
+      "id": "tx_1777322462571",
+      "type": "credit",
+      "amount": 1000,
+      "balance": 1000,
+      "note": "First top-up",
+      "at": "2026-04-27T20:41:02.571Z"
+    },
+    {
+      "id": "tx_1777322462572",
+      "type": "debit",
+      "amount": 250,
+      "balance": 750,
+      "note": "Purchase",
+      "at": "2026-04-27T20:41:02.572Z"
+    }
+  ],
+  "createdAt": "2026-04-27T20:41:02.571Z"
+}

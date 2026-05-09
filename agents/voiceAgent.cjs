@@ -156,7 +156,7 @@ class VoiceAgent {
         this.voiceSettings.rate = rate;
         console.log(`🎤 Voice set to: ${voice} (rate: ${rate})`);
     }
-
-    module.exports = VoiceAgent;
 }
+
+module.exports = VoiceAgent;
 
