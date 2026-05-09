@@ -8,6 +8,16 @@ function ChatPanel({ messages, isLoading, onSendCommand, onClearChat, serverHeal
   const messagesEndRef = useRef(null);
   const recognitionRef = useRef(null);
 
+  const data = await response.json();
+
+setMessages(prev => [
+  ...prev,
+  {
+    sender: "jarvis",
+    text: data.message
+  }
+]);
+
   // Auto-scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -108,10 +118,13 @@ function ChatPanel({ messages, isLoading, onSendCommand, onClearChat, serverHeal
     try {
       console.log('🎤 Sending to smart parser:', command);
       
-      const response = await fetch('http://localhost:3000/parse-command', {
+      const response = await fetch('http://localhost:3000/jarvis', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ command })
+        body: JSON.stringify({
+  input: userMessage,
+  mode: "sales"
+})
       });
       
       if (!response.ok) {

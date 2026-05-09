@@ -3,7 +3,20 @@
  * Converts natural language into executable commands
  */
 
+const { toolAgent } = require("./agents/tool.cjs");
+
 function parseCommand(input) {
+
+
+    if (input.includes("lead") || input.includes("client")) {
+    return {
+        action: "get_leads",
+        label: "Fetching leads"
+    };
+}
+
+
+
     if (!input || typeof input !== 'string') {
         return { type: 'error', message: 'Invalid input' };
     }
@@ -267,67 +280,35 @@ function parseCommand(input) {
 /**
  * Execute parsed command
  */
-function executeCommand(parsed) {
-    const results = {
+const { toolAgent } = require("./agents/tool.cjs");
+
+async function executeCommand(parsed) {
+
+    let results = {
         success: false,
         message: 'Command not executed',
         data: null
     };
 
     try {
+        // 🔥 FIRST: try real execution
+        const toolResult = await toolAgent(parsed);
+
+        if (toolResult) {
+            return {
+                success: true,
+                message: toolResult.message,
+                data: toolResult
+            };
+        }
+
+        // 🧠 FALLBACK (old logic)
         switch (parsed.action) {
-            case 'open_browser':
-                results.message = `Opening ${parsed.label}`;
-                results.success = true;
-                results.data = { url: parsed.url, type: parsed.action };
-                break;
-
-            case 'launch_app':
-                results.message = `Launching ${parsed.app}`;
-                results.success = true;
-                results.data = { app: parsed.app, type: parsed.action };
-                break;
-
-            case 'set_reminder':
-                results.message = `Reminder set: ${parsed.text}`;
-                results.success = true;
-                results.data = { reminder: parsed.text, timestamp: new Date() };
-                break;
-
-            case 'start_timer':
-                results.message = `Timer started for ${parsed.duration} minutes`;
-                results.success = true;
-                results.data = { duration: parsed.duration, type: 'timer' };
-                break;
-
-            case 'web_search':
-                results.message = `Searching Google for "${parsed.query}"`;
-                results.success = true;
-                results.data = { query: parsed.query, engine: 'google' };
-                break;
-
-            case 'save_note':
-                results.message = `Note saved: ${parsed.text}`;
-                results.success = true;
-                results.data = { note: parsed.text, timestamp: new Date() };
-                break;
 
             case 'respond':
                 results.message = parsed.label;
                 results.success = true;
                 results.data = { type: 'response', content: parsed.label };
-                break;
-
-            case 'shutdown':
-                results.message = 'System shutdown command received';
-                results.success = true;
-                results.data = { action: 'shutdown', warning: 'This will shut down the system' };
-                break;
-
-            case 'sleep':
-                results.message = 'System entering sleep mode';
-                results.success = true;
-                results.data = { action: 'sleep' };
                 break;
 
             case 'unknown':
@@ -337,9 +318,10 @@ function executeCommand(parsed) {
                 break;
 
             default:
-                results.message = 'Unknown action type';
-                results.success = false;
+                results.message = parsed.label || 'No action matched';
+                results.success = true;
         }
+
     } catch (error) {
         results.message = `Error executing command: ${error.message}`;
         results.success = false;
@@ -348,7 +330,6 @@ function executeCommand(parsed) {
 
     return results;
 }
-
 module.exports = {
     parseCommand,
     executeCommand

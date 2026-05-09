@@ -1,18 +1,109 @@
-const express = require("express");
+// ── Load env FIRST ──────────────────────────────────────────────
+require("dotenv").config();
+
+// ── Node stdlib ──────────────────────────────────────────────────
+const fs   = require("fs");
+const path = require("path");
+const { exec } = require("child_process");
+
+// ── npm packages ─────────────────────────────────────────────────
+const express    = require("express");
+const axios      = require("axios");
+const cron       = require("node-cron");
+const fetch      = require("node-fetch");
+const TelegramBot = require("node-telegram-bot-api");
+
+// ── Core systems ─────────────────────────────────────────────────
+const { gateway }   = require("./core/gateway.cjs");
+const { checkEnv }  = require("./core/envCheck.cjs");
+const logger        = require("./core/logger.cjs");
+const orchestratorModule  = require("./orchestrator.cjs");
+const schedulerModule     = require("./scheduler.cjs");
+const commandParserModule = require("./commandParser.cjs");
+
+// ── Agents & utilities ───────────────────────────────────────────
+const { saveLead, updateLead, getLeads: getCRMLeads } = require("./agents/crm.cjs");
+const { getLeads: getMapsLeads } = require("./agents/leads.cjs");
+const { createPaymentLink }  = require("./utils/payment.cjs");
+const { followUpSequence }   = require("./agents/followUpSequence.cjs");
+const { autoLoop }           = require("./agents/autoLoop.cjs");
+const { processInput }       = require("./agents/interactionPipeline.cjs");
+const { route }              = require("./agents/router.cjs");
+const { processResponse }    = require("./agents/responsePipeline.cjs");
+const notificationAgent      = require("./agents/interaction/notificationAgent.cjs");
+const { AutoReplyAgent }     = require("./agents/autoReplyAgent.cjs");
+const { SalesAgent }         = require("./agents/salesAgent.cjs");
+const { InterestDetector }   = require("./agents/interestDetector.cjs");
+const { PaymentAgent }       = require("./agents/paymentAgent.cjs");
+const { FollowUpSystem }     = require("./agents/followUpSystem.cjs");
+const { sendBulk }           = require("./utils/bulkSender.cjs");
+const { sendDM }             = require("./agents/instagram.cjs");
+const saasRoutes             = require("./agents/saas.cjs");
+
+// ── Validate environment ─────────────────────────────────────────
+checkEnv();
+
+// ── Telegram token ───────────────────────────────────────────────
+const token = process.env.TELEGRAM_TOKEN;
+
+// ── Express setup ─────────────────────────────────────────────────
 const app = express();
 app.use(express.json());
-const cron = require("node-cron");
-const orchestratorModule = require("./orchestrator.cjs");
-const dotenv = require("dotenv");
-dotenv.config();
-const token = process.env.TELEGRAM_TOKEN;
-console.log("TOKEN:", token);
-const fetch = require("node-fetch");
-const fs = require("fs");
-const axios = require("axios");
-const schedulerModule = require("./scheduler.cjs");
-const commandParserModule = require("./commandParser.cjs");
-const TelegramBot = require("node-telegram-bot-api");
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    if (req.method === "OPTIONS") return res.sendStatus(200);
+    next();
+});
+
+// ── Instances ────────────────────────────────────────────────────
+const autoReply    = new AutoReplyAgent();
+const salesAgent   = new SalesAgent();
+const paymentAgent = new PaymentAgent();
+const detector     = new InterestDetector();
+const followUp     = new FollowUpSystem();
+
+// ── Mounted sub-routers ──────────────────────────────────────────
+app.use("/saas", saasRoutes);
+
+// ── Start autonomy loop ──────────────────────────────────────────
+autoLoop();
+
+// ── Bulk send route ──────────────────────────────────────────────
+app.get("/bulk", async (req, res) => {
+    await sendBulk("🔥 Offer live — join now!");
+    res.json({ success: true });
+});
+
+
+
+
+app.get("/leads", async (req, res) => {
+    const query = req.query.q || "digital marketing agency india";
+    const data = await getMapsLeads(query).catch(() => []);
+    res.json(data);
+});
+
+
+app.post("/webhook", async (req, res) => {
+    try {
+        const message =
+            req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+
+        if (message) {
+            const phone = message.from;
+            const text = message.text?.body;
+
+            await autoReply.handleIncoming(phone, text);
+        }
+
+        res.sendStatus(200);
+    } catch (err) {
+        console.log("Webhook error:", err.message);
+        res.sendStatus(500);
+    }
+});
 
 
 
@@ -74,17 +165,7 @@ https://your-link.com`);
 https://your-link.com`);
     }, 172800000);
 }
-//
-app.get("/leads", (req, res) => {
-    try {
-        const data = fs.readFileSync("leads.json", "utf-8");
-        res.send(data || "No leads yet");
-    } catch (err) {
-        res.send("No leads file found");
-    }
-});
-
-async function sendWhatsApp(phone, message) {
+async function sendWhatsApp(phone, message) {//////
     try {
         await axios.post(
             `https://graph.facebook.com/v19.0/${PHONE_ID}/messages`,
@@ -177,14 +258,9 @@ https://rzp.io/l/razorpay.me/@alwaliytechnologiesprivatelim
     return bot.sendMessage(chatId, "Type YES to continue");
 }
 });
-// leads 
-app.get("/leads", (req, res) => {
-    try {
-        const data = fs.readFileSync("leads.json", "utf-8");
-        res.send(data || "No leads yet");
-    } catch (err) {
-        res.send("No leads file found");
-    }
+// GET /crm-leads → returns local CRM data
+app.get("/crm-leads", (req, res) => {
+    res.json(getCRMLeads());
 });
 
 
@@ -204,45 +280,10 @@ app.post("/payment-webhook", (req, res) => {
 
 
 // Payment captured
-app.post("/razorpay-webhook", express.json(), async (req, res) => {
-    const event = req.body;
+// (razorpay-webhook moved to bottom — see Phase 8 section)
 
-    if (event.event === "payment.captured") {
-        const payment = event.payload.payment.entity;
 
-        const phone = payment.contact;
 
-        console.log("💰 PAYMENT FROM:", phone);
-
-        // 🔥 MATCH USER FROM leads.json
-        const data = fs.readFileSync("leads.json", "utf-8").split("\n").filter(Boolean);
-
-        const users = data.map(line => JSON.parse(line));
-
-        const user = users.find(u => u.phone === phone);
-
-        if (user) {
-            // ✅ TELEGRAM MESSAGE
-            bot.sendMessage(user.chatId,
-`🎉 Payment Received!
-
-🚀 Your system activated`);
-
-            // ✅ WHATSAPP ACTIVATION
-            await sendWhatsApp(phone,
-`🔥 ${user.name}
-
-System Activated!
-
-💰 Start earning now`);
-            
-            // ✅ FOLLOW-UP START
-            scheduleFollowUps(phone, user.name);
-        }
-    }
-
-    res.sendStatus(200);
-});
 //orchestrator core logic 
 
 
@@ -270,18 +311,7 @@ const { parseCommand, executeCommand } = commandParserModule;
 
 
 
-// 🌐 CORS Configuration - Allow frontend to make requests
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-    // Handle preflight requests
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    }
-    next();
-});
+// (CORS already set at top — duplicate removed)
 
 
 app.post("/ai-reply", (req, res) => {
@@ -339,66 +369,42 @@ app.get("/", (req, res) => {
     res.send("Jarvis Server is Running 🚀 (Multi-Agent Orchestrator + Scheduler + Voice + Desktop Control)");
 });
 
-// ✅ JARVIS MULTI-AGENT ORCHESTRATOR ROUTE
-// All requests go through: planner → executor → memory
+// ✅ JARVIS UNIFIED GATEWAY — full interaction pipeline
 app.post("/jarvis", async (req, res) => {
     try {
-        const command = req.body.command?.toLowerCase();
+        const { input, command, mode, phone, name, telegramChatId } = req.body;
+        const userInput = input || command;
 
-        // 🔥 CUSTOM OVERRIDE
-        if (command && command.includes("instagram automation")) {
-            const response = await fetch("http://localhost:5678/webhook/instagram-post", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ command }),
-            });
-
-            const data = await response.json();
-
-            return res.json({
-                success: true,
-                source: "n8n",
-                result: data,
-            });
-        }
-        const userInput = req.body.command;
-
-        // ❗ Check for empty input
         if (!userInput) {
-            return res.status(400).json({
-                error: "Command is required"
-            });
+            return res.status(400).json({ error: "Input is required" });
         }
 
+        // Stage 1: interaction pipeline (lang detect, intent, emotion, personalization)
+        const processed = await processInput(userInput, { id: phone, name: name || "User" });
 
+        // Stage 2: route intent → mode (caller-supplied mode takes precedence)
+        const resolvedMode = mode || route(processed.intent);
 
+        logger.info("Gateway request", { mode: resolvedMode, intent: processed.intent, lang: processed.lang });
 
+        // Stage 3: gateway execution
+        const rawResult = await gateway(processed.text, resolvedMode, phone, { name: processed.user.name });
 
-        console.log("📥 User input:", userInput);
+        // Stage 4: format response
+        const rawReply = rawResult?.reply || rawResult?.text || (typeof rawResult === "string" ? rawResult : JSON.stringify(rawResult));
+        const { text: finalReply } = await processResponse(rawReply, { emotion: processed.emotion, lang: processed.lang });
 
-        // ✅ ROUTE THROUGH ORCHESTRATOR: planner → executor → memory
-        const result = await orchestrator(userInput);
-
-        console.log("📤 Orchestrator result:", {
-            tasks_parsed: result.tasks.length,
-            results_generated: result.results.length,
-            processed_by: result.memory_status?.processedBy || "Unknown"
+        // Stage 5: notifications (skip WhatsApp when sales mode — moneyFlow already sent)
+        await notificationAgent.send(phone, finalReply, {
+            skipWhatsApp:   resolvedMode === "sales",
+            telegramChatId: telegramChatId || null
         });
 
-        res.json({
-            success: true,
-            ...result
-        });
+        res.json({ success: true, reply: finalReply, intent: processed.intent, emotion: processed.emotion, lang: processed.lang, mode: resolvedMode });
 
     } catch (error) {
-        console.error("❌ Orchestrator error:", error);
-
-        res.status(500).json({
-            error: "Processing failed",
-            details: error.message
-        });
+        logger.error("Gateway error", { error: error.message });
+        res.status(500).json({ error: "Processing failed", details: error.message });
     }
 });
 
@@ -1314,6 +1320,7 @@ app.post("/parse-command", (req, res) => {
         const { parseCommand, executeCommand } = commandParserModule;
 
         // Execute the command
+        const parsed = parseCommand(command);
         const result = executeCommand(parsed);
         console.log("✅ Execution result:", result);
 
@@ -1432,7 +1439,7 @@ app.post("/auto-agent/execute", async (req, res) => {
         // Parse and execute command immediately
         const { parseCommand, executeCommand } = commandParserModule;
 
-        const parsed = parseCommand(cmd);
+        const parsed = parseCommand(command);
         const result = executeCommand(parsed);
         commandHistory.addCommand(command, parsed, result);
 
@@ -1655,7 +1662,7 @@ app.post("/workflow/execute", (req, res) => {
 
         // Execute all commands in sequence
         workflow.commands.forEach((cmd, idx) => {
-            const parsed = parseCommand(command);
+            const parsed = parseCommand(cmd);
             const result = executeCommand(parsed);
             commandHistory.addCommand(cmd, parsed, result);
             results.push({
@@ -2520,7 +2527,69 @@ initializeMasterAgentManager().then(success => {
         console.log('\n🤖 500-AGENT SYSTEM ACTIVE!');
     }
 });
-const PORT = 3000;
+
+// GET /crm → CRM leads (alias)
+app.get("/crm", (req, res) => {
+    res.json(getCRMLeads());
+});
+
+// ── Phase 7: Frontend integration endpoints ───────────────────────
+
+// GET /stats → system summary for dashboard
+app.get("/stats", (req, res) => {
+    try {
+        const leads  = getCRMLeads();
+        const hot    = leads.filter(l => l.status === "hot").length;
+        const paid   = leads.filter(l => l.status === "paid").length;
+        res.json({
+            success: true,
+            totalLeads: leads.length,
+            hotLeads: hot,
+            paidLeads: paid,
+            conversionRate: leads.length > 0 ? ((paid / leads.length) * 100).toFixed(1) + "%" : "0%",
+            uptime: process.uptime(),
+            timestamp: new Date().toISOString()
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// POST /start-automation → kick off autoLoop manually
+app.post("/start-automation", (req, res) => {
+    try {
+        autoLoop();
+        res.json({ success: true, message: "Automation loop started" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// POST /send-followup → manual follow-up trigger
+app.post("/send-followup", async (req, res) => {
+    const { phone, step } = req.body;
+    if (!phone) return res.status(400).json({ error: "phone required" });
+    await followUp.sendFollowUp(phone, step || 0);
+    res.json({ success: true });
+});
+
+// ── Phase 8: Razorpay webhook (update CRM on payment) ────────────
+app.post("/razorpay-webhook", express.json(), async (req, res) => {
+    const event = req.body;
+
+    if (event.event === "payment.captured") {
+        const payment = event.payload.payment.entity;
+        const phone   = payment.contact || "";
+
+        if (phone) {
+            updateLead(phone, { status: "paid" });
+            logger.info("Payment captured", { phone });
+        }
+    }
+    res.sendStatus(200);
+});
+
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Jarvis Server running on http://localhost:${PORT}`);
     console.log("📋 Features: Multi-Agent Orchestrator | Planner | Executor | Scheduler | Memory System");
