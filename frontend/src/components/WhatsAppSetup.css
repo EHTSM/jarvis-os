@@ -1,0 +1,280 @@
+.wz-wizard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* ── Header ───────────────────────────────────────────────────── */
+.wz-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wz-back {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 8px;
+  text-align: left;
+  transition: opacity 0.2s;
+}
+.wz-back:hover { opacity: 0.75; }
+
+.wz-title { font-size: 20px; font-weight: 800; color: var(--text); }
+.wz-sub   { font-size: 13px; color: var(--text-dim); }
+
+/* ── Connected banner ─────────────────────────────────────────── */
+.wz-connected-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: rgba(0, 230, 118, 0.08);
+  border: 1px solid var(--success);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--success);
+  font-weight: 500;
+}
+
+.wz-conn-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+  flex-shrink: 0;
+}
+
+/* ── Steps ────────────────────────────────────────────────────── */
+.wz-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.wz-step {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 24px;
+  position: relative;
+}
+
+.wz-step::before {
+  content: "";
+  position: absolute;
+  left: 19px;
+  top: 40px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+
+.wz-step:last-child::before { display: none; }
+
+.wz-step-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.wz-step-body {
+  flex: 1;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wz-step-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.wz-step-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wz-step-content p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.wz-step-content strong { color: var(--text); }
+
+/* ── Code blocks ──────────────────────────────────────────────── */
+.wz-code {
+  display: block;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 12px;
+  color: var(--accent2);
+  word-break: break-all;
+}
+
+.wz-code-inline {
+  background: var(--surface2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 12px;
+  color: var(--accent2);
+}
+
+.wz-code-block {
+  position: relative;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  overflow: hidden;
+}
+
+.wz-code-block pre {
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 12px;
+  color: var(--accent2);
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+  padding-right: 60px;
+}
+
+.wz-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 10px;
+  font-size: 11px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.wz-copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── External link button ─────────────────────────────────────── */
+.wz-link-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  align-self: flex-start;
+}
+.wz-link-btn:hover { background: var(--accent); color: #fff; }
+
+/* ── Test section ─────────────────────────────────────────────── */
+.wz-test-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wz-test-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.wz-test-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.wz-test-row {
+  display: flex;
+  gap: 10px;
+}
+
+.wz-input {
+  flex: 1;
+  padding: 10px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  min-width: 0;
+}
+.wz-input:focus { border-color: var(--accent); outline: none; }
+.wz-input::placeholder { color: var(--text-dim); }
+
+.wz-test-btn {
+  padding: 10px 18px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.wz-test-btn:disabled { opacity: 0.4; cursor: default; }
+.wz-test-btn:not(:disabled):hover { opacity: 0.88; }
+
+.wz-result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.wz-result--ok   { background: rgba(0,230,118,0.08); border: 1px solid var(--success); color: var(--success); }
+.wz-result--fail { background: rgba(255,82,82,0.08);  border: 1px solid var(--danger);  color: var(--danger); }
+
+.wz-result-icon { font-size: 15px; font-weight: 700; flex-shrink: 0; }
+
+/* ── Mobile ───────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .wz-wizard   { padding: 14px; gap: 18px; }
+  .wz-test-row { flex-direction: column; }
+  .wz-test-btn { width: 100%; }
+  .wz-input    { font-size: 16px; }
+  .wz-copy-btn { padding: 8px 14px; font-size: 12px; }
+}

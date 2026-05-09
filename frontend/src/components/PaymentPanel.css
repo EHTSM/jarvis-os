@@ -72,7 +72,33 @@
 .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
 
 .leads-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-.no-leads { color: var(--text-dim); font-size: 13px; }
+.no-leads { color: var(--text-dim); font-size: 13px; padding: 8px 0; }
+
+/* Leads empty state */
+.leads-empty {
+  text-align: center;
+  padding: 28px 16px;
+}
+.leads-empty-icon  { font-size: 32px; display: block; margin-bottom: 10px; }
+.leads-empty-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.leads-empty-sub   { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+
+/* Follow-up quick button in table */
+.fu-btn {
+  padding: 4px 10px;
+  font-size: 11px;
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  color: var(--accent);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.fu-btn:hover { background: var(--accent); color: #fff; }
+
+.td-phone { font-size: 12px; color: var(--text-dim); }
+.td-date  { font-size: 12px; color: var(--text-dim); white-space: nowrap; }
 
 .leads-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .leads-table th { text-align: left; padding: 8px 12px; color: var(--text-dim); font-weight: 600; border-bottom: 1px solid var(--border); }
@@ -92,6 +118,147 @@
 .badge--onboarded { background: #1a2a1a; color: var(--success); }
 .badge--followup_sent { background: #1a1a2a; color: var(--text-dim); }
 
+/* ── WhatsApp not-connected banner ─────────────────────────────── */
+.wa-setup-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255, 160, 0, 0.07);
+  border: 1px solid rgba(255, 160, 0, 0.3);
+  border-radius: var(--radius);
+}
+
+.wa-banner-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.wa-banner-icon { font-size: 20px; flex-shrink: 0; }
+
+.wa-banner-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.wa-banner-sub { font-size: 12px; color: var(--text-dim); }
+
+.wa-banner-btn {
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.wa-banner-btn:hover { background: var(--accent); color: #fff; }
+
+/* ── Payment link success card ──────────────────────────────────── */
+.pls-card {
+  margin-top: 14px;
+  background: rgba(0, 230, 118, 0.06);
+  border: 1px solid var(--success);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pls-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.pls-check {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--success);
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pls-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.pls-sub   { font-size: 12px; color: var(--text-dim); }
+
+.pls-dismiss {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.pls-dismiss:hover { color: var(--text); background: var(--surface2); }
+
+.pls-link-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  overflow: hidden;
+}
+
+.pls-link-text {
+  flex: 1;
+  font-size: 12px;
+  color: var(--accent2);
+  word-break: break-all;
+  min-width: 0;
+}
+
+.pls-copy-btn {
+  padding: 4px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--text-dim);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.pls-copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.pls-actions { display: flex; gap: 10px; }
+
+.pls-wa-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 16px;
+  background: #25d366;
+  color: #fff;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.pls-wa-btn:hover { opacity: 0.88; }
+
 /* ── Mobile ────────────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .payment-panel  { padding: 12px; gap: 14px; }
@@ -99,4 +266,9 @@
   .leads-table    { font-size: 12px; }
   .leads-table th,
   .leads-table td { padding: 6px 8px; }
+  /* Hide phone column on small screens — saves ~80px */
+  .leads-table th:nth-child(2),
+  .leads-table td:nth-child(2) { display: none; }
+  .fu-btn         { padding: 8px 12px; font-size: 12px; }
+  .wa-setup-banner { flex-direction: column; align-items: flex-start; }
 }

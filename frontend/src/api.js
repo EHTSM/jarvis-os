@@ -142,6 +142,33 @@ export async function generatePaymentLink({ amount, name, phone, description }) 
   } catch (err) { return { success: false, error: err.message }; }
 }
 
+// ── Create a lead (CRM) ───────────────────────────────────────────
+export async function createLead({ name, phone, service, dealValue, notes }) {
+  try {
+    const body = { name, phone };
+    if (service)   body.service   = service;
+    if (dealValue) body.dealValue = String(dealValue);
+    if (notes)     body.notes     = notes;
+    return await _fetch("/crm/lead", { method: "POST", body: JSON.stringify(body) });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+// ── Test WhatsApp connection (send a test message) ────────────────
+export async function testWhatsAppSend(phone, message) {
+  try {
+    return await _fetch("/whatsapp/send", {
+      method: "POST",
+      body: JSON.stringify({ phone, message: message || "✅ JARVIS connected! Your WhatsApp automation is now active." })
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+// ── Ops / automation status ───────────────────────────────────────
+export async function getOpsData() {
+  try { return await _fetch("/ops"); }
+  catch { return null; }
+}
+
 // ── Send WhatsApp ─────────────────────────────────────────────────
 export async function sendFollowUp(phone, message) {
   try {

@@ -317,6 +317,10 @@ _httpServer = app.listen(PORT, () => {
         logger.info(`  telegram   : ${_svcStatus.telegram  ? "enabled" : "DISABLED"}`);
         logger.info(`  whatsapp   : ${_svcStatus.whatsapp  ? "enabled" : "disabled (WA_TOKEN not set)"}`);
         logger.info(`  payments   : ${_svcStatus.payments  ? "enabled" : "disabled (RAZORPAY_KEY not set)"}`);
+        if (!process.env.BASE_URL) {
+            logger.warn(`[Startup] WARNING: BASE_URL not set — Razorpay webhook callback will use localhost.`);
+            logger.warn(`[Startup]          Set BASE_URL=https://yourdomain.com in .env for payments to work.`);
+        }
         logger.info(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
     } catch (diagErr) {
         logger.warn("[Startup] Diagnostics failed:", diagErr.message);

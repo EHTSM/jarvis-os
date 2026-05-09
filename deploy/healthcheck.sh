@@ -16,7 +16,7 @@ if curl -sf "http://localhost:${PORT}/health" >/dev/null 2>&1; then
     # Get key metrics
     HEALTH=$(curl -s "http://localhost:${PORT}/health" 2>/dev/null)
     UPTIME=$(echo "$HEALTH" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('uptime_seconds','?'))" 2>/dev/null || echo "?")
-    MEMORY=$(echo "$HEALTH" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('memory',{}).get('heap_used_mb','?'))" 2>/dev/null || echo "?")
+    MEMORY=$(echo "$HEALTH" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('memory',{}).get('current',{}).get('heap_mb','?'))" 2>/dev/null || echo "?")
     echo "[${TIMESTAMP}] OK — uptime=${UPTIME}s memory=${MEMORY}MB"
 else
     echo "[${TIMESTAMP}] UNHEALTHY — attempting restart..."

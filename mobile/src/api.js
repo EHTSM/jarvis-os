@@ -116,6 +116,11 @@ export async function getMetrics() {
   catch { return null; }
 }
 
+export async function getOpsData() {
+  try { return await _fetch("/ops"); }
+  catch { return null; }
+}
+
 // ── CRM leads ─────────────────────────────────────────────────────
 export async function getLeads(status) {
   try {

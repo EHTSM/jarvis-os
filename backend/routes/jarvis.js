@@ -38,8 +38,14 @@ router.get("/crm-leads", optionalAuth, (req, res) => res.json(crm.getLeads()));
 router.post("/crm/lead", optionalAuth, (req, res) => {
     const { phone, name, ...rest } = req.body;
     if (!phone) return res.status(400).json({ error: "phone required" });
-    crm.saveLead({ phone, name, ...rest });
-    res.json({ success: true });
+    const cleanPhone = String(phone).replace(/\D/g, "");
+    if (!cleanPhone || cleanPhone.length < 7)
+        return res.status(400).json({ error: "Invalid phone number — include country code (e.g. 919876543210)" });
+    const existing = crm.getLead(cleanPhone);
+    if (existing)
+        return res.json({ success: true, duplicate: true, message: "Client already exists" });
+    crm.saveLead({ phone: cleanPhone, name, ...rest });
+    res.json({ success: true, duplicate: false });
 });
 
 router.patch("/crm/lead/:phone", optionalAuth, (req, res) => {

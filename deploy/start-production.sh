@@ -20,12 +20,15 @@ die()  { echo -e "${RED}[✗]${NC} $1"; exit 1; }
 # Validate required env vars are not placeholder values
 source .env 2>/dev/null || true
 
-[ -z "${GROQ_API_KEY:-}" ]   && die "GROQ_API_KEY is not set in .env"
-[ -z "${TELEGRAM_TOKEN:-}" ] && die "TELEGRAM_TOKEN is not set in .env"
-[ -z "${BASE_URL:-}" ]       && die "BASE_URL is not set in .env (must be https://yourdomain.com)"
+[ -z "${GROQ_API_KEY:-}" ]               && die "GROQ_API_KEY is not set in .env"
+[ -z "${TELEGRAM_TOKEN:-}" ]             && die "TELEGRAM_TOKEN is not set in .env"
+[ -z "${BASE_URL:-}" ]                   && die "BASE_URL is not set in .env (must be https://yourdomain.com)"
+[ -z "${RAZORPAY_WEBHOOK_SECRET:-}" ]    && warn "RAZORPAY_WEBHOOK_SECRET not set — payment webhooks will be REJECTED in production"
+[ -z "${WA_TOKEN:-}${WHATSAPP_TOKEN:-}" ] && warn "WA_TOKEN not set — WhatsApp messaging is disabled"
 
-[[ "${BASE_URL:-}" == *"localhost"* ]] && die "BASE_URL is still set to localhost — set it to your real domain"
+[[ "${BASE_URL:-}" == *"localhost"* ]]   && die "BASE_URL is still set to localhost — set it to your real domain"
 [[ "${BASE_URL:-}" == *"YOUR_DOMAIN"* ]] && die "BASE_URL is still a placeholder — set it to your real domain"
+[[ "${BASE_URL:-}" != "https://"* ]]     && warn "BASE_URL does not start with https:// — Razorpay requires HTTPS for webhooks"
 
 log "Pre-flight checks passed."
 

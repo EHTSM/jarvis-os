@@ -16,12 +16,15 @@
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
-.brand { display: flex; align-items: center; gap: 8px; }
-.logo  { font-size: 22px; color: var(--accent); }
-.brand-name { font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: 1px; }
-.brand-sub  { font-size: 11px; color: var(--text-dim); margin-left: 4px; }
-
-.header-right { display: flex; align-items: center; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.logo  {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff; font-size: 15px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.brand-name { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: 0.5px; }
 
 .status-dot {
   width: 9px; height: 9px; border-radius: 50%;
@@ -29,15 +32,6 @@
 }
 .status-dot.online  { background: var(--success); box-shadow: 0 0 6px var(--success); }
 .status-dot.offline { background: var(--danger); }
-
-.score-badge {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 20px;
-}
 
 /* Tabs */
 .tabs {

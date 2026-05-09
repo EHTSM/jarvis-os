@@ -1,83 +1,97 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { sendMessage, checkHealth, getEvolutionScore, getSuggestions, approveSuggestion, getStats, getMetrics } from "./api";
+import { sendMessage, checkHealth, getStats, getOpsData } from "./api";
 import Chat         from "./components/Chat.jsx";
 import Dashboard    from "./components/Dashboard.jsx";
 import Logs         from "./components/Logs.jsx";
 import PaymentPanel from "./components/PaymentPanel.jsx";
+import Landing      from "./components/Landing.jsx";
+import Onboarding   from "./components/Onboarding.jsx";
+import ConnectBar   from "./components/ConnectBar.jsx";
 import "./App.css";
 
 const TABS = [
-  { id: "chat",    label: "Chat"  },
-  { id: "stats",   label: "Stats" },
-  { id: "logs",    label: "Logs"  },
-  { id: "crm",     label: "CRM"   }
+  { id: "chat",     label: "Chat"     },
+  { id: "insights", label: "Insights" },
+  { id: "activity", label: "Activity" },
+  { id: "clients",  label: "Clients"  }
 ];
 
+// ── Determine initial screen from localStorage ───────────────────
+function _initialScreen() {
+  if (localStorage.getItem("jarvis_started") !== "1") return "landing";
+  if (!localStorage.getItem("jarvis_biz_profile"))    return "onboarding";
+  return "app";
+}
+
+function _loadProfile() {
+  try { return JSON.parse(localStorage.getItem("jarvis_biz_profile") || "null"); }
+  catch { return null; }
+}
+
+function _welcomeMessage(profile) {
+  if (!profile) {
+    return "Hi! I'm JARVIS — your automated sales assistant.\n\nI follow up with leads on WhatsApp, generate payment links, and help close clients.\n\nWhat would you like to do first?";
+  }
+  return `Hi! JARVIS is set up for your ${profile.business || "business"}.\n\nI'll automatically follow up with every lead and send payment links when they're ready to buy.\n\nType anything to get started — or use the quick actions below.`;
+}
+
 export default function App() {
-  const [messages, setMessages] = useState([{
+  const [screen,   setScreen]   = useState(_initialScreen);
+  const [messages, setMessages] = useState(() => [{
     id: 1, role: "jarvis",
-    text: "JARVIS AI is ready.\n\nTry: \"Open YouTube\", \"Search AI news\", \"What time is it\", or \"Get leads\".\n\nFor sales automation — type what you offer and I'll help you close clients.",
+    text: _welcomeMessage(_loadProfile()),
     ts: Date.now()
   }]);
-  const [input,       setInput]       = useState("");
-  const [loading,     setLoading]     = useState(false);
-  const [online,      setOnline]      = useState(false);
-  const [tab,         setTab]         = useState("chat");
-  const [score,       setScore]       = useState(50);
-  const [suggestions, setSuggestions] = useState([]);
-  const [stats,       setStats]       = useState(null);
-  const [metrics,     setMetrics]     = useState(null);
+  const [input,   setInput]   = useState("");
+  const [loading, setLoading] = useState(false);
+  const [online,  setOnline]  = useState(false);
+  const [tab,     setTab]     = useState("chat");
+  const [stats,   setStats]   = useState(null);
+  const [opsData, setOpsData] = useState(null);
 
   const endRef   = useRef(null);
   const inputRef = useRef(null);
 
-  const push = useCallback((role, text, extra = {}) => {
+  const push = useCallback((role, text) => {
     setMessages(prev => [...prev, {
-      id: Date.now() + Math.random(), role, text, ts: Date.now(), ...extra
+      id: Date.now() + Math.random(), role, text, ts: Date.now()
     }]);
   }, []);
 
-  // ── polling ───────────────────────────────────────────────────────
+  // ── Health + data polling (only when in app screen) ───────────────
   useEffect(() => {
+    if (screen !== "app") return;
     let wasOnline = false;
 
     const poll = async () => {
       const healthy = await checkHealth();
-
-      if (!wasOnline && healthy)  push("system", "Connected to JARVIS backend.");
-      if (wasOnline  && !healthy) push("system", "Backend offline — reconnecting...");
+      if (!wasOnline && healthy)  push("system", "Connected to JARVIS.");
+      if (wasOnline  && !healthy) push("system", "Connection lost — reconnecting…");
       wasOnline = healthy;
       setOnline(healthy);
 
       if (healthy) {
-        const [sc, sugg, st, mx] = await Promise.allSettled([
-          getEvolutionScore(),
-          getSuggestions(),
-          getStats(),
-          getMetrics()
-        ]);
-        setScore(Math.round(sc.value ?? 50));
-        setSuggestions(sugg.value ?? []);
-        setStats(st.value ?? null);
-        setMetrics(mx.value ?? null);
+        const [st, ops] = await Promise.allSettled([getStats(), getOpsData()]);
+        setStats(st.value   ?? null);
+        setOpsData(ops.value ?? null);
       }
     };
 
     poll();
-    const id = setInterval(poll, 6000);
+    const id = setInterval(poll, 8000);
     return () => clearInterval(id);
-  }, [push]);
+  }, [screen, push]);
 
-  // ── auto-scroll ───────────────────────────────────────────────────
+  // ── Auto-scroll ───────────────────────────────────────────────────
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // ── send — accepts optional value override (for quick buttons) ────
+  // ── Send ──────────────────────────────────────────────────────────
   const handleSend = useCallback(async (override) => {
     const cmd = (typeof override === "string" ? override : input).trim();
     if (!cmd || loading) return;
-    if (!online) { push("error", "Backend offline."); return; }
+    if (!online) { push("error", "Backend offline. Please wait."); return; }
 
     push("user", cmd);
     setInput("");
@@ -86,9 +100,6 @@ export default function App() {
     try {
       const res = await sendMessage(cmd, "smart");
       push(res.success ? "jarvis" : "error", res.reply || (res.success ? "Done." : "Request failed."));
-      if (res.success && res.intent && res.intent !== "unknown") {
-        push("meta", `intent: ${res.intent}  |  mode: ${res.mode}`);
-      }
     } catch (err) {
       push("error", err.message);
     } finally {
@@ -101,32 +112,60 @@ export default function App() {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }
   };
 
-  const handleSuggestionClick = async (s) => {
-    const ok = await approveSuggestion(s.id).catch(() => null);
-    if (ok) push("system", `Approved: ${s.description || s.id}`);
+  // ── Landing → Onboarding ──────────────────────────────────────────
+  const handleStart = () => {
+    localStorage.setItem("jarvis_started", "1");
+    setScreen("onboarding");
   };
 
+  // Login: skip onboarding, go straight to app (returns user with existing data)
+  const handleLogin = () => {
+    localStorage.setItem("jarvis_started", "1");
+    setScreen("app");
+  };
+
+  // ── Onboarding complete ───────────────────────────────────────────
+  const handleOnboardingComplete = (profile) => {
+    setMessages([{
+      id: Date.now(), role: "jarvis",
+      text: _welcomeMessage(profile),
+      ts:   Date.now()
+    }]);
+    setScreen("app");
+  };
+
+  // ── Screen routing ────────────────────────────────────────────────
+  if (screen === "landing")    return <Landing onStart={handleStart} onLogin={handleLogin} />;
+  if (screen === "onboarding") return <Onboarding onComplete={handleOnboardingComplete} />;
+
+  // ── Main app ──────────────────────────────────────────────────────
   return (
     <div className="app">
       <header className="app-header">
         <div className="brand">
-          <span className="logo">⬡</span>
+          <span className="logo">J</span>
           <span className="brand-name">JARVIS</span>
-          <span className="brand-sub">AI OS</span>
         </div>
-        <div className="header-right">
-          <div className={`status-dot ${online ? "online" : "offline"}`} title={online ? "Connected" : "Offline"} />
-          <div className="score-badge" title="Evolution Score">{score}%</div>
-        </div>
+        <div className={`status-dot ${online ? "online" : "offline"}`}
+             title={online ? "Connected" : "Offline"} />
       </header>
 
       <nav className="tabs">
         {TABS.map(t => (
-          <button key={t.id} className={`tab ${tab === t.id ? "active" : ""}`} onClick={() => setTab(t.id)}>
+          <button
+            key={t.id}
+            className={`tab ${tab === t.id ? "active" : ""}`}
+            onClick={() => setTab(t.id)}
+          >
             {t.label}
           </button>
         ))}
       </nav>
+
+      <ConnectBar
+        services={opsData?.services || {}}
+        onSetupWhatsApp={() => setTab("clients")}
+      />
 
       <main className="app-main">
         {tab === "chat" && (
@@ -135,22 +174,25 @@ export default function App() {
             input={input}
             loading={loading}
             online={online}
-            suggestions={suggestions}
             inputRef={inputRef}
             endRef={endRef}
             onInput={setInput}
             onSend={handleSend}
             onKey={handleKey}
-            onSuggestionClick={handleSuggestionClick}
             onClear={() => setMessages([{
               id: Date.now(), role: "system",
               text: "Chat cleared.", ts: Date.now()
             }])}
           />
         )}
-        {tab === "stats" && <Dashboard stats={stats} score={score} suggestions={suggestions} />}
-        {tab === "logs"  && <Logs metrics={metrics} />}
-        {tab === "crm"   && <PaymentPanel onMessage={(role, text) => push(role, text)} />}
+        {tab === "insights"  && <Dashboard stats={stats} opsData={opsData} />}
+        {tab === "activity"  && <Logs opsData={opsData} stats={stats} />}
+        {tab === "clients"   && (
+          <PaymentPanel
+            onMessage={push}
+            whatsappConnected={opsData?.services?.whatsapp ?? false}
+          />
+        )}
       </main>
     </div>
   );
