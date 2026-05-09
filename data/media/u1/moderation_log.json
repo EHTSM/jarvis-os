@@ -1,0 +1,80 @@
+[
+  {
+    "id": "mod-moic9hyh-ctz",
+    "userId": "u1",
+    "contentId": "c1",
+    "contentType": "video",
+    "approved": false,
+    "score": 0.9,
+    "flags": [
+      {
+        "category": "violence_graphic",
+        "severity": "HIGH",
+        "action": "block",
+        "matched": true
+      },
+      {
+        "category": "self_harm",
+        "severity": "HIGH",
+        "action": "block",
+        "matched": true
+      }
+    ],
+    "blockingFlags": 2,
+    "action": "block",
+    "reviewNote": "Content BLOCKED — violence_graphic, self_harm detected.",
+    "moderatedAt": "2026-04-28T08:02:55.913Z"
+  },
+  {
+    "id": "mod-moic9hyi-qty",
+    "userId": "u1",
+    "contentId": "c2",
+    "contentType": "video",
+    "approved": true,
+    "score": 0,
+    "flags": [],
+    "blockingFlags": 0,
+    "action": "allow",
+    "reviewNote": "Content passed automated moderation.",
+    "moderatedAt": "2026-04-28T08:02:55.914Z"
+  },
+  {
+    "id": "mod-moicacrb-ckm",
+    "userId": "u1",
+    "contentId": "c1",
+    "contentType": "video",
+    "approved": false,
+    "score": 0.9,
+    "flags": [
+      {
+        "category": "violence_graphic",
+        "severity": "HIGH",
+        "action": "block",
+        "matched": true
+      },
+      {
+        "category": "self_harm",
+        "severity": "HIGH",
+        "action": "block",
+        "matched": true
+      }
+    ],
+    "blockingFlags": 2,
+    "action": "block",
+    "reviewNote": "Content BLOCKED — violence_graphic, self_harm detected.",
+    "moderatedAt": "2026-04-28T08:03:35.832Z"
+  },
+  {
+    "id": "mod-moicacrc-hkh",
+    "userId": "u1",
+    "contentId": "c2",
+    "contentType": "video",
+    "approved": true,
+    "score": 0,
+    "flags": [],
+    "blockingFlags": 0,
+    "action": "allow",
+    "reviewNote": "Content passed automated moderation.",
+    "moderatedAt": "2026-04-28T08:03:35.832Z"
+  }
+]

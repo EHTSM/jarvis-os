@@ -1,0 +1,84 @@
+[
+  {
+    "id": "pl-moic9hyk-yps",
+    "userId": "u1",
+    "title": "Pump Up Your Workout",
+    "theme": "workout",
+    "template": {
+      "bpm": "120-160",
+      "energy": "high",
+      "duration": "45-60 min",
+      "theme": "Pump Up Your Workout"
+    },
+    "trackCount": 15,
+    "genres": [
+      "mixed"
+    ],
+    "totalDuration": "45-60 min",
+    "exportFormats": [
+      "Spotify URI",
+      "M3U",
+      "JSON"
+    ],
+    "generationNote": "Track list is a suggestion template — import to Spotify/JioSaavn to fill with actual tracks",
+    "sections": [
+      {
+        "name": "Warm Up",
+        "tracks": 3,
+        "energy": "medium"
+      },
+      {
+        "name": "Peak Intensity",
+        "tracks": 12,
+        "energy": "high"
+      },
+      {
+        "name": "Cool Down",
+        "tracks": 5,
+        "energy": "low"
+      }
+    ],
+    "createdAt": "2026-04-28T08:02:55.916Z"
+  },
+  {
+    "id": "pl-moicacrf-u0d",
+    "userId": "u1",
+    "title": "Pump Up Your Workout",
+    "theme": "workout",
+    "template": {
+      "bpm": "120-160",
+      "energy": "high",
+      "duration": "45-60 min",
+      "theme": "Pump Up Your Workout"
+    },
+    "trackCount": 15,
+    "genres": [
+      "mixed"
+    ],
+    "totalDuration": "45-60 min",
+    "exportFormats": [
+      "Spotify URI",
+      "M3U",
+      "JSON"
+    ],
+    "generationNote": "Track list is a suggestion template — import to Spotify/JioSaavn to fill with actual tracks",
+    "sections": [
+      {
+        "name": "Warm Up",
+        "tracks": 3,
+        "energy": "medium"
+      },
+      {
+        "name": "Peak Intensity",
+        "tracks": 12,
+        "energy": "high"
+      },
+      {
+        "name": "Cool Down",
+        "tracks": 5,
+        "energy": "low"
+      }
+    ],
+    "createdAt": "2026-04-28T08:03:35.835Z"
+  }
+]

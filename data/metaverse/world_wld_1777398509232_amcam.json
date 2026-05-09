@@ -1,0 +1,71 @@
+{
+  "worldId": "wld_1777398509232_amcam",
+  "name": "PhysicsWorld",
+  "worldType": "sandbox",
+  "theme": "space",
+  "status": "active",
+  "ownerId": "u2",
+  "maxUsers": 100,
+  "physics": "standard",
+  "assets": [],
+  "users": [],
+  "interactions": [],
+  "createdAt": "2026-04-28T17:48:29.232Z",
+  "updatedAt": "2026-04-28T17:48:29.234Z",
+  "settings": {
+    "spawnPoint": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "skybox": "space_default",
+    "ambientLight": 0.6,
+    "fogDensity": 0.02,
+    "gravity": -9.8
+  },
+  "sceneConfig": {
+    "renderer": "client_threejs",
+    "xr": true,
+    "assets": [],
+    "lights": [
+      {
+        "type": "ambient",
+        "intensity": 0.6
+      },
+      {
+        "type": "directional",
+        "intensity": 0.8,
+        "position": {
+          "x": 10,
+          "y": 20,
+          "z": 10
+        }
+      }
+    ],
+    "fog": {
+      "enabled": true,
+      "density": 0.02
+    }
+  },
+  "physicsRules": {
+    "gravity": -2,
+    "friction": 0.2,
+    "restitution": 0.4,
+    "airResistance": 0.005,
+    "preset": "low_gravity"
+  },
+  "environment": {
+    "weather": {
+      "state": "rain",
+      "intensity": 0.7,
+      "transitionSeconds": 10,
+      "setAt": "2026-04-28T17:48:29.233Z"
+    },
+    "timeCycle": {
+      "cycle": "day_night",
+      "speedMultiplier": 2,
+      "currentHour": 6,
+      "setAt": "2026-04-28T17:48:29.234Z"
+    }
+  }
+}

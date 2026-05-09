@@ -1,0 +1,32 @@
+{
+  "classroomId": "cls_1777398438359_7mqr7",
+  "worldId": "wld_1777398438359_py7vl",
+  "className": "Web3 101",
+  "subject": "Blockchain",
+  "instructorId": "u2",
+  "maxStudents": 25,
+  "roomMode": "lecture",
+  "seatLayout": "theater",
+  "roster": [
+    {
+      "studentId": "s1",
+      "displayName": "Bob",
+      "enrolledAt": "2026-04-28T17:47:18.360Z",
+      "attendance": 0,
+      "grade": null
+    }
+  ],
+  "sessions": [
+    {
+      "id": "ses_1777398438361_pvcys",
+      "sessionTitle": "Intro to NFTs",
+      "mediaType": "slide_deck",
+      "mediaUrl": null,
+      "startedAt": "2026-04-28T17:47:18.361Z",
+      "endedAt": null,
+      "attendees": []
+    }
+  ],
+  "materials": [],
+  "createdAt": "2026-04-28T17:47:18.359Z"
+}

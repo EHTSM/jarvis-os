@@ -1,54 +1,57 @@
 {
-  
   "name": "jarvis-os",
-  
-  "version": "1.0.0",
-  
-  "description": "Jarvis AI System",
-  
-  "main": "server.js",
-  
+  "version": "3.0.0",
+  "description": "JARVIS AI Automation System",
+  "main": "electron/main.cjs",
+  "type": "commonjs",
   "scripts": {
-  
-    
-  "start": "node server.js",
-  
-    
-  "test": "node test.js"
-  
+    "start":                     "node backend/server.js",
+    "start:LEGACY-DO-NOT-USE":   "node server.js",
+    "frontend":      "cd frontend && npm start",
+    "desktop":       "electron .",
+    "dev":           "concurrently \"npm start\" \"npm run frontend\"",
+    "dev:full":      "concurrently \"npm start\" \"npm run frontend\" \"npm run desktop\"",
+    "build:frontend":"cd frontend && npm run build",
+    "test:api":      "curl -s -X POST http://localhost:5050/jarvis -H 'Content-Type: application/json' -d '{\"input\":\"hello\"}'",
+    "backup":        "bash backup.sh",
+    "pm2:start":     "pm2 start ecosystem.config.cjs --env production",
+    "pm2:restart":   "pm2 restart jarvis-os",
+    "pm2:logs":      "pm2 logs jarvis-os",
+    "pm2:stop":      "pm2 stop jarvis-os",
+    "deploy:setup":  "bash deploy/setup-vps.sh",
+    "deploy:start":  "bash deploy/start-production.sh",
+    "deploy:update": "bash deploy/update.sh",
+    "deploy:rollback":"bash deploy/rollback.sh"
   },
-  
   "dependencies": {
-  
-    
-  "axios": "^1.14.0",
-  
-    
-  "dotenv": "^17.4.1",
-  
-    
-  "express": "^5.2.1",
-  
-    
-  "groq-sdk": "^1.1.2",
-  
-    
-  "https-proxy-agent": "^9.0.0",
-  
-    
-  "node-cron": "^4.2.1",
-  
-    
-  "node-fetch": "^3.3.2",
-  
-    
-  "node-telegram-bot-api": "^0.63.0",
-  
-    
-  "openai": "^6.34.0",
-  
-    
-  "robotjs": "^0.7.0"
-  
-  }
+    "axios":               "^1.16.0",
+    "cheerio":             "^1.2.0",
+    "cors":                "^2.8.6",
+    "dotenv":              "^17.4.1",
+    "express":             "^5.2.1",
+    "groq-sdk":            "^1.1.2",
+    "https-proxy-agent":   "^9.0.0",
+    "node-cron":           "^4.2.1",
+    "node-fetch":          "^3.3.2",
+    "node-telegram-bot-api":"^0.63.0",
+    "openai":              "^6.34.0",
+    "razorpay":            "^2.9.6",
+    "robotjs":             "^0.7.0",
+    "rss-parser":          "^3.13.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "electron":     "^41.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url":  "git+https://github.com/EHTSM/jarvis-os.git"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm":  ">=8.0.0"
+  },
+  "keywords": ["jarvis","ai","automation"],
+  "author":   "EHTSM",
+  "license":  "ISC"
 }

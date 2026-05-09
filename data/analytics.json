@@ -1,0 +1,192 @@
+[
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:02:55.905Z",
+    "feature": "media",
+    "action": "content_moderate",
+    "userId": "u1",
+    "contentType": "video",
+    "contentId": "c1"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:02:55.914Z",
+    "feature": "media",
+    "action": "content_moderate",
+    "userId": "u1",
+    "contentType": "video",
+    "contentId": "c2"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:02:55.914Z",
+    "feature": "media",
+    "action": "copyright_check",
+    "userId": "u1",
+    "assetType": "audio",
+    "assetName": "trending bollywood song"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:02:55.914Z",
+    "feature": "media",
+    "action": "copyright_check",
+    "userId": "u1",
+    "assetType": "audio",
+    "assetName": "pixabay_ambient.mp3"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:02:55.915Z",
+    "feature": "media",
+    "action": "movie_recommend",
+    "userId": "u1",
+    "genres": [
+      "action"
+    ]
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:02:55.916Z",
+    "feature": "media",
+    "action": "playlist_generate",
+    "userId": "u1",
+    "theme": "workout"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:03:17.238Z",
+    "feature": "media",
+    "action": "copyright_check",
+    "userId": "u1",
+    "assetType": "audio",
+    "assetName": "pixabay.mp3"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:03:35.825Z",
+    "feature": "media",
+    "action": "content_moderate",
+    "userId": "u1",
+    "contentType": "video",
+    "contentId": "c1"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:03:35.832Z",
+    "feature": "media",
+    "action": "content_moderate",
+    "userId": "u1",
+    "contentType": "video",
+    "contentId": "c2"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:03:35.833Z",
+    "feature": "media",
+    "action": "copyright_check",
+    "userId": "u1",
+    "assetType": "audio",
+    "assetName": "trending bollywood song"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:03:35.833Z",
+    "feature": "media",
+    "action": "copyright_check",
+    "userId": "u1",
+    "assetType": "audio",
+    "assetName": "pixabay.mp3"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:03:35.834Z",
+    "feature": "media",
+    "action": "movie_recommend",
+    "userId": "u1",
+    "genres": [
+      "action"
+    ]
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:03:35.835Z",
+    "feature": "media",
+    "action": "playlist_generate",
+    "userId": "u1",
+    "theme": "workout"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:03:35.836Z",
+    "feature": "media",
+    "action": "gaming_tips",
+    "userId": "u1",
+    "game": "valorant"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:03:35.836Z",
+    "feature": "media",
+    "action": "meme_generate",
+    "userId": "u1",
+    "template": "drake"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:03:35.837Z",
+    "feature": "media",
+    "action": "virtual_influencer_create",
+    "userId": "u1",
+    "personaType": "fashion"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:05:18.608Z",
+    "feature": "media",
+    "action": "virtual_influencer_create",
+    "userId": "u1",
+    "personaType": "fashion"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:05:18.618Z",
+    "feature": "media",
+    "action": "virtual_influencer_create",
+    "userId": "u1",
+    "personaType": "fashion"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:05:18.618Z",
+    "feature": "media",
+    "action": "virtual_influencer_create",
+    "userId": "u1",
+    "personaType": "fashion"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:06:10.643Z",
+    "feature": "media",
+    "action": "virtual_influencer_create",
+    "userId": "u1",
+    "personaType": "fashion"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:06:10.659Z",
+    "feature": "media",
+    "action": "virtual_influencer_create",
+    "userId": "u1",
+    "personaType": "fashion"
+  },
+  {
+    "event": "api_call",
+    "ts": "2026-04-28T08:06:10.660Z",
+    "feature": "media",
+    "action": "voiceover_generate",
+    "userId": "u1",
+    "style": "narrator",
+    "language": "en"
+  }
+]

@@ -1,0 +1,40 @@
+{
+  "avatarId": "av_1777398404109_1lioy",
+  "userId": "u1",
+  "worldId": "wld_1777398404095_r1fox",
+  "displayName": "Alice",
+  "model": "humanoid",
+  "color": "#3498db",
+  "accessories": {
+    "head": null,
+    "body": null,
+    "feet": null,
+    "hand_left": null,
+    "hand_right": null,
+    "back": null,
+    "face": null
+  },
+  "transform": {
+    "position": {
+      "x": 5,
+      "y": 0,
+      "z": 3
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "scale": {
+      "x": 1,
+      "y": 1,
+      "z": 1
+    }
+  },
+  "animation": "wave",
+  "health": 100,
+  "energy": 100,
+  "visible": true,
+  "joinedAt": "2026-04-28T17:46:44.109Z",
+  "lastUpdated": "2026-04-28T17:46:44.110Z"
+}

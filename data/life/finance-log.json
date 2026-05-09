@@ -1,0 +1,54 @@
+{
+  "demo3": [
+    {
+      "id": "tx-mohblaod-csp",
+      "userId": "demo3",
+      "type": "income",
+      "amount": 50000,
+      "category": "salary",
+      "description": "Monthly salary",
+      "date": "Mon Apr 27 2026",
+      "loggedAt": "2026-04-27T14:56:20.557Z"
+    },
+    {
+      "id": "tx-mohblaoe-j1i",
+      "userId": "demo3",
+      "type": "expense",
+      "amount": 12000,
+      "category": "housing",
+      "description": "Rent",
+      "date": "Mon Apr 27 2026",
+      "loggedAt": "2026-04-27T14:56:20.558Z"
+    },
+    {
+      "id": "tx-mohblaoe-0xz",
+      "userId": "demo3",
+      "type": "expense",
+      "amount": 4000,
+      "category": "food",
+      "description": "Groceries",
+      "date": "Mon Apr 27 2026",
+      "loggedAt": "2026-04-27T14:56:20.558Z"
+    },
+    {
+      "id": "tx-mohblaof-mb1",
+      "userId": "demo3",
+      "type": "expense",
+      "amount": 3000,
+      "category": "entertainment",
+      "description": "OTT + games",
+      "date": "Mon Apr 27 2026",
+      "loggedAt": "2026-04-27T14:56:20.559Z"
+    },
+    {
+      "id": "tx-mohblaof-lir",
+      "userId": "demo3",
+      "type": "expense",
+      "amount": 5000,
+      "category": "savings",
+      "description": "SIP",
+      "date": "Mon Apr 27 2026",
+      "loggedAt": "2026-04-27T14:56:20.559Z"
+    }
+  ]
+}

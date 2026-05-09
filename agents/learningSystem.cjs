@@ -31,15 +31,11 @@ class LearningSystem {
     }
 
 learnMoneyPattern(input, result) {
-    console.log("📈 Learning:", input, result);
-
-    // Store simple pattern
     this.learningData.commandHistory.push({
         timestamp: new Date().toISOString(),
         input,
         result
     });
-
     this.saveLearning();
 }
 
@@ -153,8 +149,11 @@ learnMoneyPattern(input, result) {
             console.log(`🧠 Learned pattern: ${taskTypes} (seen ${pattern.count} times)`);
         }
 
-        // Keep patterns sorted by frequency
+        // Keep patterns sorted by frequency; cap total pattern count
         this.learningData.patterns.sort((a, b) => b.count - a.count);
+        if (this.learningData.patterns.length > 500) {
+            this.learningData.patterns = this.learningData.patterns.slice(0, 500);
+        }
     }
 
     /**
@@ -393,7 +392,6 @@ learnMoneyPattern(input, result) {
         return this.learningData;
     }
 }
-const learningSystem = new LearningSystem();
 module.exports = {
     LearningSystem
 };

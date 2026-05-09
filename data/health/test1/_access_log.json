@@ -1,0 +1,26 @@
+[
+  {
+    "agent": "symptomChecker",
+    "action": "symptom_check",
+    "meta": "{\"count\":2}",
+    "timestamp": "2026-04-28T02:42:18.914Z"
+  },
+  {
+    "agent": "symptomChecker",
+    "action": "symptom_check",
+    "meta": "{\"count\":2}",
+    "timestamp": "2026-04-28T02:42:18.928Z"
+  },
+  {
+    "agent": "triageAgent",
+    "action": "triage",
+    "meta": "{\"riskLevel\":\"MEDIUM\"}",
+    "timestamp": "2026-04-28T02:42:18.928Z"
+  },
+  {
+    "agent": "diagnosisSupportAgent",
+    "action": "possible_causes_viewed",
+    "meta": "{\"count\":2}",
+    "timestamp": "2026-04-28T02:42:18.928Z"
+  }
+]

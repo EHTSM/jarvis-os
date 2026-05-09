@@ -1,0 +1,346 @@
+[
+  {
+    "id": "log_1777414334624_lojwo",
+    "agent": "climatePredictionAI",
+    "userId": "test_user_01",
+    "action": "climate_predicted",
+    "detail": {
+      "region": "Europe",
+      "scenario": "SSP2-4.5",
+      "model": "CMIP6",
+      "horizonYears": 30
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.624Z"
+  },
+  {
+    "id": "log_1777414334624_r90tz",
+    "agent": "climatePredictionAI",
+    "userId": "test_user_01",
+    "action": "extreme_events_analysed",
+    "detail": {
+      "region": "Asia",
+      "eventType": "heatwave",
+      "periodYears": 20
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.624Z"
+  },
+  {
+    "id": "log_1777414334624_oa9aj",
+    "agent": "climatePredictionAI",
+    "userId": "test_user_01",
+    "action": "tipping_points_assessed",
+    "detail": {
+      "elementCount": 2
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.624Z"
+  },
+  {
+    "id": "log_1777414334624_lyg62",
+    "agent": "climatePredictionAI",
+    "userId": "test_user_01",
+    "action": "scenario_comparison_done",
+    "detail": {
+      "region": "global",
+      "scenarioCount": 4
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.624Z"
+  },
+  {
+    "id": "log_1777414334628_8zpcn",
+    "agent": "carbonTrackingAgent",
+    "userId": "test_user_01",
+    "action": "emissions_tracked",
+    "detail": {
+      "entityId": "corp_01",
+      "totalCO2e": 58486.7,
+      "period": "monthly"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.628Z"
+  },
+  {
+    "id": "log_1777414334628_qzuvd",
+    "agent": "carbonTrackingAgent",
+    "userId": "test_user_01",
+    "action": "footprint_calculated",
+    "detail": {
+      "activityCount": 1,
+      "totalKgCO2e": 4164.95
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.628Z"
+  },
+  {
+    "id": "log_1777414334628_jlu0q",
+    "agent": "carbonTrackingAgent",
+    "userId": "test_user_01",
+    "action": "offsets_found",
+    "detail": {
+      "targetTCO2e": 50,
+      "typeCount": 2
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.628Z"
+  },
+  {
+    "id": "log_1777414334628_3i5el",
+    "agent": "carbonTrackingAgent",
+    "userId": "test_user_01",
+    "action": "emission_report_generated",
+    "detail": {
+      "entityId": "corp_01",
+      "standard": "GHG_Protocol",
+      "reportYear": 2024
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.628Z"
+  },
+  {
+    "id": "log_1777414334629_hdzmv",
+    "agent": "environmentalAI",
+    "userId": "test_user_01",
+    "action": "ecosystem_monitored",
+    "detail": {
+      "ecosystemId": "amazon_01",
+      "ecosystemType": "tropical_rainforest",
+      "healthScore": 95
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.629Z"
+  },
+  {
+    "id": "log_1777414334629_fvb9d",
+    "agent": "environmentalAI",
+    "userId": "test_user_01",
+    "action": "air_quality_analysed",
+    "detail": {
+      "locationId": "london_01",
+      "AQI": 118
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.629Z"
+  },
+  {
+    "id": "log_1777414334630_akfpx",
+    "agent": "environmentalAI",
+    "userId": "test_user_01",
+    "action": "water_quality_monitored",
+    "detail": {
+      "waterbodyId": "thames_01",
+      "waterbodyType": "river",
+      "overallStatus": "impaired"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.630Z"
+  },
+  {
+    "id": "log_1777414334630_lofpz",
+    "agent": "environmentalAI",
+    "userId": "test_user_01",
+    "action": "soil_assessed",
+    "detail": {
+      "plotId": "field_1",
+      "soilType": "loamy",
+      "healthScore": 33
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.630Z"
+  },
+  {
+    "id": "log_1777414334630_9x9cz",
+    "agent": "disasterPredictionAI",
+    "userId": "test_user_01",
+    "action": "early_warning_issued",
+    "detail": {
+      "region": "Japan",
+      "disasterType": "earthquake",
+      "alertLevel": "yellow",
+      "probability_pct": 37.1
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.630Z"
+  },
+  {
+    "id": "log_1777414334630_o6wvi",
+    "agent": "disasterPredictionAI",
+    "userId": "test_user_01",
+    "action": "EVACUATION_ALERT_ISSUED",
+    "detail": {
+      "regionId": "Tokyo",
+      "disasterType": "earthquake",
+      "severity": "critical"
+    },
+    "level": "WARN",
+    "timestamp": "2026-04-28T22:12:14.630Z"
+  },
+  {
+    "id": "log_1777414334631_n86a9",
+    "agent": "disasterPredictionAI",
+    "userId": "test_user_01",
+    "action": "historical_data_retrieved",
+    "detail": {
+      "region": "USA",
+      "disasterType": "hurricane",
+      "yearRange": 20
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.631Z"
+  },
+  {
+    "id": "log_1777414334631_aw9q9",
+    "agent": "oceanMonitoringAI",
+    "userId": "test_user_01",
+    "action": "ocean_status_checked",
+    "detail": {
+      "basinId": "Pacific",
+      "layer": "surface",
+      "temperature_C": 28.27
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.631Z"
+  },
+  {
+    "id": "log_1777414334631_sgu2k",
+    "agent": "oceanMonitoringAI",
+    "userId": "test_user_01",
+    "action": "marine_ecosystem_analysed",
+    "detail": {
+      "habitatType": "coral_reef",
+      "healthScore": 83
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.631Z"
+  },
+  {
+    "id": "log_1777414334631_t47mx",
+    "agent": "oceanMonitoringAI",
+    "userId": "test_user_01",
+    "action": "ocean_currents_tracked",
+    "detail": {
+      "systemCount": 1
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.631Z"
+  },
+  {
+    "id": "log_1777414334632_gokt8",
+    "agent": "oceanMonitoringAI",
+    "userId": "test_user_01",
+    "action": "sea_level_forecast_generated",
+    "detail": {
+      "coastalCity": "Miami",
+      "scenario": "SSP5-8.5",
+      "horizonYears": 80
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.632Z"
+  },
+  {
+    "id": "log_1777414334632_xh4me",
+    "agent": "agriculturalAI",
+    "userId": "test_user_01",
+    "action": "crop_recommended",
+    "detail": {
+      "farmId": "farm_01",
+      "topChoice": "rice",
+      "season": "spring"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.632Z"
+  },
+  {
+    "id": "log_1777414334632_yo5po",
+    "agent": "agriculturalAI",
+    "userId": "test_user_01",
+    "action": "crop_health_monitored",
+    "detail": {
+      "farmId": "farm_01",
+      "cropType": "wheat",
+      "stressLevel": "mild"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.632Z"
+  },
+  {
+    "id": "log_1777414334632_asoqc",
+    "agent": "agriculturalAI",
+    "userId": "test_user_01",
+    "action": "irrigation_optimised",
+    "detail": {
+      "farmId": "farm_01",
+      "irrigationType": "drip",
+      "totalWaterSaving_pct": 18.1
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.632Z"
+  },
+  {
+    "id": "log_1777414334632_o3p26",
+    "agent": "agriculturalAI",
+    "userId": "test_user_01",
+    "action": "harvest_predicted",
+    "detail": {
+      "farmId": "farm_01",
+      "cropType": "wheat",
+      "totalYield_t": 1274
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.632Z"
+  },
+  {
+    "id": "log_1777414334633_p9sdv",
+    "agent": "foodSupplyChainAI",
+    "userId": "test_user_01",
+    "action": "product_traced",
+    "detail": {
+      "productId": "prod_wheat_001",
+      "batchId": "batch_042",
+      "category": "grains",
+      "flaggedCount": 0
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.633Z"
+  },
+  {
+    "id": "log_1777414334633_q3lzg",
+    "agent": "foodSupplyChainAI",
+    "userId": "test_user_01",
+    "action": "supply_chain_risk_assessed",
+    "detail": {
+      "chainId": "chain_eu_01",
+      "overallRisk_pct": 46,
+      "region": "EU"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.633Z"
+  },
+  {
+    "id": "log_1777414334634_icn0f",
+    "agent": "foodSupplyChainAI",
+    "userId": "test_user_01",
+    "action": "inventory_optimised",
+    "detail": {
+      "warehouseId": "wh_central",
+      "totalSKUs": 3,
+      "criticalItems": 0
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.634Z"
+  },
+  {
+    "id": "log_1777414334634_jhvir",
+    "agent": "foodSupplyChainAI",
+    "userId": "test_user_01",
+    "action": "food_safety_alerts_retrieved",
+    "detail": {
+      "region": "UK",
+      "alertCount": 1
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T22:12:14.634Z"
+  }
+]

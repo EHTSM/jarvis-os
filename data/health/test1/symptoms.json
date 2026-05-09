@@ -1,0 +1,26 @@
+[
+  {
+    "id": "sx-moi0t6lk-6l4",
+    "userId": "test1",
+    "symptoms": [
+      "headache",
+      "mild fatigue"
+    ],
+    "detectedSystems": [],
+    "riskLevel": "LOW",
+    "riskScore": 0,
+    "age": 30,
+    "existingConditions": [],
+    "checkedAt": "2026-04-28T02:42:18.921Z"
+  },
+  {
+    "id": "sx-moi0t6ls-5y3",
+    "userId": "test1",
+    "symptoms": [
+      "chest pain",
+      "shortness of breath"
+    ],
+    "riskLevel": "HIGH",
+    "checkedAt": "2026-04-28T02:42:18.928Z"
+  }
+]

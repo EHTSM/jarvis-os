@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AndroidManifest.xml — place this at:
+  android/app/src/main/AndroidManifest.xml
+  after running: npx cap add android
+
+  ONLY the permissions required for Play Store compliance are declared.
+  NO accessibility services, NO system-level control.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jarvisai.app">
+
+    <!-- ── Required permissions ─────────────────────────────────── -->
+    <!-- Internet: communicates with JARVIS backend and Firebase -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Network state: detect offline / show reconnecting message -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- ── NOT requested (Play Store compliance) ─────────────────
+         READ_CONTACTS, WRITE_CONTACTS
+         READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
+         CAMERA, RECORD_AUDIO
+         ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
+         BIND_ACCESSIBILITY_SERVICE
+         SYSTEM_ALERT_WINDOW
+         Any device admin or overlay permissions
+    ─────────────────────────────────────────────────────────────── -->
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="false">
+
+        <!-- Main activity — Capacitor shell -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+            android:label="@string/title_activity_main"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBarLaunch"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+
+</manifest>

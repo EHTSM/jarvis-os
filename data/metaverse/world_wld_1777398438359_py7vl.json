@@ -1,0 +1,50 @@
+{
+  "worldId": "wld_1777398438359_py7vl",
+  "name": "Web3 101",
+  "worldType": "classroom",
+  "theme": "corporate",
+  "status": "active",
+  "ownerId": "u2",
+  "maxUsers": 30,
+  "physics": "standard",
+  "assets": [],
+  "users": [],
+  "interactions": [],
+  "createdAt": "2026-04-28T17:47:18.359Z",
+  "updatedAt": "2026-04-28T17:47:18.359Z",
+  "settings": {
+    "spawnPoint": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "skybox": "corporate_default",
+    "ambientLight": 0.6,
+    "fogDensity": 0.02,
+    "gravity": -9.8
+  },
+  "sceneConfig": {
+    "renderer": "client_threejs",
+    "xr": true,
+    "assets": [],
+    "lights": [
+      {
+        "type": "ambient",
+        "intensity": 0.6
+      },
+      {
+        "type": "directional",
+        "intensity": 0.8,
+        "position": {
+          "x": 10,
+          "y": 20,
+          "z": 10
+        }
+      }
+    ],
+    "fog": {
+      "enabled": true,
+      "density": 0.02
+    }
+  }
+}

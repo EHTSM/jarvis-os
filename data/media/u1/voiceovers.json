@@ -1,0 +1,40 @@
+[
+  {
+    "id": "vo-moicdo84-wes",
+    "userId": "u1",
+    "scriptText": "Hello world",
+    "scriptWords": 2,
+    "style": "narrator",
+    "styleInfo": {
+      "description": "Calm, authoritative storytelling voice",
+      "pacing": "slow",
+      "pitch": "medium-low"
+    },
+    "emotion": "neutral",
+    "language": "en",
+    "speakerName": "Default TTS Voice",
+    "estimatedDurationSec": 1,
+    "ttsEngines": [
+      "ElevenLabs",
+      "Play.ht",
+      "Amazon Polly",
+      "Google TTS",
+      "Murf.ai",
+      "Resemble.ai"
+    ],
+    "ssmlHints": {
+      "pause": "<break time=\"500ms\"/> for pauses",
+      "emphasis": "<emphasis level=\"strong\">word</emphasis>",
+      "rate": "<prosody rate=\"slow\">text</prosody>"
+    },
+    "exportFormats": [
+      "MP3",
+      "WAV",
+      "OGG",
+      "FLAC"
+    ],
+    "consentOnFile": "N/A",
+    "watermark": null,
+    "createdAt": "2026-04-28T08:06:10.660Z"
+  }
+]

@@ -1,8 +1,9 @@
-import { generateLeads } from "../money/leadSystem.js";
-import { sendDM } from "../automation/dmSender.js";
+const { generateLeads } = require("../agents/money/leadSystem.cjs");
+const { sendDM } = require("../automation/dmSender.cjs");
 
-export async function marketingAgent() {
+async function marketingAgent() {
   const leads = generateLeads();
-
   return leads.map(u => sendDM(u));
 }
+
+module.exports = marketingAgent;

@@ -1,0 +1,123 @@
+[
+  {
+    "id": "ga-moikf659-rk7",
+    "agent": "auditTrailGenerator",
+    "userId": "u1",
+    "action": "audit_event_recorded",
+    "detail": {
+      "id": "aud-moikf659-t86",
+      "category": "financial",
+      "action": "invoice_created",
+      "actor": "u1"
+    },
+    "timestamp": "2026-04-28T11:51:17.469Z"
+  },
+  {
+    "id": "ga-moikf659-bzk",
+    "agent": "regulationTracker",
+    "userId": "u1",
+    "action": "regulations_searched",
+    "detail": {
+      "jurisdiction": "India",
+      "count": 7
+    },
+    "timestamp": "2026-04-28T11:51:17.469Z"
+  },
+  {
+    "id": "ga-moikf65a-kdc",
+    "agent": "riskComplianceAI",
+    "userId": "u1",
+    "action": "risk_registered",
+    "detail": {
+      "riskId": "rsk-moikf659-jcj",
+      "title": "Data Breach Risk",
+      "band": "HIGH"
+    },
+    "timestamp": "2026-04-28T11:51:17.470Z"
+  },
+  {
+    "id": "ga-moikf65a-kqd",
+    "agent": "governanceVotingAI",
+    "userId": "u1",
+    "action": "proposal_created",
+    "detail": {
+      "proposalId": "prp-moikf65a-egi",
+      "title": "Increase treasury budget",
+      "voteType": "simple_majority"
+    },
+    "timestamp": "2026-04-28T11:51:17.470Z"
+  },
+  {
+    "id": "ga-moikf65a-eoy",
+    "agent": "daoManager",
+    "userId": "u1",
+    "action": "dao_created",
+    "detail": {
+      "daoId": "dao-moikf65a-4bw",
+      "name": "TestDAO",
+      "type": "protocol"
+    },
+    "timestamp": "2026-04-28T11:51:17.470Z"
+  },
+  {
+    "id": "ga-moikf65a-8xc",
+    "agent": "ethicsAIMonitor",
+    "userId": "u1",
+    "action": "ai_ethics_assessed",
+    "detail": {
+      "assessmentId": "eth-moikf65a-vez",
+      "systemName": "Recommendation Engine",
+      "ethicsBand": "ETHICAL",
+      "overallScore": 100
+    },
+    "timestamp": "2026-04-28T11:51:17.470Z"
+  },
+  {
+    "id": "ga-moikf65c-g44",
+    "agent": "blockchainVerification",
+    "userId": "u1",
+    "action": "data_hashed_and_recorded",
+    "detail": {
+      "recordId": "bvr-moikf65c-cw3",
+      "network": "ethereum",
+      "label": "Contract v1"
+    },
+    "timestamp": "2026-04-28T11:51:17.472Z"
+  },
+  {
+    "id": "ga-moikf65c-443",
+    "agent": "smartContractAgent",
+    "userId": "u1",
+    "action": "template_accessed",
+    "detail": {
+      "templateKey": "token_erc20"
+    },
+    "timestamp": "2026-04-28T11:51:17.472Z"
+  },
+  {
+    "id": "ga-moikf65c-33c",
+    "agent": "cryptoWalletManager",
+    "userId": "u1",
+    "action": "wallet_created",
+    "detail": {
+      "walletId": "wlt-moikf65c-cge",
+      "network": "ethereum",
+      "tier": "cold"
+    },
+    "timestamp": "2026-04-28T11:51:17.472Z"
+  },
+  {
+    "id": "ga-moikf65d-jkg",
+    "agent": "tokenizationAgent",
+    "userId": "u1",
+    "action": "asset_tokenized",
+    "detail": {
+      "tokenId": "tok-moikf65d-vbm",
+      "assetName": "Mumbai Flat",
+      "assetClass": "real_estate",
+      "totalValue": 5000000,
+      "currency": "INR"
+    },
+    "timestamp": "2026-04-28T11:51:17.473Z"
+  }
+]

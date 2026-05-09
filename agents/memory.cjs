@@ -1,6 +1,7 @@
 const shortTermMemory = [];
-const longTermMemory = [];
+const longTermMemory  = [];
 const SHORT_TERM_LIMIT = 10;
+const LONG_TERM_LIMIT  = 500;  // without this, longTerm grows unboundedly (1 item per 10 interactions)
 
 function memoryAgent(entry) {
     const payload = {
@@ -14,6 +15,7 @@ function memoryAgent(entry) {
     if (shortTermMemory.length > SHORT_TERM_LIMIT) {
         const moved = shortTermMemory.shift();
         longTermMemory.push(moved);
+        if (longTermMemory.length > LONG_TERM_LIMIT) longTermMemory.shift();
     }
 
     return {

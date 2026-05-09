@@ -1,0 +1,426 @@
+[
+  {
+    "id": "log_1777395584462_gjmi9",
+    "agent": "brainComputerInterfaceAgent",
+    "userId": "u1",
+    "action": "bci_signal_simulated",
+    "detail": {
+      "signalType": "focus",
+      "confidence": 67
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T16:59:44.462Z"
+  },
+  {
+    "id": "log_1777395584463_sbgug",
+    "agent": "neuralLinkSimulation",
+    "userId": "u1",
+    "action": "neural_link_initiated",
+    "detail": {
+      "protocol": "sensory",
+      "deviceId": "dev_1777395584462_nzzmh"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T16:59:44.463Z"
+  },
+  {
+    "id": "log_1777395584464_klkkd",
+    "agent": "thoughtToTextAgent",
+    "userId": "u1",
+    "action": "thought_decoded",
+    "detail": {
+      "cognitiveMode": "analytical",
+      "confidence": 80
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T16:59:44.464Z"
+  },
+  {
+    "id": "log_1777395584464_05qp7",
+    "agent": "emotionSyncEngine",
+    "userId": "u1",
+    "action": "emotion_detected",
+    "detail": {
+      "primary": "sadness",
+      "confidence": 82
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T16:59:44.464Z"
+  },
+  {
+    "id": "log_1777395584465_0aute",
+    "agent": "personalityCloneAI",
+    "userId": "u1",
+    "action": "personality_profile_built",
+    "detail": {
+      "profileId": "pc_1777395584465_80zpr",
+      "mbti": "INTP",
+      "style": "nurturing"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T16:59:44.465Z"
+  },
+  {
+    "id": "log_1777395615026_l6pv8",
+    "agent": "digitalTwinCreator",
+    "userId": "u2",
+    "action": "digital_twin_created",
+    "detail": {
+      "twinId": "dt_1777395615017_ggpbn",
+      "fidelity": "high",
+      "layers": 5
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.026Z"
+  },
+  {
+    "id": "log_1777395615028_owb2n",
+    "agent": "digitalTwinCreator",
+    "userId": "u2",
+    "action": "digital_twin_queried",
+    "detail": {
+      "twinId": "dt_1777395615017_ggpbn"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.028Z"
+  },
+  {
+    "id": "log_1777395615028_kktwo",
+    "agent": "memoryBackupAI",
+    "userId": "u2",
+    "action": "memory_backed_up",
+    "detail": {
+      "memoryType": "episodic",
+      "retentionTier": "long",
+      "hash": "cd38ad5c430ee80e"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.028Z"
+  },
+  {
+    "id": "log_1777395615028_i0s5o",
+    "agent": "memoryBackupAI",
+    "userId": "u2",
+    "action": "memory_recalled",
+    "detail": {
+      "memoryId": "mb_1777395615028_tq76r"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.028Z"
+  },
+  {
+    "id": "log_1777395615029_fhynx",
+    "agent": "memoryBackupAI",
+    "userId": "u2",
+    "action": "memory_searched",
+    "detail": {
+      "query": "school",
+      "found": 1
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.029Z"
+  },
+  {
+    "id": "log_1777395615029_6x3gp",
+    "agent": "memoryBackupAI",
+    "userId": "u2",
+    "action": "memory_deleted",
+    "detail": {
+      "memoryId": "mb_1777395615028_tq76r"
+    },
+    "level": "WARN",
+    "timestamp": "2026-04-28T17:00:15.029Z"
+  },
+  {
+    "id": "log_1777395615029_y0n2j",
+    "agent": "lifeLoggerAgent",
+    "userId": "u2",
+    "action": "life_event_logged",
+    "detail": {
+      "category": "milestone",
+      "title": "Got my first client",
+      "privacyLevel": "private"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.029Z"
+  },
+  {
+    "id": "log_1777395615029_71n57",
+    "agent": "lifeLoggerAgent",
+    "userId": "u2",
+    "action": "life_summary_accessed",
+    "detail": {
+      "total": 1
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.029Z"
+  },
+  {
+    "id": "log_1777395615029_fyfzh",
+    "agent": "personalHistoryAI",
+    "userId": "u2",
+    "action": "history_chapter_added",
+    "detail": {
+      "eraTag": "career",
+      "title": "First job",
+      "year": 2018
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.029Z"
+  },
+  {
+    "id": "log_1777395615030_79xzf",
+    "agent": "personalHistoryAI",
+    "userId": "u2",
+    "action": "biography_generated",
+    "detail": {
+      "chapters": 1
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.030Z"
+  },
+  {
+    "id": "log_1777395615030_giqlf",
+    "agent": "legacyAISystem",
+    "userId": "u2",
+    "action": "legacy_entry_added",
+    "detail": {
+      "legacyType": "values_statement",
+      "audience": "family",
+      "title": "My Core Values"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.030Z"
+  },
+  {
+    "id": "log_1777395615030_ouedq",
+    "agent": "legacyAISystem",
+    "userId": "u2",
+    "action": "legacy_archive_accessed",
+    "detail": {
+      "count": 1
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.030Z"
+  },
+  {
+    "id": "log_1777395615032_gegsx",
+    "agent": "voicePersonalityClone",
+    "userId": "u2",
+    "action": "voice_profile_created",
+    "detail": {
+      "profileId": "vp_1777395615030_vkvs8",
+      "archetype": "warm_alto",
+      "speechStyle": "casual"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.032Z"
+  },
+  {
+    "id": "log_1777395615033_pk4vd",
+    "agent": "voicePersonalityClone",
+    "userId": "u2",
+    "action": "speech_synthesised",
+    "detail": {
+      "profileId": "vp_1777395615030_vkvs8",
+      "wordCount": 8
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.033Z"
+  },
+  {
+    "id": "log_1777395615033_8phut",
+    "agent": "behaviourSimulationAI",
+    "userId": "u2",
+    "action": "behaviour_model_built",
+    "detail": {
+      "modelId": "bm_1777395615033_9zr3a"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.033Z"
+  },
+  {
+    "id": "log_1777395615033_o27tr",
+    "agent": "behaviourSimulationAI",
+    "userId": "u2",
+    "action": "behaviour_simulated",
+    "detail": {
+      "modelId": "bm_1777395615033_9zr3a",
+      "scenarioType": "crisis"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.033Z"
+  },
+  {
+    "id": "log_1777395615034_8i681",
+    "agent": "identityReplicationAgent",
+    "userId": "u2",
+    "action": "identity_snapshot_created",
+    "detail": {
+      "snapshotId": "id_1777395615033_wnx5e"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:15.034Z"
+  },
+  {
+    "id": "log_1777395644998_v2g8r",
+    "agent": "avatarConsciousAI",
+    "userId": "u3",
+    "action": "avatar_created",
+    "detail": {
+      "avatarId": "av_1777395644990_vd9uf",
+      "archetype": "guardian",
+      "consciousnessLevel": "reflective"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:44.998Z"
+  },
+  {
+    "id": "log_1777395644999_czuca",
+    "agent": "avatarConsciousAI",
+    "userId": "u3",
+    "action": "avatar_interaction",
+    "detail": {
+      "avatarId": "av_1777395644990_vd9uf",
+      "inputLength": 33
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:44.999Z"
+  },
+  {
+    "id": "log_1777395645000_3aebp",
+    "agent": "virtualHumanCreator",
+    "userId": "u3",
+    "action": "virtual_human_created",
+    "detail": {
+      "humanId": "vh_1777395645000_hrnfd",
+      "appearancePreset": "realistic",
+      "personalityBase": "friendly"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:45.000Z"
+  },
+  {
+    "id": "log_1777395645001_qtz6s",
+    "agent": "virtualHumanCreator",
+    "userId": "u3",
+    "action": "virtual_human_animated",
+    "detail": {
+      "humanId": "vh_1777395645000_hrnfd",
+      "emotion": "enthusiasm",
+      "durationSec": 8
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:45.001Z"
+  },
+  {
+    "id": "log_1777395645001_wzqll",
+    "agent": "metaverseAgent",
+    "userId": "u3",
+    "action": "metaverse_space_created",
+    "detail": {
+      "spaceId": "ms_1777395645001_x3ejx",
+      "worldType": "workspace"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:45.001Z"
+  },
+  {
+    "id": "log_1777395645002_g5t8b",
+    "agent": "metaverseAgent",
+    "userId": "u3",
+    "action": "avatar_spawned",
+    "detail": {
+      "spaceId": "ms_1777395645001_x3ejx",
+      "avatarStyle": "realistic"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:45.002Z"
+  },
+  {
+    "id": "log_1777395645002_j0lif",
+    "agent": "digitalImmortalitySystem",
+    "userId": "u3",
+    "action": "preservation_record_created",
+    "detail": {
+      "recordId": "di_1777395645002_9gzh3",
+      "preservationType": "values_record"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:45.002Z"
+  },
+  {
+    "id": "log_1777395645004_a7z4k",
+    "agent": "aiCompanionPro",
+    "userId": "u3",
+    "action": "companion_created",
+    "detail": {
+      "companionId": "cp_1777395645003_p9glv",
+      "role": "mentor"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:45.004Z"
+  },
+  {
+    "id": "log_1777395645004_75ldv",
+    "agent": "aiCompanionPro",
+    "userId": "u3",
+    "action": "companion_session",
+    "detail": {
+      "companionId": "cp_1777395645003_p9glv",
+      "sessionType": "goal_review"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:45.004Z"
+  },
+  {
+    "id": "log_1777395645005_i7ejz",
+    "agent": "relationshipSimulationAI",
+    "userId": "u3",
+    "action": "relationship_sim_created",
+    "detail": {
+      "simId": "rs_1777395645004_asgw1",
+      "relationshipType": "friendship",
+      "healthScore": 62
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:00:45.005Z"
+  },
+  {
+    "id": "log_1777395683642_sir2a",
+    "agent": "relationshipSimulationAI",
+    "userId": "u4",
+    "action": "relationship_sim_created",
+    "detail": {
+      "simId": "rs_1777395683633_7qozl",
+      "relationshipType": "friendship",
+      "healthScore": 71
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:01:23.642Z"
+  },
+  {
+    "id": "log_1777395683644_a7nb5",
+    "agent": "relationshipSimulationAI",
+    "userId": "u4",
+    "action": "relationship_scenario_practised",
+    "detail": {
+      "simId": "rs_1777395683633_7qozl",
+      "scenarioContext": "deep_conversation"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:01:23.644Z"
+  },
+  {
+    "id": "log_1777395683645_4wisj",
+    "agent": "emotionalIntelligenceCore",
+    "userId": "u4",
+    "action": "eq_assessed",
+    "detail": {
+      "overallEQ": 72,
+      "band": "competent"
+    },
+    "level": "INFO",
+    "timestamp": "2026-04-28T17:01:23.645Z"
+  }
+]

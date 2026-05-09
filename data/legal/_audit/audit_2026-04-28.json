@@ -1,0 +1,47 @@
+[
+  {
+    "id": "al-moikf64v-cev",
+    "agent": "contractAnalyzer",
+    "userId": "u1",
+    "action": "contract_analyzed",
+    "detail": {
+      "contractType": "service",
+      "jurisdiction": "India",
+      "charCount": 95
+    },
+    "timestamp": "2026-04-28T11:51:17.455Z"
+  },
+  {
+    "id": "al-moikf653-dwk",
+    "agent": "legalChatbot",
+    "userId": "u1",
+    "action": "legal_chat",
+    "detail": {
+      "messageLength": 28
+    },
+    "timestamp": "2026-04-28T11:51:17.463Z"
+  },
+  {
+    "id": "al-moikf653-tpi",
+    "agent": "consentManager",
+    "userId": "u1",
+    "action": "consent_recorded",
+    "detail": {
+      "consentType": "data_processing",
+      "subjectId": "s1",
+      "purpose": "Analytics"
+    },
+    "timestamp": "2026-04-28T11:51:17.463Z"
+  },
+  {
+    "id": "al-moikf654-3an",
+    "agent": "policyGenerator",
+    "userId": "u1",
+    "action": "policy_generated",
+    "detail": {
+      "policyType": "privacy",
+      "jurisdiction": "India"
+    },
+    "timestamp": "2026-04-28T11:51:17.464Z"
+  }
+]

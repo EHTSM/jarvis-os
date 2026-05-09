@@ -24,7 +24,7 @@ class EvolutionEngine {
         try {
             // Get learning data
             const frequency = this.learningSystem.getFrequency();
-            const habits = this.learningSystem.getHabits();
+            const habits = this.learningSystem.getUserHabits();
 
             // 1. Detect repetitive single tasks
             const repetitiveTasks = this.detectRepetitiveTasks(frequency);
@@ -66,8 +66,8 @@ class EvolutionEngine {
 
         for (const task of frequency.slice(0, 20)) {
             if (task.count >= this.REPETITION_THRESHOLD) {
-                // Parse task to see what it is
-                const taskName = task.task;
+                // getFrequency() returns {type, count} — "task" field does not exist
+                const taskName = String(task.type || task.task || "");
 
                 // Detect specific patterns
                 if (taskName.includes("open ")) {
@@ -213,7 +213,7 @@ class EvolutionEngine {
         let dataCount = 0;
 
         for (const task of frequency.slice(0, 20)) {
-            const taskLower = task.task.toLowerCase();
+            const taskLower = String(task.type || task.task || "").toLowerCase();
 
             if (apiKeywords.some(kw => taskLower.includes(kw))) {
                 apiCount += task.count;
@@ -508,7 +508,7 @@ class EvolutionEngine {
     getOptimizationScore() {
         try {
             const frequency = this.learningSystem.getFrequency();
-            const habits = this.learningSystem.getHabits();
+            const habits = this.learningSystem.getUserHabits();
 
             let score = 50; // Base score
 

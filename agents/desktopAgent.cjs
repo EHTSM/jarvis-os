@@ -1,14 +1,12 @@
 /**
- * Desktop Agent - Control system via robotjs
- * Features: open apps, type text, move mouse, press keys
+ * Desktop Agent — open apps, type text, press keys, move mouse.
+ * openApp/typeText/pressKey/pressKeyCombo delegate to agents/primitives.cjs.
+ * Mouse/screen methods use robotjs directly (no primitive equivalent needed).
  */
 
-const { exec } = require("child_process");
-const { promisify } = require("util");
+const p = require("./primitives.cjs");
 
-const execAsync = promisify(exec);
-
-// Lazy load robotjs (optional, may not be available)
+// Lazy load robotjs — only needed for mouse/screen methods
 let robot = null;
 try {
     robot = require("robotjs");
@@ -19,164 +17,37 @@ try {
 class DesktopAgent {
     constructor() {
         this.available = robot !== null;
-        this.automationEnabled = process.platform === "darwin"; // macOS first
+        this.automationEnabled = process.platform === "darwin";
     }
 
-    /**
-     * Open an application by name
-     * @param {string} appName - Application name (e.g., "Chrome", "VS Code")
-     */
     async openApp(appName) {
-        try {
-            console.log(`🚀 Opening ${appName}...`);
-
-            if (process.platform === "darwin") {
-                // macOS: Use open command
-                await execAsync(`open -a "${appName}"`);
-            } else if (process.platform === "win32") {
-                // Windows: Use start command
-                await execAsync(`start ${appName}`);
-            } else {
-                // Linux: Use standard app launcher
-                await execAsync(`${appName} &`);
-            }
-
-            return {
-                success: true,
-                action: "open_app",
-                app: appName,
-                message: `Opened ${appName}`
-            };
-        } catch (error) {
-            console.error(`❌ Failed to open ${appName}:`, error.message);
-            return {
-                success: false,
-                error: error.message,
-                app: appName
-            };
-        }
+        console.log(`🚀 Opening ${appName}...`);
+        const r = await p.openApp(appName);
+        if (!r.success) console.error(`❌ Failed to open ${appName}:`, r.error);
+        return r.success
+            ? { success: true, action: "open_app", app: appName, message: `Opened ${appName}` }
+            : { success: false, error: r.error, app: appName };
     }
 
-    /**
-     * Type text on the keyboard
-     * @param {string} text - Text to type
-     * @param {number} speed - Typing speed (ms between chars)
-     */
-    async typeText(text, speed = 50) {
-        try {
-            if (!this.available) {
-                throw new Error("robotjs not available");
-            }
-
-            console.log(`⌨️  Typing: "${text.slice(0, 50)}${text.length > 50 ? "..." : ""}"`);
-
-            robot.typeString(text, speed / 1000);
-
-            return {
-                success: true,
-                action: "type_text",
-                text: text.slice(0, 100),
-                typed_chars: text.length
-            };
-        } catch (error) {
-            console.error("❌ Type text error:", error.message);
-            return {
-                success: false,
-                error: error.message
-            };
-        }
+    async typeText(text, _speed = 50) {
+        console.log(`⌨️  Typing: "${(text || "").slice(0, 50)}${(text || "").length > 50 ? "..." : ""}"`);
+        const r = await p.typeText(text);
+        if (!r.success) { console.error("❌ Type text error:", r.error); return { success: false, error: r.error }; }
+        return { success: true, action: "type_text", text: (text || "").slice(0, 100), typed_chars: r.typed_chars };
     }
 
-    /**
-     * Press a key
-     * @param {string} key - Key name (e.g., "enter", "space", "cmd", "ctrl")
-     */
     async pressKey(key) {
-        try {
-            if (!this.available) {
-                throw new Error("robotjs not available");
-            }
-
-            console.log(`⌨️  Pressing key: ${key}`);
-
-            // Map common key names
-            const keyMap = {
-                "enter": ["enter"],
-                "return": ["enter"],
-                "space": ["space"],
-                "tab": ["tab"],
-                "esc": ["escape"],
-                "escape": ["escape"],
-                "delete": ["delete"],
-                "backspace": ["backspace"],
-                "cmd": ["cmd"],
-                "command": ["cmd"],
-                "ctrl": ["control"],
-                "control": ["control"],
-                "alt": ["alt"],
-                "option": ["alt"],
-                "shift": ["shift"],
-                "up": ["up"],
-                "down": ["down"],
-                "left": ["left"],
-                "right": ["right"]
-            };
-
-            const keyToPress = keyMap[key.toLowerCase()] || [key];
-            robot.keyTap(keyToPress[0]);
-
-            return {
-                success: true,
-                action: "press_key",
-                key: key
-            };
-        } catch (error) {
-            console.error("❌ Key press error:", error.message);
-            return {
-                success: false,
-                error: error.message,
-                key: key
-            };
-        }
+        console.log(`⌨️  Pressing key: ${key}`);
+        const r = await p.pressKey(key);
+        if (!r.success) { console.error("❌ Key press error:", r.error); return { success: false, error: r.error, key }; }
+        return { success: true, action: "press_key", key };
     }
 
-    /**
-     * Press key combination (Ctrl+C, Cmd+V, etc.)
-     * @param {string[]} modifiers - ["ctrl", "cmd", "alt", "shift"]
-     * @param {string} key - Main key to press
-     */
     async pressKeyCombo(modifiers, key) {
-        try {
-            if (!this.available) {
-                throw new Error("robotjs not available");
-            }
-
-            console.log(`⌨️  Pressing: ${modifiers.join("+")}+${key}`);
-
-            // Normalize modifier names
-            const mods = modifiers.map(m => {
-                const lowered = m.toLowerCase();
-                if (lowered === "cmd" || lowered === "command") return "cmd";
-                if (lowered === "ctrl" || lowered === "control") return "ctrl";
-                if (lowered === "alt" || lowered === "option") return "alt";
-                if (lowered === "shift") return "shift";
-                return lowered;
-            });
-
-            robot.hotkey(...mods, key);
-
-            return {
-                success: true,
-                action: "press_key_combo",
-                combination: `${modifiers.join("+")}+${key}`
-            };
-        } catch (error) {
-            console.error("❌ Key combo error:", error.message);
-            return {
-                success: false,
-                error: error.message
-            };
-        }
+        console.log(`⌨️  Pressing: ${modifiers.join("+")}+${key}`);
+        const r = await p.pressKeyCombo(modifiers, key);
+        if (!r.success) { console.error("❌ Key combo error:", r.error); return { success: false, error: r.error }; }
+        return { success: true, action: "press_key_combo", combination: `${r.modifiers.join("+")}+${r.key}` };
     }
 
     /**

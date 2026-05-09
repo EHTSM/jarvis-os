@@ -2,14 +2,14 @@
   "name": "jarvis-desktop",
   "version": "1.0.0",
   "description": "JARVIS - Self-Evolving AI Assistant Desktop Application",
-  "main": "main.js",
+  "main": "main.cjs",
   "homepage": "./",
   "author": "JARVIS Team",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently \"npm run dev\" \"wait-on http://localhost:3001 && electron .\"",
-    "dev": "react-scripts start",
+    "dev": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
+    "start": "electron .",
     "eject": "react-scripts eject",
     "electron": "electron .",
     "electron-dev": "cross-env ELECTRON_START_URL=http://localhost:3001 electron .",
@@ -18,7 +18,10 @@
     "build-app-linux": "npm run build && electron-builder -l",
     "build-app-win": "npm run build && electron-builder -w",
     "lint": "eslint src",
-    "test": "react-scripts test --watchAll=false"
+    "test": "react-scripts test --watchAll=false",
+    "mobile:sync": "npm run build && npx cap copy android",
+    "mobile:open": "npx cap open android",
+    "mobile:build": "npm run build && npx cap copy android && npx cap open android"
   },
   "dependencies": {
     "axios": "^1.6.2",
@@ -26,14 +29,17 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
-    "react-speech-recognition": "^4.0.1"
+    "react-speech-recognition": "^4.0.1",
+    "@capacitor/core": "^6.0.0"
   },
   "devDependencies": {
     "concurrently": "^8.2.0",
     "cross-env": "^7.0.3",
     "electron": "^41.2.1",
     "electron-builder": "^26.8.1",
-    "wait-on": "^7.0.1"
+    "wait-on": "^7.0.1",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/android": "^6.0.0"
   },
   "browserslist": {
     "production": [

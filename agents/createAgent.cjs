@@ -1,29 +1,26 @@
-import fs from "fs";
+const fs = require("fs");
+const path = require("path");
 
-export async function createAgent(task) {
+async function createAgent(task) {
+    const agentName = task.name.replace(/[^a-zA-Z]/g, "") + "Agent";
+    const dir = path.join(__dirname, "generated");
 
-  const agentName = task.name.replace(/[^a-zA-Z]/g, "") + "Agent";
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-  const filePath = `./agents/generated/${agentName}.js`;
+    const filePath = path.join(dir, `${agentName}.cjs`);
 
-  const code = `
-import { runWorkflow } from "../../automation/n8nConnector.js";
-const { apiTool } = require("../../tools/apiTool.js");
-export async function ${agentName}() {
-
-  const toolResult = await apiTool("${task.tool}", {
-    task: "${task.name}"
-  });
-
-  const workflowResult = await runWorkflow("business-workflow", {
-    task: "${task.name}"
-  });
-
-  return "Task: ${task.name} → " + toolResult + " → " + workflowResult;
+    const code = `// Auto-generated agent: ${agentName}
+async function ${agentName}(input) {
+    console.log("${agentName} executing:", input);
+    return { agent: "${agentName}", task: input, status: "completed" };
 }
+
+module.exports = { ${agentName} };
 `;
 
-  fs.writeFileSync(filePath, code);
-
-  console.log("🤖 Agent created:", agentName);
+    fs.writeFileSync(filePath, code);
+    console.log("🤖 Agent created:", agentName);
+    return { agentName, filePath };
 }
+
+module.exports = { createAgent };

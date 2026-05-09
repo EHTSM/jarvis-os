@@ -1,0 +1,33 @@
+[
+  {
+    "id": "meal-moi0trtz-i4o",
+    "userId": "u1",
+    "mealType": "lunch",
+    "foods": [
+      {
+        "name": "rice",
+        "grams": 200,
+        "calories": 260,
+        "carbs": 56,
+        "protein": 5.4,
+        "fat": 0.6
+      },
+      {
+        "name": "dal",
+        "grams": 150,
+        "calories": 174,
+        "carbs": 30,
+        "protein": 12,
+        "fat": 0.8
+      }
+    ],
+    "totals": {
+      "calories": 434,
+      "carbs": 86,
+      "protein": 17.4,
+      "fat": 1.4
+    },
+    "date": "2026-04-28",
+    "loggedAt": "2026-04-28T02:42:46.439Z"
+  }
+]
