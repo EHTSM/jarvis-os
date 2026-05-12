@@ -263,7 +263,11 @@
       "Bash(rm -rf ~/Library/Caches/node-gyp)",
       "Bash(rm -rf ~/Library/Caches/electron)",
       "Bash(curl -sf http://localhost:5050/health)",
-      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('PM2 health:', d['status'], '| uptime:', d['uptime_seconds'],'s'\\)\")"
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('PM2 health:', d['status'], '| uptime:', d['uptime_seconds'],'s'\\)\")",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('/Users/ehtsm/jarvis-os/package.json','utf8'\\)\\); console.log\\('JSON valid'\\)\")",
+      "Bash(node -e \"const p = JSON.parse\\(require\\('fs'\\).readFileSync\\('/Users/ehtsm/jarvis-os/package.json','utf8'\\)\\); console.log\\('JSON valid'\\); console.log\\('dependencies:', Object.keys\\(p.dependencies\\).length, 'packages'\\); console.log\\('optionalDependencies:', Object.keys\\(p.optionalDependencies\\)\\); console.log\\('robotjs in deps:', 'robotjs' in p.dependencies\\); console.log\\('robotjs in optional:', 'robotjs' in p.optionalDependencies\\);\")",
+      "Bash(REACT_APP_API_URL=https://ooplix.com npm run build:frontend)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
