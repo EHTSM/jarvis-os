@@ -95,7 +95,8 @@ router.get("/metrics", (req, res) => {
 });
 
 // ── Health ────────────────────────────────────────────────────────
-router.get("/test",  (req, res) => res.json({ status: "OK", timestamp: new Date().toISOString() }));
+router.get("/test",       (req, res) => res.json({ status: "OK", timestamp: new Date().toISOString() }));
+router.get("/api/status", (req, res) => res.json({ status: "JARVIS running", version: "3.0", port: process.env.PORT || 5050 }));
 router.get("/health", (req, res) => {
     const svcWarnings = [];
     if (!process.env.GROQ_API_KEY)                                  svcWarnings.push("AI disabled — GROQ_API_KEY missing");
@@ -122,7 +123,6 @@ router.get("/health", (req, res) => {
         warnings: svcWarnings
     });
 });
-router.get("/",      (req, res) => res.json({ status: "JARVIS running", version: "3.0", port: process.env.PORT || 5050 }));
 
 // ── AI direct ────────────────────────────────────────────────────
 router.post("/ai/chat", async (req, res) => {
