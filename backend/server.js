@@ -28,6 +28,10 @@ for (const [svc, cfg] of Object.entries(ENV_SERVICES)) {
         }
     }
 }
+// Payments supports dual naming: RAZORPAY_KEY or RAZORPAY_KEY_ID (either works).
+const _rzKey = process.env.RAZORPAY_KEY || process.env.RAZORPAY_KEY_ID;
+const _rzSec = process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET;
+_svcStatus.payments = !!(_rzKey && _rzSec);
 if (_missingRequired.length) {
     console.warn(`[Startup] ${_missingRequired.length} required var(s) missing — core degraded`);
 }
@@ -184,6 +188,9 @@ function startTelegramBot() {
 
     // Catch polling errors (401 = bad token, 409 = conflict with another bot instance).
     // Log and disable rather than crashing — these are config errors, not runtime bugs.
+    // Transient network errors are throttled to one log per 5 minutes to avoid spam.
+    const POLLING_LOG_THROTTLE_MS = 5 * 60 * 1000;
+    let _lastPollingErrLog = 0;
     bot.on("polling_error", (err) => {
         const code = err?.response?.statusCode || err?.code;
         if (code === 401) {
@@ -193,7 +200,11 @@ function startTelegramBot() {
             logger.warn("[Telegram] Conflict (409) — another instance is polling. Stopping this one.");
             bot.stopPolling();
         } else {
-            logger.warn(`[Telegram] Polling error (${code}): ${err.message}`);
+            const now = Date.now();
+            if (now - _lastPollingErrLog > POLLING_LOG_THROTTLE_MS) {
+                _lastPollingErrLog = now;
+                logger.warn(`[Telegram] Polling error (${code}): ${err.message}`);
+            }
         }
     });
 

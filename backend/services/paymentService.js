@@ -7,23 +7,37 @@ const Razorpay = require("razorpay");
 const crypto   = require("crypto");
 const logger   = require("../utils/logger");
 
+// Accept both naming conventions: RAZORPAY_KEY or RAZORPAY_KEY_ID
+const _rzKey    = process.env.RAZORPAY_KEY    || process.env.RAZORPAY_KEY_ID    || "";
+const _rzSecret = process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET || "";
+const _paymentsEnabled = !!(_rzKey && _rzSecret);
+
+if (!_paymentsEnabled) {
+    logger.warn("[Payment] RAZORPAY_KEY / RAZORPAY_SECRET not set — payment link creation disabled");
+}
+
 let _instance = null;
 
 function _getInstance() {
     if (!_instance) {
-        const key    = process.env.RAZORPAY_KEY;
-        const secret = process.env.RAZORPAY_SECRET;
-        if (!key || !secret) throw new Error("RAZORPAY_KEY / RAZORPAY_SECRET not set in .env");
-        _instance = new Razorpay({ key_id: key, key_secret: secret });
+        _instance = new Razorpay({ key_id: _rzKey, key_secret: _rzSecret });
     }
     return _instance;
 }
+
+function isEnabled() { return _paymentsEnabled; }
 
 /**
  * Create a Razorpay payment link.
  * @returns {Promise<{success:boolean, link?:string, error?:string}>}
  */
 async function createPaymentLink({ amount = 999, name = "Customer", phone = null, description = "JARVIS Access" }) {
+    if (process.env.DISABLE_PAYMENTS === "true") {
+        return { success: false, error: "Payments disabled (DISABLE_PAYMENTS=true in .env)" };
+    }
+    if (!_paymentsEnabled) {
+        return { success: false, error: "Payments not configured — set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in .env" };
+    }
     try {
         const rz   = _getInstance();
         const body = {
@@ -90,4 +104,4 @@ function parseWebhookEvent(body) {
     }
 }
 
-module.exports = { createPaymentLink, verifyWebhookSignature, parseWebhookEvent };
+module.exports = { createPaymentLink, verifyWebhookSignature, parseWebhookEvent, isEnabled };
