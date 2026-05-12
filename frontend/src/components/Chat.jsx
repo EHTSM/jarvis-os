@@ -36,11 +36,9 @@ function Message({ msg }) {
 }
 
 const QUICK_ACTIONS = [
-  { label: "Add a lead",            cmd: "Add a new lead"                },
-  { label: "Generate payment link", cmd: "Generate a payment link"        },
-  { label: "Show my clients",       cmd: "Show me all my leads"           },
-  { label: "Send follow-up",        cmd: "Send a follow-up to my leads"   },
-  { label: "What can JARVIS do?",   cmd: "What can you do for my business?" },
+  { label: "Add Client",        cmd: "Add a new client"        },
+  { label: "Show Leads",        cmd: "Show me all my leads"    },
+  { label: "Send Payment Link", cmd: "Generate a payment link" },
 ];
 
 export default function Chat({

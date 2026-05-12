@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { generatePaymentLink, sendFollowUp, getLeads } from "../api";
+import { generatePaymentLink, getLeads } from "../api";
 import AddClientForm  from "./AddClientForm.jsx";
 import WhatsAppSetup  from "./WhatsAppSetup.jsx";
 import "./PaymentPanel.css";
@@ -57,14 +57,19 @@ function PayLinkSuccess({ link, name, phone, onDismiss }) {
 
 export default function Clients({ onMessage, whatsappConnected }) {
   const [view,    setView]    = useState("main");   // "main" | "setup"
-  const [form,    setForm]    = useState({ name: "", phone: "", amount: "999", description: "JARVIS AI Access" });
+  const [form,    setForm]    = useState(() => {
+    try {
+      const p = JSON.parse(localStorage.getItem("jarvis_biz_profile") || "null");
+      const amt = p?.price?.replace(/[^\d]/g, "") || "999";
+      return { name: "", phone: "", amount: amt, description: "JARVIS AI Access" };
+    } catch {
+      return { name: "", phone: "", amount: "999", description: "JARVIS AI Access" };
+    }
+  });
   const [link,    setLink]    = useState(null);     // null | { url, name, phone }
   const [genLoad, setGenLoad] = useState(false);
   const [leads,   setLeads]   = useState(null);
   const [leadsLoading, setLeadsLoading] = useState(true);
-  const [followupPhone, setFollowupPhone] = useState("");
-  const [followupMsg,   setFollowupMsg]   = useState("Hey! Just checking in — ready to get started with JARVIS AI?");
-  const [fuLoad,  setFuLoad]  = useState(false);
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -104,28 +109,6 @@ export default function Clients({ onMessage, whatsappConnected }) {
     }
   };
 
-  const handleFollowup = async () => {
-    if (!followupPhone) { onMessage("error", "Enter a phone number."); return; }
-    setFuLoad(true);
-    try {
-      const res = await sendFollowUp(followupPhone, followupMsg);
-      if (res.success) {
-        onMessage("system", `Follow-up sent to ${followupPhone}`);
-        setFollowupPhone("");
-      } else {
-        onMessage("error", res.error || "Failed to send. Check WhatsApp is connected.");
-      }
-    } catch (err) {
-      onMessage("error", err.message);
-    } finally {
-      setFuLoad(false);
-    }
-  };
-
-  const handleQuickFollowup = (phone) => {
-    setFollowupPhone(phone);
-    document.getElementById("followup-phone")?.focus();
-  };
 
   // ── WhatsApp setup view ───────────────────────────────────────────
   if (view === "setup") {
@@ -190,24 +173,6 @@ export default function Clients({ onMessage, whatsappConnected }) {
         )}
       </section>
 
-      {/* ── WhatsApp follow-up ────────────────────────────────────── */}
-      <section className="panel-section">
-        <h3 className="section-heading">Send WhatsApp Follow-up</h3>
-        <div className="form-grid">
-          <input
-            id="followup-phone"
-            className="p-input"
-            placeholder="Phone with country code (e.g. 919876543210)"
-            value={followupPhone}
-            onChange={e => setFollowupPhone(e.target.value)}
-          />
-          <input className="p-input" placeholder="Message"
-            value={followupMsg} onChange={e => setFollowupMsg(e.target.value)} />
-        </div>
-        <button className="p-btn secondary" onClick={handleFollowup} disabled={fuLoad || !followupPhone}>
-          {fuLoad ? "Sending…" : "Send Follow-up"}
-        </button>
-      </section>
 
       {/* ── Client list ───────────────────────────────────────────── */}
       <section className="panel-section">
@@ -236,7 +201,6 @@ export default function Clients({ onMessage, whatsappConnected }) {
                 <th>Phone</th>
                 <th>Status</th>
                 <th>Added</th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -253,13 +217,6 @@ export default function Clients({ onMessage, whatsappConnected }) {
                     {l.createdAt
                       ? new Date(l.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })
                       : "—"}
-                  </td>
-                  <td>
-                    {l.phone && l.status !== "paid" && l.status !== "onboarded" && (
-                      <button className="fu-btn" onClick={() => handleQuickFollowup(l.phone)}>
-                        Follow up
-                      </button>
-                    )}
                   </td>
                 </tr>
               ))}

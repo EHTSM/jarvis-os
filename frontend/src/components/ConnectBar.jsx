@@ -27,11 +27,13 @@ export default function ConnectBar({ services = {}, onSetupWhatsApp }) {
     );
   }
 
+  // Only render a pill if it's connected (good feedback) or has a setup action.
+  // Never show a disconnected pill with no action — it just looks broken.
   return (
     <div className="connect-bar">
-      <Pill label="WhatsApp"  connected={whatsapp}  onSetup={onSetupWhatsApp} />
-      <Pill label="Payments"  connected={payments}  />
-      <Pill label="AI"        connected={aiOn}      />
+      <Pill label="WhatsApp" connected={whatsapp} onSetup={onSetupWhatsApp} />
+      {payments && <Pill label="Payments" connected={true} />}
+      {aiOn     && <Pill label="AI"       connected={true} />}
     </div>
   );
 }
