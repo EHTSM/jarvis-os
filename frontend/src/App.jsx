@@ -10,10 +10,10 @@ import ConnectBar   from "./components/ConnectBar.jsx";
 import "./App.css";
 
 const TABS = [
-  { id: "chat",     label: "Chat"     },
-  { id: "insights", label: "Insights" },
-  { id: "activity", label: "Activity" },
-  { id: "clients",  label: "Clients"  }
+  { id: "chat",     label: "Chat"       },
+  { id: "insights", label: "Revenue"    },
+  { id: "activity", label: "Automation" },
+  { id: "clients",  label: "Clients"    }
 ];
 
 // ── Determine initial screen from localStorage ───────────────────
@@ -132,6 +132,7 @@ export default function App() {
       ts:   Date.now()
     }]);
     setScreen("app");
+    setTab("clients");
   };
 
   // ── Screen routing ────────────────────────────────────────────────

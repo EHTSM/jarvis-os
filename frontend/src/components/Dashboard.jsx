@@ -46,12 +46,12 @@ function _timeAgo(isoStr) {
 }
 
 const TIER_LABELS = {
-  "10min":      "10-minute follow-up",
-  "6hr":        "6-hour follow-up",
-  "24hr":       "Daily follow-up",
-  "3day":       "3-day follow-up",
-  "onboarding": "Onboarding sequence",
-  "upsell":     "Upsell trigger",
+  "10min":      "First touch",
+  "6hr":        "Follow-up 2",
+  "24hr":       "Follow-up 3",
+  "3day":       "Final reminder",
+  "onboarding": "Welcome message",
+  "upsell":     "Hot lead alert",
 };
 
 export default function Dashboard({ stats, opsData }) {
