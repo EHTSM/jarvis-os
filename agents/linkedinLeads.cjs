@@ -1,3 +1,4 @@
+const axios = require("axios");
 const { HttpsProxyAgent } = require("https-proxy-agent");
 
 class LinkedInLeads {

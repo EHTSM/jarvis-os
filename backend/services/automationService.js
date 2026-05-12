@@ -19,6 +19,11 @@ const _cronHandles = [];   // all scheduled jobs, for clean stop()
 // Keys: tier labels ("10min","6hr","24hr","3day") + "onboarding" + "upsell"
 const _autoStats = {};
 
+// ── Overlap guards ─────────────────────────────────────────────────
+// Prevents a slow sweep from spawning a second concurrent sweep if the cron
+// fires again before the first one finishes (would double-send and pile up WA calls).
+const _running = {};
+
 function _stat(key) {
     if (!_autoStats[key]) _autoStats[key] = { attempts: 0, sent: 0, failed: 0, lastRun: null };
     return _autoStats[key];
@@ -74,6 +79,9 @@ const FOLLOW_UP_SEQUENCES = [
  * Run a follow-up sweep for a given tier.
  */
 async function _runFollowUpTier(tier) {
+    if (_running[tier.label]) return;   // previous sweep still in progress
+    _running[tier.label] = true;
+    try {
     const crm = _crm();
     const wa  = _wa();
     const leads = crm.getLeads().filter(l =>
@@ -113,12 +121,18 @@ async function _runFollowUpTier(tier) {
     }
 
     if (sent > 0) logger.info(`[Automation] Follow-up [${tier.label}]: ${sent} messages sent`);
+    } finally {
+        _running[tier.label] = false;
+    }
 }
 
 /**
  * Onboarding drip for newly paid leads.
  */
 async function _runOnboarding() {
+    if (_running["onboarding"]) return;
+    _running["onboarding"] = true;
+    try {
     const crm = _crm();
     const wa  = _wa();
     const leads = crm.getLeads().filter(l =>
@@ -147,6 +161,9 @@ async function _runOnboarding() {
         crm.updateLead(lead.phone, { onboardingDone: true, status: "onboarded" });
         logger.info(`[Automation] Onboarded: ${lead.phone}`);
     }
+    } finally {
+        _running["onboarding"] = false;
+    }
 }
 
 /**
@@ -154,6 +171,8 @@ async function _runOnboarding() {
  * Marks leads as hot if they've interacted recently but not paid.
  */
 async function _runUpsell() {
+    if (_running["upsell"]) return;
+    _running["upsell"] = true;
     const crm = _crm();
     const wa  = _wa();
     const now = Date.now();
@@ -172,6 +191,7 @@ async function _runUpsell() {
     for (const lead of hotLeads) {
         crm.updateLead(lead.phone, { status: "hot" });
     }
+    _running["upsell"] = false;
 }
 
 /**

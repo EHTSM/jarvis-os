@@ -93,12 +93,11 @@ ufw --force enable
 ufw status
 
 # ── 11. Nginx config ─────────────────────────────────────────────────────
-log "Installing nginx config template..."
-DOMAIN_PLACEHOLDER="YOUR_DOMAIN_HERE"
+log "Installing nginx config (domain placeholder — https-setup.sh will substitute it)..."
 cp "$APP_DIR/deploy/nginx-jarvis.conf" /etc/nginx/sites-available/jarvis
 ln -sf /etc/nginx/sites-available/jarvis /etc/nginx/sites-enabled/jarvis
 rm -f /etc/nginx/sites-enabled/default  # remove nginx default page
-nginx -t && systemctl reload nginx
+nginx -t && systemctl reload nginx || warn "Nginx reload failed — run 'nginx -t' to debug"
 
 # ── 12. PM2 startup ──────────────────────────────────────────────────────
 log "Configuring PM2 startup on reboot..."

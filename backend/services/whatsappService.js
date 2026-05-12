@@ -15,6 +15,13 @@ function _sanitizePhone(phone) {
     return String(phone).replace(/\D/g, "").replace(/^0+/, "");
 }
 
+// Auth cooldown — after a 401/403 we stop retrying for AUTH_COOLDOWN_MS to avoid log spam.
+const AUTH_COOLDOWN_MS = 60 * 60 * 1000;  // 1 hour
+let _authCooldownUntil = 0;
+
+/** Reset the auth cooldown (call after updating WA_TOKEN in .env and reloading). */
+function resetAuthCooldown() { _authCooldownUntil = 0; }
+
 /**
  * Send a plain text WhatsApp message with retry.
  * @returns {Promise<{success: boolean, messageId?: string, error?: string}>}
@@ -23,9 +30,18 @@ async function sendMessage(phone, text, retries = 2) {
     const token   = _token();
     const phoneId = _phoneId();
 
+    if (process.env.DISABLE_WHATSAPP === "true") {
+        return { success: false, error: "WhatsApp disabled (DISABLE_WHATSAPP=true in .env)" };
+    }
+
     if (!token || !phoneId) {
         logger.warn("[WA] Not configured — set WA_TOKEN and PHONE_NUMBER_ID in .env");
         return { success: false, error: "WhatsApp not configured" };
+    }
+
+    // Suppress retries during auth cooldown — token is known bad, no point spamming Meta.
+    if (Date.now() < _authCooldownUntil) {
+        return { success: false, error: "WhatsApp auth failed — regenerate token in Meta Business Manager" };
     }
 
     const to = _sanitizePhone(phone);
@@ -58,9 +74,10 @@ async function sendMessage(phone, text, retries = 2) {
             const detail = err.response?.data?.error?.message || err.message;
             const status = err.response?.status;
 
-            // Don't retry on auth errors
+            // Auth errors: set cooldown so automation stops hammering Meta for the next hour.
             if (status === 401 || status === 403) {
-                logger.error(`[WA] Auth error (${status}): ${detail}`);
+                _authCooldownUntil = Date.now() + AUTH_COOLDOWN_MS;
+                logger.error(`[WA] Auth error (${status}) — pausing WA sends for 1 hour. Regenerate token in Meta Business Manager > WhatsApp > Accounts.`);
                 return { success: false, error: `Auth error: ${detail}` };
             }
 
@@ -107,4 +124,4 @@ function parseIncomingMessage(body) {
     }
 }
 
-module.exports = { sendMessage, verifyWebhook, parseIncomingMessage };
+module.exports = { sendMessage, verifyWebhook, parseIncomingMessage, resetAuthCooldown };
