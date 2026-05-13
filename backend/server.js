@@ -44,7 +44,7 @@ const TelegramBot = require("node-telegram-bot-api");
 const logger      = require("./utils/logger");
 const errTracker  = require("./utils/errorTracker");
 const memTracker  = require("./utils/memoryTracker");
-const routes      = require("./routes/jarvis");
+const routes      = require("./routes/index");
 const crm        = require("./services/crmService");
 const payment    = require("./services/paymentService");
 const wa         = require("./services/whatsappService");
@@ -52,16 +52,8 @@ const automation = require("./services/automationService");
 
 const app = express();
 
-// ── Raw body capture (Razorpay HMAC) ──────────────────────────────
-app.use((req, res, next) => {
-    if (req.url.includes("/webhook/razorpay") || req.url.includes("/razorpay-webhook")) {
-        let raw = "";
-        req.on("data", chunk => { raw += chunk; });
-        req.on("end",  ()    => { req.rawBody = raw; next(); });
-    } else {
-        next();
-    }
-});
+// ── Raw body capture (Razorpay HMAC) — must be before express.json() ──
+app.use(require("./middleware/rawBody"));
 
 // ── Middleware ─────────────────────────────────────────────────────
 app.use(express.json({ limit: "10mb" }));
@@ -70,22 +62,7 @@ app.set("trust proxy", 1);
 app.use(cors({ origin: "*", methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"] }));
 
 // ── Structured request logging ────────────────────────────────────
-// Skips OPTIONS (CORS preflight) and high-frequency health/metrics polls
-// to keep logs readable in production. Records method, path, status, ms, IP.
-const _SKIP_LOG_PATHS = new Set(["/health", "/test", "/metrics", "/"]);
-app.use((req, res, next) => {
-    if (req.method === "OPTIONS" || _SKIP_LOG_PATHS.has(req.path)) return next();
-    const _t0 = Date.now();
-    res.on("finish", () => {
-        const ms  = Date.now() - _t0;
-        const ip  = req.ip || req.socket?.remoteAddress || "-";
-        const msg = `${req.method} ${req.path} ${res.statusCode} ${ms}ms ${ip}`;
-        if (res.statusCode >= 500) logger.error(`[HTTP] ${msg}`);
-        else if (res.statusCode >= 400) logger.warn(`[HTTP] ${msg}`);
-        else logger.info(`[HTTP] ${msg}`);
-    });
-    next();
-});
+app.use(require("./middleware/requestLogger"));
 
 // ── Mount all routes ───────────────────────────────────────────────
 app.use(routes);
