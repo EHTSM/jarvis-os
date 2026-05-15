@@ -1,0 +1,108 @@
+{
+  "generated": "2026-05-15T15:33:39.752Z",
+  "cycles": 720,
+  "totalMs": 622,
+  "verdict": "STABLE",
+  "latency": {
+    "ops": {
+      "avg": 1,
+      "p95": 1,
+      "min": 0,
+      "max": 24,
+      "n": 720
+    },
+    "status": {
+      "avg": 0,
+      "p95": 1,
+      "min": 0,
+      "max": 12,
+      "n": 720
+    },
+    "dispatch": {
+      "avg": 0,
+      "p95": 1,
+      "min": 0,
+      "max": 12,
+      "n": 72
+    },
+    "queue": {
+      "avg": 0,
+      "p95": 1,
+      "min": 0,
+      "max": 1,
+      "n": 48
+    },
+    "history": {
+      "avg": 0,
+      "p95": 1,
+      "min": 0,
+      "max": 6,
+      "n": 36
+    }
+  },
+  "heap": {
+    "first": 5,
+    "last": 7,
+    "drift": 2,
+    "samples": [
+      {
+        "cycle": 60,
+        "heapMB": 5
+      },
+      {
+        "cycle": 120,
+        "heapMB": 5
+      },
+      {
+        "cycle": 180,
+        "heapMB": 6
+      },
+      {
+        "cycle": 240,
+        "heapMB": 6
+      },
+      {
+        "cycle": 300,
+        "heapMB": 5
+      },
+      {
+        "cycle": 360,
+        "heapMB": 6
+      },
+      {
+        "cycle": 420,
+        "heapMB": 6
+      },
+      {
+        "cycle": 480,
+        "heapMB": 6
+      },
+      {
+        "cycle": 540,
+        "heapMB": 6
+      },
+      {
+        "cycle": 600,
+        "heapMB": 6
+      },
+      {
+        "cycle": 660,
+        "heapMB": 6
+      },
+      {
+        "cycle": 720,
+        "heapMB": 7
+      }
+    ]
+  },
+  "errors": {
+    "count": 0,
+    "rate": "0.00",
+    "list": []
+  },
+  "successRates": {
+    "ops": "720/720",
+    "dispatch": "0/72",
+    "queue": "0/48"
+  }
+}

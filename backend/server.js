@@ -40,6 +40,29 @@ if (_missingRequired.length) {
     console.warn(`[Startup] ${_missingRequired.length} required var(s) missing — core degraded`);
 }
 
+// ── Auth env validation (production hard requirement) ─────────────
+// In production, JWT_SECRET and OPERATOR_PASSWORD_HASH are REQUIRED.
+// Without them, all /auth/* and /runtime/* routes return 503 and the
+// operator console is completely inaccessible.
+_svcStatus.auth = !!(process.env.JWT_SECRET && process.env.OPERATOR_PASSWORD_HASH);
+if (process.env.NODE_ENV === "production") {
+    if (!process.env.JWT_SECRET) {
+        console.error("[Startup] FATAL (production): JWT_SECRET is not set.");
+        console.error("[Startup]   Generate: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\"");
+        console.error("[Startup]   Auth routes will return 503 until this is set.");
+    }
+    if (!process.env.OPERATOR_PASSWORD_HASH) {
+        console.error("[Startup] FATAL (production): OPERATOR_PASSWORD_HASH is not set.");
+        console.error("[Startup]   Generate: node scripts/generate-password-hash.cjs <your-password>");
+        console.error("[Startup]   Login will return 503 until this is set.");
+    }
+    if (!_svcStatus.auth) {
+        console.error("[Startup] Operator console is INACCESSIBLE — set JWT_SECRET and OPERATOR_PASSWORD_HASH in .env and restart.");
+    }
+} else if (!_svcStatus.auth) {
+    console.info("[Startup] Auth env not set — using dev passthrough (non-production mode)");
+}
+
 const express    = require("express");
 const cors       = require("cors");
 const path       = require("path");
@@ -106,6 +129,9 @@ try {
 app.use((err, req, res, _next) => {
     if (err.type === "entity.parse.failed") {
         return res.status(400).json({ success: false, error: "Invalid JSON body" });
+    }
+    if (err.type === "entity.too.large" || err.status === 413) {
+        return res.status(413).json({ success: false, error: "Payload too large" });
     }
     logger.error("Unhandled error:", err.message);
     res.status(500).json({ success: false, error: "Internal server error", details: err.message });
@@ -340,6 +366,7 @@ _httpServer = app.listen(PORT, () => {
         logger.info(`  task queue : ${queueLen}`);
         logger.info(`  automation : follow-ups + onboarding + upsell`);
         logger.info(`  auto loop  : task execution every 10s`);
+        logger.info(`  auth       : ${_svcStatus.auth      ? "configured (JWT + password hash)" : process.env.NODE_ENV === "production" ? "⚠ NOT CONFIGURED — console inaccessible" : "dev passthrough"}`);
         logger.info(`  ai         : ${_svcStatus.ai       ? "enabled" : "DISABLED"}`);
         logger.info(`  telegram   : ${_svcStatus.telegram  ? "enabled" : "DISABLED"}`);
         logger.info(`  whatsapp   : ${_svcStatus.whatsapp  ? "enabled" : "disabled (WA_TOKEN not set)"}`);
