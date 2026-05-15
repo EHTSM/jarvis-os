@@ -21,10 +21,26 @@ die()  { echo -e "${RED}[✗]${NC} $1"; exit 1; }
 source .env 2>/dev/null || true
 
 [ -z "${GROQ_API_KEY:-}" ]               && die "GROQ_API_KEY is not set in .env"
-[ -z "${TELEGRAM_TOKEN:-}" ]             && die "TELEGRAM_TOKEN is not set in .env"
+[ -z "${TELEGRAM_TOKEN:-}" ]             && warn "TELEGRAM_TOKEN not set — Telegram bot disabled (optional)"
 [ -z "${BASE_URL:-}" ]                   && die "BASE_URL is not set in .env (must be https://yourdomain.com)"
 [ -z "${RAZORPAY_WEBHOOK_SECRET:-}" ]    && warn "RAZORPAY_WEBHOOK_SECRET not set — payment webhooks will be REJECTED in production"
 [ -z "${WA_TOKEN:-}${WHATSAPP_TOKEN:-}" ] && warn "WA_TOKEN not set — WhatsApp messaging is disabled"
+
+# ── Auth env vars — REQUIRED in production ────────────────────────────────
+# Without these the operator console (login/runtime) is entirely inaccessible.
+if [ -z "${JWT_SECRET:-}" ]; then
+    die "JWT_SECRET is not set in .env
+  Generate: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\"
+  Or run:   node scripts/generate-password-hash.cjs <yourpassword>  (outputs both)"
+fi
+if [ -z "${OPERATOR_PASSWORD_HASH:-}" ]; then
+    die "OPERATOR_PASSWORD_HASH is not set in .env
+  Generate: node scripts/generate-password-hash.cjs <yourpassword>"
+fi
+# Warn if JWT_SECRET looks like a placeholder or is too short
+if [[ "${JWT_SECRET:-}" == *"your"* ]] || [[ "${JWT_SECRET:-}" == *"change"* ]] || [ ${#JWT_SECRET} -lt 32 ]; then
+    warn "JWT_SECRET looks weak or is a placeholder — use at least 32 random bytes"
+fi
 
 [[ "${BASE_URL:-}" == *"localhost"* ]]   && die "BASE_URL is still set to localhost — set it to your real domain"
 [[ "${BASE_URL:-}" == *"YOUR_DOMAIN"* ]] && die "BASE_URL is still a placeholder — set it to your real domain"
