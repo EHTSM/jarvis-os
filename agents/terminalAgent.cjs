@@ -32,6 +32,8 @@ const BLOCKED = [
     /\bkill\b/,
     /\bpkill\b/,
     /\bkillall\b/,
+    /&&/,                                 // AND chaining (bypass via allowed prefix)
+    /;/,                                  // semicolon chaining
     /\|\s*(bash|sh|zsh|fish|ksh|csh)/,  // pipe to shell
     /curl[^|]*\|/,                        // curl pipe
     /wget[^|]*\|/,                        // wget pipe

@@ -8,13 +8,17 @@
  *   router.post("/jarvis", rateLimiter(60, 60_000), handler);
  */
 
+// Key: `${ip}:${windowMs}` — separate counters per route window so a 5-min
+// login window and a 1-min jarvis window don't share state or purge each other.
 const _rateMap = new Map();
 
-// Purge entries older than one window + 15s grace — runs every 5 minutes.
+// Purge entries whose window has fully expired. Runs every 5 minutes.
+// Uses windowMs stored on each entry so long-window limiters (login at 5 min)
+// are not evicted prematurely by a hardcoded short cutoff.
 setInterval(() => {
-    const cutoff = Date.now() - 75_000;
-    for (const [ip, entry] of _rateMap) {
-        if (entry.start < cutoff) _rateMap.delete(ip);
+    const now = Date.now();
+    for (const [key, entry] of _rateMap) {
+        if (now - entry.start > entry.windowMs + 15_000) _rateMap.delete(key);
     }
 }, 300_000).unref();
 
@@ -25,11 +29,12 @@ setInterval(() => {
 module.exports = function rateLimiter(limit = 60, windowMs = 60_000) {
     return (req, res, next) => {
         const ip    = req.ip || "unknown";
+        const key   = `${ip}:${windowMs}`;
         const now   = Date.now();
-        const entry = _rateMap.get(ip) || { count: 0, start: now };
+        const entry = _rateMap.get(key) || { count: 0, start: now, windowMs };
         if (now - entry.start > windowMs) { entry.count = 0; entry.start = now; }
         entry.count++;
-        _rateMap.set(ip, entry);
+        _rateMap.set(key, entry);
         if (entry.count > limit) {
             return res.status(429).json({ success: false, reply: "Too many requests. Slow down." });
         }
