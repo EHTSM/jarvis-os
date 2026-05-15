@@ -5,12 +5,10 @@ require("dotenv").config({ path: require("path").join(__dirname, "../.env") });
 // Each service declares its required keys. Missing required = DEGRADED.
 // Missing optional = feature disabled, logged once at startup.
 const ENV_SERVICES = {
-    ai:       { vars: ["GROQ_API_KEY"],                          required: true  },
-    telegram: { vars: ["TELEGRAM_TOKEN"],                        required: true  },
-    payments: { vars: ["RAZORPAY_KEY","RAZORPAY_SECRET"],        required: false },
-    whatsapp: { vars: ["WA_TOKEN","WA_PHONE_ID"],                required: false },
-    firebase: { vars: ["FIREBASE_PROJECT_ID"],                   required: false },
-    maps:     { vars: ["GOOGLE_API"],                            required: false },
+    ai:       { vars: ["GROQ_API_KEY"],          required: true  },
+    telegram: { vars: ["TELEGRAM_TOKEN"],         required: false },
+    firebase: { vars: ["FIREBASE_PROJECT_ID"],    required: false },
+    maps:     { vars: ["GOOGLE_API"],             required: false },
 };
 
 // _svcStatus: live service capability flags — queried by /health and /ops
@@ -28,10 +26,16 @@ for (const [svc, cfg] of Object.entries(ENV_SERVICES)) {
         }
     }
 }
-// Payments supports dual naming: RAZORPAY_KEY or RAZORPAY_KEY_ID (either works).
+// Services with dual naming — check both variants so .env.example and whatsappService.js stay in sync
 const _rzKey = process.env.RAZORPAY_KEY || process.env.RAZORPAY_KEY_ID;
 const _rzSec = process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET;
 _svcStatus.payments = !!(_rzKey && _rzSec);
+if (!_svcStatus.payments) console.info("[Startup] Optional env not set — payments disabled: RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET");
+
+const _waToken   = process.env.WA_TOKEN   || process.env.WHATSAPP_TOKEN;
+const _waPhoneId = process.env.WA_PHONE_ID || process.env.PHONE_NUMBER_ID;
+_svcStatus.whatsapp = !!(_waToken && _waPhoneId);
+if (!_svcStatus.whatsapp) console.info("[Startup] Optional env not set — whatsapp disabled: WHATSAPP_TOKEN / PHONE_NUMBER_ID");
 if (_missingRequired.length) {
     console.warn(`[Startup] ${_missingRequired.length} required var(s) missing — core degraded`);
 }
@@ -59,7 +63,21 @@ app.use(require("./middleware/rawBody"));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.set("trust proxy", 1);
-app.use(cors({ origin: "*", methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"] }));
+
+// CORS: allow credentials (httpOnly cookies) only from explicitly listed origins.
+// origin:"*" silently breaks credentials:include in browsers — use allowlist instead.
+const _allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
+    .split(",").map(s => s.trim()).filter(Boolean);
+app.use(cors({
+    origin: (origin, cb) => {
+        // Allow same-origin requests (origin === undefined in server-to-server or
+        // same-origin fetches) and any listed ALLOWED_ORIGINS.
+        if (!origin || _allowedOrigins.includes(origin)) return cb(null, true);
+        cb(new Error(`CORS: origin '${origin}' not allowed`));
+    },
+    credentials: true,
+    methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+}));
 
 // ── Structured request logging ────────────────────────────────────
 app.use(require("./middleware/requestLogger"));
@@ -86,6 +104,9 @@ try {
 
 // ── Global error handler ───────────────────────────────────────────
 app.use((err, req, res, _next) => {
+    if (err.type === "entity.parse.failed") {
+        return res.status(400).json({ success: false, error: "Invalid JSON body" });
+    }
     logger.error("Unhandled error:", err.message);
     res.status(500).json({ success: false, error: "Internal server error", details: err.message });
 });
@@ -113,6 +134,9 @@ function _gracefulShutdown(signal) {
 
     // 4. Stop memory sampler
     try { memTracker.stop(); } catch { /* ignore */ }
+
+    // 5a. Stop event bus (closes SSE connections cleanly)
+    try { require("../agents/runtime/runtimeEventBus.cjs").stop(); } catch { /* ignore */ }
 
     // 5. Give in-flight work 5 s to drain, then exit
     setTimeout(() => {
@@ -259,6 +283,21 @@ _httpServer = app.listen(PORT, () => {
         logger.info("[AutoLoop] autonomous task loop running");
     } catch (err) {
         logger.warn("[AutoLoop] failed to start:", err.message);
+    }
+
+    // ── Runtime agent registry ────────────────────────────────────
+    try {
+        require("../agents/runtime/bootstrapRuntime.cjs");
+    } catch (err) {
+        logger.warn("[Bootstrap] Runtime agent registry failed:", err.message);
+    }
+
+    // ── Realtime event bus ────────────────────────────────────────
+    try {
+        require("../agents/runtime/runtimeEventBus.cjs").start();
+        logger.info("[EventBus] realtime event bus started — GET /runtime/stream");
+    } catch (err) {
+        logger.warn("[EventBus] failed to start:", err.message);
     }
 
     // ── Queue persistence integrity check ────────────────────────
