@@ -118,12 +118,13 @@ class VoiceAgent {
      * Get available voices on macOS
      */
     async getAvailableVoices() {
+        if (!this.voiceEnabled) return ["Samantha", "Victoria", "Alex"];
         try {
             const { stdout } = await execAsync("say -v '?' | awk '{print $1}'");
             const voices = stdout.split('\n').filter(v => v.trim());
             return voices;
         } catch (error) {
-            return ["Samantha", "Victoria", "Alex"]; // Default voices
+            return ["Samantha", "Victoria", "Alex"];
         }
     }
 

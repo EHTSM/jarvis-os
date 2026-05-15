@@ -7,7 +7,6 @@
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
-const { execSync } = require("child_process");
 
 class AgentFactory {
     constructor(generatedDir = path.join(__dirname, "generated")) {

@@ -1,13 +1,24 @@
 "use strict";
-const router     = require("express").Router();
-const crm        = require("../services/crmService");
-const automation = require("../services/automationService");
-const controller = require("../controllers/jarvisController");
-const errTracker = require("../utils/errorTracker");
-const memTracker = require("../utils/memoryTracker");
+const router       = require("express").Router();
+const crm          = require("../services/crmService");
+const automation   = require("../services/automationService");
+const controller   = require("../controllers/jarvisController");
+const errTracker   = require("../utils/errorTracker");
+const memTracker   = require("../utils/memoryTracker");
+const { requireAuth } = require("../middleware/authMiddleware");
+const operatorAudit   = require("../middleware/operatorAudit");
 
+// /health and /test are intentionally unauthenticated:
+//   - /health is used by Docker HEALTHCHECK, PM2, nginx, and monitoring tools
+//   - /test is a no-op probe used in smoke tests
 router.get("/test",       (req, res) => res.json({ status: "OK", timestamp: new Date().toISOString() }));
+
+// /api/status also remains unauthenticated (external status probe)
 router.get("/api/status", (req, res) => res.json({ status: "JARVIS running", version: "3.0", port: process.env.PORT || 5050 }));
+
+// Gate: all remaining ops routes require a valid operator session.
+// operatorAudit records every authenticated request for the audit trail.
+router.use(requireAuth, operatorAudit);
 
 router.get("/stats", (req, res) => {
     const s = crm.getStats();
@@ -49,7 +60,7 @@ router.get("/health", (req, res) => {
             ai:       !!process.env.GROQ_API_KEY,
             telegram: !!process.env.TELEGRAM_TOKEN,
             whatsapp: !!(process.env.WA_TOKEN || process.env.WHATSAPP_TOKEN),
-            payments: !!(process.env.RAZORPAY_KEY && process.env.RAZORPAY_SECRET),
+            payments: !!((process.env.RAZORPAY_KEY || process.env.RAZORPAY_KEY_ID) && (process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET)),
         },
         warnings: svcWarnings
     });
