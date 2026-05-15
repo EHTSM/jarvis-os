@@ -83,6 +83,7 @@ const app = express();
 app.use(require("./middleware/rawBody"));
 
 // ── Middleware ─────────────────────────────────────────────────────
+app.use(require("./middleware/requestId"));   // x-request-id on every request
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.set("trust proxy", 1);

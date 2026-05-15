@@ -1,0 +1,115 @@
+# ═══════════════════════════════════════════════════════════════════════
+#  JARVIS OS — Production Docker Compose
+#
+#  Usage:
+#    docker-compose -f docker-compose.prod.yml up -d        # start
+#    docker-compose -f docker-compose.prod.yml logs -f      # logs
+#    docker-compose -f docker-compose.prod.yml down         # stop
+#    docker-compose -f docker-compose.prod.yml pull && up -d # update
+#
+#  Prerequisites:
+#    - .env file present with JWT_SECRET + OPERATOR_PASSWORD_HASH set
+#    - nginx installed on host (or use the nginx service below)
+#    - docker + docker-compose installed
+#
+#  IMPORTANT: Port 5050 is NOT exposed to the host network.
+#  Nginx (running on the host or in the jarvis-nginx service) proxies to it
+#  via the internal Docker network (jarvis_net).
+# ═══════════════════════════════════════════════════════════════════════
+
+version: "3.9"
+
+services:
+
+  # ── Backend ─────────────────────────────────────────────────────────
+  jarvis-backend:
+    image: jarvis-os:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+      args:
+        REACT_APP_API_URL: "${BASE_URL}"
+    container_name: jarvis-backend
+    restart: unless-stopped
+
+    # Secrets and config — never bake secrets into the image
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      PORT:     5050
+
+    # Resource limits — prevent runaway memory/CPU from taking down the host
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus:   "1.0"
+        reservations:
+          memory: 128m
+
+    # Persistent data volumes
+    volumes:
+      - jarvis-data:/app/data
+      - jarvis-logs:/app/logs
+      - jarvis-backups:/app/backups
+
+    # Only reachable within the Docker network — not exposed to host/internet
+    networks:
+      - jarvis_net
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5050/health"]
+      interval: 30s
+      timeout:  5s
+      retries:  3
+      start_period: 15s
+
+    # Logging — rotate to prevent disk fill
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  # ── Nginx reverse proxy (optional — use if nginx not on host) ────────
+  # Comment this out if nginx is running on the host and configured
+  # with deploy/nginx-jarvis.conf pointing to jarvis-backend:5050.
+  jarvis-nginx:
+    image: nginx:1.25-alpine
+    container_name: jarvis-nginx
+    restart: unless-stopped
+    depends_on:
+      jarvis-backend:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx-jarvis.conf:/etc/nginx/conf.d/jarvis.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro  # Let's Encrypt certs from host
+      - nginx-cache:/var/cache/nginx
+    networks:
+      - jarvis_net
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+# ── Volumes ───────────────────────────────────────────────────────────────
+volumes:
+  jarvis-data:
+    name: jarvis-data
+  jarvis-logs:
+    name: jarvis-logs
+  jarvis-backups:
+    name: jarvis-backups
+  nginx-cache:
+    name: jarvis-nginx-cache
+
+# ── Networks ──────────────────────────────────────────────────────────────
+networks:
+  jarvis_net:
+    name: jarvis_net
+    driver: bridge

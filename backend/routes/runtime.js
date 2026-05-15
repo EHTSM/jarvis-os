@@ -37,9 +37,19 @@ router.post("/runtime/queue", rateLimiter(60, 60_000), (req, res) => {
     return res.json({ success: true, queueId: id });
 });
 
-// GET /runtime/status — live diagnostics
+// GET /runtime/status — live diagnostics (includes SSE connection count)
 router.get("/runtime/status", (req, res) => {
-    return res.json(orchestrator.status());
+    const status = orchestrator.status();
+    // Attach SSE metrics if available
+    let sseMetrics = null;
+    try {
+        const stream = require("../../agents/runtime/runtimeStream.cjs");
+        // runtimeStream exports the router; SSE state is accessible via the stream/status route
+        // Directly read from the event bus metrics instead
+        const bus = require("../../agents/runtime/runtimeEventBus.cjs");
+        sseMetrics = bus.metrics ? bus.metrics() : null;
+    } catch { /* non-critical */ }
+    return res.json({ ...status, sse: sseMetrics });
 });
 
 // GET /runtime/history — recent execution history
