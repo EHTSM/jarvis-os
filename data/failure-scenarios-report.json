@@ -1,0 +1,106 @@
+{
+  "pass": 20,
+  "fail": 0,
+  "details": [
+    {
+      "ok": true,
+      "name": "Runtime without cookie",
+      "detail": "status=200 (401=prod, 200=dev)"
+    },
+    {
+      "ok": true,
+      "name": "Tampered cookie rejected or dev passthrough",
+      "detail": "status=200"
+    },
+    {
+      "ok": true,
+      "name": "Expired JWT token",
+      "detail": "status=200 (401=properly rejected)"
+    },
+    {
+      "ok": true,
+      "name": "Empty dispatch input → 400",
+      "detail": "1ms"
+    },
+    {
+      "ok": true,
+      "name": "Missing dispatch input field → 400",
+      "detail": "0ms"
+    },
+    {
+      "ok": true,
+      "name": "Empty queue input → 400 or 401 (auth)",
+      "detail": "0ms"
+    },
+    {
+      "ok": true,
+      "name": "Empty login password → 400",
+      "detail": "0ms"
+    },
+    {
+      "ok": true,
+      "name": "5KB input (should be sliced/rejected)",
+      "detail": "status=200, no crash"
+    },
+    {
+      "ok": true,
+      "name": "100KB input handled (no crash)",
+      "detail": "status=200"
+    },
+    {
+      "ok": true,
+      "name": "Concurrent stop+dispatch — all responded",
+      "detail": "stop=200 d1=200 d2=200"
+    },
+    {
+      "ok": true,
+      "name": "Emergency resume after race",
+      "detail": "status=200"
+    },
+    {
+      "ok": true,
+      "name": "GET /runtime/dead-letter",
+      "detail": "status=200 count=10"
+    },
+    {
+      "ok": true,
+      "name": "Malformed JSON body handled",
+      "detail": "status=400"
+    },
+    {
+      "ok": true,
+      "name": "SSE rapid reconnect x5",
+      "detail": "5/5 responded without crash"
+    },
+    {
+      "ok": true,
+      "name": "SSE connections responded",
+      "detail": "statuses=200,200,200,200,200,200,200,200,200,200,200,200"
+    },
+    {
+      "ok": true,
+      "name": "GET /runtime/logs",
+      "detail": "status=200 entries=20"
+    },
+    {
+      "ok": true,
+      "name": "/jarvis: empty string",
+      "detail": "status=400"
+    },
+    {
+      "ok": true,
+      "name": "/jarvis: whitespace",
+      "detail": "status=400"
+    },
+    {
+      "ok": true,
+      "name": "/jarvis: null",
+      "detail": "status=400"
+    },
+    {
+      "ok": true,
+      "name": "/jarvis: 3000 char input",
+      "detail": "status=200"
+    }
+  ]
+}

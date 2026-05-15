@@ -1,0 +1,110 @@
+{
+  "pass": 28,
+  "fail": 0,
+  "skipped": 0,
+  "latencies": {
+    "health": {
+      "avg": 1,
+      "p95": 1,
+      "max": 1,
+      "n": 1
+    },
+    "login": {
+      "avg": 1,
+      "p95": 1,
+      "max": 1,
+      "n": 1
+    },
+    "auth_me": {
+      "avg": 0,
+      "p95": 0,
+      "max": 0,
+      "n": 1
+    },
+    "rt_status": {
+      "avg": 1,
+      "p95": 1,
+      "max": 1,
+      "n": 5
+    },
+    "dispatch": {
+      "avg": 12,
+      "p95": 52,
+      "max": 52,
+      "n": 5
+    },
+    "queue_enqueue": {
+      "avg": 0,
+      "p95": 1,
+      "max": 1,
+      "n": 3
+    },
+    "history": {
+      "avg": 1,
+      "p95": 1,
+      "max": 1,
+      "n": 1
+    },
+    "emergency_stop": {
+      "avg": 0,
+      "p95": 0,
+      "max": 0,
+      "n": 1
+    },
+    "emergency_resume": {
+      "avg": 1,
+      "p95": 1,
+      "max": 1,
+      "n": 1
+    },
+    "ops": {
+      "avg": 1,
+      "p95": 3,
+      "max": 3,
+      "n": 10
+    },
+    "stats": {
+      "avg": 1,
+      "p95": 1,
+      "max": 1,
+      "n": 1
+    },
+    "metrics": {
+      "avg": 1,
+      "p95": 1,
+      "max": 1,
+      "n": 1
+    },
+    "health_deep": {
+      "avg": 1,
+      "p95": 1,
+      "max": 1,
+      "n": 1
+    },
+    "tasks": {
+      "avg": 1,
+      "p95": 1,
+      "max": 1,
+      "n": 5
+    },
+    "sse_connect": {
+      "avg": 0,
+      "p95": 0,
+      "max": 0,
+      "n": 1
+    },
+    "logout": {
+      "avg": 2,
+      "p95": 2,
+      "max": 2,
+      "n": 1
+    },
+    "post_logout_rt": {
+      "avg": 0,
+      "p95": 0,
+      "max": 0,
+      "n": 1
+    }
+  },
+  "errors": []
+}

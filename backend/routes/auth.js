@@ -31,14 +31,20 @@ router.post("/auth/login", rateLimiter(10, 5 * 60_000), (req, res) => {
   const storedHash = process.env.OPERATOR_PASSWORD_HASH;
 
   if (!storedHash) {
-    // Dev passthrough: no password configured
+    // Dev passthrough: no password configured — requireAuth also bypasses in dev mode
     if (process.env.NODE_ENV !== "production") {
-      const token = signJWT({
-        role: "operator", sub: "dev",
-        iat: Math.floor(Date.now() / 1000),
-        exp: Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
-      });
-      res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
+      // Only set a cookie if JWT_SECRET is available; otherwise dev passthrough is enough
+      // (requireAuth checks no cookie when JWT_SECRET is unset in dev mode)
+      if (process.env.JWT_SECRET) {
+        try {
+          const token = signJWT({
+            role: "operator", sub: "dev",
+            iat: Math.floor(Date.now() / 1000),
+            exp: Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
+          });
+          res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
+        } catch { /* no-op: JWT_SECRET missing, dev passthrough sufficient */ }
+      }
       return res.json({ success: true, role: "operator" });
     }
     return res.status(503).json({ error: "Auth not configured — OPERATOR_PASSWORD_HASH missing" });

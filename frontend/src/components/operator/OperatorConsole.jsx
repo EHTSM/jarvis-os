@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { BASE_URL, getOpsData, getTasks, getRuntimeStatus, getRuntimeHistory } from "../../api";
+import { useAuth } from "../../contexts/AuthContext";
 import TaskQueuePanel  from "./TaskQueuePanel";
 import ExecLogPanel    from "./ExecLogPanel";
 import AIConsolePanel  from "./AIConsolePanel";
@@ -29,12 +30,16 @@ function fmtUptime(secs) {
 }
 
 export default function OperatorConsole() {
+  const { logout } = useAuth();
   const [ops,       setOps]       = useState(null);
   const [tasks,     setTasks]     = useState(null);
   const [rtStatus,  setRtStatus]  = useState(null);
   const [history,   setHistory]   = useState([]);
   const [stream,    setStream]    = useState({ connected: false, lastBeat: null, replayCount: 0, retryCount: 0, retryDelayMs: 0 });
   const [fetchErrors, setFetchErrors] = useState({});
+  const [authError,  setAuthError]  = useState(null); // "expired" | "unconfigured" | null
+  const [lastExec,   setLastExec]   = useState(null); // { status, input, ts } — most recent completion
+  const [mobileTab,  setMobileTab]  = useState("Workflow"); // mobile-only tab state
 
   // Track seen entry IDs for new-entry flash animation
   const seenEntries   = useRef(new Set());
@@ -67,15 +72,27 @@ export default function OperatorConsole() {
     });
   }, [markNew]);
 
+  // ── Auth error classifier ──────────────────────────────────────
+  const _classifyAuthErr = useCallback((err) => {
+    const status = err?.status;
+    const msg    = (err?.message || "").toLowerCase();
+    if (status === 401 || msg.includes("unauthorized") || msg.includes("token invalid") || msg.includes("token expired")) {
+      setAuthError("expired");
+    } else if (status === 503 || msg.includes("not configured")) {
+      setAuthError("unconfigured");
+    }
+  }, []);
+
   // ── Fallback fetchers ──────────────────────────────────────────
   const fetchOps = useCallback(async () => {
     try {
       const o = await getOpsData();
-      if (o) { setOps(o); setFetchErrors(e => ({ ...e, ops: null })); }
+      if (o) { setOps(o); setFetchErrors(e => ({ ...e, ops: null })); setAuthError(null); }
     } catch (err) {
       setFetchErrors(e => ({ ...e, ops: err.message }));
+      _classifyAuthErr(err);
     }
-  }, []);
+  }, [_classifyAuthErr]);
 
   const fetchTasks = useCallback(async () => {
     try {
@@ -89,11 +106,12 @@ export default function OperatorConsole() {
   const fetchRt = useCallback(async () => {
     try {
       const r = await getRuntimeStatus();
-      if (r) { setRtStatus(r); setFetchErrors(e => ({ ...e, rt: null })); }
+      if (r) { setRtStatus(r); setFetchErrors(e => ({ ...e, rt: null })); setAuthError(null); }
     } catch (err) {
       setFetchErrors(e => ({ ...e, rt: err.message }));
+      _classifyAuthErr(err);
     }
-  }, []);
+  }, [_classifyAuthErr]);
 
   const fetchHistory = useCallback(async () => {
     try {
@@ -144,7 +162,14 @@ export default function OperatorConsole() {
 
     // ── Execution events ───────────────────────────────────────
     es.addEventListener("execution", (e) => {
-      try { prependExec(JSON.parse(e.data)); } catch {}
+      try {
+        const d = JSON.parse(e.data);
+        prependExec(d);
+        // Surface completions/failures in the status bar so operator sees activity
+        if (d.status === "success" || d.status === "completed" || d.status === "failed" || d.status === "error") {
+          setLastExec({ status: d.status, input: (d.input || d.task || "").slice(0, 40), ts: Date.now() });
+        }
+      } catch {}
     });
 
     // ── Task lifecycle ─────────────────────────────────────────
@@ -250,6 +275,19 @@ export default function OperatorConsole() {
 
   return (
     <div className="operator-console">
+      {/* ── Auth error banner ──────────────────────────────────── */}
+      {authError === "expired" && (
+        <div className="op-session-banner expired">
+          <span>Session expired — sign in again to continue</span>
+          <button onClick={logout}>Sign out</button>
+        </div>
+      )}
+      {authError === "unconfigured" && (
+        <div className="op-session-banner">
+          <span>Runtime auth not configured — set JWT_SECRET + OPERATOR_PASSWORD_HASH in .env</span>
+        </div>
+      )}
+
       {/* ── Status Bar ─────────────────────────────────────────── */}
       <div className="op-statusbar">
         <div
@@ -318,6 +356,19 @@ export default function OperatorConsole() {
           </span>
         </div>
 
+        {/* Last execution result */}
+        {lastExec && (
+          <div className="op-stat" style={{ marginLeft: "auto" }}
+            title={`Last: ${lastExec.input}`}>
+            <span className="op-stat-label">Last exec</span>
+            <span className={`op-stat-value ${
+              lastExec.status === "success" || lastExec.status === "completed" ? "ok" : "crit"
+            }`} style={{ fontSize: 10, maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {lastExec.status === "success" || lastExec.status === "completed" ? "✓" : "✗"} {lastExec.input || "—"}
+            </span>
+          </div>
+        )}
+
         <div className="op-statusbar-warnings">
           {warnings.slice(0, 3).map((w, i) => (
             <span key={i} className={`op-warn-badge ${w.level === "critical" ? "crit" : ""}`}>
@@ -327,25 +378,37 @@ export default function OperatorConsole() {
         </div>
       </div>
 
+      {/* ── Mobile tab bar (hidden on desktop) ──────────────────── */}
+      <div className="op-tab-bar op-mobile-only">
+        {["Workflow","Log","Queue","Adapters"].map(t => (
+          <button
+            key={t}
+            className={`op-tab${mobileTab === t ? " active" : ""}`}
+            onClick={() => setMobileTab(t)}
+          >{t}</button>
+        ))}
+      </div>
+
       {/* ── Main Grid ────────────────────────────────────────────── */}
       <div className="op-grid">
 
         {/* Col 1 top: Task Queue */}
-        <div className="op-col-left">
+        <div className={`op-col-left${mobileTab !== "Queue" ? " op-mobile-hide" : ""}`}>
           <ErrorBoundary label="TaskQueue">
             <TaskQueuePanel tasks={tasks} />
           </ErrorBoundary>
         </div>
 
         {/* Col 2 (spans both rows): Execution Log + Telemetry */}
-        <div className="op-col-mid">
+        <div className={`op-col-mid${mobileTab !== "Log" ? " op-mobile-hide" : ""}`}>
           <ErrorBoundary label="ExecLog">
             <ExecLogPanel history={history} rtStatus={rtStatus} ops={ops} />
           </ErrorBoundary>
         </div>
 
         {/* Col 3 (spans both rows): AI Console + Workflow + Governor */}
-        <div className="op-col-right" style={{ display: "flex", flexDirection: "column", gap: 6, minHeight: 0 }}>
+        <div className={`op-col-right${mobileTab !== "Workflow" ? " op-mobile-hide" : ""}`}
+          style={{ display: "flex", flexDirection: "column", gap: 6, minHeight: 0 }}>
           <ErrorBoundary label="AIConsole">
             <AIConsolePanel style={{ flex: "1 1 0", minHeight: 0 }} />
           </ErrorBoundary>
@@ -358,7 +421,7 @@ export default function OperatorConsole() {
         </div>
 
         {/* Col 1 bottom: Adapters + Services */}
-        <div className="op-col-left-bot">
+        <div className={`op-col-left-bot${mobileTab !== "Adapters" ? " op-mobile-hide" : ""}`}>
           <ErrorBoundary label="Adapters">
             <AdapterPanel rtStatus={rtStatus} services={ops?.services} />
           </ErrorBoundary>
