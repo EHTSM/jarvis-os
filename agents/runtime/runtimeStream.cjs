@@ -37,12 +37,18 @@ let _active  = 0;
 
 // ── SSE helpers ───────────────────────────────────────────────────
 
-function _sseHeaders(res) {
+function _sseHeaders(res, req) {
     res.setHeader("Content-Type",      "text/event-stream; charset=utf-8");
     res.setHeader("Cache-Control",     "no-cache, no-transform");
     res.setHeader("Connection",        "keep-alive");
     res.setHeader("X-Accel-Buffering", "no");     // nginx: disable response buffering
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    // Reflect the request origin so withCredentials:true works.
+    // ALLOWED_ORIGINS is already enforced by the global CORS middleware.
+    const origin = req.headers.origin || req.headers.referer?.replace(/\/$/, "") || "";
+    if (origin) {
+        res.setHeader("Access-Control-Allow-Origin",      origin);
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+    }
     res.flushHeaders();
 }
 
@@ -80,7 +86,7 @@ router.get("/runtime/stream", (req, res) => {
         });
     }
 
-    _sseHeaders(res);
+    _sseHeaders(res, req);
     _active++;
 
     // Unique client ID for this connection
