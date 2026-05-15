@@ -34,15 +34,29 @@ function _normalize(raw) {
 }
 
 async function _fetch(path, options = {}) {
-  const res  = await fetch(`${BASE_URL}${path}`, {
-    headers: { "Content-Type": "application/json" },
-    ...options
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error || `HTTP ${res.status}`);
+  const ctrl  = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 10_000);
+  try {
+    const res = await fetch(`${BASE_URL}${path}`, {
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      signal: ctrl.signal,
+      ...options,
+    });
+    clearTimeout(timer);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      const msg = err.error || `HTTP ${res.status}`;
+      const e   = new Error(msg);
+      e.status  = res.status;
+      throw e;
+    }
+    return res.json();
+  } catch (err) {
+    clearTimeout(timer);
+    if (err.name === "AbortError") throw new Error("Request timed out");
+    throw err;
   }
-  return res.json();
 }
 
 // ── Core: send command to JARVIS ──────────────────────────────────
@@ -176,6 +190,93 @@ export async function sendFollowUp(phone, message) {
       method: "POST",
       body:   JSON.stringify({ phone, message })
     });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+// ── Telegram ─────────────────────────────────────────────────────
+export async function sendTelegram(chatId, message) {
+  try {
+    return await _fetch("/telegram/send", {
+      method: "POST",
+      body:   JSON.stringify({ chatId, message })
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+// ── Emergency controls ────────────────────────────────────────────
+export async function emergencyStop(reason = "operator_initiated") {
+  try { return await _fetch("/runtime/emergency/stop", { method: "POST", body: JSON.stringify({ reason }) }); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function emergencyResume() {
+  try { return await _fetch("/runtime/emergency/resume", { method: "POST", body: "{}" }); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+// ── Runtime operator endpoints ────────────────────────────────────
+export async function getRuntimeStatus() {
+  try { return await _fetch("/runtime/status"); }
+  catch { return null; }
+}
+
+export async function getRuntimeHistory(n = 40) {
+  try { return await _fetch(`/runtime/history?n=${n}`); }
+  catch { return null; }
+}
+
+export async function getTasks() {
+  try { return await _fetch("/tasks"); }
+  catch { return null; }
+}
+
+export async function dispatchTask(input, timeoutMs = 30000) {
+  try {
+    return await _fetch("/runtime/dispatch", {
+      method: "POST",
+      body: JSON.stringify({ input, timeoutMs })
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function queueTask(input, priority = 1) {
+  try {
+    return await _fetch("/runtime/queue", {
+      method: "POST",
+      body: JSON.stringify({ input, priority })
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function addTask(input, type = "auto") {
+  try {
+    return await _fetch("/tasks", {
+      method: "POST",
+      body: JSON.stringify({ input, type })
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+// ── Auth ──────────────────────────────────────────────────────────
+export async function getAuthStatus() {
+  try {
+    const data = await _fetch("/auth/me");
+    return data.user || null;
+  } catch { return null; }
+}
+
+export async function loginOperator(password) {
+  try {
+    return await _fetch("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ password }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function logoutOperator() {
+  try {
+    return await _fetch("/auth/logout", { method: "POST", body: "{}" });
   } catch (err) { return { success: false, error: err.message }; }
 }
 
