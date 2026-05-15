@@ -29,6 +29,7 @@
 
 const router = require("express").Router();
 const bus    = require("./runtimeEventBus.cjs");
+const { verifyJWT, COOKIE_NAME } = require("../../backend/middleware/authMiddleware");
 
 // Hard cap on concurrent SSE connections — prevents memory exhaustion
 // from clients that connect and never disconnect.
@@ -136,6 +137,41 @@ router.get("/runtime/stream", (req, res) => {
     }, 20_000);
     pingRef.unref();
 
+    // ── JWT expiry warning ───────────────────────────────────────
+    // If the operator's token expires during this SSE session, emit
+    // a jwt_expiry_warning event 5 minutes before expiry so the
+    // frontend can show a reconnect banner before the session goes dark.
+    let _expiryWarnTimer = null;
+    try {
+        const rawCookie = req.headers.cookie || "";
+        const cookieMap = {};
+        for (const part of rawCookie.split(";")) {
+            const idx = part.indexOf("=");
+            if (idx < 0) continue;
+            try {
+                cookieMap[decodeURIComponent(part.slice(0, idx).trim())] =
+                    decodeURIComponent(part.slice(idx + 1).trim());
+            } catch { /* malformed cookie pair — ignore */ }
+        }
+        const token = cookieMap[COOKIE_NAME];
+        if (token) {
+            const payload = verifyJWT(token);
+            if (payload?.exp) {
+                const WARN_BEFORE_MS = 5 * 60 * 1000;  // 5 minutes
+                const msUntilWarn = (payload.exp * 1000) - Date.now() - WARN_BEFORE_MS;
+                if (msUntilWarn > 0) {
+                    _expiryWarnTimer = setTimeout(() => {
+                        _write(res, "jwt_expiry_warning", {
+                            message:   "Session expires in ~5 minutes",
+                            expiresAt: new Date(payload.exp * 1000).toISOString()
+                        });
+                    }, msUntilWarn);
+                    _expiryWarnTimer.unref();
+                }
+            }
+        }
+    } catch { /* non-critical — never crash SSE setup for this */ }
+
     // ── Cleanup on disconnect ────────────────────────────────────
     let _cleaned = false;
 
@@ -143,6 +179,7 @@ router.get("/runtime/stream", (req, res) => {
         if (_cleaned) return;
         _cleaned = true;
         clearInterval(pingRef);
+        clearTimeout(_expiryWarnTimer);
         if (_subscribed) bus.unsubscribe(clientId);
         _active = Math.max(0, _active - 1);
     }

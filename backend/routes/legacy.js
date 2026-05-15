@@ -12,6 +12,13 @@
 
 const express = require("express");
 const router  = express.Router();
+const { requireAuth } = require("../middleware/authMiddleware");
+const operatorAudit   = require("../middleware/operatorAudit");
+
+// All legacy routes require operator authentication.
+// These routes expose internal system state (agents, evolution, voice,
+// desktop) and must not be reachable without a valid JWT session.
+router.use(requireAuth, operatorAudit);
 
 // ── Graceful module loader ────────────────────────────────────────
 function tryRequire(path) {
@@ -80,6 +87,12 @@ let   masterAgentMgr   = null;
 // ── Helpers ───────────────────────────────────────────────────────
 function unavailable(name) {
     return (_req, res) => res.status(503).json({ error: `${name} module unavailable` });
+}
+
+// Safe degraded response for evolution endpoints — returns 200 with empty data
+// so the frontend Insights tab renders instead of throwing on 503.
+function evolutionFallback(shape) {
+    return (_req, res) => res.json({ success: false, available: false, ...shape });
 }
 
 // ── /saas ─────────────────────────────────────────────────────────
@@ -247,15 +260,11 @@ router.get("/agents/list",            agentFactory ? (req, res) => { try { const
 router.get("/agents/suggestions",     agentFactory ? (req, res) => { try { res.json({ success: true, suggestions: agentFactory.suggestAgentCreation({ frequency: {} }) }); } catch (e) { res.status(500).json({ error: e.message }); } } : unavailable("agentFactory"));
 router.get("/agents/top-50",          agentFactory ? (req, res) => { try { const list = agentFactory.listAgents(); res.json({ success: true, agents: (list.agents || []).slice(0, 50) }); } catch (e) { res.status(500).json({ error: e.message }); } } : unavailable("agentFactory"));
 
-router.post("/agents/dynamic/create", agentFactory
-    ? async (req, res) => {
-        try {
-            const { name, type, spec } = req.body;
-            if (!name || !type) return res.status(400).json({ error: "name and type required" });
-            res.json(agentFactory.createAgent(name, type, spec || {}));
-        } catch (e) { res.status(500).json({ error: e.message }); }
-    }
-    : unavailable("agentFactory"));
+// Dynamic agent creation is disabled — Phase I minimization.
+// Runtime must be controlled by the operator, not autonomous code generation.
+router.post("/agents/dynamic/create", (req, res) =>
+    res.status(410).json({ error: "Dynamic agent creation is disabled. Deploy agents via the codebase, not HTTP." })
+);
 
 router.post("/agents/delegate", agentFactory
     ? async (req, res) => {
@@ -304,11 +313,11 @@ router.get("/agents/:agentName", agentFactory
     : unavailable("agentFactory"));
 
 // ── Evolution Engine ──────────────────────────────────────────────
-router.get("/evolution/score",        evolutionEngine ? (req, res) => { try { res.json({ success: true, ...evolutionEngine.getOptimizationScore() }); } catch (e) { res.status(500).json({ error: e.message }); } } : unavailable("evolution"));
-router.get("/evolution/approvals",    evolutionEngine ? (req, res) => { try { const p = evolutionEngine.getPendingApprovals(); res.json({ success: true, pending: p, pending_count: p.length }); } catch (e) { res.status(500).json({ error: e.message }); } } : unavailable("evolution"));
-router.post("/evolution/approve/:id", evolutionEngine ? async (req, res) => { try { res.json(await evolutionEngine.handleApproval(req.params.id, true)); } catch (e) { res.status(500).json({ error: e.message }); } } : unavailable("evolution"));
-router.post("/evolution/reject/:id",  evolutionEngine ? (req, res) => { try { res.json(evolutionEngine.handleApproval(req.params.id, false)); } catch (e) { res.status(500).json({ error: e.message }); } } : unavailable("evolution"));
-router.get("/evolution/suggestions",  evolutionEngine ? (req, res) => { try { res.json({ success: true, ...evolutionEngine.analyzeAndSuggest({ tasks: [], results: [], duration: 0 }) }); } catch (e) { res.status(500).json({ error: e.message }); } } : unavailable("evolution"));
+router.get("/evolution/score",        evolutionEngine ? (req, res) => { try { res.json({ success: true, ...evolutionEngine.getOptimizationScore() }); } catch (e) { res.status(500).json({ error: e.message }); } } : evolutionFallback({ optimization_score: 0, score: 0 }));
+router.get("/evolution/approvals",    evolutionEngine ? (req, res) => { try { const p = evolutionEngine.getPendingApprovals(); res.json({ success: true, pending: p, pending_count: p.length }); } catch (e) { res.status(500).json({ error: e.message }); } } : evolutionFallback({ pending: [], pending_count: 0 }));
+router.post("/evolution/approve/:id", evolutionEngine ? async (req, res) => { try { res.json(await evolutionEngine.handleApproval(req.params.id, true)); } catch (e) { res.status(500).json({ error: e.message }); } } : evolutionFallback({}));
+router.post("/evolution/reject/:id",  evolutionEngine ? (req, res) => { try { res.json(evolutionEngine.handleApproval(req.params.id, false)); } catch (e) { res.status(500).json({ error: e.message }); } } : evolutionFallback({}));
+router.get("/evolution/suggestions",  evolutionEngine ? (req, res) => { try { res.json({ success: true, ...evolutionEngine.analyzeAndSuggest({ tasks: [], results: [], duration: 0 }) }); } catch (e) { res.status(500).json({ error: e.message }); } } : evolutionFallback({ suggestions: [] }));
 
 // ── 500 Master Agent System ───────────────────────────────────────
 async function initMasterAgentMgr() {
@@ -350,10 +359,10 @@ router.post("/agents/500/domain/:domain", async (req, res) => {
     if (!masterAgentMgr) return res.status(503).json({ error: "not initialized" });
     try { res.json({ success: true, result: await masterAgentMgr.routeTask(req.body.task, req.params.domain.toUpperCase()) }); } catch (e) { res.status(500).json({ error: e.message }); }
 });
-router.post("/agents/500/start-learning", async (req, res) => {
-    if (!masterAgentMgr) return res.status(503).json({ error: "not initialized" });
-    try { await masterAgentMgr.startContinuousLearning(); res.json({ success: true, message: "Continuous learning activated" }); } catch (e) { res.status(500).json({ error: e.message }); }
-});
+// Continuous autonomous learning disabled — Phase I minimization.
+router.post("/agents/500/start-learning", (req, res) =>
+    res.status(410).json({ error: "Autonomous continuous learning is disabled." })
+);
 router.get("/agents/500/:agentName", (req, res) => {
     if (!masterAgentMgr) return res.status(503).json({ error: "not initialized" });
     const agent = masterAgentMgr.getAgent(req.params.agentName);

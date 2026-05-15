@@ -38,6 +38,7 @@ export default function OperatorConsole() {
   const [stream,    setStream]    = useState({ connected: false, lastBeat: null, replayCount: 0, retryCount: 0, retryDelayMs: 0 });
   const [fetchErrors, setFetchErrors] = useState({});
   const [authError,  setAuthError]  = useState(null); // "expired" | "unconfigured" | null
+  const [sseWarning, setSseWarning] = useState(null); // "expiring_soon" | null
   const [lastExec,   setLastExec]   = useState(null); // { status, input, ts } — most recent completion
   const [mobileTab,  setMobileTab]  = useState("Workflow"); // mobile-only tab state
 
@@ -198,6 +199,11 @@ export default function OperatorConsole() {
       } catch {}
     });
 
+    // ── JWT expiry warning ─────────────────────────────────────
+    es.addEventListener("jwt_expiry_warning", () => {
+      setSseWarning("expiring_soon");
+    });
+
     // ── SSE error + reconnect backoff ──────────────────────────
     es.onerror = () => {
       setStream(s => ({ ...s, connected: false }));
@@ -275,7 +281,14 @@ export default function OperatorConsole() {
 
   return (
     <div className="operator-console">
-      {/* ── Auth error banner ──────────────────────────────────── */}
+      {/* ── Session banners ───────────────────────────────────── */}
+      {sseWarning === "expiring_soon" && authError !== "expired" && (
+        <div className="op-session-banner warn">
+          <span>Session expires in ~5 minutes — save your work and re-authenticate</span>
+          <button onClick={() => setSseWarning(null)}>Dismiss</button>
+          <button onClick={logout}>Sign out</button>
+        </div>
+      )}
       {authError === "expired" && (
         <div className="op-session-banner expired">
           <span>Session expired — sign in again to continue</span>
