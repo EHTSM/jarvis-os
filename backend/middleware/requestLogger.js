@@ -15,7 +15,8 @@ module.exports = function requestLogger(req, res, next) {
     res.on("finish", () => {
         const ms  = Date.now() - t0;
         const ip  = req.ip || req.socket?.remoteAddress || "-";
-        const msg = `${req.method} ${req.path} ${res.statusCode} ${ms}ms ${ip}`;
+        const rid = req.id || "-";
+        const msg = `${req.method} ${req.path} ${res.statusCode} ${ms}ms ${ip} [${rid}]`;
         if      (res.statusCode >= 500) logger.error(`[HTTP] ${msg}`);
         else if (res.statusCode >= 400) logger.warn(`[HTTP] ${msg}`);
         else                            logger.info(`[HTTP] ${msg}`);
