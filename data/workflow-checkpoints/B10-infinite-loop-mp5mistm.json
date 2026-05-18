@@ -1,0 +1,18 @@
+{
+  "id": "B10-infinite-loop-mp5mistm",
+  "name": "B10-infinite-loop",
+  "startedAt": "2026-05-14T15:08:48.106Z",
+  "completedAt": "2026-05-14T15:08:48.109Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "infinite-loop-guard",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: always broken",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

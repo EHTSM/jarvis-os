@@ -1,0 +1,20 @@
+{
+  "id": "sandbox-fail-mp5jx5e2",
+  "name": "sandbox-fail",
+  "startedAt": "2026-05-14T13:55:58.730Z",
+  "completedAt": "2026-05-14T13:55:59.731Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "fail",
+      "status": "failed",
+      "result": null,
+      "error": "kaboom",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

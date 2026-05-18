@@ -1,0 +1,20 @@
+{
+  "id": "test-wf-mp56hg8j-28sb-mp56hg8j",
+  "name": "test-wf-mp56hg8j-28sb",
+  "startedAt": "2026-05-14T07:39:51.283Z",
+  "completedAt": "2026-05-14T07:39:52.288Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "always-fail",
+      "status": "failed",
+      "result": null,
+      "error": "forced-fail-for-checkpoint",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

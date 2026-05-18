@@ -73,10 +73,49 @@ function PipelineRow({ label, value, color, of: total }) {
   );
 }
 
+function QueueSection({ queueHealth }) {
+  if (!queueHealth) return null;
+  const { counts = {}, total = 0, oldestPendingMins = 0, failedLast24h = 0, healthy } = queueHealth;
+  const statusColor = healthy ? "var(--success)" : "var(--warning)";
+
+  return (
+    <div className="log-section-wrap">
+      <h3 className="log-section-title">Task Queue</h3>
+      <div className="log-section-inner">
+        <div className="act-summary" style={{ marginBottom: "0.75rem" }}>
+          <div className="act-sum-item">
+            <span className="act-sum-val" style={{ color: "var(--accent)" }}>{counts.pending ?? 0}</span>
+            <span className="act-sum-lbl">Pending</span>
+          </div>
+          <div className="act-sum-sep" />
+          <div className="act-sum-item">
+            <span className="act-sum-val" style={{ color: "var(--warning)" }}>{counts.running ?? 0}</span>
+            <span className="act-sum-lbl">Running</span>
+          </div>
+          <div className="act-sum-sep" />
+          <div className="act-sum-item">
+            <span className="act-sum-val" style={{ color: "var(--success)" }}>{counts.completed ?? 0}</span>
+            <span className="act-sum-lbl">Completed</span>
+          </div>
+          <div className="act-sum-sep" />
+          <div className="act-sum-item">
+            <span className="act-sum-val" style={{ color: failedLast24h > 0 ? "var(--danger)" : "var(--text-dim)" }}>{failedLast24h}</span>
+            <span className="act-sum-lbl">Failed 24h</span>
+          </div>
+        </div>
+        <div style={{ fontSize: "0.75rem", color: statusColor }}>
+          {healthy ? "Queue healthy" : `Oldest pending: ${oldestPendingMins}m`} · {total} total tasks
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Activity({ opsData, stats }) {
-  const autoStats = opsData?.automation || null;
-  const hasAuto   = autoStats && Object.keys(autoStats).length > 0;
-  const crm       = stats || opsData?.crm || null;
+  const autoStats   = opsData?.automation || null;
+  const queueHealth = opsData?.queue      || null;
+  const hasAuto     = autoStats && Object.keys(autoStats).length > 0;
+  const crm         = stats || opsData?.crm || null;
 
   // Totals for automation
   const totalSent    = hasAuto ? Object.values(autoStats).reduce((s, d) => s + (d.sent    || 0), 0) : 0;
@@ -107,15 +146,18 @@ export default function Activity({ opsData, stats }) {
         </div>
       )}
 
+      {/* ── Task queue ──────────────────────────────────────────────── */}
+      <QueueSection queueHealth={queueHealth} />
+
       {/* ── Automation sequences ────────────────────────────────────── */}
       <div className="log-section-wrap">
         <h3 className="log-section-title">Follow-up Sequences</h3>
 
         {!hasAuto ? (
           <div className="act-empty">
-            <p className="act-empty-title">No activity yet</p>
+            <p className="act-empty-title">No automation activity yet</p>
             <p className="act-empty-sub">
-              Add leads and connect WhatsApp — JARVIS will start automating follow-ups immediately.
+              Add clients in the Clients tab and connect WhatsApp. JARVIS will send follow-ups automatically.
             </p>
           </div>
         ) : (

@@ -1,0 +1,20 @@
+{
+  "id": "sandbox-fail-test-mp4op71s",
+  "name": "sandbox-fail-test",
+  "startedAt": "2026-05-13T23:21:59.536Z",
+  "completedAt": "2026-05-13T23:22:00.539Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "fail-step",
+      "status": "failed",
+      "result": null,
+      "error": "step fails after write",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

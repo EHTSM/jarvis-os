@@ -26,6 +26,11 @@ const BLOCKED_ARGS = new Set(["--exec", "--upload-pack", "--receive-pack"]);
 
 let _counter  = 0;
 let _receipts = new Map();
+const MAX_RECEIPTS = 1000;
+function _addReceipt(r) {
+  _receipts.set(r.receiptId, r);
+  if (_receipts.size > MAX_RECEIPTS) _receipts.delete(_receipts.keys().next().value);
+}
 
 function _spawnGit(args, { repoPath = process.cwd(), timeoutMs = DEFAULT_TIMEOUT } = {}) {
   return new Promise((resolve) => {
@@ -78,7 +83,7 @@ function _receipt(subcommand, args, result, meta = {}) {
     timestamp: new Date().toISOString(),
     ...meta,
   });
-  _receipts.set(r.receiptId, r);
+  _addReceipt(r);
   return r;
 }
 

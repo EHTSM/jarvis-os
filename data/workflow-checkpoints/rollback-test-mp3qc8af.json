@@ -1,0 +1,29 @@
+{
+  "id": "rollback-test-mp3qc8af",
+  "name": "rollback-test",
+  "startedAt": "2026-05-13T07:20:07.671Z",
+  "completedAt": "2026-05-13T07:20:08.678Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "modify-file",
+      "status": "completed",
+      "result": {
+        "modified": true
+      },
+      "error": null,
+      "attempts": 1,
+      "completedAt": "2026-05-13T07:20:07.673Z",
+      "recoveries": 0
+    },
+    {
+      "name": "fatal-step",
+      "status": "failed",
+      "result": null,
+      "error": "unrecoverable — force rollback",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1
+    }
+  ]
+}

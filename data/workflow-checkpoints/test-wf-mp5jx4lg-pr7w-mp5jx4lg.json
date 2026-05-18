@@ -1,0 +1,20 @@
+{
+  "id": "test-wf-mp5jx4lg-pr7w-mp5jx4lg",
+  "name": "test-wf-mp5jx4lg-pr7w",
+  "startedAt": "2026-05-14T13:55:57.700Z",
+  "completedAt": "2026-05-14T13:55:58.705Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "always-fail",
+      "status": "failed",
+      "result": null,
+      "error": "forced-fail-for-checkpoint",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

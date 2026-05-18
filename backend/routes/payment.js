@@ -3,8 +3,9 @@ const router  = require("express").Router();
 const payment = require("../services/paymentService");
 const wa      = require("../services/whatsappService");
 const { handleRazorpayWebhook } = require("../controllers/webhookController");
+const { requireAuth } = require("../middleware/authMiddleware");
 
-router.post("/payment/link", async (req, res) => {
+router.post("/payment/link", requireAuth, async (req, res) => {
     try {
         const { amount = 999, name = "Customer", phone, description = "JARVIS Access" } = req.body;
         const result = await payment.createPaymentLink({ amount, name, phone, description });

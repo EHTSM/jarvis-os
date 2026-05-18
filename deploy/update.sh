@@ -33,6 +33,9 @@ npm install --omit=dev --ignore-scripts 2>&1 | grep -v "^npm warn" || true
 if [ -n "${BASE_URL:-}" ] && [[ "${BASE_URL}" != *"localhost"* ]]; then
     log "Rebuilding frontend for ${BASE_URL}..."
     REACT_APP_API_URL="${BASE_URL}" npm run build:frontend
+else
+    warn "Skipping frontend rebuild (BASE_URL is localhost or unset)."
+    warn "If this is a production VPS, set BASE_URL in .env and run 'npm run build:frontend' manually."
 fi
 
 # ── Reload PM2 (zero-downtime) ───────────────────────────────────────────

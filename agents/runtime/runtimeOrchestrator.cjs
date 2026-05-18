@@ -134,11 +134,27 @@ function registerAgent(config) {
  * @returns {{ queue, agents, history, uptime }}
  */
 function status() {
+    const memUsage = process.memoryUsage();
+    const histStats = history.stats();
+    
+    // Runaway detection: 5+ failures of same input in last 50 tasks
+    const recent50 = history.recent(50);
+    const failed   = recent50.filter(e => !e.success);
+    const counts   = {};
+    failed.forEach(e => { counts[e.input] = (counts[e.input] || 0) + 1; });
+    const runaway  = Object.values(counts).some(v => v >= 5);
+
     return {
         queue:   { size: pq.size(), items: pq.snapshot() },
         agents:  registry.listAll(),
-        history: history.stats(),
+        history: histStats,
         uptime:  process.uptime(),
+        runaway,
+        vitals: {
+            memRSS: Math.round(memUsage.rss / 1024 / 1024),
+            memHeap: Math.round(memUsage.heapUsed / 1024 / 1024),
+            cpuLoad: process.cpuUsage().user / 1000000 // Simple user CPU usage in seconds
+        }
     };
 }
 

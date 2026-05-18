@@ -1,0 +1,18 @@
+{
+  "id": "test-wf-mp5t2k1f-dp5e-mp5t2k1f",
+  "name": "test-wf-mp5t2k1f-dp5e",
+  "startedAt": "2026-05-14T18:12:07.539Z",
+  "completedAt": "2026-05-14T18:12:08.445Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "retrying",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: keep retrying",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

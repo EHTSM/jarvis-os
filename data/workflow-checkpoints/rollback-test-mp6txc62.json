@@ -1,0 +1,31 @@
+{
+  "id": "rollback-test-mp6txc62",
+  "name": "rollback-test",
+  "startedAt": "2026-05-15T11:23:49.851Z",
+  "completedAt": "2026-05-15T11:23:50.867Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "modify-file",
+      "status": "completed",
+      "result": {
+        "modified": true
+      },
+      "error": null,
+      "attempts": 1,
+      "completedAt": "2026-05-15T11:23:49.852Z",
+      "recoveries": 0
+    },
+    {
+      "name": "fatal-step",
+      "status": "failed",
+      "result": null,
+      "error": "unrecoverable — force rollback",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

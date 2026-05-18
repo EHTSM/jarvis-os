@@ -1,0 +1,29 @@
+{
+  "id": "failed-health-test-mp3qcsr9",
+  "name": "failed-health-test",
+  "startedAt": "2026-05-13T07:20:34.197Z",
+  "completedAt": "2026-05-13T07:20:35.199Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "ok",
+      "status": "completed",
+      "result": {
+        "done": true
+      },
+      "error": null,
+      "attempts": 1,
+      "completedAt": "2026-05-13T07:20:34.197Z",
+      "recoveries": 0
+    },
+    {
+      "name": "fail",
+      "status": "failed",
+      "result": null,
+      "error": "permanent failure",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1
+    }
+  ]
+}

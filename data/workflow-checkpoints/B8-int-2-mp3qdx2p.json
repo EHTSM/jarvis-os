@@ -1,0 +1,18 @@
+{
+  "id": "B8-int-2-mp3qdx2p",
+  "name": "B8-int-2",
+  "startedAt": "2026-05-13T07:21:26.449Z",
+  "completedAt": "2026-05-13T07:21:27.454Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "x",
+      "status": "failed",
+      "result": null,
+      "error": "fail",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1
+    }
+  ]
+}

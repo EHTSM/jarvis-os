@@ -1,0 +1,20 @@
+{
+  "id": "test-wf-mp4goaqp-5dpy-mp4goaqq",
+  "name": "test-wf-mp4goaqp-5dpy",
+  "startedAt": "2026-05-13T19:37:20.738Z",
+  "completedAt": "2026-05-13T19:37:21.743Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "always-fail",
+      "status": "failed",
+      "result": null,
+      "error": "forced-fail-for-checkpoint",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

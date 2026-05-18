@@ -1,0 +1,18 @@
+{
+  "id": "B10-bounded-mp5ugxqf",
+  "name": "B10-bounded",
+  "startedAt": "2026-05-14T18:51:18.087Z",
+  "completedAt": "2026-05-14T18:51:18.394Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "bounded-failure",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: test",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

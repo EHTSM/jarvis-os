@@ -1,0 +1,1073 @@
+[
+  {
+    "taskId": "dlq-wf9-1778841888189",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:44:48.189Z"
+  },
+  {
+    "taskId": "t-mp6sm6bo",
+    "taskType": "terminal",
+    "input": "concurrent task 0",
+    "error": "fail attempt 1",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:47:09.447Z"
+  },
+  {
+    "taskId": "t-mp6sm6bp",
+    "taskType": "terminal",
+    "input": "concurrent task 1",
+    "error": "fail attempt 2",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:47:09.447Z"
+  },
+  {
+    "taskId": "t-mp6sm6bp",
+    "taskType": "terminal",
+    "input": "concurrent task 2",
+    "error": "fail attempt 3",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:47:09.448Z"
+  },
+  {
+    "taskId": "t-mp6sm6bp",
+    "taskType": "terminal",
+    "input": "concurrent task 3",
+    "error": "fail attempt 4",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:47:09.448Z"
+  },
+  {
+    "taskId": "t-mp6sm6bp",
+    "taskType": "terminal",
+    "input": "concurrent task 4",
+    "error": "fail attempt 5",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:47:09.448Z"
+  },
+  {
+    "taskId": "t-mp6sm6bp",
+    "taskType": "terminal",
+    "input": "concurrent task 5",
+    "error": "fail attempt 6",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:47:09.448Z"
+  },
+  {
+    "taskId": "t-mp6sm6bp",
+    "taskType": "terminal",
+    "input": "concurrent task 6",
+    "error": "fail attempt 7",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:47:09.449Z"
+  },
+  {
+    "taskId": "t-mp6sm6bp",
+    "taskType": "terminal",
+    "input": "concurrent task 7",
+    "error": "fail attempt 8",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:47:09.449Z"
+  },
+  {
+    "taskId": "t-mp6sm6bp",
+    "taskType": "terminal",
+    "input": "concurrent task 8",
+    "error": "fail attempt 9",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:47:09.449Z"
+  },
+  {
+    "taskId": "t-mp6sm6bp",
+    "taskType": "terminal",
+    "input": "concurrent task 9",
+    "error": "fail attempt 10",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:47:09.449Z"
+  },
+  {
+    "taskId": "t-mp6sm6gl",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:47:10.625Z"
+  },
+  {
+    "taskId": "t-mp6so5hj",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:48:41.773Z"
+  },
+  {
+    "taskId": "t-mp6so7vx",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:48:45.786Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778842140867",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:49:00.868Z"
+  },
+  {
+    "taskId": "t-mp6sokam",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:49:00.964Z"
+  },
+  {
+    "taskId": "t-mp6somoz",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:49:04.975Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778842169875",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:49:29.876Z"
+  },
+  {
+    "taskId": "t-mp6sp6oj",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:49:29.976Z"
+  },
+  {
+    "taskId": "t-mp6sp92v",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:49:33.987Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778842275774",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:51:15.774Z"
+  },
+  {
+    "taskId": "t-mp6srgcb",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:51:15.808Z"
+  },
+  {
+    "taskId": "t-mp6sriqn",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T10:51:19.820Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778843743560",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:15:43.560Z"
+  },
+  {
+    "taskId": "t-mp6tmwvw",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:15:43.586Z"
+  },
+  {
+    "taskId": "t-mp6tmzaj",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:15:47.618Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778844228250",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:23:48.251Z"
+  },
+  {
+    "taskId": "t-mp6txavt",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:23:48.286Z"
+  },
+  {
+    "taskId": "t-mp6txdc1",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:23:52.365Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845075407",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:37:55.408Z"
+  },
+  {
+    "taskId": "t-mp6ufgjw",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:37:55.443Z"
+  },
+  {
+    "taskId": "t-mp6ufj3e",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:37:59.645Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845090886",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:38:10.888Z"
+  },
+  {
+    "taskId": "t-mp6ufsh8",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:38:10.899Z"
+  },
+  {
+    "taskId": "t-mp6ufuwc",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:38:14.939Z"
+  },
+  {
+    "taskId": "t-mp6ug6gv",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:38:29.033Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845109093",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:38:29.094Z"
+  },
+  {
+    "taskId": "t-mp6ug8wf",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:38:33.086Z"
+  },
+  {
+    "taskId": "t-mp6ugi4d",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:38:44.136Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845124193",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:38:44.193Z"
+  },
+  {
+    "taskId": "t-mp6ugkje",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:38:48.168Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845139782",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:38:59.782Z"
+  },
+  {
+    "taskId": "t-mp6ugu7f",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:38:59.794Z"
+  },
+  {
+    "taskId": "t-mp6ugwls",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:39:03.806Z"
+  },
+  {
+    "taskId": "t-mp6uhykv",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:39:52.119Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845192137",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:39:52.137Z"
+  },
+  {
+    "taskId": "t-mp6ui0zb",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:39:56.130Z"
+  },
+  {
+    "taskId": "t-mp6uii3f",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:40:17.409Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845217421",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:40:17.421Z"
+  },
+  {
+    "taskId": "t-mp6uikhs",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:40:21.421Z"
+  },
+  {
+    "taskId": "t-mp6ujvq4",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:41:21.730Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845281769",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:41:21.769Z"
+  },
+  {
+    "taskId": "t-mp6ujy4i",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:41:25.742Z"
+  },
+  {
+    "taskId": "t-mp6ukf4v",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:41:46.894Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845306920",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:41:46.921Z"
+  },
+  {
+    "taskId": "t-mp6ukhjt",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:41:50.926Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845334150",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:42:14.150Z"
+  },
+  {
+    "taskId": "dlq-wf9-rm-1778845334151",
+    "taskType": "wf9-remove",
+    "input": "remove me",
+    "error": "err",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:42:14.151Z"
+  },
+  {
+    "taskId": "t-mp6ul06a",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:42:14.152Z"
+  },
+  {
+    "taskId": "t-mp6ul2ko",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:42:18.164Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845357065",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:42:37.065Z"
+  },
+  {
+    "taskId": "t-mp6ulhuw",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:42:37.070Z"
+  },
+  {
+    "taskId": "t-mp6ulk99",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:42:41.080Z"
+  },
+  {
+    "taskId": "t-mp6um0t1",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:43:01.627Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845381639",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:43:01.639Z"
+  },
+  {
+    "taskId": "t-mp6um37g",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:43:05.639Z"
+  },
+  {
+    "taskId": "t-mp6umk47",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:43:26.652Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845406659",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:43:26.659Z"
+  },
+  {
+    "taskId": "t-mp6ummin",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:43:30.668Z"
+  },
+  {
+    "taskId": "t-mp6un2dr",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:43:50.330Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845430358",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:43:50.359Z"
+  },
+  {
+    "taskId": "t-mp6un4sf",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:43:54.346Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845455534",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:44:15.535Z"
+  },
+  {
+    "taskId": "t-mp6unluj",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:44:15.553Z"
+  },
+  {
+    "taskId": "t-mp6uno8v",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:44:19.560Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845484888",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:44:44.889Z"
+  },
+  {
+    "taskId": "t-mp6uoays",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:44:49.048Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845592257",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:46:32.257Z"
+  },
+  {
+    "taskId": "t-mp6uqjc0",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:46:32.263Z"
+  },
+  {
+    "taskId": "t-mp6uqlqc",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:46:36.274Z"
+  },
+  {
+    "taskId": "t-mp6urk7i",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:47:20.056Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778845640080",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:47:20.080Z"
+  },
+  {
+    "taskId": "t-mp6urmm6",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:47:24.075Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778846337823",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:58:57.824Z"
+  },
+  {
+    "taskId": "t-mp6v6in7",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:58:57.886Z"
+  },
+  {
+    "taskId": "t-mp6v6l2t",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:59:01.924Z"
+  },
+  {
+    "taskId": "t-mp6v7myn",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:59:50.127Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778846390159",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:59:50.159Z"
+  },
+  {
+    "taskId": "t-mp6v7pdt",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T11:59:54.156Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778855295706",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T14:28:15.707Z"
+  },
+  {
+    "taskId": "t-mp70iikq",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T14:28:15.729Z"
+  },
+  {
+    "taskId": "t-mp70ikz5",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T14:28:19.742Z"
+  },
+  {
+    "taskId": "t-mp70mff5",
+    "taskType": "terminal",
+    "input": "timeout test",
+    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T14:31:18.263Z"
+  },
+  {
+    "taskId": "dlq-wf9-1778855478277",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-05-15T14:31:18.277Z"
+  },
+  {
+    "taskId": "t-mp70mhtn",
+    "taskType": "automation",
+    "input": "dlq test — deliberate failure",
+    "error": "deliberate automation failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T14:31:22.281Z"
+  },
+  {
+    "taskId": "t-mp7i8acg",
+    "taskType": "content",
+    "input": "content gen",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:44:12.493Z"
+  },
+  {
+    "taskId": "t-mp7i8b4f",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:44:13.500Z"
+  },
+  {
+    "taskId": "t-mp7i8bwf",
+    "taskType": "speak",
+    "input": "speak test",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:44:14.507Z"
+  },
+  {
+    "taskId": "t-mp7i8coe",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:44:14.511Z"
+  },
+  {
+    "taskId": "t-mp7i8cog",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:44:14.513Z"
+  },
+  {
+    "taskId": "t-mp7i8coi",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:44:14.514Z"
+  },
+  {
+    "taskId": "t-mp7i8coj",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:44:14.516Z"
+  },
+  {
+    "taskId": "t-mp7i8com",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:44:14.519Z"
+  },
+  {
+    "taskId": "t-mp7i9j6v",
+    "taskType": "content",
+    "input": "content gen",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:45:10.608Z"
+  },
+  {
+    "taskId": "t-mp7i9jyp",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:45:11.613Z"
+  },
+  {
+    "taskId": "t-mp7i9kqo",
+    "taskType": "speak",
+    "input": "speak test",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:45:12.620Z"
+  },
+  {
+    "taskId": "t-mp7i9lim",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:45:12.623Z"
+  },
+  {
+    "taskId": "t-mp7i9lio",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:45:12.624Z"
+  },
+  {
+    "taskId": "t-mp7i9lip",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:45:12.626Z"
+  },
+  {
+    "taskId": "t-mp7i9liq",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:45:12.626Z"
+  },
+  {
+    "taskId": "t-mp7i9lis",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:45:12.628Z"
+  },
+  {
+    "taskId": "t-mp7ilyzc",
+    "taskType": "content",
+    "input": "content gen",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:54:50.949Z"
+  },
+  {
+    "taskId": "t-mp7ilzrc",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:54:51.955Z"
+  },
+  {
+    "taskId": "t-mp7im0ja",
+    "taskType": "speak",
+    "input": "speak test",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:54:52.963Z"
+  },
+  {
+    "taskId": "t-mp7im1ba",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:54:52.967Z"
+  },
+  {
+    "taskId": "t-mp7im1bd",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:54:52.969Z"
+  },
+  {
+    "taskId": "t-mp7im1be",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:54:52.971Z"
+  },
+  {
+    "taskId": "t-mp7im1bf",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:54:52.972Z"
+  },
+  {
+    "taskId": "t-mp7im1bh",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-15T22:54:52.976Z"
+  }
+]

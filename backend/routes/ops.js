@@ -8,12 +8,37 @@ const memTracker   = require("../utils/memoryTracker");
 const { requireAuth } = require("../middleware/authMiddleware");
 const operatorAudit   = require("../middleware/operatorAudit");
 
-// /health and /test are intentionally unauthenticated:
-//   - /health is used by Docker HEALTHCHECK, PM2, nginx, and monitoring tools
-//   - /test is a no-op probe used in smoke tests
-router.get("/test",       (req, res) => res.json({ status: "OK", timestamp: new Date().toISOString() }));
+// Open probes — intentionally unauthenticated:
+//   /health used by Docker HEALTHCHECK, PM2, nginx, and monitoring tools
+//   /test   used by smoke tests and CI
+//   /api/status used by external status pages
+router.get("/health",     (req, res) => {
+    const svcWarnings = [];
+    if (!process.env.GROQ_API_KEY)                                 svcWarnings.push("AI disabled — GROQ_API_KEY missing");
+    if (!process.env.TELEGRAM_TOKEN)                               svcWarnings.push("Telegram disabled — TELEGRAM_TOKEN missing");
+    if (!process.env.WA_TOKEN && !process.env.WHATSAPP_TOKEN)      svcWarnings.push("WhatsApp disabled — WA_TOKEN missing");
+    if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) svcWarnings.push("Payments disabled — RAZORPAY_KEY/SECRET missing");
 
-// /api/status also remains unauthenticated (external status probe)
+    let base = { status: "ok", uptime_seconds: Math.round(process.uptime()), timestamp: new Date().toISOString() };
+    try {
+        const mc = require("../../agents/metrics/metricsCollector.cjs");
+        base = { ...mc.health(), timestamp: new Date().toISOString() };
+    } catch { /* metricsCollector optional */ }
+
+    res.json({
+        ...base,
+        status: svcWarnings.length >= 2 ? "degraded" : "ok",
+        services: {
+            ai:       !!process.env.GROQ_API_KEY,
+            telegram: !!process.env.TELEGRAM_TOKEN,
+            whatsapp: !!(process.env.WA_TOKEN || process.env.WHATSAPP_TOKEN),
+            payments: !!((process.env.RAZORPAY_KEY || process.env.RAZORPAY_KEY_ID) && (process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET)),
+        },
+        warnings: svcWarnings
+    });
+});
+
+router.get("/test",       (req, res) => res.json({ status: "OK", timestamp: new Date().toISOString() }));
 router.get("/api/status", (req, res) => res.json({ status: "JARVIS running", version: "3.0", port: process.env.PORT || 5050 }));
 
 // Gate: all remaining ops routes require a valid operator session.
@@ -38,32 +63,6 @@ router.get("/metrics", (req, res) => {
     } catch (e) {
         res.json({ success: true, ...controller.getMetrics(), execution_error: e.message });
     }
-});
-
-router.get("/health", (req, res) => {
-    const svcWarnings = [];
-    if (!process.env.GROQ_API_KEY)                                 svcWarnings.push("AI disabled — GROQ_API_KEY missing");
-    if (!process.env.TELEGRAM_TOKEN)                               svcWarnings.push("Telegram disabled — TELEGRAM_TOKEN missing");
-    if (!process.env.WA_TOKEN && !process.env.WHATSAPP_TOKEN)      svcWarnings.push("WhatsApp disabled — WA_TOKEN missing");
-    if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) svcWarnings.push("Payments disabled — RAZORPAY_KEY/SECRET missing");
-
-    let base = { status: "ok", uptime_seconds: Math.round(process.uptime()), timestamp: new Date().toISOString() };
-    try {
-        const mc = require("../../agents/metrics/metricsCollector.cjs");
-        base = { ...mc.health(), timestamp: new Date().toISOString() };
-    } catch { /* metricsCollector optional */ }
-
-    res.json({
-        ...base,
-        status: svcWarnings.length >= 2 ? "degraded" : "ok",
-        services: {
-            ai:       !!process.env.GROQ_API_KEY,
-            telegram: !!process.env.TELEGRAM_TOKEN,
-            whatsapp: !!(process.env.WA_TOKEN || process.env.WHATSAPP_TOKEN),
-            payments: !!((process.env.RAZORPAY_KEY || process.env.RAZORPAY_KEY_ID) && (process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET)),
-        },
-        warnings: svcWarnings
-    });
 });
 
 router.get("/ops", (req, res) => {
@@ -176,6 +175,13 @@ router.get("/ops", (req, res) => {
             };
         } catch { /* non-critical */ }
     }
+
+// POST /runtime/reboot — safely restart the process (PM2 will bring it back)
+router.post("/runtime/reboot", (req, res) => {
+    logger.warn(`[Runtime] Operator initiated SAFE REBOOT`);
+    res.json({ success: true, message: "Reboot initiated. System will be back in ~10s." });
+    setTimeout(() => process.exit(0), 1000); // Exit code 0 tells PM2 to restart if configured
+});
 
     res.json(payload);
 });

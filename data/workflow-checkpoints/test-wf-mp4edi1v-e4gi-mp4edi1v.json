@@ -1,0 +1,18 @@
+{
+  "id": "test-wf-mp4edi1v-e4gi-mp4edi1v",
+  "name": "test-wf-mp4edi1v-e4gi",
+  "startedAt": "2026-05-13T18:32:57.763Z",
+  "completedAt": "2026-05-13T18:32:58.672Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "retrying",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: keep retrying",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

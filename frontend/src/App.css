@@ -31,7 +31,15 @@
   transition: background 0.3s;
 }
 .status-dot.online  { background: var(--success); box-shadow: 0 0 6px var(--success); }
-.status-dot.offline { background: var(--danger); }
+.status-dot.offline { background: var(--danger); animation: dot-pulse 1.4s ease-in-out infinite; }
+@keyframes dot-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.status-reconnect {
+  font-size: 0.68rem;
+  color: var(--text-dim, #888);
+  letter-spacing: 0.01em;
+  animation: dot-pulse 1.4s ease-in-out infinite;
+}
 
 /* Tabs */
 .tabs {
@@ -55,11 +63,52 @@
 /* Main */
 .app-main { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
 
+/* ── Emergency mode banner ───────────────────────────────────────── */
+.app--emergency .app-header {
+  background: #2a0a0a;
+  border-bottom-color: rgba(255, 82, 82, 0.4);
+}
+.app--emergency .tabs {
+  background: #1a0808;
+  border-bottom-color: rgba(255, 82, 82, 0.2);
+}
+
 /* ── Mobile ────────────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .app-header { padding: 0 12px; height: 48px; }
-  .brand-name { font-size: 14px; }
-  .brand-sub  { display: none; }
-  .tab        { padding: 10px 14px; font-size: 12px; }
+  .app-header  { padding: 0 12px; height: 48px; }
+  .brand-name  { font-size: 14px; }
+  .brand-sub   { display: none; }
+  .tab         { padding: 10px 10px; font-size: 11px; flex: 1; text-align: center; }
+  .tabs        { justify-content: stretch; }
   .score-badge { font-size: 10px; padding: 2px 7px; }
+  /* Hide tab label text on very small screens, show only first 2 chars */
+  .tab { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 25vw; }
+}
+
+@media (max-width: 380px) {
+  .app-header { height: 44px; }
+  .brand-name { display: none; }
+}
+
+.btn-sm        { padding: 4px 10px; border-radius: 6px; border: none; font-size: 0.72rem; font-weight: 600; cursor: pointer; line-height: 1.4; }
+.btn-danger    { background: var(--danger, #e53935); color: #fff; }
+.btn-danger:hover  { opacity: 0.85; }
+.btn-success   { background: var(--success, #43a047); color: #fff; }
+.btn-success:hover { opacity: 0.85; }
+
+/* ── Scrollbars ──────────────────────────────────────────────────── */
+* { scrollbar-width: thin; scrollbar-color: var(--border, #2a2a40) transparent; }
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border, #2a2a40); border-radius: 4px; }
+
+
+/* ── Runtime auth loading ────────────────────────────────────────── */
+.runtime-auth-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted, #888);
+  font-size: 0.875rem;
 }

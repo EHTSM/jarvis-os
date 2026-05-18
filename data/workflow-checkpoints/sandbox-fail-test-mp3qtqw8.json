@@ -1,0 +1,18 @@
+{
+  "id": "sandbox-fail-test-mp3qtqw8",
+  "name": "sandbox-fail-test",
+  "startedAt": "2026-05-13T07:33:44.936Z",
+  "completedAt": "2026-05-13T07:33:45.942Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "fail-step",
+      "status": "failed",
+      "result": null,
+      "error": "step fails after write",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1
+    }
+  ]
+}

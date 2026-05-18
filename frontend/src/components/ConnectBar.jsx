@@ -14,8 +14,8 @@ function Pill({ label, connected, onSetup }) {
 }
 
 export default function ConnectBar({ services = {}, onSetupWhatsApp }) {
-  const { whatsapp = false, payments = false, ai = false, groq = false } = services;
-  const aiOn = ai || groq;
+  const { whatsapp = false, payments = false, ai = false, groq = false, telegram = false } = services;
+  const aiOn  = ai || groq;
   const allOn = whatsapp && payments && aiOn;
 
   if (allOn) {
@@ -23,17 +23,17 @@ export default function ConnectBar({ services = {}, onSetupWhatsApp }) {
       <div className="connect-bar connect-bar--all-on">
         <span className="cb-all-dot" />
         <span className="cb-all-label">All systems active</span>
+        {telegram && <Pill label="Telegram" connected={true} />}
       </div>
     );
   }
 
-  // Only render a pill if it's connected (good feedback) or has a setup action.
-  // Never show a disconnected pill with no action — it just looks broken.
   return (
     <div className="connect-bar">
-      <Pill label="WhatsApp" connected={whatsapp} onSetup={onSetupWhatsApp} />
-      {payments && <Pill label="Payments" connected={true} />}
-      {aiOn     && <Pill label="AI"       connected={true} />}
+      <Pill label="WhatsApp" connected={whatsapp} onSetup={!whatsapp ? onSetupWhatsApp : undefined} />
+      <Pill label="Payments" connected={payments} />
+      <Pill label="AI"       connected={aiOn} />
+      {telegram && <Pill label="Telegram" connected={true} />}
     </div>
   );
 }

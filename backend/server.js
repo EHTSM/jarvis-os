@@ -109,13 +109,6 @@ app.use(require("./middleware/requestLogger"));
 // ── Mount all routes ───────────────────────────────────────────────
 app.use(routes);
 
-// ── Mount legacy routes (orchestrator, scheduler, voice, desktop, agents, etc.) ──
-try {
-    app.use(require("./routes/legacy"));
-} catch (err) {
-    logger.warn("[Legacy] Routes unavailable:", err.message);
-}
-
 // ── Serve frontend build in production ────────────────────────────
 const frontendBuild = path.join(__dirname, "../frontend/build");
 try {

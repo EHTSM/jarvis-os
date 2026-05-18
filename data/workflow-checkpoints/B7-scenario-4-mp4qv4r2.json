@@ -1,0 +1,20 @@
+{
+  "id": "B7-scenario-4-mp4qv4r2",
+  "name": "B7-scenario-4",
+  "startedAt": "2026-05-14T00:22:35.726Z",
+  "completedAt": "2026-05-14T00:22:36.732Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "permanent",
+      "status": "failed",
+      "result": null,
+      "error": "truly permanent unrecoverable failure xyz",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

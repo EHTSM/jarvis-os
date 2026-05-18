@@ -30,6 +30,7 @@ class AgentRecord {
 
         // Lifetime stats
         this.stats = { success: 0, failure: 0, totalMs: 0 };
+        this.lastActivity = Date.now();
     }
 
     /** Returns true if this agent can accept a new task right now. */
@@ -52,12 +53,14 @@ class AgentRecord {
         this._cbState       = "closed";
         this.stats.success++;
         this.stats.totalMs += durationMs;
+        this.lastActivity = Date.now();
     }
 
     recordFailure() {
         this._active     = Math.max(0, this._active - 1);
         this._cbFailures++;
         this.stats.failure++;
+        this.lastActivity = Date.now();
         if (this._cbFailures >= CB_FAIL_THRESHOLD) {
             if (this._cbState !== "open") {
                 this._cbState    = "open";
@@ -67,7 +70,14 @@ class AgentRecord {
         }
     }
 
-    acquireSlot() { this._active++; }
+    acquireSlot() { 
+        this._active++; 
+        this.lastActivity = Date.now();
+    }
+
+    heartbeat() {
+        this.lastActivity = Date.now();
+    }
 
     toJSON() {
         const total = this.stats.success + this.stats.failure;
@@ -77,6 +87,7 @@ class AgentRecord {
             cbState:      this._cbState,
             active:       this._active,
             maxConcurrent: this.maxConcurrent,
+            lastActivity:  this.lastActivity,
             stats: {
                 ...this.stats,
                 successRate:   total ? this.stats.success / total : 1,

@@ -1,0 +1,87 @@
+{
+  "id": "test-dev-mp3ponv1",
+  "name": "test-dev-workflow",
+  "startedAt": "2026-05-13T07:01:48.109Z",
+  "completedAt": "2026-05-13T07:01:48.465Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "open-editor",
+      "status": "completed",
+      "result": {
+        "skipped": true,
+        "reason": "skipEditor=true"
+      },
+      "error": null,
+      "attempts": 1,
+      "completedAt": "2026-05-13T07:01:48.113Z"
+    },
+    {
+      "name": "scan-project",
+      "status": "completed",
+      "result": {
+        "files": [
+          "/var/folders/m3/8y88ycbx5cz65g4sb4yy_pq40000gn/T/jarvis-dev-workflow-test-1778655708104/broken.cjs",
+          "/var/folders/m3/8y88ycbx5cz65g4sb4yy_pq40000gn/T/jarvis-dev-workflow-test-1778655708104/valid.cjs"
+        ],
+        "count": 2,
+        "dir": "/var/folders/m3/8y88ycbx5cz65g4sb4yy_pq40000gn/T/jarvis-dev-workflow-test-1778655708104"
+      },
+      "error": null,
+      "attempts": 1,
+      "completedAt": "2026-05-13T07:01:48.113Z"
+    },
+    {
+      "name": "check-syntax",
+      "status": "completed",
+      "result": {
+        "errors": [
+          {
+            "file": "/var/folders/m3/8y88ycbx5cz65g4sb4yy_pq40000gn/T/jarvis-dev-workflow-test-1778655708104/broken.cjs",
+            "basename": "broken.cjs",
+            "error": "SyntaxError: Unexpected end of input"
+          }
+        ],
+        "clean": [
+          "valid.cjs"
+        ],
+        "hasErrors": true
+      },
+      "error": null,
+      "attempts": 1,
+      "completedAt": "2026-05-13T07:01:48.159Z"
+    },
+    {
+      "name": "fix-errors",
+      "status": "failed",
+      "result": null,
+      "error": "Fixer produced no change for \"broken.cjs\" (error: SyntaxError: Unexpected end of input)",
+      "attempts": 2,
+      "completedAt": null
+    },
+    {
+      "name": "recheck-syntax",
+      "status": "pending",
+      "result": null,
+      "error": null,
+      "attempts": 0,
+      "completedAt": null
+    },
+    {
+      "name": "run-script",
+      "status": "pending",
+      "result": null,
+      "error": null,
+      "attempts": 0,
+      "completedAt": null
+    },
+    {
+      "name": "summarize",
+      "status": "pending",
+      "result": null,
+      "error": null,
+      "attempts": 0,
+      "completedAt": null
+    }
+  ]
+}

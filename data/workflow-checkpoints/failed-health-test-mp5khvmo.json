@@ -1,0 +1,31 @@
+{
+  "id": "failed-health-test-mp5khvmo",
+  "name": "failed-health-test",
+  "startedAt": "2026-05-14T14:12:05.856Z",
+  "completedAt": "2026-05-14T14:12:06.858Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "ok",
+      "status": "completed",
+      "result": {
+        "done": true
+      },
+      "error": null,
+      "attempts": 1,
+      "completedAt": "2026-05-14T14:12:05.856Z",
+      "recoveries": 0
+    },
+    {
+      "name": "fail",
+      "status": "failed",
+      "result": null,
+      "error": "permanent failure",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

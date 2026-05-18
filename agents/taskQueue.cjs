@@ -6,9 +6,49 @@
 
 const fs   = require("fs");
 const path = require("path");
+const logger = require("../backend/utils/logger");
 
 const QUEUE_FILE = path.join(__dirname, "../data/task-queue.json");
 let _counter = Date.now();
+let _lastPulse = Date.now(); // Internal heartbeat
+
+// ── SQLite Shadow-Write Layer ─────────────────────────────────────────────
+// Passive mirror. If SQLite fails, runtime continues with JSON authoritative.
+function _shadowUpsert(task) {
+    try {
+        const { getDB } = require("../backend/db/sqlite.cjs");
+        const db = getDB();
+        const stmt = db.prepare(`
+            INSERT OR REPLACE INTO tasks (
+                id, input, type, status, retries, max_retries, retry_delay,
+                scheduled_for, recurring_cron, created_at, started_at, completed_at,
+                last_error, metadata
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `);
+        stmt.run(
+            task.id, task.input, task.type, task.status, task.retries || 0,
+            task.maxRetries || 3, task.retryDelay || 15000,
+            task.scheduledFor, task.recurringCron, task.createdAt,
+            task.startedAt, task.completedAt, task.lastError,
+            JSON.stringify(task.metadata || {})
+        );
+    } catch (err) {
+        // FAIL-SAFE: Shadow failure must never crash the main task loop.
+        logger.warn(`[SQLite Shadow] Upsert failed for ${task.id}: ${err.message}`);
+    }
+}
+
+function _shadowDelete(id) {
+    try {
+        const { getDB } = require("../backend/db/sqlite.cjs");
+        const db = getDB();
+        db.prepare("DELETE FROM tasks WHERE id = ?").run(id);
+    } catch (err) {
+        logger.warn(`[SQLite Shadow] Delete failed for ${id}: ${err.message}`);
+    }
+}
+// ──────────────────────────────────────────────────────────────────────────
+
 
 function _load() {
     try {
@@ -19,7 +59,9 @@ function _load() {
 function _save(tasks) {
     const dir = path.dirname(QUEUE_FILE);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(QUEUE_FILE, JSON.stringify(tasks, null, 2));
+    const tmp = QUEUE_FILE + ".tmp";
+    fs.writeFileSync(tmp, JSON.stringify(tasks, null, 2));
+    fs.renameSync(tmp, QUEUE_FILE);  // atomic on POSIX — prevents partial-write corruption
 }
 
 /**
@@ -52,12 +94,23 @@ function addTask({ input, type = "auto", scheduledFor, recurringCron, maxRetries
     };
     tasks.push(task);
     _save(tasks);
-    console.log(`[TaskQueue] added ${task.id} type="${task.type}" scheduledFor=${task.scheduledFor}`);
+    _shadowUpsert(task); // Passive mirror
+    if (process.env.DEBUG === "1") {
+  const logger = require("../backend/utils/logger");
+  logger.debug(`[TaskQueue] added ${task.id} type="${task.type}" scheduledFor=${task.scheduledFor}`);
+}
+    try {
+        require("./runtime/runtimeEventBus.cjs").emit("task:added", {
+            id: task.id, input: task.input.slice(0, 80), type: task.type,
+            status: task.status, createdAt: task.createdAt
+        });
+    } catch { /* non-critical */ }
     return task;
 }
 
 /** Return all tasks whose scheduledFor is now or in the past and status=pending. */
 function getDuePending() {
+    _lastPulse = Date.now();
     const now = Date.now();
     return _load().filter(t =>
         t.status === "pending" &&
@@ -72,7 +125,15 @@ function update(id, fields) {
     if (idx === -1) return null;
     Object.assign(tasks[idx], fields);
     _save(tasks);
-    return tasks[idx];
+    const t = tasks[idx];
+    _shadowUpsert(t); // Passive mirror
+    try {
+        require("./runtime/runtimeEventBus.cjs").emit("task:updated", {
+            id: t.id, status: t.status, type: t.type,
+            input: (t.input || "").slice(0, 80)
+        });
+    } catch { /* non-critical */ }
+    return t;
 }
 
 /** Return all tasks (full history). */
@@ -86,6 +147,7 @@ function recoverStale() {
         if (t.status === "running") {
             t.status = "pending";
             t.executionLog.push({ ts: new Date().toISOString(), event: "recovered — was running on crash" });
+            _shadowUpsert(t); // Mirror recovery state
             changed++;
         }
     }
@@ -112,6 +174,12 @@ function pruneOldTasks(keepCompleted = 50) {
     const kept = [...new Map([...active, ...recurring, ...terminal].map(t => [t.id, t])).values()];
     const pruned = tasks.length - kept.length;
     if (pruned > 0) {
+        // Sync SQLite pruning
+        const keptIds = new Set(kept.map(k => k.id));
+        tasks.forEach(t => {
+            if (!keptIds.has(t.id)) _shadowDelete(t.id);
+        });
+
         _save(kept);
         console.log(`[TaskQueue] pruned ${pruned} old completed/failed task(s) — ${kept.length} remain`);
     }
@@ -140,6 +208,7 @@ function abandonStuckTasks(maxAgeHours = 2) {
             event: "abandoned",
             reason: `Pending >${maxAgeHours}h without execution`
         }];
+        _shadowUpsert(t); // Mirror abandonment
         changed++;
     }
     if (changed > 0) {
@@ -156,7 +225,11 @@ function deleteTask(id) {
     const tasks = _load();
     const before = tasks.length;
     const kept   = tasks.filter(t => t.id !== id);
-    if (kept.length < before) { _save(kept); return true; }
+    if (kept.length < before) { 
+        _save(kept); 
+        _shadowDelete(id); // Mirror deletion
+        return true; 
+    }
     return false;
 }
 

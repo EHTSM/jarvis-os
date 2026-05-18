@@ -147,7 +147,17 @@ function buildTask(segment) {
         return { type: "execute_agent", label: "Execute Agent", payload: { agent: agentName, input: segment } };
     }
 
-    // ── 10. Canonical parser — all remaining single-command intents ──
+    // ── 10. Natural-language time / date queries ─────────────────────
+    // "what is the time", "what time is it", "current time", etc.
+    // Must come before the canonical parser which routes these to web_search.
+    if (/\b(what(?:\s+is|'s)\s+(the\s+)?(time|date|day)|what\s+(time|date|day)\s+is\s+it|current\s+(time|date)|today'?s?\s+date)\b/i.test(task)) {
+        if (/\b(date|day)\b/i.test(task)) {
+            return { type: "date", label: "Date", payload: {} };
+        }
+        return { type: "time", label: "Time", payload: {} };
+    }
+
+    // ── 11. Canonical parser — all remaining single-command intents ──
     // Covers: URL shortcuts, web search, app launch, desktop typing/keys,
     //         time, date, greetings, CRM, payment, and AI fallback.
     return _parserToTask(parser.parseCommand(segment), segment);

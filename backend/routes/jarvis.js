@@ -1,10 +1,10 @@
 "use strict";
 const router      = require("express").Router();
 const controller  = require("../controllers/jarvisController");
-const { optionalAuth } = require("../middleware/firebaseAuth");
+const { requireAuth } = require("../middleware/authMiddleware");
 const rateLimiter = require("../middleware/rateLimiter");
 
-// POST /jarvis — main AI gateway (60 req/min per IP)
-router.post("/jarvis", optionalAuth, rateLimiter(60, 60_000), controller.handleJarvis);
+// POST /jarvis — main AI gateway; operator auth required + rate limit
+router.post("/jarvis", requireAuth, rateLimiter(60, 60_000), controller.handleJarvis);
 
 module.exports = router;

@@ -1,0 +1,20 @@
+{
+  "id": "test-wf-mp5l48kv-p9p4-mp5l48kv",
+  "name": "test-wf-mp5l48kv-p9p4",
+  "startedAt": "2026-05-14T14:29:29.072Z",
+  "completedAt": "2026-05-14T14:29:30.076Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "always-fail",
+      "status": "failed",
+      "result": null,
+      "error": "forced-fail-for-checkpoint",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

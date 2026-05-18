@@ -1,0 +1,20 @@
+{
+  "id": "test-wf-mp5mil42-kt25-mp5mil42",
+  "name": "test-wf-mp5mil42-kt25",
+  "startedAt": "2026-05-14T15:08:38.114Z",
+  "completedAt": "2026-05-14T15:08:39.118Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "always-fail",
+      "status": "failed",
+      "result": null,
+      "error": "forced-fail-for-checkpoint",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

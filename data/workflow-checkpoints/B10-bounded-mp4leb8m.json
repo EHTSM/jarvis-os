@@ -1,0 +1,18 @@
+{
+  "id": "B10-bounded-mp4leb8m",
+  "name": "B10-bounded",
+  "startedAt": "2026-05-13T21:49:32.902Z",
+  "completedAt": "2026-05-13T21:49:33.210Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "bounded-failure",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: test",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

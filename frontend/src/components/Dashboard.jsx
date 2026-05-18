@@ -55,6 +55,20 @@ const TIER_LABELS = {
 };
 
 export default function Dashboard({ stats, opsData }) {
+  // Still loading — show skeleton rather than blank screen
+  if (stats === null && opsData === null) {
+    return (
+      <div className="dashboard">
+        <h2 className="dash-title">Business Insights</h2>
+        <div className="dash-loading">
+          <div className="dash-skeleton" />
+          <div className="dash-skeleton dash-skeleton--sm" />
+          <div className="dash-skeleton" />
+        </div>
+      </div>
+    );
+  }
+
   const hasLeads = stats && stats.total > 0;
   const autoStats = opsData?.automation || null;
 

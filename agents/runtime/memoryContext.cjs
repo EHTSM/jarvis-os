@@ -4,21 +4,17 @@
  * Provides context injection for task execution and records results back.
  */
 
+// [Phase O] contextEngine archived to experimental/evolution-runtime/.
+// Production runtime uses in-memory stubs — no external context dependency.
 let _ctx = null;
 function _engine() {
     if (!_ctx) {
-        try {
-            const { ContextEngine } = require("../contextEngine.cjs");
-            _ctx = new ContextEngine();
-        } catch {
-            // contextEngine unavailable — return null-safe stubs
-            _ctx = {
-                findSimilar:      () => [],
-                getContextPrompt: () => "",
-                addConversation:  () => {},
-                getHistory:       () => [],
-            };
-        }
+        _ctx = {
+            findSimilar:      () => [],
+            getContextPrompt: () => "",
+            addConversation:  () => {},
+            getHistory:       () => [],
+        };
     }
     return _ctx;
 }

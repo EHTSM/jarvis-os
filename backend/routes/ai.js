@@ -1,8 +1,9 @@
 "use strict";
 const router = require("express").Router();
 const ai     = require("../services/aiService");
+const { requireAuth } = require("../middleware/authMiddleware");
 
-router.post("/ai/chat", async (req, res) => {
+router.post("/ai/chat", requireAuth, async (req, res) => {
     try {
         const { prompt, system, history } = req.body;
         if (!prompt) return res.status(400).json({ error: "prompt required" });

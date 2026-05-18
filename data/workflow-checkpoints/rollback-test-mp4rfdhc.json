@@ -1,0 +1,20 @@
+{
+  "id": "rollback-test-mp4rfdhc",
+  "name": "rollback-test",
+  "startedAt": "2026-05-14T00:38:20.160Z",
+  "completedAt": "2026-05-14T00:38:20.200Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "risky-fix",
+      "status": "failed",
+      "result": null,
+      "error": "listen EADDRINUSE :::3000",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "port-find-free",
+      "_lastRecoveryType": "port_conflict"
+    }
+  ]
+}

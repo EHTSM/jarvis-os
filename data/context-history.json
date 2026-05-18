@@ -1,74 +1,132 @@
 [
   {
-    "timestamp": "2026-05-09T20:24:15.068Z",
-    "input": "get my leads",
+    "timestamp": "2026-05-15T19:37:30.514Z",
+    "input": "what is the current time",
     "taskCount": 1,
     "taskTypes": [
-      "money_flow"
+      "time"
     ],
     "resultCount": 1,
-    "executedBy": "moneyEngine",
-    "duration": 11,
-    "processedBy": "moneyEngine"
-  },
-  {
-    "timestamp": "2026-05-09T20:24:22.305Z",
-    "input": "every 30 minutes check crm stats",
-    "taskCount": 1,
-    "taskTypes": [
-      "queue_task"
-    ],
-    "resultCount": 1,
-    "executedBy": "System",
-    "duration": 15,
-    "processedBy": "System"
-  },
-  {
-    "timestamp": "2026-05-09T20:24:22.325Z",
-    "input": "in 5 minutes run health check",
-    "taskCount": 1,
-    "taskTypes": [
-      "queue_task"
-    ],
-    "resultCount": 1,
-    "executedBy": "System",
+    "executedBy": "legacy",
     "duration": 2,
-    "processedBy": "System"
+    "processedBy": "legacy",
+    "success": true
   },
   {
-    "timestamp": "2026-05-09T20:25:00.548Z",
-    "input": "what can you do?",
+    "timestamp": "2026-05-15T19:37:35.548Z",
+    "input": "git status",
     "taskCount": 1,
     "taskTypes": [
-      "ai"
+      "terminal"
     ],
     "resultCount": 1,
-    "executedBy": "Groq AI",
-    "duration": 841,
-    "processedBy": "Groq AI"
+    "executedBy": "terminal",
+    "duration": 36,
+    "processedBy": "terminal",
+    "success": true
   },
   {
-    "timestamp": "2026-05-09T20:26:28.128Z",
-    "input": "what time is it",
+    "timestamp": "2026-05-15T19:55:37.436Z",
+    "input": "git status",
+    "taskCount": 1,
+    "taskTypes": [
+      "terminal"
+    ],
+    "resultCount": 1,
+    "executedBy": "terminal",
+    "duration": 23,
+    "processedBy": "terminal",
+    "success": true
+  },
+  {
+    "timestamp": "2026-05-15T19:55:37.440Z",
+    "input": "what is the time",
     "taskCount": 1,
     "taskTypes": [
       "time"
     ],
     "resultCount": 1,
-    "executedBy": "System",
-    "duration": 9,
-    "processedBy": "System"
+    "executedBy": "legacy",
+    "duration": 3,
+    "processedBy": "legacy",
+    "success": true
   },
   {
-    "timestamp": "2026-05-09T20:42:05.510Z",
-    "input": "what time is it",
+    "timestamp": "2026-05-15T19:55:37.453Z",
+    "input": "node -v",
+    "taskCount": 1,
+    "taskTypes": [
+      "terminal"
+    ],
+    "resultCount": 1,
+    "executedBy": "terminal",
+    "duration": 13,
+    "processedBy": "terminal",
+    "success": true
+  },
+  {
+    "timestamp": "2026-05-15T19:55:42.483Z",
+    "input": "git status",
+    "taskCount": 1,
+    "taskTypes": [
+      "terminal"
+    ],
+    "resultCount": 1,
+    "executedBy": "terminal",
+    "duration": 27,
+    "processedBy": "terminal",
+    "success": true
+  },
+  {
+    "timestamp": "2026-05-15T20:07:48.987Z",
+    "input": "git status",
+    "taskCount": 1,
+    "taskTypes": [
+      "terminal"
+    ],
+    "resultCount": 1,
+    "executedBy": "terminal",
+    "duration": 26,
+    "processedBy": "terminal",
+    "success": true
+  },
+  {
+    "timestamp": "2026-05-15T20:07:48.992Z",
+    "input": "what is the time",
     "taskCount": 1,
     "taskTypes": [
       "time"
     ],
     "resultCount": 1,
-    "executedBy": "System",
-    "duration": 18,
-    "processedBy": "System"
+    "executedBy": "legacy",
+    "duration": 4,
+    "processedBy": "legacy",
+    "success": true
+  },
+  {
+    "timestamp": "2026-05-15T20:07:49.008Z",
+    "input": "node -v",
+    "taskCount": 1,
+    "taskTypes": [
+      "terminal"
+    ],
+    "resultCount": 1,
+    "executedBy": "terminal",
+    "duration": 15,
+    "processedBy": "terminal",
+    "success": true
+  },
+  {
+    "timestamp": "2026-05-15T20:07:54.052Z",
+    "input": "git status",
+    "taskCount": 1,
+    "taskTypes": [
+      "terminal"
+    ],
+    "resultCount": 1,
+    "executedBy": "terminal",
+    "duration": 40,
+    "processedBy": "terminal",
+    "success": true
   }
 ]

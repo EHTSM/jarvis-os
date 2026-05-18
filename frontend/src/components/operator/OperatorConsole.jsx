@@ -1,291 +1,132 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { BASE_URL, getOpsData, getTasks, getRuntimeStatus, getRuntimeHistory } from "../../api";
+import React, { useState, useEffect } from "react";
+import { useRuntimeStream } from "../../hooks/useRuntimeStream";
+import { useNotifications } from "../../hooks/useNotifications";
 import { useAuth } from "../../contexts/AuthContext";
-import TaskQueuePanel  from "./TaskQueuePanel";
 import ExecLogPanel    from "./ExecLogPanel";
 import AIConsolePanel  from "./AIConsolePanel";
 import AdapterPanel    from "./AdapterPanel";
-import TelemetryPanel  from "./TelemetryPanel";
 import WorkflowPanel   from "./WorkflowPanel";
 import GovernorPanel   from "./GovernorPanel";
+import PluginManagerPanel from "./PluginManagerPanel";
 import ErrorBoundary   from "../ErrorBoundary";
+import { EmergencyModeBanner } from "./widgets/EmergencyModeBanner";
+import { ConnectionStatusCard } from "./widgets/ConnectionStatusCard";
+import { RuntimeHealthCard } from "./widgets/RuntimeHealthCard";
+import { QueueStatusCard } from "./widgets/QueueStatusCard";
+import { RecentFailuresPanel } from "./widgets/RecentFailuresPanel";
+import { SessionContextCard } from "./widgets/SessionContextCard";
+import { OperationalStatusBanner } from "./widgets/OperationalStatusBanner";
+import { NotificationOverlay } from "./widgets/NotificationOverlay";
 import "./operator.css";
 
-// ── Fallback polling intervals (active when SSE is disconnected) ───
-const POLL_OPS_MS    = 6_000;   // ops + tasks (fast fallback)
-const POLL_RT_MS     = 8_000;   // runtime status
-const POLL_HIST_MS   = 5_000;   // execution history
-
-// ── SSE reconnect backoff ──────────────────────────────────────────
-const SSE_BACKOFF    = [1000, 2000, 4000, 8000, 30_000];
-
-function fmtUptime(secs) {
-  if (!secs) return "—";
-  const h = Math.floor(secs / 3600);
-  const m = Math.floor((secs % 3600) / 60);
-  const s = secs % 60;
-  if (h > 0) return `${h}h ${m}m`;
-  if (m > 0) return `${m}m ${s}s`;
-  return `${s}s`;
-}
-
 export default function OperatorConsole() {
-  const { logout } = useAuth();
-  const [ops,       setOps]       = useState(null);
-  const [tasks,     setTasks]     = useState(null);
-  const [rtStatus,  setRtStatus]  = useState(null);
-  const [history,   setHistory]   = useState([]);
-  const [stream,    setStream]    = useState({ connected: false, lastBeat: null, replayCount: 0, retryCount: 0, retryDelayMs: 0 });
-  const [fetchErrors, setFetchErrors] = useState({});
-  const [authError,  setAuthError]  = useState(null); // "expired" | "unconfigured" | null
-  const [sseWarning, setSseWarning] = useState(null); // "expiring_soon" | null
-  const [lastExec,   setLastExec]   = useState(null); // { status, input, ts } — most recent completion
-  const [mobileTab,  setMobileTab]  = useState("Workflow"); // mobile-only tab state
+  const [sessionRestored, setSessionRestored] = React.useState(false);
 
-  // Track seen entry IDs for new-entry flash animation
-  const seenEntries   = useRef(new Set());
-  const sseRef        = useRef(null);    // EventSource instance
-  const sseRetryCount = useRef(0);
-  const sseRetryTimer = useRef(null);
-  const pollRefs      = useRef({});      // interval handles for fallback polling
-
-  // ── Helpers ────────────────────────────────────────────────────
-  const markNew = useCallback((entry) => {
-    const isNew = !seenEntries.current.has(entry.id || entry.seq);
-    if (isNew) {
-      seenEntries.current.add(entry.id || entry.seq);
-      if (seenEntries.current.size > 600) {
-        const arr = [...seenEntries.current];
-        seenEntries.current = new Set(arr.slice(-500));
-      }
-    }
-    return isNew;
-  }, []);
-
-  const prependExec = useCallback((entry) => {
-    setHistory(prev => {
-      const isNew = markNew(entry);
-      const enriched = { ...entry, _new: isNew };
-      // De-duplicate by id/seq — SSE replay may resend recent entries
-      const exists = prev.some(e => (e.id && e.id === entry.id) || (e.seq && e.seq === entry.seq));
-      if (exists) return prev;
-      return [enriched, ...prev.slice(0, 199)];
-    });
-  }, [markNew]);
-
-  // ── Auth error classifier ──────────────────────────────────────
-  const _classifyAuthErr = useCallback((err) => {
-    const status = err?.status;
-    const msg    = (err?.message || "").toLowerCase();
-    if (status === 401 || msg.includes("unauthorized") || msg.includes("token invalid") || msg.includes("token expired")) {
-      setAuthError("expired");
-    } else if (status === 503 || msg.includes("not configured")) {
-      setAuthError("unconfigured");
-    }
-  }, []);
-
-  // ── Fallback fetchers ──────────────────────────────────────────
-  const fetchOps = useCallback(async () => {
-    try {
-      const o = await getOpsData();
-      if (o) { setOps(o); setFetchErrors(e => ({ ...e, ops: null })); setAuthError(null); }
-    } catch (err) {
-      setFetchErrors(e => ({ ...e, ops: err.message }));
-      _classifyAuthErr(err);
-    }
-  }, [_classifyAuthErr]);
-
-  const fetchTasks = useCallback(async () => {
-    try {
-      const t = await getTasks();
-      if (t) { setTasks(t); setFetchErrors(e => ({ ...e, tasks: null })); }
-    } catch (err) {
-      setFetchErrors(e => ({ ...e, tasks: err.message }));
-    }
-  }, []);
-
-  const fetchRt = useCallback(async () => {
-    try {
-      const r = await getRuntimeStatus();
-      if (r) { setRtStatus(r); setFetchErrors(e => ({ ...e, rt: null })); setAuthError(null); }
-    } catch (err) {
-      setFetchErrors(e => ({ ...e, rt: err.message }));
-      _classifyAuthErr(err);
-    }
-  }, [_classifyAuthErr]);
-
-  const fetchHistory = useCallback(async () => {
-    try {
-      const r = await getRuntimeHistory(60);
-      if (!r?.entries) return;
-      setFetchErrors(e => ({ ...e, history: null }));
-      // Bulk-load without animation for initial/fallback hydration
-      r.entries.forEach(e => {
-        if (!seenEntries.current.has(e.id || e.seq)) {
-          seenEntries.current.add(e.id || e.seq);
-        }
-      });
-      setHistory(r.entries.map(e => ({ ...e, _new: false })));
-    } catch (err) {
-      setFetchErrors(e => ({ ...e, history: err.message }));
-    }
-  }, []);
-
-  // ── SSE connection ─────────────────────────────────────────────
-  const connectSSE = useCallback(() => {
-    // Don't open a second connection
-    if (sseRef.current && sseRef.current.readyState !== 2 /* CLOSED */) return;
-
-    const url = `${BASE_URL}/runtime/stream`;
-    let es;
-    try {
-      es = new EventSource(url, { withCredentials: true });
-    } catch {
-      // EventSource not available — stay in polling mode
-      return;
-    }
-    sseRef.current = es;
-
-    // ── Connection established ─────────────────────────────────
-    es.addEventListener("connected", (e) => {
-      try {
-        const d = JSON.parse(e.data);
-        setStream({ connected: true, lastBeat: Date.now(), replayCount: d.replayCount ?? 0, retryCount: 0, retryDelayMs: 0 });
-        sseRetryCount.current = 0;
-        // Stop heavy fallback polling now that SSE is live
-        clearInterval(pollRefs.current.hist);
-        pollRefs.current.hist = null;
-        // Keep a slow ops+tasks poll as insurance (every 15s)
-        clearInterval(pollRefs.current.ops);
-        pollRefs.current.ops = setInterval(() => { fetchOps(); fetchTasks(); }, 15_000);
-      } catch {}
-    });
-
-    // ── Execution events ───────────────────────────────────────
-    es.addEventListener("execution", (e) => {
-      try {
-        const d = JSON.parse(e.data);
-        prependExec(d);
-        // Surface completions/failures in the status bar so operator sees activity
-        if (d.status === "success" || d.status === "completed" || d.status === "failed" || d.status === "error") {
-          setLastExec({ status: d.status, input: (d.input || d.task || "").slice(0, 40), ts: Date.now() });
-        }
-      } catch {}
-    });
-
-    // ── Task lifecycle ─────────────────────────────────────────
-    es.addEventListener("task:added",   () => { fetchTasks(); });
-    es.addEventListener("task:updated", () => { fetchTasks(); });
-
-    // ── Telemetry snapshot ─────────────────────────────────────
-    es.addEventListener("telemetry", (e) => {
-      try {
-        const d = JSON.parse(e.data);
-        // Merge into ops: preserve fields SSE doesn't send (crm, requests, etc.)
-        setOps(prev => prev ? { ...prev, memory: d.memory, errors: d.errors, queue: d.queue } : d);
-      } catch {}
-    });
-
-    // ── Heartbeat ──────────────────────────────────────────────
-    es.addEventListener("heartbeat", () => {
-      setStream(s => ({ ...s, connected: true, lastBeat: Date.now() }));
-    });
-
-    // ── Warning ────────────────────────────────────────────────
-    es.addEventListener("warning", (e) => {
-      try {
-        const d = JSON.parse(e.data);
-        setOps(prev => prev ? { ...prev, warnings: [...(prev.warnings ?? []), d] } : null);
-      } catch {}
-    });
-
-    // ── JWT expiry warning ─────────────────────────────────────
-    es.addEventListener("jwt_expiry_warning", () => {
-      setSseWarning("expiring_soon");
-    });
-
-    // ── SSE error + reconnect backoff ──────────────────────────
-    es.onerror = () => {
-      setStream(s => ({ ...s, connected: false }));
-      es.close();
-      sseRef.current = null;
-
-      // Restart full polling while disconnected
-      if (!pollRefs.current.hist) {
-        pollRefs.current.hist = setInterval(fetchHistory, POLL_HIST_MS);
-      }
-      if (!pollRefs.current.ops) {
-        pollRefs.current.ops = setInterval(() => { fetchOps(); fetchTasks(); }, POLL_OPS_MS);
-      }
-
-      // Schedule reconnect with exponential backoff
-      clearTimeout(sseRetryTimer.current);
-      const delay = SSE_BACKOFF[Math.min(sseRetryCount.current, SSE_BACKOFF.length - 1)];
-      sseRetryCount.current++;
-      setStream(s => ({ ...s, retryCount: sseRetryCount.current, retryDelayMs: delay }));
-      sseRetryTimer.current = setTimeout(connectSSE, delay);
-    };
-  }, [fetchOps, fetchTasks, fetchHistory, prependExec]);
-
-  // ── Bootstrap: initial data load + connect SSE ────────────────
+  // Load persisted session state if available
   useEffect(() => {
-    // Immediate initial loads so UI isn't blank
-    fetchOps();
-    fetchTasks();
-    fetchRt();
-    fetchHistory();
+    const saved = localStorage.getItem('operatorSession');
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        if (data.pendingCmd) setPendingCmd(data.pendingCmd);
+        if (data.lastCheck) setLastCheck(data.lastCheck);
+        addNotification('Session restored from local storage.', 'ok', 3000);
+        setSessionRestored(true);
+      } catch {}
+    }
+  }, []);
 
-    // Start fallback polling (will be throttled once SSE connects)
-    pollRefs.current.ops  = setInterval(() => { fetchOps(); fetchTasks(); }, POLL_OPS_MS);
-    pollRefs.current.rt   = setInterval(fetchRt,   POLL_RT_MS);
-    pollRefs.current.hist = setInterval(fetchHistory, POLL_HIST_MS);
+  // Persist session state on changes
+  useEffect(() => {
+    const state = { pendingCmd, lastCheck };
+    localStorage.setItem('operatorSession', JSON.stringify(state));
+  }, [pendingCmd, lastCheck]);
+  const { logout } = useAuth();
+  const [mobileTab, setMobileTab] = useState("Log");
+  const [pendingCmd, setPendingCmd] = useState("");
+  const [lastCheck, setLastCheck] = useState(Date.now()); // Re-entry orientation anchor
+  const { notifications, addNotification, removeNotification } = useNotifications();
 
-    // Connect SSE
-    connectSSE();
+  const {
+    connectionState,
+    streamMeta,
+    authError,
+    sseWarning,
+    fetchErrors,
+    forceRefresh,
+    dismissWarning,
+    data: { ops, rtStatus, history }
+  } = useRuntimeStream();
 
-    return () => {
-      // Full cleanup on unmount
-      Object.values(pollRefs.current).forEach(t => t && clearInterval(t));
-      pollRefs.current = {};
-      clearTimeout(sseRetryTimer.current);
-      if (sseRef.current) { sseRef.current.close(); sseRef.current = null; }
+  const reconnectNotifRef = React.useRef(0);
+
+  // Trigger notifications on critical state changes
+  useEffect(() => {
+    const now = Date.now();
+    const cooldownMs = 30000;
+
+    if (connectionState === "reconnecting" && now - reconnectNotifRef.current > cooldownMs) {
+      reconnectNotifRef.current = now;
+      addNotification(`Connection lost. Retrying... (Attempt ${streamMeta.retryCount})`, "warn", 3000);
+    } else if (connectionState === "connected" && streamMeta.retryCount > 0) {
+      addNotification("Connection restored successfully.", "ok", 3000);
+    } else if (connectionState === "offline") {
+      addNotification("Runtime offline. Fallback polling active.", "crit", 0);
+    }
+  }, [connectionState, streamMeta.retryCount, addNotification]);
+
+  const stats = React.useMemo(() => {
+    const last20 = history.slice(0, 20);
+    const failed = last20.filter(e => e.status === "failed" || e.status === "error");
+    const success = last20.filter(e => e.status === "success" || e.status === "completed");
+    
+    // Safety: Find last successful backup
+    const lastBackupEntry = history.find(e => (e.input || "").includes("backup") && (e.status === "success" || e.status === "completed"));
+    const lastBackupMin = lastBackupEntry ? Math.floor((Date.now() - (lastBackupEntry.timestamp || lastBackupEntry.ts)) / 60000) : null;
+
+    return {
+      ratio: last20.length ? Math.round((success.length / last20.length) * 100) : 100,
+      active: history.filter(e => e.status === "running" || e.status === "pending").length,
+      stalled: history.filter(e => e.status === "running" && (Date.now() - (e.timestamp || e.ts)) > 60000).length,
+      failCount: failed.length,
+      lastBackupMin,
+      total: history.length
     };
-  }, []); // eslint-disable-line
+  }, [history]);
 
-  // ── Force refresh callback (used by WorkflowPanel after dispatch) ─
-  const handleRefresh = useCallback(() => {
-    fetchOps();
-    fetchTasks();
-  }, [fetchOps, fetchTasks]);
-
-  // ── Derived display values ─────────────────────────────────────
-  const status   = ops?.status ?? "unknown";
-  const heapMb   = ops?.memory?.current?.heap_mb ?? "—";
-  const rssMb    = ops?.memory?.current?.rss_mb  ?? "—";
-  const uptime   = fmtUptime(ops?.uptime?.seconds);
-  const warnings = ops?.warnings ?? [];
-  const errRate  = ops?.errors?.errors_per_hour ?? 0;
-  const qCounts  = ops?.queue?.counts ?? {};
-  const pending  = qCounts.pending ?? 0;
-  const running  = qCounts.running ?? 0;
-
-  const statusClass = status === "ok" ? "ok" : status === "degraded" ? "warn" : "crit";
-
-  // Stream age: "Live", "Xm ago", or "—"
-  const streamAge = (() => {
-    if (!stream.lastBeat) return "—";
-    const secs = Math.floor((Date.now() - stream.lastBeat) / 1000);
-    if (secs < 60) return `${secs}s`;
-    return `${Math.floor(secs / 60)}m`;
-  })();
+  useEffect(() => {
+    if (authError === "expired") {
+      addNotification("Authentication expired. Please sign in again.", "crit", 0);
+    }
+  }, [authError, addNotification]);
 
   return (
-    <div className="operator-console">
+    <div className="operator-console" onClick={() => setLastCheck(Date.now())}>
+      <NotificationOverlay notifications={notifications} removeNotification={removeNotification} />
+      {sessionRestored && (
+        <div className="op-session-restore" style={{color: 'var(--op-green)', padding: '4px 8px', background: 'var(--op-bg)', borderRadius: '4px', marginTop: '4px'}}>
+          Session restored from local storage.
+        </div>
+      )}
+      {connectionState === 'reconnecting' && (
+        <div className="op-reconnect-badge" style={{color: 'var(--op-amber)', padding: '4px 8px', background: 'var(--op-bg)', borderRadius: '4px', marginTop: '4px'}}>
+          Reconnecting… ({streamMeta.retryCount})
+        </div>
+      )}
+      <OperationalStatusBanner
+        stats={{
+          ...stats,
+          vitals: rtStatus?.vitals,
+          runaway: rtStatus?.runaway
+        }}
+        emergency={rtStatus?.emergency}
+      />
+
       {/* ── Session banners ───────────────────────────────────── */}
       {sseWarning === "expiring_soon" && authError !== "expired" && (
         <div className="op-session-banner warn">
           <span>Session expires in ~5 minutes — save your work and re-authenticate</span>
-          <button onClick={() => setSseWarning(null)}>Dismiss</button>
+          <button onClick={dismissWarning}>Dismiss</button>
           <button onClick={logout}>Sign out</button>
         </div>
       )}
@@ -301,99 +142,9 @@ export default function OperatorConsole() {
         </div>
       )}
 
-      {/* ── Status Bar ─────────────────────────────────────────── */}
-      <div className="op-statusbar">
-        <div
-          className={`op-pulse ${stream.connected ? "" : "offline"}`}
-          title={stream.connected ? `Live stream · beat ${streamAge} ago` : "Stream offline — polling fallback active"}
-        />
-        <span className="op-statusbar-brand">JARVIS OS</span>
-
-        {/* Stream indicator */}
-        <div className="op-stat">
-          <span className="op-stat-label">Stream</span>
-          <span
-            className={`op-stat-value ${stream.connected ? "ok" : "warn"}`}
-            title={!stream.connected && stream.retryCount > 0
-              ? `Reconnect attempt ${stream.retryCount} — next in ${Math.round(stream.retryDelayMs / 1000)}s`
-              : undefined}
-          >
-            {stream.connected ? "SSE" : `POLL #${stream.retryCount || 0}`}
-          </span>
-        </div>
-
-        {/* Fetch error indicator */}
-        {Object.values(fetchErrors).some(Boolean) && (
-          <div className="op-stat" title={Object.entries(fetchErrors).filter(([,v]) => v).map(([k,v]) => `${k}: ${v}`).join(" | ")}>
-            <span className="op-stat-value crit">⚠ fetch</span>
-          </div>
-        )}
-        <div className="op-statusbar-sep" />
-
-        <div className="op-stat">
-          <span className="op-stat-label">Status</span>
-          <span className={`op-stat-value ${statusClass}`}>{status.toUpperCase()}</span>
-        </div>
-        <div className="op-statusbar-sep" />
-
-        <div className="op-stat">
-          <span className="op-stat-label">Heap</span>
-          <span className={`op-stat-value ${ops?.memory?.critical ? "crit" : ops?.memory?.warn ? "warn" : ""}`}>
-            {heapMb}MB
-          </span>
-        </div>
-
-        <div className="op-stat">
-          <span className="op-stat-label">RSS</span>
-          <span className="op-stat-value dim">{rssMb}MB</span>
-        </div>
-        <div className="op-statusbar-sep" />
-
-        <div className="op-stat">
-          <span className="op-stat-label">Uptime</span>
-          <span className="op-stat-value dim">{uptime}</span>
-        </div>
-        <div className="op-statusbar-sep" />
-
-        <div className="op-stat">
-          <span className="op-stat-label">Queue</span>
-          <span className={`op-stat-value ${pending > 10 ? "warn" : ""}`}>
-            {pending}p / {running}r
-          </span>
-        </div>
-
-        <div className="op-stat">
-          <span className="op-stat-label">Err/hr</span>
-          <span className={`op-stat-value ${errRate > 10 ? "crit" : errRate > 0 ? "warn" : "ok"}`}>
-            {errRate}
-          </span>
-        </div>
-
-        {/* Last execution result */}
-        {lastExec && (
-          <div className="op-stat" style={{ marginLeft: "auto" }}
-            title={`Last: ${lastExec.input}`}>
-            <span className="op-stat-label">Last exec</span>
-            <span className={`op-stat-value ${
-              lastExec.status === "success" || lastExec.status === "completed" ? "ok" : "crit"
-            }`} style={{ fontSize: 10, maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-              {lastExec.status === "success" || lastExec.status === "completed" ? "✓" : "✗"} {lastExec.input || "—"}
-            </span>
-          </div>
-        )}
-
-        <div className="op-statusbar-warnings">
-          {warnings.slice(0, 3).map((w, i) => (
-            <span key={i} className={`op-warn-badge ${w.level === "critical" ? "crit" : ""}`}>
-              {w.code}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Mobile tab bar (hidden on desktop) ──────────────────── */}
+      {/* ── Mobile tab bar ──────────────────── */}
       <div className="op-tab-bar op-mobile-only">
-        {["Workflow","Log","Queue","Adapters"].map(t => (
+        {["Status","Log","Workflow","Plugins"].map(t => (
           <button
             key={t}
             className={`op-tab${mobileTab === t ? " active" : ""}`}
@@ -402,44 +153,68 @@ export default function OperatorConsole() {
         ))}
       </div>
 
-      {/* ── Main Grid ────────────────────────────────────────────── */}
-      <div className="op-grid">
+      <div className="op-main-container">
+        {/* ── Main Grid ────────────────────────────────────────────── */}
+        <div className="op-grid">
 
-        {/* Col 1 top: Task Queue */}
-        <div className={`op-col-left${mobileTab !== "Queue" ? " op-mobile-hide" : ""}`}>
-          <ErrorBoundary label="TaskQueue">
-            <TaskQueuePanel tasks={tasks} />
-          </ErrorBoundary>
+          {/* Col 1 (Left): Health & Telemetry Widgets */}
+          <div className={`op-col-left${mobileTab !== "Status" ? " op-mobile-hide" : ""}`} style={{ display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto' }}>
+            <ErrorBoundary label="ConnectionStatus">
+              <ConnectionStatusCard connectionState={connectionState} streamMeta={streamMeta} fetchErrors={fetchErrors} />
+            </ErrorBoundary>
+            <ErrorBoundary label="RuntimeHealth">
+              <RuntimeHealthCard ops={ops} />
+            </ErrorBoundary>
+            <ErrorBoundary label="QueueStatus">
+              <QueueStatusCard ops={ops} />
+            </ErrorBoundary>
+            <ErrorBoundary label="RecentFailures">
+              <RecentFailuresPanel history={history} />
+            </ErrorBoundary>
+            <ErrorBoundary label="Adapters">
+              <AdapterPanel rtStatus={rtStatus} services={ops?.services} />
+            </ErrorBoundary>
+          </div>
+
+          {/* Col 2 (Mid): Execution History */}
+          <div className={`op-col-mid${mobileTab !== "Log" ? " op-mobile-hide" : ""}`} style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: 0 }}>
+            <ErrorBoundary label="ExecLog">
+              <ExecLogPanel 
+                history={history} 
+                rtStatus={rtStatus} 
+                ops={ops} 
+                onPopulateInput={setPendingCmd} 
+                lastCheck={lastCheck} 
+              />
+            </ErrorBoundary>
+          </div>
+
+          {/* Col 3 (Right): Control Center */}
+          <div className={`op-col-right${mobileTab !== "Workflow" ? " op-mobile-hide" : ""}`} style={{ display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto' }}>
+            <ErrorBoundary label="SessionContext">
+              <SessionContextCard history={history} ops={ops} lastCheck={lastCheck} />
+            </ErrorBoundary>
+            <ErrorBoundary label="Workflow">
+              <WorkflowPanel 
+                onRefresh={forceRefresh} 
+                addNotification={addNotification}
+                onAction={(cmd) => setPendingCmd(cmd)}
+                externalInput={pendingCmd}
+                onClearExternal={() => setPendingCmd("")}
+              />
+            </ErrorBoundary>
+            <ErrorBoundary label="Governor">
+              <GovernorPanel ops={ops} onRefresh={forceRefresh} />
+            </ErrorBoundary>
+            <ErrorBoundary label="AIConsole">
+              <AIConsolePanel addNotification={addNotification} />
+            </ErrorBoundary>
+            <ErrorBoundary label="Plugins">
+              <PluginManagerPanel />
+            </ErrorBoundary>
+          </div>
+
         </div>
-
-        {/* Col 2 (spans both rows): Execution Log + Telemetry */}
-        <div className={`op-col-mid${mobileTab !== "Log" ? " op-mobile-hide" : ""}`}>
-          <ErrorBoundary label="ExecLog">
-            <ExecLogPanel history={history} rtStatus={rtStatus} ops={ops} />
-          </ErrorBoundary>
-        </div>
-
-        {/* Col 3 (spans both rows): AI Console + Workflow + Governor */}
-        <div className={`op-col-right${mobileTab !== "Workflow" ? " op-mobile-hide" : ""}`}
-          style={{ display: "flex", flexDirection: "column", gap: 6, minHeight: 0 }}>
-          <ErrorBoundary label="AIConsole">
-            <AIConsolePanel style={{ flex: "1 1 0", minHeight: 0 }} />
-          </ErrorBoundary>
-          <ErrorBoundary label="Workflow">
-            <WorkflowPanel  onRefresh={handleRefresh} />
-          </ErrorBoundary>
-          <ErrorBoundary label="Governor">
-            <GovernorPanel  ops={ops} onRefresh={handleRefresh} />
-          </ErrorBoundary>
-        </div>
-
-        {/* Col 1 bottom: Adapters + Services */}
-        <div className={`op-col-left-bot${mobileTab !== "Adapters" ? " op-mobile-hide" : ""}`}>
-          <ErrorBoundary label="Adapters">
-            <AdapterPanel rtStatus={rtStatus} services={ops?.services} />
-          </ErrorBoundary>
-        </div>
-
       </div>
     </div>
   );

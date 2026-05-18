@@ -7,6 +7,8 @@
 // ── Intent rules (ordered by priority) ────────────────────────────
 const INTENT_RULES = [
     { intent: "payment",    patterns: [/\bpay\b/, /\bbuy\b/, /\bpurchase\b/, /\bprice\b/, /payment link/, /razorpay/] },
+    // terminal before crm/search: "run X", "execute X" must route to shell, not AI
+    { intent: "terminal",   patterns: [/^run\s+.+/, /^execute\s+.+/, /^terminal\s+.+/, /^shell\s+.+/, /^cmd\s+.+/] },
     // crm before search: "find leads" / "find clients" must not fall into generic search
     { intent: "crm",        patterns: [/\blead[s]?\b/, /\bclient[s]?\b/, /\bcrm\b/, /get leads/, /find leads?/, /find clients?/, /show leads?/] },
     { intent: "search",     patterns: [/\bsearch\b/, /\bfind\b/, /look up/, /\bwhat is\b/, /\bwho is\b/] },
@@ -89,6 +91,27 @@ function parseCommand(input) {
     const raw   = input.trim();
     const lower = raw.toLowerCase();
     const intent = detectIntent(raw);
+
+    // ── Terminal command ──────────────────────────────────────────
+    if (intent === "terminal") {
+        const command = raw.replace(/^(run|execute|terminal|shell|cmd)\s+/i, "").trim();
+        return { type: "terminal", intent, command, label: `$ ${command}`, action: "run_command", voiceReply: `Running ${command}` };
+    }
+
+    // ── File operations ───────────────────────────────────────────
+    // "create file <path> with <content>"  or  "create file <path>"
+    const createMatch = raw.match(/^create\s+file\s+(\S+)(?:\s+with\s+([\s\S]+))?$/i);
+    if (createMatch) {
+        const filePath = createMatch[1];
+        const content  = createMatch[2] || "";
+        return { type: "create_file", intent: "create_file", filePath, content, label: `Create: ${filePath}`, action: "create_file", voiceReply: `Creating file ${filePath}` };
+    }
+    // "read file <path>"
+    const readMatch = raw.match(/^(read|open|show|cat)\s+file\s+(\S+)$/i);
+    if (readMatch) {
+        const filePath = readMatch[2];
+        return { type: "read_file", intent: "read_file", filePath, label: `Read: ${filePath}`, action: "read_file", voiceReply: `Reading ${filePath}` };
+    }
 
     // ── Web search — check before URL shortcuts so "search google for X" works ──
     if (intent === "search") {

@@ -1,0 +1,20 @@
+{
+  "id": "B8-int-2-mp4itu1t",
+  "name": "B8-int-2",
+  "startedAt": "2026-05-13T20:37:38.273Z",
+  "completedAt": "2026-05-13T20:37:39.279Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "x",
+      "status": "failed",
+      "result": null,
+      "error": "fail",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

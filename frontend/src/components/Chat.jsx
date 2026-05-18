@@ -15,6 +15,22 @@ const ROLE_COLORS = {
   error:  "#ff5252"
 };
 
+// Detect if text looks like terminal/code output
+function _isCode(text) {
+  if (!text) return false;
+  return text.startsWith("$ ") || text.startsWith("On branch") ||
+    /^(M |A |D |\?\? )/.test(text) || // git status
+    text.includes("\n") && /\d{1,3} (insertions|deletions)/.test(text) ||
+    text.startsWith("node_modules") || text.startsWith("package.json");
+}
+
+function MessageBody({ text }) {
+  if (_isCode(text)) {
+    return <pre className="msg-code">{text}</pre>;
+  }
+  return <div className="msg-body">{text}</div>;
+}
+
 function Message({ msg }) {
   if (msg.role === "system") {
     return <div className="msg msg--system">{msg.text}</div>;
@@ -30,15 +46,16 @@ function Message({ msg }) {
         <span className="msg-role" style={{ color }}>{label}</span>
         <span className="msg-time">{ts}</span>
       </div>
-      <div className="msg-body">{msg.text}</div>
+      <MessageBody text={msg.text} />
     </div>
   );
 }
 
 const QUICK_ACTIONS = [
-  { label: "Add Client",        cmd: "Add a new client"        },
   { label: "Show Leads",        cmd: "Show me all my leads"    },
-  { label: "Send Payment Link", cmd: "Generate a payment link" },
+  { label: "Payment Link",      cmd: "Generate a payment link" },
+  { label: "Git Status",        cmd: "run git status"          },
+  { label: "Open Chrome",       cmd: "open Chrome"             },
 ];
 
 export default function Chat({
