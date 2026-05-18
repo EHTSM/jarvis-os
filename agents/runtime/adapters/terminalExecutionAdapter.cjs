@@ -7,14 +7,40 @@ const { spawn } = require("child_process");
 const sandboxPolicy = require("./adapterSandboxPolicyEngine.cjs");
 const processTracker = require("./processLifecycleAdapter.cjs");
 
+// Strip secret-bearing env vars before passing to child processes.
+// Mirrors backend/core/safe-exec.js _sanitizeEnv — kept local to avoid circular dep.
+const _ENV_STRIP = [/TOKEN/i, /SECRET/i, /KEY/i, /PASSWORD/i, /HASH/i,
+    /CREDENTIAL/i, /API_KEY/i, /JWT/i, /AUTH/i, /COOKIE/i];
+const _ENV_KEEP  = ["PATH", "HOME", "USER", "LANG", "TERM", "TZ", "NODE_ENV"];
+
+function _sanitizeEnv(extra = {}) {
+    const safe = {};
+    for (const k of _ENV_KEEP) {
+        if (process.env[k] !== undefined) safe[k] = process.env[k];
+    }
+    for (const [k, v] of Object.entries(extra)) {
+        if (!_ENV_STRIP.some(p => p.test(k))) safe[k] = String(v);
+    }
+    return safe;
+}
+
 const ADAPTER_ID     = "terminal-adapter-1";
 const ADAPTER_TYPE   = "terminal";
 const DEFAULT_TIMEOUT_MS  = 15000;
 const MAX_OUTPUT_BYTES    = 512 * 1024;  // 512 KB
 
 let _counter  = 0;
-let _receipts = new Map();  // executionId → receipt (in-flight or completed)
+let _receipts = new Map();  // executionId → receipt (in-flight or completed) — capped at MAX_RECEIPTS
 let _active   = new Map();  // executionId → { child, cancel }
+
+const MAX_RECEIPTS = 1000;  // prevent unbounded growth over long uptime
+function _addReceipt(id, receipt) {
+  _receipts.set(id, receipt);
+  if (_receipts.size > MAX_RECEIPTS) {
+    // Evict oldest entry (Map preserves insertion order)
+    _receipts.delete(_receipts.keys().next().value);
+  }
+}
 
 // Parse command to [executable, ...args]
 function _parseCommand(command) {
@@ -65,7 +91,7 @@ function execute({
       duration: 0, timedOut: false, cancelled: false,
       timestamp: new Date().toISOString(),
     });
-    _receipts.set(executionId, receipt);
+    _addReceipt(executionId, receipt);
     return Promise.resolve(receipt);
   }
 
@@ -83,7 +109,7 @@ function execute({
         duration: 0, timedOut: false, cancelled: false,
         timestamp: new Date().toISOString(),
       });
-      _receipts.set(executionId, receipt);
+      _addReceipt(executionId, receipt);
       return Promise.resolve(receipt);
     }
     timeoutMs = Math.min(timeoutMs, policyResult.effectiveTimeoutMs);
@@ -98,7 +124,7 @@ function execute({
       duration: 0, timedOut: false, cancelled: false,
       timestamp: new Date().toISOString(),
     });
-    _receipts.set(executionId, receipt);
+    _addReceipt(executionId, receipt);
     return Promise.resolve(receipt);
   }
 
@@ -110,7 +136,7 @@ function execute({
     let timedOut  = false;
     let cancelled = false;
 
-    const mergedEnv = { ...process.env, ...env };
+    const mergedEnv = _sanitizeEnv(env);
     const child = spawn(validation.executable, validation.args, {
       cwd,
       env:   mergedEnv,
@@ -160,7 +186,7 @@ function execute({
         command: validation.executable, args: validation.args,
         timestamp: new Date().toISOString(),
       });
-      _receipts.set(executionId, receipt);
+      _addReceipt(executionId, receipt);
       resolve(receipt);
     }
 

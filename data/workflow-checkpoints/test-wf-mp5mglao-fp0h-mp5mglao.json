@@ -1,0 +1,18 @@
+{
+  "id": "test-wf-mp5mglao-fp0h-mp5mglao",
+  "name": "test-wf-mp5mglao-fp0h",
+  "startedAt": "2026-05-14T15:07:05.040Z",
+  "completedAt": "2026-05-14T15:07:05.944Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "retrying",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: keep retrying",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

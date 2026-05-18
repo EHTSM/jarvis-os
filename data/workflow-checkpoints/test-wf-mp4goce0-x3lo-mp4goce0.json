@@ -1,0 +1,18 @@
+{
+  "id": "test-wf-mp4goce0-x3lo-mp4goce0",
+  "name": "test-wf-mp4goce0-x3lo",
+  "startedAt": "2026-05-13T19:37:22.872Z",
+  "completedAt": "2026-05-13T19:37:23.782Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "retrying",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: keep retrying",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

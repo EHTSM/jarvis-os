@@ -99,7 +99,9 @@ if [ -f "$APP_DIR/.env" ]; then
     if [[ "$CURRENT_BASE" != "https://$DOMAIN" ]]; then
         warn "Updating BASE_URL in .env to https://$DOMAIN"
         sed -i "s|^BASE_URL=.*|BASE_URL=https://$DOMAIN|" "$APP_DIR/.env"
-        log "BASE_URL updated. Restart JARVIS: pm2 restart jarvis-os"
+        log "BASE_URL updated. IMPORTANT: Rebuild frontend to apply new domain:"
+        log "   npm run build:frontend"
+        log "Then restart JARVIS: pm2 restart jarvis-os"
     else
         log "BASE_URL already correct in .env"
     fi

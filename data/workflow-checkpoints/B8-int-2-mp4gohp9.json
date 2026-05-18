@@ -1,0 +1,20 @@
+{
+  "id": "B8-int-2-mp4gohp9",
+  "name": "B8-int-2",
+  "startedAt": "2026-05-13T19:37:29.757Z",
+  "completedAt": "2026-05-13T19:37:30.762Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "x",
+      "status": "failed",
+      "result": null,
+      "error": "fail",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

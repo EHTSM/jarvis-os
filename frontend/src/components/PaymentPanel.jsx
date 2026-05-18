@@ -55,7 +55,7 @@ function PayLinkSuccess({ link, name, phone, onDismiss }) {
   );
 }
 
-export default function Clients({ onMessage, whatsappConnected }) {
+export default function Clients({ onMessage, onToast, whatsappConnected }) {
   const [view,    setView]    = useState("main");   // "main" | "setup"
   const [form,    setForm]    = useState(() => {
     try {
@@ -99,8 +99,11 @@ export default function Clients({ onMessage, whatsappConnected }) {
       if (res.success && res.link) {
         setLink({ url: res.link, name: form.name, phone: form.phone });
         setForm(f => ({ ...f, name: "", phone: "" }));
+        onToast?.("success", `Payment link created for ${form.name}`);
       } else {
-        onMessage("error", res.error || "Could not generate link. Check that payments are configured.");
+        const msg = res.error || "Could not generate link. Check Razorpay credentials in .env";
+        onMessage("error", msg);
+        onToast?.("error", msg.slice(0, 72));
       }
     } catch (err) {
       onMessage("error", err.message);

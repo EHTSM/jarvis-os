@@ -1,0 +1,20 @@
+{
+  "id": "test-wf-mp4nif53-su5p-mp4nif53",
+  "name": "test-wf-mp4nif53-su5p",
+  "startedAt": "2026-05-13T22:48:43.816Z",
+  "completedAt": "2026-05-13T22:48:44.819Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "always-fail",
+      "status": "failed",
+      "result": null,
+      "error": "forced-fail-for-checkpoint",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

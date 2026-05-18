@@ -1,0 +1,20 @@
+{
+  "id": "B8-int-2-mp56hn64",
+  "name": "B8-int-2",
+  "startedAt": "2026-05-14T07:40:00.268Z",
+  "completedAt": "2026-05-14T07:40:01.272Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "x",
+      "status": "failed",
+      "result": null,
+      "error": "fail",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

@@ -3,6 +3,7 @@ const router     = require("express").Router();
 const wa         = require("../services/whatsappService");
 const crm        = require("../services/crmService");
 const controller = require("../controllers/jarvisController");
+const { requireAuth } = require("../middleware/authMiddleware");
 
 // Webhook verification (GET) — Meta sends this to confirm the endpoint.
 router.get("/whatsapp/webhook", (req, res) => {
@@ -14,14 +15,14 @@ router.get("/whatsapp/webhook", (req, res) => {
 // Incoming messages (POST) — handled by the full sales/intelligence pipeline.
 router.post("/whatsapp/webhook", controller.handleWhatsAppWebhook);
 
-router.post("/whatsapp/send", async (req, res) => {
+router.post("/whatsapp/send", requireAuth, async (req, res) => {
     const { phone, message } = req.body;
     if (!phone || !message) return res.status(400).json({ error: "phone and message required" });
     const result = await wa.sendMessage(phone, message);
     res.json(result);
 });
 
-router.post("/whatsapp/bulk", async (req, res) => {
+router.post("/whatsapp/bulk", requireAuth, async (req, res) => {
     const { message, statusFilter } = req.body;
     if (!message) return res.status(400).json({ error: "message required" });
     const leads = crm.getLeads(statusFilter || "new").filter(l => l.phone);

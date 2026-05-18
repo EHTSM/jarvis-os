@@ -9,34 +9,14 @@
  * existing executor.cjs via executionEngine's legacy fallback.
  */
 
+const path         = require("path");
 const orchestrator = require("./runtimeOrchestrator.cjs");
 const logger       = require("../../backend/utils/logger");
 
 // ── 1. Desktop Agent ──────────────────────────────────────────────
-// Capabilities: open_app, type_text, press_key, key_combo
-// maxConcurrent=1 — keyboard/mouse operations are inherently serial
-try {
-    const { DesktopAgent } = require("../desktopAgent.cjs");
-    const _da = new DesktopAgent();
-
-    orchestrator.registerAgent({
-        id:           "desktop",
-        capabilities: ["desktop"],
-        maxConcurrent: 1,
-        handler: async (task) => {
-            const type = task.type;
-            const p    = task.payload || {};
-            if (type === "open_app")  return _da.openApp(p.app || p.appName || "");
-            if (type === "type_text") return _da.typeText(p.text || "");
-            if (type === "press_key") return _da.pressKey(p.key || "enter");
-            if (type === "key_combo") return _da.pressKeyCombo(p.modifiers || [], p.key || "c");
-            return { success: false, message: `DesktopAgent: unhandled type "${type}"` };
-        },
-    });
-    logger.info("[Bootstrap] desktop agent registered");
-} catch (err) {
-    logger.warn("[Bootstrap] desktop agent skipped:", err.message);
-}
+// [Phase O] Removed from production bootstrap. Desktop automation is now an
+// optional plugin at plugins/local-desktop/ — disabled by default on VPS.
+// To re-enable, create a plugin loader that registers via orchestrator.registerAgent().
 
 // ── 2. Browser Agent ──────────────────────────────────────────────
 // Capabilities: web_search, open_url, named URL shortcuts
@@ -107,6 +87,22 @@ try {
     logger.info("[Bootstrap] dev agent registered");
 } catch (err) {
     logger.warn("[Bootstrap] dev agent skipped:", err.message);
+}
+
+// ── 6. Filesystem Adapter ─────────────────────────────────────────
+// Must be configured here — adapter blocks all I/O until configure() is called.
+// Read-only by default; write access is not granted to runtime-dispatched tasks.
+try {
+    const fsAdapter = require("./adapters/filesystemExecutionAdapter.cjs");
+    const projectRoot = path.resolve(__dirname, "../..");
+    const result = fsAdapter.configure(projectRoot, { writeAllowed: false });
+    if (result.configured) {
+        logger.info(`[Bootstrap] filesystem adapter configured — sandbox: ${projectRoot} (read-only)`);
+    } else {
+        logger.warn("[Bootstrap] filesystem adapter configure() rejected:", result.reason);
+    }
+} catch (err) {
+    logger.warn("[Bootstrap] filesystem adapter skipped:", err.message);
 }
 
 logger.info("[Bootstrap] Runtime agent registration complete");

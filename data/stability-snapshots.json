@@ -1,0 +1,66 @@
+{
+  "ts": "2026-05-15T05:22:57.345Z",
+  "count": 5,
+  "samples": [
+    {
+      "idx": 0,
+      "ts": 1778822567346,
+      "heapMb": 5,
+      "rssMb": 42.1,
+      "lagMs": 0,
+      "cpuPct": 113.9,
+      "fds": 21,
+      "httpMs": 7,
+      "httpOk": true,
+      "remoteHeap": 35.9
+    },
+    {
+      "idx": 1,
+      "ts": 1778822569365,
+      "heapMb": 5,
+      "rssMb": 45.5,
+      "lagMs": 2,
+      "cpuPct": 0.7,
+      "fds": 25,
+      "httpMs": 2,
+      "httpOk": true,
+      "remoteHeap": 35.9
+    },
+    {
+      "idx": 2,
+      "ts": 1778822571412,
+      "heapMb": 4.6,
+      "rssMb": 41.6,
+      "lagMs": 0,
+      "cpuPct": 0.4,
+      "fds": 25,
+      "httpMs": 1,
+      "httpOk": true,
+      "remoteHeap": 35.9
+    },
+    {
+      "idx": 3,
+      "ts": 1778822573452,
+      "heapMb": 4.8,
+      "rssMb": 42.2,
+      "lagMs": 1,
+      "cpuPct": 0.4,
+      "fds": 25,
+      "httpMs": 2,
+      "httpOk": true,
+      "remoteHeap": 35.9
+    },
+    {
+      "idx": 4,
+      "ts": 1778822575496,
+      "heapMb": 4.9,
+      "rssMb": 43.1,
+      "lagMs": 1,
+      "cpuPct": 0.4,
+      "fds": 25,
+      "httpMs": 6,
+      "httpOk": true,
+      "remoteHeap": 35.9
+    }
+  ]
+}

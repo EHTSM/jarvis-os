@@ -11,6 +11,11 @@ const logger = require("../backend/utils/logger");
 const { APP_MAP } = require("../backend/utils/parser");
 const p      = require("./primitives.cjs");
 
+// Lazy-load supervisor so toolAgent remains importable without the full runtime
+function _supervisor() {
+    return require("./runtime/adapters/executionAdapterSupervisor.cjs");
+}
+
 /**
  * @param {object} parsed  – output of parser.parseCommand()
  * @returns {Promise<{success:boolean, message:string, data?:any}|null>}
@@ -63,6 +68,65 @@ async function execute(parsed) {
                 return { success: r.success, message: r.success ? `Key combo: ${[...r.modifiers, r.key].join("+")}` : r.error };
             }
             return { success: false, message: `Unknown desktop action: ${action}` };
+        }
+
+        case "terminal": {
+            const command = parsed.command || "";
+            if (!command) return { success: false, message: "No command provided" };
+            try {
+                const record = await _supervisor().routeExecution({
+                    adapterType: "terminal",
+                    command,
+                });
+                const ok  = record.receipt?.ok ?? record.receipt?.success ?? false;
+                const out = record.receipt?.stdout || record.receipt?.stderr || record.reason || "";
+                logger.info(`[Tool] terminal ${record.status} — "${command.slice(0, 60)}"`);
+                return {
+                    success: ok,
+                    message: ok ? `$ ${command}\n${out}` : `Blocked or failed: ${out || record.receipt?.reason || record.status}`,
+                    stdout: record.receipt?.stdout,
+                    stderr: record.receipt?.stderr,
+                    exitCode: record.receipt?.exitCode,
+                };
+            } catch (err) {
+                logger.warn(`[Tool] terminal supervisor error: ${err.message}`);
+                return { success: false, message: `Terminal error: ${err.message}` };
+            }
+        }
+
+        case "create_file": {
+            const filePath = parsed.filePath || "";
+            if (!filePath) return { success: false, message: "No file path provided" };
+            try {
+                const record = await _supervisor().routeExecution({
+                    adapterType: "filesystem",
+                    command:     "write",
+                    filePath,
+                    content:     parsed.content || "",
+                    options:     { createDirs: true },
+                });
+                const ok = record.receipt?.success ?? false;
+                return { success: ok, message: ok ? `File created: ${filePath}` : `Failed to create file: ${record.receipt?.error || record.status}` };
+            } catch (err) {
+                return { success: false, message: `File create error: ${err.message}` };
+            }
+        }
+
+        case "read_file": {
+            const filePath = parsed.filePath || "";
+            if (!filePath) return { success: false, message: "No file path provided" };
+            try {
+                const record = await _supervisor().routeExecution({
+                    adapterType: "filesystem",
+                    command:     "read",
+                    filePath,
+                });
+                const ok      = record.receipt?.success ?? false;
+                const content = record.receipt?.content ?? "";
+                return { success: ok, message: ok ? content : `Cannot read file: ${record.receipt?.error || record.status}` };
+            } catch (err) {
+                return { success: false, message: `File read error: ${err.message}` };
+            }
         }
 
         case "note": {

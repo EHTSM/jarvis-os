@@ -77,10 +77,12 @@ async function executeTask(task, options = {}) {
         // If we have a registered agent, use it
         if (agent) {
             agent.acquireSlot();
+            // Provide a way for the handler to signal liveness
+            const extendedCtx = { ...ctx, heartbeat: () => agent.heartbeat() };
             const t0 = Date.now();
             try {
                 const result = await _withTimeout(
-                    agent.handler(task, ctx),
+                    agent.handler(task, extendedCtx),
                     timeoutMs,
                     `${agent.id}/${task.type}`
                 );

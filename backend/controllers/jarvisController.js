@@ -247,7 +247,7 @@ async function handleJarvis(req, res) {
         if (mode === "smart") {
             if (/\b(buy|pay|price|demo|purchase|payment|cost|interested|yes)\b/i.test(input)) mode = "sales";
             else if (/\s+(and|then)\s+.{4,}|\s*;\s*.{4,}|\s*\+\s*.{4,}/i.test(input)) mode = "intelligence";
-            else if (/\b(open|launch|search|find|type|note|remind|timer|get leads|calendar)\b/i.test(input) || /^(press|copy|paste|select all)(\s|$)/i.test(input)) mode = "execution";
+            else if (/\b(open|launch|search|find|type|note|remind|timer|get leads|calendar)\b/i.test(input) || /^(press|copy|paste|select all)(\s|$)/i.test(input) || /^(run|execute|terminal|shell|cmd)\s+/i.test(input) || /^(create|read|show|cat)\s+file\s+/i.test(input)) mode = "execution";
             else mode = "intelligence";
         }
         metricsStore.trackMode(mode);

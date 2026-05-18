@@ -1,0 +1,20 @@
+{
+  "id": "bench-recovery-1778744392879-1-mp56hhgv",
+  "name": "bench-recovery-1778744392879-1",
+  "startedAt": "2026-05-14T07:39:52.880Z",
+  "completedAt": "2026-05-14T07:39:53.882Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "bench-step",
+      "status": "failed",
+      "result": null,
+      "error": "bench-unknown",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

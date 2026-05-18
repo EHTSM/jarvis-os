@@ -209,6 +209,9 @@ function AppInner() {
           )}
           <div className={`status-dot ${online ? "online" : "offline"}`}
                title={online ? "Connected" : "Offline"} />
+          {!online && (
+            <span className="status-reconnect">Reconnecting…</span>
+          )}
         </div>
       </header>
 

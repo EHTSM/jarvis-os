@@ -10,13 +10,8 @@
  */
 
 const agentRouter       = require("./agentRouter.cjs");
-const VoiceAgent        = require("./voiceAgent.cjs");
-const { DesktopAgent }  = require("./desktopAgent.cjs");
-const { AgentFactory }  = require("./agentFactory.cjs");
-
-const voiceAgent    = new VoiceAgent();
-const desktopAgent  = new DesktopAgent();
-const agentFactory  = new AgentFactory();
+// [Phase O] VoiceAgent, DesktopAgent, AgentFactory removed from production.
+// Archived: plugins/voice-control/, plugins/local-desktop/, experimental/legacy-agents/
 
 // ── Automation Layer ─────────────────────────────────────────────
 const automationEngine   = require("./automation/automationEngine.cjs");
@@ -55,70 +50,11 @@ function _buildHandlers() {
             return browserAgent.run(task);
         },
 
-        voice: async (task) => {
-            const text        = task.payload?.text || "Speaking";
-            const voiceResult = await voiceAgent.speak(text);
-            return {
-                type:    "speak",
-                result:  voiceResult.success ? `Spoken: "${text.slice(0, 50)}"` : `Voice error: ${voiceResult.error}`,
-                success: voiceResult.success,
-                message: voiceResult.message
-            };
-        },
+        // [Phase O] voice handler removed — archived to plugins/voice-control/
+        voice: async () => ({ success: false, error: "Voice plugin not loaded. Enable via plugins/voice-control/" }),
 
-        desktop: async (task) => {
-            if (task.type === "open_app") {
-                // Single source of truth: same APP_MAP as execution pipeline (backend/utils/parser.js)
-                const { APP_MAP } = require("../backend/utils/parser.js");
-                const raw    = (task.payload?.app || "").toLowerCase().trim();
-                const appName = APP_MAP[raw] || task.payload?.app || "Unknown";
-                const desktopResult = await desktopAgent.openApp(appName);
-                return {
-                    type:    "open_app",
-                    result:  desktopResult.success ? `Opened: ${appName}` : `Failed to open: ${appName}`,
-                    success: desktopResult.success,
-                    app:     appName,
-                    error:   desktopResult.error
-                };
-            }
-            if (task.type === "type_text") {
-                const text         = task.payload?.text || "";
-                const speed        = task.payload?.speed || 50;
-                const desktopResult = await desktopAgent.typeText(text, speed);
-                return {
-                    type:        "type_text",
-                    result:      desktopResult.success ? `Typed: ${text.slice(0, 50)}` : `Type error: ${desktopResult.error}`,
-                    success:     desktopResult.success,
-                    typed_chars: desktopResult.typed_chars || 0,
-                    error:       desktopResult.error
-                };
-            }
-            if (task.type === "press_key") {
-                const key          = task.payload?.key || "enter";
-                const desktopResult = await desktopAgent.pressKey(key);
-                return {
-                    type:    "press_key",
-                    result:  desktopResult.success ? `Pressed: ${key}` : `Key press error: ${desktopResult.error}`,
-                    success: desktopResult.success,
-                    key,
-                    error:   desktopResult.error
-                };
-            }
-            if (task.type === "key_combo") {
-                const mods         = task.payload?.modifiers || [];
-                const key          = task.payload?.key || "c";
-                const desktopResult = await desktopAgent.pressKeyCombo(mods, key);
-                const combo        = `${mods.join("+")}+${key}`;
-                return {
-                    type:    "key_combo",
-                    result:  desktopResult.success ? `Key combo: ${combo}` : `Key combo error: ${desktopResult.error}`,
-                    success: desktopResult.success,
-                    combo,
-                    error:   desktopResult.error
-                };
-            }
-            return { success: false, error: "Unknown desktop task type" };
-        },
+        // [Phase O] desktop handler removed — archived to plugins/local-desktop/
+        desktop: async () => ({ success: false, error: "Desktop plugin not loaded. Enable via plugins/local-desktop/" }),
 
         scheduler: async (task) => ({
             type:          "trigger",
@@ -183,67 +119,8 @@ function _buildHandlers() {
             return { type: task.type, result: "System task acknowledged" };
         },
 
-        agent_factory: async (task) => {
-            if (task.type === "list_agents") {
-                const agentList   = agentFactory.listAgents();
-                const agentSummary = agentList.agents.length === 0
-                    ? "No agents created yet"
-                    : agentList.agents.map(a => `• ${a.name} (${a.type})`).join("\n");
-                return {
-                    type:    "list_agents",
-                    result:  `📦 Total Agents: ${agentList.total}\n${agentSummary}`,
-                    success: true,
-                    agents:  agentList.agents,
-                    total:   agentList.total
-                };
-            }
-
-            if (task.type === "execute_agent") {
-                const agentName      = task.payload?.agent || "";
-                const input          = task.payload?.input || task.payload;
-                const executionResult = await agentFactory.executeAgent(agentName, input);
-                return {
-                    type:    "execute_agent",
-                    result:  executionResult.success
-                        ? `✅ Agent "${agentName}" executed: ${JSON.stringify(executionResult.result).slice(0, 100)}`
-                        : `❌ Failed to execute agent: ${executionResult.error}`,
-                    success: executionResult.success,
-                    agent:   agentName,
-                    output:  executionResult.result,
-                    error:   executionResult.error
-                };
-            }
-
-            if (task.type === "create_agent") {
-                const specification = task.payload?.specification || "";
-                const nameMatch     = specification.match(/(?:called?|named?|for)\s+(\w+)/i);
-                const agentName     = nameMatch ? nameMatch[1].toLowerCase() : `agent_${Date.now()}`;
-
-                let agentType = "processor";
-                if (specification.includes("api") || specification.includes("fetch") || specification.includes("http")) {
-                    agentType = "api";
-                } else if (specification.includes("schedule") || specification.includes("daily") || specification.includes("recurring")) {
-                    agentType = "scheduler";
-                } else if (specification.includes("analyze") || specification.includes("analysis")) {
-                    agentType = "analyzer";
-                }
-
-                const spec           = { description: specification, config: { specification }, inputType: "string", outputType: "object" };
-                const creationResult = await agentFactory.createAgent(agentName, agentType, spec);
-                return {
-                    type:       "create_agent",
-                    result:     creationResult.success
-                        ? `✨ Created agent "${creationResult.agent}" (${creationResult.type})`
-                        : `❌ Failed to create agent: ${creationResult.error}`,
-                    success:    creationResult.success,
-                    agent:      creationResult.agent,
-                    agent_type: creationResult.type,
-                    error:      creationResult.error
-                };
-            }
-
-            return { success: false, error: "Unknown agent_factory task type" };
-        },
+        // [Phase O] agent_factory removed — archived to experimental/legacy-agents/
+        agent_factory: async () => ({ success: false, error: "Agent factory disabled. Archived to experimental/legacy-agents/" }),
 
         automation: async (task) => {
             const automationAgent = require("./automationAgent.cjs");
@@ -324,31 +201,10 @@ function _buildHandlers() {
         brandVoice:         async (task) => agentExecutorMod.run("brandVoice",         task),
         reputationManager:  async (task) => agentExecutorMod.run("reputationManager",  task),
 
-        // ── Autonomous System Layer ──────────────────────────────────
-        autonomous:           async (task) => {
-            const autonomousCore = require("./autonomous/autonomousCore.cjs");
-            return autonomousCore.runTask(task);
-        },
-        autonomousCore:          async (task) => agentExecutorMod.run("autonomousCore",         task),
-        aiArmyManager:           async (task) => agentExecutorMod.run("aiArmyManager",          task),
-        selfBusiness:            async (task) => agentExecutorMod.run("selfBusinessAgent",      task),
-        startupBuilder:          async (task) => agentExecutorMod.run("startupBuilderAgent",    task),
-        productBuilder:          async (task) => agentExecutorMod.run("productBuilderAgent",    task),
-        autoSaas:                async (task) => agentExecutorMod.run("autoSaasCreator",        task),
-        marketLaunch:            async (task) => agentExecutorMod.run("marketLaunchAgent",      task),
-        growthLoop:              async (task) => agentExecutorMod.run("growthLoopEngine",       task),
-        feedbackAnalyzer:        async (task) => agentExecutorMod.run("feedbackAnalyzerPro",    task),
-        selfOptimization:        async (task) => agentExecutorMod.run("selfOptimizationEngine", task),
-        aiDecision:              async (task) => agentExecutorMod.run("aiDecisionMaker",        task),
-        scenarioSim:             async (task) => agentExecutorMod.run("scenarioSimulator",      task),
-        riskPredict:             async (task) => agentExecutorMod.run("riskPredictionEngine",   task),
-        opportunityFind:         async (task) => agentExecutorMod.run("opportunityFinder",      task),
-        innovation:              async (task) => agentExecutorMod.run("innovationEngine",       task),
-        competitorAnalysis:      async (task) => agentExecutorMod.run("competitorAI",           task),
-        globalExpansion:         async (task) => agentExecutorMod.run("globalExpansionAgent",   task),
-        multiLang:               async (task) => agentExecutorMod.run("multiLanguageExpansion", task),
-        selfLearning:            async (task) => agentExecutorMod.run("selfLearningBrainV2",    task),
-        jarvisEvolution:         async (task) => agentExecutorMod.run("jarvisEvolutionCore",    task),
+        // [Phase O] Autonomous System Layer removed from production runtime.
+        // All 22 modules archived to experimental/autonomous-research/
+        // These handlers return disabled stubs — no code is loaded.
+        autonomous:           async () => ({ success: false, error: "Autonomous systems archived to experimental/autonomous-research/" }),
 
         // ── Personal Life OS Layer ───────────────────────────────────
         healthTracker:       async (task) => agentExecutorMod.run("healthTrackerAgent",       task),
@@ -2096,4 +1952,4 @@ async function executorAgent(task) {
     return result;
 }
 
-module.exports = { executorAgent };
+module.exports = { executorAgent, execute: executorAgent };

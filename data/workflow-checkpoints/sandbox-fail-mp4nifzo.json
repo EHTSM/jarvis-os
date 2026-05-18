@@ -1,0 +1,20 @@
+{
+  "id": "sandbox-fail-mp4nifzo",
+  "name": "sandbox-fail",
+  "startedAt": "2026-05-13T22:48:44.916Z",
+  "completedAt": "2026-05-13T22:48:45.922Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "fail",
+      "status": "failed",
+      "result": null,
+      "error": "kaboom",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

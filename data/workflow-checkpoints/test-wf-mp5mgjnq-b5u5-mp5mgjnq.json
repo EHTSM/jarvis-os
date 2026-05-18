@@ -1,0 +1,20 @@
+{
+  "id": "test-wf-mp5mgjnq-b5u5-mp5mgjnq",
+  "name": "test-wf-mp5mgjnq-b5u5",
+  "startedAt": "2026-05-14T15:07:02.918Z",
+  "completedAt": "2026-05-14T15:07:03.924Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "always-fail",
+      "status": "failed",
+      "result": null,
+      "error": "forced-fail-for-checkpoint",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

@@ -1,4 +1,8 @@
 const axios = require("axios");
+// Only emit verbose pipeline logs when LOG_LEVEL=debug or DEBUG_PIPELINE=true
+const _pipelineDebug = process.env.DEBUG_PIPELINE === "true" || (process.env.LOG_LEVEL || "").toLowerCase() === "debug";
+const _dbg = _pipelineDebug ? console.log : () => {};
+
 const { plannerAgent } = require("./agents/planner.cjs");
 const { executorAgent } = require("./agents/executor.cjs");
 const analyzerAgent = (data) => ({ analyzed: true, ...data });
@@ -98,7 +102,7 @@ async function orchestrator(input) {
     const tasks = plannerAgent(input, contextData);
     const results = [];
     const logs = [];
-    console.log(`[Planner] input="${input.slice(0,60)}" → ${tasks.length} task(s): ${tasks.map(t=>t.type).join(", ")}`);
+    _dbg(`[Planner] input="${input.slice(0,60)}" → ${tasks.length} task(s): ${tasks.map(t=>t.type).join(", ")}`);
 
     // 💰 MONEY INTENT DETECTION
     const moneyIntent = await moneyEngine(input);
@@ -143,13 +147,13 @@ async function orchestrator(input) {
 
         logs.push(`Task ${taskIndex}/${tasks.length}: Processing type="${task.type}" label="${task.label}"`);
 
-        console.log(`[Executor] step ${taskIndex}/${tasks.length} type="${task.type}" payload="${JSON.stringify(task.payload||{}).slice(0,60)}"`);
+        _dbg(`[Executor] step ${taskIndex}/${tasks.length} type="${task.type}" payload="${JSON.stringify(task.payload||{}).slice(0,60)}"`);
         let taskResult = await executorAgent(task);
 
         // ── Stop pipeline on hard failure ────────────────────────
         if (taskResult && taskResult.success === false && !taskResult.type?.includes("ai")) {
             logs.push(`Step ${taskIndex} FAILED (${task.type}): ${taskResult.result || taskResult.error || "unknown error"} — pipeline stopped`);
-            console.log(`[Executor] step ${taskIndex} FAILED — stopping pipeline`);
+            _dbg(`[Executor] step ${taskIndex} FAILED — stopping pipeline`);
             results.push({ task, result: taskResult, failed: true });
             break;
         }
@@ -182,7 +186,7 @@ async function orchestrator(input) {
             const systemPrompt = contextPrompt || "You are Jarvis AI with memory and context awareness. You plan tasks, execute safe actions, and answer unknown queries using AI.";
             // Use enrichedInput (with RAG context) for AI calls — raw input for intent parsing
             const aiQuery = task.payload?.query || enrichedInput || input;
-            console.log(`[Executor] ai fallback for task="${task.type}" query="${aiQuery.slice(0,60)}"`);
+            _dbg(`[Executor] ai fallback for task="${task.type}" query="${aiQuery.slice(0,60)}"`);
             const aiResponse = await callGroqAI(aiQuery, contextMessages, systemPrompt);
             taskResult = {
                 type: "ai",
@@ -269,7 +273,7 @@ async function orchestrator(input) {
         // Index immediately for future vector search
         vectorSearch.index(saved);
         logs.push("💾 Memory saved");
-        console.log(`[Memory] saved — taskType="${primaryTask?.type}" success=${interactionSuccess}`);
+        _dbg(`[Memory] saved — taskType="${primaryTask?.type}" success=${interactionSuccess}`);
     } catch (memErr) {
         logs.push(`⚠️  Memory save failed: ${memErr.message}`);
     }
@@ -313,7 +317,7 @@ async function orchestrator(input) {
 
 async function gateway(_mode, opts = {}) {
     const input = opts.input || "";
-    console.log(`[Gateway] received input="${input.slice(0,60)}"`);
+    _dbg(`[Gateway] received input="${input.slice(0,60)}"`);
 
     const result = await orchestrator(input);
 
@@ -363,7 +367,7 @@ async function gateway(_mode, opts = {}) {
         replySource = "multi-step";
     }
 
-    console.log(`[Gateway] returning source="${replySource}" steps=${allResults.length} reply_len=${reply.length}`);
+    _dbg(`[Gateway] returning source="${replySource}" steps=${allResults.length} reply_len=${reply.length}`);
     return { ...result, reply, response: reply, steps: allResults.length };
 }
 

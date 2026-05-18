@@ -1,0 +1,18 @@
+{
+  "id": "test-wf-mp4fws7c-tn6y-mp4fws7d",
+  "name": "test-wf-mp4fws7c-tn6y",
+  "startedAt": "2026-05-13T19:15:57.001Z",
+  "completedAt": "2026-05-13T19:15:57.909Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "retrying",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: keep retrying",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

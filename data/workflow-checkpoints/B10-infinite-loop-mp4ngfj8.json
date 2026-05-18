@@ -1,0 +1,18 @@
+{
+  "id": "B10-infinite-loop-mp4ngfj8",
+  "name": "B10-infinite-loop",
+  "startedAt": "2026-05-13T22:47:11.012Z",
+  "completedAt": "2026-05-13T22:47:11.015Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "infinite-loop-guard",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: always broken",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

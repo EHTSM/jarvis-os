@@ -126,3 +126,16 @@
   background: var(--border);
   flex-shrink: 0;
 }
+
+.dash-loading { padding: 16px 0; display: flex; flex-direction: column; gap: 12px; }
+.dash-skeleton {
+  height: 72px; border-radius: 10px;
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface2, #1a1a2e) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+.dash-skeleton--sm { height: 44px; }
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

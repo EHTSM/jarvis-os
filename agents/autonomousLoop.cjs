@@ -19,6 +19,9 @@ const STUCK_AGE_HOURS = 2;        // abandon pending tasks older than this
 let _consecutiveTickErrors = 0;
 const MAX_CONSECUTIVE_ERRORS = 5;
 
+// Depth guard — prevents tick from re-entering while a dispatch is in flight
+let _dispatching = false;
+
 // ── Repeated-failure tracker (in-memory, session-scoped) ─────────────
 // Maps input-prefix → { count, lastError, lastTs }
 const _failureTracker = new Map();
@@ -170,7 +173,7 @@ async function _runTask(task) {
 
         const elapsed = Date.now() - _taskStart;
         _recordExecTiming(task, elapsed, true);
-        console.log(`[AutoLoop] DONE  task ${task.id} (${elapsed}ms)`);
+        if (process.env.DEBUG === "1") { const logger = require("../backend/utils/logger"); logger.debug(`[AutoLoop] DONE  task ${task.id} (${elapsed}ms)`); }
         return { success: true, summary };
     } catch (err) {
         const elapsed = Date.now() - _taskStart;
@@ -213,14 +216,30 @@ async function _runTask(task) {
 
 // ── Poll tick ────────────────────────────────────────────────────────
 async function _tick() {
-    // Sweep for tasks stuck in pending before executing new work
-    taskQueue.abandonStuckTasks(STUCK_AGE_HOURS);
+    if (_dispatching) return;   // skip if previous tick still running
 
-    const due = taskQueue.getDuePending();
-    if (due.length === 0) return;
-    console.log(`[AutoLoop] tick — ${due.length} task(s) due`);
-    for (const task of due) {
-        await _runTask(task);
+    // Respect emergency stop — governor gates runtimeOrchestrator AND autonomousLoop
+    try {
+        const governor = require("./runtime/control/runtimeEmergencyGovernor.cjs");
+        if (governor.isEmergencyActive()) {
+            console.log("[AutoLoop] EMERGENCY STOP active — tick suppressed");
+            return;
+        }
+    } catch { /* non-critical — never prevent normal operation for missing governor */ }
+
+    _dispatching = true;
+    try {
+        // Sweep for tasks stuck in pending before executing new work
+        taskQueue.abandonStuckTasks(STUCK_AGE_HOURS);
+
+        const due = taskQueue.getDuePending();
+        if (due.length === 0) return;
+        console.log(`[AutoLoop] tick — ${due.length} task(s) due`);
+        for (const task of due) {
+            await _runTask(task);
+        }
+    } finally {
+        _dispatching = false;
     }
 }
 

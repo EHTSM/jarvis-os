@@ -1,0 +1,18 @@
+{
+  "id": "test-wf-mp5b2hk3-jpf2-mp5b2hk3",
+  "name": "test-wf-mp5b2hk3-jpf2",
+  "startedAt": "2026-05-14T09:48:11.235Z",
+  "completedAt": "2026-05-14T09:48:12.138Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "retrying",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: keep retrying",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

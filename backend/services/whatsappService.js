@@ -74,11 +74,11 @@ async function sendMessage(phone, text, retries = 2) {
             const detail = err.response?.data?.error?.message || err.message;
             const status = err.response?.status;
 
-            // Auth errors: set cooldown so automation stops hammering Meta for the next hour.
-            if (status === 401 || status === 403) {
+            // Auth/Config errors: set cooldown so automation stops hammering Meta for the next hour.
+            if (status === 400 || status === 401 || status === 403 || status === 404) {
                 _authCooldownUntil = Date.now() + AUTH_COOLDOWN_MS;
-                logger.error(`[WA] Auth error (${status}) — pausing WA sends for 1 hour. Regenerate token in Meta Business Manager > WhatsApp > Accounts.`);
-                return { success: false, error: `Auth error: ${detail}` };
+                logger.error(`[WA] Permanent/Config error (${status}) — pausing WA sends for 1 hour. Fix .env (WA_PHONE_ID/WA_TOKEN) and restart.`);
+                return { success: false, error: `Config error: ${detail}` };
             }
 
             if (attempt < retries) {

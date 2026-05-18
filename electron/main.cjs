@@ -111,7 +111,14 @@ ipcMain.handle("create-floating-window", () => {
 });
 
 // ── Lifecycle ──────────────────────────────────────────────────────
-app.whenReady().then(() => { createWindow(); createMenu(); });
+app.whenReady().then(() => { createWindow(); createMenu();
+  // Signal renderer that the runtime is fully initialized
+  if (mainWindow) {
+    mainWindow.webContents.once('did-finish-load', () => {
+      mainWindow.webContents.send('runtime-ready');
+    });
+  }
+});
 app.on("window-all-closed", () => { if (process.platform !== "darwin") app.quit(); });
 app.on("activate",          () => { if (!mainWindow) createWindow(); });
 

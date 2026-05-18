@@ -1,0 +1,20 @@
+{
+  "id": "rollback-test-mp49x6mr",
+  "name": "rollback-test",
+  "startedAt": "2026-05-13T16:28:18.003Z",
+  "completedAt": "2026-05-13T16:28:18.035Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "risky-fix",
+      "status": "failed",
+      "result": null,
+      "error": "listen EADDRINUSE :::3000",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "port-find-free",
+      "_lastRecoveryType": "port_conflict"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "B10-bounded-mp4ltjh7",
+  "name": "B10-bounded",
+  "startedAt": "2026-05-13T22:01:23.419Z",
+  "completedAt": "2026-05-13T22:01:23.726Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "bounded-failure",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: test",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

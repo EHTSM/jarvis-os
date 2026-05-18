@@ -1,0 +1,18 @@
+{
+  "id": "test-wf-mp5adk95-gtoj-mp5adk95",
+  "name": "test-wf-mp5adk95-gtoj",
+  "startedAt": "2026-05-14T09:28:48.329Z",
+  "completedAt": "2026-05-14T09:28:49.233Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "retrying",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: keep retrying",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

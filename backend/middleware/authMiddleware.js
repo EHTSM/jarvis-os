@@ -76,4 +76,12 @@ function requireAuth(req, res, next) {
   next();
 }
 
-module.exports = { requireAuth, signJWT, verifyJWT, COOKIE_NAME, TOKEN_EXPIRY };
+// Requires a valid session AND the operator role.
+// Compose after requireAuth — assumes req.user is already populated.
+function operatorOnly(req, res, next) {
+  if (!req.user) return res.status(401).json({ error: "Unauthorized" });
+  if (req.user.role !== "operator") return res.status(403).json({ error: "Forbidden — operator access required" });
+  next();
+}
+
+module.exports = { requireAuth, operatorOnly, signJWT, verifyJWT, COOKIE_NAME, TOKEN_EXPIRY };

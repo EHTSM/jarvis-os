@@ -1,0 +1,18 @@
+{
+  "id": "test-wf-mp4ngz5u-r6h1-mp4ngz5u",
+  "name": "test-wf-mp4ngz5u-r6h1",
+  "startedAt": "2026-05-13T22:47:36.450Z",
+  "completedAt": "2026-05-13T22:47:37.357Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "retrying",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: keep retrying",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}

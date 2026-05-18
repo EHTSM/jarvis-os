@@ -1,0 +1,20 @@
+{
+  "id": "test-wf-mp4edgem-zjqv-mp4edgen",
+  "name": "test-wf-mp4edgem-zjqv",
+  "startedAt": "2026-05-13T18:32:55.631Z",
+  "completedAt": "2026-05-13T18:32:56.637Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "always-fail",
+      "status": "failed",
+      "result": null,
+      "error": "forced-fail-for-checkpoint",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

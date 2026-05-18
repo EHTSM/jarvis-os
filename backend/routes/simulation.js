@@ -5,15 +5,17 @@ const payment    = require("../services/paymentService");
 const wa         = require("../services/whatsappService");
 const ai         = require("../services/aiService");
 const automation = require("../services/automationService");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
+const operatorAudit = require("../middleware/operatorAudit");
 
-router.post("/send-followup", async (req, res) => {
+router.post("/send-followup", requireAuth, operatorOnly, operatorAudit, async (req, res) => {
     const { phone, message } = req.body;
     if (!phone) return res.status(400).json({ error: "phone required" });
     const result = await automation.sendManualFollowUp(phone, message);
     res.json(result);
 });
 
-router.post("/simulate/full-flow", async (req, res) => {
+router.post("/simulate/full-flow", requireAuth, operatorOnly, operatorAudit, async (req, res) => {
     const { phone = "919999999999", name = "Test User" } = req.body;
     const steps = [];
 

@@ -53,14 +53,13 @@ function registerProcess(pid, {
   return { registered: true, registrationId, pid };
 }
 
-// Mark process as terminated (called after it exits naturally)
+// Mark process as terminated and remove it from tracking.
 function deregisterProcess(registrationId, { exitCode = null } = {}) {
   const r = _processes.get(registrationId);
   if (!r) return { deregistered: false, reason: "registration_not_found" };
-  r.alive         = false;
-  r.terminatedAt  = new Date().toISOString();
-  r.exitCode      = exitCode ?? null;
-  return { deregistered: true, registrationId, pid: r.pid };
+  const pid = r.pid;
+  _processes.delete(registrationId);
+  return { deregistered: true, registrationId, pid, exitCode: exitCode ?? null };
 }
 
 // Check if a tracked process is still alive
@@ -107,9 +106,8 @@ function cleanupOrphans({ nowMs = Date.now() } = {}) {
       if (ttlExpired && _isAlive(r.pid)) {
         try { process.kill(r.pid, "SIGTERM"); } catch (_) {}
       }
-      r.alive        = false;
-      r.terminatedAt = new Date(nowMs).toISOString();
       cleaned.push({ registrationId: regId, pid: r.pid, reason });
+      _processes.delete(regId);
     }
   }
   return { cleaned: cleaned.length, details: cleaned };
@@ -137,6 +135,10 @@ function getLifecycleMetrics() {
   for (const [, r] of _processes) r.alive ? alive++ : terminated++;
   return { total: _processes.size, alive, terminated, maxTracked: MAX_TRACKED };
 }
+
+// Periodic cleanup: sweep TTL-expired and dead processes every 5 minutes.
+// Prevents Map from growing past MAX_TRACKED on long uptimes.
+setInterval(() => cleanupOrphans(), 5 * 60 * 1000).unref();
 
 function reset() {
   _counter   = 0;

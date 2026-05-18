@@ -12,6 +12,11 @@ const MAX_LIST_ENTRIES = 1000;
 
 let _counter     = 0;
 let _receipts    = new Map();
+const MAX_RECEIPTS = 1000;
+function _addReceipt(r) {
+  _receipts.set(r.receiptId, r);
+  if (_receipts.size > MAX_RECEIPTS) _receipts.delete(_receipts.keys().next().value);
+}
 let _sandboxRoot = null;    // must be configured before use
 let _writeAllowed = false;
 
@@ -36,7 +41,7 @@ function _receipt(op, filePath, result) {
     reason:   result.reason ?? null,
     timestamp: new Date().toISOString(),
   });
-  _receipts.set(r.receiptId, r);
+  _addReceipt(r);
   return r;
 }
 

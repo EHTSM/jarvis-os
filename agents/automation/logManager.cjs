@@ -4,17 +4,27 @@
  */
 
 const LEVELS = { DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3 };
-const MIN_LEVEL = LEVELS[process.env.LOG_LEVEL?.toUpperCase()] ?? LEVELS.INFO;
+// Default to WARN so INFO-level automation chatter stays quiet in production.
+// Set LOG_LEVEL=info or DEBUG_PIPELINE=true to restore verbose output.
+const MIN_LEVEL = LEVELS[process.env.LOG_LEVEL?.toUpperCase()] ??
+    (process.env.DEBUG_PIPELINE === "true" ? LEVELS.DEBUG : LEVELS.WARN);
 
 const _history = []; // in-memory ring buffer (last 500 entries)
 const MAX_HISTORY = 500;
 
 function _sink(entry) {
-    if (entry.level === "ERROR") console.error(JSON.stringify(entry));
-    else console.log(JSON.stringify(entry));
-
+    // Store structured; output human-readable to console
     _history.push(entry);
     if (_history.length > MAX_HISTORY) _history.shift();
+
+    const { ts, level, msg, ...rest } = entry;
+    const time  = ts.slice(11, 19); // HH:MM:SS
+    const extra = Object.keys(rest).length ? " " + JSON.stringify(rest) : "";
+    const line  = `[${time}] [${level.padEnd(5)}] [Automation] ${msg}${extra}`;
+
+    if (level === "ERROR") console.error(line);
+    else if (level === "WARN") console.warn(line);
+    else console.log(line);
 }
 
 function log(level, message, data = {}) {

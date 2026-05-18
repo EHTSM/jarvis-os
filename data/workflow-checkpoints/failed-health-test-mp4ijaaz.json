@@ -1,0 +1,31 @@
+{
+  "id": "failed-health-test-mp4ijaaz",
+  "name": "failed-health-test",
+  "startedAt": "2026-05-13T20:29:26.123Z",
+  "completedAt": "2026-05-13T20:29:27.127Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "ok",
+      "status": "completed",
+      "result": {
+        "done": true
+      },
+      "error": null,
+      "attempts": 1,
+      "completedAt": "2026-05-13T20:29:26.123Z",
+      "recoveries": 0
+    },
+    {
+      "name": "fail",
+      "status": "failed",
+      "result": null,
+      "error": "permanent failure",
+      "attempts": 2,
+      "completedAt": null,
+      "recoveries": 1,
+      "_lastStrategyId": "unknown-log-and-wait",
+      "_lastRecoveryType": "unknown"
+    }
+  ]
+}

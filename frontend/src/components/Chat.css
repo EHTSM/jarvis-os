@@ -138,6 +138,23 @@
 }
 .clear-btn:hover { color: var(--danger); border-color: var(--danger); }
 
+/* Code/terminal output block */
+.msg-code {
+  font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: #0a0a14;
+  border: 1px solid #1e1e2e;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin: 0;
+  color: #a8ff78;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
 /* ── Mobile ────────────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .chat-messages  { padding: 12px; gap: 8px; }

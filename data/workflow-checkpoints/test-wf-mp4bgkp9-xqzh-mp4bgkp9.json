@@ -1,0 +1,18 @@
+{
+  "id": "test-wf-mp4bgkp9-xqzh-mp4bgkp9",
+  "name": "test-wf-mp4bgkp9-xqzh",
+  "startedAt": "2026-05-13T17:11:22.317Z",
+  "completedAt": "2026-05-13T17:11:23.228Z",
+  "status": "failed",
+  "steps": [
+    {
+      "name": "retrying",
+      "status": "failed",
+      "result": null,
+      "error": "SyntaxError: keep retrying",
+      "attempts": 3,
+      "completedAt": null,
+      "recoveries": 0
+    }
+  ]
+}
