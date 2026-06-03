@@ -27,17 +27,23 @@ import PricingPage           from "./components/PricingPage.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import "./App.css";
 
+// Web: 5 primary tabs — secondary modules in "More" overflow
 const TABS = [
-  { id: "chat",       label: "Ask Ooplix"    },
-  { id: "overview",   label: "Overview"      },
-  { id: "runtime",    label: "Control Room", featured: true },
-  { id: "insights",   label: "Pipeline"      },
-  { id: "activity",   label: "History"       },
-  { id: "clients",    label: "Contacts"      },
-  { id: "personal",   label: "Personal"      },
-  { id: "business",   label: "Business"      },
-  { id: "developer",  label: "Developer"     },
-  { id: "enterprise", label: "Enterprise"    },
+  { id: "runtime",  label: "Control Room", featured: true },
+  { id: "chat",     label: "Intelligence"  },
+  { id: "insights", label: "Pipeline"      },
+  { id: "clients",  label: "Contacts"      },
+  { id: "more",     label: "More ▾"        },
+];
+
+// Secondary tabs shown in the More dropdown
+const MORE_TABS = [
+  { id: "overview",   label: "Overview"    },
+  { id: "activity",   label: "History"     },
+  { id: "personal",   label: "Personal"    },
+  { id: "business",   label: "Business"    },
+  { id: "developer",  label: "Developer"   },
+  { id: "enterprise", label: "Enterprise"  },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -96,17 +102,13 @@ const _IS_DESKTOP = _isDesktopShell();
 const _IS_SAAS    = _isSaasApp();
 const _PRODUCT   = _IS_DESKTOP ? "desktop" : _IS_SAAS ? "saas" : "public";
 
-// Tabs shown in desktop shell: cockpit-focused, no marketing/onboarding tabs
+// Desktop: same 5-tab structure — runtime is already default here
 const DESKTOP_TABS = [
-  { id: "runtime",    label: "Control Room", featured: true },
-  { id: "chat",       label: "Ask Ooplix"    },
-  { id: "insights",   label: "Pipeline"      },
-  { id: "activity",   label: "History"       },
-  { id: "clients",    label: "Contacts"      },
-  { id: "personal",   label: "Personal"      },
-  { id: "business",   label: "Business"      },
-  { id: "developer",  label: "Developer"     },
-  { id: "enterprise", label: "Enterprise"    },
+  { id: "runtime",  label: "Control Room", featured: true },
+  { id: "chat",     label: "Intelligence"  },
+  { id: "insights", label: "Pipeline"      },
+  { id: "clients",  label: "Contacts"      },
+  { id: "more",     label: "More ▾"        },
 ];
 
 function AppInner() {
@@ -120,8 +122,9 @@ function AppInner() {
   const [input,   setInput]   = useState("");
   const [loading, setLoading] = useState(false);
   const [online,  setOnline]  = useState(false);
-  // Desktop shell: default to cockpit tab; web: default to chat
-  const [tab,     setTab]     = useState(_IS_DESKTOP ? "runtime" : "chat");
+  // Both web and desktop default to Control Room — it IS the product
+  const [tab,      setTab]      = useState("runtime");
+  const [moreOpen, setMoreOpen] = useState(false);
   const [stats,     setStats]     = useState(null);
   const [opsData,   setOpsData]   = useState(null);
   const [toasts,    setToasts]    = useState([]);
@@ -354,16 +357,48 @@ function AppInner() {
         </div>
       </header>
 
-      <nav className="tabs">
-        {(_IS_DESKTOP ? DESKTOP_TABS : TABS).map(t => (
-          <button
-            key={t.id}
-            className={`tab${tab === t.id ? " active" : ""}${t.featured ? " tab--featured" : ""}`}
-            onClick={() => setTab(t.id)}
-          >
-            {t.label}
-          </button>
-        ))}
+      <nav className="tabs" onClick={() => setMoreOpen(false)}>
+        {(_IS_DESKTOP ? DESKTOP_TABS : TABS).map(t => {
+          // "More" tab — renders a dropdown of secondary tabs
+          if (t.id === "more") {
+            const secondaryActive = MORE_TABS.some(m => m.id === tab);
+            return (
+              <div key="more" className="tab-more-wrap" onClick={e => e.stopPropagation()}>
+                <button
+                  className={`tab tab--more${secondaryActive ? " active" : ""}${moreOpen ? " tab--more-open" : ""}`}
+                  onClick={() => setMoreOpen(o => !o)}
+                  aria-haspopup="true"
+                  aria-expanded={moreOpen}
+                >
+                  {secondaryActive ? (MORE_TABS.find(m => m.id === tab)?.label ?? "More") + " ▾" : "More ▾"}
+                </button>
+                {moreOpen && (
+                  <div className="tab-more-menu" role="menu">
+                    {MORE_TABS.map(m => (
+                      <button
+                        key={m.id}
+                        className={`tab-more-item${tab === m.id ? " active" : ""}`}
+                        role="menuitem"
+                        onClick={() => { setTab(m.id); setMoreOpen(false); }}
+                      >
+                        {m.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          }
+          return (
+            <button
+              key={t.id}
+              className={`tab${tab === t.id ? " active" : ""}${t.featured ? " tab--featured" : ""}`}
+              onClick={() => setTab(t.id)}
+            >
+              {t.label}
+            </button>
+          );
+        })}
       </nav>
 
       {tab !== "runtime" && !_IS_DESKTOP && (
