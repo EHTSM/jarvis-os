@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import "./Logs.css";
 
 function _timeAgo(isoStr) {
@@ -73,6 +73,89 @@ function PipelineRow({ label, value, color, of: total }) {
   );
 }
 
+function _buildTimeline(autoStats, crm) {
+  const events = [];
+
+  // Lead additions from crm leads array (sorted by createdAt)
+  if (Array.isArray(crm?.leads)) {
+    crm.leads
+      .filter(l => l.createdAt)
+      .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+      .slice(0, 6)
+      .forEach(l => {
+        events.push({ ts: new Date(l.createdAt).getTime(), type: "lead", label: `${l.name || "Contact"} added`, color: "var(--accent)" });
+        // Paid event
+        if (l.paymentStatus === "paid" && l.paidAt) {
+          events.push({ ts: new Date(l.paidAt).getTime(), type: "paid", label: `${l.name || "Contact"} paid`, color: "var(--success)" });
+        }
+      });
+  }
+
+  // Automation events from automation tiers
+  if (autoStats) {
+    Object.entries(autoStats).forEach(([key, data]) => {
+      if (data.sent > 0 && data.lastRun) {
+        const tierNames = {
+          "10min": "First message sent",
+          "6hr":   "Same-day follow-up sent",
+          "24hr":  "Next-day check-in sent",
+          "3day":  "3-day closing message sent",
+          "onboarding": "Welcome message sent",
+          "upsell": "Upsell message sent",
+        };
+        events.push({
+          ts:    new Date(data.lastRun).getTime(),
+          type:  "msg",
+          label: `${tierNames[key] || "Message sent"} (${data.sent.toLocaleString()})`,
+          color: "var(--accent2)",
+        });
+      }
+    });
+  }
+
+  // Sort all events newest-first, cap at 10
+  return events.sort((a, b) => b.ts - a.ts).slice(0, 10);
+}
+
+function TimelineView({ autoStats, crm, onNavigate }) {
+  const events = useMemo(() => _buildTimeline(autoStats, crm), [autoStats, crm]);
+
+  if (events.length === 0) {
+    return (
+      <div className="log-section-wrap">
+        <h3 className="log-section-title">Activity Timeline</h3>
+        <div className="act-empty">
+          <p className="act-empty-title">No activity yet</p>
+          <p className="act-empty-sub">Add contacts to see a live timeline of every lead added, message sent, and payment collected.</p>
+          <button className="act-empty-btn" onClick={() => onNavigate?.("clients")}>
+            Add your first contact →
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="log-section-wrap">
+      <h3 className="log-section-title">Activity Timeline</h3>
+      <div className="timeline">
+        {events.map((ev, i) => (
+          <div key={i} className="tl-row">
+            <div className="tl-spine">
+              <div className="tl-dot" style={{ background: ev.color }} />
+              {i < events.length - 1 && <div className="tl-line" />}
+            </div>
+            <div className="tl-content">
+              <span className="tl-label">{ev.label}</span>
+              <span className="tl-ago">{_timeAgo(new Date(ev.ts).toISOString())}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function QueueSection({ queueHealth }) {
   if (!queueHealth) return null;
   const { counts = {}, total = 0, oldestPendingMins = 0, failedLast24h = 0, healthy } = queueHealth;
@@ -123,6 +206,9 @@ export default function Activity({ opsData, stats, onNavigate }) {
 
   return (
     <div className="logs">
+
+      {/* ── Activity timeline (hero section) ───────────────────────── */}
+      <TimelineView autoStats={autoStats} crm={crm} onNavigate={onNavigate} />
 
       {/* ── Summary strip ──────────────────────────────────────────── */}
       {hasAuto && (
