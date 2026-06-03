@@ -288,9 +288,11 @@ function AppInner() {
   // while the session cookie is being verified.
   if (authLoading) return <div className="runtime-auth-loading">Loading…</div>;
   if (!user) {
+    // context="fresh" when user just came through onboarding — explains the password ask
+    const justOnboarded = localStorage.getItem("jarvis_just_onboarded") === "1";
     return (
       <div className="app-auth-gate">
-        <LoginPage onSuccess={() => {/* user state set by AuthContext */}} />
+        <LoginPage context={justOnboarded ? "fresh" : undefined} onSuccess={() => {/* AuthContext updates user */}} />
       </div>
     );
   }

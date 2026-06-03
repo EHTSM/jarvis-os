@@ -4,11 +4,14 @@ import "./LoginPage.css";
 
 // onSuccess is optional — used when LoginPage is rendered as a full-screen gate.
 // When omitted (RuntimeTab usage), AuthContext user state update re-renders parent.
-export default function LoginPage({ onSuccess } = {}) {
+// context: "fresh" shown when user just completed onboarding (clearer UX bridge)
+export default function LoginPage({ onSuccess, context } = {}) {
   const { login } = useAuth();
   const [pw,   setPw]   = useState("");
   const [err,  setErr]  = useState("");
   const [busy, setBusy] = useState(false);
+
+  const isFresh = context === "fresh";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,14 +34,28 @@ export default function LoginPage({ onSuccess } = {}) {
       <div className="login-card">
 
         <div className="login-brand">
-          <div className="login-logo">J</div>
+          <div className="login-logo">O</div>
           <div className="login-brand-text">
             <span className="login-brand-name">Ooplix</span>
             <span className="login-brand-by">AI Operating System</span>
           </div>
         </div>
 
-        <h1 className="login-title">Welcome back</h1>
+        {isFresh ? (
+          <>
+            <div className="login-fresh-banner">
+              <span className="login-fresh-icon">✓</span>
+              <div>
+                <p className="login-fresh-title">Your workspace is ready.</p>
+                <p className="login-fresh-sub">Sign in with the password set up by your Ooplix administrator to access the system.</p>
+              </div>
+            </div>
+            <h1 className="login-title">Access your workspace</h1>
+          </>
+        ) : (
+          <h1 className="login-title">Welcome back</h1>
+        )}
+
         <p className="login-subtitle">Enter your access password to continue</p>
 
         <form className="login-form" onSubmit={handleSubmit}>
@@ -75,9 +92,9 @@ export default function LoginPage({ onSuccess } = {}) {
 
         <div className="login-footer">
           <p className="login-footer-text">
-            Need access?{" "}
+            No password?{" "}
             <a href="mailto:support@ooplix.com" className="login-footer-link">
-              Contact support
+              Contact support ↗
             </a>
           </p>
           <p className="login-footer-company">ALWALIY TECHNOLOGIES PRIVATE LIMITED</p>

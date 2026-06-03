@@ -123,6 +123,35 @@
   letter-spacing: 0.04em;
 }
 
+/* Fresh-context banner — shown when user arrives from onboarding */
+.login-fresh-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(82, 214, 138, 0.06);
+  border: 1px solid rgba(82, 214, 138, 0.20);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+}
+.login-fresh-icon {
+  font-size: 14px;
+  color: var(--success, #52d68a);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.login-fresh-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+.login-fresh-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
