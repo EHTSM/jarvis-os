@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { dispatchTask } from "../runtimeApi";
+import VisualIntelligence from "./VisualIntelligence.jsx";
 import "./ControlCenter.css";
 
 // ── Helpers ────────────────────────────────────────────────────────
@@ -478,11 +479,11 @@ export default function ControlCenter({ stats, opsData, online, onNavigate }) {
       </div>
 
       <div className="cc-content">
+        <VisualIntelligence stats={stats} opsData={opsData} />
         <SystemsStrip  opsData={opsData} online={online}  onNavigate={onNavigate} />
         <ActionsFeed   opsData={opsData} stats={stats}    onNavigate={onNavigate} />
         <HealthBar     opsData={opsData} online={online} />
         <DispatchBar   online={online}                    onNavigate={onNavigate} />
-        <BusinessStrip stats={stats}                      onNavigate={onNavigate} />
       </div>
     </div>
   );
