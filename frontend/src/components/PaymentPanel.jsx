@@ -4,6 +4,56 @@ import AddClientForm  from "./AddClientForm.jsx";
 import WhatsAppSetup  from "./WhatsAppSetup.jsx";
 import "./PaymentPanel.css";
 
+function PaymentSetupGuide({ onDismiss }) {
+  return (
+    <div className="pay-setup-guide">
+      <div className="pay-setup-guide-header">
+        <span className="pay-setup-guide-icon">💳</span>
+        <div>
+          <p className="pay-setup-guide-title">Set up Razorpay to collect payments</p>
+          <p className="pay-setup-guide-sub">Free account · Takes 5 minutes · ₹0 until you charge someone</p>
+        </div>
+        <button className="pay-setup-guide-dismiss" onClick={onDismiss}>✕</button>
+      </div>
+      <div className="pay-setup-guide-steps">
+        <div className="pay-setup-guide-step">
+          <span className="pay-setup-step-num">1</span>
+          <div>
+            <p className="pay-setup-step-title">Create a free Razorpay account</p>
+            <p className="pay-setup-step-desc">Sign up at razorpay.com — you can test in sandbox mode immediately, no business verification needed to start.</p>
+            <a href="https://dashboard.razorpay.com/signup" target="_blank" rel="noreferrer" className="pay-setup-step-link">
+              Create Razorpay account ↗
+            </a>
+          </div>
+        </div>
+        <div className="pay-setup-guide-step">
+          <span className="pay-setup-step-num">2</span>
+          <div>
+            <p className="pay-setup-step-title">Copy your API keys</p>
+            <p className="pay-setup-step-desc">Dashboard → Settings → API Keys → Generate Test Key. You'll get a Key ID (starts with <code>rzp_test_</code>) and Key Secret.</p>
+          </div>
+        </div>
+        <div className="pay-setup-guide-step">
+          <span className="pay-setup-step-num">3</span>
+          <div>
+            <p className="pay-setup-step-title">Add keys to your server .env</p>
+            <p className="pay-setup-step-desc">On your server, add these two lines then restart Jarvis:</p>
+            <div className="pay-setup-code">
+              <code>RAZORPAY_KEY_ID=rzp_test_your_key_here</code>
+              <code>RAZORPAY_KEY_SECRET=your_secret_here</code>
+              <code>pm2 restart jarvis-os</code>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p className="pay-setup-guide-note">
+        Test mode links are real Razorpay links — you can test the full payment flow without charging anyone.
+        Switch to live keys when you're ready to collect real payments.
+      </p>
+    </div>
+  );
+}
+
 const STATUS_LABEL = {
   new:       "New lead",
   hot:       "Hot",
@@ -61,15 +111,17 @@ export default function Clients({ onMessage, onToast, whatsappConnected }) {
     try {
       const p = JSON.parse(localStorage.getItem("jarvis_biz_profile") || "null");
       const amt = p?.price?.replace(/[^\d]/g, "") || "999";
-      return { name: "", phone: "", amount: amt, description: "Jarvis Access" };
+      // Use the user's own product name as description — not Jarvis branding
+      return { name: "", phone: "", amount: amt, description: p?.product || "" };
     } catch {
-      return { name: "", phone: "", amount: "999", description: "Jarvis Access" };
+      return { name: "", phone: "", amount: "999", description: "" };
     }
   });
-  const [link,    setLink]    = useState(null);     // null | { url, name, phone }
-  const [genLoad, setGenLoad] = useState(false);
-  const [leads,   setLeads]   = useState(null);
+  const [link,         setLink]         = useState(null);
+  const [genLoad,      setGenLoad]      = useState(false);
+  const [leads,        setLeads]        = useState(null);
   const [leadsLoading, setLeadsLoading] = useState(true);
+  const [showPaySetup, setShowPaySetup] = useState(false);
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -101,12 +153,20 @@ export default function Clients({ onMessage, onToast, whatsappConnected }) {
         setForm(f => ({ ...f, name: "", phone: "" }));
         onToast?.("success", `Checkout link created for ${form.name}`);
       } else {
-        const msg = res.error || "Could not generate link. Check Razorpay credentials in .env";
+        const rawErr = res.error || "";
+        const msg = /unauthorized|forbidden|401|403/i.test(rawErr)
+          ? "Session expired — please refresh the page and sign in again."
+          : /razorpay|credentials|key|not configured|disabled/i.test(rawErr)
+          ? (() => { setShowPaySetup(true); return "Payments not configured — see setup guide below."; })()
+          : rawErr || "Could not generate link. Please try again.";
         onMessage("error", msg);
         onToast?.("error", msg.slice(0, 72));
       }
     } catch (err) {
-      onMessage("error", err.message);
+      const msg = /unauthorized|forbidden/i.test(err.message)
+        ? "Session expired — please refresh the page and sign in again."
+        : err.message;
+      onMessage("error", msg);
     } finally {
       setGenLoad(false);
     }
@@ -173,6 +233,10 @@ export default function Clients({ onMessage, onToast, whatsappConnected }) {
             phone={link.phone}
             onDismiss={() => setLink(null)}
           />
+        )}
+
+        {showPaySetup && (
+          <PaymentSetupGuide onDismiss={() => setShowPaySetup(false)} />
         )}
       </section>
 
