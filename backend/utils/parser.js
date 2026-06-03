@@ -130,6 +130,14 @@ function parseCommand(input) {
         }
     }
 
+    // ── Arbitrary https?:// URL — intercept before open_app (which matches "open\s+\w") ──
+    // Handles: "open https://example.com", "https://example.com", "launch https://..."
+    const rawUrlMatch = raw.match(/https?:\/\/[^\s]+/i);
+    if (rawUrlMatch) {
+        const url = rawUrlMatch[0].replace(/[.,;!?]$/, "");  // strip trailing punctuation
+        return { type: "open_url", intent: "open_url", url, label: `Opening ${url}`, action: "open_browser" };
+    }
+
     // ── Maps shortcut (must be before open_app — "open maps X" fires open_app intent) ──
     if (intent === "open_app" && /\bmaps\b/i.test(lower)) {
         const query = lower

@@ -20,5 +20,6 @@ router.use("/runtime", requireAuth);   // gate all /runtime/* routes
 router.use(require("./runtime"));      // /runtime/dispatch, /runtime/queue, /runtime/status, /runtime/history
 router.use(require("../../agents/runtime/runtimeStream.cjs")); // GET /runtime/stream, /runtime/stream/status
 router.use(require("./tasks"));        // /tasks, /scheduler/status, /queue/status
+router.use(require("./browser"));      // /browser/run, /browser/action, /browser/navigate, /browser/sessions, /browser/status
 
 module.exports = router;

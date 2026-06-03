@@ -1,0 +1,33 @@
+{
+  "id": "sess-mpfve305-h52",
+  "goal": "deploy and validate backend api",
+  "label": "deploy and validate backend api",
+  "state": "abandoned",
+  "createdAt": 1779390886325,
+  "updatedAt": 1779390886326,
+  "heartbeat": 1779390886325,
+  "workflows": [],
+  "validationLog": [],
+  "recoveryLog": [],
+  "timeline": [
+    {
+      "type": "session-created",
+      "ts": 1779390886325,
+      "goal": "deploy and validate backend api"
+    },
+    {
+      "type": "state-abandoned",
+      "ts": 1779390886326,
+      "reason": "test cleanup"
+    }
+  ],
+  "runtimeState": null,
+  "blockedAt": null,
+  "executionConfidence": 100,
+  "degradationState": "healthy",
+  "activeChain": null,
+  "meta": {
+    "tags": [],
+    "triggeredBy": "operator"
+  }
+}

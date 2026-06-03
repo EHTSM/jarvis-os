@@ -8,8 +8,23 @@ function fmtRelTime(ts) {
   return `${Math.floor(secs / 3600)}h ago`;
 }
 
+// Mirrors getRecoveryHint in ExecLogPanel — keep in sync.
+function getHint(error) {
+  if (!error) return null;
+  const err = error.toLowerCase();
+  if (err.includes("econnrefused"))  return "Service may be down — check pm2 list.";
+  if (err.includes("etimedout") || err.includes("timeout")) return "Timed out — increase timeout or check for stuck process.";
+  if (err.includes("enoent") || err.includes("not found"))  return "File/command not found — verify path.";
+  if (err.includes("eacces") || err.includes("permission")) return "Permission denied — check ownership.";
+  if (err.includes("enospc") || err.includes("no space"))   return "Disk full — run 'df -h'.";
+  if (err.includes("enomem") || err.includes("killed"))     return "OOM or killed — check system memory.";
+  if (err.includes("pm2"))     return "PM2 error — run 'pm2 list' to inspect.";
+  if (err.includes("git"))     return "Git error — check 'git status'.";
+  if (err.includes("401") || err.includes("unauthorized")) return "Session expired — reload to re-login.";
+  return null;
+}
+
 export const RecentFailuresPanel = React.memo(({ history }) => {
-  // Extract only failures/errors from recent history (last 5)
   const failures = useMemo(() => {
     return history
       .filter(item => item.status === "failed" || item.status === "error")
@@ -21,22 +36,28 @@ export const RecentFailuresPanel = React.memo(({ history }) => {
   return (
     <div className="op-widget-card failures-card">
       <div className="op-widget-header crit-header">
-        <span className="op-emergency-banner-icon" style={{ fontSize: '0.85rem' }}>⚠</span>
+        <span className="op-emergency-banner-icon">⚠</span>
         <span>Recent Failures</span>
+        <span style={{ marginLeft: "auto", fontSize: 9, opacity: 0.6 }}>{failures.length} failure{failures.length !== 1 ? "s" : ""}</span>
       </div>
-      
+
       <div className="op-widget-content failure-list">
-        {failures.map(f => (
-          <div key={f.id || f.seq || Math.random()} className="failure-item">
-            <div className="failure-meta">
-              <span className="failure-type">{f.type || "unknown"}</span>
-              <span className="failure-time">{fmtRelTime(f.ts || f.createdAt)}</span>
+        {failures.map(f => {
+          const errText = f.error || f.result?.error || "Task failed without explicit error message";
+          const hint = getHint(errText);
+          return (
+            <div key={f.id || f.seq || f.ts} className="failure-item">
+              <div className="failure-meta">
+                <span className="failure-type">{f.type || "unknown"}</span>
+                <span className="failure-time">{fmtRelTime(f.ts || f.createdAt)}</span>
+              </div>
+              <div className="failure-error" title={errText}>
+                {errText}
+              </div>
+              {hint && <div className="failure-hint">Hint: {hint}</div>}
             </div>
-            <div className="failure-error" title={f.error || f.result?.error || "Task failed"}>
-              {f.error || f.result?.error || "Task failed without explicit error message"}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

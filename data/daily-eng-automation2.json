@@ -1,0 +1,1564 @@
+{
+  "runs": [
+    {
+      "runId": "7bef710a-d846-45e3-ab00-16d95e1acd9a",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458720333,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458720333,
+      "updatedAt": 1779458720333
+    },
+    {
+      "runId": "b9a41bc8-d63f-4e03-877c-6e70d4814249",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458720229,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458720228,
+      "updatedAt": 1779458720229
+    },
+    {
+      "runId": "356ca1b6-b021-4a37-b1eb-993180fc43f7",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458720142,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458720142,
+      "updatedAt": 1779458720142
+    },
+    {
+      "runId": "592396ca-297c-4537-b31c-0e9227537b7c",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458720030,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458720030,
+      "updatedAt": 1779458720030
+    },
+    {
+      "runId": "6d4ad09e-db7c-48ce-ae45-105913cbf983",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458719943,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458719943,
+      "updatedAt": 1779458719943
+    },
+    {
+      "runId": "520e5364-3aba-4f63-b18a-8f8b83f1d2a9",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458719865,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458719865,
+      "updatedAt": 1779458719865
+    },
+    {
+      "runId": "c318b101-43f2-4aaa-b766-b5ee14ce88f8",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458719772,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458719772,
+      "updatedAt": 1779458719772
+    },
+    {
+      "runId": "1e485d2d-7bd7-4958-a628-1dd5498cca5a",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458719672,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458719671,
+      "updatedAt": 1779458719672
+    },
+    {
+      "runId": "3a2fbb0b-d381-4c7b-9a27-fd60c4ea6a8d",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458719577,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458719576,
+      "updatedAt": 1779458719577
+    },
+    {
+      "runId": "774e5e3a-d5b6-462e-afdb-94c0aab157bd",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458719491,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458719491,
+      "updatedAt": 1779458719491
+    },
+    {
+      "runId": "7651d503-e308-487c-961f-9936476280ba",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458719395,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458719394,
+      "updatedAt": 1779458719395
+    },
+    {
+      "runId": "6f5f6679-9b4f-4ea8-ad3e-9f48804e0fca",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458563367,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458563366,
+      "updatedAt": 1779458563367
+    },
+    {
+      "runId": "a43223f5-afd6-424c-b279-7376e62ab9d3",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458563236,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458563236,
+      "updatedAt": 1779458563237
+    },
+    {
+      "runId": "55eaaf66-1bfc-4dad-b5f4-b67fca25ba66",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458563150,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458563150,
+      "updatedAt": 1779458563150
+    },
+    {
+      "runId": "2cb015b7-febc-4af7-a674-7ddef759f30a",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458563059,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458563058,
+      "updatedAt": 1779458563059
+    },
+    {
+      "runId": "ad78c3fd-f6aa-4bee-b499-ddb327ad4617",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458562974,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458562973,
+      "updatedAt": 1779458562974
+    },
+    {
+      "runId": "b9da2ee7-853f-4660-9d40-4299761b417c",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458562896,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458562896,
+      "updatedAt": 1779458562896
+    },
+    {
+      "runId": "0bc2c6da-5fc7-4cd2-ba69-818f66b49e8b",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458562810,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458562809,
+      "updatedAt": 1779458562810
+    },
+    {
+      "runId": "3b0b76d7-39d2-4d89-b95a-ca2ec1eccaca",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458562708,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458562707,
+      "updatedAt": 1779458562708
+    },
+    {
+      "runId": "0d3664e7-1842-4052-844e-07a78a997c76",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458562605,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458562605,
+      "updatedAt": 1779458562606
+    },
+    {
+      "runId": "a48eaf4b-a553-4ad1-ad08-53aec62f837f",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458562517,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458562517,
+      "updatedAt": 1779458562518
+    },
+    {
+      "runId": "b718ea33-6af3-476a-b2b5-28d8065d9976",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458562416,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458562416,
+      "updatedAt": 1779458562417
+    },
+    {
+      "runId": "b79bc1b6-9cd4-435d-b40d-a780245d10aa",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455340455,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455340455,
+      "updatedAt": 1779455340455
+    },
+    {
+      "runId": "db0d936a-1db1-49d2-8c5d-f00ea2eee191",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455340346,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455340346,
+      "updatedAt": 1779455340347
+    },
+    {
+      "runId": "fcffe87b-d4c0-4cce-9dfa-722d5ad78cc4",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455340257,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455340257,
+      "updatedAt": 1779455340257
+    },
+    {
+      "runId": "8677016c-aae4-4245-b674-d4f3bd70f1dc",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455340165,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455340164,
+      "updatedAt": 1779455340165
+    },
+    {
+      "runId": "2b0f99f6-6fea-4509-ba91-598fdd21f6d6",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455340075,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455340074,
+      "updatedAt": 1779455340075
+    },
+    {
+      "runId": "973dbd63-482b-41f1-9c86-11d053d0d744",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455339990,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455339989,
+      "updatedAt": 1779455339990
+    },
+    {
+      "runId": "e4279847-48dc-4b0a-bac2-0a80dd113f70",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455339900,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455339899,
+      "updatedAt": 1779455339900
+    },
+    {
+      "runId": "66236a25-0562-4c37-bfb7-894d0af99128",
+      "automationType": "startup-health-scan",
+      "description": "Full startup health scan",
+      "steps": [
+        {
+          "step": "workspace-continuity-check",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455339795,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "unstable-env-detection",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455339795,
+      "updatedAt": 1779455339795
+    }
+  ]
+}

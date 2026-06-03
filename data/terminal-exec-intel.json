@@ -1,0 +1,286 @@
+{
+  "executions": [
+    {
+      "command": "node server.js",
+      "output": "",
+      "exitCode": 0,
+      "outcome": {
+        "id": "success",
+        "label": "Success",
+        "retryable": false,
+        "repairPath": null,
+        "confidence": 99
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779442824556
+    },
+    {
+      "command": "npm install",
+      "output": "npm ERR! missing peer",
+      "exitCode": 1,
+      "outcome": {
+        "id": "npm-error",
+        "pattern": {},
+        "label": "NPM error",
+        "retryable": true,
+        "repairPath": "dep-repair",
+        "confidence": 78,
+        "alternatives": []
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779442824556
+    },
+    {
+      "command": "node server.js",
+      "output": "ECONNREFUSED localhost:5050",
+      "exitCode": 1,
+      "outcome": {
+        "id": "econnrefused",
+        "pattern": {},
+        "label": "Connection refused",
+        "retryable": true,
+        "repairPath": "restart-server",
+        "confidence": 78,
+        "alternatives": []
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779442824556
+    },
+    {
+      "command": "node server.js",
+      "output": "",
+      "exitCode": 0,
+      "outcome": {
+        "id": "success",
+        "label": "Success",
+        "retryable": false,
+        "repairPath": null,
+        "confidence": 99
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779442717462
+    },
+    {
+      "command": "npm install",
+      "output": "npm ERR! missing peer",
+      "exitCode": 1,
+      "outcome": {
+        "id": "npm-error",
+        "pattern": {},
+        "label": "NPM error",
+        "retryable": true,
+        "repairPath": "dep-repair",
+        "confidence": 78,
+        "alternatives": []
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779442717462
+    },
+    {
+      "command": "node server.js",
+      "output": "ECONNREFUSED localhost:5050",
+      "exitCode": 1,
+      "outcome": {
+        "id": "econnrefused",
+        "pattern": {},
+        "label": "Connection refused",
+        "retryable": true,
+        "repairPath": "restart-server",
+        "confidence": 78,
+        "alternatives": []
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779442717461
+    },
+    {
+      "command": "node server.js",
+      "output": "",
+      "exitCode": 0,
+      "outcome": {
+        "id": "success",
+        "label": "Success",
+        "retryable": false,
+        "repairPath": null,
+        "confidence": 99
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779442681715
+    },
+    {
+      "command": "npm install",
+      "output": "npm ERR! missing peer",
+      "exitCode": 1,
+      "outcome": {
+        "id": "npm-error",
+        "pattern": {},
+        "label": "NPM error",
+        "retryable": true,
+        "repairPath": "dep-repair",
+        "confidence": 78,
+        "alternatives": []
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779442681715
+    },
+    {
+      "command": "node server.js",
+      "output": "ECONNREFUSED localhost:5050",
+      "exitCode": 1,
+      "outcome": {
+        "id": "econnrefused",
+        "pattern": {},
+        "label": "Connection refused",
+        "retryable": true,
+        "repairPath": "restart-server",
+        "confidence": 78,
+        "alternatives": []
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779442681714
+    },
+    {
+      "command": "node server.js",
+      "output": "",
+      "exitCode": 0,
+      "outcome": {
+        "id": "success",
+        "label": "Success",
+        "retryable": false,
+        "repairPath": null,
+        "confidence": 99
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779441564629
+    },
+    {
+      "command": "npm install",
+      "output": "npm ERR! missing peer",
+      "exitCode": 1,
+      "outcome": {
+        "id": "npm-error",
+        "pattern": {},
+        "label": "NPM error",
+        "retryable": true,
+        "repairPath": "dep-repair",
+        "confidence": 78,
+        "alternatives": []
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779441564628
+    },
+    {
+      "command": "node server.js",
+      "output": "ECONNREFUSED localhost:5050",
+      "exitCode": 1,
+      "outcome": {
+        "id": "econnrefused",
+        "pattern": {},
+        "label": "Connection refused",
+        "retryable": true,
+        "repairPath": "restart-server",
+        "confidence": 78,
+        "alternatives": []
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779441564628
+    },
+    {
+      "command": "node server.js",
+      "output": "",
+      "exitCode": 0,
+      "outcome": {
+        "id": "success",
+        "label": "Success",
+        "retryable": false,
+        "repairPath": null,
+        "confidence": 99
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779441458836
+    },
+    {
+      "command": "npm install",
+      "output": "npm ERR! missing peer",
+      "exitCode": 1,
+      "outcome": {
+        "id": "npm-error",
+        "pattern": {},
+        "label": "NPM error",
+        "retryable": true,
+        "repairPath": "dep-repair",
+        "confidence": 78,
+        "alternatives": []
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779441458835
+    },
+    {
+      "command": "node server.js",
+      "output": "ECONNREFUSED localhost:5050",
+      "exitCode": 1,
+      "outcome": {
+        "id": "econnrefused",
+        "pattern": {},
+        "label": "Connection refused",
+        "retryable": true,
+        "repairPath": "restart-server",
+        "confidence": 78,
+        "alternatives": []
+      },
+      "sessionId": "stress-656",
+      "retryCount": 0,
+      "ts": 1779441458835
+    }
+  ],
+  "checkpoints": [
+    {
+      "sessionId": "stress-656",
+      "label": "server-started",
+      "stepOrder": 0,
+      "state": {},
+      "ts": 1779441458836
+    },
+    {
+      "sessionId": "stress-656",
+      "label": "server-started",
+      "stepOrder": 0,
+      "state": {},
+      "ts": 1779441564629
+    },
+    {
+      "sessionId": "stress-656",
+      "label": "server-started",
+      "stepOrder": 0,
+      "state": {},
+      "ts": 1779442681715
+    },
+    {
+      "sessionId": "stress-656",
+      "label": "server-started",
+      "stepOrder": 0,
+      "state": {},
+      "ts": 1779442717462
+    },
+    {
+      "sessionId": "stress-656",
+      "label": "server-started",
+      "stepOrder": 0,
+      "state": {},
+      "ts": 1779442824557
+    }
+  ]
+}

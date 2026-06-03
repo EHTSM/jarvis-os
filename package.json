@@ -5,7 +5,7 @@
   "main": "electron/main.cjs",
   "type": "commonjs",
   "scripts": {
-    "start": "node backend/server.js",
+    "start": "node scripts/check-startup-env.cjs && node backend/server.js",
     "frontend": "cd frontend && npm start",
     "desktop": "electron .",
     "dev": "concurrently \"npm start\" \"npm run frontend\"",
@@ -35,7 +35,75 @@
     "deploy:update": "bash deploy/update.sh",
     "deploy:rollback": "bash deploy/rollback.sh",
     "security:no-raw-exec": "node scripts/check-no-raw-exec.cjs",
-    "env:check": "node scripts/check-startup-env.cjs"
+    "env:check": "node scripts/check-startup-env.cjs",
+    "dist:mac": "npm run build:frontend && electron-builder --mac",
+    "dist:win": "npm run build:frontend && electron-builder --win",
+    "dist:linux": "npm run build:frontend && electron-builder --linux",
+    "dist:all": "npm run build:frontend && electron-builder --mac --win --linux"
+  },
+  "build": {
+    "appId": "com.ooplix.jarvis",
+    "productName": "JARVIS",
+    "copyright": "Copyright © 2026 Ooplix",
+    "files": [
+      "electron/**/*",
+      "frontend/build/**/*",
+      "backend/**/*",
+      "scripts/**/*",
+      "package.json",
+      "!**/.env",
+      "!**/.env.*",
+      "!**/node_modules/.cache",
+      "!**/tests/**",
+      "!**/_archive/**"
+    ],
+    "extraResources": [],
+    "mac": {
+      "category": "public.app-category.business",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "icon": "electron/assets/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "electron/entitlements.mac.plist",
+      "entitlementsInherit": "electron/entitlements.mac.plist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "electron/assets/icon.ico"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "electron/assets/icon.png",
+      "category": "Office"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "publish": null
   },
   "dependencies": {
     "axios": "^1.16.0",
@@ -50,12 +118,14 @@
     "node-fetch": "^3.3.2",
     "node-telegram-bot-api": "^0.63.0",
     "openai": "^6.34.0",
+    "playwright": "^1.60.0",
     "razorpay": "^2.9.6",
     "rss-parser": "^3.13.0"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
-    "electron": "^41.4.0"
+    "electron": "^41.4.0",
+    "electron-builder": "^25.1.8"
   },
   "repository": {
     "type": "git",

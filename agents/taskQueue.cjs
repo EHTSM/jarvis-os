@@ -52,8 +52,20 @@ function _shadowDelete(id) {
 
 function _load() {
     try {
-        return JSON.parse(fs.readFileSync(QUEUE_FILE, "utf8"));
-    } catch { return []; }
+        const raw = fs.readFileSync(QUEUE_FILE, "utf8");
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+        return parsed;
+    } catch (err) {
+        // Corrupt file mid-session — back up and reset so the queue stays alive
+        try {
+            const backup = QUEUE_FILE + ".bak." + Date.now();
+            fs.copyFileSync(QUEUE_FILE, backup);
+            fs.writeFileSync(QUEUE_FILE, "[]");
+            logger.warn(`[TaskQueue] queue file corrupt — reset to [] (backup: ${backup})`);
+        } catch { /* disk error — nothing to do */ }
+        return [];
+    }
 }
 
 function _save(tasks) {

@@ -1,0 +1,116 @@
+{
+  "signals": [
+    {
+      "source": "test-746",
+      "dimension": "test",
+      "check": "check-a",
+      "severity": "warning",
+      "fp": "test-746:test:check-a:warning",
+      "ts": 1779454776727
+    },
+    {
+      "source": "./platformMaturityResilience.cjs",
+      "dimension": "maturity-resilience",
+      "check": "rollback-not-ready",
+      "severity": "critical",
+      "fp": "./platformMaturityResilience.cjs:maturity-resilience:rollback-not-ready:critical",
+      "ts": 1779454776788
+    },
+    {
+      "source": "./platformProductivityResilience.cjs",
+      "dimension": "productivity-resilience",
+      "check": "deployment-trust-amber",
+      "severity": "warning",
+      "fp": "./platformProductivityResilience.cjs:productivity-resilience:deployment-trust-amber:warning",
+      "ts": 1779454776792
+    },
+    {
+      "source": "./platformProductivityResilience.cjs",
+      "dimension": "productivity-resilience",
+      "check": "env-readiness-failed",
+      "severity": "warning",
+      "fp": "./platformProductivityResilience.cjs:productivity-resilience:env-readiness-failed:warning",
+      "ts": 1779454776792
+    },
+    {
+      "source": "./platformProductivityResilience.cjs",
+      "dimension": "productivity-resilience",
+      "check": "too-many-productivity-chains",
+      "severity": "warning",
+      "fp": "./platformProductivityResilience.cjs:productivity-resilience:too-many-productivity-chains:warning",
+      "ts": 1779454776792
+    },
+    {
+      "source": "./platformCoordinationResilience2.cjs",
+      "dimension": "coordination-resilience",
+      "check": "deployment-trust-amber",
+      "severity": "warning",
+      "fp": "./platformCoordinationResilience2.cjs:coordination-resilience:deployment-trust-amber:warning",
+      "ts": 1779454776795
+    },
+    {
+      "source": "test-746",
+      "dimension": "test",
+      "check": "check-a",
+      "severity": "warning",
+      "fp": "test-746:test:check-a:warning",
+      "ts": 1779455181603
+    },
+    {
+      "source": "./platformMaturityResilience.cjs",
+      "dimension": "maturity-resilience",
+      "check": "rollback-not-ready",
+      "severity": "critical",
+      "fp": "./platformMaturityResilience.cjs:maturity-resilience:rollback-not-ready:critical",
+      "ts": 1779455181616
+    },
+    {
+      "source": "./platformProductivityResilience.cjs",
+      "dimension": "productivity-resilience",
+      "check": "deployment-trust-amber",
+      "severity": "warning",
+      "fp": "./platformProductivityResilience.cjs:productivity-resilience:deployment-trust-amber:warning",
+      "ts": 1779455181620
+    },
+    {
+      "source": "./platformProductivityResilience.cjs",
+      "dimension": "productivity-resilience",
+      "check": "env-readiness-failed",
+      "severity": "warning",
+      "fp": "./platformProductivityResilience.cjs:productivity-resilience:env-readiness-failed:warning",
+      "ts": 1779455181620
+    },
+    {
+      "source": "./platformProductivityResilience.cjs",
+      "dimension": "productivity-resilience",
+      "check": "too-many-productivity-chains",
+      "severity": "warning",
+      "fp": "./platformProductivityResilience.cjs:productivity-resilience:too-many-productivity-chains:warning",
+      "ts": 1779455181620
+    },
+    {
+      "source": "./platformCoordinationResilience2.cjs",
+      "dimension": "coordination-resilience",
+      "check": "deployment-trust-amber",
+      "severity": "warning",
+      "fp": "./platformCoordinationResilience2.cjs:coordination-resilience:deployment-trust-amber:warning",
+      "ts": 1779455181624
+    },
+    {
+      "source": "test-746",
+      "dimension": "test",
+      "check": "check-a",
+      "severity": "warning",
+      "fp": "test-746:test:check-a:warning",
+      "ts": 1779458562753
+    },
+    {
+      "source": "./platformProductivityResilience.cjs",
+      "dimension": "productivity-resilience",
+      "check": "too-many-productivity-chains",
+      "severity": "warning",
+      "fp": "./platformProductivityResilience.cjs:productivity-resilience:too-many-productivity-chains:warning",
+      "ts": 1779458562768
+    }
+  ]
+}

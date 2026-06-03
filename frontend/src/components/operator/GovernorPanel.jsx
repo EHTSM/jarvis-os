@@ -1,30 +1,71 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { emergencyStop, emergencyResume } from "../../api";
+import { _fetch } from "../../_client";
 
-/**
- * GovernorPanel - Production safety control center.
- * Implements "Hold-to-Stop" logic to prevent accidental deployment halts on touch devices.
- */
+// HoldButton — generic hold-to-confirm pattern, eliminates 3 duplicated inline patterns.
+// Fires onConfirm once progress reaches 100%. All timers are ref-scoped (no window globals).
+function HoldButton({ onConfirm, disabled, className, style, children, stepMs = 80, stepPct = 5, fillColor }) {
+  const [progress, setProgress] = useState(0);
+  const timerRef = useRef(null);
+
+  const start = useCallback(() => {
+    if (disabled) return;
+    setProgress(0);
+    timerRef.current = setInterval(() => {
+      setProgress(prev => {
+        const next = prev + stepPct;
+        if (next >= 100) {
+          clearInterval(timerRef.current);
+          onConfirm();
+          return 100;
+        }
+        return next;
+      });
+    }, stepMs);
+  }, [disabled, onConfirm, stepMs, stepPct]);
+
+  const cancel = useCallback(() => {
+    clearInterval(timerRef.current);
+    setProgress(p => (p < 100 ? 0 : p));
+  }, []);
+
+  useEffect(() => () => clearInterval(timerRef.current), []);
+
+  return (
+    <button
+      className={className}
+      style={{ position: "relative", overflow: "hidden", ...style }}
+      onMouseDown={start}
+      onMouseUp={cancel}
+      onMouseLeave={cancel}
+      onTouchStart={start}
+      onTouchEnd={cancel}
+      disabled={disabled}
+    >
+      <div className="op-hold-fill" style={{ width: `${progress}%`, background: fillColor }} />
+      <span className="op-hold-label">{children}</span>
+    </button>
+  );
+}
+
 export default function GovernorPanel({ ops, onRefresh }) {
-  const [busy,    setBusy]    = useState(false);
-  const [result,  setResult]  = useState(null);
-  const [reason,  setReason]  = useState("");
-  const [holdProgress, setHoldProgress] = useState(0);
-  const [resumeHold,   setResumeHold]   = useState(0);
-  const [rebootHold,   setRebootHold]   = useState(0);
+  const [busy,   setBusy]   = useState(false);
+  const [result, setResult] = useState(null);
+  const [reason, setReason] = useState("");
+  const resultTimerRef = useRef(null);
 
-  const holdTimer = useRef(null);
+  useEffect(() => () => clearTimeout(resultTimerRef.current), []);
 
-  // Detect emergency state from ops warnings
   const isEmergency = ops?.status === "critical" ||
     (ops?.warnings ?? []).some(w => w.code === "EMERGENCY_ACTIVE");
 
-  const showResult = (ok, text) => {
+  const showResult = useCallback((ok, text) => {
+    clearTimeout(resultTimerRef.current);
     setResult({ ok, text });
-    if (ok) setTimeout(() => setResult(null), 5000);
-  };
+    if (ok) resultTimerRef.current = setTimeout(() => setResult(null), 5000);
+  }, []);
 
-  const handleStop = async () => {
+  const handleStop = useCallback(async () => {
     if (busy) return;
     setBusy(true);
     try {
@@ -37,33 +78,10 @@ export default function GovernorPanel({ ops, onRefresh }) {
     } finally {
       setBusy(false);
       onRefresh?.();
-      setHoldProgress(0);
     }
-  };
+  }, [busy, reason, showResult, onRefresh]);
 
-  const startHold = () => {
-    if (busy || isEmergency) return;
-    setHoldProgress(0);
-    holdTimer.current = setInterval(() => {
-      setHoldProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(holdTimer.current);
-          handleStop();
-          return 100;
-        }
-        return prev + 5; // ~1.6s total hold time
-      });
-    }, 80);
-  };
-
-  const endHold = () => {
-    clearInterval(holdTimer.current);
-    if (holdProgress < 100) setHoldProgress(0);
-  };
-
-  useEffect(() => () => clearInterval(holdTimer.current), []);
-
-  const handleResume = async () => {
+  const handleResume = useCallback(async () => {
     if (busy) return;
     setBusy(true);
     try {
@@ -77,17 +95,22 @@ export default function GovernorPanel({ ops, onRefresh }) {
       setBusy(false);
       onRefresh?.();
     }
-  };
+  }, [busy, showResult, onRefresh]);
 
-  const handleReboot = async () => {
+  const handleReboot = useCallback(async () => {
     if (busy) return;
     setBusy(true);
     try {
       const r = await _fetch("/runtime/reboot", { method: "POST" });
-      r.success ? showResult(true, "Rebooting...") : showResult(false, r.error || "Reboot failed");
-    } catch (e) { showResult(false, e.message); }
-    finally { setBusy(false); }
-  };
+      r.success ? showResult(true, "Rebooting…") : showResult(false, r.error || "Reboot failed");
+    } catch (e) {
+      showResult(false, e.message);
+    } finally {
+      setBusy(false);
+    }
+  }, [busy, showResult]);
+
+  const activeTasks = ops?.queue?.counts?.active ?? 0;
 
   return (
     <div className="op-panel">
@@ -97,6 +120,7 @@ export default function GovernorPanel({ ops, onRefresh }) {
           {isEmergency ? "● EMERGENCY" : "● NORMAL"}
         </span>
       </div>
+
       <div className="op-governor-body">
         <div className={`op-governor-state ${isEmergency ? "active" : ""}`}>
           <span className={`op-governor-label ${isEmergency ? "active" : "idle"}`}>
@@ -110,7 +134,7 @@ export default function GovernorPanel({ ops, onRefresh }) {
             type="text"
             placeholder="Stop reason (optional)"
             value={reason}
-            onChange={(e) => setReason(e.target.value)}
+            onChange={e => setReason(e.target.value)}
             disabled={busy}
             style={{ fontSize: 10, padding: "4px 6px" }}
           />
@@ -118,95 +142,67 @@ export default function GovernorPanel({ ops, onRefresh }) {
 
         <div className="op-governor-actions">
           {!isEmergency ? (
-            <button
+            <HoldButton
               className="op-btn-emergency"
-              onMouseDown={startHold}
-              onMouseUp={endHold}
-              onMouseLeave={endHold}
-              onTouchStart={startHold}
-              onTouchEnd={endHold}
-              style={{ position: "relative", overflow: "hidden" }}
+              style={{ width: "100%" }}
+              onConfirm={handleStop}
+              disabled={busy}
+              stepMs={80}
+              stepPct={5}
+              fillColor="rgba(255,68,68,0.3)"
             >
-              <div className="op-hold-bg" style={{ width: `${holdProgress}%`, position: "absolute", left: 0, top: 0, height: "100%", background: "rgba(255,68,68,0.3)" }} />
-              <span style={{ position: "relative", zIndex: 1 }}>HOLD TO STOP RUNTIME</span>
-            </button>
+              HOLD TO STOP RUNTIME
+            </HoldButton>
           ) : (
-            <button 
-              className="op-btn ok" 
-              style={{ width: "100%", position: "relative", overflow: "hidden" }}
-              onMouseDown={() => {
-                const timer = setInterval(() => {
-                  setResumeHold(prev => {
-                    if (prev >= 100) { clearInterval(timer); handleResume(); return 100; }
-                    return prev + 10;
-                  });
-                }, 100);
-                window._resumeTimer = timer;
-              }}
-              onMouseUp={() => { clearInterval(window._resumeTimer); setResumeHold(0); }}
-              onMouseLeave={() => { clearInterval(window._resumeTimer); setResumeHold(0); }}
+            <HoldButton
+              className="op-btn ok"
+              style={{ width: "100%" }}
+              onConfirm={handleResume}
+              disabled={busy}
+              stepMs={100}
+              stepPct={10}
+              fillColor="rgba(0,255,163,0.2)"
             >
-              <div style={{ position: "absolute", left: 0, top: 0, height: "100%", background: "rgba(0,255,163,0.2)", width: `${resumeHold}%` }} />
-              <span style={{ position: "relative", zIndex: 1 }}>HOLD TO RESUME</span>
-            </button>
+              HOLD TO RESUME
+            </HoldButton>
           )}
         </div>
 
-        <div style={{ marginTop: 16, borderTop: "1px solid var(--op-border)", paddingTop: 12 }}>
-          <div style={{ fontSize: 9, color: "var(--op-text2)", marginBottom: 6, display: "flex", justifyContent: "space-between" }}>
+        <div className="op-gov-recovery">
+          <div className="op-gov-recovery-header">
             <span>RECOVERY ASSURANCE</span>
-            <span style={{ color: "var(--op-green)" }}>✓ READY</span>
+            <span className={`op-gov-recovery-status ${activeTasks > 0 ? "active" : "safe"}`}>
+              {activeTasks > 0 ? `⚠ ${activeTasks} ACTIVE` : "✓ READY"}
+            </span>
           </div>
-          
-          <div style={{ 
-            fontSize: 9, 
-            background: "rgba(0,0,0,0.2)", 
-            padding: "6px 8px", 
-            borderRadius: 4, 
-            border: "1px solid var(--op-border)",
-            lineHeight: 1.4
-          }}>
-            <span style={{ fontWeight: "bold", color: "var(--op-text2)", display: "block", marginBottom: 2 }}>SAFE INTERVENTION:</span>
-            {ops?.queue?.counts?.active > 0 
+
+          <div className="op-gov-recovery-info">
+            <span className="op-gov-recovery-title">SAFE INTERVENTION:</span>
+            {activeTasks > 0
               ? "⚠ ACTIVE TASKS: Reboot will abandon running executions. Wait for idle if possible."
               : "✓ IDLE: Safe to reboot or maintenance."
             }
           </div>
 
-          <button 
-            className="op-btn secondary" 
-            style={{ width: "100%", marginTop: 8, height: 28, position: "relative", overflow: "hidden", fontSize: 10 }}
-            onMouseDown={() => {
-              const timer = setInterval(() => {
-                setRebootHold(prev => {
-                  if (prev >= 100) { clearInterval(timer); handleReboot(); return 100; }
-                  return prev + 10;
-                });
-              }, 100);
-              window._rebootTimer = timer;
-            }}
-            onMouseUp={() => { clearInterval(window._rebootTimer); setRebootHold(0); }}
-            onMouseLeave={() => { clearInterval(window._rebootTimer); setRebootHold(0); }}
+          <HoldButton
+            className="op-btn secondary"
+            style={{ width: "100%", marginTop: 8, height: 28, fontSize: 10 }}
+            onConfirm={handleReboot}
+            disabled={busy}
+            stepMs={100}
+            stepPct={10}
+            fillColor="rgba(255,255,255,0.1)"
           >
-            <div style={{ position: "absolute", left: 0, top: 0, height: "100%", background: "rgba(255,255,255,0.1)", width: `${rebootHold}%` }} />
             SAFE REBOOT (HOLD)
-          </button>
+          </HoldButton>
         </div>
 
-        {/* Warnings from ops */}
         {(ops?.warnings ?? []).length > 0 && (
-          <div style={{ marginTop: 2 }}>
+          <div className="op-gov-warnings">
             {ops.warnings.map((w, i) => (
-              <div key={i} className="op-error" style={{
-                marginBottom: 3,
-                fontSize: 10,
-                color: w.level === "critical" ? "var(--op-red)" : "var(--op-amber)",
-                borderColor: w.level === "critical" ? "rgba(255,68,68,0.3)" : "rgba(255,179,0,0.3)",
-                background: w.level === "critical" ? "rgba(255,68,68,0.06)" : "rgba(255,179,0,0.06)",
-                lineHeight: 1.4,
-              }}>
-                <span style={{ fontWeight: 700 }}>{w.code}</span>
-                {w.detail && <span style={{ opacity: 0.8 }}> — {w.detail}</span>}
+              <div key={i} className={`op-error op-gov-warning ${w.level === "critical" ? "crit" : "warn"}`}>
+                <span className="op-gov-warning-code">{w.code}</span>
+                {w.detail && <span className="op-gov-warning-detail"> — {w.detail}</span>}
               </div>
             ))}
           </div>
@@ -217,8 +213,8 @@ export default function GovernorPanel({ ops, onRefresh }) {
             <span style={{ flex: 1 }}>{result.ok ? "✓ " : "✗ "}{result.text}</span>
             {!result.ok && (
               <button
+                className="op-result-dismiss"
                 onClick={() => setResult(null)}
-                style={{ background: "none", border: "none", cursor: "pointer", color: "inherit", padding: "0 2px", fontSize: 12, lineHeight: 1, opacity: 0.7 }}
                 title="Dismiss"
                 aria-label="Dismiss error"
               >×</button>

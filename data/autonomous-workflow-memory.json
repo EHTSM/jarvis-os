@@ -1,0 +1,56 @@
+{
+  "memories": [
+    {
+      "fp": "e6d13d238c0e",
+      "type": "debug-chain",
+      "key": "daily-driver-econnrefused",
+      "payload": "{\"path\":\"restart-server\"}",
+      "confidence": 80,
+      "hitCount": 0,
+      "sessionId": null,
+      "replayId": null,
+      "createdAt": 1779432292344,
+      "updatedAt": 1779434692098,
+      "lastHitAt": null
+    },
+    {
+      "fp": "87374828742d",
+      "type": "workflow-pattern",
+      "key": "daily-driver-health-scan-644",
+      "payload": "{\"flow\":\"health-scan\",\"steps\":4}",
+      "confidence": 85,
+      "hitCount": 0,
+      "sessionId": null,
+      "replayId": null,
+      "createdAt": 1779432292344,
+      "updatedAt": 1779434692098,
+      "lastHitAt": null
+    },
+    {
+      "fp": "292bf54fdebb",
+      "type": "debug-chain",
+      "key": "econnrefused-stress",
+      "payload": "{\"path\":\"restart-server\"}",
+      "confidence": 75,
+      "hitCount": 0,
+      "sessionId": null,
+      "replayId": null,
+      "createdAt": 1779432281645,
+      "updatedAt": 1779434692087,
+      "lastHitAt": null
+    },
+    {
+      "fp": "76463a6617cb",
+      "type": "workflow-pattern",
+      "key": "stabilize-backend-stress",
+      "payload": "{\"chain\":\"runtime-recovery-full\"}",
+      "confidence": 80,
+      "hitCount": 0,
+      "sessionId": null,
+      "replayId": null,
+      "createdAt": 1779432281644,
+      "updatedAt": 1779434692086,
+      "lastHitAt": null
+    }
+  ]
+}

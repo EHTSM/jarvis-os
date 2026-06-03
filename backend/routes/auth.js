@@ -3,6 +3,7 @@ const router      = require("express").Router();
 const crypto      = require("crypto");
 const rateLimiter = require("../middleware/rateLimiter");
 const { signJWT, requireAuth, COOKIE_NAME, TOKEN_EXPIRY } = require("../middleware/authMiddleware");
+const auditLog    = require("../utils/auditLog.cjs");
 
 const COOKIE_OPTS = {
   httpOnly: true,
@@ -45,6 +46,7 @@ router.post("/auth/login", rateLimiter(10, 5 * 60_000), (req, res) => {
           res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
         } catch { /* no-op: JWT_SECRET missing, dev passthrough sufficient */ }
       }
+      auditLog.recordAuth({ action: "login", operator: "dev", method: "dev_passthrough" });
       return res.json({ success: true, role: "operator" });
     }
     return res.status(503).json({ error: "Auth not configured — OPERATOR_PASSWORD_HASH missing" });
@@ -60,11 +62,13 @@ router.post("/auth/login", rateLimiter(10, 5 * 60_000), (req, res) => {
     exp: Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
   });
   res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
+  auditLog.recordAuth({ action: "login", operator: "operator", method: "password" });
   res.json({ success: true, role: "operator" });
 });
 
 // POST /auth/logout
 router.post("/auth/logout", (req, res) => {
+  auditLog.recordAuth({ action: "logout", operator: req.user });
   res.clearCookie(COOKIE_NAME, { path: "/" });
   res.json({ success: true });
 });

@@ -1,12 +1,25 @@
 "use strict";
 /**
  * Dev Agent — coordinates code generation requests.
- * Detects framework, derives filename, calls codeGeneratorAgent,
- * writes output to /generated/, returns structured result.
+ *
+ * Two paths:
+ *   payload.targetFile set → modifyFile() → proposePatch() → patch proposal (approval required)
+ *   no targetFile          → generate()   → new file in /generated/ (existing behaviour)
  */
 
 const path      = require("path");
-const { generate } = require("./dev/codeGeneratorAgent.cjs");
+
+let _generate         = null;
+let _modifyFile       = null;
+let _buildRepoContext = null;
+let _patchAssist      = null;
+try {
+    const cga         = require("./dev/codeGeneratorAgent.cjs");
+    _generate         = cga.generate;
+    _modifyFile       = cga.modifyFile;
+    _buildRepoContext  = cga.buildRepoContext;
+} catch { /* archived */ }
+try { _patchAssist = require("./runtime/patchAssistant.cjs"); } catch { /* unavailable */ }
 
 const OUTPUT_DIR = path.join(__dirname, "../generated");
 
@@ -54,14 +67,56 @@ async function run(task) {
         return { success: false, error: "devAgent: description is required" };
     }
 
-    const framework = p.framework || detectFramework(description);
-    const filename  = p.filename  || deriveFilename(description, framework);
+    // ── Path A: modify existing file ─────────────────────────────────────────
+    if (p.targetFile) {
+        if (!_modifyFile)  return { success: false, error: "devAgent: modifyFile not available" };
+        if (!_patchAssist) return { success: false, error: "devAgent: patchAssistant not available" };
+
+        console.log(`[DevAgent] modify mode — target="${p.targetFile}" instruction="${description.slice(0, 80)}"`);
+
+        // Gather repo context before calling AI: imports, importers, keyword files
+        let repoCtx = null;
+        if (_buildRepoContext) {
+            const keyword = p.keyword || description.split(/\s+/).slice(0, 3).join(" ");
+            repoCtx = _buildRepoContext(p.targetFile, keyword);
+            console.log(`[DevAgent] repo context — scanned ${repoCtx.scannedFiles} files, ${repoCtx.relatedFiles.length} related, ${repoCtx.importers.length} importers`);
+        }
+
+        const mod = await _modifyFile({ filePath: p.targetFile, instruction: description, context: repoCtx });
+        const proposal = _patchAssist.proposePatch({
+            filePath:       mod.filePath,
+            patchedContent: mod.patchedContent,
+            reason:         description.slice(0, 200),
+        });
+
+        if (!proposal.ok) return { success: false, error: proposal.error };
+
+        console.log(`[DevAgent] patch proposed — id=${proposal.patchId} +${proposal.diff.linesAdded}/-${proposal.diff.linesRemoved}`);
+
+        return {
+            success:      true,
+            type:         "dev_patch",
+            result:       `Patch proposed for \`${p.targetFile}\`\n\nPatch ID: \`${proposal.patchId}\`\nLines: ${mod.linesOriginal} → ${mod.linesPatched} (+${proposal.diff.linesAdded}/-${proposal.diff.linesRemoved})\n\nApply:    POST /runtime/patches/${proposal.patchId}/apply  { "approved": true }\nRollback: POST /runtime/patches/${proposal.patchId}/rollback { "approved": true }`,
+            patchId:      proposal.patchId,
+            targetFile:   mod.filePath,
+            diff:         proposal.diff,
+            linesOriginal: mod.linesOriginal,
+            linesPatched:  mod.linesPatched,
+            requiresApproval: true,
+            repoContext:  mod.contextUsed,
+        };
+    }
+
+    // ── Path B: generate new file (original behaviour, unchanged) ────────────
+    const framework  = p.framework  || detectFramework(description);
+    const filename   = p.filename   || deriveFilename(description, framework);
     const outputPath = p.outputPath || OUTPUT_DIR;
 
-    console.log(`[DevAgent] framework="${framework}" filename="${filename}" outputPath="${outputPath}"`);
+    console.log(`[DevAgent] generate mode — framework="${framework}" filename="${filename}"`);
     console.log(`[DevAgent] generating code for: "${description.slice(0, 80)}"`);
 
-    const result = await generate({ framework, description, outputPath, filename });
+    if (!_generate) return { success: false, error: "devAgent: code generator not available" };
+    const result = await _generate({ framework, description, outputPath, filename });
 
     if (result.written) {
         console.log(`[DevAgent] file written → ${result.written.path} (${result.written.bytes} bytes)`);

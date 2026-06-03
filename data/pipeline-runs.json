@@ -1,0 +1,652 @@
+[
+  {
+    "id": "run-mpfvdh9b-ecb",
+    "pipeline": "standard-deploy",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "rolled-back",
+    "createdAt": 1779390858143,
+    "startedAt": null,
+    "completedAt": 1779390858144,
+    "stages": [
+      {
+        "name": "preflight",
+        "chain": "deployment-readiness",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "deploy",
+        "chain": "deploy-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "verify",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": true,
+    "auditLog": [
+      {
+        "ts": 1779390858144,
+        "event": "rollback",
+        "reason": "simulated interruption"
+      }
+    ]
+  },
+  {
+    "id": "run-mpfvdlbe-3gj",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "pending",
+    "createdAt": 1779390863402,
+    "startedAt": null,
+    "completedAt": null,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": false,
+    "auditLog": []
+  },
+  {
+    "id": "run-mpfvdlbf-qns",
+    "pipeline": "standard-deploy",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "rolled-back",
+    "createdAt": 1779390863403,
+    "startedAt": null,
+    "completedAt": 1779390863404,
+    "stages": [
+      {
+        "name": "preflight",
+        "chain": "deployment-readiness",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "deploy",
+        "chain": "deploy-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "verify",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": true,
+    "auditLog": [
+      {
+        "ts": 1779390863404,
+        "event": "rollback",
+        "reason": "simulated interruption"
+      }
+    ]
+  },
+  {
+    "id": "run-mpfvdqrb-nro",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "pending",
+    "createdAt": 1779390870455,
+    "startedAt": null,
+    "completedAt": null,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": false,
+    "auditLog": []
+  },
+  {
+    "id": "run-mpfvdqrc-y4h",
+    "pipeline": "standard-deploy",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "rolled-back",
+    "createdAt": 1779390870456,
+    "startedAt": null,
+    "completedAt": 1779390870457,
+    "stages": [
+      {
+        "name": "preflight",
+        "chain": "deployment-readiness",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "deploy",
+        "chain": "deploy-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "verify",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": true,
+    "auditLog": [
+      {
+        "ts": 1779390870457,
+        "event": "rollback",
+        "reason": "simulated interruption"
+      }
+    ]
+  },
+  {
+    "id": "run-mpfvdw2j-fn3",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "pending",
+    "createdAt": 1779390877339,
+    "startedAt": null,
+    "completedAt": null,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": false,
+    "auditLog": []
+  },
+  {
+    "id": "run-mpfvdw2k-011",
+    "pipeline": "standard-deploy",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "rolled-back",
+    "createdAt": 1779390877340,
+    "startedAt": null,
+    "completedAt": 1779390877341,
+    "stages": [
+      {
+        "name": "preflight",
+        "chain": "deployment-readiness",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "deploy",
+        "chain": "deploy-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "verify",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": true,
+    "auditLog": [
+      {
+        "ts": 1779390877341,
+        "event": "rollback",
+        "reason": "simulated interruption"
+      }
+    ]
+  },
+  {
+    "id": "run-mpfve307-8ff",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "pending",
+    "createdAt": 1779390886327,
+    "startedAt": null,
+    "completedAt": null,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": false,
+    "auditLog": []
+  },
+  {
+    "id": "run-mpfve309-de8",
+    "pipeline": "standard-deploy",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "rolled-back",
+    "createdAt": 1779390886329,
+    "startedAt": null,
+    "completedAt": 1779390886329,
+    "stages": [
+      {
+        "name": "preflight",
+        "chain": "deployment-readiness",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "deploy",
+        "chain": "deploy-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "verify",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": true,
+    "auditLog": [
+      {
+        "ts": 1779390886329,
+        "event": "rollback",
+        "reason": "simulated interruption"
+      }
+    ]
+  },
+  {
+    "id": "run-mpfvyazr-rbs",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "rolled-back",
+    "createdAt": 1779391829799,
+    "startedAt": null,
+    "completedAt": 1779391829801,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": true,
+    "auditLog": [
+      {
+        "ts": 1779391829801,
+        "event": "rollback",
+        "reason": "stress test failure"
+      }
+    ]
+  },
+  {
+    "id": "run-mpfvyazs-pe5",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "rolled-back",
+    "createdAt": 1779391829800,
+    "startedAt": null,
+    "completedAt": 1779391829801,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": true,
+    "auditLog": [
+      {
+        "ts": 1779391829801,
+        "event": "rollback",
+        "reason": "stress test failure"
+      }
+    ]
+  },
+  {
+    "id": "run-mpfvyazs-p9s",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "pending",
+    "createdAt": 1779391829800,
+    "startedAt": null,
+    "completedAt": null,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": false,
+    "auditLog": []
+  },
+  {
+    "id": "run-mpfvyazs-kh2",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "pending",
+    "createdAt": 1779391829800,
+    "startedAt": null,
+    "completedAt": null,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": false,
+    "auditLog": []
+  },
+  {
+    "id": "run-mpfvyazs-e10",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "pending",
+    "createdAt": 1779391829800,
+    "startedAt": null,
+    "completedAt": null,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": false,
+    "auditLog": []
+  },
+  {
+    "id": "run-mpfvz0e2-msv",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "rolled-back",
+    "createdAt": 1779391862714,
+    "startedAt": null,
+    "completedAt": 1779391862716,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": true,
+    "auditLog": [
+      {
+        "ts": 1779391862716,
+        "event": "rollback",
+        "reason": "stress test failure"
+      }
+    ]
+  },
+  {
+    "id": "run-mpfvz0e3-i2d",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "rolled-back",
+    "createdAt": 1779391862715,
+    "startedAt": null,
+    "completedAt": 1779391862716,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": true,
+    "auditLog": [
+      {
+        "ts": 1779391862716,
+        "event": "rollback",
+        "reason": "stress test failure"
+      }
+    ]
+  },
+  {
+    "id": "run-mpfvz0e3-o2v",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "pending",
+    "createdAt": 1779391862715,
+    "startedAt": null,
+    "completedAt": null,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": false,
+    "auditLog": []
+  },
+  {
+    "id": "run-mpfvz0e3-oks",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "pending",
+    "createdAt": 1779391862715,
+    "startedAt": null,
+    "completedAt": null,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": false,
+    "auditLog": []
+  },
+  {
+    "id": "run-mpfvz0e3-y59",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "pending",
+    "createdAt": 1779391862715,
+    "startedAt": null,
+    "completedAt": null,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": false,
+    "auditLog": []
+  },
+  {
+    "id": "run-mpfwwjrv-mip",
+    "pipeline": "standard-deploy",
+    "operatorId": "op-surv",
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "awaiting-approval",
+    "createdAt": 1779393427483,
+    "startedAt": null,
+    "completedAt": null,
+    "stages": [
+      {
+        "name": "preflight",
+        "chain": "deployment-readiness",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "deploy",
+        "chain": "deploy-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "verify",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": false,
+    "auditLog": []
+  }
+]

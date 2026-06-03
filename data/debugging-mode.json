@@ -1,0 +1,33 @@
+{
+  "active": false,
+  "sessionId": null,
+  "operatorId": "op-sim",
+  "activatedAt": 1779390886328,
+  "errorLog": [
+    {
+      "message": "Connection refused: ECONNREFUSED 127.0.0.1:3000",
+      "context": {},
+      "ts": 1779390886328
+    },
+    {
+      "message": "Connection refused: ECONNREFUSED 127.0.0.1:3000",
+      "context": {},
+      "ts": 1779390886328
+    },
+    {
+      "message": "Connection refused: ECONNREFUSED 127.0.0.1:3000",
+      "context": {},
+      "ts": 1779390886328
+    },
+    {
+      "message": "Connection refused: ECONNREFUSED 127.0.0.1:3000",
+      "context": {},
+      "ts": 1779390886328
+    },
+    {
+      "message": "Connection refused: ECONNREFUSED 127.0.0.1:3000",
+      "context": {},
+      "ts": 1779390886328
+    }
+  ]
+}

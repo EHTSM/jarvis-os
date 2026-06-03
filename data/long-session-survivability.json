@@ -1,0 +1,17 @@
+{
+  "sessions": [
+    {
+      "sessionId": "stress-731",
+      "goal": "maturity stress test",
+      "env": "production",
+      "progress": 45,
+      "checkpointData": null,
+      "status": "active",
+      "createdAt": 1779453437280,
+      "ts": 1779458720310
+    }
+  ],
+  "reconnects": [],
+  "deploymentSessions": [],
+  "dedup": []
+}

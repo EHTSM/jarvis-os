@@ -1,0 +1,38 @@
+{
+  "sessions": {
+    "long-session-test": {
+      "id": "long-session-test",
+      "goal": "real-world long session test",
+      "operatorId": null,
+      "startedAt": 1779434691893,
+      "lastActivityAt": 1779434691894,
+      "blocked": false,
+      "blockReason": null,
+      "phase": "active",
+      "deploymentPhase": null,
+      "activeChainId": null,
+      "debuggingActive": false,
+      "recoveryActive": false,
+      "eventCount": 10,
+      "errorCount": 4,
+      "notes": []
+    },
+    "intel-test": {
+      "id": "intel-test",
+      "goal": "smoke test",
+      "operatorId": null,
+      "startedAt": 1779397526987,
+      "lastActivityAt": 1779397526987,
+      "blocked": true,
+      "blockReason": "npm dependency missing",
+      "phase": "blocked",
+      "deploymentPhase": null,
+      "activeChainId": null,
+      "debuggingActive": false,
+      "recoveryActive": false,
+      "eventCount": 0,
+      "errorCount": 0,
+      "notes": []
+    }
+  }
+}

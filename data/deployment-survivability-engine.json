@@ -1,0 +1,797 @@
+{
+  "snapshots": [
+    {
+      "id": "48633959-1df0-47a5-b531-8d4376883e36",
+      "deploymentId": "0b1aa112-a8b5-4030-ad1a-df787b644cbf",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 33,
+          "resolved": 33,
+          "avgTimeMs": 5,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 9,
+          "successes": 9,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 95,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779434692041,
+      "createdAt": 1779434692041
+    },
+    {
+      "id": "99a551b1-4125-4758-8066-836724c26be2",
+      "deploymentId": "e983194d-8bda-4d3b-9df8-9cc2c9080b92",
+      "pipelineName": "stress-test",
+      "environment": "test",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 32,
+          "resolved": 32,
+          "avgTimeMs": 5,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 9,
+          "successes": 9,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 95,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779434692023,
+      "createdAt": 1779434692023
+    },
+    {
+      "id": "42b89474-f219-4ee5-992d-cd32eb842105",
+      "deploymentId": "d30c4109-c742-4670-b844-171260e40a44",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 29,
+          "resolved": 29,
+          "avgTimeMs": 5,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 8,
+          "successes": 8,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 95,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779432371182,
+      "createdAt": 1779432371182
+    },
+    {
+      "id": "5df6eba9-1fd6-4bdd-9206-1d004793f158",
+      "deploymentId": "a9c7a95c-4e94-4459-8105-8523c7c53943",
+      "pipelineName": "stress-test",
+      "environment": "test",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 28,
+          "resolved": 28,
+          "avgTimeMs": 3,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 8,
+          "successes": 8,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 95,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779432371166,
+      "createdAt": 1779432371166
+    },
+    {
+      "id": "ccce892b-0232-44b3-b06d-8404f453c7c3",
+      "deploymentId": "12b0a682-42f1-4abc-9150-dee6767fa772",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 25,
+          "resolved": 25,
+          "avgTimeMs": 4,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 7,
+          "successes": 7,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 95,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779432336177,
+      "createdAt": 1779432336177
+    },
+    {
+      "id": "f41d49d2-59db-46e4-b13b-29bdaaa331ad",
+      "deploymentId": "122ba079-ed39-403f-932e-1bc204d6ff28",
+      "pipelineName": "stress-test",
+      "environment": "test",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 24,
+          "resolved": 24,
+          "avgTimeMs": 3,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 7,
+          "successes": 7,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 95,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779432336163,
+      "createdAt": 1779432336163
+    },
+    {
+      "id": "702c1331-92f7-4cf6-aa77-dad3e7e71fcf",
+      "deploymentId": "7c21b826-6904-4acd-8559-b6c3bb34cbd2",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 21,
+          "resolved": 21,
+          "avgTimeMs": 3,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 6,
+          "successes": 6,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 95,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779432330781,
+      "createdAt": 1779432330781
+    },
+    {
+      "id": "f5ddbe1a-0f8d-4166-ae29-f1571e542b33",
+      "deploymentId": "5d769abd-6ceb-4071-bada-e640ad39bbb5",
+      "pipelineName": "stress-test",
+      "environment": "test",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 20,
+          "resolved": 20,
+          "avgTimeMs": 3,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 6,
+          "successes": 6,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 95,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779432330768,
+      "createdAt": 1779432330768
+    },
+    {
+      "id": "eac945cb-ae58-4c98-ab03-c92a2384064c",
+      "deploymentId": "56da9986-8da8-48f5-b85a-c0ed13d73b51",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 17,
+          "resolved": 17,
+          "avgTimeMs": 3,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 5,
+          "successes": 5,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 95,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779432315340,
+      "createdAt": 1779432315340
+    },
+    {
+      "id": "e6e027f5-ffa3-4eb8-a3f2-6dc99b114c8e",
+      "deploymentId": "6f04348d-b1f1-4326-a4ea-f5ac1f2e00b9",
+      "pipelineName": "stress-test",
+      "environment": "test",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 16,
+          "resolved": 16,
+          "avgTimeMs": 3,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 5,
+          "successes": 5,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 95,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779432315327,
+      "createdAt": 1779432315327
+    },
+    {
+      "id": "5d3947ed-3ce7-4a08-b763-d7077a1da1c3",
+      "deploymentId": "06f7f7ec-ad9b-4c6a-81bd-acef1279e3db",
+      "pipelineName": "stress-test",
+      "environment": "test",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 9,
+          "resolved": 9,
+          "avgTimeMs": 3,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 1,
+          "successes": 1,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 95,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779414798428,
+      "createdAt": 1779414798428
+    },
+    {
+      "id": "2c01b4a2-045c-4c2d-9440-ca9f5a7a2c8c",
+      "deploymentId": "46d10395-a7e6-4dd2-b1b5-b2468f8b5741",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 8,
+          "resolved": 8,
+          "avgTimeMs": 3,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 1,
+          "successes": 1,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 91,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779414798387,
+      "createdAt": 1779414798387
+    },
+    {
+      "id": "6639a3bd-12b5-444e-9fb9-5642a370fa69",
+      "deploymentId": "c33ce982-febc-4e19-98d4-7173b37557d6",
+      "pipelineName": "stress-test",
+      "environment": "test",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 7,
+          "resolved": 7,
+          "avgTimeMs": 2,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 1,
+          "successes": 1,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 91,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779414798372,
+      "createdAt": 1779414798372
+    },
+    {
+      "id": "7db42e8d-0253-4ab3-b2a2-34f29380c44e",
+      "deploymentId": "06b6b6ad-7e50-40e5-84b2-280777cabd35",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 6,
+          "resolved": 6,
+          "avgTimeMs": 3,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 1,
+          "successes": 1,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 85,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779414789113,
+      "createdAt": 1779414789113
+    },
+    {
+      "id": "a1837c3e-8a4f-441c-8c56-fdc1b3142d10",
+      "deploymentId": "94ba90f1-2804-461c-806f-58d18e0fca07",
+      "pipelineName": "stress-test",
+      "environment": "test",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 5,
+          "resolved": 5,
+          "avgTimeMs": 3,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 1,
+          "successes": 1,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 85,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779414789106,
+      "createdAt": 1779414789106
+    },
+    {
+      "id": "f71bea38-c159-4b58-80ff-64f03f9f1a63",
+      "deploymentId": "b1ddb4e7-5c82-4d00-82ab-75fd3ebc7cfa",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 4,
+          "resolved": 4,
+          "avgTimeMs": 4,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 1,
+          "successes": 1,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 79,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779414789081,
+      "createdAt": 1779414789081
+    },
+    {
+      "id": "135c671d-639d-4606-9700-4cee071a6516",
+      "deploymentId": "9c659554-bac5-4da0-8794-bbe5e5138620",
+      "pipelineName": "stress-test",
+      "environment": "test",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 3,
+          "resolved": 3,
+          "avgTimeMs": 4,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 1,
+          "successes": 1,
+          "rollbacks": 0,
+          "successRate": 100
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 50,
+        "summary": "Debug:100% Deploy:100% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 79,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779414789068,
+      "createdAt": 1779414789068
+    },
+    {
+      "id": "53071b5b-f261-40b2-886c-307348292cdf",
+      "deploymentId": "86e8a35f-c5b7-41d2-b738-227e16831944",
+      "pipelineName": "stress-test",
+      "environment": "test",
+      "notes": "",
+      "todayMetrics": {
+        "date": "2026-05-22",
+        "debugging": {
+          "sessions": 1,
+          "resolved": 1,
+          "avgTimeMs": 7,
+          "resolutionRate": 100
+        },
+        "deployments": {
+          "attempts": 0,
+          "successes": 0,
+          "rollbacks": 0,
+          "successRate": 0
+        },
+        "patches": {
+          "proposed": 0,
+          "applied": 0,
+          "rolledBack": 0,
+          "applyRate": 0
+        },
+        "recovery": {
+          "chains": 0,
+          "successes": 0,
+          "successRate": 0
+        },
+        "replays": {
+          "used": 0,
+          "useful": 0,
+          "usefulRate": 0
+        },
+        "overallTrust": 25,
+        "summary": "Debug:100% Deploy:0% Patch:0% Recovery:0% Replay:0%"
+      },
+      "trustScore": 73,
+      "nodeVersion": "v24.11.1",
+      "capturedAt": 1779413431205,
+      "createdAt": 1779413431205
+    }
+  ],
+  "phasedStates": []
+}

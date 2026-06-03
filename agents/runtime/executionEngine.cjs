@@ -70,6 +70,12 @@ async function executeTask(task, options = {}) {
     for (let attempt = 0; attempt < maxRetries; attempt++) {
         if (attempt > 0) {
             await _sleep(_backoffMs(attempt - 1));
+            // Audit lineage: record retry with parent taskId
+            try {
+                const audit = require("../../backend/utils/auditLog.cjs");
+                audit.recordRetry({ taskId: `${taskId}_r${attempt}`, originalTaskId: taskId,
+                    reason: lastError?.message || "prior_attempt_failed", attempt });
+            } catch {}
         }
 
         const agent = registry.findForCapability(capability);

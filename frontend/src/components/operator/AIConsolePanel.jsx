@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { sendMessage } from "../../api";
 
 const MAX_HISTORY  = 200;
@@ -13,7 +13,7 @@ function _loadPersistedMsgs() {
       if (Array.isArray(parsed) && parsed.length > 0) return parsed;
     }
   } catch { /* ignore corrupt storage */ }
-  return [{ id: 0, role: "sys", text: "JARVIS AI Operator Console — type commands or natural language" }];
+  return [{ id: 0, role: "sys", text: "Jarvis AI console — type commands or natural language" }];
 }
 
 function _savePersistedMsgs(msgs) {
@@ -31,6 +31,28 @@ export default function AIConsolePanel({ style }) {
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState([]);  // command history for ↑↓
   const [histIdx, setHistIdx] = useState(-1);
+
+  const memoryTags = useMemo(() => {
+    const tags = [];
+    for (let i = msgs.length - 1; i >= 0 && tags.length < 4; i--) {
+      const msg = msgs[i];
+      if (!msg || msg.role === "sys" || msg.role === "wait") continue;
+      const text = (msg.text || "").split(/[\n,.;]/)[0].trim();
+      if (!text) continue;
+      const label = text.length > 22 ? `${text.slice(0, 22)}…` : text;
+      if (!tags.includes(label)) tags.push(label);
+    }
+    return tags;
+  }, [msgs]);
+
+  const assistantSummary = useMemo(() => {
+    if (loading) return "Jarvis is synthesizing the next operational insight…";
+    const last = [...msgs].reverse().find(m => m.role === "jarvis");
+    if (!last) return "Jarvis is ready for your next command.";
+    const summary = (last.text || "").replace(/\s+/g, " ").trim();
+    const firstLine = summary.split(/[\n\.]/)[0].trim();
+    return firstLine.length > 100 ? `${firstLine.slice(0, 100)}…` : firstLine;
+  }, [msgs, loading]);
 
   const inputRef = useRef(null);
   const scrollRef = useRef(null);
@@ -110,60 +132,116 @@ export default function AIConsolePanel({ style }) {
     setMsgs([_persistedMsgs[0]]);
   };
 
+  const msgCount = msgs.filter(m => m.role === "user" || m.role === "jarvis").length;
+
   return (
     <div className="op-panel op-aiconsole" style={style}>
       <div className="op-panel-header">
-        <span className="op-panel-title">AI Console</span>
+        <div>
+          <span className="op-panel-title">Ask Jarvis</span>
+          <span className="op-aiconsole-meta">Your AI operator — type anything</span>
+          <div className="op-aiconsole-status">
+            <span className="op-aiconsole-badge">● ready</span>
+            {msgCount > 0 && (
+              <span className="op-aiconsole-badge op-aiconsole-badge-soft">{msgCount} exchange{msgCount !== 1 ? "s" : ""}</span>
+            )}
+          </div>
+        </div>
         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          {loading && <span style={{ fontSize: 10, color: "var(--op-amber)" }}>thinking…</span>}
+          {loading && <span className="op-aiconsole-thinking">Jarvis is thinking…</span>}
           <button
             className="op-send-btn"
             onClick={handleClear}
-            title="Clear console"
-            aria-label="Clear console"
-          >CLR</button>
+            title="Clear conversation"
+            aria-label="Clear conversation"
+          >Clear</button>
+        </div>
+      </div>
+
+      <div className="op-aiconsole-meta-row">
+        <div className="op-aiconsole-summary-card">
+          <div className="op-aiconsole-summary-title">What Jarvis thinks</div>
+          <div className="op-aiconsole-summary-text">{assistantSummary}</div>
+        </div>
+        <div className="op-aiconsole-summary-card op-aiconsole-memory-card">
+          <div className="op-aiconsole-summary-title">Recent context</div>
+          <div className="op-aiconsole-memory-chips">
+            {memoryTags.length > 0 ? memoryTags.map((tag, idx) => (
+              <span key={idx} className="op-aiconsole-memory-chip">{tag}</span>
+            )) : (
+              <span className="op-aiconsole-memory-empty">Your recent actions will appear here as context chips.</span>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Messages */}
       <div ref={scrollRef} className="op-aiconsole-messages">
-        {msgs.map(m => (
-          <div key={m.id} className="op-msg op-fade-in">
-            {m.role === "user"   && <><span className="op-msg-prompt">&gt;</span><span className="op-msg-user">{m.text}</span></>}
-            {m.role === "jarvis" && <><span className="op-msg-prompt">←</span><span className="op-msg-reply">{m.text}</span></>}
-            {m.role === "err"    && <><span className="op-msg-prompt">!</span><span className="op-msg-err">{m.text}</span></>}
-            {m.role === "sys"    && <span className="op-msg-sys"># {m.text}</span>}
-            {m.role === "wait"   && <span className="op-msg-wait">  {m.text}</span>}
+        {msgs.length === 1 && msgs[0].role === "sys" && (
+          <div className="op-aiconsole-welcome">
+            <div className="op-aiconsole-welcome-icon">✦</div>
+            <div className="op-aiconsole-welcome-title">How can I help you today?</div>
+            <div className="op-aiconsole-welcome-sub">Ask anything — run a task, check status, get guidance, or just describe what you need.</div>
+            <div className="op-aiconsole-welcome-hints">
+              <span className="op-aiconsole-welcome-hint">Try: "What's running right now?"</span>
+              <span className="op-aiconsole-welcome-hint">Try: "Run a health check"</span>
+              <span className="op-aiconsole-welcome-hint">Try: "What should I do next?"</span>
+            </div>
           </div>
-        ))}
+        )}
+        {msgs.map(m => {
+          if (m.role === "sys" && msgs.length === 1) return null;
+          return (
+            <div
+              key={m.id}
+              className={`op-msg op-fade-in ${
+                m.role === "jarvis" ? "op-msg-ai" :
+                m.role === "user" ? "op-msg-user-entry" :
+                m.role === "err" ? "op-msg-error-entry" :
+                m.role === "sys" ? "op-msg-sys-entry" : ""
+              }`}
+            >
+              {m.role === "user"   && <><span className="op-msg-prompt op-msg-prompt--you">You</span><span className="op-msg-user">{m.text}</span></>}
+              {m.role === "jarvis" && <><span className="op-msg-prompt op-msg-prompt--ai">J</span><span className="op-msg-reply">{m.text}</span></>}
+              {m.role === "err"    && <><span className="op-msg-prompt op-msg-prompt--err">!</span><span className="op-msg-err">{m.text}</span></>}
+              {m.role === "sys"    && <span className="op-msg-sys">{m.text}</span>}
+              {m.role === "wait"   && <span className="op-msg-wait">{m.text}</span>}
+            </div>
+          );
+        })}
         {loading && (
-          <div className="op-msg op-fade-in" style={{ opacity: 0.8 }}>
-            <span className="op-msg-prompt">←</span>
-            <span className="op-msg-wait" style={{ animation: "op-pulse 1.5s infinite" }}>Awaiting runtime response... ▋</span>
+          <div className="op-msg op-msg-ai op-fade-in op-aiconsole-loading-msg">
+            <span className="op-msg-prompt op-msg-prompt--ai">J</span>
+            <span className="op-msg-wait">
+              <span className="op-aiconsole-dot-pulse">●</span>
+              <span className="op-aiconsole-dot-pulse" style={{ animationDelay: "0.2s" }}>●</span>
+              <span className="op-aiconsole-dot-pulse" style={{ animationDelay: "0.4s" }}>●</span>
+            </span>
           </div>
         )}
       </div>
 
       {/* Input row */}
       <div className="op-input-row">
-        <span className="op-input-prompt">&gt;</span>
         <input
           ref={inputRef}
           className="op-cmd-input"
           type="text"
           value={input}
-          placeholder="command or natural language…"
+          placeholder="Ask anything or run a command…"
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKey}
           disabled={loading}
           autoComplete="off"
           spellCheck={false}
+          aria-label="Message Jarvis"
         />
         <button
-          className="op-send-btn"
+          className={`op-send-btn op-send-btn--primary${input.trim() && !loading ? " op-send-btn--ready" : ""}`}
           onClick={() => send(input)}
           disabled={!input.trim() || loading}
-        >→</button>
+          aria-label="Send message"
+        >Send</button>
       </div>
     </div>
   );

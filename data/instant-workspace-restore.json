@@ -1,0 +1,43 @@
+{
+  "snapshots": [
+    {
+      "snapshotId": "dd-snap-719",
+      "vsCode": {
+        "file": "/app.ts"
+      },
+      "terminal": {
+        "cwd": "/project"
+      },
+      "browser": null,
+      "deployment": null,
+      "replay": {
+        "env": "vscode",
+        "progress": 70
+      },
+      "debugging": null,
+      "goal": "daily driver",
+      "ts": 1779458720344,
+      "createdAt": 1779445853961
+    },
+    {
+      "snapshotId": "stress-715-snap",
+      "vsCode": {
+        "file": "/src/app.ts"
+      },
+      "terminal": {
+        "cwd": "/project"
+      },
+      "browser": null,
+      "deployment": null,
+      "replay": {
+        "env": "production",
+        "progress": 50
+      },
+      "debugging": null,
+      "goal": "stress test",
+      "ts": 1779458720322,
+      "createdAt": 1779445618027
+    }
+  ],
+  "restores": []
+}

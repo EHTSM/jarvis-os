@@ -1,0 +1,47 @@
+{
+  "symbols": [
+    {
+      "name": "getUserById",
+      "filePath": "/src/user.ts",
+      "kind": "function",
+      "language": "typescript",
+      "lineNumber": null,
+      "ts": 1779458720293
+    }
+  ],
+  "files": [
+    {
+      "filePath": "/src/user.ts",
+      "language": "typescript",
+      "size": 0,
+      "ts": 1779458720293
+    }
+  ],
+  "deps": [
+    {
+      "key": "/src/user.ts→/src/db.ts",
+      "fromFile": "/src/user.ts",
+      "toFile": "/src/db.ts",
+      "kind": "import",
+      "weight": 1,
+      "ts": 1779458720293
+    }
+  ],
+  "graph": {
+    "/src/user.ts": [
+      "/src/db.ts"
+    ]
+  },
+  "replays": [
+    {
+      "replayId": "replay-731",
+      "files": [
+        "/src/user.ts"
+      ],
+      "symbols": [
+        "getUserById"
+      ],
+      "ts": 1779458720293
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "memories": [
+    {
+      "fp": "68848b6a0450",
+      "type": "recovery-success",
+      "key": "restart-server-stress-656",
+      "payload": "{\"steps\":3}",
+      "confidence": 82,
+      "outcome": "success",
+      "hitCount": 0,
+      "successCount": 5,
+      "createdAt": 1779441458841,
+      "updatedAt": 1779442824558,
+      "lastHitAt": null
+    },
+    {
+      "fp": "c34790ecf6f8",
+      "type": "failure-cluster",
+      "key": "econnrefused-stress-656",
+      "payload": "{\"pattern\":\"restart-server\"}",
+      "confidence": 78,
+      "outcome": "success",
+      "hitCount": 0,
+      "successCount": 5,
+      "createdAt": 1779441458840,
+      "updatedAt": 1779442824558,
+      "lastHitAt": null
+    }
+  ]
+}

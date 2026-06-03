@@ -1,0 +1,103 @@
+{
+  "patches": [
+    {
+      "patchId": "mf-sprint2",
+      "files": [
+        {
+          "filePath": "a.js"
+        },
+        {
+          "filePath": "b.js"
+        },
+        {
+          "filePath": "c.js"
+        }
+      ],
+      "description": "multi-file cert test",
+      "replayId": null,
+      "depth": 1,
+      "status": "applied",
+      "validations": [
+        {
+          "check": "file-validated:a.js",
+          "severity": "ok"
+        },
+        {
+          "check": "file-validated:b.js",
+          "severity": "ok"
+        },
+        {
+          "check": "file-validated:c.js",
+          "severity": "ok"
+        }
+      ],
+      "ts": 1780314821976,
+      "proposedAt": 1780314821976,
+      "appliedAt": 1780314821977
+    },
+    {
+      "patchId": "mf-cert",
+      "files": [
+        {
+          "filePath": "a.js"
+        },
+        {
+          "filePath": "b.js"
+        }
+      ],
+      "description": "test",
+      "replayId": null,
+      "depth": 1,
+      "status": "applied",
+      "validations": [
+        {
+          "check": "file-validated:a.js",
+          "severity": "ok"
+        },
+        {
+          "check": "file-validated:b.js",
+          "severity": "ok"
+        }
+      ],
+      "ts": 1780313873422,
+      "proposedAt": 1780313873422,
+      "appliedAt": 1780313873422
+    },
+    {
+      "patchId": "test-patch-001",
+      "files": [
+        {
+          "filePath": "generated/patch-test-simple.txt",
+          "content": "modified"
+        },
+        {
+          "filePath": "generated/validate-email.js",
+          "content": "modified"
+        }
+      ],
+      "description": "certification test multi-file patch",
+      "replayId": null,
+      "depth": 1,
+      "status": "proposed",
+      "validations": [
+        {
+          "check": "file-validated:patch-test-simple.txt",
+          "severity": "ok"
+        },
+        {
+          "check": "file-validated:validate-email.js",
+          "severity": "ok"
+        }
+      ],
+      "ts": 1780313509051,
+      "proposedAt": 1780313509051
+    }
+  ],
+  "chains": [],
+  "dedup": [
+    {
+      "key": "patch:mf-sprint2",
+      "ts": 1780314821976
+    }
+  ]
+}

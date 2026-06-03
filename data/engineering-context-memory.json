@@ -1,0 +1,24 @@
+{
+  "entries": [
+    {
+      "type": "recovery-workflow",
+      "ts": 1779434691887,
+      "workflowId": "env-bootstrap-full",
+      "goal": "env-bootstrap-full",
+      "stepCount": 4,
+      "confidence": 100,
+      "replayId": null,
+      "_fp": "845d4e49fa19"
+    },
+    {
+      "type": "recovery-workflow",
+      "ts": 1779397526964,
+      "workflowId": "full-debug-session",
+      "goal": "full-debug-session",
+      "stepCount": 5,
+      "confidence": 100,
+      "replayId": null,
+      "_fp": "709653070de2"
+    }
+  ]
+}

@@ -49,9 +49,12 @@ fi
 log "Pre-flight checks passed."
 
 # ── Build frontend ───────────────────────────────────────────────────────
+# Single-server nginx: REACT_APP_API_URL="" → relative paths (nginx proxies API routes).
+# Split API (api.ooplix.com): set REACT_APP_API_URL=https://api.ooplix.com in .env.
 if [ "${1:-}" = "--build-frontend" ] || [ ! -d "frontend/build" ]; then
-    log "Building frontend (REACT_APP_API_URL=${BASE_URL})..."
-    REACT_APP_API_URL="${BASE_URL}" npm run build:frontend
+    BUILD_API_URL="${REACT_APP_API_URL:-}"
+    log "Building frontend (REACT_APP_API_URL='${BUILD_API_URL}')..."
+    REACT_APP_API_URL="${BUILD_API_URL}" npm run build:frontend
     log "Frontend build complete."
 fi
 

@@ -1,0 +1,48 @@
+{
+  "commands": [
+    {
+      "command": "npm run test",
+      "context": {
+        "sessionId": "sess-761"
+      },
+      "ts": 1779458015206
+    },
+    {
+      "command": "npm run test",
+      "context": {
+        "sessionId": "sess-761"
+      },
+      "ts": 1779458562267
+    },
+    {
+      "command": "npm run test",
+      "context": {
+        "sessionId": "sess-761"
+      },
+      "ts": 1779458719287
+    }
+  ],
+  "sessions": [
+    {
+      "sessionId": "shell-761-1779458015206",
+      "context": {},
+      "startedAt": 1779458015206,
+      "updatedAt": 1779458015206,
+      "status": "active"
+    },
+    {
+      "sessionId": "shell-761-1779458562267",
+      "context": {},
+      "startedAt": 1779458562267,
+      "updatedAt": 1779458562267,
+      "status": "active"
+    },
+    {
+      "sessionId": "shell-761-1779458719287",
+      "context": {},
+      "startedAt": 1779458719287,
+      "updatedAt": 1779458719287,
+      "status": "active"
+    }
+  ]
+}

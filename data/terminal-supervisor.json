@@ -1,0 +1,18 @@
+{
+  "processes": [
+    {
+      "id": "802cc468-841c-4bb3-81f1-08061624d279",
+      "name": "test-backend",
+      "cmd": "node backend/server.js",
+      "pid": 9999,
+      "sessionId": null,
+      "status": "running",
+      "startedAt": 1779397526964,
+      "lastSeenAt": 1779397526964,
+      "restartCount": 0,
+      "outputLines": [],
+      "stale": false
+    }
+  ],
+  "checkpoints": []
+}

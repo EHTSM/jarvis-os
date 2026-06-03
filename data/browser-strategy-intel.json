@@ -1,0 +1,338 @@
+{
+  "plans": [
+    {
+      "workflowId": "dd-browser-689",
+      "steps": [
+        {
+          "index": 0,
+          "action": "navigate",
+          "url": "https://app.example.com",
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        },
+        {
+          "index": 1,
+          "action": "extract",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": true,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779458562372
+    },
+    {
+      "workflowId": "audit-wf-688",
+      "steps": [
+        {
+          "index": 0,
+          "action": "click",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779458562360
+    },
+    {
+      "workflowId": "dd-browser-689",
+      "steps": [
+        {
+          "index": 0,
+          "action": "navigate",
+          "url": "https://app.example.com",
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        },
+        {
+          "index": 1,
+          "action": "extract",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": true,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779455181248
+    },
+    {
+      "workflowId": "audit-wf-688",
+      "steps": [
+        {
+          "index": 0,
+          "action": "click",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779455181238
+    },
+    {
+      "workflowId": "dd-browser-689",
+      "steps": [
+        {
+          "index": 0,
+          "action": "navigate",
+          "url": "https://app.example.com",
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        },
+        {
+          "index": 1,
+          "action": "extract",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": true,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779454777171
+    },
+    {
+      "workflowId": "audit-wf-688",
+      "steps": [
+        {
+          "index": 0,
+          "action": "click",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779454777166
+    },
+    {
+      "workflowId": "dd-browser-689",
+      "steps": [
+        {
+          "index": 0,
+          "action": "navigate",
+          "url": "https://app.example.com",
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        },
+        {
+          "index": 1,
+          "action": "extract",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": true,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779454477141
+    },
+    {
+      "workflowId": "audit-wf-688",
+      "steps": [
+        {
+          "index": 0,
+          "action": "click",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779454477133
+    },
+    {
+      "workflowId": "dd-browser-689",
+      "steps": [
+        {
+          "index": 0,
+          "action": "navigate",
+          "url": "https://app.example.com",
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        },
+        {
+          "index": 1,
+          "action": "extract",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": true,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779453675287
+    },
+    {
+      "workflowId": "audit-wf-688",
+      "steps": [
+        {
+          "index": 0,
+          "action": "click",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779453675272
+    },
+    {
+      "workflowId": "dd-browser-689",
+      "steps": [
+        {
+          "index": 0,
+          "action": "navigate",
+          "url": "https://app.example.com",
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        },
+        {
+          "index": 1,
+          "action": "extract",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": true,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779450861439
+    },
+    {
+      "workflowId": "audit-wf-688",
+      "steps": [
+        {
+          "index": 0,
+          "action": "click",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779450861430
+    },
+    {
+      "workflowId": "dd-browser-689",
+      "steps": [
+        {
+          "index": 0,
+          "action": "navigate",
+          "url": "https://app.example.com",
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        },
+        {
+          "index": 1,
+          "action": "extract",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": true,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779445854037
+    },
+    {
+      "workflowId": "audit-wf-688",
+      "steps": [
+        {
+          "index": 0,
+          "action": "click",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779445854029
+    },
+    {
+      "workflowId": "dd-browser-689",
+      "steps": [
+        {
+          "index": 0,
+          "action": "navigate",
+          "url": "https://app.example.com",
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        },
+        {
+          "index": 1,
+          "action": "extract",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": true,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779444845130
+    },
+    {
+      "workflowId": "audit-wf-688",
+      "steps": [
+        {
+          "index": 0,
+          "action": "click",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779444845119
+    },
+    {
+      "workflowId": "dd-browser-689",
+      "steps": [
+        {
+          "index": 0,
+          "action": "navigate",
+          "url": "https://app.example.com",
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        },
+        {
+          "index": 1,
+          "action": "extract",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": true,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779443579079
+    },
+    {
+      "workflowId": "audit-wf-688",
+      "steps": [
+        {
+          "index": 0,
+          "action": "click",
+          "url": null,
+          "formSafe": "auto",
+          "checkpoint": false,
+          "requiresApproval": false
+        }
+      ],
+      "ts": 1779443534545
+    }
+  ],
+  "dedup": [
+    {
+      "key": "browser-seq:audit-wf-688",
+      "ts": 1779458562360
+    },
+    {
+      "key": "browser-seq:dd-browser-689",
+      "ts": 1779458562372
+    }
+  ]
+}

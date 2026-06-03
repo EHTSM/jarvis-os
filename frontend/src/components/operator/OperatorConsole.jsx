@@ -8,6 +8,7 @@ import AdapterPanel    from "./AdapterPanel";
 import WorkflowPanel   from "./WorkflowPanel";
 import GovernorPanel   from "./GovernorPanel";
 import PluginManagerPanel from "./PluginManagerPanel";
+import BrowserAutomationPanel from "./BrowserAutomationPanel";
 import ErrorBoundary   from "../ErrorBoundary";
 import { EmergencyModeBanner } from "./widgets/EmergencyModeBanner";
 import { ConnectionStatusCard } from "./widgets/ConnectionStatusCard";
@@ -17,10 +18,12 @@ import { RecentFailuresPanel } from "./widgets/RecentFailuresPanel";
 import { SessionContextCard } from "./widgets/SessionContextCard";
 import { OperationalStatusBanner } from "./widgets/OperationalStatusBanner";
 import { NotificationOverlay } from "./widgets/NotificationOverlay";
+import { FirstRunSetup, shouldShowFirstRun } from "./widgets/FirstRunSetup";
 import "./operator.css";
 
 export default function OperatorConsole() {
   const [sessionRestored, setSessionRestored] = React.useState(false);
+  const [showFirstRun, setShowFirstRun] = useState(shouldShowFirstRun);
 
   // Load persisted session state if available
   useEffect(() => {
@@ -102,6 +105,9 @@ export default function OperatorConsole() {
 
   return (
     <div className="operator-console" onClick={() => setLastCheck(Date.now())}>
+      {showFirstRun && (
+        <FirstRunSetup onComplete={() => setShowFirstRun(false)} rtStatus={rtStatus} />
+      )}
       <NotificationOverlay notifications={notifications} removeNotification={removeNotification} />
       {sessionRestored && (
         <div className="op-session-restore" style={{color: 'var(--op-green)', padding: '4px 8px', background: 'var(--op-bg)', borderRadius: '4px', marginTop: '4px'}}>
@@ -144,13 +150,16 @@ export default function OperatorConsole() {
 
       {/* ── Mobile tab bar ──────────────────── */}
       <div className="op-tab-bar op-mobile-only">
-        {["Status","Log","Workflow","Plugins"].map(t => (
-          <button
-            key={t}
-            className={`op-tab${mobileTab === t ? " active" : ""}`}
-            onClick={() => setMobileTab(t)}
-          >{t}</button>
-        ))}
+        {["Status","Log","Workflow","Browser","Plugins"].map((t, i) => {
+          const labels = ["Status","Activity","Run","Automate","Plugins"];
+          return (
+            <button
+              key={t}
+              className={`op-tab${mobileTab === t ? " active" : ""}`}
+              onClick={() => setMobileTab(t)}
+            >{labels[i]}</button>
+          );
+        })}
       </div>
 
       <div className="op-main-container">
@@ -159,6 +168,33 @@ export default function OperatorConsole() {
 
           {/* Col 1 (Left): Health & Telemetry Widgets */}
           <div className={`op-col-left${mobileTab !== "Status" ? " op-mobile-hide" : ""}`} style={{ display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto' }}>
+            <div className="op-widget-card op-sidebar-overview">
+              <div className="op-widget-header">
+                <span>Your workspace</span>
+                <span className={`op-stat-value ${connectionState === "connected" ? "ok" : "warn"}`} style={{ fontSize: 9 }}>
+                  {connectionState === "connected" ? "Live" : connectionState === "reconnecting" ? "Reconnecting…" : "Offline"}
+                </span>
+              </div>
+              <div className="op-widget-content">
+                <div className="op-sidebar-summary">
+                  <div className="op-sidebar-metric">
+                    <div className="op-sidebar-metric-label">Running</div>
+                    <div className="op-sidebar-metric-value">{stats.active}</div>
+                  </div>
+                  <div className="op-sidebar-metric">
+                    <div className="op-sidebar-metric-label">Done today</div>
+                    <div className={`op-sidebar-metric-value${stats.ratio >= 80 ? " done-today" : ""}`}>{stats.total}</div>
+                  </div>
+                  <div className="op-sidebar-metric">
+                    <div className="op-sidebar-metric-label">Failed</div>
+                    <div className="op-sidebar-metric-value" style={{ color: stats.failCount > 0 ? "var(--op-amber)" : undefined }}>{stats.failCount}</div>
+                  </div>
+                </div>
+                {stats.active === 0 && stats.failCount === 0 && (
+                  <div style={{ fontSize: 9, color: "var(--op-green)", marginTop: 6, opacity: 0.85 }}>✓ Everything is running well</div>
+                )}
+              </div>
+            </div>
             <ErrorBoundary label="ConnectionStatus">
               <ConnectionStatusCard connectionState={connectionState} streamMeta={streamMeta} fetchErrors={fetchErrors} />
             </ErrorBoundary>
@@ -215,6 +251,14 @@ export default function OperatorConsole() {
           </div>
 
         </div>
+
+        {/* Browser Automation — full-width below the main grid, hidden on mobile unless "Browser" tab active */}
+        <div className={`op-browser-row${mobileTab !== "Browser" ? " op-mobile-hide" : ""}`}>
+          <ErrorBoundary label="BrowserAutomation">
+            <BrowserAutomationPanel addNotification={addNotification} />
+          </ErrorBoundary>
+        </div>
+
       </div>
     </div>
   );

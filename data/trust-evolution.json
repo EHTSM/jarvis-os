@@ -1,0 +1,517 @@
+{
+  "events": [
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "general-health-check",
+      "sessionId": null,
+      "ts": 1779434692096
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "stabilize-backend",
+      "sessionId": null,
+      "ts": 1779434692082
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "daily-driver test",
+      "sessionId": null,
+      "ts": 1779434692046
+    },
+    {
+      "type": "chain-interrupted",
+      "impact": -1,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779434692029
+    },
+    {
+      "type": "autonomous-recovery-fail",
+      "impact": -3,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779434692029
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779434692028
+    },
+    {
+      "type": "autonomous-recovery-success",
+      "impact": 4,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779434692028
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "general-health-check",
+      "sessionId": null,
+      "ts": 1779434638983
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "general-health-check",
+      "sessionId": null,
+      "ts": 1779433550908
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "stabilize-backend",
+      "sessionId": null,
+      "ts": 1779433542184
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "general-health-check",
+      "sessionId": null,
+      "ts": 1779432376059
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "stabilize-backend",
+      "sessionId": null,
+      "ts": 1779432376046
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "general-health-check",
+      "sessionId": null,
+      "ts": 1779432371226
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "stabilize-backend",
+      "sessionId": null,
+      "ts": 1779432371216
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "daily-driver test",
+      "sessionId": null,
+      "ts": 1779432371187
+    },
+    {
+      "type": "chain-interrupted",
+      "impact": -1,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432371169
+    },
+    {
+      "type": "autonomous-recovery-fail",
+      "impact": -3,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432371169
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432371169
+    },
+    {
+      "type": "autonomous-recovery-success",
+      "impact": 4,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432371169
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "daily-driver test",
+      "sessionId": null,
+      "ts": 1779432336181
+    },
+    {
+      "type": "chain-interrupted",
+      "impact": -1,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432336167
+    },
+    {
+      "type": "autonomous-recovery-fail",
+      "impact": -3,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432336166
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432336166
+    },
+    {
+      "type": "autonomous-recovery-success",
+      "impact": 4,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432336166
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "daily-driver test",
+      "sessionId": null,
+      "ts": 1779432330785
+    },
+    {
+      "type": "chain-interrupted",
+      "impact": -1,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432330772
+    },
+    {
+      "type": "autonomous-recovery-fail",
+      "impact": -3,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432330771
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432330771
+    },
+    {
+      "type": "autonomous-recovery-success",
+      "impact": 4,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432330771
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "general-health-check",
+      "sessionId": null,
+      "ts": 1779432315381
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "stabilize-backend",
+      "sessionId": null,
+      "ts": 1779432315371
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "daily-driver test",
+      "sessionId": null,
+      "ts": 1779432315345
+    },
+    {
+      "type": "chain-interrupted",
+      "impact": -1,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432315331
+    },
+    {
+      "type": "autonomous-recovery-fail",
+      "impact": -3,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432315331
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432315331
+    },
+    {
+      "type": "autonomous-recovery-success",
+      "impact": 4,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779432315331
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "general-health-check",
+      "sessionId": null,
+      "ts": 1779432306522
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "stabilize-backend",
+      "sessionId": null,
+      "ts": 1779432306511
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "general-health-check",
+      "sessionId": null,
+      "ts": 1779432292337
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "stabilize-backend",
+      "sessionId": null,
+      "ts": 1779432281632
+    },
+    {
+      "type": "chain-interrupted",
+      "impact": -1,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414798429
+    },
+    {
+      "type": "autonomous-recovery-fail",
+      "impact": -3,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414798429
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414798429
+    },
+    {
+      "type": "autonomous-recovery-success",
+      "impact": 4,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414798429
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "daily-driver test",
+      "sessionId": null,
+      "ts": 1779414798390
+    },
+    {
+      "type": "chain-interrupted",
+      "impact": -1,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414798376
+    },
+    {
+      "type": "autonomous-recovery-fail",
+      "impact": -3,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414798376
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414798376
+    },
+    {
+      "type": "autonomous-recovery-success",
+      "impact": 4,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414798375
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "daily-driver test",
+      "sessionId": null,
+      "ts": 1779414789115
+    },
+    {
+      "type": "chain-interrupted",
+      "impact": -1,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414789107
+    },
+    {
+      "type": "autonomous-recovery-fail",
+      "impact": -3,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414789107
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414789107
+    },
+    {
+      "type": "autonomous-recovery-success",
+      "impact": 4,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414789107
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "daily-driver test",
+      "sessionId": null,
+      "ts": 1779414789085
+    },
+    {
+      "type": "chain-interrupted",
+      "impact": -1,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414789073
+    },
+    {
+      "type": "autonomous-recovery-fail",
+      "impact": -3,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414789073
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414789073
+    },
+    {
+      "type": "autonomous-recovery-success",
+      "impact": 4,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779414789073
+    },
+    {
+      "type": "chain-interrupted",
+      "impact": -1,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779413431213
+    },
+    {
+      "type": "autonomous-recovery-fail",
+      "impact": -3,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779413431213
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779413431213
+    },
+    {
+      "type": "autonomous-recovery-success",
+      "impact": 4,
+      "detail": "",
+      "sessionId": null,
+      "ts": 1779413431213
+    },
+    {
+      "type": "chain-completed",
+      "impact": 2,
+      "detail": "daily-driver test",
+      "sessionId": null,
+      "ts": 1779413431210
+    }
+  ],
+  "snapshots": [
+    {
+      "ts": 1779434692046,
+      "day": "2026-05-22",
+      "trust": 95,
+      "safety": 70,
+      "trend": "stable"
+    },
+    {
+      "ts": 1779432371187,
+      "day": "2026-05-22",
+      "trust": 95,
+      "safety": 70,
+      "trend": "stable"
+    },
+    {
+      "ts": 1779432336181,
+      "day": "2026-05-22",
+      "trust": 95,
+      "safety": 70,
+      "trend": "stable"
+    },
+    {
+      "ts": 1779432330785,
+      "day": "2026-05-22",
+      "trust": 95,
+      "safety": 70,
+      "trend": "stable"
+    },
+    {
+      "ts": 1779432315345,
+      "day": "2026-05-22",
+      "trust": 89,
+      "safety": 70,
+      "trend": "stable"
+    },
+    {
+      "ts": 1779414798390,
+      "day": "2026-05-22",
+      "trust": 76,
+      "safety": 70,
+      "trend": "stable"
+    },
+    {
+      "ts": 1779414789115,
+      "day": "2026-05-22",
+      "trust": 72,
+      "safety": 70,
+      "trend": "stable"
+    },
+    {
+      "ts": 1779414789085,
+      "day": "2026-05-22",
+      "trust": 68,
+      "safety": 70,
+      "trend": "stable"
+    },
+    {
+      "ts": 1779413431210,
+      "day": "2026-05-22",
+      "trust": 62,
+      "safety": 95,
+      "trend": "stable"
+    }
+  ]
+}

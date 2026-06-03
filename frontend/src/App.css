@@ -1,114 +1,414 @@
+/* ── App Shell ─────────────────────────────────────────────────────────── */
+
 .app {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background: var(--bg);
+  background: transparent;
+  position: relative;
 }
 
-/* Header */
+/* Subtle ambient gradient overlay — behind all content */
+.app::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 35% at 8% 0%,   rgba(124, 111, 255, 0.05), transparent 55%),
+    radial-gradient(ellipse 50% 45% at 92% 105%, rgba(78, 205, 196, 0.04), transparent 55%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.app--public {
+  background: linear-gradient(180deg, rgba(14, 16, 28, 0.96), rgba(5, 7, 16, 0.98));
+}
+.app--public::before {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 203, 117, 0.14), transparent 22%),
+    radial-gradient(circle at 85% 20%, rgba(123, 166, 255, 0.12), transparent 15%);
+}
+
+.app--saas {
+  background: linear-gradient(180deg, rgba(6, 20, 34, 0.98), rgba(7, 12, 19, 1));
+}
+.app--saas::before {
+  background:
+    radial-gradient(circle at 15% 15%, rgba(78, 205, 196, 0.14), transparent 24%),
+    radial-gradient(circle at 80% 90%, rgba(124, 111, 255, 0.08), transparent 18%);
+}
+
+.app--desktop {
+  background: linear-gradient(180deg, rgba(4, 7, 16, 0.98), rgba(3, 5, 12, 1));
+}
+.app--desktop::before {
+  background:
+    radial-gradient(circle at 16% 12%, rgba(0, 192, 230, 0.12), transparent 20%),
+    radial-gradient(circle at 88% 90%, rgba(255, 255, 255, 0.06), transparent 14%);
+}
+
+.app--public .app-header {
+  background: rgba(14, 19, 34, 0.82);
+  border-bottom-color: rgba(255, 215, 135, 0.1);
+}
+.app--saas .app-header {
+  background: rgba(8, 22, 34, 0.88);
+  border-bottom-color: rgba(78, 205, 196, 0.12);
+}
+.app--desktop .app-header {
+  background: rgba(7, 10, 18, 0.95);
+  border-bottom-color: rgba(0, 192, 230, 0.14);
+}
+
+/* desktop-cockpit-banner removed — operator console provides its own header */
+
+/* ── Header ───────────────────────────────────────────────────────────── */
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  height: 52px;
-  background: var(--surface);
+  padding: 0 28px;
+  min-height: 62px;
+  background: rgba(8, 11, 20, 0.90);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+  position: relative;
+  z-index: 10;
 }
-.brand { display: flex; align-items: center; gap: 10px; }
-.logo  {
-  width: 30px; height: 30px; border-radius: 8px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff; font-size: 15px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.brand-name { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: 0.5px; }
 
-.status-dot {
-  width: 9px; height: 9px; border-radius: 50%;
-  transition: background 0.3s;
+/* Hairline accent glow at top of header */
+.app-header::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(124, 111, 255, 0.28),
+    rgba(78, 205, 196, 0.20),
+    transparent);
+  pointer-events: none;
 }
-.status-dot.online  { background: var(--success); box-shadow: 0 0 6px var(--success); }
-.status-dot.offline { background: var(--danger); animation: dot-pulse 1.4s ease-in-out infinite; }
-@keyframes dot-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, rgba(124, 111, 255, 0.28), rgba(78, 205, 196, 0.22));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: -0.5px;
+  box-shadow: var(--glow-accent);
+}
+
+.brand-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+/* Status indicator */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  transition: background var(--dur-std) var(--ease-std),
+              box-shadow var(--dur-std) var(--ease-std);
+}
+.status-dot.online {
+  background: var(--success);
+  box-shadow: 0 0 0 3px rgba(82, 214, 138, 0.14);
+}
+.status-dot.offline {
+  background: var(--danger);
+  box-shadow: 0 0 0 3px rgba(245, 91, 91, 0.14);
+  animation: pulse-offline 2s ease-in-out infinite;
+}
+
+@keyframes pulse-offline {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(245, 91, 91, 0.14); }
+  50%       { box-shadow: 0 0 0 5px rgba(245, 91, 91, 0.06); }
+}
 
 .status-reconnect {
-  font-size: 0.68rem;
-  color: var(--text-dim, #888);
+  font-size: 12px;
+  color: var(--text-dim);
   letter-spacing: 0.01em;
-  animation: dot-pulse 1.4s ease-in-out infinite;
 }
 
-/* Tabs */
+/* ── Tab nav ──────────────────────────────────────────────────────────── */
 .tabs {
   display: flex;
-  background: var(--surface);
+  gap: 3px;
+  padding: 8px 28px;
+  background: rgba(8, 11, 20, 0.84);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.tabs::-webkit-scrollbar { display: none; }
+
 .tab {
-  padding: 10px 22px;
-  font-size: 13px;
-  font-weight: 500;
+  padding: 7px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
   color: var(--text-dim);
   background: transparent;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  transition: color var(--dur-fast) var(--ease-std),
+              background var(--dur-fast) var(--ease-std),
+              border-color var(--dur-fast) var(--ease-std);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.01em;
 }
-.tab:hover  { color: var(--text); }
-.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.tab.active {
+  color: var(--accent2);
+  background: rgba(78, 205, 196, 0.10);
+  border-color: rgba(78, 205, 196, 0.24);
+  box-shadow: inset 0 1px 0 rgba(78, 205, 196, 0.06);
+}
 
-/* Main */
-.app-main { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+/* Control Room gets a persistent violet accent border so it stands out at rest */
+.tab--featured {
+  border-color: rgba(124, 111, 255, 0.28);
+  color: var(--text-dim);
+}
+.tab--featured:hover {
+  border-color: rgba(124, 111, 255, 0.46);
+  color: var(--text);
+  background: rgba(124, 111, 255, 0.07);
+}
+.tab--featured.active {
+  color: var(--accent);
+  background: rgba(124, 111, 255, 0.12);
+  border-color: rgba(124, 111, 255, 0.40);
+  box-shadow: inset 0 1px 0 rgba(124, 111, 255, 0.08);
+}
 
-/* ── Emergency mode banner ───────────────────────────────────────── */
+/* ── Main content ─────────────────────────────────────────────────────── */
+.app-main {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ── Utility buttons ──────────────────────────────────────────────────── */
+.btn-sm {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1.4;
+  transition: opacity var(--dur-fast) var(--ease-std),
+              transform var(--dur-fast) var(--ease-std);
+  flex-shrink: 0;
+}
+.btn-sm:hover { opacity: 0.88; }
+.btn-sm:active { transform: translateY(1px); opacity: 0.82; }
+
+.btn-danger {
+  background: rgba(245, 91, 91, 0.14);
+  color: var(--danger);
+  border: 1px solid rgba(245, 91, 91, 0.28);
+}
+.btn-danger:hover { background: rgba(245, 91, 91, 0.22); }
+
+.btn-success {
+  background: rgba(82, 214, 138, 0.12);
+  color: var(--success);
+  border: 1px solid rgba(82, 214, 138, 0.26);
+}
+.btn-success:hover { background: rgba(82, 214, 138, 0.2); }
+
+/* ── Emergency mode ───────────────────────────────────────────────────── */
 .app--emergency .app-header {
-  background: #2a0a0a;
-  border-bottom-color: rgba(255, 82, 82, 0.4);
+  background: rgba(32, 8, 8, 0.92);
+  border-bottom-color: rgba(245, 91, 91, 0.22);
 }
 .app--emergency .tabs {
-  background: #1a0808;
-  border-bottom-color: rgba(255, 82, 82, 0.2);
+  background: rgba(28, 7, 7, 0.88);
+  border-bottom-color: rgba(245, 91, 91, 0.14);
 }
 
-/* ── Mobile ────────────────────────────────────────────────────── */
-@media (max-width: 600px) {
-  .app-header  { padding: 0 12px; height: 48px; }
-  .brand-name  { font-size: 14px; }
-  .brand-sub   { display: none; }
-  .tab         { padding: 10px 10px; font-size: 11px; flex: 1; text-align: center; }
-  .tabs        { justify-content: stretch; }
-  .score-badge { font-size: 10px; padding: 2px 7px; }
-  /* Hide tab label text on very small screens, show only first 2 chars */
-  .tab { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 25vw; }
+/* ── Header right cluster ─────────────────────────────────────────────── */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-@media (max-width: 380px) {
-  .app-header { height: 44px; }
-  .brand-name { display: none; }
+/* ── First-launch hint banner ─────────────────────────────────────────── */
+.first-launch-hint {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 28px;
+  background: rgba(78, 205, 196, 0.06);
+  border-bottom: 1px solid rgba(78, 205, 196, 0.14);
+  font-size: 13px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.first-launch-title {
+  color: var(--text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.first-launch-body {
+  color: var(--text-dim);
+  flex: 1;
+  min-width: 0;
+}
+.first-launch-dismiss {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 3px 10px;
+  color: var(--text-dim);
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color var(--dur-fast) var(--ease-std),
+              border-color var(--dur-fast) var(--ease-std);
+}
+.first-launch-dismiss:hover { color: var(--text); border-color: rgba(255,255,255,0.22); }
+
+/* ── Session expiry bar ───────────────────────────────────────────────── */
+.session-expiry-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 14px;
+  background: rgba(240, 180, 41, 0.1);
+  border-bottom: 1px solid rgba(240, 180, 41, 0.28);
+  font-size: 11px;
+  color: var(--warning);
+  flex-shrink: 0;
+}
+.session-expiry-btn {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background var(--dur-fast) var(--ease-std);
+}
+.session-expiry-btn--verify {
+  background: rgba(240, 180, 41, 0.14);
+  border: 1px solid rgba(240, 180, 41, 0.38);
+  color: var(--warning);
+}
+.session-expiry-btn--verify:hover { background: rgba(240, 180, 41, 0.22); }
+.session-expiry-btn--logout {
+  background: transparent;
+  border: 1px solid rgba(245, 91, 91, 0.32);
+  color: var(--danger);
+}
+.session-expiry-btn--logout:hover { background: rgba(245, 91, 91, 0.1); }
+
+/* ── Runtime tab wrapper ──────────────────────────────────────────────── */
+.runtime-tab-wrap {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.runtime-tab-wrap--desktop {
+  gap: 16px;
+  padding: 0 20px 18px;
+  background: rgba(4, 7, 15, 0.95);
 }
 
-.btn-sm        { padding: 4px 10px; border-radius: 6px; border: none; font-size: 0.72rem; font-weight: 600; cursor: pointer; line-height: 1.4; }
-.btn-danger    { background: var(--danger, #e53935); color: #fff; }
-.btn-danger:hover  { opacity: 0.85; }
-.btn-success   { background: var(--success, #43a047); color: #fff; }
-.btn-success:hover { opacity: 0.85; }
-
-/* ── Scrollbars ──────────────────────────────────────────────────── */
-* { scrollbar-width: thin; scrollbar-color: var(--border, #2a2a40) transparent; }
-::-webkit-scrollbar       { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border, #2a2a40); border-radius: 4px; }
-
-
-/* ── Runtime auth loading ────────────────────────────────────────── */
+/* ── Auth loading ─────────────────────────────────────────────────────── */
 .runtime-auth-loading {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: var(--text-muted, #888);
-  font-size: 0.875rem;
+  color: var(--text-dim);
+  font-size: 13px;
+  gap: 10px;
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .app-header {
+    padding: 0 14px;
+    min-height: 52px;
+  }
+  .brand-name { font-size: 14px; }
+  .tabs {
+    padding: 6px 12px;
+    gap: 2px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab {
+    padding: 7px 12px;       /* taller for touch comfort */
+    font-size: 12px;
+    min-height: 34px;        /* 34px touch minimum */
+  }
+  .header-right { gap: 8px; }
+}
+
+@media (max-width: 480px) {
+  .first-launch-hint { padding: 8px 14px; font-size: 12px; gap: 8px; }
+  .first-launch-body { display: none; }
+  /* Keep title + dismiss legible on small screens */
+  .first-launch-title { font-size: 12px; }
+}
+
+@media (max-width: 380px) {
+  .brand-name { display: none; }
+  .tabs { padding: 5px 8px; }
+  .tab { padding: 6px 10px; font-size: 11.5px; }
+}
+
+/* ── Touch device: increase tap targets globally ─────────────────────── */
+@media (pointer: coarse) {
+  .tab { min-height: 40px; padding: 8px 14px; }
+  .btn-sm { min-height: 38px; }
+  .first-launch-dismiss { min-height: 36px; padding: 6px 12px; }
+}
+
+/* ── Full-screen auth gate ───────────────────────────────────────────── */
+/* Shown when the user is not yet authenticated and tries to access the app. */
+.app-auth-gate {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(6, 8, 18, 0.98), rgba(4, 5, 12, 1));
 }

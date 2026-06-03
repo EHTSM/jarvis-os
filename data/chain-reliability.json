@@ -1,0 +1,99 @@
+[
+  {
+    "id": "cr-1779393427469-655c",
+    "chainName": "ci-pipeline",
+    "sessionId": "sess-chain",
+    "operatorId": "default",
+    "steps": [
+      {
+        "index": 0,
+        "name": "install",
+        "cmd": "npm install",
+        "state": "completed",
+        "retries": 0,
+        "rollbackCmd": null,
+        "startedAt": null,
+        "completedAt": 1779393427470,
+        "error": null
+      },
+      {
+        "index": 1,
+        "name": "test",
+        "cmd": "npm test",
+        "state": "retrying",
+        "retries": 1,
+        "rollbackCmd": null,
+        "startedAt": 1779393427470,
+        "completedAt": 1779393427470,
+        "error": "test failed",
+        "nextRetryAt": 1779393428470
+      },
+      {
+        "index": 2,
+        "name": "build",
+        "cmd": "npm run build",
+        "state": "pending",
+        "retries": 0,
+        "rollbackCmd": null,
+        "startedAt": null,
+        "completedAt": null,
+        "error": null
+      }
+    ],
+    "state": "running",
+    "currentStep": 1,
+    "rollbackTriggered": false,
+    "createdAt": 1779393427469,
+    "updatedAt": 1779393427470
+  },
+  {
+    "id": "cr-1779393427470-ilzv",
+    "chainName": "rollback-test",
+    "sessionId": null,
+    "operatorId": "default",
+    "steps": [
+      {
+        "index": 0,
+        "name": "step-a",
+        "cmd": "npm install",
+        "state": "completed",
+        "retries": 0,
+        "rollbackCmd": "npm cache clean --force",
+        "startedAt": null,
+        "completedAt": 1779393427470,
+        "error": null
+      }
+    ],
+    "state": "completed",
+    "currentStep": 0,
+    "rollbackTriggered": false,
+    "createdAt": 1779393427470,
+    "updatedAt": 1779393427470,
+    "completedAt": 1779393427470
+  },
+  {
+    "id": "cr-1779393427471-zqmj",
+    "chainName": "rollback-test-2",
+    "sessionId": null,
+    "operatorId": "default",
+    "steps": [
+      {
+        "index": 0,
+        "name": "step-a",
+        "cmd": "npm install",
+        "state": "failed",
+        "retries": 4,
+        "rollbackCmd": "npm cache clean --force",
+        "startedAt": null,
+        "completedAt": 1779393427471,
+        "error": "err",
+        "nextRetryAt": 1779393430471
+      }
+    ],
+    "state": "rolling-back",
+    "currentStep": 0,
+    "rollbackTriggered": true,
+    "createdAt": 1779393427471,
+    "updatedAt": 1779393427471
+  }
+]

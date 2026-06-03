@@ -57,26 +57,50 @@ function queueTask(taskType, payload = {}, options = {}) {
   return { queued: true, taskId: task.taskId, taskType, position: _queue.length };
 }
 
+const DEFAULT_TASK_TIMEOUT_MS = 30_000;   // 30s per browser task
+let _consecutiveDriverErrors  = 0;
+const DRIVER_ERROR_THRESHOLD  = 3;        // auto-clear stale driver after 3 consecutive failures
+
+// Wraps driver.execute with a hard timeout so a stale page can't hang forever.
+function _executeWithTimeout(taskType, payload, timeoutMs) {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error(`browser_task_timeout_${timeoutMs}ms`)), timeoutMs);
+    Promise.resolve(_driver.execute(taskType, payload))
+      .then(r => { clearTimeout(t); resolve(r); })
+      .catch(e => { clearTimeout(t); reject(e); });
+  });
+}
+
 // Execute the next task in the queue (with real driver if available, else record intent)
-async function executeNext() {
+async function executeNext(options = {}) {
   if (_queue.length === 0) return { executed: false, reason: "queue_empty" };
   const task = _queue.shift();
   task.status    = "running";
   task.startedAt = new Date().toISOString();
 
+  const timeoutMs = options.timeoutMs || task.metadata?.timeoutMs || DEFAULT_TASK_TIMEOUT_MS;
+
   if (_driver && typeof _driver.execute === "function") {
     try {
-      const result = await _driver.execute(task.taskType, task.payload);
+      const result = await _executeWithTimeout(task.taskType, task.payload, timeoutMs);
       task.status      = "completed";
       task.completedAt = new Date().toISOString();
       task.result      = result;
+      _consecutiveDriverErrors = 0;   // reset error streak on success
     } catch (err) {
       task.status      = "failed";
       task.completedAt = new Date().toISOString();
       task.error       = err.message;
+      _consecutiveDriverErrors++;
+      // Stale driver: auto-disconnect after threshold so next task doesn't hang too
+      if (_consecutiveDriverErrors >= DRIVER_ERROR_THRESHOLD) {
+        console.warn(`[BrowserAdapter] ${_consecutiveDriverErrors} consecutive driver errors — clearing stale driver for safe reconnect`);
+        _driver = null;
+        _consecutiveDriverErrors = 0;
+      }
     }
   } else {
-    // No real driver: mark as "pending_driver"
+    // No real driver: mark as "pending_driver" — not an error, just not wired yet
     task.status      = "pending_driver";
     task.completedAt = new Date().toISOString();
     task.result      = { note: "no_real_browser_driver_wired" };
@@ -128,27 +152,40 @@ function getHistory(limit = 50) {
   return _history.slice(0, limit);
 }
 
+// Drain the queue with a per-drain concurrency cap so a stuck task
+// can't block everything behind it indefinitely.
+async function drainQueue({ maxTasks = 5, timeoutMs } = {}) {
+  const results = [];
+  for (let i = 0; i < maxTasks && _queue.length > 0; i++) {
+    results.push(await executeNext({ timeoutMs }));
+  }
+  return { drained: results.length, remaining: _queue.length, results };
+}
+
 function getAdapterMetrics() {
   const statusCount = {};
   for (const t of _history) statusCount[t.status] = (statusCount[t.status] ?? 0) + 1;
   return {
-    adapterType:    "browser",
-    hasDriver:      _driver !== null,
-    queueDepth:     _queue.length,
-    historySize:    _history.length,
-    statusDistribution: statusCount,
+    adapterType:           "browser",
+    hasDriver:             _driver !== null,
+    consecutiveErrors:     _consecutiveDriverErrors,
+    driverHealthy:         _driver !== null && _consecutiveDriverErrors < DRIVER_ERROR_THRESHOLD,
+    queueDepth:            _queue.length,
+    historySize:           _history.length,
+    statusDistribution:    statusCount,
   };
 }
 
 function reset() {
-  _counter = 0;
-  _queue   = [];
-  _history = [];
-  _driver  = null;
+  _counter                 = 0;
+  _queue                   = [];
+  _history                 = [];
+  _driver                  = null;
+  _consecutiveDriverErrors = 0;
 }
 
 module.exports = {
-  setDriver, hasDriver, queueTask, executeNext,
+  setDriver, hasDriver, queueTask, executeNext, drainQueue,
   navigate, click, fill, screenshot, evaluate, cancelTask,
   getQueue, getHistory, getAdapterMetrics, reset,
   TASK_TYPES: Array.from(TASK_TYPES),

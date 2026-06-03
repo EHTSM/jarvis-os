@@ -41,6 +41,8 @@ const TASK_TYPE_MAP = {
     // ── Dev / Terminal ─────────────────────────────────────────────
     dev:            "dev",
     terminal:       "terminal",
+    read_file:      "filesystem",
+    create_file:    "filesystem",
 
     // ── Agents ─────────────────────────────────────────────────────
     create_agent:   "agent_factory",

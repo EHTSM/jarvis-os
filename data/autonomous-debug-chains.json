@@ -1,0 +1,2130 @@
+{
+  "chains": [
+    {
+      "id": "8c538629-d8da-464c-837a-4cf36148fb2e",
+      "goal": "daily driver — verify production health",
+      "sessionId": "daily-driver-644",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779434692093,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    },
+    {
+      "id": "0db78971-b074-4165-871a-99cb48f080f1",
+      "goal": "stabilize backend after ECONNREFUSED",
+      "sessionId": null,
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779434692079,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    },
+    {
+      "id": "e5536dc1-bad6-4c49-b26e-37aad15f117b",
+      "goal": "verify production health",
+      "sessionId": "dd-session",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779434692047,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    },
+    {
+      "id": "b9a2f596-fe9b-41dc-81e1-2de7b826df9c",
+      "goal": "restore runtime after ECONNREFUSED",
+      "sessionId": "dd-session",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779434692041,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779434692043,
+      "interruptReason": "daily-driver cleanup"
+    },
+    {
+      "id": "49ff33d7-8132-48e0-bdbc-ebb6e9acea83",
+      "goal": "stress-test recovery #4",
+      "sessionId": "stress-session-4",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779434692014,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779434692017,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "7c6991e9-62e8-45cf-b692-c86b173e0582",
+      "goal": "stress-test recovery #3",
+      "sessionId": "stress-session-3",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779434692012,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779434692017,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "ddfab4c8-85c8-4321-8baa-28c5b9f65a22",
+      "goal": "stress-test recovery #2",
+      "sessionId": "stress-session-2",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779434692010,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779434692017,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "da952b24-27ad-4920-89fb-8c0bc45480ce",
+      "goal": "stress-test recovery #1",
+      "sessionId": "stress-session-1",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779434692009,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779434692016,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "a0f1826e-4f08-4595-b8a7-845861aa4eb0",
+      "goal": "stress-test recovery #0",
+      "sessionId": "stress-session-0",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779434692007,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779434692015,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "254bacc3-1209-45b0-b459-df36c6ababeb",
+      "goal": "daily driver — verify production health",
+      "sessionId": "daily-driver-644",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779434638979,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    },
+    {
+      "id": "9a4e33f8-a9e6-4b49-9454-d09722584481",
+      "goal": "daily driver — verify production health",
+      "sessionId": "daily-driver-644",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779433550903,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    },
+    {
+      "id": "00bace08-0b1b-43ac-ac9c-8fb486dc7ce7",
+      "goal": "stabilize backend after ECONNREFUSED",
+      "sessionId": null,
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779433542179,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    },
+    {
+      "id": "5fb64f44-d271-4dc4-a756-9452fda91daf",
+      "goal": "daily driver — verify production health",
+      "sessionId": "daily-driver-644",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779432376055,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    },
+    {
+      "id": "8de131a1-2367-44ca-ac37-e192599a839d",
+      "goal": "stabilize backend after ECONNREFUSED",
+      "sessionId": null,
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779432376043,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    },
+    {
+      "id": "31518078-7f5f-45be-9c17-7d869a0cc858",
+      "goal": "daily driver — verify production health",
+      "sessionId": "daily-driver-644",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779432371222,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    },
+    {
+      "id": "0d9cbfaf-8235-44fb-baef-0e8d8c90e27e",
+      "goal": "stabilize backend after ECONNREFUSED",
+      "sessionId": null,
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779432371213,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    },
+    {
+      "id": "371bc58b-63fd-475f-90cf-1ec08b2b15e0",
+      "goal": "verify production health",
+      "sessionId": "dd-session",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779432371188,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    },
+    {
+      "id": "2fe6fe65-7194-4f1b-a89b-064ec88d11c7",
+      "goal": "restore runtime after ECONNREFUSED",
+      "sessionId": "dd-session",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779432371183,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779432371185,
+      "interruptReason": "daily-driver cleanup"
+    },
+    {
+      "id": "0d9645d8-abc0-486e-8c1e-615de35dc52a",
+      "goal": "stress-test recovery #4",
+      "sessionId": "stress-session-4",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779432371159,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779432371162,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "91234ea8-0aac-4187-a726-ecac35916589",
+      "goal": "stress-test recovery #3",
+      "sessionId": "stress-session-3",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779432371158,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779432371161,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "5568819b-c06e-4b68-982a-1ac95ca52a0d",
+      "goal": "stress-test recovery #2",
+      "sessionId": "stress-session-2",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779432371157,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779432371161,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "fe88f4a6-c405-4567-acc7-401668ccc5b0",
+      "goal": "stress-test recovery #1",
+      "sessionId": "stress-session-1",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779432371155,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779432371161,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "d1279834-d066-4d35-b567-2380b6bc70dd",
+      "goal": "stress-test recovery #0",
+      "sessionId": "stress-session-0",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779432371153,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779432371160,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "acc5eb1c-985c-433f-91d2-8682715c3a39",
+      "goal": "verify production health",
+      "sessionId": "dd-session",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779432336182,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    },
+    {
+      "id": "b6c6db4f-be50-45a8-9c2f-480a26c153d8",
+      "goal": "restore runtime after ECONNREFUSED",
+      "sessionId": "dd-session",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779432336178,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779432336179,
+      "interruptReason": "daily-driver cleanup"
+    },
+    {
+      "id": "05711734-72f3-4537-be62-d7d37bbc3f1b",
+      "goal": "stress-test recovery #4",
+      "sessionId": "stress-session-4",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779432336154,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779432336160,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "08020fea-77b3-4c2a-ab59-8e76707103d6",
+      "goal": "stress-test recovery #3",
+      "sessionId": "stress-session-3",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779432336153,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779432336159,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "0c7dec6d-6e63-4ddf-82f2-27a5766f326c",
+      "goal": "stress-test recovery #2",
+      "sessionId": "stress-session-2",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779432336152,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779432336158,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "e4429f8c-f338-4fa2-86ec-9014e5549e03",
+      "goal": "stress-test recovery #1",
+      "sessionId": "stress-session-1",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779432336150,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779432336156,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "477d8a46-5ed0-445d-9d0b-2564d5d9de93",
+      "goal": "stress-test recovery #0",
+      "sessionId": "stress-session-0",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "interrupted",
+      "currentStep": 0,
+      "startedAt": 1779432336149,
+      "completedAt": null,
+      "interrupted": true,
+      "operatorInterruptAt": 1779432336156,
+      "interruptReason": "stress-test cleanup"
+    },
+    {
+      "id": "9307f649-3799-4f01-9762-fc6944fb5dec",
+      "goal": "verify production health",
+      "sessionId": "dd-session",
+      "steps": [
+        {
+          "order": 0,
+          "key": "check-runtime-dashboard",
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/dashboard",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 1,
+          "key": "check-runtime-pressure",
+          "label": "Check runtime pressure",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/pressure",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 2,
+          "key": "inspect-env-health",
+          "label": "Inspect environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /api/runtime/env-health/report",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 3,
+          "key": "propose-recovery-plan",
+          "label": "Propose recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "advisory",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        },
+        {
+          "order": 4,
+          "key": "verify-health-endpoint",
+          "label": "Verify health endpoint",
+          "safe": true,
+          "autonomousOk": true,
+          "action": "GET /health",
+          "status": "pending",
+          "result": null,
+          "executedAt": null
+        }
+      ],
+      "status": "planned",
+      "currentStep": 0,
+      "startedAt": 1779432330786,
+      "completedAt": null,
+      "interrupted": false,
+      "operatorInterruptAt": null
+    }
+  ]
+}

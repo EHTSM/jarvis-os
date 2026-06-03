@@ -1,0 +1,788 @@
+{
+  "runs": [
+    {
+      "id": "2c6bcd94-8fcc-45a7-89fd-e2779c0fc219",
+      "goal": "stress-test: trusted debug autonomy",
+      "sessionId": null,
+      "replayId": null,
+      "errorContext": "ECONNREFUSED localhost:5050",
+      "recovery": {
+        "ok": true,
+        "path": "restart-server",
+        "action": "Restart backend service",
+        "confidence": 75,
+        "reasoning": "Error pattern 'ECONNREFUSED localhost:5050' matched recovery path 'restart-server'",
+        "alternatives": []
+      },
+      "steps": [
+        {
+          "order": 0,
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779434692072
+        },
+        {
+          "order": 1,
+          "label": "Check environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779434692073
+        },
+        {
+          "order": 2,
+          "label": "Verify dependencies",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Check trust score",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 4,
+          "label": "Ingest errors into debug session",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 5,
+          "label": "Build recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 6,
+          "label": "Execute safe recovery steps",
+          "safe": false,
+          "autonomousOk": false,
+          "requiresApproval": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 7,
+          "label": "Verify health post-recovery",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "retryCount": 0,
+      "status": "interrupted",
+      "interrupted": true,
+      "startedAt": 1779434692071,
+      "completedAt": null,
+      "interruptAt": 1779434692073,
+      "interruptReason": "stress test cleanup"
+    },
+    {
+      "id": "d5dbfc46-5807-4280-baaa-2b7bcacafe87",
+      "goal": "stress-test: trusted debug autonomy",
+      "sessionId": null,
+      "replayId": null,
+      "errorContext": "ECONNREFUSED localhost:5050",
+      "recovery": {
+        "ok": true,
+        "path": "restart-server",
+        "action": "Restart backend service",
+        "confidence": 75,
+        "reasoning": "Error pattern 'ECONNREFUSED localhost:5050' matched recovery path 'restart-server'",
+        "alternatives": []
+      },
+      "steps": [
+        {
+          "order": 0,
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779433542167
+        },
+        {
+          "order": 1,
+          "label": "Check environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779433542167
+        },
+        {
+          "order": 2,
+          "label": "Verify dependencies",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Check trust score",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 4,
+          "label": "Ingest errors into debug session",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 5,
+          "label": "Build recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 6,
+          "label": "Execute safe recovery steps",
+          "safe": false,
+          "autonomousOk": false,
+          "requiresApproval": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 7,
+          "label": "Verify health post-recovery",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "retryCount": 0,
+      "status": "interrupted",
+      "interrupted": true,
+      "startedAt": 1779433542163,
+      "completedAt": null,
+      "interruptAt": 1779433542168,
+      "interruptReason": "stress test cleanup"
+    },
+    {
+      "id": "266d0e66-c34d-4673-9102-c40d48595255",
+      "goal": "stress-test: trusted debug autonomy",
+      "sessionId": null,
+      "replayId": null,
+      "errorContext": "ECONNREFUSED localhost:5050",
+      "recovery": {
+        "ok": true,
+        "path": "restart-server",
+        "action": "Restart backend service",
+        "confidence": 75,
+        "reasoning": "Error pattern 'ECONNREFUSED localhost:5050' matched recovery path 'restart-server'",
+        "alternatives": []
+      },
+      "steps": [
+        {
+          "order": 0,
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779432376038
+        },
+        {
+          "order": 1,
+          "label": "Check environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779432376038
+        },
+        {
+          "order": 2,
+          "label": "Verify dependencies",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Check trust score",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 4,
+          "label": "Ingest errors into debug session",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 5,
+          "label": "Build recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 6,
+          "label": "Execute safe recovery steps",
+          "safe": false,
+          "autonomousOk": false,
+          "requiresApproval": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 7,
+          "label": "Verify health post-recovery",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "retryCount": 0,
+      "status": "interrupted",
+      "interrupted": true,
+      "startedAt": 1779432376036,
+      "completedAt": null,
+      "interruptAt": 1779432376038,
+      "interruptReason": "stress test cleanup"
+    },
+    {
+      "id": "5537bb7f-ff3d-41e1-b991-c9226b88c194",
+      "goal": "stress-test: trusted debug autonomy",
+      "sessionId": null,
+      "replayId": null,
+      "errorContext": "ECONNREFUSED localhost:5050",
+      "recovery": {
+        "ok": true,
+        "path": "restart-server",
+        "action": "Restart backend service",
+        "confidence": 75,
+        "reasoning": "Error pattern 'ECONNREFUSED localhost:5050' matched recovery path 'restart-server'",
+        "alternatives": []
+      },
+      "steps": [
+        {
+          "order": 0,
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779432371209
+        },
+        {
+          "order": 1,
+          "label": "Check environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779432371209
+        },
+        {
+          "order": 2,
+          "label": "Verify dependencies",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Check trust score",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 4,
+          "label": "Ingest errors into debug session",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 5,
+          "label": "Build recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 6,
+          "label": "Execute safe recovery steps",
+          "safe": false,
+          "autonomousOk": false,
+          "requiresApproval": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 7,
+          "label": "Verify health post-recovery",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "retryCount": 0,
+      "status": "interrupted",
+      "interrupted": true,
+      "startedAt": 1779432371208,
+      "completedAt": null,
+      "interruptAt": 1779432371209,
+      "interruptReason": "stress test cleanup"
+    },
+    {
+      "id": "92cd3483-3114-408a-938b-fa62dae25e01",
+      "goal": "stress-test: trusted debug autonomy",
+      "sessionId": null,
+      "replayId": null,
+      "errorContext": "ECONNREFUSED localhost:5050",
+      "recovery": {
+        "ok": true,
+        "path": "restart-server",
+        "action": "Restart backend service",
+        "confidence": 75,
+        "reasoning": "Error pattern 'ECONNREFUSED localhost:5050' matched recovery path 'restart-server'",
+        "alternatives": []
+      },
+      "steps": [
+        {
+          "order": 0,
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779432315364
+        },
+        {
+          "order": 1,
+          "label": "Check environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779432315364
+        },
+        {
+          "order": 2,
+          "label": "Verify dependencies",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Check trust score",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 4,
+          "label": "Ingest errors into debug session",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 5,
+          "label": "Build recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 6,
+          "label": "Execute safe recovery steps",
+          "safe": false,
+          "autonomousOk": false,
+          "requiresApproval": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 7,
+          "label": "Verify health post-recovery",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "retryCount": 0,
+      "status": "interrupted",
+      "interrupted": true,
+      "startedAt": 1779432315363,
+      "completedAt": null,
+      "interruptAt": 1779432315365,
+      "interruptReason": "stress test cleanup"
+    },
+    {
+      "id": "812ac161-4263-4bc3-bc7f-264b664ef1a4",
+      "goal": "stress-test: trusted debug autonomy",
+      "sessionId": null,
+      "replayId": null,
+      "errorContext": "ECONNREFUSED localhost:5050",
+      "recovery": {
+        "ok": true,
+        "path": "restart-server",
+        "action": "Restart backend service",
+        "confidence": 75,
+        "reasoning": "Error pattern 'ECONNREFUSED localhost:5050' matched recovery path 'restart-server'",
+        "alternatives": []
+      },
+      "steps": [
+        {
+          "order": 0,
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779432306498
+        },
+        {
+          "order": 1,
+          "label": "Check environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779432306498
+        },
+        {
+          "order": 2,
+          "label": "Verify dependencies",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Check trust score",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 4,
+          "label": "Ingest errors into debug session",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 5,
+          "label": "Build recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 6,
+          "label": "Execute safe recovery steps",
+          "safe": false,
+          "autonomousOk": false,
+          "requiresApproval": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 7,
+          "label": "Verify health post-recovery",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "retryCount": 0,
+      "status": "interrupted",
+      "interrupted": true,
+      "startedAt": 1779432306496,
+      "completedAt": null,
+      "interruptAt": 1779432306498,
+      "interruptReason": "stress test cleanup"
+    },
+    {
+      "id": "51c3cbfc-e9d3-4755-99c0-f5466b8f3cb8",
+      "goal": "stress-test: trusted debug autonomy",
+      "sessionId": null,
+      "replayId": null,
+      "errorContext": "ECONNREFUSED localhost:5050",
+      "recovery": {
+        "ok": true,
+        "path": "restart-server",
+        "action": "Restart backend service",
+        "confidence": 75,
+        "reasoning": "Error pattern 'ECONNREFUSED localhost:5050' matched recovery path 'restart-server'",
+        "alternatives": []
+      },
+      "steps": [
+        {
+          "order": 0,
+          "label": "Check runtime dashboard",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779432281621
+        },
+        {
+          "order": 1,
+          "label": "Check environment health",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "completed",
+          "retryCount": 0,
+          "result": {
+            "status": "ok"
+          },
+          "executedAt": 1779432281621
+        },
+        {
+          "order": 2,
+          "label": "Verify dependencies",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Check trust score",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 4,
+          "label": "Ingest errors into debug session",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 5,
+          "label": "Build recovery plan",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 6,
+          "label": "Execute safe recovery steps",
+          "safe": false,
+          "autonomousOk": false,
+          "requiresApproval": true,
+          "retryable": true,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        },
+        {
+          "order": 7,
+          "label": "Verify health post-recovery",
+          "safe": true,
+          "autonomousOk": true,
+          "retryable": false,
+          "status": "pending",
+          "retryCount": 0,
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "retryCount": 0,
+      "status": "interrupted",
+      "interrupted": true,
+      "startedAt": 1779432281619,
+      "completedAt": null,
+      "interruptAt": 1779432281621,
+      "interruptReason": "stress test cleanup"
+    }
+  ]
+}

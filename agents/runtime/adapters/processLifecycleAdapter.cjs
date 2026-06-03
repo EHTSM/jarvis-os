@@ -132,13 +132,46 @@ function getProcessByExecutionId(executionId) {
 
 function getLifecycleMetrics() {
   let alive = 0, terminated = 0;
-  for (const [, r] of _processes) r.alive ? alive++ : terminated++;
-  return { total: _processes.size, alive, terminated, maxTracked: MAX_TRACKED };
+  const now = Date.now();
+  const overdue = [];
+  for (const [, r] of _processes) {
+    r.alive ? alive++ : terminated++;
+    if (r.alive && now > new Date(r.expiresAt).getTime()) {
+      overdue.push({ pid: r.pid, executionId: r.executionId, command: r.command });
+    }
+  }
+  return { total: _processes.size, alive, terminated, maxTracked: MAX_TRACKED, overdue };
 }
 
-// Periodic cleanup: sweep TTL-expired and dead processes every 5 minutes.
-// Prevents Map from growing past MAX_TRACKED on long uptimes.
-setInterval(() => cleanupOrphans(), 5 * 60 * 1000).unref();
+// Force-terminate processes that are over TTL and ignoring SIGTERM.
+// Called by the watchdog every 2 minutes — tighter than the 5-min sweep.
+function forceKillOverdue() {
+  const now = Date.now();
+  const killed = [];
+  for (const [regId, r] of _processes) {
+    if (!r.alive) continue;
+    const over = now - new Date(r.expiresAt).getTime();
+    if (over < 30_000) continue;   // only after 30s past TTL
+    // Escalate: if process still alive after TTL+30s, SIGKILL
+    try { process.kill(r.pid, "SIGKILL"); } catch {}
+    r.alive = false;
+    r.terminatedAt = new Date().toISOString();
+    killed.push({ pid: r.pid, executionId: r.executionId, overdueMs: over });
+    _processes.delete(regId);
+  }
+  return killed;
+}
+
+// Periodic cleanup: 5-min sweep for TTL/dead + 2-min escalation sweep
+setInterval(() => cleanupOrphans(), 5 * 60_000).unref();
+setInterval(() => {
+  const killed = forceKillOverdue();
+  if (killed.length > 0) {
+    console.warn(`[ProcessLifecycle] force-killed ${killed.length} overdue process(es):`,
+      killed.map(k => `pid=${k.pid} exec=${k.executionId} over=${Math.round(k.overdueMs/1000)}s`).join(", "));
+    try { require("../driftMonitor.cjs").recordOrphan(killed.length); } catch {}
+  }
+}, 2 * 60_000).unref();
 
 function reset() {
   _counter   = 0;
@@ -147,7 +180,7 @@ function reset() {
 
 module.exports = {
   registerProcess, deregisterProcess, checkAlive, terminateProcess,
-  cleanupOrphans, getTrackedProcesses, getProcessByExecutionId,
+  cleanupOrphans, forceKillOverdue, getTrackedProcesses, getProcessByExecutionId,
   getLifecycleMetrics, reset,
   DEFAULT_TTL_MS, MAX_TRACKED,
 };

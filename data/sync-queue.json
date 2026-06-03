@@ -1,0 +1,45 @@
+{
+  "pending": [],
+  "synced": [
+    {
+      "id": "sync-mpftbeem-uf6",
+      "type": "workflow-template",
+      "entityId": "tpl-001",
+      "payload": {
+        "name": "test",
+        "goal": "test goal"
+      },
+      "operatorId": "op-alice",
+      "conflictKey": "tpl-001",
+      "ts": 1779387401902,
+      "syncedAt": 1779387401903
+    },
+    {
+      "id": "sync-mpftbeem-qmo",
+      "type": "replay-session",
+      "entityId": "sess-001",
+      "payload": {
+        "id": "sess-001",
+        "goal": "replay"
+      },
+      "operatorId": null,
+      "conflictKey": "sess-001",
+      "ts": 1779387401902,
+      "syncedAt": 1779387401903
+    },
+    {
+      "id": "sync-mpftbeem-obg",
+      "type": "op-summary",
+      "entityId": "summary-001",
+      "payload": {
+        "total": 5
+      },
+      "operatorId": null,
+      "conflictKey": "summary-001",
+      "ts": 1779387401902,
+      "syncedAt": 1779387401903
+    }
+  ],
+  "lastSyncAt": 1779387401903,
+  "syncEnabled": false
+}

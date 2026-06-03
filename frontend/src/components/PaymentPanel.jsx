@@ -5,10 +5,10 @@ import WhatsAppSetup  from "./WhatsAppSetup.jsx";
 import "./PaymentPanel.css";
 
 const STATUS_LABEL = {
-  new:       "New",
+  new:       "New lead",
   hot:       "Hot",
   paid:      "Paid",
-  onboarded: "Active",
+  onboarded: "Onboarded",
 };
 
 function PayLinkSuccess({ link, name, phone, onDismiss }) {
@@ -28,7 +28,7 @@ function PayLinkSuccess({ link, name, phone, onDismiss }) {
       <div className="pls-top">
         <span className="pls-check">✓</span>
         <div>
-          <p className="pls-title">Payment link ready for {name}</p>
+          <p className="pls-title">Checkout link ready for {name}</p>
           <p className="pls-sub">Share it via WhatsApp or copy the link below.</p>
         </div>
         <button className="pls-dismiss" onClick={onDismiss}>✕</button>
@@ -61,9 +61,9 @@ export default function Clients({ onMessage, onToast, whatsappConnected }) {
     try {
       const p = JSON.parse(localStorage.getItem("jarvis_biz_profile") || "null");
       const amt = p?.price?.replace(/[^\d]/g, "") || "999";
-      return { name: "", phone: "", amount: amt, description: "JARVIS AI Access" };
+      return { name: "", phone: "", amount: amt, description: "Jarvis Access" };
     } catch {
-      return { name: "", phone: "", amount: "999", description: "JARVIS AI Access" };
+      return { name: "", phone: "", amount: "999", description: "Jarvis Access" };
     }
   });
   const [link,    setLink]    = useState(null);     // null | { url, name, phone }
@@ -99,7 +99,7 @@ export default function Clients({ onMessage, onToast, whatsappConnected }) {
       if (res.success && res.link) {
         setLink({ url: res.link, name: form.name, phone: form.phone });
         setForm(f => ({ ...f, name: "", phone: "" }));
-        onToast?.("success", `Payment link created for ${form.name}`);
+        onToast?.("success", `Checkout link created for ${form.name}`);
       } else {
         const msg = res.error || "Could not generate link. Check Razorpay credentials in .env";
         onMessage("error", msg);
@@ -137,25 +137,25 @@ export default function Clients({ onMessage, onToast, whatsappConnected }) {
       {!whatsappConnected && (
         <div className="wa-setup-banner">
           <div className="wa-banner-left">
-            <span className="wa-banner-icon">📵</span>
+            <span className="wa-banner-icon">✉️</span>
             <div>
-              <p className="wa-banner-title">WhatsApp not connected</p>
-              <p className="wa-banner-sub">Auto follow-ups won't send until WhatsApp is set up.</p>
+              <p className="wa-banner-title">Connect WhatsApp to enable follow-ups</p>
+              <p className="wa-banner-sub">Jarvis will automatically message your leads once WhatsApp is connected.</p>
             </div>
           </div>
           <button className="wa-banner-btn" onClick={() => setView("setup")}>
-            Set up →
+            Connect WhatsApp
           </button>
         </div>
       )}
 
       {/* ── Payment link generator ────────────────────────────────── */}
       <section className="panel-section">
-        <h3 className="section-heading">Generate Payment Link</h3>
+        <h3 className="section-heading">Send a payment link</h3>
         <div className="form-grid">
-          <input className="p-input" placeholder="Customer name *" value={form.name}
+          <input className="p-input" placeholder="Customer Name *" value={form.name}
             onChange={e => set("name", e.target.value)} />
-          <input className="p-input" placeholder="Phone (with country code)" value={form.phone}
+          <input className="p-input" placeholder="WhatsApp Number (with country code)" value={form.phone}
             onChange={e => set("phone", e.target.value)} />
           <input className="p-input" placeholder="Amount (₹) *" value={form.amount}
             onChange={e => set("amount", e.target.value)} type="number" />
@@ -163,7 +163,7 @@ export default function Clients({ onMessage, onToast, whatsappConnected }) {
             onChange={e => set("description", e.target.value)} />
         </div>
         <button className="p-btn primary" onClick={handleGenerate} disabled={genLoad}>
-          {genLoad ? "Creating link…" : "Generate Link"}
+          {genLoad ? "Creating link…" : "Create Link"}
         </button>
 
         {link && (
@@ -180,20 +180,29 @@ export default function Clients({ onMessage, onToast, whatsappConnected }) {
       {/* ── Client list ───────────────────────────────────────────── */}
       <section className="panel-section">
         <div className="leads-header">
-          <h3 className="section-heading" style={{ margin: 0 }}>Your Clients</h3>
+          <h3 className="section-heading" style={{ margin: 0 }}>
+            Your Clients
+            {leads && leads.length > 0 && (
+              <span className="section-count">{leads.length}</span>
+            )}
+          </h3>
           <button className="p-btn outline" onClick={loadLeads} disabled={leadsLoading}>
             {leadsLoading ? "…" : "Refresh"}
           </button>
         </div>
 
         {leadsLoading ? (
-          <p className="no-leads">Loading clients…</p>
+          <div className="leads-loading">
+            <div className="leads-skeleton" />
+            <div className="leads-skeleton leads-skeleton--sm" />
+            <div className="leads-skeleton" />
+          </div>
         ) : leads === null || leads.length === 0 ? (
           <div className="leads-empty">
             <span className="leads-empty-icon">📭</span>
             <p className="leads-empty-title">No clients yet</p>
             <p className="leads-empty-sub">
-              Add a client above — JARVIS will automatically follow up with them on WhatsApp.
+              Add your first client above — Jarvis will start following up automatically.
             </p>
           </div>
         ) : (
@@ -201,9 +210,9 @@ export default function Clients({ onMessage, onToast, whatsappConnected }) {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Phone</th>
+                <th>WhatsApp Number</th>
                 <th>Status</th>
-                <th>Added</th>
+                <th>Date Added</th>
               </tr>
             </thead>
             <tbody>
@@ -227,6 +236,7 @@ export default function Clients({ onMessage, onToast, whatsappConnected }) {
           </table>
         )}
       </section>
+
 
     </div>
   );
