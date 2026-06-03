@@ -3,19 +3,37 @@ import "./Landing.css";
 
 const YEAR = new Date().getFullYear();
 
-const FEATURES = [
-  { icon: "✨", text: "Nurtures every relationship automatically with scheduled, warm follow-ups" },
-  { icon: "💳", text: "Delivers secure payment links exactly when clients are ready to close"      },
-  { icon: "📊", text: "A single unified view of your pipeline — clean, intentional, and quiet"   },
-  { icon: "💬", text: "Engages natively on WhatsApp, where your clients are already comfortable"  },
-  { icon: "🖥️", text: "Secure Electron desktop workspace for local execution and peace of mind"    },
-];
-
-const HOW_IT_WORKS = [
-  { step: "1", title: "Add a client",          desc: "Enter name and WhatsApp number. Takes under 30 seconds." },
-  { step: "2", title: "Sequence starts",      desc: "Quiet, scheduled follow-ups keep you top-of-mind."   },
-  { step: "3", title: "Collect securely",     desc: "Generate and send a professional checkout link in one tap." },
-  { step: "4", title: "Watch it compound",    desc: "Monitor your conversions and revenue grow in real-time." },
+const CAPABILITIES = [
+  {
+    icon: "⚡",
+    title: "Autonomous Execution",
+    desc: "Run commands, workflows, and long-horizon tasks in the background. Ooplix acts while you focus.",
+  },
+  {
+    icon: "🔁",
+    title: "Automated Follow-ups",
+    desc: "WhatsApp sequences fire automatically — greetings, check-ins, closings — calibrated to your business.",
+  },
+  {
+    icon: "💳",
+    title: "Payment Collection",
+    desc: "Generate and send secure Razorpay checkout links in one tap. Revenue tracked in real time.",
+  },
+  {
+    icon: "📡",
+    title: "Live Runtime Monitor",
+    desc: "Watch every automation, execution, and system event as it happens. Full audit trail included.",
+  },
+  {
+    icon: "🧠",
+    title: "AI Command Interface",
+    desc: "Chat with an AI that actually executes — dispatches tasks, reads files, runs shell commands.",
+  },
+  {
+    icon: "🏗️",
+    title: "Business + Dev OS",
+    desc: "Pipeline management, repo tracking, deployments, campaigns — all modules under one roof.",
+  },
 ];
 
 const TRUST_POINTS = [
@@ -24,128 +42,128 @@ const TRUST_POINTS = [
   "Cancel anytime",
 ];
 
-const PILLARS = [
-  { title: "Clear messaging", desc: "Present your business with confidence — Ooplix writes follow-ups in the right tone for your work." },
-  { title: "Visible automation", desc: "See exactly what Ooplix is doing — no black boxes, just a clear timeline of every follow-up sent." },
-  { title: "One workspace", desc: "WhatsApp, payments, and your client list — all in one place, without switching apps." },
+const SYSTEM_STATS = [
+  { label: "Execution modes",  value: "7"       },
+  { label: "Follow-up tiers",  value: "6"       },
+  { label: "Avg task runtime", value: "<2s"     },
+  { label: "Uptime target",    value: "99.9%"   },
 ];
 
-const PRICING = [
-  { title: "Immediate launch", detail: "Start in minutes with guided setup and a 7-day free trial.", badge: "Trial-first" },
-  { title: "Designed to scale", detail: "Upgrade when your team is ready with simple SaaS pricing and premium support.", badge: "Growth-ready" },
+const HOW_IT_WORKS = [
+  { step: "1", title: "Connect your stack",   desc: "WhatsApp Business API, Razorpay, AI provider. One-time setup, guided." },
+  { step: "2", title: "Add your first lead",  desc: "Name and number. Ooplix queues the follow-up sequence immediately."    },
+  { step: "3", title: "Watch it run",         desc: "Live activity feed shows every message sent, every task executed."      },
+  { step: "4", title: "Collect and compound", desc: "Payment links, conversion tracking, revenue dashboard — all live."     },
 ];
 
 export default function Landing({ onStart, onLogin, onLegal, onPricing }) {
   return (
     <div className="landing">
       <div className="landing-inner">
+
+        {/* ── Hero ──────────────────────────────────────────────────── */}
         <div className="landing-hero">
           <div className="landing-hero-copy">
-            <div className="landing-logo">J</div>
-            <div className="landing-hero-copy-inner">
-              <h1 className="landing-headline">
-                Automate your <span className="landing-headline-accent">sales pipeline</span><br />on WhatsApp
-              </h1>
-              <p className="landing-sub">
-                Quietly follows up with leads, delivers secure payment links, and handles client operations — so you can focus entirely on delivery.
-              </p>
 
-              <div className="landing-actions">
-                <button className="landing-btn-primary" onClick={onStart}>
-                  Start Free Trial — 7 days free
-                </button>
-                <button className="landing-btn-ghost" onClick={onLogin}>
-                  Sign in to your account
-                </button>
-              </div>
-
-              <ul className="landing-trust-row">
-                {TRUST_POINTS.map(t => (
-                  <li key={t} className="landing-trust-item">
-                    <span className="landing-trust-check" aria-hidden="true" />
-                    {t}
-                  </li>
-                ))}
-              </ul>
+            <div className="landing-brand-row">
+              <div className="landing-logo">O</div>
+              <span className="landing-brand-name">Ooplix</span>
+              <span className="landing-brand-tag">AI Operating System</span>
             </div>
+
+            <h1 className="landing-headline">
+              Your business runs<br />
+              <span className="landing-headline-accent">while you sleep.</span>
+            </h1>
+
+            <p className="landing-sub">
+              Ooplix is an AI Operating System — it executes workflows, follows up with leads,
+              collects payments, monitors your pipeline, and runs autonomous tasks in the background.
+              Not a chatbot. Not a CRM. An operating system for your work.
+            </p>
+
+            <div className="landing-actions">
+              <button className="landing-btn-primary" onClick={onStart}>
+                Start Free Trial — 7 days free
+              </button>
+              <button className="landing-btn-ghost" onClick={onLogin}>
+                Sign in
+              </button>
+            </div>
+
+            <ul className="landing-trust-row">
+              {TRUST_POINTS.map(t => (
+                <li key={t} className="landing-trust-item">
+                  <span className="landing-trust-check" aria-hidden="true" />
+                  {t}
+                </li>
+              ))}
+            </ul>
           </div>
 
+          {/* ── Live system preview ──────────────────────────────── */}
           <div className="landing-hero-preview">
             <div className="landing-preview-panel">
-              <span className="landing-preview-badge">Desktop workspace</span>
-              <div className="landing-preview-title">Everything you need to close clients — one calm workspace.</div>
-              <p className="landing-preview-copy">
-                Instant visibility into sequences, payments, and customer signals — all in one calm, premium workspace.
-              </p>
-              <div className="landing-preview-pillars">
-                <span>Live follow-up status</span>
-                <span>Secure payment links</span>
-                <span>Full pipeline visibility</span>
+              <div className="landing-preview-header">
+                <span className="landing-preview-badge">
+                  <span className="landing-preview-pulse" />
+                  Live
+                </span>
+                <span className="landing-preview-title-sm">Ooplix Runtime</span>
               </div>
-            </div>
-
-            <div className="landing-preview-stack">
-              <div className="landing-preview-card">
-                <div className="landing-preview-card-title">Follow-up speed</div>
-                <div className="landing-preview-card-value">72% faster response</div>
+              <div className="landing-preview-feed">
+                <div className="landing-feed-row landing-feed-row--ok">
+                  <span className="landing-feed-dot" />
+                  <span className="landing-feed-text">Follow-up sent → Ahmed Hassan</span>
+                  <span className="landing-feed-time">2m</span>
+                </div>
+                <div className="landing-feed-row landing-feed-row--ok">
+                  <span className="landing-feed-dot" />
+                  <span className="landing-feed-text">Payment link → Priya Sharma · ₹12,000</span>
+                  <span className="landing-feed-time">14m</span>
+                </div>
+                <div className="landing-feed-row landing-feed-row--run">
+                  <span className="landing-feed-dot landing-feed-dot--run" />
+                  <span className="landing-feed-text">Workflow: daily-pipeline-summary</span>
+                  <span className="landing-feed-time">now</span>
+                </div>
+                <div className="landing-feed-row landing-feed-row--ok">
+                  <span className="landing-feed-dot" />
+                  <span className="landing-feed-text">Lead marked hot → Rohan Mehta</span>
+                  <span className="landing-feed-time">1h</span>
+                </div>
               </div>
-              <div className="landing-preview-card">
-                <div className="landing-preview-card-title">Payment links sent</div>
-                <div className="landing-preview-card-value">6 secure links sent</div>
+              <div className="landing-preview-stats">
+                {SYSTEM_STATS.map(s => (
+                  <div key={s.label} className="landing-stat-chip">
+                    <span className="landing-stat-value">{s.value}</span>
+                    <span className="landing-stat-label">{s.label}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
-
-          <div className="landing-onboarding">
-        <div className="landing-section-headline">Ready in 3 steps</div>
-        <div className="landing-onboarding-grid">
-          <article className="landing-onboarding-card" tabIndex="0">
-            <div className="landing-onboarding-step">1</div>
-            <h3>Add your clients</h3>
-            <p>Enter a name and WhatsApp number. Ooplix is ready in under 30 seconds.</p>
-            <div className="landing-onboarding-progress"><i /></div>
-          </article>
-          <article className="landing-onboarding-card" tabIndex="0">
-            <div className="landing-onboarding-step">2</div>
-            <h3>Ooplix follows up</h3>
-            <p>Automated messages go out at the right time — no manual reminders needed.</p>
-            <div className="landing-onboarding-progress"><i /></div>
-          </article>
-          <article className="landing-onboarding-card" tabIndex="0">
-            <div className="landing-onboarding-step">3</div>
-            <h3>Collect payment</h3>
-            <p>Send a secure checkout link in one tap when a client is ready to buy.</p>
-            <div className="landing-onboarding-progress"><i /></div>
-          </article>
-        </div>
-      </div>
         </div>
 
         <div className="landing-divider" />
 
-        <ul className="landing-features">
-          {FEATURES.map(f => (
-            <li key={f.text}>
-              <span className="landing-feature-icon">{f.icon}</span>
-              <span>{f.text}</span>
-            </li>
-          ))}
-        </ul>
-
-        <div className="landing-divider" />
-
-        <div className="landing-pricing-grid">
-          {PRICING.map(item => (
-            <div key={item.title} className="landing-pricing-card">
-              <div className="landing-pricing-badge">{item.badge}</div>
-              <div className="landing-pricing-title">{item.title}</div>
-              <div className="landing-pricing-detail">{item.detail}</div>
-            </div>
-          ))}
+        {/* ── Capability grid ───────────────────────────────────────── */}
+        <div className="landing-section">
+          <p className="landing-section-label">What Ooplix runs for you</p>
+          <div className="landing-cap-grid">
+            {CAPABILITIES.map(c => (
+              <div key={c.title} className="landing-cap-card">
+                <span className="landing-cap-icon">{c.icon}</span>
+                <h3 className="landing-cap-title">{c.title}</h3>
+                <p className="landing-cap-desc">{c.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="landing-divider" />
 
+        {/* ── How it works ──────────────────────────────────────────── */}
         <div className="landing-how">
           <p className="landing-how-label">How it works</p>
           <ol className="landing-steps">
@@ -163,19 +181,33 @@ export default function Landing({ onStart, onLogin, onLegal, onPricing }) {
 
         <div className="landing-divider" />
 
+        {/* ── CTA repeat ────────────────────────────────────────────── */}
+        <div className="landing-cta-block">
+          <h2 className="landing-cta-headline">Ready to run your business on autopilot?</h2>
+          <p className="landing-cta-sub">
+            Join operators using Ooplix to close more leads, collect faster, and execute without the manual work.
+          </p>
+          <button className="landing-btn-primary landing-btn-primary--lg" onClick={onStart}>
+            Start Free — 7 days, no card
+          </button>
+        </div>
+
+        <div className="landing-divider" />
+
+        {/* ── Footer ────────────────────────────────────────────────── */}
         <footer className="landing-footer">
           <div className="landing-footer-brand">
-            <span className="landing-footer-logo">J</span>
-            <span className="landing-footer-name">Ooplix</span>
+            <span className="landing-footer-logo">O</span>
+            <span className="landing-footer-name">Ooplix <span className="landing-footer-tag">AI Operating System</span></span>
           </div>
-          <nav className="landing-footer-nav" aria-label="Legal">
+          <nav className="landing-footer-nav" aria-label="Site navigation">
             <button className="landing-footer-link landing-footer-link--accent" onClick={onPricing}>Pricing</button>
             <button className="landing-footer-link" onClick={() => onLegal?.("company")}>Company</button>
-            <button className="landing-footer-link" onClick={() => onLegal?.("privacy")}>Privacy Policy</button>
-            <button className="landing-footer-link" onClick={() => onLegal?.("terms")}>Terms of Service</button>
-            <button className="landing-footer-link" onClick={() => onLegal?.("refund")}>Refund Policy</button>
+            <button className="landing-footer-link" onClick={() => onLegal?.("privacy")}>Privacy</button>
+            <button className="landing-footer-link" onClick={() => onLegal?.("terms")}>Terms</button>
+            <button className="landing-footer-link" onClick={() => onLegal?.("refund")}>Refunds</button>
             <button className="landing-footer-link" onClick={() => onLegal?.("contact")}>Contact</button>
-            <button className="landing-footer-link" onClick={() => onLegal?.("trust")}>Trust & Compliance</button>
+            <button className="landing-footer-link" onClick={() => onLegal?.("trust")}>Trust & Security</button>
           </nav>
           <p className="landing-footer-legal">
             &copy; {YEAR} ALWALIY TECHNOLOGIES PRIVATE LIMITED. Ooplix is a trademark of ALWALIY TECHNOLOGIES PRIVATE LIMITED.
@@ -186,4 +218,3 @@ export default function Landing({ onStart, onLogin, onLegal, onPricing }) {
     </div>
   );
 }
-
