@@ -1,0 +1,362 @@
+[
+  {
+    "id": "snap-mpfvxz3w-czc",
+    "name": "pre-deploy snapshot",
+    "operatorId": "op-snap",
+    "capturedAt": 1779391814396,
+    "workspace": {
+      "name": "default",
+      "label": "Default Workspace",
+      "profile": "jarvis-os-dev"
+    },
+    "profile": "jarvis-os-dev",
+    "mode": "development",
+    "session": {
+      "id": "sess-mpfvxz3r-u51",
+      "goal": "snapshot test session",
+      "state": "active"
+    },
+    "workflowProgress": null,
+    "recentCheckpoints": [],
+    "pressure": {
+      "level": "nominal",
+      "score": 0
+    }
+  },
+  {
+    "id": "snap-mpfvyayy-rtp",
+    "name": "pre-deploy snapshot",
+    "operatorId": "op-snap",
+    "capturedAt": 1779391829770,
+    "workspace": {
+      "name": "default",
+      "label": "Default Workspace",
+      "profile": "jarvis-os-dev"
+    },
+    "profile": "jarvis-os-dev",
+    "mode": "development",
+    "session": {
+      "id": "sess-mpfvyayw-unj",
+      "goal": "snapshot test session",
+      "state": "active"
+    },
+    "workflowProgress": null,
+    "recentCheckpoints": [],
+    "pressure": {
+      "level": "nominal",
+      "score": 0
+    }
+  },
+  {
+    "id": "snap-mpfvyazm-6qj",
+    "name": "session-sess-mpfvyazh-8tg",
+    "operatorId": "op-continuity",
+    "capturedAt": 1779391829794,
+    "workspace": {
+      "name": "default",
+      "label": "Default Workspace",
+      "profile": "jarvis-os-dev"
+    },
+    "profile": "jarvis-os-dev",
+    "mode": "development",
+    "session": {
+      "id": "sess-mpfvyazh-8tg",
+      "goal": "long-horizon session 0",
+      "state": "active"
+    },
+    "workflowProgress": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 0,
+      "context": {},
+      "savedAt": 1779391829791
+    },
+    "recentCheckpoints": [
+      {
+        "id": "cp-mpfvyazk",
+        "sessionId": "sess-mpfvyazk-grh",
+        "lastChain": "chain-2",
+        "lastStep": "step-2"
+      },
+      {
+        "id": "cp-mpfvyazk",
+        "sessionId": "sess-mpfvyazj-pf9",
+        "lastChain": "chain-1",
+        "lastStep": "step-1"
+      },
+      {
+        "id": "cp-mpfvyazi",
+        "sessionId": "sess-mpfvyazh-8tg",
+        "lastChain": "chain-0",
+        "lastStep": "step-0"
+      }
+    ],
+    "pressure": {
+      "level": "nominal",
+      "score": 0
+    }
+  },
+  {
+    "id": "snap-mpfvyazm-cq0",
+    "name": "session-sess-mpfvyazj-pf9",
+    "operatorId": "op-continuity",
+    "capturedAt": 1779391829794,
+    "workspace": {
+      "name": "default",
+      "label": "Default Workspace",
+      "profile": "jarvis-os-dev"
+    },
+    "profile": "jarvis-os-dev",
+    "mode": "development",
+    "session": {
+      "id": "sess-mpfvyazj-pf9",
+      "goal": "long-horizon session 1",
+      "state": "active"
+    },
+    "workflowProgress": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 1,
+      "context": {},
+      "savedAt": 1779391829792
+    },
+    "recentCheckpoints": [
+      {
+        "id": "cp-mpfvyazk",
+        "sessionId": "sess-mpfvyazk-grh",
+        "lastChain": "chain-2",
+        "lastStep": "step-2"
+      },
+      {
+        "id": "cp-mpfvyazk",
+        "sessionId": "sess-mpfvyazj-pf9",
+        "lastChain": "chain-1",
+        "lastStep": "step-1"
+      },
+      {
+        "id": "cp-mpfvyazi",
+        "sessionId": "sess-mpfvyazh-8tg",
+        "lastChain": "chain-0",
+        "lastStep": "step-0"
+      }
+    ],
+    "pressure": {
+      "level": "nominal",
+      "score": 0
+    }
+  },
+  {
+    "id": "snap-mpfvyazm-q05",
+    "name": "session-sess-mpfvyazk-grh",
+    "operatorId": "op-continuity",
+    "capturedAt": 1779391829794,
+    "workspace": {
+      "name": "default",
+      "label": "Default Workspace",
+      "profile": "jarvis-os-dev"
+    },
+    "profile": "jarvis-os-dev",
+    "mode": "development",
+    "session": {
+      "id": "sess-mpfvyazk-grh",
+      "goal": "long-horizon session 2",
+      "state": "active"
+    },
+    "workflowProgress": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 2,
+      "context": {},
+      "savedAt": 1779391829793
+    },
+    "recentCheckpoints": [
+      {
+        "id": "cp-mpfvyazk",
+        "sessionId": "sess-mpfvyazk-grh",
+        "lastChain": "chain-2",
+        "lastStep": "step-2"
+      },
+      {
+        "id": "cp-mpfvyazk",
+        "sessionId": "sess-mpfvyazj-pf9",
+        "lastChain": "chain-1",
+        "lastStep": "step-1"
+      },
+      {
+        "id": "cp-mpfvyazi",
+        "sessionId": "sess-mpfvyazh-8tg",
+        "lastChain": "chain-0",
+        "lastStep": "step-0"
+      }
+    ],
+    "pressure": {
+      "level": "nominal",
+      "score": 0
+    }
+  },
+  {
+    "id": "snap-mpfvz0di-lez",
+    "name": "pre-deploy snapshot",
+    "operatorId": "op-snap",
+    "capturedAt": 1779391862694,
+    "workspace": {
+      "name": "default",
+      "label": "Default Workspace",
+      "profile": "jarvis-os-dev"
+    },
+    "profile": "jarvis-os-dev",
+    "mode": "development",
+    "session": {
+      "id": "sess-mpfvz0df-tx4",
+      "goal": "snapshot test session",
+      "state": "active"
+    },
+    "workflowProgress": null,
+    "recentCheckpoints": [],
+    "pressure": {
+      "level": "nominal",
+      "score": 0
+    }
+  },
+  {
+    "id": "snap-mpfvz0e0-2rn",
+    "name": "session-sess-mpfvz0dx-sr6",
+    "operatorId": "op-continuity",
+    "capturedAt": 1779391862712,
+    "workspace": {
+      "name": "default",
+      "label": "Default Workspace",
+      "profile": "jarvis-os-dev"
+    },
+    "profile": "jarvis-os-dev",
+    "mode": "development",
+    "session": {
+      "id": "sess-mpfvz0dx-sr6",
+      "goal": "long-horizon session 0",
+      "state": "active"
+    },
+    "workflowProgress": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 0,
+      "context": {},
+      "savedAt": 1779391862709
+    },
+    "recentCheckpoints": [
+      {
+        "id": "cp-mpfvz0dz",
+        "sessionId": "sess-mpfvz0dz-zwn",
+        "lastChain": "chain-2",
+        "lastStep": "step-2"
+      },
+      {
+        "id": "cp-mpfvz0dy",
+        "sessionId": "sess-mpfvz0dy-ziv",
+        "lastChain": "chain-1",
+        "lastStep": "step-1"
+      },
+      {
+        "id": "cp-mpfvz0dx",
+        "sessionId": "sess-mpfvz0dx-sr6",
+        "lastChain": "chain-0",
+        "lastStep": "step-0"
+      }
+    ],
+    "pressure": {
+      "level": "nominal",
+      "score": 0
+    }
+  },
+  {
+    "id": "snap-mpfvz0e0-y8k",
+    "name": "session-sess-mpfvz0dy-ziv",
+    "operatorId": "op-continuity",
+    "capturedAt": 1779391862712,
+    "workspace": {
+      "name": "default",
+      "label": "Default Workspace",
+      "profile": "jarvis-os-dev"
+    },
+    "profile": "jarvis-os-dev",
+    "mode": "development",
+    "session": {
+      "id": "sess-mpfvz0dy-ziv",
+      "goal": "long-horizon session 1",
+      "state": "active"
+    },
+    "workflowProgress": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 1,
+      "context": {},
+      "savedAt": 1779391862710
+    },
+    "recentCheckpoints": [
+      {
+        "id": "cp-mpfvz0dz",
+        "sessionId": "sess-mpfvz0dz-zwn",
+        "lastChain": "chain-2",
+        "lastStep": "step-2"
+      },
+      {
+        "id": "cp-mpfvz0dy",
+        "sessionId": "sess-mpfvz0dy-ziv",
+        "lastChain": "chain-1",
+        "lastStep": "step-1"
+      },
+      {
+        "id": "cp-mpfvz0dx",
+        "sessionId": "sess-mpfvz0dx-sr6",
+        "lastChain": "chain-0",
+        "lastStep": "step-0"
+      }
+    ],
+    "pressure": {
+      "level": "nominal",
+      "score": 0
+    }
+  },
+  {
+    "id": "snap-mpfvz0e1-jzl",
+    "name": "session-sess-mpfvz0dz-zwn",
+    "operatorId": "op-continuity",
+    "capturedAt": 1779391862713,
+    "workspace": {
+      "name": "default",
+      "label": "Default Workspace",
+      "profile": "jarvis-os-dev"
+    },
+    "profile": "jarvis-os-dev",
+    "mode": "development",
+    "session": {
+      "id": "sess-mpfvz0dz-zwn",
+      "goal": "long-horizon session 2",
+      "state": "active"
+    },
+    "workflowProgress": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 2,
+      "context": {},
+      "savedAt": 1779391862711
+    },
+    "recentCheckpoints": [
+      {
+        "id": "cp-mpfvz0dz",
+        "sessionId": "sess-mpfvz0dz-zwn",
+        "lastChain": "chain-2",
+        "lastStep": "step-2"
+      },
+      {
+        "id": "cp-mpfvz0dy",
+        "sessionId": "sess-mpfvz0dy-ziv",
+        "lastChain": "chain-1",
+        "lastStep": "step-1"
+      },
+      {
+        "id": "cp-mpfvz0dx",
+        "sessionId": "sess-mpfvz0dx-sr6",
+        "lastChain": "chain-0",
+        "lastStep": "step-0"
+      }
+    ],
+    "pressure": {
+      "level": "nominal",
+      "score": 0
+    }
+  }
+]

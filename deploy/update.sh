@@ -29,10 +29,13 @@ git pull origin main
 log "Installing dependencies..."
 npm install --omit=dev --ignore-scripts 2>&1 | grep -v "^npm warn" || true
 
-# ── Rebuild frontend if BASE_URL is set ──────────────────────────────────
+# ── Rebuild frontend ─────────────────────────────────────────────────────
+# Single-server nginx: REACT_APP_API_URL="" → relative paths (nginx handles routing).
+# Split API (api.ooplix.com): set REACT_APP_API_URL in .env to https://api.ooplix.com.
 if [ -n "${BASE_URL:-}" ] && [[ "${BASE_URL}" != *"localhost"* ]]; then
-    log "Rebuilding frontend for ${BASE_URL}..."
-    REACT_APP_API_URL="${BASE_URL}" npm run build:frontend
+    BUILD_API_URL="${REACT_APP_API_URL:-}"
+    log "Rebuilding frontend (REACT_APP_API_URL='${BUILD_API_URL}')..."
+    REACT_APP_API_URL="${BUILD_API_URL}" npm run build:frontend
 else
     warn "Skipping frontend rebuild (BASE_URL is localhost or unset)."
     warn "If this is a production VPS, set BASE_URL in .env and run 'npm run build:frontend' manually."

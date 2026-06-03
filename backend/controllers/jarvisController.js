@@ -144,7 +144,35 @@ function _scheduleTimerAlert(phone, delayMs, label) {
     }, delayMs).unref();
 }
 
+// Lazy-load devAgent — only required when a patch request arrives
+let _devAgent = null;
+function _getDevAgent() {
+    if (!_devAgent) try { _devAgent = require("../../agents/devAgent.cjs"); } catch { /* unavailable */ }
+    return _devAgent;
+}
+
 async function _executionPipeline(input, phone = "") {
+    // ── Natural language patch routing ───────────────────────────
+    // "fix the login bug in auth.js"  →  devAgent modify path
+    // Patterns: fix|modify|edit|patch|refactor|update + a file path anywhere in the input
+    const _patchVerbs = /^(fix|modify|edit|patch|refactor|update|change|improve)\s+/i;
+    if (_patchVerbs.test(input)) {
+        const fileMatch = input.match(/\b([\w./\-]+\.(?:js|cjs|mjs|jsx|ts|tsx|py|sh|json|yaml|yml|md))\b/i);
+        const targetFile = fileMatch?.[1] || null;
+        if (targetFile) {
+            const da = _getDevAgent();
+            if (da) {
+                logger.info(`[Exec→Patch] targetFile="${targetFile}" instruction="${input.slice(0, 80)}"`);
+                const result = await da.run({ payload: { targetFile, description: input } });
+                return {
+                    reply:  result.result || result.error || "Patch proposed.",
+                    action: result.type || "dev_patch",
+                    data:   result,
+                };
+            }
+        }
+    }
+
     const parsed = parser.parseCommand(input);
 
     if (parsed.type === "get_leads") {
@@ -247,7 +275,7 @@ async function handleJarvis(req, res) {
         if (mode === "smart") {
             if (/\b(buy|pay|price|demo|purchase|payment|cost|interested|yes)\b/i.test(input)) mode = "sales";
             else if (/\s+(and|then)\s+.{4,}|\s*;\s*.{4,}|\s*\+\s*.{4,}/i.test(input)) mode = "intelligence";
-            else if (/\b(open|launch|search|find|type|note|remind|timer|get leads|calendar)\b/i.test(input) || /^(press|copy|paste|select all)(\s|$)/i.test(input) || /^(run|execute|terminal|shell|cmd)\s+/i.test(input) || /^(create|read|show|cat)\s+file\s+/i.test(input)) mode = "execution";
+            else if (/\b(open|launch|search|find|type|note|remind|timer|get leads|calendar)\b/i.test(input) || /^(press|copy|paste|select all)(\s|$)/i.test(input) || /^(run|execute|terminal|shell|cmd)\s+/i.test(input) || /^(create|read|show|cat)\s+file\s+/i.test(input) || /^(fix|modify|edit|patch|refactor|update|change|improve)\s+.{3,}/i.test(input)) mode = "execution";
             else mode = "intelligence";
         }
         metricsStore.trackMode(mode);

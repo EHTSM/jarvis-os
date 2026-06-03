@@ -17,6 +17,8 @@
 export { BASE_URL, setOn401 } from "./_client";
 export * from "./authApi";
 export * from "./runtimeApi";
+// Alias: WorkflowPanel imports safeDispatch — maps to the guarded dispatchTask
+export { dispatchTask as safeDispatch } from "./runtimeApi";
 export * from "./crmApi";
 export * from "./telemetryApi";
 export * from "./paymentApi";

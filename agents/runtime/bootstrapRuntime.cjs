@@ -92,17 +92,95 @@ try {
 // ── 6. Filesystem Adapter ─────────────────────────────────────────
 // Must be configured here — adapter blocks all I/O until configure() is called.
 // Read-only by default; write access is not granted to runtime-dispatched tasks.
+let _fsAdapter = null;
 try {
     const fsAdapter = require("./adapters/filesystemExecutionAdapter.cjs");
     const projectRoot = path.resolve(__dirname, "../..");
-    const result = fsAdapter.configure(projectRoot, { writeAllowed: false });
+    const result = fsAdapter.configure(projectRoot, { writeAllowed: true });
     if (result.configured) {
-        logger.info(`[Bootstrap] filesystem adapter configured — sandbox: ${projectRoot} (read-only)`);
+        _fsAdapter = fsAdapter;
+        logger.info(`[Bootstrap] filesystem adapter configured — sandbox: ${projectRoot} (read+write, protected dirs enforced)`);
     } else {
         logger.warn("[Bootstrap] filesystem adapter configure() rejected:", result.reason);
     }
 } catch (err) {
     logger.warn("[Bootstrap] filesystem adapter skipped:", err.message);
+}
+
+// ── 7. Filesystem Agent ────────────────────────────────────────────
+if (_fsAdapter) {
+    try {
+        orchestrator.registerAgent({
+            id: "filesystem",
+            capabilities: ["filesystem"],
+            maxConcurrent: 2,
+            handler: async (task) => {
+                const payload = task.payload || {};
+                const cmd = payload.command;
+                if (cmd === "read") {
+                    return _fsAdapter.readFile(payload.filePath, payload.options || {});
+                }
+                if (cmd === "write") {
+                    return _fsAdapter.writeFile(payload.filePath, payload.content || "", { ...(payload.options || {}), createDirs: true });
+                }
+                if (cmd === "list") {
+                    return _fsAdapter.readDir(payload.filePath, payload.options || {});
+                }
+                if (cmd === "stat") {
+                    return _fsAdapter.statFile(payload.filePath);
+                }
+                if (cmd === "exists") {
+                    return _fsAdapter.fileExists(payload.filePath);
+                }
+                return { success: false, error: `unsupported_filesystem_task: ${cmd}` };
+            },
+        });
+        logger.info("[Bootstrap] filesystem agent registered");
+    } catch (err) {
+        logger.warn("[Bootstrap] filesystem agent skipped:", err.message);
+    }
+}
+
+// ── 8. Local Desktop Agent (optional) ───────────────────────────────
+const enableLocalDesktop = process.env.ENABLE_LOCAL_DESKTOP === "1" || process.env.ENABLE_RUNTIME_DESKTOP === "1";
+if (enableLocalDesktop) {
+    try {
+        const DesktopAgent = require("../../plugins/local-desktop/desktopAgent.cjs");
+        const desktop = new DesktopAgent();
+        if (desktop.available) {
+            orchestrator.registerAgent({
+                id: "desktop",
+                capabilities: ["desktop"],
+                maxConcurrent: 1,
+                handler: async (task) => {
+                    const payload = task.payload || {};
+                    switch (task.type) {
+                        case "open_app":
+                            return desktop.openApp(payload.appName || payload.app || "");
+                        case "type_text":
+                            return desktop.typeText(payload.text || "");
+                        case "press_key":
+                            return desktop.pressKey(payload.key || "enter");
+                        case "key_combo":
+                            return desktop.pressKeyCombo(payload.modifiers || [], payload.key || "c");
+                        case "click":
+                            return desktop.click(payload.button || "left");
+                        case "double_click":
+                            return desktop.doubleClick(payload.button || "left");
+                        case "move_mouse":
+                            return desktop.moveMouse(payload.x || 0, payload.y || 0);
+                        default:
+                            return { success: false, error: `unsupported_desktop_task: ${task.type}` };
+                    }
+                },
+            });
+            logger.info("[Bootstrap] local-desktop agent registered");
+        } else {
+            logger.warn("[Bootstrap] local-desktop plugin loaded but unavailable");
+        }
+    } catch (err) {
+        logger.warn("[Bootstrap] local-desktop plugin skipped:", err.message);
+    }
 }
 
 logger.info("[Bootstrap] Runtime agent registration complete");

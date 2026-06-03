@@ -1,0 +1,2050 @@
+{
+  "sessions": [
+    {
+      "id": "eaddd415-13c6-4b5e-8c50-08a10edb0e6b",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "eaddd415-13c6-4b5e-8c50-08a10edb0e6b",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779434692058,
+      "lastActivityAt": 1779434692058,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779434692058,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "0b1aa112-a8b5-4030-ad1a-df787b644cbf",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "0b1aa112-a8b5-4030-ad1a-df787b644cbf",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779434692039,
+      "lastActivityAt": 1779434692039,
+      "preflight": {
+        "pipeline": "daily-driver-test",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "daily-driver-test has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779434692039,
+          "event": "opened",
+          "detail": "Pipeline: daily-driver-test"
+        }
+      ]
+    },
+    {
+      "id": "e983194d-8bda-4d3b-9df8-9cc2c9080b92",
+      "pipelineName": "stress-test-interrupt",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "e983194d-8bda-4d3b-9df8-9cc2c9080b92",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779434692022,
+      "lastActivityAt": 1779434692022,
+      "preflight": {
+        "pipeline": "stress-test-interrupt",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "stress-test-interrupt has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779434692022,
+          "event": "opened",
+          "detail": "Pipeline: stress-test-interrupt"
+        }
+      ]
+    },
+    {
+      "id": "00650fd3-bd66-4bfb-9b91-9ebc674316e1",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "00650fd3-bd66-4bfb-9b91-9ebc674316e1",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779434691956,
+      "lastActivityAt": 1779434691956,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779434691956,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "06a7327d-693a-487d-b88b-41e9452a1841",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "06a7327d-693a-487d-b88b-41e9452a1841",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432371198,
+      "lastActivityAt": 1779432371198,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432371198,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "d30c4109-c742-4670-b844-171260e40a44",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "d30c4109-c742-4670-b844-171260e40a44",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432371181,
+      "lastActivityAt": 1779432371181,
+      "preflight": {
+        "pipeline": "daily-driver-test",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "daily-driver-test has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432371181,
+          "event": "opened",
+          "detail": "Pipeline: daily-driver-test"
+        }
+      ]
+    },
+    {
+      "id": "a9c7a95c-4e94-4459-8105-8523c7c53943",
+      "pipelineName": "stress-test-interrupt",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "a9c7a95c-4e94-4459-8105-8523c7c53943",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432371164,
+      "lastActivityAt": 1779432371164,
+      "preflight": {
+        "pipeline": "stress-test-interrupt",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "stress-test-interrupt has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432371164,
+          "event": "opened",
+          "detail": "Pipeline: stress-test-interrupt"
+        }
+      ]
+    },
+    {
+      "id": "b91e94d1-6442-4eb0-b252-794672a4fedc",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "b91e94d1-6442-4eb0-b252-794672a4fedc",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432371130,
+      "lastActivityAt": 1779432371130,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432371130,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "31a9d6a0-e038-4c7c-add5-a06bc5812dfc",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "31a9d6a0-e038-4c7c-add5-a06bc5812dfc",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432336192,
+      "lastActivityAt": 1779432336192,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432336192,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "12b0a682-42f1-4abc-9150-dee6767fa772",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "12b0a682-42f1-4abc-9150-dee6767fa772",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432336176,
+      "lastActivityAt": 1779432336176,
+      "preflight": {
+        "pipeline": "daily-driver-test",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "daily-driver-test has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432336176,
+          "event": "opened",
+          "detail": "Pipeline: daily-driver-test"
+        }
+      ]
+    },
+    {
+      "id": "122ba079-ed39-403f-932e-1bc204d6ff28",
+      "pipelineName": "stress-test-interrupt",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "122ba079-ed39-403f-932e-1bc204d6ff28",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432336161,
+      "lastActivityAt": 1779432336161,
+      "preflight": {
+        "pipeline": "stress-test-interrupt",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "stress-test-interrupt has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432336161,
+          "event": "opened",
+          "detail": "Pipeline: stress-test-interrupt"
+        }
+      ]
+    },
+    {
+      "id": "15c46130-d56c-4f38-a262-d168c2ee0936",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "15c46130-d56c-4f38-a262-d168c2ee0936",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432336127,
+      "lastActivityAt": 1779432336127,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432336127,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "ca01a876-fb37-41bc-aee2-9fe6e5e8d5e0",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "ca01a876-fb37-41bc-aee2-9fe6e5e8d5e0",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432330795,
+      "lastActivityAt": 1779432330795,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432330795,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "7c21b826-6904-4acd-8559-b6c3bb34cbd2",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "7c21b826-6904-4acd-8559-b6c3bb34cbd2",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432330779,
+      "lastActivityAt": 1779432330779,
+      "preflight": {
+        "pipeline": "daily-driver-test",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "daily-driver-test has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432330779,
+          "event": "opened",
+          "detail": "Pipeline: daily-driver-test"
+        }
+      ]
+    },
+    {
+      "id": "5d769abd-6ceb-4071-bada-e640ad39bbb5",
+      "pipelineName": "stress-test-interrupt",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "5d769abd-6ceb-4071-bada-e640ad39bbb5",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432330767,
+      "lastActivityAt": 1779432330767,
+      "preflight": {
+        "pipeline": "stress-test-interrupt",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "stress-test-interrupt has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432330767,
+          "event": "opened",
+          "detail": "Pipeline: stress-test-interrupt"
+        }
+      ]
+    },
+    {
+      "id": "a9657f34-91a3-4f70-9d55-ece67af7e8ae",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "a9657f34-91a3-4f70-9d55-ece67af7e8ae",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432330730,
+      "lastActivityAt": 1779432330730,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432330730,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "9fbdf091-db7f-450d-a4eb-b2f5b6b6620f",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "9fbdf091-db7f-450d-a4eb-b2f5b6b6620f",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432315354,
+      "lastActivityAt": 1779432315354,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432315354,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "56da9986-8da8-48f5-b85a-c0ed13d73b51",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "56da9986-8da8-48f5-b85a-c0ed13d73b51",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432315339,
+      "lastActivityAt": 1779432315339,
+      "preflight": {
+        "pipeline": "daily-driver-test",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "daily-driver-test has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432315339,
+          "event": "opened",
+          "detail": "Pipeline: daily-driver-test"
+        }
+      ]
+    },
+    {
+      "id": "6f04348d-b1f1-4326-a4ea-f5ac1f2e00b9",
+      "pipelineName": "stress-test-interrupt",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "6f04348d-b1f1-4326-a4ea-f5ac1f2e00b9",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432315326,
+      "lastActivityAt": 1779432315326,
+      "preflight": {
+        "pipeline": "stress-test-interrupt",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "stress-test-interrupt has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432315326,
+          "event": "opened",
+          "detail": "Pipeline: stress-test-interrupt"
+        }
+      ]
+    },
+    {
+      "id": "abd6b956-4d4b-4361-a1eb-3e44789f0e16",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "abd6b956-4d4b-4361-a1eb-3e44789f0e16",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779432315260,
+      "lastActivityAt": 1779432315260,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779432315260,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "ddf4318c-8303-4f6c-a24b-3693084b5419",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "ddf4318c-8303-4f6c-a24b-3693084b5419",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779414875507,
+      "lastActivityAt": 1779414875507,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779414875507,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "eb78f806-e8a7-4c61-bc75-f0e2ae08123a",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "eb78f806-e8a7-4c61-bc75-f0e2ae08123a",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779414875482,
+      "lastActivityAt": 1779414875482,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779414875482,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "06f7f7ec-ad9b-4c6a-81bd-acef1279e3db",
+      "pipelineName": "stress-test-interrupt",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "06f7f7ec-ad9b-4c6a-81bd-acef1279e3db",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779414798427,
+      "lastActivityAt": 1779414798427,
+      "preflight": {
+        "pipeline": "stress-test-interrupt",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "stress-test-interrupt has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779414798427,
+          "event": "opened",
+          "detail": "Pipeline: stress-test-interrupt"
+        }
+      ]
+    },
+    {
+      "id": "7812235d-eeb6-46cf-9969-d4aed76c6894",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "7812235d-eeb6-46cf-9969-d4aed76c6894",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779414798402,
+      "lastActivityAt": 1779414798402,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779414798402,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "46d10395-a7e6-4dd2-b1b5-b2468f8b5741",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "46d10395-a7e6-4dd2-b1b5-b2468f8b5741",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779414798386,
+      "lastActivityAt": 1779414798386,
+      "preflight": {
+        "pipeline": "daily-driver-test",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "daily-driver-test has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779414798386,
+          "event": "opened",
+          "detail": "Pipeline: daily-driver-test"
+        }
+      ]
+    },
+    {
+      "id": "c33ce982-febc-4e19-98d4-7173b37557d6",
+      "pipelineName": "stress-test-interrupt",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "c33ce982-febc-4e19-98d4-7173b37557d6",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779414798369,
+      "lastActivityAt": 1779414798369,
+      "preflight": {
+        "pipeline": "stress-test-interrupt",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "stress-test-interrupt has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779414798369,
+          "event": "opened",
+          "detail": "Pipeline: stress-test-interrupt"
+        }
+      ]
+    },
+    {
+      "id": "2ea95bf8-8c82-4f9c-b696-44c1c6d1cca5",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "2ea95bf8-8c82-4f9c-b696-44c1c6d1cca5",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779414789121,
+      "lastActivityAt": 1779414789121,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779414789121,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "06b6b6ad-7e50-40e5-84b2-280777cabd35",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "06b6b6ad-7e50-40e5-84b2-280777cabd35",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779414789112,
+      "lastActivityAt": 1779414789112,
+      "preflight": {
+        "pipeline": "daily-driver-test",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "daily-driver-test has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779414789112,
+          "event": "opened",
+          "detail": "Pipeline: daily-driver-test"
+        }
+      ]
+    },
+    {
+      "id": "94ba90f1-2804-461c-806f-58d18e0fca07",
+      "pipelineName": "stress-test-interrupt",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "94ba90f1-2804-461c-806f-58d18e0fca07",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779414789105,
+      "lastActivityAt": 1779414789105,
+      "preflight": {
+        "pipeline": "stress-test-interrupt",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "stress-test-interrupt has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779414789105,
+          "event": "opened",
+          "detail": "Pipeline: stress-test-interrupt"
+        }
+      ]
+    },
+    {
+      "id": "1d76a092-ddfd-4e22-a2cc-0485cd410076",
+      "pipelineName": "resilience-test-deploy",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "1d76a092-ddfd-4e22-a2cc-0485cd410076",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779414789092,
+      "lastActivityAt": 1779414789092,
+      "preflight": {
+        "pipeline": "resilience-test-deploy",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "resilience-test-deploy has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779414789092,
+          "event": "opened",
+          "detail": "Pipeline: resilience-test-deploy"
+        }
+      ]
+    },
+    {
+      "id": "b1ddb4e7-5c82-4d00-82ab-75fd3ebc7cfa",
+      "pipelineName": "daily-driver-test",
+      "environment": "production",
+      "operatorId": null,
+      "sessionId": "b1ddb4e7-5c82-4d00-82ab-75fd3ebc7cfa",
+      "notes": "",
+      "status": "open",
+      "phase": "preflight",
+      "startedAt": 1779414789080,
+      "lastActivityAt": 1779414789080,
+      "preflight": {
+        "pipeline": "daily-driver-test",
+        "ready": false,
+        "blockers": [],
+        "warnings": [
+          "Runtime pressure: nominal (score=0)",
+          "Dead letter queue has 119+ entries — runtime may be unstable"
+        ],
+        "checks": [
+          {
+            "name": "environment",
+            "ok": false
+          },
+          {
+            "name": "preflight",
+            "ok": false
+          }
+        ],
+        "confidence": {
+          "score": 24,
+          "grade": "F",
+          "factors": [
+            "preflight: 10% (Preflight check result)",
+            "environment: 20% (Environment warnings)",
+            "history: 50% (0/0 prior deploys succeeded)"
+          ],
+          "explanation": "preflight: 10% (Preflight check result); environment: 20% (Environment warnings); history: 50% (0/0 prior deploys succeeded)",
+          "type": "deployment"
+        },
+        "recommendation": "daily-driver-test has 0 blocker(s) — resolve before deploying"
+      },
+      "depCheck": {
+        "ok": true,
+        "warnings": [],
+        "safe": true
+      },
+      "readiness": {
+        "ready": true,
+        "issues": [],
+        "summary": "Runtime appears ready for deployment"
+      },
+      "confidence": 50,
+      "approvedAt": null,
+      "executedAt": null,
+      "completedAt": null,
+      "runId": null,
+      "rollbackTriggered": false,
+      "events": [
+        {
+          "ts": 1779414789080,
+          "event": "opened",
+          "detail": "Pipeline: daily-driver-test"
+        }
+      ]
+    }
+  ]
+}

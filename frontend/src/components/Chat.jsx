@@ -3,25 +3,42 @@ import "./Chat.css";
 
 const ROLE_LABELS = {
   user:   "You",
-  jarvis: "JARVIS",
+  jarvis: "Jarvis",
   system: "system",
   error:  "error"
 };
 
 const ROLE_COLORS = {
-  user:   "#6c63ff",
-  jarvis: "#00d4ff",
-  system: "#8888aa",
-  error:  "#ff5252"
+  user:   "#9a90ff",
+  jarvis: "#4ecdc4",
+  system: "#9b9fb7",
+  error:  "#ff7b7b"
 };
 
-// Detect if text looks like terminal/code output
+const PROVIDER_LABELS = {
+  openai: "OpenAI",
+  claude: "Claude",
+  grok:   "Grok",
+  local:  "Local",
+  default: "AI"
+};
+
+function _providerLabel(provider) {
+  if (!provider) return null;
+  const key = String(provider).toLowerCase();
+  return PROVIDER_LABELS[key] || provider;
+}
+
 function _isCode(text) {
   if (!text) return false;
-  return text.startsWith("$ ") || text.startsWith("On branch") ||
-    /^(M |A |D |\?\? )/.test(text) || // git status
-    text.includes("\n") && /\d{1,3} (insertions|deletions)/.test(text) ||
-    text.startsWith("node_modules") || text.startsWith("package.json");
+  return (
+    text.startsWith("$ ") ||
+    text.startsWith("On branch") ||
+    /^(M |A |D |\?\? )/.test(text) ||
+    (text.includes("\n") && /\d{1,3} (insertions|deletions)/.test(text)) ||
+    text.startsWith("node_modules") ||
+    text.startsWith("package.json")
+  );
 }
 
 function MessageBody({ text }) {
@@ -31,61 +48,170 @@ function MessageBody({ text }) {
   return <div className="msg-body">{text}</div>;
 }
 
-function Message({ msg }) {
+function Message({ msg, showHeader }) {
   if (msg.role === "system") {
     return <div className="msg msg--system">{msg.text}</div>;
   }
 
-  const color = ROLE_COLORS[msg.role] || "#ccc";
-  const label = ROLE_LABELS[msg.role] || msg.role;
-  const ts    = new Date(msg.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  if (msg.role === "error") {
+    return (
+      <div className="msg msg--error">
+        <div className="msg-error-header">
+          <span className="msg-error-icon">✕</span>
+          <span className="msg-error-label">Error</span>
+        </div>
+        <div className="msg-body msg-body--error">{msg.text}</div>
+      </div>
+    );
+  }
+
+  const color    = ROLE_COLORS[msg.role] || "#ccc";
+  const label    = ROLE_LABELS[msg.role] || msg.role;
+  const provider = _providerLabel(msg.provider || msg.model);
+  const ts       = msg.ts
+    ? new Date(msg.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    : "";
 
   return (
-    <div className={`msg msg--${msg.role}`}>
-      <div className="msg-header">
-        <span className="msg-role" style={{ color }}>{label}</span>
-        <span className="msg-time">{ts}</span>
-      </div>
+    <div className={`msg msg--${msg.role}${msg.role === "jarvis" ? " msg--ai" : ""}`}>
+      {showHeader && (
+        <div className="msg-header">
+          <div className="msg-meta-left">
+            <span className="msg-role" style={{ color }}>{label}</span>
+            {provider && <span className="msg-badge">{provider}</span>}
+          </div>
+          {ts && <span className="msg-time">{ts}</span>}
+        </div>
+      )}
       <MessageBody text={msg.text} />
+      {(msg.workflow || msg.status) && (
+        <div className="msg-footer">
+          {msg.workflow && <span className="msg-footer-chip">{msg.workflow}</span>}
+          {msg.status   && <span className="msg-footer-code">{msg.status}</span>}
+        </div>
+      )}
     </div>
   );
 }
 
-const QUICK_ACTIONS = [
-  { label: "Show Leads",        cmd: "Show me all my leads"    },
-  { label: "Payment Link",      cmd: "Generate a payment link" },
-  { label: "Git Status",        cmd: "run git status"          },
-  { label: "Open Chrome",       cmd: "open Chrome"             },
-];
+function _buildQuickActions() {
+  try {
+    const p = JSON.parse(localStorage.getItem("jarvis_biz_profile") || "null");
+    if (!p) {
+      return [
+        { label: "What can you do?",  cmd: "What can Jarvis do for me?"    },
+        { label: "Add a contact",     cmd: "How do I add my first contact?" },
+        { label: "Show pipeline",     cmd: "Show my pipeline status"        },
+        { label: "Control Room",      cmd: "What is the Control Room?"      },
+      ];
+    }
+    const isDev = /dev|engineer|code|software|tech|program/i.test(p.business || "");
+    if (isDev) {
+      return [
+        { label: "Git status",    cmd: "run git status"                          },
+        { label: "Run tests",     cmd: "run npm test"                            },
+        { label: "System check",  cmd: "run pm2 list"                            },
+        { label: "Recent logs",   cmd: "run pm2 logs jarvis-backend --lines 20"  },
+      ];
+    }
+    return [
+      { label: "Hot leads",         cmd: "Show my hot leads"            },
+      { label: "This week",         cmd: "What happened this week?"     },
+      { label: "Payment link",      cmd: "Generate a payment link"      },
+      { label: "Follow-up status",  cmd: "Show follow-up activity"      },
+    ];
+  } catch {
+    return [
+      { label: "Show pipeline",    cmd: "Show my pipeline status"        },
+      { label: "Payment link",     cmd: "Generate a payment link"        },
+      { label: "What can you do?", cmd: "What can Jarvis do for me?"     },
+      { label: "Help",             cmd: "What should I do first?"        },
+    ];
+  }
+}
+
+const QUICK_ACTIONS = _buildQuickActions();
 
 export default function Chat({
   messages, input, loading, online,
   inputRef, endRef,
   onInput, onSend, onKey, onClear
 }) {
+  const currentWorkflow = messages
+    .slice()
+    .reverse()
+    .find(m => m.workflow || m.status);
+  const workflowDone = currentWorkflow && (
+    currentWorkflow.status === "completed" ||
+    currentWorkflow.status === "success" ||
+    currentWorkflow.status === "done"
+  );
+
   return (
     <div className="chat">
+      {/* Workflow status banner — thin, informational */}
+      {currentWorkflow && (
+        <div className={`chat-workflow-banner${workflowDone ? " chat-workflow-banner--done" : ""}`}>
+          <div>
+            <span className="chat-workflow-title">
+              {workflowDone ? "✓ Completed" : "Running"}
+            </span>
+            <span className="chat-workflow-sub">
+              {currentWorkflow.workflow || (workflowDone ? "Workflow finished" : "Jarvis is working…")}
+            </span>
+          </div>
+          {currentWorkflow.status && (
+            <span className={`chat-workflow-pill${workflowDone ? " chat-workflow-pill--done" : ""}`}>
+              {currentWorkflow.status}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Message list */}
       <div className="chat-messages">
-        {messages.map(m => <Message key={m.id} msg={m} />)}
+        {messages.map((m, idx) => {
+          const prev       = messages[idx - 1];
+          const showHeader = !prev || prev.role !== m.role || prev.provider !== m.provider;
+          return (
+            <Message key={m.id} msg={m} showHeader={showHeader} />
+          );
+        })}
+
+        {/* AI thinking indicator */}
         {loading && (
-          <div className="msg msg--jarvis">
+          <div className="msg msg--jarvis msg--ai">
             <div className="msg-header">
-              <span className="msg-role" style={{ color: "#00d4ff" }}>JARVIS</span>
+              <div className="msg-meta-left">
+                <span className="msg-role" style={{ color: ROLE_COLORS.jarvis }}>Jarvis</span>
+                <span className="msg-thinking-label">thinking…</span>
+              </div>
             </div>
-            <div className="msg-body typing"><span /><span /><span /></div>
+            <div className="msg-body typing">
+              <span /><span /><span />
+            </div>
           </div>
         )}
+
         <div ref={endRef} />
       </div>
 
+      {/* Quick action chips */}
       <div className="quick-cmds">
         {QUICK_ACTIONS.map(a => (
-          <button key={a.cmd} className="quick-btn" onClick={() => onSend(a.cmd)}>
+          <button
+            key={a.cmd}
+            className="quick-btn"
+            onClick={() => onSend(a.cmd)}
+            disabled={!online || loading}
+            title={a.cmd}
+          >
             {a.label}
           </button>
         ))}
       </div>
 
+      {/* Input row */}
       <div className="chat-input-row">
         <input
           ref={inputRef}
@@ -93,14 +219,28 @@ export default function Chat({
           value={input}
           onChange={e => onInput(e.target.value)}
           onKeyDown={onKey}
-          placeholder={online ? "Ask JARVIS anything…" : "Connecting…"}
+          placeholder={loading ? "Jarvis is responding…" : online ? "Message Jarvis, or type a command…" : "Connecting…"}
           disabled={!online || loading}
           autoFocus
+          autoComplete="off"
+          spellCheck={false}
         />
-        <button className="send-btn" onClick={onSend} disabled={!online || loading || !input.trim()}>
+        <button
+          className="send-btn"
+          onClick={onSend}
+          disabled={!online || loading || !input.trim()}
+          aria-label="Send message"
+        >
           {loading ? "…" : "Send"}
         </button>
-        <button className="clear-btn" onClick={onClear} title="Clear chat">✕</button>
+        <button
+          className="clear-btn"
+          onClick={onClear}
+          title="Clear conversation"
+          aria-label="Clear conversation"
+        >
+          ✕
+        </button>
       </div>
     </div>
   );

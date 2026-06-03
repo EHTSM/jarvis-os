@@ -1,0 +1,1564 @@
+{
+  "runs": [
+    {
+      "runId": "6d6e2d62-dee3-476c-a0f1-4669beac19f4",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458720290,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458720290,
+      "updatedAt": 1779458720290
+    },
+    {
+      "runId": "ff7e4a37-630c-40f7-931b-80a5b72e6875",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458720186,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458720186,
+      "updatedAt": 1779458720187
+    },
+    {
+      "runId": "25e3bc52-5a17-4a6d-bb90-3303577ddf3e",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458719988,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458719988,
+      "updatedAt": 1779458719988
+    },
+    {
+      "runId": "ba32bbc0-32cf-408d-969a-9f18d69e9cd9",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458719819,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458719819,
+      "updatedAt": 1779458719819
+    },
+    {
+      "runId": "9c5935ac-2ee6-458b-8c65-6e1fef9899ea",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458719625,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458719625,
+      "updatedAt": 1779458719625
+    },
+    {
+      "runId": "6787f22e-c289-41cc-94dd-9565715813b2",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458719445,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458719445,
+      "updatedAt": 1779458719445
+    },
+    {
+      "runId": "3179c374-039e-494e-ad8a-39b194c104e8",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458563312,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458563312,
+      "updatedAt": 1779458563312
+    },
+    {
+      "runId": "1d71f19a-264a-4ea7-af50-8a60d483cca2",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458563193,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458563193,
+      "updatedAt": 1779458563194
+    },
+    {
+      "runId": "bb9a4ddb-d3ff-440e-8ecf-384c1491daa2",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458563018,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458563018,
+      "updatedAt": 1779458563018
+    },
+    {
+      "runId": "8e167237-fc39-4042-8ff5-e96f2f29f252",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458562855,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458562855,
+      "updatedAt": 1779458562855
+    },
+    {
+      "runId": "46edf223-4ede-4882-9a74-e15943161862",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458562653,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458562653,
+      "updatedAt": 1779458562653
+    },
+    {
+      "runId": "555bef2f-5224-4f7f-9010-079ea1798155",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779458562471,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779458562471,
+      "updatedAt": 1779458562472
+    },
+    {
+      "runId": "5352ac0d-9d21-4917-86fa-881a6643db75",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455340410,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455340410,
+      "updatedAt": 1779455340410
+    },
+    {
+      "runId": "41a54023-626f-4f30-9467-c4ec08c53720",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455340304,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455340304,
+      "updatedAt": 1779455340304
+    },
+    {
+      "runId": "9c1ac756-9ee2-4ec7-9787-553ab89a616d",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455340121,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455340121,
+      "updatedAt": 1779455340122
+    },
+    {
+      "runId": "7f062bec-dd48-4eda-9319-345b03f14f11",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455339946,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455339946,
+      "updatedAt": 1779455339947
+    },
+    {
+      "runId": "45c0858a-ff20-484f-b029-681955902506",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455339749,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455339749,
+      "updatedAt": 1779455339749
+    },
+    {
+      "runId": "b7e8c17b-6cc8-4fbc-ba91-3fb956e161da",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455339564,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455339563,
+      "updatedAt": 1779455339564
+    },
+    {
+      "runId": "23a1ecbd-1de1-4148-9fe0-bbfcb9af5c62",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455182143,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455182142,
+      "updatedAt": 1779455182143
+    },
+    {
+      "runId": "4913b338-34c8-4e11-80f9-21e36b2826d7",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455182042,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455182041,
+      "updatedAt": 1779455182042
+    },
+    {
+      "runId": "3aea9938-887a-4264-8945-7c6234e1ead5",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455181871,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455181870,
+      "updatedAt": 1779455181871
+    },
+    {
+      "runId": "face392b-f847-4958-a13d-56a73f4983ac",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455181706,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455181706,
+      "updatedAt": 1779455181707
+    },
+    {
+      "runId": "daad5851-51b8-42b1-a5fc-c7f2b61cc055",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455181513,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455181513,
+      "updatedAt": 1779455181513
+    },
+    {
+      "runId": "dd7eacb3-1fa7-42d3-a97c-6a8e1f4c7791",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779455181336,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779455181336,
+      "updatedAt": 1779455181336
+    },
+    {
+      "runId": "7ba58ee2-25b9-4bc7-b76a-e9d2dd893272",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779454976444,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779454976444,
+      "updatedAt": 1779454976444
+    },
+    {
+      "runId": "2df081f4-0383-4630-ac5b-7e280af78bbb",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779454777088,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779454777088,
+      "updatedAt": 1779454777088
+    },
+    {
+      "runId": "b8f88120-aee1-495c-8c83-70530f54779b",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779454776917,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779454776917,
+      "updatedAt": 1779454776917
+    },
+    {
+      "runId": "dd37a489-b7d3-4dd3-af42-9475c0902162",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779454477024,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779454477024,
+      "updatedAt": 1779454477024
+    },
+    {
+      "runId": "8e43124a-bdfa-42e1-a657-f014f64bc3a9",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779453675158,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779453675158,
+      "updatedAt": 1779453675158
+    },
+    {
+      "runId": "ee12bff7-3469-4e6e-9e49-710703a2088f",
+      "flowType": "startup-restore",
+      "description": "One-click startup: restore workspace, cross-env check, replay discoverability",
+      "steps": [
+        {
+          "step": "workspace-restore-health",
+          "autonomous": true,
+          "critical": true,
+          "index": 0,
+          "status": "completed",
+          "completedAt": 1779453486800,
+          "result": null
+        },
+        {
+          "step": "cross-env-summary",
+          "autonomous": true,
+          "critical": false,
+          "index": 1,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "replay-discoverability",
+          "autonomous": true,
+          "critical": false,
+          "index": 2,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "productivity-session-list",
+          "autonomous": true,
+          "critical": false,
+          "index": 3,
+          "status": "pending",
+          "completedAt": null
+        },
+        {
+          "step": "command-center-init",
+          "autonomous": true,
+          "critical": false,
+          "index": 4,
+          "status": "pending",
+          "completedAt": null
+        }
+      ],
+      "currentStep": 1,
+      "status": "interrupted",
+      "ts": 1779453486800,
+      "updatedAt": 1779453486800
+    }
+  ]
+}

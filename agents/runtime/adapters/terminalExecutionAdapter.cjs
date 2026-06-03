@@ -24,14 +24,39 @@ function _sanitizeEnv(extra = {}) {
     return safe;
 }
 
-const ADAPTER_ID     = "terminal-adapter-1";
-const ADAPTER_TYPE   = "terminal";
+const ADAPTER_ID          = "terminal-adapter-1";
+const ADAPTER_TYPE        = "terminal";
 const DEFAULT_TIMEOUT_MS  = 15000;
 const MAX_OUTPUT_BYTES    = 512 * 1024;  // 512 KB
+const MAX_CONCURRENT      = 8;           // hard cap on simultaneous terminal executions
 
 let _counter  = 0;
 let _receipts = new Map();  // executionId → receipt (in-flight or completed) — capped at MAX_RECEIPTS
-let _active   = new Map();  // executionId → { child, cancel }
+let _active   = new Map();
+const runtimeEventBus = require('../runtimeEventBus.cjs');
+
+// Kill-tree helper: SIGTERM → wait 3s → SIGKILL the entire process group
+function _killTree(pid) {
+    if (!pid) return;
+    try { process.kill(-pid, "SIGTERM"); } catch { try { process.kill(pid, "SIGTERM"); } catch {} }
+    setTimeout(() => {
+        try { process.kill(-pid, "SIGKILL"); } catch { try { process.kill(pid, "SIGKILL"); } catch {} }
+    }, 3000);
+}
+
+// Runaway watchdog: scan active executions every 60s, force-kill anything
+// that has been running > 2× its stated timeout (absolute maximum safety net)
+setInterval(() => {
+    const now = Date.now();
+    for (const [execId, handle] of _active) {
+        const startMs  = handle.startMs || now;
+        const limitMs  = (handle.timeoutMs || DEFAULT_TIMEOUT_MS) * 2;
+        if (now - startMs > limitMs) {
+            console.warn(`[TerminalAdapter] runaway watchdog — force-killing ${execId} (ran ${Math.round((now - startMs)/1000)}s)`);
+            try { handle.forceKill?.(); } catch {}
+        }
+    }
+}, 60_000).unref();
 
 const MAX_RECEIPTS = 1000;  // prevent unbounded growth over long uptime
 function _addReceipt(id, receipt) {
@@ -80,6 +105,20 @@ function execute({
 } = {}) {
   const receiptId = `rcpt-${++_counter}`;
   executionId     = executionId ?? `tex-${_counter}`;
+
+  // Max-concurrent guard — reject early rather than queue unbounded
+  if (_active.size >= MAX_CONCURRENT) {
+    const receipt = Object.freeze({
+      receiptId: `rcpt-${++_counter}`, executionId: executionId ?? `tex-${_counter}`,
+      adapterType: ADAPTER_TYPE, status: "rejected",
+      reason: `max_concurrent_executions_reached (${MAX_CONCURRENT})`,
+      stdout: "", stderr: "", exitCode: null,
+      duration: 0, timedOut: false, cancelled: false,
+      timestamp: new Date().toISOString(),
+    });
+    _addReceipt(executionId ?? receipt.executionId, receipt);
+    return Promise.resolve(receipt);
+  }
 
   // Validate command
   const validation = validateCommand(command);
@@ -163,8 +202,8 @@ function execute({
 
     const timer = setTimeout(() => {
       if (settled) return;
-      timedOut  = true;
-      try { child.kill("SIGTERM"); } catch (_) {}
+      timedOut = true;
+      _killTree(child.pid);
       settle(null);
     }, timeoutMs);
 
@@ -196,12 +235,20 @@ function execute({
     });
     child.on("close", (code) => settle(code ?? 1));
 
-    // Store cancel handle
+    // Store cancel + forceKill handles for watchdog and external cancellation
     _active.set(executionId, {
+      startMs:   startMs,
+      timeoutMs: timeoutMs,
       cancel: () => {
         if (settled) return;
         cancelled = true;
-        try { child.kill("SIGTERM"); } catch (_) {}
+        _killTree(child.pid);
+      },
+      forceKill: () => {
+        if (settled) return;
+        cancelled = true;
+        try { process.kill(child.pid, "SIGKILL"); } catch {}
+        settle(null);
       },
     });
   });

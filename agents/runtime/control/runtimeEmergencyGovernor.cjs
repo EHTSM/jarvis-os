@@ -117,6 +117,30 @@ function isEmergencyActive() {
   return _emergencyState?.active === true;
 }
 
+// ── Quarantine mode ───────────────────────────────────────────────
+// Softer than emergency stop: blocks new dispatches but lets in-flight
+// tasks complete. Used during suspicious activity or pre-deploy drain.
+let _quarantine = false;
+let _quarantineReason = null;
+
+function enterQuarantine({ reason = "operator_initiated", authorityLevel = "operator" } = {}) {
+  if (_authRank(authorityLevel) < 1) return { ok: false, reason: "insufficient_authority" };
+  _quarantine = true;
+  _quarantineReason = (reason || "").slice(0, 200);
+  _audit({ action: "quarantine_enter", reason: _quarantineReason, authorityLevel, timestamp: new Date().toISOString() });
+  return { ok: true, quarantine: true, reason: _quarantineReason };
+}
+
+function exitQuarantine({ authorityLevel = "operator" } = {}) {
+  if (_authRank(authorityLevel) < 1) return { ok: false, reason: "insufficient_authority" };
+  _quarantine = false;
+  _quarantineReason = null;
+  _audit({ action: "quarantine_exit", authorityLevel, timestamp: new Date().toISOString() });
+  return { ok: true, quarantine: false };
+}
+
+function isQuarantineActive() { return _quarantine; }
+
 function getEmergencyState() {
   if (!_emergencyState) return { active: false };
   return {
@@ -127,6 +151,8 @@ function getEmergencyState() {
     declaredAt:  _emergencyState.declaredAt,
     resolvedAt:  _emergencyState.resolvedAt,
     interventionCount: _emergencyState.interventions.length,
+    quarantine:  _quarantine,
+    quarantineReason: _quarantineReason,
   };
 }
 
@@ -157,6 +183,7 @@ function reset() {
 module.exports = {
   issueAlert, declareEmergency, resolveEmergency, executeIntervention,
   emergencyKillAll, isEmergencyActive, getEmergencyState,
+  enterQuarantine, exitQuarantine, isQuarantineActive,
   getAlertLog, getInterventions, getAuditLog, getGovernorMetrics, reset,
   EMERGENCY_LEVELS,
 };

@@ -69,7 +69,7 @@ async function _openai(messages, model) {
 async function _ollama(prompt, model) {
     const res = await axios.post(
         OLLAMA_URL,
-        { model: model || "llama3", prompt, stream: false },
+        { model: model || process.env.OLLAMA_MODEL || "qwen2.5-coder:7b", prompt, stream: false },
         { timeout: 30000 }
     );
     if (!res.data?.response) throw new Error("Empty Ollama response");

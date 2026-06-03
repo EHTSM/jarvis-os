@@ -1,0 +1,22 @@
+{
+  "sessions": [
+    {
+      "sessionId": "dd-browser-719",
+      "url": "https://app.example.com",
+      "user": "test",
+      "expiresAt": null,
+      "status": "active",
+      "ts": 1779458720343
+    },
+    {
+      "sessionId": "sess-701",
+      "url": "https://app.example.com",
+      "user": "test",
+      "expiresAt": null,
+      "status": "active",
+      "ts": 1779458720355
+    }
+  ],
+  "chains": [],
+  "dedup": []
+}

@@ -54,7 +54,7 @@ const STEPS = [
           <pre>{`WA_TOKEN=your_access_token_here\nWA_PHONE_ID=your_phone_number_id_here`}</pre>
           <CopyButton text={"WA_TOKEN=your_access_token_here\nWA_PHONE_ID=your_phone_number_id_here"} />
         </div>
-        <p style={{ marginTop: 10 }}>Then restart JARVIS:</p>
+        <p style={{ marginTop: 10 }}>Then restart Jarvis:</p>
         <div className="wz-code-block">
           <pre>pm2 restart jarvis-os</pre>
           <CopyButton text="pm2 restart jarvis-os" />
@@ -99,7 +99,7 @@ export default function WhatsAppSetup({ connected, onBack }) {
       setTestResult("fail");
       setTestMsg(
         res.error?.includes("not set") || res.error?.includes("401")
-          ? "Credentials not found. Follow steps 1–4 above, then restart JARVIS."
+          ? "Credentials not found. Follow steps 1–4 above, then restart Jarvis."
           : `Could not send: ${res.error || "Unknown error"}`
       );
     }
@@ -118,7 +118,7 @@ export default function WhatsAppSetup({ connected, onBack }) {
       {connected && (
         <div className="wz-connected-banner">
           <span className="wz-conn-dot" />
-          <span>WhatsApp is connected and active. JARVIS is sending follow-ups automatically.</span>
+          <span>WhatsApp is connected and active. Jarvis is sending follow-ups automatically.</span>
         </div>
       )}
 

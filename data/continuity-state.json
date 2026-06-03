@@ -1,0 +1,311 @@
+{
+  "checkpoints": [
+    {
+      "id": "cp-mpfvz0dz",
+      "sessionId": "sess-mpfvz0dz-zwn",
+      "goal": "long-horizon session 2",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "chain-2",
+      "lastStep": "step-2",
+      "context": {},
+      "operatorId": "op-continuity",
+      "createdAt": 1779391862711
+    },
+    {
+      "id": "cp-mpfvz0dy",
+      "sessionId": "sess-mpfvz0dy-ziv",
+      "goal": "long-horizon session 1",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "chain-1",
+      "lastStep": "step-1",
+      "context": {},
+      "operatorId": "op-continuity",
+      "createdAt": 1779391862710
+    },
+    {
+      "id": "cp-mpfvz0dx",
+      "sessionId": "sess-mpfvz0dx-sr6",
+      "goal": "long-horizon session 0",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "chain-0",
+      "lastStep": "step-0",
+      "context": {},
+      "operatorId": "op-continuity",
+      "createdAt": 1779391862709
+    },
+    {
+      "id": "cp-mpfvyazk",
+      "sessionId": "sess-mpfvyazk-grh",
+      "goal": "long-horizon session 2",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "chain-2",
+      "lastStep": "step-2",
+      "context": {},
+      "operatorId": "op-continuity",
+      "createdAt": 1779391829792
+    },
+    {
+      "id": "cp-mpfvyazk",
+      "sessionId": "sess-mpfvyazj-pf9",
+      "goal": "long-horizon session 1",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "chain-1",
+      "lastStep": "step-1",
+      "context": {},
+      "operatorId": "op-continuity",
+      "createdAt": 1779391829792
+    },
+    {
+      "id": "cp-mpfvyazi",
+      "sessionId": "sess-mpfvyazh-8tg",
+      "goal": "long-horizon session 0",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "chain-0",
+      "lastStep": "step-0",
+      "context": {},
+      "operatorId": "op-continuity",
+      "createdAt": 1779391829790
+    },
+    {
+      "id": "cp-mpfve30d",
+      "sessionId": "sess-mpfve30b-4qx",
+      "goal": "workday session 4: deploy and monitor project-4",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-4",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390886333
+    },
+    {
+      "id": "cp-mpfve30d",
+      "sessionId": "sess-mpfve30b-vpj",
+      "goal": "workday session 3: deploy and monitor project-3",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-3",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390886333
+    },
+    {
+      "id": "cp-mpfve30c",
+      "sessionId": "sess-mpfve30b-yxa",
+      "goal": "workday session 2: deploy and monitor project-2",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-2",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390886332
+    },
+    {
+      "id": "cp-mpfve30c",
+      "sessionId": "sess-mpfve30a-3u2",
+      "goal": "workday session 1: deploy and monitor project-1",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-1",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390886332
+    },
+    {
+      "id": "cp-mpfve30c",
+      "sessionId": "sess-mpfve30a-uqz",
+      "goal": "workday session 0: deploy and monitor project-0",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-0",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390886332
+    },
+    {
+      "id": "cp-mpfvdw2o",
+      "sessionId": "sess-mpfvdw2n-owa",
+      "goal": "workday session 4: deploy and monitor project-4",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-4",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390877344
+    },
+    {
+      "id": "cp-mpfvdw2o",
+      "sessionId": "sess-mpfvdw2n-lqv",
+      "goal": "workday session 3: deploy and monitor project-3",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-3",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390877344
+    },
+    {
+      "id": "cp-mpfvdw2o",
+      "sessionId": "sess-mpfvdw2m-tc6",
+      "goal": "workday session 2: deploy and monitor project-2",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-2",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390877344
+    },
+    {
+      "id": "cp-mpfvdw2o",
+      "sessionId": "sess-mpfvdw2m-j7t",
+      "goal": "workday session 1: deploy and monitor project-1",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-1",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390877344
+    },
+    {
+      "id": "cp-mpfvdw2n",
+      "sessionId": "sess-mpfvdw2m-a49",
+      "goal": "workday session 0: deploy and monitor project-0",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-0",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390877344
+    },
+    {
+      "id": "cp-mpfvdqrh",
+      "sessionId": "sess-mpfvdqrf-mrj",
+      "goal": "workday session 4: deploy and monitor project-4",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-4",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390870461
+    },
+    {
+      "id": "cp-mpfvdqrh",
+      "sessionId": "sess-mpfvdqrf-c0c",
+      "goal": "workday session 3: deploy and monitor project-3",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-3",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390870461
+    },
+    {
+      "id": "cp-mpfvdqrg",
+      "sessionId": "sess-mpfvdqrf-g27",
+      "goal": "workday session 2: deploy and monitor project-2",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-2",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390870460
+    },
+    {
+      "id": "cp-mpfvdqrg",
+      "sessionId": "sess-mpfvdqre-h0a",
+      "goal": "workday session 1: deploy and monitor project-1",
+      "sessionState": "active",
+      "workspace": "default",
+      "mode": "development",
+      "lastChain": "health-check",
+      "lastStep": "step-1",
+      "context": {},
+      "operatorId": null,
+      "createdAt": 1779390870460
+    }
+  ],
+  "lastRestoredAt": 1779391862714,
+  "workflowProgress": {
+    "sess-mpfv05hn-i8u": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 2,
+      "context": {
+        "notes": "step 2 done"
+      },
+      "savedAt": 1779390236364
+    },
+    "sess-mpfvyazh-8tg": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 0,
+      "context": {},
+      "savedAt": 1779391829791
+    },
+    "sess-mpfvyazj-pf9": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 1,
+      "context": {},
+      "savedAt": 1779391829792
+    },
+    "sess-mpfvyazk-grh": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 2,
+      "context": {},
+      "savedAt": 1779391829793
+    },
+    "sess-mpfvz0dx-sr6": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 0,
+      "context": {},
+      "savedAt": 1779391862709
+    },
+    "sess-mpfvz0dy-ziv": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 1,
+      "context": {},
+      "savedAt": 1779391862710
+    },
+    "sess-mpfvz0dz-zwn": {
+      "workflowId": "frontend-recovery",
+      "stepIndex": 2,
+      "context": {},
+      "savedAt": 1779391862711
+    }
+  }
+}

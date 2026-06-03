@@ -1,0 +1,29 @@
+{
+  "projects": {
+    "proj-731-a": {
+      "projectId": "proj-731-a",
+      "name": "Project A",
+      "env": "vscode",
+      "repoPath": "",
+      "ts": 1779458720310,
+      "replays": [
+        {
+          "replayId": "replay-731-a",
+          "data": {
+            "goal": "test"
+          },
+          "ts": 1779458720311
+        }
+      ]
+    },
+    "proj-731-b": {
+      "projectId": "proj-731-b",
+      "name": "Project B",
+      "env": "terminal",
+      "repoPath": "",
+      "ts": 1779458720310,
+      "replays": []
+    }
+  },
+  "activeProject": "proj-731-a"
+}

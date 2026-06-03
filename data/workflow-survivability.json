@@ -1,0 +1,48 @@
+{
+  "checkpoints": [
+    {
+      "workflowId": "rt-615-wf",
+      "stepIndex": 3,
+      "state": "{\"step\":\"test-state\",\"data\":\"xyz\"}",
+      "savedAt": 1779434692060,
+      "key": "rt-615-wf:3"
+    },
+    {
+      "workflowId": "stress-wf-4",
+      "stepIndex": 4,
+      "state": "{\"stressStep\":4}",
+      "savedAt": 1779434692030,
+      "key": "stress-wf-4:4"
+    },
+    {
+      "workflowId": "stress-wf-3",
+      "stepIndex": 3,
+      "state": "{\"stressStep\":3}",
+      "savedAt": 1779434692030,
+      "key": "stress-wf-3:3"
+    },
+    {
+      "workflowId": "stress-wf-2",
+      "stepIndex": 2,
+      "state": "{\"stressStep\":2}",
+      "savedAt": 1779434692030,
+      "key": "stress-wf-2:2"
+    },
+    {
+      "workflowId": "stress-wf-1",
+      "stepIndex": 1,
+      "state": "{\"stressStep\":1}",
+      "savedAt": 1779434692030,
+      "key": "stress-wf-1:1"
+    },
+    {
+      "workflowId": "stress-wf-0",
+      "stepIndex": 0,
+      "state": "{\"stressStep\":0}",
+      "savedAt": 1779434692030,
+      "key": "stress-wf-0:0"
+    }
+  ],
+  "interrupts": [],
+  "resumes": []
+}

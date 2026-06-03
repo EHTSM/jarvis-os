@@ -78,7 +78,7 @@ async function execute(parsed) {
                     adapterType: "terminal",
                     command,
                 });
-                const ok  = record.receipt?.ok ?? record.receipt?.success ?? false;
+                const ok  = record.receipt?.ok ?? record.receipt?.success ?? record.receipt?.status === "completed" ?? record.status === "completed" ?? false;
                 const out = record.receipt?.stdout || record.receipt?.stderr || record.reason || "";
                 logger.info(`[Tool] terminal ${record.status} — "${command.slice(0, 60)}"`);
                 return {

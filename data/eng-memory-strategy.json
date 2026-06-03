@@ -1,0 +1,48 @@
+{
+  "strategies": [
+    {
+      "strategyId": "dd-strategy-689",
+      "goal": "daily driver",
+      "env": "production",
+      "deploymentId": null,
+      "errorText": "",
+      "successCount": 82,
+      "failCount": 0,
+      "lastOutcome": true,
+      "createdAt": 1779443579080,
+      "ts": 1779458720364
+    },
+    {
+      "strategyId": "strat-686-fail",
+      "goal": "fail",
+      "env": "test",
+      "deploymentId": null,
+      "errorText": "",
+      "successCount": 0,
+      "failCount": 9,
+      "lastOutcome": false,
+      "createdAt": 1779443433726,
+      "ts": 1779443728046
+    },
+    {
+      "strategyId": "strat-686-a",
+      "goal": "stress test",
+      "env": "test",
+      "deploymentId": null,
+      "errorText": "",
+      "successCount": 6,
+      "failCount": 0,
+      "lastOutcome": true,
+      "createdAt": 1779443433725,
+      "ts": 1779443728045
+    }
+  ],
+  "suppressions": [
+    {
+      "strategyId": "strat-686-fail",
+      "reason": "repeated-failure",
+      "failCount": 3,
+      "ts": 1779443433726
+    }
+  ]
+}

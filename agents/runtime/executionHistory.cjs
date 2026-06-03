@@ -121,4 +121,22 @@ function stats() {
 /** @returns {object[]} all entries in the ring buffer (newest first) */
 function getAll() { return recent(RING_SIZE); }
 
-module.exports = { record, recent, byAgent, byType, stats, getAll };
+/**
+ * Seed the ring buffer from the persistent execution log on startup.
+ * Reads the last N lines from execLog, oldest-first, and inserts them
+ * via record() so indexes are built correctly.
+ * Called once by server.js after all modules load.
+ */
+function seedFromLog(n = RING_SIZE) {
+    try {
+        const entries = require("../../backend/utils/execLog.cjs").tail(n).reverse(); // oldest first
+        for (const e of entries) record(e);
+        if (entries.length > 0) {
+            console.log(`[ExecutionHistory] seeded ${entries.length} entries from persistent log`);
+        }
+    } catch (err) {
+        console.warn(`[ExecutionHistory] seed failed (non-fatal): ${err.message}`);
+    }
+}
+
+module.exports = { record, recent, byAgent, byType, stats, getAll, seedFromLog };

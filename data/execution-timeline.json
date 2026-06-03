@@ -1,0 +1,5433 @@
+{
+  "events": [
+    {
+      "id": "d062033e-d93e-4bbc-bbd2-2ca25f4edc13",
+      "type": "chain",
+      "ts": 1779434692095,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "38c79e6e-e808-4f24-9594-db37b4c57b14",
+        "goal": "general-health-check",
+        "event": "autonomous-goal-started"
+      }
+    },
+    {
+      "id": "4f8fe69a-c771-4f70-bdd9-a470e044b89e",
+      "type": "chain",
+      "ts": 1779434692094,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "8c538629-d8da-464c-837a-4cf36148fb2e",
+        "goal": "daily driver — verify production health",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "cf91288a-58de-4872-b6e2-07e95c4bad6a",
+      "type": "chain",
+      "ts": 1779434692092,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "159380f9-2fe7-4b62-a99f-6618c5fdf243",
+        "automationName": "health-scan",
+        "event": "daily-automation-started"
+      }
+    },
+    {
+      "id": "7ea0982d-f5a0-45ed-afc3-79f8f2a34bb4",
+      "type": "chain",
+      "ts": 1779434692089,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "c415144f-0b34-4909-a1ea-005874b644c2",
+        "flowName": "health-scan",
+        "event": "daily-autonomous-flow-started"
+      }
+    },
+    {
+      "id": "886609ba-9085-41cf-bd49-b1a0a0fe8a44",
+      "type": "session",
+      "ts": 1779434692084,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "opId": "9d45c94b-9f74-419a-a644-be7ca56e78e1",
+        "opType": "health-probe",
+        "url": "https://stress.example.com/health",
+        "event": "browser-op-started"
+      }
+    },
+    {
+      "id": "5d513087-83d8-44be-af0d-6931d8484f83",
+      "type": "chain",
+      "ts": 1779434692081,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "a1aaa7a4-b708-438e-ab86-9f775a4052f8",
+        "goal": "stabilize-backend",
+        "event": "autonomous-goal-started"
+      }
+    },
+    {
+      "id": "b4bae2db-544a-43d7-81ba-794cf9f47fee",
+      "type": "chain",
+      "ts": 1779434692080,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "0db78971-b074-4165-871a-99cb48f080f1",
+        "goal": "stabilize backend after ECONNREFUSED",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "a55d103d-2aa0-4423-b1cb-ab100bb99c82",
+      "type": "chain",
+      "ts": 1779434692078,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "65b53723-298a-41cd-bdf6-2630a624cf42",
+        "automationName": "startup-restore",
+        "event": "daily-automation-started"
+      }
+    },
+    {
+      "id": "5f8b9916-5216-4aa7-9f33-fa7407af4b16",
+      "type": "chain",
+      "ts": 1779434692072,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "2c6bcd94-8fcc-45a7-89fd-e2779c0fc219",
+        "goal": "stress-test: trusted debug autonomy",
+        "event": "trusted-debug-run-started"
+      }
+    },
+    {
+      "id": "e5d30c23-e482-49bc-85e3-a4f0b4fe89f3",
+      "type": "session",
+      "ts": 1779434692061,
+      "sessionId": "rt-615-sess",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 2
+      }
+    },
+    {
+      "id": "60c76968-b76e-4ab8-96e8-6f6c3f096dec",
+      "type": "deployment",
+      "ts": 1779434692059,
+      "sessionId": "eaddd415-13c6-4b5e-8c50-08a10edb0e6b",
+      "replayId": null,
+      "label": "Deploy preflight: resilience-test-deploy",
+      "meta": {
+        "pipelineName": "resilience-test-deploy",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "62bebc56-96c8-429b-90a8-aafae01621c1",
+      "type": "debug",
+      "ts": 1779434692056,
+      "sessionId": "c1699072-fea8-4bff-acd6-4fb2b49fafd8",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → resolved",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "288ad1ef-37be-4127-ac7b-7004231dc691",
+      "type": "debug",
+      "ts": 1779434692053,
+      "sessionId": "c1699072-fea8-4bff-acd6-4fb2b49fafd8",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → opened",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "7dc1816a-9bba-441b-a432-a77431d89666",
+      "type": "chain",
+      "ts": 1779434692049,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "07793679-9505-4100-b851-6683743eb37d",
+        "goal": "verify-production-health",
+        "event": "goal-execution-started"
+      }
+    },
+    {
+      "id": "b6824088-b200-40ca-929a-e3c5224b01d8",
+      "type": "chain",
+      "ts": 1779434692048,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "e5536dc1-bad6-4c49-b26e-37aad15f117b",
+        "goal": "verify production health",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "56e7d590-1950-422d-ae13-bc5f368a1560",
+      "type": "session",
+      "ts": 1779434692044,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "sessionDbId": "d1938835-ca57-4328-91b0-bfb609135ff1",
+        "workflowName": "health-probe",
+        "url": "https://example.com/health-check",
+        "event": "autonomous-browser-started"
+      }
+    },
+    {
+      "id": "fa15d1ec-c440-4319-8a12-ed4176b1ae6d",
+      "type": "chain",
+      "ts": 1779434692042,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "b9a2f596-fe9b-41dc-81e1-2de7b826df9c",
+        "goal": "restore runtime after ECONNREFUSED",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "d5303a6b-31dd-4132-af2e-fc26b7c381aa",
+      "type": "deployment",
+      "ts": 1779434692040,
+      "sessionId": "0b1aa112-a8b5-4030-ad1a-df787b644cbf",
+      "replayId": null,
+      "label": "Deploy preflight: daily-driver-test",
+      "meta": {
+        "pipelineName": "daily-driver-test",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "e37dd110-9e00-417b-ba15-acff5d141d29",
+      "type": "debug",
+      "ts": 1779434692037,
+      "sessionId": "34bf1e41-1a34-4c16-a31f-a930108a8b4e",
+      "replayId": null,
+      "label": "Debug: daily-driver: test debugging flow → resolved",
+      "meta": {
+        "goal": "daily-driver: test debugging flow",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "df7a2ba0-a53e-4cfb-a584-7f1ab268a6df",
+      "type": "session",
+      "ts": 1779434692035,
+      "sessionId": "34bf1e41-1a34-4c16-a31f-a930108a8b4e",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 1
+      }
+    },
+    {
+      "id": "7e54b350-99e6-4215-9f9b-7593a05edf0b",
+      "type": "debug",
+      "ts": 1779434692032,
+      "sessionId": "34bf1e41-1a34-4c16-a31f-a930108a8b4e",
+      "replayId": null,
+      "label": "Debug: daily-driver: test debugging flow → opened",
+      "meta": {
+        "goal": "daily-driver: test debugging flow",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "666aa2f3-a6e9-4020-a8d3-314563b662aa",
+      "type": "session",
+      "ts": 1779434692025,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "sessionDbId": "31ba5f7f-4e06-4f6d-900e-98323c2a276e",
+        "workflowName": "data-extraction",
+        "url": "https://example.com/stress-test",
+        "event": "autonomous-browser-started"
+      }
+    },
+    {
+      "id": "b7c05d74-9e1e-4191-bff9-2b3c24c74c88",
+      "type": "deployment",
+      "ts": 1779434692022,
+      "sessionId": "e983194d-8bda-4d3b-9df8-9cc2c9080b92",
+      "replayId": null,
+      "label": "Deploy preflight: stress-test-interrupt",
+      "meta": {
+        "pipelineName": "stress-test-interrupt",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "fab66727-f1c2-4e6b-ad24-ecd25ff2bad7",
+      "type": "chain",
+      "ts": 1779434692015,
+      "sessionId": "stress-session-4",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "49ff33d7-8132-48e0-bdbc-ebb6e9acea83",
+        "goal": "stress-test recovery #4",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "47fbddb6-ce96-43ff-9997-81d7cbb96e44",
+      "type": "chain",
+      "ts": 1779434692013,
+      "sessionId": "stress-session-3",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "7c6991e9-62e8-45cf-b692-c86b173e0582",
+        "goal": "stress-test recovery #3",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "116f41c6-78b0-40e1-9dfb-a5162cdf7758",
+      "type": "chain",
+      "ts": 1779434692011,
+      "sessionId": "stress-session-2",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "ddfab4c8-85c8-4321-8baa-28c5b9f65a22",
+        "goal": "stress-test recovery #2",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "d66e9875-7a01-456c-86b7-727f5555287a",
+      "type": "chain",
+      "ts": 1779434692009,
+      "sessionId": "stress-session-1",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "da952b24-27ad-4920-89fb-8c0bc45480ce",
+        "goal": "stress-test recovery #1",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "9d02feed-1e7e-45ec-97ff-8a2f026046a6",
+      "type": "chain",
+      "ts": 1779434692008,
+      "sessionId": "stress-session-0",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "a0f1826e-4f08-4595-b8a7-845861aa4eb0",
+        "goal": "stress-test recovery #0",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "1c802a02-0cf8-45f5-b132-743d38d55a35",
+      "type": "session",
+      "ts": 1779434691963,
+      "sessionId": "rt-615-sess",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 2
+      }
+    },
+    {
+      "id": "03266b81-380b-4f07-8898-5bc4b8dd5e90",
+      "type": "deployment",
+      "ts": 1779434691957,
+      "sessionId": "00650fd3-bd66-4bfb-9b91-9ebc674316e1",
+      "replayId": null,
+      "label": "Deploy preflight: resilience-test-deploy",
+      "meta": {
+        "pipelineName": "resilience-test-deploy",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "ac9fd6d6-0390-44ac-b642-dc048364122e",
+      "type": "debug",
+      "ts": 1779434691953,
+      "sessionId": "733e6f05-e3cf-4bb0-beeb-20f5f99cf800",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → resolved",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "15ba2846-52ec-40d5-a2ee-c7fc45f0945d",
+      "type": "debug",
+      "ts": 1779434691948,
+      "sessionId": "733e6f05-e3cf-4bb0-beeb-20f5f99cf800",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → opened",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "d90d540d-0085-4b43-a812-979f98de0335",
+      "type": "session",
+      "ts": 1779434691929,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "0c0f2c61-72c5-403e-ae4b-a710b42943b2",
+      "type": "session",
+      "ts": 1779434691928,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "355aaa50-dfa5-4d39-9839-47ba40830198",
+      "type": "session",
+      "ts": 1779434691927,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "7947cd96-a57b-41f7-b84a-8b97c9f2f13d",
+      "type": "session",
+      "ts": 1779434691927,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "b7d4fdd7-36ac-4014-bc48-4e074ca7d54b",
+      "type": "session",
+      "ts": 1779434691926,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "7f068b1c-b5a6-48d9-8396-58c846f6a72a",
+      "type": "session",
+      "ts": 1779434691925,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "5f941669-f6ef-49db-95cf-5d1674b2c94a",
+      "type": "session",
+      "ts": 1779434691924,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "2f754d78-ba17-4e47-9465-b06fa19cf26d",
+      "type": "session",
+      "ts": 1779434691922,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "bc44699b-e9cf-40db-9dc2-9abb7a0118e3",
+      "type": "session",
+      "ts": 1779434691921,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "b07e6475-fa27-475e-9c6e-b2531152a01e",
+      "type": "session",
+      "ts": 1779434691920,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "9186c894-e64d-4302-a288-73bd1cd07bc8",
+      "type": "session",
+      "ts": 1779434691920,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "663955d1-07fd-4bd2-ba00-5bbe0b7609a6",
+      "type": "session",
+      "ts": 1779434691919,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "f4b610d8-8fd4-4c92-8765-1c6ed4c7ac8f",
+      "type": "session",
+      "ts": 1779434691918,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "1df9dd92-7704-48db-85e8-891a34e08d50",
+      "type": "session",
+      "ts": 1779434691916,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "4e2e0198-a012-4313-b932-d2517ed01a64",
+      "type": "session",
+      "ts": 1779434691915,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "3967ca48-0213-4cbd-8bd8-133102c32178",
+      "type": "session",
+      "ts": 1779434691911,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "fa5d32a7-1b1b-4153-92f2-7bcbc7ac2ef8",
+      "type": "session",
+      "ts": 1779434691910,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "09298662-cfbc-47a0-8b51-b413775c7927",
+      "type": "session",
+      "ts": 1779434691909,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "c1f44956-2884-4617-8035-5c23edb708df",
+      "type": "session",
+      "ts": 1779434691908,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "ae8bb691-01de-4e10-b6bf-dfe890dc705f",
+      "type": "session",
+      "ts": 1779434691907,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "094f2d52-04bf-4dbb-9dbb-2d531662d6bf",
+      "type": "session",
+      "ts": 1779434691906,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "0d7139d1-a1ce-4128-982d-7e5d121d7f8a",
+      "type": "session",
+      "ts": 1779434691905,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "531acff0-fd76-464b-8bae-aae3ce82d522",
+      "type": "session",
+      "ts": 1779434691904,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "6c3e799f-391c-4ae7-ac9d-6168e9011420",
+      "type": "session",
+      "ts": 1779434691903,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "5cf79945-410c-41b3-ae4e-1b470840d300",
+      "type": "session",
+      "ts": 1779434691902,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "5e57a2b5-f403-47d1-b35d-7bfe35713c89",
+      "type": "session",
+      "ts": 1779434691901,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "419c6839-e710-428e-8431-4197c0a08105",
+      "type": "session",
+      "ts": 1779434691900,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "7d057495-9482-4f31-bde7-78edc881ca10",
+      "type": "session",
+      "ts": 1779434691899,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "623c7265-dbe5-4ae4-a54d-a7e5e2a7f038",
+      "type": "session",
+      "ts": 1779434691897,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "2ea2db65-2ce6-4e10-8bfb-7dad6feeadd9",
+      "type": "session",
+      "ts": 1779434691896,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "9b37c540-5b32-4368-80e3-a5d6950861d0",
+      "type": "session",
+      "ts": 1779434691891,
+      "sessionId": "rw-test-session",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "1eb14b71-3289-435f-9067-3ed736da2394",
+      "type": "chain",
+      "ts": 1779434691886,
+      "sessionId": "long-chain-test",
+      "replayId": null,
+      "label": "Chain done: env-bootstrap-full",
+      "meta": {
+        "chainId": "ca2980e8-3ccb-4b96-8b16-994f03bae62e"
+      }
+    },
+    {
+      "id": "f337e642-53d2-4190-8781-83c22013909c",
+      "type": "replay",
+      "ts": 1779434691882,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-24",
+      "label": "Replay: goal-24",
+      "meta": {
+        "goal": "goal-24",
+        "result": "success"
+      }
+    },
+    {
+      "id": "1f088d54-49c6-4784-be54-b4c05c8bdcef",
+      "type": "replay",
+      "ts": 1779434691881,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-23",
+      "label": "Replay: goal-23",
+      "meta": {
+        "goal": "goal-23",
+        "result": "success"
+      }
+    },
+    {
+      "id": "019e5428-4666-4fc1-89f4-a504cc4100dc",
+      "type": "replay",
+      "ts": 1779434691880,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-22",
+      "label": "Replay: goal-22",
+      "meta": {
+        "goal": "goal-22",
+        "result": "success"
+      }
+    },
+    {
+      "id": "b626e275-4058-499a-8612-44ece9e0921d",
+      "type": "replay",
+      "ts": 1779434691879,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-21",
+      "label": "Replay: goal-21",
+      "meta": {
+        "goal": "goal-21",
+        "result": "success"
+      }
+    },
+    {
+      "id": "2e11a1b7-f7cd-460b-a5c7-5e4b21260bdd",
+      "type": "replay",
+      "ts": 1779434691877,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-20",
+      "label": "Replay: goal-20",
+      "meta": {
+        "goal": "goal-20",
+        "result": "success"
+      }
+    },
+    {
+      "id": "a7af82a3-5519-495e-a48d-948ddb1ad66c",
+      "type": "replay",
+      "ts": 1779434691876,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-19",
+      "label": "Replay: goal-19",
+      "meta": {
+        "goal": "goal-19",
+        "result": "success"
+      }
+    },
+    {
+      "id": "d9bd4235-a986-42dd-9685-e69130a3c0f4",
+      "type": "replay",
+      "ts": 1779434691875,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-18",
+      "label": "Replay: goal-18",
+      "meta": {
+        "goal": "goal-18",
+        "result": "success"
+      }
+    },
+    {
+      "id": "c9a43393-4a31-4b7c-a21c-7b79f964e58b",
+      "type": "replay",
+      "ts": 1779434691874,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-17",
+      "label": "Replay: goal-17",
+      "meta": {
+        "goal": "goal-17",
+        "result": "success"
+      }
+    },
+    {
+      "id": "229be281-4275-47c3-926e-4104e66265e0",
+      "type": "replay",
+      "ts": 1779434691873,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-16",
+      "label": "Replay: goal-16",
+      "meta": {
+        "goal": "goal-16",
+        "result": "success"
+      }
+    },
+    {
+      "id": "de55e7c1-4b66-440f-9b8e-5151e683ab89",
+      "type": "replay",
+      "ts": 1779434691872,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-15",
+      "label": "Replay: goal-15",
+      "meta": {
+        "goal": "goal-15",
+        "result": "success"
+      }
+    },
+    {
+      "id": "e150d760-b0bb-4506-a31a-532b23f5a764",
+      "type": "replay",
+      "ts": 1779434691871,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-14",
+      "label": "Replay: goal-14",
+      "meta": {
+        "goal": "goal-14",
+        "result": "success"
+      }
+    },
+    {
+      "id": "928ad6eb-f65d-419f-a0ff-c639265a3663",
+      "type": "replay",
+      "ts": 1779434691870,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-13",
+      "label": "Replay: goal-13",
+      "meta": {
+        "goal": "goal-13",
+        "result": "success"
+      }
+    },
+    {
+      "id": "079284e5-2091-45a4-902d-e366598d7495",
+      "type": "replay",
+      "ts": 1779434691869,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-12",
+      "label": "Replay: goal-12",
+      "meta": {
+        "goal": "goal-12",
+        "result": "success"
+      }
+    },
+    {
+      "id": "6e216fe7-904e-4431-9a6c-d5b3447c5704",
+      "type": "replay",
+      "ts": 1779434691867,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-11",
+      "label": "Replay: goal-11",
+      "meta": {
+        "goal": "goal-11",
+        "result": "success"
+      }
+    },
+    {
+      "id": "88668522-e489-456e-a991-8aecd57fbaa0",
+      "type": "replay",
+      "ts": 1779434691866,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-10",
+      "label": "Replay: goal-10",
+      "meta": {
+        "goal": "goal-10",
+        "result": "success"
+      }
+    },
+    {
+      "id": "c6016731-dc21-4016-b8c9-6708db77ccf0",
+      "type": "replay",
+      "ts": 1779434691865,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-9",
+      "label": "Replay: goal-9",
+      "meta": {
+        "goal": "goal-9",
+        "result": "success"
+      }
+    },
+    {
+      "id": "e8b2bdad-8372-4cd0-ba22-75be26ed0c3c",
+      "type": "replay",
+      "ts": 1779434691864,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-8",
+      "label": "Replay: goal-8",
+      "meta": {
+        "goal": "goal-8",
+        "result": "success"
+      }
+    },
+    {
+      "id": "f668165a-0e77-4ca0-bea2-14eae54a45e1",
+      "type": "replay",
+      "ts": 1779434691862,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-7",
+      "label": "Replay: goal-7",
+      "meta": {
+        "goal": "goal-7",
+        "result": "success"
+      }
+    },
+    {
+      "id": "41f7822b-1521-4f48-9383-10ed52867d9d",
+      "type": "replay",
+      "ts": 1779434691861,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-6",
+      "label": "Replay: goal-6",
+      "meta": {
+        "goal": "goal-6",
+        "result": "success"
+      }
+    },
+    {
+      "id": "6428839f-d092-4d98-b752-6160d0a6458f",
+      "type": "replay",
+      "ts": 1779434691860,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-5",
+      "label": "Replay: goal-5",
+      "meta": {
+        "goal": "goal-5",
+        "result": "success"
+      }
+    },
+    {
+      "id": "6757751e-65c1-483e-8aee-d933617d0eff",
+      "type": "replay",
+      "ts": 1779434691859,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-4",
+      "label": "Replay: goal-4",
+      "meta": {
+        "goal": "goal-4",
+        "result": "success"
+      }
+    },
+    {
+      "id": "3cc557df-f3c5-4088-8200-60099e223dfd",
+      "type": "replay",
+      "ts": 1779434691858,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-3",
+      "label": "Replay: goal-3",
+      "meta": {
+        "goal": "goal-3",
+        "result": "success"
+      }
+    },
+    {
+      "id": "9f45a09e-1e83-4b81-9e44-1b3cf5d0280b",
+      "type": "replay",
+      "ts": 1779434691857,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-2",
+      "label": "Replay: goal-2",
+      "meta": {
+        "goal": "goal-2",
+        "result": "success"
+      }
+    },
+    {
+      "id": "414fb11b-637b-4cd1-b650-3e355dd97002",
+      "type": "replay",
+      "ts": 1779434691856,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-1",
+      "label": "Replay: goal-1",
+      "meta": {
+        "goal": "goal-1",
+        "result": "success"
+      }
+    },
+    {
+      "id": "d01fa75b-69ab-4d00-ab8f-ef2d91847a15",
+      "type": "replay",
+      "ts": 1779434691855,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-0",
+      "label": "Replay: goal-0",
+      "meta": {
+        "goal": "goal-0",
+        "result": "success"
+      }
+    },
+    {
+      "id": "edff595f-1b68-453b-871b-d189fc9aa828",
+      "type": "session",
+      "ts": 1779434691854,
+      "sessionId": "instab-4",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "f00dd30c-0207-4647-a72b-0e4c59ba3106",
+      "type": "session",
+      "ts": 1779434691852,
+      "sessionId": "instab-3",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "9fce1587-8a74-4ac2-8d9b-96dff1c798f8",
+      "type": "session",
+      "ts": 1779434691850,
+      "sessionId": "instab-2",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "23106c76-cc9c-4dc5-8f68-b9de20f8a7ab",
+      "type": "session",
+      "ts": 1779434691849,
+      "sessionId": "instab-1",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "551587dc-0c61-4f35-a304-bb20ff05023c",
+      "type": "session",
+      "ts": 1779434691847,
+      "sessionId": "instab-0",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "dc75c9b7-cb5d-42e9-8bcc-889b18304db7",
+      "type": "session",
+      "ts": 1779434691820,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "4d8e7787-e0ab-4c08-b4bc-372491be4cb3",
+      "type": "session",
+      "ts": 1779434691819,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "34f7433b-1403-4985-9e9a-f71b71117e17",
+      "type": "session",
+      "ts": 1779434691818,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "930965e8-82a2-4131-8b6d-fe5f6c9761b7",
+      "type": "session",
+      "ts": 1779434691817,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "8867c180-f948-4d08-bdcb-cc0e6168898a",
+      "type": "session",
+      "ts": 1779434691816,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "c2e0684e-7fe6-4c52-a208-fead5951b25c",
+      "type": "session",
+      "ts": 1779434691814,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "6da74d80-6080-4681-ba3d-150dd823fd72",
+      "type": "session",
+      "ts": 1779434691813,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "8486690b-6fe8-47c9-887b-51fc5d9f7131",
+      "type": "session",
+      "ts": 1779434691812,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "6b7882d4-8330-4e29-9070-a799bd0556a4",
+      "type": "session",
+      "ts": 1779434691811,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "54338b8f-d9b2-4586-910f-84ac587c41c8",
+      "type": "session",
+      "ts": 1779434691810,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "9dd73957-7b71-486d-9858-4c4105b93a9d",
+      "type": "session",
+      "ts": 1779434691809,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "61193a4e-6b09-4d32-834a-7e7d6b6bf4b8",
+      "type": "session",
+      "ts": 1779434691808,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "8f97c1fb-0907-4e00-9de5-00e329c838be",
+      "type": "session",
+      "ts": 1779434691807,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "89f5c05f-133c-445c-a6f8-dd307281ef05",
+      "type": "session",
+      "ts": 1779434691805,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "952b1805-0430-4853-ba5a-e59764e28754",
+      "type": "session",
+      "ts": 1779434691803,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "fdef9422-7c5c-4f24-aaa0-9e64c12c4e4b",
+      "type": "session",
+      "ts": 1779434638994,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "opId": "09ea5e5b-c50c-4fc3-8ae6-78b5bc133468",
+        "opType": "health-probe",
+        "url": "https://daily-driver.example.com/health",
+        "event": "browser-op-started"
+      }
+    },
+    {
+      "id": "a637502b-c2cd-4184-a6fd-6d1be3427e07",
+      "type": "chain",
+      "ts": 1779434638981,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "5591db42-d4d3-4e6a-8b25-0580d56d06ec",
+        "goal": "general-health-check",
+        "event": "autonomous-goal-started"
+      }
+    },
+    {
+      "id": "361753fc-6a75-4915-ba79-f1732c3452d6",
+      "type": "chain",
+      "ts": 1779434638980,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "254bacc3-1209-45b0-b459-df36c6ababeb",
+        "goal": "daily driver — verify production health",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "fb45b794-cee3-481b-bb23-20e728e5a22e",
+      "type": "chain",
+      "ts": 1779434638978,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "9648b505-4ea7-4a22-ac04-b67af6528201",
+        "automationName": "health-scan",
+        "event": "daily-automation-started"
+      }
+    },
+    {
+      "id": "a2e5541d-f2d7-4e69-a790-6b1049407e78",
+      "type": "chain",
+      "ts": 1779434638965,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "db1c1cec-e7d5-429e-8655-689003376e79",
+        "flowName": "health-scan",
+        "event": "daily-autonomous-flow-started"
+      }
+    },
+    {
+      "id": "de17dd79-8a39-4447-b04c-8f3e9cee8335",
+      "type": "session",
+      "ts": 1779433550911,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "opId": "c4acc470-1379-463a-8027-2f257b799281",
+        "opType": "health-probe",
+        "url": "https://daily-driver.example.com/health",
+        "event": "browser-op-started"
+      }
+    },
+    {
+      "id": "f70b7c13-40c7-46cb-9195-e137f0b2cddc",
+      "type": "chain",
+      "ts": 1779433550906,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "63eabd12-79eb-45d9-9e67-8ccbd316a700",
+        "goal": "general-health-check",
+        "event": "autonomous-goal-started"
+      }
+    },
+    {
+      "id": "514380e0-0a9f-4f3f-a683-4b7d5f676019",
+      "type": "chain",
+      "ts": 1779433550904,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "9a4e33f8-a9e6-4b49-9454-d09722584481",
+        "goal": "daily driver — verify production health",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "94000150-fadc-44de-bf9d-59a680807a52",
+      "type": "chain",
+      "ts": 1779433550901,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "8af53714-3050-4c04-88c2-e13fc3b5e866",
+        "automationName": "health-scan",
+        "event": "daily-automation-started"
+      }
+    },
+    {
+      "id": "d55aac6f-1ef4-4b23-9a07-625562ada838",
+      "type": "chain",
+      "ts": 1779433550892,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "cfc27266-cac5-4ffa-92b6-abbd91af2d63",
+        "flowName": "health-scan",
+        "event": "daily-autonomous-flow-started"
+      }
+    },
+    {
+      "id": "6f6cd8d2-72e7-461e-b71d-cb1b33352ccf",
+      "type": "session",
+      "ts": 1779433542193,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "opId": "5bcea485-a9f1-48ed-9746-080dc5b4b1c1",
+        "opType": "health-probe",
+        "url": "https://stress.example.com/health",
+        "event": "browser-op-started"
+      }
+    },
+    {
+      "id": "1e86826d-a7e0-4543-9561-9c64fa8f3fbb",
+      "type": "chain",
+      "ts": 1779433542182,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "bc197fc0-8a63-4fd4-aed7-a460b8d702d8",
+        "goal": "stabilize-backend",
+        "event": "autonomous-goal-started"
+      }
+    },
+    {
+      "id": "5e0c9998-c11d-47fb-90d7-b276b179d66a",
+      "type": "chain",
+      "ts": 1779433542180,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "00bace08-0b1b-43ac-ac9c-8fb486dc7ce7",
+        "goal": "stabilize backend after ECONNREFUSED",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "c83016f2-0bdf-42f2-a1bf-eb90aaea7819",
+      "type": "chain",
+      "ts": 1779433542177,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "9d542258-aec3-42c1-93af-fd95a4d3459d",
+        "automationName": "startup-restore",
+        "event": "daily-automation-started"
+      }
+    },
+    {
+      "id": "bfcd6b24-0c14-4b0e-beef-2f393b3e5c85",
+      "type": "chain",
+      "ts": 1779433542165,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "d5dbfc46-5807-4280-baaa-2b7bcacafe87",
+        "goal": "stress-test: trusted debug autonomy",
+        "event": "trusted-debug-run-started"
+      }
+    },
+    {
+      "id": "957bbb0e-4ce1-4a0b-894c-779f589f3da2",
+      "type": "chain",
+      "ts": 1779432376058,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "a64199d3-f099-4208-bb38-013cb9d3e4bc",
+        "goal": "general-health-check",
+        "event": "autonomous-goal-started"
+      }
+    },
+    {
+      "id": "c1644923-8cd5-400e-9c6e-97a30024ed00",
+      "type": "chain",
+      "ts": 1779432376056,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "5fb64f44-d271-4dc4-a756-9452fda91daf",
+        "goal": "daily driver — verify production health",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "da623e43-e4bc-4ae9-babf-d7bb48e4ad83",
+      "type": "chain",
+      "ts": 1779432376054,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "2724ccbb-6983-45cd-888e-65490f696e5b",
+        "automationName": "health-scan",
+        "event": "daily-automation-started"
+      }
+    },
+    {
+      "id": "a493140d-9c03-4c3f-b2e1-729319fe1303",
+      "type": "chain",
+      "ts": 1779432376052,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "95bb1fc7-bdbb-4e5e-9e8d-6f7ebb24a4dc",
+        "flowName": "health-scan",
+        "event": "daily-autonomous-flow-started"
+      }
+    },
+    {
+      "id": "26210d2f-66c4-4a84-aef3-54b08fefb516",
+      "type": "chain",
+      "ts": 1779432376045,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "feaa5942-87cd-4edd-b442-b990bf7e4570",
+        "goal": "stabilize-backend",
+        "event": "autonomous-goal-started"
+      }
+    },
+    {
+      "id": "5fec378e-a6d2-4943-a4ee-e170db9787bf",
+      "type": "chain",
+      "ts": 1779432376044,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "8de131a1-2367-44ca-ac37-e192599a839d",
+        "goal": "stabilize backend after ECONNREFUSED",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "6d205b52-b04c-4fbe-a731-21fbe4ad4cd1",
+      "type": "chain",
+      "ts": 1779432376042,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "29ccbf0d-a28b-439d-8f6a-48efe88c63a3",
+        "automationName": "startup-restore",
+        "event": "daily-automation-started"
+      }
+    },
+    {
+      "id": "624e372d-e9fd-4392-b285-2a61e0f9882f",
+      "type": "chain",
+      "ts": 1779432376037,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "266d0e66-c34d-4673-9102-c40d48595255",
+        "goal": "stress-test: trusted debug autonomy",
+        "event": "trusted-debug-run-started"
+      }
+    },
+    {
+      "id": "ab055590-a36b-40fd-9792-03830c4ed836",
+      "type": "chain",
+      "ts": 1779432371225,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "00825592-72ce-415d-b08b-0759a992f4d1",
+        "goal": "general-health-check",
+        "event": "autonomous-goal-started"
+      }
+    },
+    {
+      "id": "2a67e381-65a9-4b33-85e8-7141deca4cda",
+      "type": "chain",
+      "ts": 1779432371223,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "31518078-7f5f-45be-9c17-7d869a0cc858",
+        "goal": "daily driver — verify production health",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "75e5c461-8c85-4504-9f8e-47452f7f0cd7",
+      "type": "chain",
+      "ts": 1779432371222,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "5e000dbe-8a6e-4a92-b8dc-87a20f979c73",
+        "automationName": "health-scan",
+        "event": "daily-automation-started"
+      }
+    },
+    {
+      "id": "80251eb1-5839-4b00-bbdc-5b7185080e77",
+      "type": "chain",
+      "ts": 1779432371220,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "b29e4591-fdfa-460f-8d7d-c1404d3956b0",
+        "flowName": "health-scan",
+        "event": "daily-autonomous-flow-started"
+      }
+    },
+    {
+      "id": "e9e40bcd-1d78-46db-9218-9d4a2b7f09f9",
+      "type": "chain",
+      "ts": 1779432371215,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "947279bb-64dc-4eed-8ad3-004ec7c5b228",
+        "goal": "stabilize-backend",
+        "event": "autonomous-goal-started"
+      }
+    },
+    {
+      "id": "9f7d6879-13b9-4093-bfb8-826006489d6a",
+      "type": "chain",
+      "ts": 1779432371214,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "0d9cbfaf-8235-44fb-baef-0e8d8c90e27e",
+        "goal": "stabilize backend after ECONNREFUSED",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "d1464d68-bda3-4a16-9d41-852f57d2df9a",
+      "type": "chain",
+      "ts": 1779432371212,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "5dfab406-1775-4908-9f60-ed8a08d7b434",
+        "automationName": "startup-restore",
+        "event": "daily-automation-started"
+      }
+    },
+    {
+      "id": "3e8631db-e7ec-40f9-badc-bd2257226e5f",
+      "type": "chain",
+      "ts": 1779432371208,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "5537bb7f-ff3d-41e1-b991-c9226b88c194",
+        "goal": "stress-test: trusted debug autonomy",
+        "event": "trusted-debug-run-started"
+      }
+    },
+    {
+      "id": "6e970d52-4f6c-4939-985e-045614c64722",
+      "type": "session",
+      "ts": 1779432371200,
+      "sessionId": "rt-615-sess",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 2
+      }
+    },
+    {
+      "id": "6b36d414-4e65-41d9-8f32-43fbca81ae24",
+      "type": "deployment",
+      "ts": 1779432371198,
+      "sessionId": "06a7327d-693a-487d-b88b-41e9452a1841",
+      "replayId": null,
+      "label": "Deploy preflight: resilience-test-deploy",
+      "meta": {
+        "pipelineName": "resilience-test-deploy",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "edb8ef1c-d250-4493-8402-6f6f443b8323",
+      "type": "debug",
+      "ts": 1779432371196,
+      "sessionId": "c4d03d36-28a6-4821-ac56-fb4b21e1e959",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → resolved",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "5c52eb0e-198e-4214-aefb-acb80ab02239",
+      "type": "debug",
+      "ts": 1779432371193,
+      "sessionId": "c4d03d36-28a6-4821-ac56-fb4b21e1e959",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → opened",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "4b3d0842-9372-4e87-8dd7-70edc6cf2963",
+      "type": "chain",
+      "ts": 1779432371189,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "ac4caa09-6ae5-452a-a2c5-31fd574c48e3",
+        "goal": "verify-production-health",
+        "event": "goal-execution-started"
+      }
+    },
+    {
+      "id": "6c016023-ecfa-4678-8f56-da305d149c7e",
+      "type": "chain",
+      "ts": 1779432371188,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "371bc58b-63fd-475f-90cf-1ec08b2b15e0",
+        "goal": "verify production health",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "e8158864-05b0-4a9e-8f4a-4f8efed00e79",
+      "type": "session",
+      "ts": 1779432371186,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "sessionDbId": "df8c6062-2186-443d-a797-e1a466b8de97",
+        "workflowName": "health-probe",
+        "url": "https://example.com/health-check",
+        "event": "autonomous-browser-started"
+      }
+    },
+    {
+      "id": "68ff97ee-116a-43f4-8981-19eb8a539a70",
+      "type": "chain",
+      "ts": 1779432371184,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "2fe6fe65-7194-4f1b-a89b-064ec88d11c7",
+        "goal": "restore runtime after ECONNREFUSED",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "2b269e56-027d-4be6-9b72-57564b259419",
+      "type": "deployment",
+      "ts": 1779432371182,
+      "sessionId": "d30c4109-c742-4670-b844-171260e40a44",
+      "replayId": null,
+      "label": "Deploy preflight: daily-driver-test",
+      "meta": {
+        "pipelineName": "daily-driver-test",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "4a1d28c5-5555-4537-8f46-b520168b7693",
+      "type": "debug",
+      "ts": 1779432371178,
+      "sessionId": "2d1a9788-9fd2-4c86-8287-d507c47a65a4",
+      "replayId": null,
+      "label": "Debug: daily-driver: test debugging flow → resolved",
+      "meta": {
+        "goal": "daily-driver: test debugging flow",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "d2545925-593e-4a73-9e8d-9a5574a4134a",
+      "type": "session",
+      "ts": 1779432371176,
+      "sessionId": "2d1a9788-9fd2-4c86-8287-d507c47a65a4",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 1
+      }
+    },
+    {
+      "id": "a01a89c2-d214-4512-a38a-c9644ccd8d17",
+      "type": "debug",
+      "ts": 1779432371172,
+      "sessionId": "2d1a9788-9fd2-4c86-8287-d507c47a65a4",
+      "replayId": null,
+      "label": "Debug: daily-driver: test debugging flow → opened",
+      "meta": {
+        "goal": "daily-driver: test debugging flow",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "3d5a0eaa-e611-4bff-a3a1-d9af628623e6",
+      "type": "session",
+      "ts": 1779432371167,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "sessionDbId": "f7e72bff-0d76-4cb5-8816-418abb2ca64b",
+        "workflowName": "data-extraction",
+        "url": "https://example.com/stress-test",
+        "event": "autonomous-browser-started"
+      }
+    },
+    {
+      "id": "5f760f9b-7e9e-4314-96be-dd911b6483cd",
+      "type": "deployment",
+      "ts": 1779432371164,
+      "sessionId": "a9c7a95c-4e94-4459-8105-8523c7c53943",
+      "replayId": null,
+      "label": "Deploy preflight: stress-test-interrupt",
+      "meta": {
+        "pipelineName": "stress-test-interrupt",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "c346ea93-adc8-44b5-90e4-81e7d365a88c",
+      "type": "chain",
+      "ts": 1779432371160,
+      "sessionId": "stress-session-4",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "0d9645d8-abc0-486e-8c1e-615de35dc52a",
+        "goal": "stress-test recovery #4",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "3d83e881-ea35-489f-b529-1a9f020b796f",
+      "type": "chain",
+      "ts": 1779432371158,
+      "sessionId": "stress-session-3",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "91234ea8-0aac-4187-a726-ecac35916589",
+        "goal": "stress-test recovery #3",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "629d9196-1e2a-4240-a03f-bccee649bf50",
+      "type": "chain",
+      "ts": 1779432371157,
+      "sessionId": "stress-session-2",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "5568819b-c06e-4b68-982a-1ac95ca52a0d",
+        "goal": "stress-test recovery #2",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "4bc07be8-3a3e-48f6-bb1c-d96cc8a8f35e",
+      "type": "chain",
+      "ts": 1779432371155,
+      "sessionId": "stress-session-1",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "fe88f4a6-c405-4567-acc7-401668ccc5b0",
+        "goal": "stress-test recovery #1",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "02f02328-bf38-4834-b2ac-589a9432d0dd",
+      "type": "chain",
+      "ts": 1779432371154,
+      "sessionId": "stress-session-0",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "d1279834-d066-4d35-b567-2380b6bc70dd",
+        "goal": "stress-test recovery #0",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "d3b31f11-9fb5-48bc-976e-8f832ea7110f",
+      "type": "session",
+      "ts": 1779432371134,
+      "sessionId": "rt-615-sess",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 2
+      }
+    },
+    {
+      "id": "9ca3e0a2-f508-4ab1-b1c5-08ae3a0a0b39",
+      "type": "deployment",
+      "ts": 1779432371131,
+      "sessionId": "b91e94d1-6442-4eb0-b252-794672a4fedc",
+      "replayId": null,
+      "label": "Deploy preflight: resilience-test-deploy",
+      "meta": {
+        "pipelineName": "resilience-test-deploy",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "f2520960-d52e-457d-8fe7-b3a65ef1532e",
+      "type": "debug",
+      "ts": 1779432371128,
+      "sessionId": "0b57cfa9-9fc8-471b-96a3-1f0a1ec1031b",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → resolved",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "3480e919-fc65-482b-8f8d-9fc9870172ad",
+      "type": "debug",
+      "ts": 1779432371125,
+      "sessionId": "0b57cfa9-9fc8-471b-96a3-1f0a1ec1031b",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → opened",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "8e3c84b1-0149-4c1d-914e-53aa2fbd11db",
+      "type": "session",
+      "ts": 1779432371114,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "f6e2e4c3-5a64-4314-9612-17dabb90bc11",
+      "type": "session",
+      "ts": 1779432371113,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "ef8bc537-7e4e-4e4a-80a3-98bc172af1e2",
+      "type": "session",
+      "ts": 1779432371112,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "a5c2ca98-cc28-428b-b121-fb2624f24775",
+      "type": "session",
+      "ts": 1779432371111,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "37249cd4-8aec-4bc0-bfec-d27b6c08a7d1",
+      "type": "session",
+      "ts": 1779432371110,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "03f9b754-404c-47d0-9b49-d46a400febc5",
+      "type": "session",
+      "ts": 1779432371109,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "a8b41ba2-4e75-4474-83a1-18cb0a8c7e84",
+      "type": "session",
+      "ts": 1779432371108,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "6ee52c84-9764-4b41-9764-d82d428f2257",
+      "type": "session",
+      "ts": 1779432371107,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "bba14781-c8c1-4e25-843a-d8738c4d294d",
+      "type": "session",
+      "ts": 1779432371106,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "5090f4a3-35c0-4de8-a0dd-c0076193a9a7",
+      "type": "session",
+      "ts": 1779432371105,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "974ce5cb-163b-40e0-a5af-9e033563eef3",
+      "type": "session",
+      "ts": 1779432371104,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "3804def8-69b8-45af-844e-7fabba4b6298",
+      "type": "session",
+      "ts": 1779432371103,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "5d93c725-d7ae-48f5-a9fb-504381d35a46",
+      "type": "session",
+      "ts": 1779432371102,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "b9a2afc7-75e3-428f-9ea4-ef3e9f34b670",
+      "type": "session",
+      "ts": 1779432371101,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "6d9ae4ea-05a0-4918-aef1-cfb4d8b79110",
+      "type": "session",
+      "ts": 1779432371100,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "98aeaae4-21f2-477f-8541-926d0ac3b4ee",
+      "type": "session",
+      "ts": 1779432371096,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "62d3bfcc-f03d-4cb5-9a7c-0a1c6711402d",
+      "type": "session",
+      "ts": 1779432371095,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "faa05695-4a2b-459b-9675-fa95a5f56c6c",
+      "type": "session",
+      "ts": 1779432371094,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "2ba5bc44-e349-41fc-b9a9-708806fe45af",
+      "type": "session",
+      "ts": 1779432371093,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "f7edc169-675e-4890-9584-7d5f3928b6e4",
+      "type": "session",
+      "ts": 1779432371092,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "19ebf9ba-f9f1-4bc9-beea-bccbcd0ae7ac",
+      "type": "session",
+      "ts": 1779432371090,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "3ce6856e-4e4f-4926-881e-01f6e624f07c",
+      "type": "session",
+      "ts": 1779432371089,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "f30a53cd-1223-442b-a249-d282d493fde8",
+      "type": "session",
+      "ts": 1779432371088,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "ff5d064c-ec5b-48ac-9705-420ce471d77b",
+      "type": "session",
+      "ts": 1779432371087,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "5faf3a4e-f7fe-4167-8d4d-c35ee03c62bd",
+      "type": "session",
+      "ts": 1779432371086,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "7eb20532-d6a7-4d7a-bed1-70d0148b90f0",
+      "type": "session",
+      "ts": 1779432371085,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "4e9485b1-0f64-4f53-bcd8-854ac44346f7",
+      "type": "session",
+      "ts": 1779432371084,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "2aab379b-3ef0-49fc-9519-5bcc37c78694",
+      "type": "session",
+      "ts": 1779432371083,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "7845d2ad-8d05-4cb6-a4f4-61b99b49a2d6",
+      "type": "session",
+      "ts": 1779432371082,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "3a346fd6-8734-470d-ac42-b16ff6bf42f5",
+      "type": "session",
+      "ts": 1779432371081,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "599dcfc8-374d-4b52-8118-6b91024858a9",
+      "type": "session",
+      "ts": 1779432371075,
+      "sessionId": "rw-test-session",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "3be70c92-14b2-42c5-a902-d46f67f80756",
+      "type": "chain",
+      "ts": 1779432371072,
+      "sessionId": "long-chain-test",
+      "replayId": null,
+      "label": "Chain done: env-bootstrap-full",
+      "meta": {
+        "chainId": "fd9bfd9f-f0d4-41c7-b35b-69cce52c4789"
+      }
+    },
+    {
+      "id": "2f50ea49-8111-4e76-92db-e4b0d62a7492",
+      "type": "replay",
+      "ts": 1779432371069,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-24",
+      "label": "Replay: goal-24",
+      "meta": {
+        "goal": "goal-24",
+        "result": "success"
+      }
+    },
+    {
+      "id": "6f22b00f-93de-4f23-af86-2833fc397cb4",
+      "type": "replay",
+      "ts": 1779432371068,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-23",
+      "label": "Replay: goal-23",
+      "meta": {
+        "goal": "goal-23",
+        "result": "success"
+      }
+    },
+    {
+      "id": "3fbc9396-015f-4cad-8717-7f6c55b73137",
+      "type": "replay",
+      "ts": 1779432371067,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-22",
+      "label": "Replay: goal-22",
+      "meta": {
+        "goal": "goal-22",
+        "result": "success"
+      }
+    },
+    {
+      "id": "e78dc233-7b62-47a5-b434-9afda7daca8d",
+      "type": "replay",
+      "ts": 1779432371066,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-21",
+      "label": "Replay: goal-21",
+      "meta": {
+        "goal": "goal-21",
+        "result": "success"
+      }
+    },
+    {
+      "id": "e2d078e2-4f7d-44b0-8a2e-0af6eda0805b",
+      "type": "replay",
+      "ts": 1779432371065,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-20",
+      "label": "Replay: goal-20",
+      "meta": {
+        "goal": "goal-20",
+        "result": "success"
+      }
+    },
+    {
+      "id": "ec63068f-442f-4d77-acd1-3b7647cbdd1f",
+      "type": "replay",
+      "ts": 1779432371064,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-19",
+      "label": "Replay: goal-19",
+      "meta": {
+        "goal": "goal-19",
+        "result": "success"
+      }
+    },
+    {
+      "id": "eafa5b33-d2ae-4ab3-88c9-61d0fe149254",
+      "type": "replay",
+      "ts": 1779432371063,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-18",
+      "label": "Replay: goal-18",
+      "meta": {
+        "goal": "goal-18",
+        "result": "success"
+      }
+    },
+    {
+      "id": "d3b38b92-98f0-485e-b102-700921550bb7",
+      "type": "replay",
+      "ts": 1779432371062,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-17",
+      "label": "Replay: goal-17",
+      "meta": {
+        "goal": "goal-17",
+        "result": "success"
+      }
+    },
+    {
+      "id": "a89887b2-e708-4481-81bf-7172cafe8613",
+      "type": "replay",
+      "ts": 1779432371061,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-16",
+      "label": "Replay: goal-16",
+      "meta": {
+        "goal": "goal-16",
+        "result": "success"
+      }
+    },
+    {
+      "id": "e00a079b-5aec-4a11-8065-0d59ec0e3b93",
+      "type": "replay",
+      "ts": 1779432371060,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-15",
+      "label": "Replay: goal-15",
+      "meta": {
+        "goal": "goal-15",
+        "result": "success"
+      }
+    },
+    {
+      "id": "7baa138d-4e15-4c6b-ae89-e110f204efe3",
+      "type": "replay",
+      "ts": 1779432371058,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-14",
+      "label": "Replay: goal-14",
+      "meta": {
+        "goal": "goal-14",
+        "result": "success"
+      }
+    },
+    {
+      "id": "8c9be070-2c7c-44c1-abd7-2f06a55a5100",
+      "type": "replay",
+      "ts": 1779432371058,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-13",
+      "label": "Replay: goal-13",
+      "meta": {
+        "goal": "goal-13",
+        "result": "success"
+      }
+    },
+    {
+      "id": "eda77db0-0723-4ebe-b0b2-d5569a55d128",
+      "type": "replay",
+      "ts": 1779432371057,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-12",
+      "label": "Replay: goal-12",
+      "meta": {
+        "goal": "goal-12",
+        "result": "success"
+      }
+    },
+    {
+      "id": "5d48c169-47f8-47da-99f2-dbb9e5553911",
+      "type": "replay",
+      "ts": 1779432371055,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-11",
+      "label": "Replay: goal-11",
+      "meta": {
+        "goal": "goal-11",
+        "result": "success"
+      }
+    },
+    {
+      "id": "931daed6-063a-47c8-a11a-f946f4dc2514",
+      "type": "replay",
+      "ts": 1779432371054,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-10",
+      "label": "Replay: goal-10",
+      "meta": {
+        "goal": "goal-10",
+        "result": "success"
+      }
+    },
+    {
+      "id": "b1fc784c-1859-4006-9665-ab18a82eeba3",
+      "type": "replay",
+      "ts": 1779432371053,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-9",
+      "label": "Replay: goal-9",
+      "meta": {
+        "goal": "goal-9",
+        "result": "success"
+      }
+    },
+    {
+      "id": "b4d70eef-118b-4775-b754-072fcae60f60",
+      "type": "replay",
+      "ts": 1779432371052,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-8",
+      "label": "Replay: goal-8",
+      "meta": {
+        "goal": "goal-8",
+        "result": "success"
+      }
+    },
+    {
+      "id": "47b798df-a707-4067-8abf-2c663c394390",
+      "type": "replay",
+      "ts": 1779432371051,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-7",
+      "label": "Replay: goal-7",
+      "meta": {
+        "goal": "goal-7",
+        "result": "success"
+      }
+    },
+    {
+      "id": "2007fbfa-ce81-48f4-9504-61abf282f5ff",
+      "type": "replay",
+      "ts": 1779432371050,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-6",
+      "label": "Replay: goal-6",
+      "meta": {
+        "goal": "goal-6",
+        "result": "success"
+      }
+    },
+    {
+      "id": "5f00ab05-e4a5-4d33-8b17-488761fba389",
+      "type": "replay",
+      "ts": 1779432371049,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-5",
+      "label": "Replay: goal-5",
+      "meta": {
+        "goal": "goal-5",
+        "result": "success"
+      }
+    },
+    {
+      "id": "a34dbcd4-47ba-4fe6-b7ef-9edefeae2aee",
+      "type": "replay",
+      "ts": 1779432371048,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-4",
+      "label": "Replay: goal-4",
+      "meta": {
+        "goal": "goal-4",
+        "result": "success"
+      }
+    },
+    {
+      "id": "0d1d9da7-1bd7-4422-a99b-a9cc9f3c6aae",
+      "type": "replay",
+      "ts": 1779432371046,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-3",
+      "label": "Replay: goal-3",
+      "meta": {
+        "goal": "goal-3",
+        "result": "success"
+      }
+    },
+    {
+      "id": "5eb728d3-55ee-4051-9c69-d4c881cee1da",
+      "type": "replay",
+      "ts": 1779432371046,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-2",
+      "label": "Replay: goal-2",
+      "meta": {
+        "goal": "goal-2",
+        "result": "success"
+      }
+    },
+    {
+      "id": "c99835ff-8736-4a80-acfd-692e468e1bbd",
+      "type": "replay",
+      "ts": 1779432371045,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-1",
+      "label": "Replay: goal-1",
+      "meta": {
+        "goal": "goal-1",
+        "result": "success"
+      }
+    },
+    {
+      "id": "f7e76a80-0547-4988-8315-ad796c9daf74",
+      "type": "replay",
+      "ts": 1779432371043,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-0",
+      "label": "Replay: goal-0",
+      "meta": {
+        "goal": "goal-0",
+        "result": "success"
+      }
+    },
+    {
+      "id": "94717a9e-4357-40b9-b51e-f7547124f186",
+      "type": "session",
+      "ts": 1779432371042,
+      "sessionId": "instab-4",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "30222a5c-44f0-4937-933e-bfd0442210ce",
+      "type": "session",
+      "ts": 1779432371041,
+      "sessionId": "instab-3",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "c6292be1-7665-4cb9-be82-7be73f822b1e",
+      "type": "session",
+      "ts": 1779432371039,
+      "sessionId": "instab-2",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "238b612b-5e37-46ee-9bde-c01ef984e1f8",
+      "type": "session",
+      "ts": 1779432371037,
+      "sessionId": "instab-1",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "b496438c-3400-4306-9216-24f0d066378f",
+      "type": "session",
+      "ts": 1779432371035,
+      "sessionId": "instab-0",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "0740a0a6-ff54-48c1-89ff-83aa2cfbc382",
+      "type": "session",
+      "ts": 1779432371015,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "b3f5e54f-7212-4412-949e-6d8d48353ca3",
+      "type": "session",
+      "ts": 1779432371014,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "23c12156-f593-451e-8a73-eec618d6613c",
+      "type": "session",
+      "ts": 1779432371012,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "2b83d60d-b507-41ef-aad5-fd3216324627",
+      "type": "session",
+      "ts": 1779432371012,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "c3e47036-70be-4c19-a83b-ee59cf975bc8",
+      "type": "session",
+      "ts": 1779432371011,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "0afe8e1c-f89b-4bd3-93b1-384336031e88",
+      "type": "session",
+      "ts": 1779432371009,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "74d4bce7-a11d-435d-89f7-9f2646c41626",
+      "type": "session",
+      "ts": 1779432371008,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "caef3b65-4fc2-43a1-8bbd-f815470fb9f5",
+      "type": "session",
+      "ts": 1779432371007,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "be564591-aa61-4e66-887f-4ed9200cf612",
+      "type": "session",
+      "ts": 1779432371006,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "c400afc8-4d53-42c6-b1c3-1ff6b66d922c",
+      "type": "session",
+      "ts": 1779432371005,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "a8872988-3ba2-43c2-b16a-208bf4d245b2",
+      "type": "session",
+      "ts": 1779432371004,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "720b5937-86a3-4fa8-850c-14e6a48074cd",
+      "type": "session",
+      "ts": 1779432371003,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "fc3d60f2-6b75-4116-9361-5bdbefcb6154",
+      "type": "session",
+      "ts": 1779432371002,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "9e836597-8985-4398-98f6-78c34e54a0be",
+      "type": "session",
+      "ts": 1779432371001,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "4ccaf222-7bf5-4d77-83e1-411e66ec0348",
+      "type": "session",
+      "ts": 1779432370999,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "d3e09224-e837-4039-a3c0-011d07aa3cee",
+      "type": "session",
+      "ts": 1779432336195,
+      "sessionId": "rt-615-sess",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 2
+      }
+    },
+    {
+      "id": "93b63bd2-9710-4f1e-b24e-2c09ec9fd772",
+      "type": "deployment",
+      "ts": 1779432336193,
+      "sessionId": "31a9d6a0-e038-4c7c-add5-a06bc5812dfc",
+      "replayId": null,
+      "label": "Deploy preflight: resilience-test-deploy",
+      "meta": {
+        "pipelineName": "resilience-test-deploy",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "bc8f0bed-6c01-442d-9378-84a1a086a4de",
+      "type": "debug",
+      "ts": 1779432336191,
+      "sessionId": "71cf0d40-244e-4dfe-abae-0ab87c62b0d6",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → resolved",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "e1577c6b-1fab-4a3e-828f-f4413030cd47",
+      "type": "debug",
+      "ts": 1779432336187,
+      "sessionId": "71cf0d40-244e-4dfe-abae-0ab87c62b0d6",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → opened",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "ca8b1f32-59f3-4182-b2a3-c7b154bc7bf9",
+      "type": "chain",
+      "ts": 1779432336184,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "3fdb7d4f-c4e4-487d-82b8-bab230443f60",
+        "goal": "verify-production-health",
+        "event": "goal-execution-started"
+      }
+    },
+    {
+      "id": "4768e167-a8e7-42d1-9f6f-6320cb1d0e1b",
+      "type": "chain",
+      "ts": 1779432336183,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "acc5eb1c-985c-433f-91d2-8682715c3a39",
+        "goal": "verify production health",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "b644fdbe-4312-4019-84bf-39add9d58aec",
+      "type": "session",
+      "ts": 1779432336180,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "sessionDbId": "72134bef-4a17-4195-8fb6-5162e7a52189",
+        "workflowName": "health-probe",
+        "url": "https://example.com/health-check",
+        "event": "autonomous-browser-started"
+      }
+    },
+    {
+      "id": "4f9dee65-c357-4af3-a714-7f3236fa9398",
+      "type": "chain",
+      "ts": 1779432336178,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "b6c6db4f-be50-45a8-9c2f-480a26c153d8",
+        "goal": "restore runtime after ECONNREFUSED",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "17357e10-96a4-402e-84ce-2c3f92adc1a5",
+      "type": "deployment",
+      "ts": 1779432336176,
+      "sessionId": "12b0a682-42f1-4abc-9150-dee6767fa772",
+      "replayId": null,
+      "label": "Deploy preflight: daily-driver-test",
+      "meta": {
+        "pipelineName": "daily-driver-test",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "e16158ae-a70c-4513-a726-313692dbe01f",
+      "type": "debug",
+      "ts": 1779432336174,
+      "sessionId": "9d25f367-e293-4a9f-8739-42b58c799825",
+      "replayId": null,
+      "label": "Debug: daily-driver: test debugging flow → resolved",
+      "meta": {
+        "goal": "daily-driver: test debugging flow",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "4ef37126-ca48-4d1b-ade2-2f4b2142fc86",
+      "type": "session",
+      "ts": 1779432336173,
+      "sessionId": "9d25f367-e293-4a9f-8739-42b58c799825",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 1
+      }
+    },
+    {
+      "id": "345eae33-d188-4a5a-85a4-f132ba49088e",
+      "type": "debug",
+      "ts": 1779432336169,
+      "sessionId": "9d25f367-e293-4a9f-8739-42b58c799825",
+      "replayId": null,
+      "label": "Debug: daily-driver: test debugging flow → opened",
+      "meta": {
+        "goal": "daily-driver: test debugging flow",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "787cdd62-3ad9-4018-ad18-76a8755883a9",
+      "type": "session",
+      "ts": 1779432336164,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "sessionDbId": "25f3b126-ed2c-41f1-a64e-d893627fdf35",
+        "workflowName": "data-extraction",
+        "url": "https://example.com/stress-test",
+        "event": "autonomous-browser-started"
+      }
+    },
+    {
+      "id": "7c755350-5f51-4faf-9d6e-a123ccb5c3e2",
+      "type": "deployment",
+      "ts": 1779432336162,
+      "sessionId": "122ba079-ed39-403f-932e-1bc204d6ff28",
+      "replayId": null,
+      "label": "Deploy preflight: stress-test-interrupt",
+      "meta": {
+        "pipelineName": "stress-test-interrupt",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "1df3362a-63ec-465b-bed7-b8af487a2d83",
+      "type": "chain",
+      "ts": 1779432336155,
+      "sessionId": "stress-session-4",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "05711734-72f3-4537-be62-d7d37bbc3f1b",
+        "goal": "stress-test recovery #4",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "a1cc0020-e0dc-4406-982b-ffb70a8e4be0",
+      "type": "chain",
+      "ts": 1779432336154,
+      "sessionId": "stress-session-3",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "08020fea-77b3-4c2a-ab59-8e76707103d6",
+        "goal": "stress-test recovery #3",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "2a27fc8e-0bdd-42b2-8d23-5fef9d48dc8e",
+      "type": "chain",
+      "ts": 1779432336152,
+      "sessionId": "stress-session-2",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "0c7dec6d-6e63-4ddf-82f2-27a5766f326c",
+        "goal": "stress-test recovery #2",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "888b8e5f-a5c4-4fc6-af7c-f41d07a725c2",
+      "type": "chain",
+      "ts": 1779432336151,
+      "sessionId": "stress-session-1",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "e4429f8c-f338-4fa2-86ec-9014e5549e03",
+        "goal": "stress-test recovery #1",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "f82117c7-e842-4e8b-9746-e590f8128ce7",
+      "type": "chain",
+      "ts": 1779432336150,
+      "sessionId": "stress-session-0",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "477d8a46-5ed0-445d-9d0b-2564d5d9de93",
+        "goal": "stress-test recovery #0",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "5f6e3144-4fd2-4a81-86ba-8b489f29315e",
+      "type": "session",
+      "ts": 1779432336130,
+      "sessionId": "rt-615-sess",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 2
+      }
+    },
+    {
+      "id": "5e604728-582c-429f-8347-c41377642107",
+      "type": "deployment",
+      "ts": 1779432336127,
+      "sessionId": "15c46130-d56c-4f38-a262-d168c2ee0936",
+      "replayId": null,
+      "label": "Deploy preflight: resilience-test-deploy",
+      "meta": {
+        "pipelineName": "resilience-test-deploy",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "2809d8e2-056b-40d9-b076-bd06260b7b51",
+      "type": "debug",
+      "ts": 1779432336125,
+      "sessionId": "0e974ecd-aeb7-4ccd-b4b6-3ef36452e32c",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → resolved",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "ea275354-1057-4148-a9f3-d46998a36af1",
+      "type": "debug",
+      "ts": 1779432336122,
+      "sessionId": "0e974ecd-aeb7-4ccd-b4b6-3ef36452e32c",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → opened",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "45b7c5ee-8826-4b25-98a4-39bf207f5b2f",
+      "type": "session",
+      "ts": 1779432336113,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "61a206b9-17a5-4c98-aff9-cb3de7dda239",
+      "type": "session",
+      "ts": 1779432336112,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "ec31af98-1403-4799-8bde-c1ead0dac584",
+      "type": "session",
+      "ts": 1779432336111,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "270b1276-3c09-4cee-9bb8-005bc0a11215",
+      "type": "session",
+      "ts": 1779432336110,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "740a0d9f-ce11-4fbf-8380-012706b692e5",
+      "type": "session",
+      "ts": 1779432336109,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "7269e776-ca93-48e9-b361-2471878eaeef",
+      "type": "session",
+      "ts": 1779432336107,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "3ee3e1f2-46bd-4a9a-862b-e12720bb3064",
+      "type": "session",
+      "ts": 1779432336106,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "f460fe60-7775-459f-a081-38bd8186d7ca",
+      "type": "session",
+      "ts": 1779432336105,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "dae38cf2-0e38-4d5e-b34d-072157e2ac37",
+      "type": "session",
+      "ts": 1779432336104,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "c472d5ec-fd73-41cd-b5d5-5c899d1e8d23",
+      "type": "session",
+      "ts": 1779432336103,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "5b63b80e-648f-45e5-b20b-4ffd182d6d03",
+      "type": "session",
+      "ts": 1779432336102,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "c7130fec-5409-4f16-92af-9c9d0f1eab6d",
+      "type": "session",
+      "ts": 1779432336101,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "cc663c41-842a-4862-bce4-2b5f5d786561",
+      "type": "session",
+      "ts": 1779432336100,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "d49dc85b-6004-4326-8719-7888b3969d12",
+      "type": "session",
+      "ts": 1779432336099,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "e007b835-70ee-4bd5-bbae-c4d072c552ff",
+      "type": "session",
+      "ts": 1779432336098,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "8ba5a2dd-1efa-4b51-bd21-e9d44d4355d6",
+      "type": "session",
+      "ts": 1779432336094,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "83529c58-a423-493b-9af6-036dabd6e3c2",
+      "type": "session",
+      "ts": 1779432336092,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "3d43988f-c166-4e19-ad9b-26aa1ceb9a99",
+      "type": "session",
+      "ts": 1779432336091,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "4c4e326a-bb02-444e-b852-f58e6824140e",
+      "type": "session",
+      "ts": 1779432336091,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "3e8582b8-7373-4780-a7fc-93622cbc1525",
+      "type": "session",
+      "ts": 1779432336089,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "fc07ab65-88b0-4d98-bcf8-8ccc6872e56c",
+      "type": "session",
+      "ts": 1779432336088,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "8f8ba800-81e0-49e3-bfc3-407aac99444a",
+      "type": "session",
+      "ts": 1779432336087,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "8e5eef17-637a-49dd-aeb6-f2bcabe59121",
+      "type": "session",
+      "ts": 1779432336086,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "1a831d92-8f99-4560-b8b8-91f8235a8400",
+      "type": "session",
+      "ts": 1779432336085,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "ecfa424d-44f0-44eb-ae8c-5d3b8d455b53",
+      "type": "session",
+      "ts": 1779432336084,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "f9bc1c23-65a3-48bf-bb43-f2bd99e057dc",
+      "type": "session",
+      "ts": 1779432336083,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "6f523f44-b7a6-4eba-a654-c74aedaca278",
+      "type": "session",
+      "ts": 1779432336081,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "caeb95a5-63bf-493e-9576-4fe0eb6009d2",
+      "type": "session",
+      "ts": 1779432336080,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "3609f6e0-f805-4446-a4d7-479b78a11851",
+      "type": "session",
+      "ts": 1779432336079,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "dccd7add-b7d3-4ea4-83e1-e60c82642b8e",
+      "type": "session",
+      "ts": 1779432336078,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "fb98762a-32f1-4d5a-a50a-0b00a042f057",
+      "type": "session",
+      "ts": 1779432336073,
+      "sessionId": "rw-test-session",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "ffbc9a67-657b-466c-846b-2526e7759ec8",
+      "type": "chain",
+      "ts": 1779432336069,
+      "sessionId": "long-chain-test",
+      "replayId": null,
+      "label": "Chain done: env-bootstrap-full",
+      "meta": {
+        "chainId": "c492f155-5233-4564-b044-8e5feab9dde1"
+      }
+    },
+    {
+      "id": "b716decc-0af9-4080-bd5f-7ba485e62ffd",
+      "type": "replay",
+      "ts": 1779432336067,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-24",
+      "label": "Replay: goal-24",
+      "meta": {
+        "goal": "goal-24",
+        "result": "success"
+      }
+    },
+    {
+      "id": "715fbe1f-da38-4864-8c43-4adb58dfa4ec",
+      "type": "replay",
+      "ts": 1779432336066,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-23",
+      "label": "Replay: goal-23",
+      "meta": {
+        "goal": "goal-23",
+        "result": "success"
+      }
+    },
+    {
+      "id": "86ed3f16-516c-46b8-bde7-69b70b0411fc",
+      "type": "replay",
+      "ts": 1779432336065,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-22",
+      "label": "Replay: goal-22",
+      "meta": {
+        "goal": "goal-22",
+        "result": "success"
+      }
+    },
+    {
+      "id": "887f6edb-05ac-46fa-9fbe-3cd44eec10ca",
+      "type": "replay",
+      "ts": 1779432336064,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-21",
+      "label": "Replay: goal-21",
+      "meta": {
+        "goal": "goal-21",
+        "result": "success"
+      }
+    },
+    {
+      "id": "d2a7d9be-1430-4fb8-9758-35ff23743aed",
+      "type": "replay",
+      "ts": 1779432336062,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-20",
+      "label": "Replay: goal-20",
+      "meta": {
+        "goal": "goal-20",
+        "result": "success"
+      }
+    },
+    {
+      "id": "10339aff-e762-4604-8c98-14af52a0dbfe",
+      "type": "replay",
+      "ts": 1779432336061,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-19",
+      "label": "Replay: goal-19",
+      "meta": {
+        "goal": "goal-19",
+        "result": "success"
+      }
+    },
+    {
+      "id": "bf3ee1ad-0b28-4cf2-b3cd-2cf029934eb9",
+      "type": "replay",
+      "ts": 1779432336060,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-18",
+      "label": "Replay: goal-18",
+      "meta": {
+        "goal": "goal-18",
+        "result": "success"
+      }
+    },
+    {
+      "id": "44911e8b-b567-4fc7-bcdd-52fb2e73d325",
+      "type": "replay",
+      "ts": 1779432336059,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-17",
+      "label": "Replay: goal-17",
+      "meta": {
+        "goal": "goal-17",
+        "result": "success"
+      }
+    },
+    {
+      "id": "9f3292f0-9efb-4af3-b075-df78f62c78dd",
+      "type": "replay",
+      "ts": 1779432336058,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-16",
+      "label": "Replay: goal-16",
+      "meta": {
+        "goal": "goal-16",
+        "result": "success"
+      }
+    },
+    {
+      "id": "20ba5284-f719-489b-adf3-6a1a47c69dd1",
+      "type": "replay",
+      "ts": 1779432336057,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-15",
+      "label": "Replay: goal-15",
+      "meta": {
+        "goal": "goal-15",
+        "result": "success"
+      }
+    },
+    {
+      "id": "238b4382-bde1-411f-a9ea-a03b6476313c",
+      "type": "replay",
+      "ts": 1779432336056,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-14",
+      "label": "Replay: goal-14",
+      "meta": {
+        "goal": "goal-14",
+        "result": "success"
+      }
+    },
+    {
+      "id": "f97a1bd5-2525-4349-8981-f1c950f00492",
+      "type": "replay",
+      "ts": 1779432336055,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-13",
+      "label": "Replay: goal-13",
+      "meta": {
+        "goal": "goal-13",
+        "result": "success"
+      }
+    },
+    {
+      "id": "1e4811ae-b09d-4044-bb7c-0df3b02d578c",
+      "type": "replay",
+      "ts": 1779432336054,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-12",
+      "label": "Replay: goal-12",
+      "meta": {
+        "goal": "goal-12",
+        "result": "success"
+      }
+    },
+    {
+      "id": "72591a71-134a-4655-aabe-08791f2ece24",
+      "type": "replay",
+      "ts": 1779432336051,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-11",
+      "label": "Replay: goal-11",
+      "meta": {
+        "goal": "goal-11",
+        "result": "success"
+      }
+    },
+    {
+      "id": "1d24cf48-b764-45ed-b9d2-6a040fc11777",
+      "type": "replay",
+      "ts": 1779432336049,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-10",
+      "label": "Replay: goal-10",
+      "meta": {
+        "goal": "goal-10",
+        "result": "success"
+      }
+    },
+    {
+      "id": "d88633a0-4386-4d66-ae5c-b982b0424d38",
+      "type": "replay",
+      "ts": 1779432336048,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-9",
+      "label": "Replay: goal-9",
+      "meta": {
+        "goal": "goal-9",
+        "result": "success"
+      }
+    },
+    {
+      "id": "bbb84022-8dd8-4b9d-a3b4-6a6649b9b204",
+      "type": "replay",
+      "ts": 1779432336047,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-8",
+      "label": "Replay: goal-8",
+      "meta": {
+        "goal": "goal-8",
+        "result": "success"
+      }
+    },
+    {
+      "id": "fc01733f-9bd0-4a8b-bb66-fd994581e7e5",
+      "type": "replay",
+      "ts": 1779432336046,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-7",
+      "label": "Replay: goal-7",
+      "meta": {
+        "goal": "goal-7",
+        "result": "success"
+      }
+    },
+    {
+      "id": "d67a93d0-de45-4fac-b54a-b1515cf035e1",
+      "type": "replay",
+      "ts": 1779432336045,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-6",
+      "label": "Replay: goal-6",
+      "meta": {
+        "goal": "goal-6",
+        "result": "success"
+      }
+    },
+    {
+      "id": "2b3fd6c4-4805-4f84-8bae-2113947f3541",
+      "type": "replay",
+      "ts": 1779432336044,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-5",
+      "label": "Replay: goal-5",
+      "meta": {
+        "goal": "goal-5",
+        "result": "success"
+      }
+    },
+    {
+      "id": "8411abe0-36cb-44a5-afec-0d6219ad273b",
+      "type": "replay",
+      "ts": 1779432336042,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-4",
+      "label": "Replay: goal-4",
+      "meta": {
+        "goal": "goal-4",
+        "result": "success"
+      }
+    },
+    {
+      "id": "0ec72e25-ef8a-48cc-a7f5-9aa4a34f8f79",
+      "type": "replay",
+      "ts": 1779432336041,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-3",
+      "label": "Replay: goal-3",
+      "meta": {
+        "goal": "goal-3",
+        "result": "success"
+      }
+    },
+    {
+      "id": "5a5c3edd-eab4-484d-ae85-3352b2554015",
+      "type": "replay",
+      "ts": 1779432336040,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-2",
+      "label": "Replay: goal-2",
+      "meta": {
+        "goal": "goal-2",
+        "result": "success"
+      }
+    },
+    {
+      "id": "45477586-7055-4074-a69a-a59175eef330",
+      "type": "replay",
+      "ts": 1779432336038,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-1",
+      "label": "Replay: goal-1",
+      "meta": {
+        "goal": "goal-1",
+        "result": "success"
+      }
+    },
+    {
+      "id": "09edf2a8-b4c3-4b4f-8a71-49719c043a2b",
+      "type": "replay",
+      "ts": 1779432336037,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-0",
+      "label": "Replay: goal-0",
+      "meta": {
+        "goal": "goal-0",
+        "result": "success"
+      }
+    },
+    {
+      "id": "c8901286-2735-4465-948d-4fc028b77542",
+      "type": "session",
+      "ts": 1779432336035,
+      "sessionId": "instab-4",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "a7818680-3929-4798-97b5-fd3126d65a73",
+      "type": "session",
+      "ts": 1779432336033,
+      "sessionId": "instab-3",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "a19e19f3-8d6a-43da-afea-d1d4bf09aeac",
+      "type": "session",
+      "ts": 1779432336031,
+      "sessionId": "instab-2",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "c138850a-64eb-41be-9d40-f9064d38c065",
+      "type": "session",
+      "ts": 1779432336030,
+      "sessionId": "instab-1",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "966e48f4-decc-483e-9256-a883502a8ec7",
+      "type": "session",
+      "ts": 1779432336028,
+      "sessionId": "instab-0",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "b84be3e2-9685-4186-b9fd-dc30d878e1bc",
+      "type": "session",
+      "ts": 1779432336010,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "b7239f3f-6360-4181-896a-4ba2c95408f3",
+      "type": "session",
+      "ts": 1779432336009,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "b4250535-6e5e-4615-a299-480d1ce6bb48",
+      "type": "session",
+      "ts": 1779432336008,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "1144aa2d-eff8-4267-a303-23a2349ecc45",
+      "type": "session",
+      "ts": 1779432336007,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "b2d4b30a-5c72-4912-a164-14c4dcb345ca",
+      "type": "session",
+      "ts": 1779432336006,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "aa7c8952-fd38-463c-8083-8daa40674933",
+      "type": "session",
+      "ts": 1779432336005,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "d21afa46-4933-4d11-99f7-08b1aecf9d2d",
+      "type": "session",
+      "ts": 1779432336004,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "e678541c-aa12-4911-9f00-972c768d6d9a",
+      "type": "session",
+      "ts": 1779432336002,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "f04a982a-9a47-448a-b6cb-cf8f108ac702",
+      "type": "session",
+      "ts": 1779432336001,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "505836db-18da-420f-a121-51404176f9fc",
+      "type": "session",
+      "ts": 1779432336000,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "0d098fcf-206e-4c99-9838-c55d45979bb8",
+      "type": "session",
+      "ts": 1779432335999,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "8963a62b-657a-4c77-ace1-232b1001448d",
+      "type": "session",
+      "ts": 1779432335998,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "ef82efd3-21a0-49fe-892d-f705de69af55",
+      "type": "session",
+      "ts": 1779432335997,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "3d3aa7cf-147a-4920-947f-ef20b3b83685",
+      "type": "session",
+      "ts": 1779432335996,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "43cc08a5-f62e-4571-9900-b7b546f80a60",
+      "type": "session",
+      "ts": 1779432335994,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "7eb85e01-8832-43ed-8500-4c852c43693f",
+      "type": "session",
+      "ts": 1779432330797,
+      "sessionId": "rt-615-sess",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 2
+      }
+    },
+    {
+      "id": "af64c6e5-277a-47b8-b04d-ba190bf9dd4e",
+      "type": "deployment",
+      "ts": 1779432330795,
+      "sessionId": "ca01a876-fb37-41bc-aee2-9fe6e5e8d5e0",
+      "replayId": null,
+      "label": "Deploy preflight: resilience-test-deploy",
+      "meta": {
+        "pipelineName": "resilience-test-deploy",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "a0620303-7645-4ad0-8659-f1ec840ca917",
+      "type": "debug",
+      "ts": 1779432330793,
+      "sessionId": "6c549459-6971-454b-bc35-e8ec32d6174d",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → resolved",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "a407c5b8-4370-4499-a70d-a72215ae5148",
+      "type": "debug",
+      "ts": 1779432330790,
+      "sessionId": "6c549459-6971-454b-bc35-e8ec32d6174d",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → opened",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "0dfe1369-96d0-418b-b0f0-dabad9124696",
+      "type": "chain",
+      "ts": 1779432330787,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "3f0f21fd-6fd6-4b93-be32-ddb38683e43c",
+        "goal": "verify-production-health",
+        "event": "goal-execution-started"
+      }
+    },
+    {
+      "id": "6cbce2f1-1b50-4533-bd69-1b0d121ba51f",
+      "type": "chain",
+      "ts": 1779432330787,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "9307f649-3799-4f01-9762-fc6944fb5dec",
+        "goal": "verify production health",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "61f6119c-554d-4d1e-8542-f8493b5ea61c",
+      "type": "session",
+      "ts": 1779432330783,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "sessionDbId": "0c05ab92-f9d2-4c0a-bef7-e848c7c7aed4",
+        "workflowName": "health-probe",
+        "url": "https://example.com/health-check",
+        "event": "autonomous-browser-started"
+      }
+    },
+    {
+      "id": "c0ef3ba7-3f53-4ac4-aa00-4904cb3fd4ba",
+      "type": "chain",
+      "ts": 1779432330782,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "a28ab212-e307-46b9-be5b-c0b08e779ba1",
+        "goal": "restore runtime after ECONNREFUSED",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "375169d2-4f56-4c6b-8483-266f5477a348",
+      "type": "deployment",
+      "ts": 1779432330780,
+      "sessionId": "7c21b826-6904-4acd-8559-b6c3bb34cbd2",
+      "replayId": null,
+      "label": "Deploy preflight: daily-driver-test",
+      "meta": {
+        "pipelineName": "daily-driver-test",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "727c3182-7b50-4b13-b40e-c05e1064a1de",
+      "type": "debug",
+      "ts": 1779432330778,
+      "sessionId": "3905c04e-8548-40cb-a8ff-8d3a66b87bce",
+      "replayId": null,
+      "label": "Debug: daily-driver: test debugging flow → resolved",
+      "meta": {
+        "goal": "daily-driver: test debugging flow",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "857e1714-00ef-4408-9120-8ebfcc908b82",
+      "type": "session",
+      "ts": 1779432330776,
+      "sessionId": "3905c04e-8548-40cb-a8ff-8d3a66b87bce",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 1
+      }
+    },
+    {
+      "id": "029f5fd2-c92f-4ce9-8d96-cda340bf0276",
+      "type": "debug",
+      "ts": 1779432330774,
+      "sessionId": "3905c04e-8548-40cb-a8ff-8d3a66b87bce",
+      "replayId": null,
+      "label": "Debug: daily-driver: test debugging flow → opened",
+      "meta": {
+        "goal": "daily-driver: test debugging flow",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "3e02ef86-fe51-4513-99f6-3e50f04da8a2",
+      "type": "session",
+      "ts": 1779432330769,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "sessionDbId": "aaef4219-eb23-427e-a9a8-8c6f4652803f",
+        "workflowName": "data-extraction",
+        "url": "https://example.com/stress-test",
+        "event": "autonomous-browser-started"
+      }
+    },
+    {
+      "id": "692bed41-3d63-4c51-949d-907b44cf3567",
+      "type": "deployment",
+      "ts": 1779432330767,
+      "sessionId": "5d769abd-6ceb-4071-bada-e640ad39bbb5",
+      "replayId": null,
+      "label": "Deploy preflight: stress-test-interrupt",
+      "meta": {
+        "pipelineName": "stress-test-interrupt",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "cf4fa47e-3e7d-424d-a194-82c58108d37b",
+      "type": "chain",
+      "ts": 1779432330762,
+      "sessionId": "stress-session-4",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "126c7282-02f1-4583-b4a8-efe2043088ab",
+        "goal": "stress-test recovery #4",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "cfa1553c-2f73-42fd-942f-fbc08d3f1e5c",
+      "type": "chain",
+      "ts": 1779432330760,
+      "sessionId": "stress-session-3",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "c2c56be5-fbfa-436c-975d-c48ddeab75b2",
+        "goal": "stress-test recovery #3",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "b51685ae-71de-458c-bfb0-26de614d37dc",
+      "type": "chain",
+      "ts": 1779432330759,
+      "sessionId": "stress-session-2",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "182d4001-5f87-4ae5-80e3-d35a48384afc",
+        "goal": "stress-test recovery #2",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "adbe2952-9025-41d6-b8d5-763869515397",
+      "type": "chain",
+      "ts": 1779432330758,
+      "sessionId": "stress-session-1",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "d5c63c6c-090e-451f-884e-5511c6ba0b96",
+        "goal": "stress-test recovery #1",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "86e65cce-9feb-46df-b818-c08d5d44de2e",
+      "type": "chain",
+      "ts": 1779432330756,
+      "sessionId": "stress-session-0",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "c3aa01a8-ab74-4354-8993-fc4bb5e38916",
+        "goal": "stress-test recovery #0",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "b9695656-b3a9-4834-9e38-00f44759c77d",
+      "type": "session",
+      "ts": 1779432330736,
+      "sessionId": "rt-615-sess",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 2
+      }
+    },
+    {
+      "id": "3e895159-42e8-4ea2-a939-7d2025418398",
+      "type": "deployment",
+      "ts": 1779432330733,
+      "sessionId": "a9657f34-91a3-4f70-9d55-ece67af7e8ae",
+      "replayId": null,
+      "label": "Deploy preflight: resilience-test-deploy",
+      "meta": {
+        "pipelineName": "resilience-test-deploy",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "9dfabb83-4f3d-4dd6-92f1-47bdf8e23d4d",
+      "type": "debug",
+      "ts": 1779432330721,
+      "sessionId": "fd855509-fa34-4968-b230-2c72af5dd17a",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → resolved",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "a909be3b-99dd-4593-a4cc-0345171bb1e4",
+      "type": "debug",
+      "ts": 1779432330718,
+      "sessionId": "fd855509-fa34-4968-b230-2c72af5dd17a",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → opened",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "d779f9e5-3cbf-4044-9bea-7a1b2676d232",
+      "type": "session",
+      "ts": 1779432330706,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "cece31e0-7222-48e3-807e-4fa5fccce504",
+      "type": "session",
+      "ts": 1779432330706,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "18a4ef69-0ba4-491b-819f-8aa54bb74054",
+      "type": "session",
+      "ts": 1779432330705,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "bf529cc7-ff27-4737-8dfd-e173af61b4a4",
+      "type": "session",
+      "ts": 1779432330703,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "d100d16d-2a23-4efc-89fe-a4afd67ad64a",
+      "type": "session",
+      "ts": 1779432330702,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "2553b69e-6c1a-4b82-b239-9b8635d5f463",
+      "type": "session",
+      "ts": 1779432330702,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "c922bd07-9c4d-4a32-898b-2153c1d739fe",
+      "type": "session",
+      "ts": 1779432330701,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "8842fc04-bd08-40fe-851e-215c6ae8aea0",
+      "type": "session",
+      "ts": 1779432330699,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "4c3fc466-914d-4d24-90a0-73edc4aeee0f",
+      "type": "session",
+      "ts": 1779432330698,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "aad05ed8-a364-4eaf-8296-fcb7eb5ebc2f",
+      "type": "session",
+      "ts": 1779432330697,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "4108d564-8bd4-4b4d-8cc1-265e1937c5d8",
+      "type": "session",
+      "ts": 1779432330696,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "21886c56-f93b-408d-9e82-07931b8f36c7",
+      "type": "session",
+      "ts": 1779432330695,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "ce499738-7c48-4697-b24d-79c3d8500de2",
+      "type": "session",
+      "ts": 1779432330695,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "f10d84b8-3f03-4bd7-a3e1-3d8d848a266a",
+      "type": "session",
+      "ts": 1779432330694,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "24eb4cc0-0b69-4245-b12e-faa1be2e608a",
+      "type": "session",
+      "ts": 1779432330692,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "e82982aa-9aac-41c8-a714-9096240e659f",
+      "type": "session",
+      "ts": 1779432330687,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "87e4f642-105c-4492-97e6-ed0f316c842c",
+      "type": "session",
+      "ts": 1779432330686,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "349b1705-57f3-4cc7-ac95-d7b570564fa9",
+      "type": "session",
+      "ts": 1779432330685,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "6616ac0c-e075-4ea8-90e1-45cf79b2bd65",
+      "type": "session",
+      "ts": 1779432330684,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "661005ec-f0c9-4d12-81a9-0babf053a32b",
+      "type": "session",
+      "ts": 1779432330683,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "42f2a1b2-74cd-49b6-bae6-13cfb3ac79dd",
+      "type": "session",
+      "ts": 1779432330680,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "96fec82c-0339-49b5-968a-9da6d7b1cd19",
+      "type": "session",
+      "ts": 1779432330676,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "08365e6e-0f60-48e0-bcbd-2d1fc640e5c9",
+      "type": "session",
+      "ts": 1779432330675,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "ce8d0102-4cd6-42e1-a691-f68d37a75cb1",
+      "type": "session",
+      "ts": 1779432330674,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "56744b6d-f0de-4a87-b2b7-a4ab0b1b4957",
+      "type": "session",
+      "ts": 1779432330673,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "eef2d6a5-1614-4c0c-8cc2-9febab89fe6e",
+      "type": "session",
+      "ts": 1779432330670,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "2f7c061d-82b1-4612-8875-00082252b563",
+      "type": "session",
+      "ts": 1779432330669,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "d6781101-10af-4db6-8f47-d4bf9da8a3dd",
+      "type": "session",
+      "ts": 1779432330668,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "6b11cee3-6546-4d94-8bec-1b953e86b60f",
+      "type": "session",
+      "ts": 1779432330667,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "4224e194-c6d0-437b-8229-9ef30e9fa5d7",
+      "type": "session",
+      "ts": 1779432330666,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "a3f04680-da74-4b65-8e4d-1d5937f2a84a",
+      "type": "session",
+      "ts": 1779432330661,
+      "sessionId": "rw-test-session",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "b659995c-a3cb-4674-b601-e3bc315369a1",
+      "type": "chain",
+      "ts": 1779432330656,
+      "sessionId": "long-chain-test",
+      "replayId": null,
+      "label": "Chain done: env-bootstrap-full",
+      "meta": {
+        "chainId": "2a9f2b5e-5a70-49c5-916f-48a5d9f29964"
+      }
+    },
+    {
+      "id": "c79094f8-7a9f-43b1-a6f7-18d8b3fb5bce",
+      "type": "replay",
+      "ts": 1779432330654,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-24",
+      "label": "Replay: goal-24",
+      "meta": {
+        "goal": "goal-24",
+        "result": "success"
+      }
+    },
+    {
+      "id": "a4bfe6b7-7f43-428b-b781-a2118fe2b686",
+      "type": "replay",
+      "ts": 1779432330653,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-23",
+      "label": "Replay: goal-23",
+      "meta": {
+        "goal": "goal-23",
+        "result": "success"
+      }
+    },
+    {
+      "id": "742b5ade-31e7-43b2-9109-01845ce98486",
+      "type": "replay",
+      "ts": 1779432330652,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-22",
+      "label": "Replay: goal-22",
+      "meta": {
+        "goal": "goal-22",
+        "result": "success"
+      }
+    },
+    {
+      "id": "1d97fc24-24df-45ab-89e9-3b8dc236c297",
+      "type": "replay",
+      "ts": 1779432330651,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-21",
+      "label": "Replay: goal-21",
+      "meta": {
+        "goal": "goal-21",
+        "result": "success"
+      }
+    },
+    {
+      "id": "6c6b02e3-01c7-47bc-8f5d-3a9bf9e6fecc",
+      "type": "replay",
+      "ts": 1779432330650,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-20",
+      "label": "Replay: goal-20",
+      "meta": {
+        "goal": "goal-20",
+        "result": "success"
+      }
+    },
+    {
+      "id": "2fe2f144-858f-4820-acd9-4fd70718a183",
+      "type": "replay",
+      "ts": 1779432330649,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-19",
+      "label": "Replay: goal-19",
+      "meta": {
+        "goal": "goal-19",
+        "result": "success"
+      }
+    },
+    {
+      "id": "1cf50491-68ad-43c7-8273-ca2dac09fd63",
+      "type": "replay",
+      "ts": 1779432330648,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-18",
+      "label": "Replay: goal-18",
+      "meta": {
+        "goal": "goal-18",
+        "result": "success"
+      }
+    },
+    {
+      "id": "693fad9b-ab1a-4f3c-b7cd-52f1d5298c5f",
+      "type": "replay",
+      "ts": 1779432330647,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-17",
+      "label": "Replay: goal-17",
+      "meta": {
+        "goal": "goal-17",
+        "result": "success"
+      }
+    },
+    {
+      "id": "c450eaa2-22f7-4cf3-932a-84bf8c6599ca",
+      "type": "replay",
+      "ts": 1779432330646,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-16",
+      "label": "Replay: goal-16",
+      "meta": {
+        "goal": "goal-16",
+        "result": "success"
+      }
+    },
+    {
+      "id": "6e30949e-f24e-46b4-a9ea-6c78df3082d2",
+      "type": "replay",
+      "ts": 1779432330645,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-15",
+      "label": "Replay: goal-15",
+      "meta": {
+        "goal": "goal-15",
+        "result": "success"
+      }
+    },
+    {
+      "id": "38d933f3-3e4a-42e6-aa05-af59ccb38498",
+      "type": "replay",
+      "ts": 1779432330644,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-14",
+      "label": "Replay: goal-14",
+      "meta": {
+        "goal": "goal-14",
+        "result": "success"
+      }
+    },
+    {
+      "id": "b3ac9b73-a745-4b1f-879f-53c05be8c536",
+      "type": "replay",
+      "ts": 1779432330643,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-13",
+      "label": "Replay: goal-13",
+      "meta": {
+        "goal": "goal-13",
+        "result": "success"
+      }
+    },
+    {
+      "id": "6c1afc5a-2ed8-4daf-a3a1-fee490ae9209",
+      "type": "replay",
+      "ts": 1779432330642,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-12",
+      "label": "Replay: goal-12",
+      "meta": {
+        "goal": "goal-12",
+        "result": "success"
+      }
+    },
+    {
+      "id": "af2af0e5-9282-4c19-8b9c-b02511963fc6",
+      "type": "replay",
+      "ts": 1779432330641,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-11",
+      "label": "Replay: goal-11",
+      "meta": {
+        "goal": "goal-11",
+        "result": "success"
+      }
+    },
+    {
+      "id": "41805985-273c-412b-af62-d5c6a6f14b40",
+      "type": "replay",
+      "ts": 1779432330640,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-10",
+      "label": "Replay: goal-10",
+      "meta": {
+        "goal": "goal-10",
+        "result": "success"
+      }
+    },
+    {
+      "id": "674e6fa1-acc2-4817-bc8e-0ac0324c2cf0",
+      "type": "replay",
+      "ts": 1779432330639,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-9",
+      "label": "Replay: goal-9",
+      "meta": {
+        "goal": "goal-9",
+        "result": "success"
+      }
+    },
+    {
+      "id": "1e18942d-a74d-4f6c-b0a0-0eba745b987b",
+      "type": "replay",
+      "ts": 1779432330638,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-8",
+      "label": "Replay: goal-8",
+      "meta": {
+        "goal": "goal-8",
+        "result": "success"
+      }
+    },
+    {
+      "id": "68333264-9c60-4bb3-a30b-f48fd4ee7c5e",
+      "type": "replay",
+      "ts": 1779432330637,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-7",
+      "label": "Replay: goal-7",
+      "meta": {
+        "goal": "goal-7",
+        "result": "success"
+      }
+    },
+    {
+      "id": "45470681-1d36-48da-ba32-91d9bedbbde9",
+      "type": "replay",
+      "ts": 1779432330636,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-6",
+      "label": "Replay: goal-6",
+      "meta": {
+        "goal": "goal-6",
+        "result": "success"
+      }
+    },
+    {
+      "id": "829bcae7-d268-48ab-b459-b545d67cf780",
+      "type": "replay",
+      "ts": 1779432330635,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-5",
+      "label": "Replay: goal-5",
+      "meta": {
+        "goal": "goal-5",
+        "result": "success"
+      }
+    },
+    {
+      "id": "d0e1870a-14e8-47b8-af30-6a45194f899c",
+      "type": "replay",
+      "ts": 1779432330633,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-4",
+      "label": "Replay: goal-4",
+      "meta": {
+        "goal": "goal-4",
+        "result": "success"
+      }
+    },
+    {
+      "id": "9b1ecb05-a8fa-4295-a0c4-824d980f63d5",
+      "type": "replay",
+      "ts": 1779432330632,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-3",
+      "label": "Replay: goal-3",
+      "meta": {
+        "goal": "goal-3",
+        "result": "success"
+      }
+    },
+    {
+      "id": "4903f08a-1bb9-4f84-a3e9-3719f7c4e07d",
+      "type": "replay",
+      "ts": 1779432330631,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-2",
+      "label": "Replay: goal-2",
+      "meta": {
+        "goal": "goal-2",
+        "result": "success"
+      }
+    },
+    {
+      "id": "348c2f0f-6d73-489f-8eeb-bb8c274eb0f8",
+      "type": "replay",
+      "ts": 1779432330630,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-1",
+      "label": "Replay: goal-1",
+      "meta": {
+        "goal": "goal-1",
+        "result": "success"
+      }
+    },
+    {
+      "id": "c0d485d0-5ac9-4439-8e9d-2f8e04e7d7c3",
+      "type": "replay",
+      "ts": 1779432330629,
+      "sessionId": "replay-heavy-test",
+      "replayId": "replay-0",
+      "label": "Replay: goal-0",
+      "meta": {
+        "goal": "goal-0",
+        "result": "success"
+      }
+    },
+    {
+      "id": "fc8eef68-fd1a-4940-b0fe-9059688db7ae",
+      "type": "session",
+      "ts": 1779432330628,
+      "sessionId": "instab-4",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "de72ebca-a138-4de6-9350-2cd39a395a98",
+      "type": "session",
+      "ts": 1779432330627,
+      "sessionId": "instab-3",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "b909edb0-3d9b-42cb-aeb5-fb54b64de631",
+      "type": "session",
+      "ts": 1779432330625,
+      "sessionId": "instab-2",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "8e02accf-daf3-4d99-9e1e-83d8e346c4c1",
+      "type": "session",
+      "ts": 1779432330623,
+      "sessionId": "instab-1",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "41402193-dd6d-42c3-945b-7978677507b1",
+      "type": "session",
+      "ts": 1779432330622,
+      "sessionId": "instab-0",
+      "replayId": null,
+      "label": "Browser workflow started: public-api-probe",
+      "meta": {}
+    },
+    {
+      "id": "62f8ef19-c3e0-4f9a-a78f-970590beb00c",
+      "type": "session",
+      "ts": 1779432330597,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "5939bf43-c0fd-4da0-aa5f-af3eb0e3dfd0",
+      "type": "session",
+      "ts": 1779432330596,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "88acef68-e8d2-45be-b81b-b85c60ad2127",
+      "type": "session",
+      "ts": 1779432330595,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "66140326-68ae-4d26-ac6a-4b475bd87559",
+      "type": "session",
+      "ts": 1779432330594,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "e9d100a2-ad2d-4a68-90c1-d931316191d7",
+      "type": "session",
+      "ts": 1779432330593,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "317c2a8c-745c-4c3c-997f-694678bfad6a",
+      "type": "session",
+      "ts": 1779432330593,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "64514a68-5eb4-4f44-89ee-a1ab0c1409bc",
+      "type": "session",
+      "ts": 1779432330591,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "5f104eea-d358-4035-9b41-3d56082be50f",
+      "type": "session",
+      "ts": 1779432330590,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "4957c955-19ef-4972-a754-d145269e9d86",
+      "type": "session",
+      "ts": 1779432330589,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "4c5080a1-c174-4e09-829a-d67a4e0d1b0c",
+      "type": "session",
+      "ts": 1779432330588,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "a0022448-0ac1-4eb8-aca4-cd3164aaa44d",
+      "type": "session",
+      "ts": 1779432330586,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "75c29119-622b-4cc2-a17e-2e8e1c0428d2",
+      "type": "session",
+      "ts": 1779432330585,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "a9777df6-e487-44be-89bb-9b23cd5a6f0b",
+      "type": "session",
+      "ts": 1779432330583,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "aa8c7947-71b9-4d05-a0d6-c88dca821266",
+      "type": "session",
+      "ts": 1779432330582,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "758d0ad1-938d-4b85-a534-6c6e540eeaee",
+      "type": "session",
+      "ts": 1779432330581,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "209272ea-dbca-491e-bbb2-2b296f3333ed",
+      "type": "chain",
+      "ts": 1779432315381,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "e054687a-4549-4c86-8045-6cedbba6be37",
+        "goal": "general-health-check",
+        "event": "autonomous-goal-started"
+      }
+    },
+    {
+      "id": "24661da2-f253-4cf7-8838-1c2466041538",
+      "type": "chain",
+      "ts": 1779432315380,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "8ee39785-bc3e-4e6c-ab90-f50d7bb3ada3",
+        "goal": "daily driver — verify production health",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "19d24657-94cd-4883-b72e-a56a9a63fe55",
+      "type": "chain",
+      "ts": 1779432315378,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "0e50e852-539a-4416-8879-11800b0a0898",
+        "automationName": "health-scan",
+        "event": "daily-automation-started"
+      }
+    },
+    {
+      "id": "bb8bec0d-6ebc-4c13-b7d1-bb64793847b3",
+      "type": "chain",
+      "ts": 1779432315375,
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "72bb71ea-e0cd-4286-9b1a-f6c1dbe1eb2b",
+        "flowName": "health-scan",
+        "event": "daily-autonomous-flow-started"
+      }
+    },
+    {
+      "id": "a7fd1c6b-ac5a-4e47-8db2-c44a5f0a9847",
+      "type": "chain",
+      "ts": 1779432315370,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "f8382fd1-1e0a-4a49-b7a8-b41800ed4da3",
+        "goal": "stabilize-backend",
+        "event": "autonomous-goal-started"
+      }
+    },
+    {
+      "id": "6b576804-451b-456e-80bb-5f0ad9fbaa7d",
+      "type": "chain",
+      "ts": 1779432315369,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "08fe54be-d847-408d-9cb8-f8662182df6c",
+        "goal": "stabilize backend after ECONNREFUSED",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "f7f8d5c4-4709-43fb-85f6-e175b2bab4fb",
+      "type": "chain",
+      "ts": 1779432315367,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "201c2072-60e8-4d96-b523-8ee5038285bc",
+        "automationName": "startup-restore",
+        "event": "daily-automation-started"
+      }
+    },
+    {
+      "id": "8a0148da-d6a3-4c35-846e-09b2ad38de67",
+      "type": "chain",
+      "ts": 1779432315363,
+      "sessionId": null,
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "runId": "92cd3483-3114-408a-938b-fa62dae25e01",
+        "goal": "stress-test: trusted debug autonomy",
+        "event": "trusted-debug-run-started"
+      }
+    },
+    {
+      "id": "2bdc3779-33a2-4b88-a130-05a2b7383448",
+      "type": "session",
+      "ts": 1779432315356,
+      "sessionId": "rt-615-sess",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 2
+      }
+    },
+    {
+      "id": "8f0ac680-5f93-4a51-af7e-18ba16db1eab",
+      "type": "deployment",
+      "ts": 1779432315354,
+      "sessionId": "9fbdf091-db7f-450d-a4eb-b2f5b6b6620f",
+      "replayId": null,
+      "label": "Deploy preflight: resilience-test-deploy",
+      "meta": {
+        "pipelineName": "resilience-test-deploy",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "bc68a5c3-0456-48ad-8345-64e65d7aab3c",
+      "type": "debug",
+      "ts": 1779432315353,
+      "sessionId": "bbde4c02-0d92-43db-9ea7-ec06565a43f4",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → resolved",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "6824459f-0f31-4347-8432-a734114448dc",
+      "type": "debug",
+      "ts": 1779432315350,
+      "sessionId": "bbde4c02-0d92-43db-9ea7-ec06565a43f4",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → opened",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "91196dc4-5e67-4398-a285-527979a6cb10",
+      "type": "chain",
+      "ts": 1779432315347,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "goalId": "5bc513d8-2c16-4d45-8baa-a0426bf7d24f",
+        "goal": "verify-production-health",
+        "event": "goal-execution-started"
+      }
+    },
+    {
+      "id": "94d1f536-1fbc-4411-bb31-4704c151715c",
+      "type": "chain",
+      "ts": 1779432315346,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "22fca82e-8be1-4e56-8ff7-a4ad677943d5",
+        "goal": "verify production health",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "e9e8f234-dcd3-4bc6-a55e-4a8649916730",
+      "type": "session",
+      "ts": 1779432315343,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "sessionDbId": "83302733-f70b-4663-a164-9a488e5f9c16",
+        "workflowName": "health-probe",
+        "url": "https://example.com/health-check",
+        "event": "autonomous-browser-started"
+      }
+    },
+    {
+      "id": "ca0b98a1-6498-4faf-9495-ffaa528424c0",
+      "type": "chain",
+      "ts": 1779432315341,
+      "sessionId": "dd-session",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "681d23e7-3d76-458a-9ec5-212913cffbbe",
+        "goal": "restore runtime after ECONNREFUSED",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "b68539ae-dd06-490a-a87a-bfa2f63b16e2",
+      "type": "deployment",
+      "ts": 1779432315339,
+      "sessionId": "56da9986-8da8-48f5-b85a-c0ed13d73b51",
+      "replayId": null,
+      "label": "Deploy preflight: daily-driver-test",
+      "meta": {
+        "pipelineName": "daily-driver-test",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "d3b803c3-c9cf-4bce-98c8-649115798bca",
+      "type": "debug",
+      "ts": 1779432315337,
+      "sessionId": "1e21257d-e6ff-4df0-b208-08dedd276b4f",
+      "replayId": null,
+      "label": "Debug: daily-driver: test debugging flow → resolved",
+      "meta": {
+        "goal": "daily-driver: test debugging flow",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "f19fef35-c6fa-4fcd-8df9-0a04fd02a64d",
+      "type": "session",
+      "ts": 1779432315336,
+      "sessionId": "1e21257d-e6ff-4df0-b208-08dedd276b4f",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 1
+      }
+    },
+    {
+      "id": "2714fceb-25f9-4efe-be03-b225c7bc85be",
+      "type": "debug",
+      "ts": 1779432315334,
+      "sessionId": "1e21257d-e6ff-4df0-b208-08dedd276b4f",
+      "replayId": null,
+      "label": "Debug: daily-driver: test debugging flow → opened",
+      "meta": {
+        "goal": "daily-driver: test debugging flow",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "48a4ef3e-79ca-4281-a68a-8a09ff2b9322",
+      "type": "session",
+      "ts": 1779432315328,
+      "sessionId": null,
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "sessionDbId": "2ed55614-0acb-4b07-b1c9-bcd43646e773",
+        "workflowName": "data-extraction",
+        "url": "https://example.com/stress-test",
+        "event": "autonomous-browser-started"
+      }
+    },
+    {
+      "id": "84c100cf-1957-4176-9411-5a03b8313f95",
+      "type": "deployment",
+      "ts": 1779432315326,
+      "sessionId": "6f04348d-b1f1-4326-a4ea-f5ac1f2e00b9",
+      "replayId": null,
+      "label": "Deploy preflight: stress-test-interrupt",
+      "meta": {
+        "pipelineName": "stress-test-interrupt",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "e035e63e-4de5-4fba-a37e-56df25349729",
+      "type": "chain",
+      "ts": 1779432315321,
+      "sessionId": "stress-session-4",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "7106f35d-4feb-4a37-811c-79a28f7d11bd",
+        "goal": "stress-test recovery #4",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "c0d7783e-aeed-4502-a425-834ff4128eeb",
+      "type": "chain",
+      "ts": 1779432315320,
+      "sessionId": "stress-session-3",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "fd669d72-cec7-4b64-817f-9a68f3504f3c",
+        "goal": "stress-test recovery #3",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "9b33bdd4-6a74-402a-b180-3ed828585ab6",
+      "type": "chain",
+      "ts": 1779432315318,
+      "sessionId": "stress-session-2",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "b290d409-e6f9-4201-9ae0-9d762e26d698",
+        "goal": "stress-test recovery #2",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "b67bfb1d-549f-4f26-ac80-cf59f8face5e",
+      "type": "chain",
+      "ts": 1779432315317,
+      "sessionId": "stress-session-1",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "ad9e2e8a-683d-4d5a-83d3-12cdb2de9c49",
+        "goal": "stress-test recovery #1",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "00a6cdd6-ab45-41f3-aeb1-7987d0ca5cf8",
+      "type": "chain",
+      "ts": 1779432315315,
+      "sessionId": "stress-session-0",
+      "replayId": null,
+      "label": "chain",
+      "meta": {
+        "chainId": "9942c5b0-c4d2-421f-bb65-751f2c7f3b04",
+        "goal": "stress-test recovery #0",
+        "event": "autonomous-debug-planned"
+      }
+    },
+    {
+      "id": "1bff983c-4cf0-4e8c-890b-932e42fdf816",
+      "type": "session",
+      "ts": 1779432315264,
+      "sessionId": "rt-615-sess",
+      "replayId": null,
+      "label": "session",
+      "meta": {
+        "event": "continuity-saved",
+        "step": 2
+      }
+    },
+    {
+      "id": "dc77c9bf-c1f0-494f-9bbf-2d3d3b132c4c",
+      "type": "deployment",
+      "ts": 1779432315260,
+      "sessionId": "abd6b956-4d4b-4361-a1eb-3e44789f0e16",
+      "replayId": null,
+      "label": "Deploy preflight: resilience-test-deploy",
+      "meta": {
+        "pipelineName": "resilience-test-deploy",
+        "state": "preflight",
+        "runId": null
+      }
+    },
+    {
+      "id": "4b81195a-090b-40b5-8a22-708b290a253a",
+      "type": "debug",
+      "ts": 1779432315255,
+      "sessionId": "c772053a-cd6f-4346-9d10-8b09841510d5",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → resolved",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "resolved"
+      }
+    },
+    {
+      "id": "77340d7b-02e9-4817-838c-1f90cd03f5af",
+      "type": "debug",
+      "ts": 1779432315253,
+      "sessionId": "c772053a-cd6f-4346-9d10-8b09841510d5",
+      "replayId": null,
+      "label": "Debug: resilience-test: debug workflow smoke test → opened",
+      "meta": {
+        "goal": "resilience-test: debug workflow smoke test",
+        "outcome": "opened"
+      }
+    },
+    {
+      "id": "9475d7d3-64f3-4493-b8e4-91cbd4329eb2",
+      "type": "session",
+      "ts": 1779432315237,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "a6ff54bc-2b37-46e3-a8a1-8a449aca9a65",
+      "type": "session",
+      "ts": 1779432315236,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "bfb8d1d0-29c3-4b6d-a432-d9b80061cb33",
+      "type": "session",
+      "ts": 1779432315235,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "16805e03-1187-4cf3-b01d-ce0768a448b0",
+      "type": "session",
+      "ts": 1779432315234,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "62c86d5b-6d76-41fd-a6cd-4dc2e00bc88e",
+      "type": "session",
+      "ts": 1779432315233,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "bcc00f40-8ee5-456c-a5e0-8c24b322c9eb",
+      "type": "session",
+      "ts": 1779432315232,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "e2ac730c-032c-41c6-8121-a6200343fc24",
+      "type": "session",
+      "ts": 1779432315231,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "48ee56f3-a26e-4b5f-88de-49f1a418e521",
+      "type": "session",
+      "ts": 1779432315230,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "c6317685-d17f-4a59-97e6-c554d3ce7867",
+      "type": "session",
+      "ts": 1779432315229,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "6d16828a-da81-422d-96fb-25e96762fba5",
+      "type": "session",
+      "ts": 1779432315228,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "72ba9de3-9fb7-4652-8fd6-6b443fe2c716",
+      "type": "session",
+      "ts": 1779432315227,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "351a8956-4e31-4d9d-995e-1ca10013964a",
+      "type": "session",
+      "ts": 1779432315226,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "8f28bdc1-1854-489d-a43f-7413f1df3a84",
+      "type": "session",
+      "ts": 1779432315225,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "7406fb53-8adb-49b2-b5b2-2b1aabdb8268",
+      "type": "session",
+      "ts": 1779432315222,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    },
+    {
+      "id": "8f7d0ea3-feba-42b8-9e6f-a78ea2c2c59a",
+      "type": "session",
+      "ts": 1779432315221,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 0",
+      "meta": {}
+    },
+    {
+      "id": "3386d9eb-a44d-459b-9b84-ffae017dd32a",
+      "type": "session",
+      "ts": 1779432315216,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 14",
+      "meta": {}
+    },
+    {
+      "id": "ef8e87a7-8812-4089-9dbd-ef82fc6f0ae9",
+      "type": "session",
+      "ts": 1779432315215,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 13",
+      "meta": {}
+    },
+    {
+      "id": "cc674537-9d49-4ab1-af90-dd4deb1edd90",
+      "type": "session",
+      "ts": 1779432315214,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 12",
+      "meta": {}
+    },
+    {
+      "id": "8359b946-6489-4674-9be1-ea6742f2e2ef",
+      "type": "session",
+      "ts": 1779432315213,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 11",
+      "meta": {}
+    },
+    {
+      "id": "8ffa11b1-1d3b-43b0-a3d5-e673783aa79d",
+      "type": "session",
+      "ts": 1779432315212,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 10",
+      "meta": {}
+    },
+    {
+      "id": "7a2156a7-1149-43ab-a8af-2ce232b18135",
+      "type": "session",
+      "ts": 1779432315211,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 9",
+      "meta": {}
+    },
+    {
+      "id": "2e0e5b79-c4f5-465d-b1d9-b08056a0adf6",
+      "type": "session",
+      "ts": 1779432315210,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 8",
+      "meta": {}
+    },
+    {
+      "id": "e59c5f53-f1c8-4133-899f-a9763d5d06bb",
+      "type": "session",
+      "ts": 1779432315209,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 7",
+      "meta": {}
+    },
+    {
+      "id": "17b7470c-6592-4165-adfa-d497d4066d74",
+      "type": "session",
+      "ts": 1779432315207,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 6",
+      "meta": {}
+    },
+    {
+      "id": "d7dd645a-8f4b-4d4e-aefe-75f96ab9cfc7",
+      "type": "session",
+      "ts": 1779432315206,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 5",
+      "meta": {}
+    },
+    {
+      "id": "bd067af9-8dc2-4aaa-9298-5f049eac91e2",
+      "type": "session",
+      "ts": 1779432315205,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 4",
+      "meta": {}
+    },
+    {
+      "id": "53d348e7-7a37-4dfa-b52e-2d4cfa0acc54",
+      "type": "session",
+      "ts": 1779432315205,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 3",
+      "meta": {}
+    },
+    {
+      "id": "f11ead2a-4210-4568-aa05-65ccbabfc2ea",
+      "type": "session",
+      "ts": 1779432315204,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 2",
+      "meta": {}
+    },
+    {
+      "id": "e36791ea-2470-4178-a46d-211245c89980",
+      "type": "session",
+      "ts": 1779432315203,
+      "sessionId": "stress-test",
+      "replayId": null,
+      "label": "Stress test event 1",
+      "meta": {}
+    }
+  ]
+}

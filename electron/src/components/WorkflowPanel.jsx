@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './ChatPanel.css';
 
 const WorkflowPanel = () => {
@@ -15,20 +15,65 @@ const WorkflowPanel = () => {
     fetchWorkflows();
   }, []);
 
-  // Fetch workflows from JARVIS backend
-  const fetchWorkflows = async () => {
+  // Fetch workflows from JARVIS backend with retry/cancel and reconnect safety
+  const fetchWorkflows = useCallback(async () => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     setLoading(true);
-    try {
-      const response = await fetch('http://localhost:3000/workflow/list');
-      const data = await response.json();
-      if (data.success) {
-        setWorkflows(data.workflows);
+    let attempts = 0;
+    const maxAttempts = 3;
+    const baseDelay = 500;
+
+    const attemptFetch = async (retryCount) => {
+      try {
+        const response = await fetch('http://localhost:3000/workflow/list', {
+          signal,
+          timeout: 8000 // 8 second timeout per attempt
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        if (data.success) {
+          setWorkflows(data.workflows);
+          return true;
+        }
+        throw new Error(data.error || 'Invalid response');
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          return false; // cancelled, don't retry
+        }
+
+        if (retryCount < maxAttempts) {
+          // Exponential backoff with jitter
+          const delay = baseDelay * Math.pow(2, retryCount) + Math.random() * 300;
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return attemptFetch(retryCount + 1);
+        }
+
+        console.error('Error fetching workflows after retries:', error);
+        return false;
       }
-    } catch (error) {
-      console.error('Error fetching workflows:', error);
+    };
+
+    try {
+      const success = await attemptFetch(0);
+      if (!success && !loading) {
+        // Only set error state if still loading (not cancelled)
+        setWorkflows([]); // clear on persistent failure
+      }
+    } finally {
+      // Always reset loading state unless explicitly cancelled
+      if (!signal.aborted) {
+        setLoading(false);
+      }
     }
-    setLoading(false);
-  };
+
+    // Return cleanup function
+    return () => controller.abort();
+  }, []);
 
   // Sync all workflows to N8N
   const syncToN8N = async () => {

@@ -7,7 +7,7 @@ function Pill({ label, connected, onSetup }) {
       <span className="cb-dot" />
       <span className="cb-pill-label">{label}</span>
       {!connected && onSetup && (
-        <button className="cb-setup-btn" onClick={onSetup}>Set up →</button>
+        <button className="cb-setup-btn" onClick={onSetup}>Connect →</button>
       )}
     </div>
   );

@@ -45,12 +45,15 @@ module.exports = {
             },
 
             // Restart policy: treat < 10s uptime as a crash loop.
-            // Exponential backoff via restart_delay prevents thundering herd
-            // against a broken dependency (DB, external API).
+            // max_restarts:5 + min_uptime:15s = PM2 stops after 5 fast crashes,
+            // preventing infinite crash loops that burn CPU and exhaust disk logs.
+            // restart_delay escalates via PM2's built-in backoff so the process
+            // doesn't thundering-herd against a broken dependency on each retry.
+            // If you need more restarts, fix the crash — do not raise this limit.
             autorestart:    true,
-            max_restarts:   10,
-            min_uptime:     "10s",
-            restart_delay:  3000,
+            max_restarts:   5,
+            min_uptime:     "15s",
+            restart_delay:  5000,
 
             // Memory ceiling: restart before the OS kills the process.
             // Heap warn threshold in memoryTracker is 350 MB — this hard limit
@@ -74,10 +77,10 @@ module.exports = {
             // Set to 15 s to cover slow cold-disk executor loading.
             listen_timeout:  15000,
 
-            // wait_ready: false — server.js does not call process.send("ready").
-            // If you add process.send("ready") after app.listen(), set this to true
-            // and PM2 will only consider the restart complete when that signal fires.
-            wait_ready:      false,
+            // wait_ready: true — server.js calls process.send("ready") after app.listen().
+            // PM2 considers the restart complete only when this signal fires,
+            // enabling true zero-downtime reload validation.
+            wait_ready:      true,
 
             // Node.js flags: expose GC metrics and cap old-space to 400 MB.
             // Keeps the process below the 512 MB PM2 ceiling with headroom.

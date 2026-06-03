@@ -1,0 +1,265 @@
+{
+  "goals": [
+    {
+      "id": "07793679-9505-4100-b851-6683743eb37d",
+      "goal": "verify production health",
+      "matchedGoal": "verify-production-health",
+      "chainName": "env-bootstrap-full",
+      "sessionId": "dd-session",
+      "operatorId": null,
+      "steps": [
+        "check-runtime-dashboard",
+        "check-trust-score",
+        "inspect-survivability",
+        "verify-health-endpoint"
+      ],
+      "reasoning": "Production health verification — checking all signal sources before confirming production state.",
+      "expectedOutcome": "Production health report generated.",
+      "trustScore": 95,
+      "chainId": "e5536dc1-bad6-4c49-b26e-37aad15f117b",
+      "status": "completed",
+      "outcomes": [
+        {
+          "outcome": "health verified",
+          "success": true,
+          "notes": "",
+          "ts": 1779434692049
+        }
+      ],
+      "createdAt": 1779434692048,
+      "completedAt": 1779434692049
+    },
+    {
+      "id": "ac4caa09-6ae5-452a-a2c5-31fd574c48e3",
+      "goal": "verify production health",
+      "matchedGoal": "verify-production-health",
+      "chainName": "env-bootstrap-full",
+      "sessionId": "dd-session",
+      "operatorId": null,
+      "steps": [
+        "check-runtime-dashboard",
+        "check-trust-score",
+        "inspect-survivability",
+        "verify-health-endpoint"
+      ],
+      "reasoning": "Production health verification — checking all signal sources before confirming production state.",
+      "expectedOutcome": "Production health report generated.",
+      "trustScore": 95,
+      "chainId": "371bc58b-63fd-475f-90cf-1ec08b2b15e0",
+      "status": "completed",
+      "outcomes": [
+        {
+          "outcome": "health verified",
+          "success": true,
+          "notes": "",
+          "ts": 1779432371190
+        }
+      ],
+      "createdAt": 1779432371189,
+      "completedAt": 1779432371190
+    },
+    {
+      "id": "3fdb7d4f-c4e4-487d-82b8-bab230443f60",
+      "goal": "verify production health",
+      "matchedGoal": "verify-production-health",
+      "chainName": "env-bootstrap-full",
+      "sessionId": "dd-session",
+      "operatorId": null,
+      "steps": [
+        "check-runtime-dashboard",
+        "check-trust-score",
+        "inspect-survivability",
+        "verify-health-endpoint"
+      ],
+      "reasoning": "Production health verification — checking all signal sources before confirming production state.",
+      "expectedOutcome": "Production health report generated.",
+      "trustScore": 95,
+      "chainId": "acc5eb1c-985c-433f-91d2-8682715c3a39",
+      "status": "completed",
+      "outcomes": [
+        {
+          "outcome": "health verified",
+          "success": true,
+          "notes": "",
+          "ts": 1779432336184
+        }
+      ],
+      "createdAt": 1779432336183,
+      "completedAt": 1779432336184
+    },
+    {
+      "id": "3f0f21fd-6fd6-4b93-be32-ddb38683e43c",
+      "goal": "verify production health",
+      "matchedGoal": "verify-production-health",
+      "chainName": "env-bootstrap-full",
+      "sessionId": "dd-session",
+      "operatorId": null,
+      "steps": [
+        "check-runtime-dashboard",
+        "check-trust-score",
+        "inspect-survivability",
+        "verify-health-endpoint"
+      ],
+      "reasoning": "Production health verification — checking all signal sources before confirming production state.",
+      "expectedOutcome": "Production health report generated.",
+      "trustScore": 95,
+      "chainId": "9307f649-3799-4f01-9762-fc6944fb5dec",
+      "status": "completed",
+      "outcomes": [
+        {
+          "outcome": "health verified",
+          "success": true,
+          "notes": "",
+          "ts": 1779432330788
+        }
+      ],
+      "createdAt": 1779432330787,
+      "completedAt": 1779432330788
+    },
+    {
+      "id": "5bc513d8-2c16-4d45-8baa-a0426bf7d24f",
+      "goal": "verify production health",
+      "matchedGoal": "verify-production-health",
+      "chainName": "env-bootstrap-full",
+      "sessionId": "dd-session",
+      "operatorId": null,
+      "steps": [
+        "check-runtime-dashboard",
+        "check-trust-score",
+        "inspect-survivability",
+        "verify-health-endpoint"
+      ],
+      "reasoning": "Production health verification — checking all signal sources before confirming production state.",
+      "expectedOutcome": "Production health report generated.",
+      "trustScore": 95,
+      "chainId": "22fca82e-8be1-4e56-8ff7-a4ad677943d5",
+      "status": "completed",
+      "outcomes": [
+        {
+          "outcome": "health verified",
+          "success": true,
+          "notes": "",
+          "ts": 1779432315348
+        }
+      ],
+      "createdAt": 1779432315347,
+      "completedAt": 1779432315348
+    },
+    {
+      "id": "61896015-48c4-49f7-a606-f5c2a680458b",
+      "goal": "verify production health",
+      "matchedGoal": "verify-production-health",
+      "chainName": "env-bootstrap-full",
+      "sessionId": "dd-session",
+      "operatorId": null,
+      "steps": [
+        "check-runtime-dashboard",
+        "check-trust-score",
+        "inspect-survivability",
+        "verify-health-endpoint"
+      ],
+      "reasoning": "Production health verification — checking all signal sources before confirming production state.",
+      "expectedOutcome": "Production health report generated.",
+      "trustScore": 91,
+      "chainId": "202c57ba-b55e-4a14-a9b2-1c64939579a0",
+      "status": "completed",
+      "outcomes": [
+        {
+          "outcome": "health verified",
+          "success": true,
+          "notes": "",
+          "ts": 1779414798393
+        }
+      ],
+      "createdAt": 1779414798392,
+      "completedAt": 1779414798393
+    },
+    {
+      "id": "22cad7a1-38f3-4927-95ee-a72aad88a04e",
+      "goal": "verify production health",
+      "matchedGoal": "verify-production-health",
+      "chainName": "env-bootstrap-full",
+      "sessionId": "dd-session",
+      "operatorId": null,
+      "steps": [
+        "check-runtime-dashboard",
+        "check-trust-score",
+        "inspect-survivability",
+        "verify-health-endpoint"
+      ],
+      "reasoning": "Production health verification — checking all signal sources before confirming production state.",
+      "expectedOutcome": "Production health report generated.",
+      "trustScore": 85,
+      "chainId": "ec99cd76-5962-4cfb-973b-9dcad1675ea6",
+      "status": "completed",
+      "outcomes": [
+        {
+          "outcome": "health verified",
+          "success": true,
+          "notes": "",
+          "ts": 1779414789117
+        }
+      ],
+      "createdAt": 1779414789116,
+      "completedAt": 1779414789117
+    },
+    {
+      "id": "d4369781-b0ca-4eb5-b8b6-3fdee96c09eb",
+      "goal": "verify production health",
+      "matchedGoal": "verify-production-health",
+      "chainName": "env-bootstrap-full",
+      "sessionId": "dd-session",
+      "operatorId": null,
+      "steps": [
+        "check-runtime-dashboard",
+        "check-trust-score",
+        "inspect-survivability",
+        "verify-health-endpoint"
+      ],
+      "reasoning": "Production health verification — checking all signal sources before confirming production state.",
+      "expectedOutcome": "Production health report generated.",
+      "trustScore": 79,
+      "chainId": "cb9108c7-9abd-4c2b-bb25-21138981ecce",
+      "status": "completed",
+      "outcomes": [
+        {
+          "outcome": "health verified",
+          "success": true,
+          "notes": "",
+          "ts": 1779414789087
+        }
+      ],
+      "createdAt": 1779414789086,
+      "completedAt": 1779414789087
+    },
+    {
+      "id": "63ef77db-f25c-43b0-bc04-e241b769ab29",
+      "goal": "verify production health",
+      "matchedGoal": "verify-production-health",
+      "chainName": "env-bootstrap-full",
+      "sessionId": "dd-session",
+      "operatorId": null,
+      "steps": [
+        "check-runtime-dashboard",
+        "check-trust-score",
+        "inspect-survivability",
+        "verify-health-endpoint"
+      ],
+      "reasoning": "Production health verification — checking all signal sources before confirming production state.",
+      "expectedOutcome": "Production health report generated.",
+      "trustScore": 73,
+      "chainId": "179eb32a-ecde-4bc1-838b-9b54d18e0719",
+      "status": "completed",
+      "outcomes": [
+        {
+          "outcome": "health verified",
+          "success": true,
+          "notes": "",
+          "ts": 1779413431213
+        }
+      ],
+      "createdAt": 1779413431212,
+      "completedAt": 1779413431213
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "files": [
+    {
+      "filePath": "/src/app.ts",
+      "language": "typescript",
+      "lineCount": 200,
+      "lastSavedAt": null,
+      "ts": 1779458720355
+    }
+  ],
+  "patches": [
+    {
+      "patchId": "patch-1779444263618",
+      "filePath": "/src/app.ts",
+      "symbol": "getUserById",
+      "lineRange": null,
+      "description": "fix null check",
+      "replayId": null,
+      "status": "pending",
+      "ts": 1779444263618
+    }
+  ],
+  "sessions": []
+}

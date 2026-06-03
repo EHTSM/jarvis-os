@@ -1,0 +1,33 @@
+{
+  "id": "sess-mpfve30a-3u2",
+  "goal": "workday session 1: deploy and monitor project-1",
+  "label": "workday session 1: deploy and monitor project-1",
+  "state": "abandoned",
+  "createdAt": 1779390886330,
+  "updatedAt": 1779390886336,
+  "heartbeat": 1779390886330,
+  "workflows": [],
+  "validationLog": [],
+  "recoveryLog": [],
+  "timeline": [
+    {
+      "type": "session-created",
+      "ts": 1779390886330,
+      "goal": "workday session 1: deploy and monitor project-1"
+    },
+    {
+      "type": "state-abandoned",
+      "ts": 1779390886336,
+      "reason": "workday simulation complete"
+    }
+  ],
+  "runtimeState": null,
+  "blockedAt": null,
+  "executionConfidence": 100,
+  "degradationState": "healthy",
+  "activeChain": null,
+  "meta": {
+    "tags": [],
+    "triggeredBy": "operator"
+  }
+}

@@ -19,6 +19,12 @@ function _parserToTask(parsed, segment) {
         case "open_app":
             return { type: "open_app",   label: parsed.label, payload: { app: parsed.app, appName: parsed.appName } };
 
+        case "read_file":
+            return { type: "read_file", label: parsed.label, payload: { command: "read", filePath: parsed.filePath } };
+
+        case "create_file":
+            return { type: "create_file", label: parsed.label, payload: { command: "write", filePath: parsed.filePath, content: parsed.content || "", options: { createDirs: true } } };
+
         case "desktop":
             if (parsed.action === "type")
                 return { type: "type_text", label: parsed.label, payload: { text: parsed.text } };

@@ -11,19 +11,50 @@ import ToastContainer  from "./components/Toast.jsx";
 import ProgressBar     from "./components/ProgressBar.jsx";
 import OperatorConsole from "./components/operator/OperatorConsole.jsx";
 import LoginPage       from "./components/auth/LoginPage.jsx";
+import PersonalOS      from "./components/PersonalOS.jsx";
+import BusinessOS      from "./components/BusinessOS.jsx";
+import DeveloperOS     from "./components/DeveloperOS.jsx";
+import EnterpriseOS    from "./components/EnterpriseOS.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import "./App.css";
 
 const TABS = [
-  { id: "chat",     label: "Chat"       },
-  { id: "insights", label: "Revenue"    },
-  { id: "activity", label: "Automation" },
-  { id: "clients",  label: "Clients"    },
-  { id: "runtime",  label: "Runtime"    },
+  { id: "chat",       label: "Ask Jarvis"    },
+  { id: "runtime",    label: "Control Room", featured: true },
+  { id: "insights",   label: "Pipeline"      },
+  { id: "activity",   label: "History"       },
+  { id: "clients",    label: "Contacts"      },
+  { id: "personal",   label: "Personal"      },
+  { id: "business",   label: "Business"      },
+  { id: "developer",  label: "Developer"     },
+  { id: "enterprise", label: "Enterprise"    },
 ];
+
+// ── Context detection ─────────────────────────────────────────────
+// desktop=1 query param → Electron shell; skip landing + onboarding
+// app.* hostname         → SaaS web app;  skip marketing landing page
+function _isDesktopShell() {
+  try {
+    return new URLSearchParams(window.location.search).get("desktop") === "1";
+  } catch { return false; }
+}
+
+function _isSaasApp() {
+  try {
+    return window.location.hostname.startsWith("app.");
+  } catch { return false; }
+}
 
 // ── Determine initial screen from localStorage ───────────────────
 function _initialScreen() {
+  // Electron desktop: go straight to cockpit — no marketing screens
+  if (_isDesktopShell()) return "app";
+  // SaaS domain (app.ooplix.com): skip public landing, require onboarding if new
+  if (_isSaasApp()) {
+    if (!localStorage.getItem("jarvis_biz_profile")) return "onboarding";
+    return "app";
+  }
+  // Public web: full flow — landing → onboarding → app
   if (localStorage.getItem("jarvis_started") !== "1") return "landing";
   if (!localStorage.getItem("jarvis_biz_profile"))    return "onboarding";
   return "app";
@@ -36,16 +67,40 @@ function _loadProfile() {
 
 function _welcomeMessage(profile) {
   if (!profile) {
-    return "Hi! I'm JARVIS — your automated sales assistant.\n\nI follow up with leads on WhatsApp, generate payment links, and help close clients.\n\nWhat would you like to do first?";
+    return "Hi! I'm Jarvis — your AI Operating System.\n\nI can follow up with leads, run code and commands, automate workflows, manage your business pipeline, and execute tasks in the background.\n\nUse the Control Room tab for full execution power, or just ask me anything here.";
   }
-  return `Hi! JARVIS is set up for your ${profile.business || "business"}.\n\nI'll automatically follow up with every lead and send payment links when they're ready to buy.\n\nType anything to get started — or use the quick actions below.`;
+  const hasLeads = (() => {
+    try { return localStorage.getItem("jarvis_has_leads") === "1"; } catch { return false; }
+  })();
+  if (!hasLeads) {
+    return `Hi! Jarvis is ready for ${profile.business || "your work"}.\n\nNext step: add your first contact in the Contacts tab and Jarvis will start following up automatically.\n\nOr ask me to run a task, check your pipeline, or anything else.`;
+  }
+  return `Hi! Jarvis is running for ${profile.business || "your business"}.\n\nI'm monitoring your pipeline, sending follow-ups, and ready for your next command.\n\nAsk me anything, or open the Control Room for full execution power.`;
 }
 
 export default function App() {
   return <AuthProvider><AppInner /></AuthProvider>;
 }
 
+const _IS_DESKTOP = _isDesktopShell();
+const _IS_SAAS    = _isSaasApp();
+const _PRODUCT   = _IS_DESKTOP ? "desktop" : _IS_SAAS ? "saas" : "public";
+
+// Tabs shown in desktop shell: cockpit-focused, no marketing/onboarding tabs
+const DESKTOP_TABS = [
+  { id: "runtime",    label: "Control Room", featured: true },
+  { id: "chat",       label: "Ask Jarvis"    },
+  { id: "insights",   label: "Pipeline"      },
+  { id: "activity",   label: "History"       },
+  { id: "clients",    label: "Contacts"      },
+  { id: "personal",   label: "Personal"      },
+  { id: "business",   label: "Business"      },
+  { id: "developer",  label: "Developer"     },
+  { id: "enterprise", label: "Enterprise"    },
+];
+
 function AppInner() {
+  const { user, loading: authLoading } = useAuth();
   const [screen,   setScreen]   = useState(_initialScreen);
   const [messages, setMessages] = useState(() => [{
     id: 1, role: "jarvis",
@@ -55,7 +110,8 @@ function AppInner() {
   const [input,   setInput]   = useState("");
   const [loading, setLoading] = useState(false);
   const [online,  setOnline]  = useState(false);
-  const [tab,     setTab]     = useState("chat");
+  // Desktop shell: default to cockpit tab; web: default to chat
+  const [tab,     setTab]     = useState(_IS_DESKTOP ? "runtime" : "chat");
   const [stats,     setStats]     = useState(null);
   const [opsData,   setOpsData]   = useState(null);
   const [toasts,    setToasts]    = useState([]);
@@ -86,7 +142,7 @@ function AppInner() {
 
     const poll = async () => {
       const healthy = await checkHealth();
-      if (!wasOnline && healthy)  push("system", "Connected to JARVIS.");
+      if (!wasOnline && healthy)  push("system", "Connected to Jarvis.");
       if (wasOnline  && !healthy) push("system", "Connection lost — reconnecting…");
       wasOnline = healthy;
       setOnline(healthy);
@@ -154,58 +210,93 @@ function AppInner() {
     setScreen("onboarding");
   };
 
-  // Login: skip onboarding, go straight to app (returns user with existing data)
+  // Login: show the login screen — authentication happens there before app access
   const handleLogin = () => {
     localStorage.setItem("jarvis_started", "1");
-    setScreen("app");
+    setScreen("login");
   };
 
   // ── Onboarding complete ───────────────────────────────────────────
   const handleOnboardingComplete = (profile) => {
     setMessages([{
       id: Date.now(), role: "jarvis",
-      text: _welcomeMessage(profile),
+      text: `Setup complete! Jarvis is ready for your ${profile.business || "business"}.\n\nAdd your first client below — enter their name and WhatsApp number, and I'll take it from there.`,
       ts:   Date.now()
     }]);
+    localStorage.setItem("jarvis_just_onboarded", "1");
     setScreen("app");
     setTab("clients");
   };
+
+  // ── First-launch hint (dismissible, shown once after onboarding) ──
+  const [showFirstLaunchHint, setShowFirstLaunchHint] = useState(
+    () => localStorage.getItem("jarvis_just_onboarded") === "1"
+  );
+  const dismissFirstLaunchHint = useCallback(() => {
+    localStorage.removeItem("jarvis_just_onboarded");
+    setShowFirstLaunchHint(false);
+  }, []);
 
   // ── Screen routing ────────────────────────────────────────────────
   if (screen === "landing")    return <Landing onStart={handleStart} onLogin={handleLogin} />;
   if (screen === "onboarding") return <Onboarding onComplete={handleOnboardingComplete} />;
 
+  // ── Explicit login screen (reached via "Sign in" on landing) ──────
+  if (screen === "login") {
+    return (
+      <div className="app-auth-gate">
+        <LoginPage onSuccess={() => setScreen("app")} />
+      </div>
+    );
+  }
+
+  // ── Auth gate for main app ────────────────────────────────────────
+  // All meaningful API calls require a session. Block the app until the
+  // user is authenticated. authLoading is true only on initial mount
+  // while the session cookie is being verified.
+  if (authLoading) return <div className="runtime-auth-loading">Loading…</div>;
+  if (!user) {
+    return (
+      <div className="app-auth-gate">
+        <LoginPage onSuccess={() => {/* user state set by AuthContext */}} />
+      </div>
+    );
+  }
+
   // ── Main app ──────────────────────────────────────────────────────
   return (
-    <div className={`app${opsData?.status === "critical" ? " app--emergency" : ""}`}>
+    <div className={`app app--${_PRODUCT}${opsData?.status === "critical" ? " app--emergency" : ""}`}>
       <ProgressBar visible={loading} />
       <ToastContainer toasts={toasts} onRemove={removeToast} />
       <header className="app-header">
         <div className="brand">
           <span className="logo">J</span>
-          <span className="brand-name">JARVIS</span>
+          <span className="brand-name">Jarvis</span>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          {opsData?.status === "critical" ? (
-            <button
-              className="btn-sm btn-success"
-              title="Resume all executions"
-              onClick={async () => {
-                const r = await emergencyResume();
-                if (r.success) addToast("success", "Execution resumed");
-                else addToast("error", r.error || "Resume failed");
-              }}
-            >Resume</button>
-          ) : (
-            <button
-              className="btn-sm btn-danger"
-              title="Emergency stop — halt all task execution"
-              onClick={async () => {
-                const r = await emergencyStop();
-                if (r.success) addToast("warn", "Emergency stop active — all execution halted", 6000);
-                else addToast("error", r.error || "Stop failed");
-              }}
-            >Stop</button>
+        <div className="header-right">
+          {/* Phase 1657: emergency controls only shown on runtime/cockpit tab — reduce clutter */}
+          {tab === "runtime" && (
+            opsData?.status === "critical" ? (
+              <button
+                className="btn-sm btn-success"
+                title="Resume all executions"
+                onClick={async () => {
+                  const r = await emergencyResume();
+                  if (r.success) addToast("success", "Execution resumed");
+                  else addToast("error", r.error || "Resume failed");
+                }}
+              >Resume</button>
+            ) : (
+              <button
+                className="btn-sm btn-danger"
+                title="Emergency stop — halt all task execution"
+                onClick={async () => {
+                  const r = await emergencyStop();
+                  if (r.success) addToast("warn", "Emergency stop active — all execution halted", 6000);
+                  else addToast("error", r.error || "Stop failed");
+                }}
+              >Stop</button>
+            )
           )}
           <div className={`status-dot ${online ? "online" : "offline"}`}
                title={online ? "Connected" : "Offline"} />
@@ -216,10 +307,10 @@ function AppInner() {
       </header>
 
       <nav className="tabs">
-        {TABS.map(t => (
+        {(_IS_DESKTOP ? DESKTOP_TABS : TABS).map(t => (
           <button
             key={t.id}
-            className={`tab ${tab === t.id ? "active" : ""}`}
+            className={`tab${tab === t.id ? " active" : ""}${t.featured ? " tab--featured" : ""}`}
             onClick={() => setTab(t.id)}
           >
             {t.label}
@@ -227,11 +318,21 @@ function AppInner() {
         ))}
       </nav>
 
-      {tab !== "runtime" && (
+      {tab !== "runtime" && !_IS_DESKTOP && (
         <ConnectBar
           services={opsData?.services || {}}
           onSetupWhatsApp={() => setTab("clients")}
         />
+      )}
+
+      {showFirstLaunchHint && !_IS_DESKTOP && (
+        <div className="first-launch-hint">
+          <span className="first-launch-title">Welcome!</span>
+          <span className="first-launch-body">
+            Add your first contact in the <strong>Clients</strong> tab — Jarvis will start following up automatically.
+          </span>
+          <button className="first-launch-dismiss" onClick={dismissFirstLaunchHint}>Got it</button>
+        </div>
       )}
 
       <main className="app-main">
@@ -261,24 +362,30 @@ function AppInner() {
             whatsappConnected={opsData?.services?.whatsapp ?? false}
           />
         )}
-        {tab === "runtime"   && <RuntimeTab />}
+        {tab === "personal"  && <PersonalOS  onToast={addToast} />}
+        {tab === "business"  && <BusinessOS  onToast={addToast} />}
+        {tab === "developer" && <DeveloperOS onToast={addToast} />}
+        {tab === "enterprise" && <EnterpriseOS onToast={addToast} />}
+        {tab === "runtime"   && <RuntimeTab product={_PRODUCT} />}
       </main>
     </div>
   );
 }
 
-function RuntimeTab() {
-  const { user, loading, logout } = useAuth();
+function RuntimeTab({ product }) {
+  const { user, loading, logout, sessionExpiring, silentCheck } = useAuth();
   if (loading) return <div className="runtime-auth-loading">Checking access…</div>;
   if (!user)   return <LoginPage />;
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      <div style={{ display: "flex", justifyContent: "flex-end", padding: "0.5rem 1rem 0" }}>
-        <button className="btn-sm" style={{ fontSize: "0.75rem", opacity: 0.6 }} onClick={logout}>
-          Sign out
-        </button>
-      </div>
-      <OperatorConsole />
+    <div className={`runtime-tab-wrap runtime-tab-wrap--${product}`}>
+      {sessionExpiring && (
+        <div className="session-expiry-bar">
+          <span>Session expires in ~5 minutes.</span>
+          <button className="session-expiry-btn session-expiry-btn--verify" onClick={silentCheck}>Verify</button>
+          <button className="session-expiry-btn session-expiry-btn--logout" onClick={logout}>Sign out</button>
+        </div>
+      )}
+      <OperatorConsole product={product} />
     </div>
   );
 }

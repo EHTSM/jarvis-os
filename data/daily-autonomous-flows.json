@@ -1,0 +1,404 @@
+{
+  "runs": [
+    {
+      "id": "c415144f-0b34-4909-a1ea-005874b644c2",
+      "flowName": "health-scan",
+      "description": "Operational health scan",
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "steps": [
+        {
+          "order": 0,
+          "label": "Quick status",
+          "safe": true,
+          "endpoint": "GET /api/runtime/dashboard/status",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 1,
+          "label": "Trust gate",
+          "safe": true,
+          "endpoint": "GET /api/runtime/trust/gate/deploy",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 2,
+          "label": "Stale workflow check",
+          "safe": true,
+          "endpoint": "GET /api/runtime/survivability/stale",
+          "status": "pending",
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Foundation health",
+          "safe": true,
+          "endpoint": "GET /api/runtime/eng-foundation/health",
+          "status": "pending",
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "status": "interrupted",
+      "interrupted": true,
+      "resumeFromStep": 2,
+      "replayable": true,
+      "startedAt": 1779434692088,
+      "completedAt": null,
+      "interruptAt": 1779434692090,
+      "interruptReason": "daily driver test cleanup"
+    },
+    {
+      "id": "db1c1cec-e7d5-429e-8655-689003376e79",
+      "flowName": "health-scan",
+      "description": "Operational health scan",
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "steps": [
+        {
+          "order": 0,
+          "label": "Quick status",
+          "safe": true,
+          "endpoint": "GET /api/runtime/dashboard/status",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 1,
+          "label": "Trust gate",
+          "safe": true,
+          "endpoint": "GET /api/runtime/trust/gate/deploy",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 2,
+          "label": "Stale workflow check",
+          "safe": true,
+          "endpoint": "GET /api/runtime/survivability/stale",
+          "status": "pending",
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Foundation health",
+          "safe": true,
+          "endpoint": "GET /api/runtime/eng-foundation/health",
+          "status": "pending",
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "status": "interrupted",
+      "interrupted": true,
+      "resumeFromStep": 2,
+      "replayable": true,
+      "startedAt": 1779434638963,
+      "completedAt": null,
+      "interruptAt": 1779434638967,
+      "interruptReason": "daily driver test cleanup"
+    },
+    {
+      "id": "cfc27266-cac5-4ffa-92b6-abbd91af2d63",
+      "flowName": "health-scan",
+      "description": "Operational health scan",
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "steps": [
+        {
+          "order": 0,
+          "label": "Quick status",
+          "safe": true,
+          "endpoint": "GET /api/runtime/dashboard/status",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 1,
+          "label": "Trust gate",
+          "safe": true,
+          "endpoint": "GET /api/runtime/trust/gate/deploy",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 2,
+          "label": "Stale workflow check",
+          "safe": true,
+          "endpoint": "GET /api/runtime/survivability/stale",
+          "status": "pending",
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Foundation health",
+          "safe": true,
+          "endpoint": "GET /api/runtime/eng-foundation/health",
+          "status": "pending",
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "status": "interrupted",
+      "interrupted": true,
+      "resumeFromStep": 2,
+      "replayable": true,
+      "startedAt": 1779433550890,
+      "completedAt": null,
+      "interruptAt": 1779433550893,
+      "interruptReason": "daily driver test cleanup"
+    },
+    {
+      "id": "95bb1fc7-bdbb-4e5e-9e8d-6f7ebb24a4dc",
+      "flowName": "health-scan",
+      "description": "Operational health scan",
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "steps": [
+        {
+          "order": 0,
+          "label": "Quick status",
+          "safe": true,
+          "endpoint": "GET /api/runtime/dashboard/status",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 1,
+          "label": "Trust gate",
+          "safe": true,
+          "endpoint": "GET /api/runtime/trust/gate/deploy",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 2,
+          "label": "Stale workflow check",
+          "safe": true,
+          "endpoint": "GET /api/runtime/survivability/stale",
+          "status": "pending",
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Foundation health",
+          "safe": true,
+          "endpoint": "GET /api/runtime/eng-foundation/health",
+          "status": "pending",
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "status": "interrupted",
+      "interrupted": true,
+      "resumeFromStep": 2,
+      "replayable": true,
+      "startedAt": 1779432376051,
+      "completedAt": null,
+      "interruptAt": 1779432376053,
+      "interruptReason": "daily driver test cleanup"
+    },
+    {
+      "id": "b29e4591-fdfa-460f-8d7d-c1404d3956b0",
+      "flowName": "health-scan",
+      "description": "Operational health scan",
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "steps": [
+        {
+          "order": 0,
+          "label": "Quick status",
+          "safe": true,
+          "endpoint": "GET /api/runtime/dashboard/status",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 1,
+          "label": "Trust gate",
+          "safe": true,
+          "endpoint": "GET /api/runtime/trust/gate/deploy",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 2,
+          "label": "Stale workflow check",
+          "safe": true,
+          "endpoint": "GET /api/runtime/survivability/stale",
+          "status": "pending",
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Foundation health",
+          "safe": true,
+          "endpoint": "GET /api/runtime/eng-foundation/health",
+          "status": "pending",
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "status": "interrupted",
+      "interrupted": true,
+      "resumeFromStep": 2,
+      "replayable": true,
+      "startedAt": 1779432371219,
+      "completedAt": null,
+      "interruptAt": 1779432371220,
+      "interruptReason": "daily driver test cleanup"
+    },
+    {
+      "id": "72bb71ea-e0cd-4286-9b1a-f6c1dbe1eb2b",
+      "flowName": "health-scan",
+      "description": "Operational health scan",
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "steps": [
+        {
+          "order": 0,
+          "label": "Quick status",
+          "safe": true,
+          "endpoint": "GET /api/runtime/dashboard/status",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 1,
+          "label": "Trust gate",
+          "safe": true,
+          "endpoint": "GET /api/runtime/trust/gate/deploy",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 2,
+          "label": "Stale workflow check",
+          "safe": true,
+          "endpoint": "GET /api/runtime/survivability/stale",
+          "status": "pending",
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Foundation health",
+          "safe": true,
+          "endpoint": "GET /api/runtime/eng-foundation/health",
+          "status": "pending",
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "status": "interrupted",
+      "interrupted": true,
+      "resumeFromStep": 2,
+      "replayable": true,
+      "startedAt": 1779432315375,
+      "completedAt": null,
+      "interruptAt": 1779432315377,
+      "interruptReason": "daily driver test cleanup"
+    },
+    {
+      "id": "ce7b8863-90b5-43d8-9c96-f3eefc3afd5b",
+      "flowName": "health-scan",
+      "description": "Operational health scan",
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "steps": [
+        {
+          "order": 0,
+          "label": "Quick status",
+          "safe": true,
+          "endpoint": "GET /api/runtime/dashboard/status",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 1,
+          "label": "Trust gate",
+          "safe": true,
+          "endpoint": "GET /api/runtime/trust/gate/deploy",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 2,
+          "label": "Stale workflow check",
+          "safe": true,
+          "endpoint": "GET /api/runtime/survivability/stale",
+          "status": "pending",
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Foundation health",
+          "safe": true,
+          "endpoint": "GET /api/runtime/eng-foundation/health",
+          "status": "pending",
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "status": "interrupted",
+      "interrupted": true,
+      "resumeFromStep": 2,
+      "replayable": true,
+      "startedAt": 1779432306516,
+      "completedAt": null,
+      "interruptAt": 1779432306517,
+      "interruptReason": "daily driver test cleanup"
+    },
+    {
+      "id": "720e619f-b1a3-4b2c-bbce-5bf9664091e6",
+      "flowName": "health-scan",
+      "description": "Operational health scan",
+      "sessionId": "daily-driver-644",
+      "replayId": null,
+      "steps": [
+        {
+          "order": 0,
+          "label": "Quick status",
+          "safe": true,
+          "endpoint": "GET /api/runtime/dashboard/status",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 1,
+          "label": "Trust gate",
+          "safe": true,
+          "endpoint": "GET /api/runtime/trust/gate/deploy",
+          "status": "completed",
+          "result": "{\"status\":\"ok\"}"
+        },
+        {
+          "order": 2,
+          "label": "Stale workflow check",
+          "safe": true,
+          "endpoint": "GET /api/runtime/survivability/stale",
+          "status": "pending",
+          "result": null
+        },
+        {
+          "order": 3,
+          "label": "Foundation health",
+          "safe": true,
+          "endpoint": "GET /api/runtime/eng-foundation/health",
+          "status": "pending",
+          "result": null
+        }
+      ],
+      "currentStep": 2,
+      "status": "interrupted",
+      "interrupted": true,
+      "resumeFromStep": 2,
+      "replayable": true,
+      "startedAt": 1779432292324,
+      "completedAt": null,
+      "interruptAt": 1779432292327,
+      "interruptReason": "daily driver test cleanup"
+    }
+  ]
+}

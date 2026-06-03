@@ -17,8 +17,50 @@ function _addReceipt(r) {
   _receipts.set(r.receiptId, r);
   if (_receipts.size > MAX_RECEIPTS) _receipts.delete(_receipts.keys().next().value);
 }
-let _sandboxRoot = null;    // must be configured before use
+let _sandboxRoot  = null;    // must be configured before use
 let _writeAllowed = false;
+
+// Rollback manifest — tracks every write+backup pair so callers can undo a session
+// Map<sessionId, [{resolved, backupPath, op}]>
+const _rollbackManifests = new Map();
+const MAX_MANIFESTS = 50;
+
+function beginRollbackSession() {
+  const sessionId = `rbs-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+  _rollbackManifests.set(sessionId, []);
+  if (_rollbackManifests.size > MAX_MANIFESTS) {
+    _rollbackManifests.delete(_rollbackManifests.keys().next().value);
+  }
+  return sessionId;
+}
+
+function _recordRollbackEntry(sessionId, entry) {
+  if (!sessionId || !_rollbackManifests.has(sessionId)) return;
+  _rollbackManifests.get(sessionId).push(entry);
+}
+
+function rollbackSession(sessionId) {
+  const entries = _rollbackManifests.get(sessionId);
+  if (!entries) return { rolled: 0, reason: "session_not_found" };
+  const results = [];
+  // Reverse order — undo most recent first
+  for (const e of [...entries].reverse()) {
+    if (e.op === "write" && e.backupPath && fs.existsSync(e.backupPath)) {
+      try {
+        fs.copyFileSync(e.backupPath, e.resolved);
+        fs.unlinkSync(e.backupPath);
+        results.push({ ok: true, path: e.resolved });
+      } catch (err) {
+        results.push({ ok: false, path: e.resolved, reason: err.message });
+      }
+    } else if (e.op === "create" && fs.existsSync(e.resolved)) {
+      try { fs.unlinkSync(e.resolved); results.push({ ok: true, path: e.resolved, deleted: true }); }
+      catch (err) { results.push({ ok: false, path: e.resolved, reason: err.message }); }
+    }
+  }
+  _rollbackManifests.delete(sessionId);
+  return { rolled: results.length, results };
+}
 
 // Resolve and validate a path against the sandbox root
 function _sandboxResolve(filePath) {
@@ -43,6 +85,24 @@ function _receipt(op, filePath, result) {
   });
   _addReceipt(r);
   return r;
+}
+
+// ── Phase 79: Protected directory rules ──────────────────────────────────────
+// Write and delete are blocked for paths that match a protected prefix.
+// These are relative to the sandbox root and are checked after path resolution.
+const PROTECTED_DIRS = [
+  "node_modules",
+  ".git",
+  ".env",
+  "backend/utils",
+  "agents/runtime/control",
+  "data/deploy_meta.json",
+];
+
+function _isProtectedPath(resolved) {
+  if (!_sandboxRoot) return false;
+  const rel = resolved.slice(_sandboxRoot.length + 1).replace(/\\/g, "/");
+  return PROTECTED_DIRS.some(p => rel === p || rel.startsWith(p + "/") || rel.startsWith(p + path.sep));
 }
 
 // Configure the sandbox root (must be called before any I/O)
@@ -77,11 +137,12 @@ function readFile(filePath, { encoding = "utf8" } = {}) {
   }
 }
 
-function writeFile(filePath, content, { encoding = "utf8", createDirs = false } = {}) {
+function writeFile(filePath, content, { encoding = "utf8", createDirs = false, sessionId = null } = {}) {
   if (!_writeAllowed) return _receipt("write", filePath, { success: false, reason: "write_not_allowed" });
 
   const check = _sandboxResolve(filePath);
   if (!check.safe) return _receipt("write", filePath, { success: false, reason: check.reason });
+  if (_isProtectedPath(check.resolved)) return _receipt("write", filePath, { success: false, reason: "protected_path" });
 
   const byteLen = Buffer.byteLength(content, encoding);
   if (byteLen > MAX_WRITE_BYTES)
@@ -89,8 +150,24 @@ function writeFile(filePath, content, { encoding = "utf8", createDirs = false } 
 
   try {
     if (createDirs) fs.mkdirSync(path.dirname(check.resolved), { recursive: true });
-    fs.writeFileSync(check.resolved, content, encoding);
-    return { ...(_receipt("write", filePath, { success: true })), bytesWritten: byteLen };
+    // Backup existing file before overwrite so callers can roll back
+    let backupPath = null;
+    const isCreate = !fs.existsSync(check.resolved);
+    if (!isCreate) {
+      backupPath = check.resolved + ".bak." + Date.now();
+      fs.copyFileSync(check.resolved, backupPath);
+    }
+    // Atomic write: tmp → rename
+    const tmp = check.resolved + ".tmp";
+    fs.writeFileSync(tmp, content, encoding);
+    fs.renameSync(tmp, check.resolved);
+    // Record rollback entry if a session is active
+    _recordRollbackEntry(sessionId, {
+      resolved: check.resolved,
+      backupPath,
+      op: isCreate ? "create" : "write",
+    });
+    return { ...(_receipt("write", filePath, { success: true })), bytesWritten: byteLen, backupPath };
   } catch (err) {
     return _receipt("write", filePath, { success: false, reason: err.code ?? err.message });
   }
@@ -139,6 +216,7 @@ function deleteFile(filePath) {
   if (!_writeAllowed) return _receipt("delete", filePath, { success: false, reason: "write_not_allowed" });
   const check = _sandboxResolve(filePath);
   if (!check.safe) return _receipt("delete", filePath, { success: false, reason: check.reason });
+  if (_isProtectedPath(check.resolved)) return _receipt("delete", filePath, { success: false, reason: "protected_path" });
 
   try {
     const stat = fs.statSync(check.resolved);
@@ -154,6 +232,7 @@ function makeDir(dirPath) {
   if (!_writeAllowed) return _receipt("mkdir", dirPath, { success: false, reason: "write_not_allowed" });
   const check = _sandboxResolve(dirPath);
   if (!check.safe) return _receipt("mkdir", dirPath, { success: false, reason: check.reason });
+  if (_isProtectedPath(check.resolved)) return _receipt("mkdir", dirPath, { success: false, reason: "protected_path" });
 
   try {
     fs.mkdirSync(check.resolved, { recursive: true });
@@ -186,5 +265,6 @@ module.exports = {
   configure, getSandboxRoot,
   readFile, writeFile, readDir, fileExists, statFile, deleteFile, makeDir,
   getAdapterMetrics, reset,
+  beginRollbackSession, rollbackSession,
   MAX_READ_BYTES, MAX_WRITE_BYTES,
 };

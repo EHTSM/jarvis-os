@@ -1,0 +1,39 @@
+{
+  "sessions": [
+    {
+      "sessionId": "sess-701-ws",
+      "goal": "stress test session",
+      "env": "production",
+      "progress": 30,
+      "checkpointData": null,
+      "projectId": null,
+      "status": "active",
+      "createdAt": 1779444263634,
+      "ts": 1779458720356
+    }
+  ],
+  "reconnects": [],
+  "deploymentSessions": [
+    {
+      "deploymentId": "deploy-731",
+      "workspaceState": {
+        "replayId": "replay-731"
+      },
+      "ts": 1779458720304
+    },
+    {
+      "deploymentId": "dd-719",
+      "workspaceState": {
+        "replayId": "replay-dd-719"
+      },
+      "ts": 1779458720342
+    },
+    {
+      "deploymentId": "deploy-715",
+      "workspaceState": {
+        "replayId": "replay-715"
+      },
+      "ts": 1779458720325
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "interruptLog": [
+    {
+      "workflowId": "e25bd9fd-e6a6-4138-98dc-da770dfb9c0a",
+      "stepIndex": 0,
+      "reason": "stress test instability",
+      "ts": 1779413431207
+    },
+    {
+      "workflowId": "9a3fd005-530d-44fc-a8a9-cc5f89906a67",
+      "stepIndex": 0,
+      "reason": "stress test instability",
+      "ts": 1779414789069
+    },
+    {
+      "workflowId": "476a0879-ef0f-4c5c-9cd3-c6fc3f1cffa6",
+      "stepIndex": 0,
+      "reason": "stress test instability",
+      "ts": 1779414798374
+    },
+    {
+      "workflowId": "9c9e89c3-3253-467f-a4ba-efb10aed2485",
+      "stepIndex": 1,
+      "reason": "stress test cleanup",
+      "ts": 1779432281641
+    },
+    {
+      "workflowId": "8fada9b1-8199-45f1-b4b0-fb008df3f12d",
+      "stepIndex": 1,
+      "reason": "daily driver cleanup",
+      "ts": 1779432292341
+    },
+    {
+      "workflowId": "2ed55614-0acb-4b07-b1c9-bcd43646e773",
+      "stepIndex": 0,
+      "reason": "stress test instability",
+      "ts": 1779432315329
+    },
+    {
+      "workflowId": "aaef4219-eb23-427e-a9a8-8c6f4652803f",
+      "stepIndex": 0,
+      "reason": "stress test instability",
+      "ts": 1779432330770
+    },
+    {
+      "workflowId": "25f3b126-ed2c-41f1-a64e-d893627fdf35",
+      "stepIndex": 0,
+      "reason": "stress test instability",
+      "ts": 1779432336165
+    },
+    {
+      "workflowId": "f7e72bff-0d76-4cb5-8816-418abb2ca64b",
+      "stepIndex": 0,
+      "reason": "stress test instability",
+      "ts": 1779432371168
+    },
+    {
+      "workflowId": "5bcea485-a9f1-48ed-9746-080dc5b4b1c1",
+      "stepIndex": 1,
+      "reason": "stress test cleanup",
+      "ts": 1779433542195
+    },
+    {
+      "workflowId": "c4acc470-1379-463a-8027-2f257b799281",
+      "stepIndex": 1,
+      "reason": "daily driver cleanup",
+      "ts": 1779433550912
+    },
+    {
+      "workflowId": "09ea5e5b-c50c-4fc3-8ae6-78b5bc133468",
+      "stepIndex": 1,
+      "reason": "daily driver cleanup",
+      "ts": 1779434638996
+    },
+    {
+      "workflowId": "31ba5f7f-4e06-4f6d-900e-98323c2a276e",
+      "stepIndex": 0,
+      "reason": "stress test instability",
+      "ts": 1779434692026
+    },
+    {
+      "workflowId": "9d45c94b-9f74-419a-a644-be7ca56e78e1",
+      "stepIndex": 1,
+      "reason": "stress test cleanup",
+      "ts": 1779434692085
+    }
+  ],
+  "recoveryLog": [
+    {
+      "workflowId": "e25bd9fd-e6a6-4138-98dc-da770dfb9c0a",
+      "success": true,
+      "strategy": "interrupt-safe-recovery",
+      "ts": 1779413431207
+    },
+    {
+      "workflowId": "9a3fd005-530d-44fc-a8a9-cc5f89906a67",
+      "success": true,
+      "strategy": "interrupt-safe-recovery",
+      "ts": 1779414789069
+    },
+    {
+      "workflowId": "476a0879-ef0f-4c5c-9cd3-c6fc3f1cffa6",
+      "success": true,
+      "strategy": "interrupt-safe-recovery",
+      "ts": 1779414798374
+    },
+    {
+      "workflowId": "2ed55614-0acb-4b07-b1c9-bcd43646e773",
+      "success": true,
+      "strategy": "interrupt-safe-recovery",
+      "ts": 1779432315329
+    },
+    {
+      "workflowId": "aaef4219-eb23-427e-a9a8-8c6f4652803f",
+      "success": true,
+      "strategy": "interrupt-safe-recovery",
+      "ts": 1779432330770
+    },
+    {
+      "workflowId": "25f3b126-ed2c-41f1-a64e-d893627fdf35",
+      "success": true,
+      "strategy": "interrupt-safe-recovery",
+      "ts": 1779432336165
+    },
+    {
+      "workflowId": "f7e72bff-0d76-4cb5-8816-418abb2ca64b",
+      "success": true,
+      "strategy": "interrupt-safe-recovery",
+      "ts": 1779432371168
+    },
+    {
+      "workflowId": "31ba5f7f-4e06-4f6d-900e-98323c2a276e",
+      "success": true,
+      "strategy": "interrupt-safe-recovery",
+      "ts": 1779434692026
+    }
+  ]
+}

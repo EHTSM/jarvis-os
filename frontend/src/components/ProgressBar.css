@@ -3,22 +3,23 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 4px;
   z-index: 10000;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.05);
   overflow: hidden;
 }
 
 .progress-bar-fill {
   height: 100%;
-  width: 40%;
-  background: linear-gradient(90deg, var(--accent, #6c63ff), var(--accent2, #00d4ff));
-  animation: progress-slide 1.4s ease-in-out infinite;
-  border-radius: 0 2px 2px 0;
+  width: 32%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  animation: progress-slide 1.6s ease-in-out infinite;
+  border-radius: 0 999px 999px 0;
+  transform-origin: left center;
 }
 
 @keyframes progress-slide {
-  0%   { transform: translateX(-100%); width: 40%; }
-  50%  { width: 60%; }
-  100% { transform: translateX(260%); width: 40%; }
+  0%   { transform: translateX(-100%) scaleX(0.95); }
+  50%  { transform: translateX(20%) scaleX(1.05); }
+  100% { transform: translateX(260%) scaleX(0.95); }
 }

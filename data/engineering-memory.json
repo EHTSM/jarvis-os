@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "type": "recovery-path",
+      "ts": 1779381904348,
+      "chainName": "health-check",
+      "goalPattern": "stabilize frontend",
+      "confidence": 80,
+      "stepCount": 3
+    },
+    {
+      "type": "recovery-path",
+      "ts": 1779378251036,
+      "chainName": "health-check",
+      "goalPattern": "stabilize frontend",
+      "confidence": 80,
+      "stepCount": 3
+    },
+    {
+      "type": "recovery-path",
+      "ts": 1779373637662,
+      "chainName": "health-check",
+      "goalPattern": "stabilize frontend",
+      "confidence": 80,
+      "stepCount": 3
+    }
+  ]
+}

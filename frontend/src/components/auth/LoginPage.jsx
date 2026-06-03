@@ -22,8 +22,8 @@ export default function LoginPage() {
     <div className="login-page">
       <div className="login-card">
         <div className="login-logo">J</div>
-        <h1 className="login-title">JARVIS Runtime</h1>
-        <p className="login-subtitle">Operator access required</p>
+        <h1 className="login-title">Sign in to Jarvis</h1>
+        <p className="login-subtitle">Enter your password to continue</p>
         <form className="login-form" onSubmit={handleSubmit}>
           <input
             type="password"

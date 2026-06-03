@@ -36,6 +36,24 @@ const { verifyJWT, COOKIE_NAME } = require("../../backend/middleware/authMiddlew
 const MAX_SSE = 10;
 let _active  = 0;
 
+// ── Reconnect damping ─────────────────────────────────────────────
+// Tracks reconnects per 60s window. When rate is high, sends a
+// Retry-After header on the connected event so clients back off.
+const _reconnectTimes = [];
+const RECONNECT_STORM_THRESHOLD = 15;  // reconnects per 60s before damping kicks in
+const RECONNECT_DAMP_DELAY_MS   = 10_000;  // suggest 10s minimum between reconnects
+
+function _reconnectDampDelay() {
+    const now = Date.now();
+    // Trim old entries outside 60s window
+    while (_reconnectTimes.length > 0 && _reconnectTimes[0] < now - 60_000) _reconnectTimes.shift();
+    _reconnectTimes.push(now);
+    // Hard cap — can't exceed MAX_SSE reconnects in any window
+    if (_reconnectTimes.length > MAX_SSE * 4) _reconnectTimes.splice(0, MAX_SSE);
+    if (_reconnectTimes.length >= RECONNECT_STORM_THRESHOLD) return RECONNECT_DAMP_DELAY_MS;
+    return 0;
+}
+
 // ── SSE helpers ───────────────────────────────────────────────────
 
 function _sseHeaders(res, req) {
@@ -54,12 +72,13 @@ function _sseHeaders(res, req) {
 }
 
 /**
- * Write a named SSE event.
+ * Write a named SSE event with optional id for Last-Event-ID tracking.
  * Returns false if write failed (client gone).
  */
-function _write(res, type, data) {
+function _write(res, type, data, seq) {
     try {
-        res.write(`event: ${type}\ndata: ${JSON.stringify(data)}\n\n`);
+        const idLine = seq != null ? `id: ${seq}\n` : "";
+        res.write(`${idLine}event: ${type}\ndata: ${JSON.stringify(data)}\n\n`);
         return true;
     } catch {
         return false;
@@ -79,39 +98,56 @@ function _ping(res) {
 
 router.get("/runtime/stream", (req, res) => {
 
-    // Connection cap
+    // Connection cap — tell client to back off 30s before retrying
     if (_active >= MAX_SSE) {
+        res.setHeader("Retry-After", "30");
         return res.status(429).json({
             success: false,
-            error: `SSE connection limit (${MAX_SSE}) reached — try again later`
+            error: `SSE connection limit (${MAX_SSE}) reached — try again in 30s`,
+            retryAfterMs: 30_000
         });
     }
 
     _sseHeaders(res, req);
     _active++;
 
+    const isReconnect = _active > 1;
+    if (isReconnect) {
+        bus.recordReconnect();
+        try { require("./driftMonitor.cjs").recordReconnect(); } catch {}
+    }
+
+    // Reconnect damping — suggest a retry delay if reconnect storm detected
+    const dampDelay = isReconnect ? _reconnectDampDelay() : 0;
+    if (dampDelay > 0) res.setHeader("X-Reconnect-Damp-Ms", String(dampDelay));
+
     // Unique client ID for this connection
     const clientId = `sse_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
-    // ── Replay recent events ────────────────────────────────────
-    // Sends buffered history so reconnecting clients catch up immediately.
-    const recent = bus.getRecent(50);
-    for (const e of recent) {
-        _write(res, e.type, e.payload);
+    // ── Replay missed events ────────────────────────────────────
+    // If client sends Last-Event-ID, replay only the gap.
+    // Otherwise replay the last 50 buffered events (cold connect).
+    const lastEventId = parseInt(req.headers["last-event-id"]) || 0;
+    const replay = lastEventId > 0
+        ? bus.getSince(lastEventId)
+        : bus.getRecent(50);
+    for (const e of replay) {
+        _write(res, e.type, e.payload, e.seq);
     }
 
     // Connection ack — lets client know it's live and how many events were replayed
     _write(res, "connected", {
         clientId,
         ts:          Date.now(),
-        replayCount: recent.length
+        replayCount: replay.length,
+        lastSeq:     replay.length > 0 ? replay[replay.length - 1].seq : lastEventId
     });
 
     // ── Subscribe to live events ─────────────────────────────────
     let _subscribed = false;
     try {
         bus.subscribe(clientId, (event) => {
-            if (!_write(res, event.type, event.payload)) {
+            if (!_write(res, event.type, event.payload, event.seq)) {
                 // Write failed — subscriber will throw, bus auto-removes it,
                 // but we also need to decrement the counter.
                 // Throw so the bus removes us cleanly.

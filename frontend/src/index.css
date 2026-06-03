@@ -1,41 +1,192 @@
+/* ── JARVIS Design System ─────────────────────────────────────────────────
+   Single source of truth for all tokens shared across SaaS, landing, chat.
+   Operator console uses --op-* tokens in operator.css.
+   ──────────────────────────────────────────────────────────────────────── */
+
 :root {
-  --bg:        #0a0a0f;
-  --surface:   #12121a;
-  --surface2:  #1a1a26;
-  --border:    #2a2a3a;
-  --accent:    #6c63ff;
-  --accent2:   #00d4ff;
-  --success:   #00e676;
-  --warning:   #ffab40;
-  --danger:    #ff5252;
-  --text:      #e0e0e0;
-  --text-dim:  #8888aa;
-  --radius:    10px;
+  /* Canvas */
+  --bg:            #05070d;
+  --surface:       rgba(11, 15, 27, 0.95);
+  --surface2:      rgba(8, 12, 22, 0.74);
+  --surface-hover: rgba(16, 22, 38, 0.97);
+
+  /* Borders */
+  --border:        rgba(255, 255, 255, 0.07);
+  --border-hover:  rgba(78, 205, 196, 0.22);
+  --border-strong: rgba(255, 255, 255, 0.11);
+
+  /* Brand palette */
+  --accent:        #7c6fff;   /* softer violet */
+  --accent2:       #4ecdc4;   /* teal */
+  --accent-glow:   rgba(124, 111, 255, 0.15);
+  --accent2-glow:  rgba(78, 205, 196, 0.12);
+
+  /* Semantic */
+  --success:       #52d68a;
+  --warning:       #f0b429;
+  --danger:        #f55b5b;
+  --info:          #5dc8f5;
+
+  /* Typography */
+  --text:          #dde2ec;
+  --text-dim:      #8994b0;
+  --text-faint:    #4a5470;
+
+  /* Cinematic typography tokens */
+  --type-hero-xxl: clamp(2.4rem, 6.2vw, 4.4rem);
+  --type-hero-xl:  clamp(1.9rem, 5.0vw, 3.4rem);
+  --type-hero-lg:  clamp(1.5rem, 3.4vw, 2.2rem);
+  --type-lead:     1.05rem;
+  --type-sub:      0.98rem;
+  --type-letter-tight: -0.028em;
+  --type-letter-loose: 0.08em;
+  --rhythm-hero:   1.04;
+
+  /* Radius — unified scale used everywhere */
+  --radius-xs:     6px;
+  --radius-sm:     10px;
+  --radius:        14px;
+  --radius-md:     18px;
+  --radius-lg:     22px;
+  --radius-xl:     28px;
+  --radius-pill:   999px;
+
+  /* Shadows — consistent elevation stack */
+  --shadow-xs:     0 1px 4px rgba(0, 0, 0, 0.24);
+  --shadow-sm:     0 3px 10px rgba(0, 0, 0, 0.28);
+  --shadow:        0 8px 32px rgba(0, 0, 0, 0.34);
+  --shadow-lg:     0 20px 60px rgba(0, 0, 0, 0.38);
+  --shadow-xl:     0 32px 80px rgba(0, 0, 0, 0.44);
+  --shadow-glow:   0 0 0 1px rgba(78, 205, 196, 0.12),
+                   0 8px 32px rgba(0, 0, 0, 0.32);
+
+  /* Glow levels — unified so every surface glows consistently */
+  --glow-accent:   0 0 24px rgba(124, 111, 255, 0.18);
+  --glow-teal:     0 0 24px rgba(78, 205, 196, 0.14);
+  --glow-danger:   0 0 20px rgba(245, 91, 91, 0.18);
+  --glow-success:  0 0 20px rgba(82, 214, 138, 0.14);
+
+  /* Spacing scale */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Motion — unified timing so everything feels in sync */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.4, 0, 1, 1);
+  --ease-std:    cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-instant: 80ms;
+  --dur-fast:    140ms;
+  --dur-std:     220ms;
+  --dur-slow:    360ms;
+  --dur-enter:   280ms;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── Reset ────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
 
+/* ── Base ─────────────────────────────────────────────────────────────── */
 body {
-  background: var(--bg);
-  color:      var(--text);
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background:
+    radial-gradient(ellipse 90% 44% at 8% -4%,   rgba(124, 111, 255, 0.08) 0%, transparent 58%),
+    radial-gradient(ellipse 64% 54% at 92% 108%,  rgba(78, 205, 196, 0.06) 0%, transparent 58%),
+    radial-gradient(ellipse 40% 30% at 50% 50%,   rgba(5, 8, 18, 0.4) 0%, transparent 100%),
+    var(--bg);
+  color: var(--text);
+  font-family: -apple-system, 'SF Pro Text', 'Segoe UI Variable', 'Segoe UI',
+               system-ui, sans-serif;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--surface); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+/* ── Elements ─────────────────────────────────────────────────────────── */
+button  { cursor: pointer; border: none; outline: none; font-family: inherit; }
+input, textarea { font-family: inherit; outline: none; border: none; background: transparent; }
+a { color: inherit; text-decoration: none; }
 
-button {
-  cursor: pointer;
-  border: none;
-  outline: none;
-  font-family: inherit;
+/* ── Focus ring (keyboard nav) ────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid rgba(124, 111, 255, 0.65);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
 }
 
-input, textarea {
-  font-family: inherit;
-  outline: none;
-  border: none;
+/* ── Scrollbars ───────────────────────────────────────────────────────── */
+* { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.09) transparent; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.09); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.16); }
+
+/* ── Selection ─────────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(124, 111, 255, 0.28);
+  color: var(--text);
+}
+
+/* ── Smooth entrance utility ──────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-up {
+  animation: fade-up var(--dur-enter) var(--ease-spring) both;
+}
+
+.animate-fade-in {
+  animation: fade-in var(--dur-std) var(--ease-out) both;
+}
+
+/* ── Motion safety ────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Responsive fluid base ────────────────────────────────────────────── */
+html {
+  /* Prevent font scale from breaking layouts on high-zoom mobile */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ── Desktop minimum width guard ─────────────────────────────────────── */
+@media (min-width: 1200px) {
+  body { min-width: 900px; }
+}
+
+/* ── Viewport-responsive base font size ──────────────────────────────── */
+@media (max-width: 360px) {
+  body { font-size: 13px; }
+}
+
+/* ── Touch device base improvements ──────────────────────────────────── */
+@media (pointer: coarse) {
+  /* Prevent accidental text selection on long-press */
+  button, [role="button"] {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  /* Consistent tap highlight color */
+  * { -webkit-tap-highlight-color: rgba(78, 205, 196, 0.12); }
 }

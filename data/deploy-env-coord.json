@@ -1,0 +1,39 @@
+{
+  "states": [
+    {
+      "deploymentId": "deploy-701",
+      "stage": "canary",
+      "pct": 5,
+      "status": "active",
+      "metrics": {},
+      "history": [
+        {
+          "stage": "canary",
+          "pct": 5,
+          "ts": 1779458719966
+        },
+        {
+          "stage": "canary",
+          "pct": 5,
+          "ts": 1779458720074
+        },
+        {
+          "stage": "canary",
+          "pct": 5,
+          "ts": 1779458720112
+        },
+        {
+          "stage": "canary",
+          "pct": 5,
+          "ts": 1779458720165
+        },
+        {
+          "stage": "canary",
+          "pct": 5,
+          "ts": 1779458720252
+        }
+      ],
+      "ts": 1779458720355
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "sess-mpfvz0dy-ziv",
+  "goal": "long-horizon session 1",
+  "label": "long-horizon session 1",
+  "state": "abandoned",
+  "createdAt": 1779391862710,
+  "updatedAt": 1779391862714,
+  "heartbeat": 1779391862710,
+  "workflows": [],
+  "validationLog": [],
+  "recoveryLog": [],
+  "timeline": [
+    {
+      "type": "session-created",
+      "ts": 1779391862710,
+      "goal": "long-horizon session 1"
+    },
+    {
+      "type": "state-abandoned",
+      "ts": 1779391862714,
+      "reason": "continuity test cleanup"
+    }
+  ],
+  "runtimeState": null,
+  "blockedAt": null,
+  "executionConfidence": 100,
+  "degradationState": "healthy",
+  "activeChain": null,
+  "meta": {
+    "tags": [],
+    "triggeredBy": "operator"
+  }
+}

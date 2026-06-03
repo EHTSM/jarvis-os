@@ -1069,5 +1069,221 @@
     "attempts": 1,
     "agentId": null,
     "deadAt": "2026-05-15T22:54:52.976Z"
+  },
+  {
+    "taskId": "t-mpit7xz5",
+    "taskType": "content",
+    "input": "content gen",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:37:20.173Z"
+  },
+  {
+    "taskId": "t-mpit7yr2",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:37:21.177Z"
+  },
+  {
+    "taskId": "t-mpit7ziz",
+    "taskType": "speak",
+    "input": "speak test",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:37:22.183Z"
+  },
+  {
+    "taskId": "t-mpit80ax",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:37:22.186Z"
+  },
+  {
+    "taskId": "t-mpit80az",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:37:22.187Z"
+  },
+  {
+    "taskId": "t-mpit80b0",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:37:22.189Z"
+  },
+  {
+    "taskId": "t-mpit80b1",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:37:22.191Z"
+  },
+  {
+    "taskId": "t-mpit80b4",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:37:22.193Z"
+  },
+  {
+    "taskId": "t-mpitijro",
+    "taskType": "content",
+    "input": "content gen",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:45:34.978Z"
+  },
+  {
+    "taskId": "t-mpitikjp",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:45:35.983Z"
+  },
+  {
+    "taskId": "t-mpitilbl",
+    "taskType": "speak",
+    "input": "speak test",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:45:36.988Z"
+  },
+  {
+    "taskId": "t-mpitim3k",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:45:36.993Z"
+  },
+  {
+    "taskId": "t-mpitim3n",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:45:36.995Z"
+  },
+  {
+    "taskId": "t-mpitim3o",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:45:36.996Z"
+  },
+  {
+    "taskId": "t-mpitim3p",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:45:36.998Z"
+  },
+  {
+    "taskId": "t-mpitim3r",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T20:45:36.999Z"
+  },
+  {
+    "taskId": "t-mpiu6oj5",
+    "taskType": "content",
+    "input": "content gen",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-23T21:04:20.893Z"
+  },
+  {
+    "taskId": "t-mpiu6pb2",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-23T21:04:21.897Z"
+  },
+  {
+    "taskId": "t-mpiu6q31",
+    "taskType": "speak",
+    "input": "speak test",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-05-23T21:04:22.903Z"
+  },
+  {
+    "taskId": "t-mpiu6qux",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T21:04:22.905Z"
+  },
+  {
+    "taskId": "t-mpiu6quy",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T21:04:22.907Z"
+  },
+  {
+    "taskId": "t-mpiu6qv0",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T21:04:22.908Z"
+  },
+  {
+    "taskId": "t-mpiu6qv1",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T21:04:22.910Z"
+  },
+  {
+    "taskId": "t-mpiu6qv2",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-05-23T21:04:22.910Z"
   }
 ]

@@ -13,12 +13,12 @@ function _timeAgo(isoStr) {
 }
 
 const TIER_META = {
-  "10min":      { label: "10-min touch",      icon: "⚡", desc: "First contact — new leads" },
-  "6hr":        { label: "6-hour follow-up",  icon: "🔁", desc: "Warm leads re-engagement"   },
-  "24hr":       { label: "Daily follow-up",   icon: "📅", desc: "Morning check-in sequence"  },
-  "3day":       { label: "3-day reminder",    icon: "📣", desc: "Last-chance conversion"     },
-  "onboarding": { label: "Onboarding",        icon: "🎉", desc: "New paid customers"         },
-  "upsell":     { label: "Upsell trigger",    icon: "💎", desc: "Hot leads — active today"   },
+  "10min":      { label: "First message",     icon: "✉️", desc: "Sent within 10 min of adding lead" },
+  "6hr":        { label: "Same-day follow-up",  icon: "🔁", desc: "Follows up the same day" },
+  "24hr":       { label: "Next-day check-in",  icon: "📅", desc: "Checks in the following day" },
+  "3day":       { label: "3-day close",        icon: "📣", desc: "Final push after 3 days" },
+  "onboarding": { label: "Welcome message",    icon: "🎉", desc: "Sent when client converts" },
+  "upsell":     { label: "Upsell nudge",       icon: "💎", desc: "Sent to high-interest leads" },
 };
 
 function AutoCard({ tierKey, data }) {
@@ -44,7 +44,7 @@ function AutoCard({ tierKey, data }) {
         {failed > 0 && (
           <div className="act-stat">
             <span className="act-stat-val" style={{ color: "var(--danger)" }}>{failed}</span>
-            <span className="act-stat-lbl">Failed</span>
+            <span className="act-stat-lbl">Delayed</span>
           </div>
         )}
         {rate !== null && (
@@ -52,7 +52,7 @@ function AutoCard({ tierKey, data }) {
             <span className="act-stat-val" style={{ color: rate >= 50 ? "var(--success)" : "var(--text-dim)" }}>
               {rate}%
             </span>
-            <span className="act-stat-lbl">Success</span>
+            <span className="act-stat-lbl">Delivered</span>
           </div>
         )}
       </div>
@@ -80,17 +80,17 @@ function QueueSection({ queueHealth }) {
 
   return (
     <div className="log-section-wrap">
-      <h3 className="log-section-title">Task Queue</h3>
+      <h3 className="log-section-title">Message Queue</h3>
       <div className="log-section-inner">
         <div className="act-summary" style={{ marginBottom: "0.75rem" }}>
           <div className="act-sum-item">
             <span className="act-sum-val" style={{ color: "var(--accent)" }}>{counts.pending ?? 0}</span>
-            <span className="act-sum-lbl">Pending</span>
+            <span className="act-sum-lbl">Awaiting</span>
           </div>
           <div className="act-sum-sep" />
           <div className="act-sum-item">
             <span className="act-sum-val" style={{ color: "var(--warning)" }}>{counts.running ?? 0}</span>
-            <span className="act-sum-lbl">Running</span>
+            <span className="act-sum-lbl">Processing</span>
           </div>
           <div className="act-sum-sep" />
           <div className="act-sum-item">
@@ -100,11 +100,11 @@ function QueueSection({ queueHealth }) {
           <div className="act-sum-sep" />
           <div className="act-sum-item">
             <span className="act-sum-val" style={{ color: failedLast24h > 0 ? "var(--danger)" : "var(--text-dim)" }}>{failedLast24h}</span>
-            <span className="act-sum-lbl">Failed 24h</span>
+            <span className="act-sum-lbl">Delayed 24h</span>
           </div>
         </div>
         <div style={{ fontSize: "0.75rem", color: statusColor }}>
-          {healthy ? "Queue healthy" : `Oldest pending: ${oldestPendingMins}m`} · {total} total tasks
+          {healthy ? "Queue healthy" : `Oldest pending: ${oldestPendingMins}m`} · {total} total sent
         </div>
       </div>
     </div>
@@ -134,14 +134,14 @@ export default function Activity({ opsData, stats }) {
           <div className="act-sum-sep" />
           <div className="act-sum-item">
             <span className="act-sum-val" style={{ color: "var(--success)" }}>{crm?.paid ?? 0}</span>
-            <span className="act-sum-lbl">Clients converted</span>
+            <span className="act-sum-lbl">Clients paid</span>
           </div>
           <div className="act-sum-sep" />
           <div className="act-sum-item">
             <span className="act-sum-val" style={{ color: totalFailed > 0 ? "var(--danger)" : "var(--text-dim)" }}>
               {totalFailed}
             </span>
-            <span className="act-sum-lbl">Delivery failures</span>
+            <span className="act-sum-lbl">Failed sends</span>
           </div>
         </div>
       )}
@@ -155,9 +155,9 @@ export default function Activity({ opsData, stats }) {
 
         {!hasAuto ? (
           <div className="act-empty">
-            <p className="act-empty-title">No automation activity yet</p>
+            <p className="act-empty-title">No outreach activity yet</p>
             <p className="act-empty-sub">
-              Add clients in the Clients tab and connect WhatsApp. JARVIS will send follow-ups automatically.
+              Add contacts in the Clients tab and connect WhatsApp. Sequences will register here.
             </p>
           </div>
         ) : (

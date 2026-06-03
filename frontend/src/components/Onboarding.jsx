@@ -4,19 +4,22 @@ import "./Onboarding.css";
 const STEPS = [
   {
     key:         "business",
-    question:    "What type of business do you run?",
+    question:    "What kind of business do you run?",
+    subtext:     "Jarvis uses this to write follow-up messages in the right tone — so messages feel personal, not automated.",
     placeholder: "e.g. Freelance designer, coaching, digital agency…",
     type:        "text",
   },
   {
     key:         "product",
-    question:    "What do you sell?",
-    placeholder: "e.g. Logo packages, 1-on-1 coaching sessions, SEO services…",
+    question:    "What do you sell or offer?",
+    subtext:     "This lets Jarvis mention your work naturally when following up with leads. No jargon, just clear and human.",
+    placeholder: "e.g. Logo packages, 1-on-1 coaching, SEO services…",
     type:        "text",
   },
   {
     key:         "price",
-    question:    "What do you charge?",
+    question:    "What's your typical price?",
+    subtext:     "Sets the default amount on your payment links. You can change it any time for individual clients.",
     placeholder: "e.g. ₹999, ₹5000/month, ₹15,000 per project",
     type:        "text",
   },
@@ -25,19 +28,22 @@ const STEPS = [
 export default function Onboarding({ onComplete }) {
   const [step,    setStep]    = useState(0);
   const [answers, setAnswers] = useState({ business: "", product: "", price: "" });
+  const [done,    setDone]    = useState(false);
+  const [profile, setProfile] = useState(null);
 
-  const current = STEPS[step];
-  const value   = answers[current.key];
-  const isLast  = step === STEPS.length - 1;
+  const current = done ? null : STEPS[step];
+  const value   = done ? "" : answers[current.key];
+  const isLast  = !done && step === STEPS.length - 1;
 
   const handleNext = () => {
     if (!value.trim()) return;
+    const updated = { ...answers, [current.key]: value.trim() };
     if (isLast) {
-      const profile = { ...answers, [current.key]: value.trim() };
-      localStorage.setItem("jarvis_biz_profile", JSON.stringify(profile));
-      onComplete(profile);
+      localStorage.setItem("jarvis_biz_profile", JSON.stringify(updated));
+      setProfile(updated);
+      setDone(true);
     } else {
-      setAnswers(prev => ({ ...prev, [current.key]: value.trim() }));
+      setAnswers(updated);
       setStep(s => s + 1);
     }
   };
@@ -46,7 +52,63 @@ export default function Onboarding({ onComplete }) {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleNext(); }
   };
 
-  const progress = ((step + 1) / STEPS.length) * 100;
+  const progress = done ? 100 : ((step + 1) / STEPS.length) * 100;
+
+  if (done) {
+    return (
+      <div className="onboarding">
+        <div className="onboarding-inner">
+
+          <div className="ob-header">
+            <div className="ob-logo">J</div>
+            <div className="ob-header-meta">
+              <span className="ob-title-brand">Jarvis</span>
+              <span className="ob-step-label">Setup complete</span>
+            </div>
+          </div>
+
+          <div className="ob-progress-track">
+            <div className="ob-progress-fill" style={{ width: "100%" }} />
+          </div>
+
+          <div className="ob-body">
+            <h2 className="ob-done-heading">
+              You're all set.
+            </h2>
+            <p className="ob-done-sub">
+              Jarvis is configured for <strong>{profile?.business || "your business"}</strong>. Here's exactly what to do first:
+            </p>
+            <ul className="ob-checklist">
+              <li>
+                <span className="ob-check">1</span>
+                <span><strong>Add a lead</strong> — go to the Clients tab and enter a name and WhatsApp number. Takes 30 seconds.</span>
+              </li>
+              <li>
+                <span className="ob-check">2</span>
+                <span><strong>Watch follow-ups begin</strong> — Jarvis sends friendly messages on your behalf automatically. No manual work.</span>
+              </li>
+              <li>
+                <span className="ob-check">3</span>
+                <span><strong>Send a payment link</strong> — one click from the client card when they're ready to buy.</span>
+              </li>
+              <li>
+                <span className="ob-check">4</span>
+                <span><strong>Track it all</strong> — the Revenue tab shows your full pipeline and what's converting.</span>
+              </li>
+            </ul>
+            <button
+              className="ob-btn ob-btn--complete"
+              onClick={() => onComplete(profile)}
+            >
+              Open Jarvis →
+            </button>
+            <p className="ob-confidence-note">Your setup is saved — you can update it any time in Settings.</p>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="onboarding">
@@ -54,15 +116,20 @@ export default function Onboarding({ onComplete }) {
 
         <div className="ob-header">
           <div className="ob-logo">J</div>
-          <p className="ob-step-label">Step {step + 1} of {STEPS.length}</p>
+          <div className="ob-header-meta">
+            <span className="ob-title-brand">Quick setup</span>
+            <span className="ob-step-label">Step {step + 1} of {STEPS.length} — takes under a minute</span>
+          </div>
+          <span className="ob-step-count">{step + 1}/{STEPS.length}</span>
         </div>
 
         <div className="ob-progress-track">
           <div className="ob-progress-fill" style={{ width: `${progress}%` }} />
         </div>
 
-        <div className="ob-body">
+        <div className={`ob-body ob-step-${step + 1}`}>
           <h2 className="ob-question">{current.question}</h2>
+          {current.subtext && <p className="ob-subtext">{current.subtext}</p>}
 
           <input
             key={current.key}
@@ -80,13 +147,15 @@ export default function Onboarding({ onComplete }) {
             onClick={handleNext}
             disabled={!value.trim()}
           >
-            {isLast ? "Let's go →" : "Continue →"}
+            {isLast ? "Complete Setup →" : "Continue →"}
           </button>
 
-          {step > 0 && (
+          {step > 0 ? (
             <button className="ob-back" onClick={() => setStep(s => s - 1)}>
               ← Back
             </button>
+          ) : (
+            <p className="ob-confidence-note">No credit card needed. Setup is saved locally.</p>
           )}
         </div>
 

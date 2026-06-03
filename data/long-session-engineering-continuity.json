@@ -1,0 +1,42 @@
+{
+  "sessions": [
+    {
+      "sessionId": "lsec-761-1779458015156",
+      "state": {
+        "project": "test-761"
+      },
+      "createdAt": 1779458015156,
+      "updatedAt": 1779458015156
+    },
+    {
+      "sessionId": "lsec-761-1779458562251",
+      "state": {
+        "project": "test-761"
+      },
+      "createdAt": 1779458562251,
+      "updatedAt": 1779458562251
+    },
+    {
+      "sessionId": "lsec-761-1779458719277",
+      "state": {
+        "project": "test-761"
+      },
+      "createdAt": 1779458719277,
+      "updatedAt": 1779458719277
+    }
+  ],
+  "reconnects": [
+    {
+      "ts": 1779458015156,
+      "sessionId": "lsec-761-1779458015156"
+    },
+    {
+      "ts": 1779458562251,
+      "sessionId": "lsec-761-1779458562251"
+    },
+    {
+      "ts": 1779458719277,
+      "sessionId": "lsec-761-1779458719277"
+    }
+  ]
+}

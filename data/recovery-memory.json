@@ -1,0 +1,408 @@
+[
+  {
+    "type": "validated-path",
+    "chainName": "chain-19",
+    "cmds": [
+      "echo 19"
+    ],
+    "context": "context 19",
+    "confidence": 89,
+    "ts": 1779385658117
+  },
+  {
+    "type": "failed-pattern",
+    "cmd": "fail-cmd-18",
+    "chainName": "chain-18",
+    "errorPattern": "ENOMEM",
+    "failCount": 2,
+    "ts": 1779385658117
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-18",
+    "cmds": [
+      "echo 18"
+    ],
+    "context": "context 18",
+    "confidence": 88,
+    "ts": 1779385658117
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-17",
+    "cmds": [
+      "echo 17"
+    ],
+    "context": "context 17",
+    "confidence": 87,
+    "ts": 1779385658116
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-16",
+    "cmds": [
+      "echo 16"
+    ],
+    "context": "context 16",
+    "confidence": 86,
+    "ts": 1779385658116
+  },
+  {
+    "type": "failed-pattern",
+    "cmd": "fail-cmd-15",
+    "chainName": "chain-15",
+    "errorPattern": "ENOMEM",
+    "failCount": 2,
+    "ts": 1779385658116
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-15",
+    "cmds": [
+      "echo 15"
+    ],
+    "context": "context 15",
+    "confidence": 85,
+    "ts": 1779385658116
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-14",
+    "cmds": [
+      "echo 14"
+    ],
+    "context": "context 14",
+    "confidence": 84,
+    "ts": 1779385658116
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-13",
+    "cmds": [
+      "echo 13"
+    ],
+    "context": "context 13",
+    "confidence": 83,
+    "ts": 1779385658115
+  },
+  {
+    "type": "failed-pattern",
+    "cmd": "fail-cmd-12",
+    "chainName": "chain-12",
+    "errorPattern": "ENOMEM",
+    "failCount": 2,
+    "ts": 1779385658115
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-12",
+    "cmds": [
+      "echo 12"
+    ],
+    "context": "context 12",
+    "confidence": 82,
+    "ts": 1779385658115
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-11",
+    "cmds": [
+      "echo 11"
+    ],
+    "context": "context 11",
+    "confidence": 81,
+    "ts": 1779385658115
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-10",
+    "cmds": [
+      "echo 10"
+    ],
+    "context": "context 10",
+    "confidence": 80,
+    "ts": 1779385658115
+  },
+  {
+    "type": "failed-pattern",
+    "cmd": "fail-cmd-9",
+    "chainName": "chain-9",
+    "errorPattern": "ENOMEM",
+    "failCount": 2,
+    "ts": 1779385658115
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-9",
+    "cmds": [
+      "echo 9"
+    ],
+    "context": "context 9",
+    "confidence": 79,
+    "ts": 1779385658114
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-8",
+    "cmds": [
+      "echo 8"
+    ],
+    "context": "context 8",
+    "confidence": 78,
+    "ts": 1779385658114
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-7",
+    "cmds": [
+      "echo 7"
+    ],
+    "context": "context 7",
+    "confidence": 77,
+    "ts": 1779385658114
+  },
+  {
+    "type": "failed-pattern",
+    "cmd": "fail-cmd-6",
+    "chainName": "chain-6",
+    "errorPattern": "ENOMEM",
+    "failCount": 2,
+    "ts": 1779385658114
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-6",
+    "cmds": [
+      "echo 6"
+    ],
+    "context": "context 6",
+    "confidence": 76,
+    "ts": 1779385658114
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-5",
+    "cmds": [
+      "echo 5"
+    ],
+    "context": "context 5",
+    "confidence": 75,
+    "ts": 1779385658114
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-4",
+    "cmds": [
+      "echo 4"
+    ],
+    "context": "context 4",
+    "confidence": 74,
+    "ts": 1779385658113
+  },
+  {
+    "type": "failed-pattern",
+    "cmd": "fail-cmd-3",
+    "chainName": "chain-3",
+    "errorPattern": "ENOMEM",
+    "failCount": 2,
+    "ts": 1779385658113
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-3",
+    "cmds": [
+      "echo 3"
+    ],
+    "context": "context 3",
+    "confidence": 73,
+    "ts": 1779385658113
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-2",
+    "cmds": [
+      "echo 2"
+    ],
+    "context": "context 2",
+    "confidence": 72,
+    "ts": 1779385658113
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-1",
+    "cmds": [
+      "echo 1"
+    ],
+    "context": "context 1",
+    "confidence": 71,
+    "ts": 1779385658113
+  },
+  {
+    "type": "failed-pattern",
+    "cmd": "fail-cmd-0",
+    "chainName": "chain-0",
+    "errorPattern": "ENOMEM",
+    "failCount": 2,
+    "ts": 1779385658113
+  },
+  {
+    "type": "validated-path",
+    "chainName": "chain-0",
+    "cmds": [
+      "echo 0"
+    ],
+    "context": "context 0",
+    "confidence": 70,
+    "ts": 1779385658113
+  },
+  {
+    "type": "repair-sequence",
+    "problemType": "frontend-build-failure",
+    "sequence": [
+      "recover-frontend-runtime",
+      "health-check"
+    ],
+    "successCount": 4,
+    "ts": 1779385271654
+  },
+  {
+    "type": "failed-pattern",
+    "cmd": "npm install",
+    "chainName": "clean-install",
+    "errorPattern": "ENOTFOUND registry.npmjs.org",
+    "failCount": 3,
+    "ts": 1779385271653
+  },
+  {
+    "type": "validated-path",
+    "chainName": "recover-backend",
+    "cmds": [
+      "pm2 restart jarvis-backend",
+      "curl http://localhost:3001/api/health"
+    ],
+    "context": "backend crashed after OOM",
+    "confidence": 85,
+    "ts": 1779385271653
+  },
+  {
+    "type": "repair-sequence",
+    "problemType": "frontend-build-failure",
+    "sequence": [
+      "recover-frontend-runtime",
+      "health-check"
+    ],
+    "successCount": 4,
+    "ts": 1779381904383
+  },
+  {
+    "type": "failed-pattern",
+    "cmd": "npm install",
+    "chainName": "clean-install",
+    "errorPattern": "ENOTFOUND registry.npmjs.org",
+    "failCount": 3,
+    "ts": 1779381904383
+  },
+  {
+    "type": "validated-path",
+    "chainName": "recover-backend",
+    "cmds": [
+      "pm2 restart jarvis-backend",
+      "curl http://localhost:3001/api/health"
+    ],
+    "context": "backend crashed after OOM",
+    "confidence": 85,
+    "ts": 1779381904382
+  },
+  {
+    "type": "repair-sequence",
+    "problemType": "backend-startup-failure",
+    "sequence": [
+      "project-recovery",
+      "health-check"
+    ],
+    "successCount": 3,
+    "ts": 1779381862192
+  },
+  {
+    "type": "validated-path",
+    "chainName": "dev-health-check",
+    "cmds": [
+      "pm2 list",
+      "curl localhost:3001/api/health"
+    ],
+    "context": "routine morning check",
+    "confidence": 90,
+    "ts": 1779381862192
+  },
+  {
+    "type": "repair-sequence",
+    "problemType": "backend-startup-failure",
+    "sequence": [
+      "project-recovery",
+      "health-check"
+    ],
+    "successCount": 3,
+    "ts": 1779381812560
+  },
+  {
+    "type": "validated-path",
+    "chainName": "dev-health-check",
+    "cmds": [
+      "pm2 list",
+      "curl localhost:3001/api/health"
+    ],
+    "context": "routine morning check",
+    "confidence": 90,
+    "ts": 1779381812560
+  },
+  {
+    "type": "repair-sequence",
+    "problemType": "backend-startup-failure",
+    "sequence": [
+      "project-recovery",
+      "health-check"
+    ],
+    "successCount": 3,
+    "ts": 1779381805809
+  },
+  {
+    "type": "validated-path",
+    "chainName": "dev-health-check",
+    "cmds": [
+      "pm2 list",
+      "curl localhost:3001/api/health"
+    ],
+    "context": "routine morning check",
+    "confidence": 90,
+    "ts": 1779381805809
+  },
+  {
+    "type": "repair-sequence",
+    "problemType": "frontend-build-failure",
+    "sequence": [
+      "recover-frontend-runtime",
+      "health-check"
+    ],
+    "successCount": 4,
+    "ts": 1779378237416
+  },
+  {
+    "type": "failed-pattern",
+    "cmd": "npm install",
+    "chainName": "clean-install",
+    "errorPattern": "ENOTFOUND registry.npmjs.org",
+    "failCount": 3,
+    "ts": 1779378237416
+  },
+  {
+    "type": "validated-path",
+    "chainName": "recover-backend",
+    "cmds": [
+      "pm2 restart jarvis-backend",
+      "curl http://localhost:3001/api/health"
+    ],
+    "context": "backend crashed after OOM",
+    "confidence": 85,
+    "ts": 1779378237415
+  }
+]

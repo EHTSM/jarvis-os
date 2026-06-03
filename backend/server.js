@@ -131,6 +131,37 @@ app.use((err, req, res, _next) => {
     res.status(500).json({ success: false, error: "Internal server error", details: err.message });
 });
 
+// ── Runtime alerting ──────────────────────────────────────────────
+// Sends a Telegram message to TELEGRAM_OPERATOR_CHAT_ID.
+// Fire-and-forget: never throws, never blocks the main process.
+// Falls back to a local alert log when chatId is not configured.
+const _ALERT_LOG = require("path").join(__dirname, "../data/runtime-alerts.log");
+
+function _runtimeAlert(emoji, title, lines = []) {
+    const chatId = process.env.TELEGRAM_OPERATOR_CHAT_ID;
+    const ts     = new Date().toISOString();
+    const text   = [
+        `${emoji} <b>JARVIS — ${title}</b>`,
+        ...lines,
+        `<i>${ts}</i>`,
+    ].join("\n");
+
+    // Always append to local alert log regardless of Telegram outcome
+    try {
+        const logLine = `[${ts}] ${emoji} ${title} | ${lines.join(" | ")}\n`;
+        require("fs").appendFileSync(_ALERT_LOG, logLine);
+    } catch { /* non-critical */ }
+
+    if (!chatId) return;  // no operator chat ID — local log is the only channel
+
+    try {
+        const tg = require("./services/telegramService");
+        if (tg.isConfigured()) {
+            tg.sendMessage(chatId, text).catch(() => {});  // fire-and-forget
+        }
+    } catch { /* alerting must never crash the process */ }
+}
+
 // ── Process guards + graceful shutdown ────────────────────────────
 let _autoLoopRef    = null;  // set after startup
 let _httpServer     = null;  // set after listen()
@@ -140,6 +171,15 @@ function _gracefulShutdown(signal) {
     if (_shuttingDown) return;
     _shuttingDown = true;
     logger.info(`[Shutdown] ${signal} received — stopping services`);
+    // Alert on unexpected termination (SIGTERM from PM2 after crash, not clean operator stop)
+    // SIGINT = operator Ctrl+C, SIGUSR2 = nodemon — both expected; SIGTERM may be PM2 kill
+    if (signal === "SIGTERM") {
+        const restarts = parseInt(process.env.restart_time || "0");
+        _runtimeAlert("⚠️", "Runtime Shutdown",
+            [`Signal: ${signal}`, `Uptime: ${Math.round(process.uptime())}s`, `PM2 restarts: ${restarts}`]);
+    }
+    // Clear startup marker so the next boot doesn't count this as a crash
+    try { _fs_native.unlinkSync(_STARTUP_MARKER); } catch {}
 
     // 1. Stop accepting new HTTP connections
     if (_httpServer) {
@@ -151,6 +191,9 @@ function _gracefulShutdown(signal) {
 
     // 3. Stop automation cron jobs
     try { automation.stop(); } catch { /* ignore */ }
+
+    // 3a. Stop browser schedule executor
+    try { require("../agents/browser/browserScheduler.cjs").stop(); } catch { /* ignore */ }
 
     // 4. Stop memory sampler
     try { memTracker.stop(); } catch { /* ignore */ }
@@ -165,6 +208,63 @@ function _gracefulShutdown(signal) {
     }, 5_000).unref();
 }
 
+// ── Crash forensics snapshot ──────────────────────────────────────
+// Written synchronously on uncaughtException so it survives the crash.
+function _writeCrashForensics(err, source) {
+    try {
+        const crashDir  = require("path").join(__dirname, "../data/crashes");
+        _fs_native.mkdirSync(crashDir, { recursive: true });
+        const snapFile  = require("path").join(crashDir, `crash_${Date.now()}.json`);
+
+        // Queue snapshot
+        let queueSnap = null;
+        try {
+            const tq = require("../agents/taskQueue.cjs");
+            const all = tq.getAll();
+            queueSnap = { pending: all.filter(t=>t.status==="pending").length, running: all.filter(t=>t.status==="running").length, total: all.length };
+        } catch {}
+
+        // Last ring event snapshot
+        let lastEvent = null;
+        try {
+            const bus = require("../agents/runtime/runtimeEventBus.cjs");
+            const recent = bus.getRecent(1);
+            lastEvent = recent[0] ?? null;
+        } catch {}
+
+        // Drift snapshot
+        let drift = null;
+        try { drift = require("../agents/runtime/driftMonitor.cjs").getDriftReport(); } catch {}
+
+        // PM2 attribution
+        const pm2Info = {
+            pm2AppName: process.env.name,
+            pm2InstanceId: process.env.pm_id,
+            restartCount: process.env.restart_time,
+            nodeVersion: process.version,
+            uptime: Math.round(process.uptime()),
+        };
+
+        const snap = {
+            source, crashedAt: new Date().toISOString(),
+            pid: process.pid, pm2: pm2Info,
+            error: { message: err?.message, code: err?.code, stack: err?.stack?.slice(0, 2000) },
+            queue: queueSnap, lastEvent, drift,
+            mem: process.memoryUsage(),
+        };
+        _fs_native.writeFileSync(snapFile, JSON.stringify(snap, null, 2));
+        logger.error(`[Crash] Forensics written to ${snapFile}`);
+
+        // Telegram crash alert — non-blocking, must not throw
+        _runtimeAlert("🔴", "Crash Detected", [
+            `Error: ${String(err?.message || err || "unknown").slice(0, 160)}`,
+            `Source: ${source}`,
+            `Uptime: ${Math.round(process.uptime())}s`,
+            `PM2 restarts: ${process.env.restart_time || 0}`,
+        ]);
+    } catch { /* writing forensics must never throw */ }
+}
+
 // uncaughtException: state is unknown — log, record, exit so PM2 restarts cleanly.
 process.on("uncaughtException", (err) => {
     // Startup guard: EADDRINUSE means another process owns the port — fail fast
@@ -174,6 +274,7 @@ process.on("uncaughtException", (err) => {
         logger.error(`[Startup] Kill the existing process first: lsof -nP -iTCP:${err.port || PORT}`);
         process.exit(1);
     }
+    _writeCrashForensics(err, "uncaughtException");
     errTracker.record("uncaughtException", err.message || String(err));
     logger.error("FATAL uncaughtException — exiting for clean restart:");
     logger.error(err.stack || err.message || String(err));
@@ -279,9 +380,124 @@ function startTelegramBot() {
     logger.info("[Telegram] Bot started");
 }
 
+// ── Startup health gate ────────────────────────────────────────────
+// On each boot:
+//   1. Write data/startup_in_progress.json (cleared on clean listen + on SIGTERM)
+//   2. If that file exists from a prior boot, a crash occurred before clean listen
+//   3. Count consecutive crashes — if >= 3, log a deployment rollback warning
+const _fs_native = require("fs");
+const _STARTUP_MARKER = require("path").join(__dirname, "../data/startup_in_progress.json");
+const _CRASH_COUNTER  = require("path").join(__dirname, "../data/startup_crash_count.json");
+
+(function _startupGate() {
+  try { _fs_native.mkdirSync(require("path").dirname(_STARTUP_MARKER), { recursive: true }); } catch {}
+
+  // ── JWT secret rotation detection ─────────────────────────────
+  // If JWT_SECRET changes between deploys, all existing tokens become invalid.
+  // Warn so operators know they'll need to re-login.
+  const _JWT_HASH_FILE = require("path").join(__dirname, "../data/jwt_secret_hash.json");
+  try {
+    const crypto = require("crypto");
+    const currentHash = process.env.JWT_SECRET
+      ? crypto.createHash("sha256").update(process.env.JWT_SECRET).digest("hex").slice(0, 12)
+      : null;
+    if (currentHash) {
+      let priorHash = null;
+      try { priorHash = JSON.parse(_fs_native.readFileSync(_JWT_HASH_FILE, "utf8")).hash; } catch {}
+      if (priorHash && priorHash !== currentHash) {
+        console.warn("[Startup:Auth] JWT_SECRET changed — all existing operator sessions are invalidated.");
+        console.warn("[Startup:Auth] Operators will need to log in again.");
+      }
+      _fs_native.writeFileSync(_JWT_HASH_FILE, JSON.stringify({ hash: currentHash, updatedAt: new Date().toISOString() }));
+    }
+  } catch { /* non-fatal */ }
+
+  // ── Env mismatch / deployment integrity check ─────────────────
+  // Detect NODE_VERSION changes (e.g. a deploy that switched Node major).
+  // Detect NODE_ENV mismatch vs last recorded env.
+  const _DEPLOY_META_FILE = require("path").join(__dirname, "../data/deploy_meta.json");
+  try {
+    const currentMeta = {
+      nodeVersion: process.version,
+      nodeEnv:     process.env.NODE_ENV || "development",
+      port:        process.env.PORT || "5050",
+    };
+    let priorMeta = null;
+    try { priorMeta = JSON.parse(_fs_native.readFileSync(_DEPLOY_META_FILE, "utf8")); } catch {}
+    if (priorMeta) {
+      if (priorMeta.nodeVersion !== currentMeta.nodeVersion)
+        console.warn(`[Startup:Deploy] Node version changed: ${priorMeta.nodeVersion} → ${currentMeta.nodeVersion}`);
+      if (priorMeta.nodeEnv !== currentMeta.nodeEnv)
+        console.warn(`[Startup:Deploy] NODE_ENV changed: ${priorMeta.nodeEnv} → ${currentMeta.nodeEnv}`);
+      if (priorMeta.port !== currentMeta.port)
+        console.warn(`[Startup:Deploy] PORT changed: ${priorMeta.port} → ${currentMeta.port}`);
+    }
+    _fs_native.writeFileSync(_DEPLOY_META_FILE, JSON.stringify({ ...currentMeta, updatedAt: new Date().toISOString() }));
+  } catch { /* non-fatal */ }
+
+  // ── Crash counter + quarantine ─────────────────────────────────
+  // If crashCount >= 5 (matching PM2 max_restarts), log a quarantine warning.
+  // The process still starts — quarantine is informational only (PM2 will stop it).
+  let crashCount = 0;
+  try {
+    if (_fs_native.existsSync(_STARTUP_MARKER)) {
+      try { crashCount = JSON.parse(_fs_native.readFileSync(_CRASH_COUNTER, "utf8")).count || 0; } catch {}
+      crashCount++;
+      _fs_native.writeFileSync(_CRASH_COUNTER, JSON.stringify({ count: crashCount, lastCrashAt: new Date().toISOString() }));
+      if (crashCount >= 5) {
+        console.error(`[Startup:Gate] QUARANTINE — ${crashCount} consecutive failures. PM2 will stop retrying.`);
+        console.error(`[Startup:Gate] Fix the error and run: pm2 restart jarvis-os`);
+        console.error(`[Startup:Gate] Forensics: data/crashes/  Logs: logs/pm2-err.log`);
+      } else if (crashCount >= 3) {
+        console.error(`[Startup:Gate] ⚠ ${crashCount} consecutive startup failures — possible bad deploy.`);
+        console.error(`[Startup:Gate] Roll back with: pm2 restart jarvis-os`);
+      } else {
+        console.warn(`[Startup:Gate] Prior startup did not complete cleanly (crash #${crashCount})`);
+      }
+    } else {
+      try { _fs_native.writeFileSync(_CRASH_COUNTER, JSON.stringify({ count: 0 })); } catch {}
+    }
+    _fs_native.writeFileSync(_STARTUP_MARKER, JSON.stringify({ pid: process.pid, startedAt: new Date().toISOString() }));
+  } catch { /* non-fatal */ }
+})();
+
 // ── Startup ────────────────────────────────────────────────────────
 const PORT = parseInt(process.env.PORT) || 5050;
 _httpServer = app.listen(PORT, () => {
+    // Signal PM2 that this process is ready (used when wait_ready:true in ecosystem config)
+    if (typeof process.send === "function") process.send("ready");
+    // Clear startup-in-progress marker — clean listen
+    try { _fs_native.unlinkSync(_STARTUP_MARKER); } catch {}
+
+    // Startup / Recovery alert
+    const _restarts = parseInt(process.env.restart_time || "0");
+    if (_restarts > 0) {
+        // PM2 has restarted this process — it recovered from a prior crash
+        _runtimeAlert("✅", "Runtime Recovered",
+            [`PM2 restart #${_restarts}`, `Port: ${PORT}`, `Node: ${process.version}`]);
+    } else {
+        // Clean first start
+        _runtimeAlert("🟢", "Runtime Started",
+            [`Port: ${PORT}`, `Node: ${process.version}`, `Env: ${process.env.NODE_ENV || "development"}`]);
+    }
+
+    // Scan for unread crash forensics from prior runs
+    try {
+        const crashDir = require("path").join(__dirname, "../data/crashes");
+        if (_fs_native.existsSync(crashDir)) {
+            const files = _fs_native.readdirSync(crashDir).filter(f => f.startsWith("crash_") && f.endsWith(".json")).sort().slice(-5);
+            if (files.length > 0) {
+                logger.warn(`[Startup:Forensics] ${files.length} crash report(s) from prior run(s) — check data/crashes/`);
+                for (const f of files.slice(-3)) {
+                    try {
+                        const c = JSON.parse(_fs_native.readFileSync(require("path").join(crashDir, f), "utf8"));
+                        logger.warn(`  ${f}: ${c.error?.message || "unknown"} (uptime=${c.pm2?.uptime}s restarts=${c.pm2?.restartCount})`);
+                    } catch {}
+                }
+            }
+        }
+    } catch {}
+
     logger.info(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
     logger.info(` JARVIS OS v3.0 — http://localhost:${PORT}`);
     logger.info(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
@@ -305,6 +521,17 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[AutoLoop] failed to start:", err.message);
     }
 
+    // ── n8n workflow registration ─────────────────────────────────
+    try {
+        const { registerWorkflows } = require("../agents/automation/registerWorkflows.cjs");
+        registerWorkflows().then(r => {
+            if (r.registered.length) logger.info(`[n8n] Registered ${r.registered.length} workflow(s): ${r.registered.join(", ")}`);
+            if (r.errors.length)     logger.warn(`[n8n] Registration errors: ${r.errors.join("; ")}`);
+        }).catch(err => logger.warn("[n8n] registerWorkflows error:", err.message));
+    } catch (err) {
+        logger.warn("[n8n] registerWorkflows failed to load:", err.message);
+    }
+
     // ── Runtime agent registry ────────────────────────────────────
     try {
         require("../agents/runtime/bootstrapRuntime.cjs");
@@ -318,6 +545,30 @@ _httpServer = app.listen(PORT, () => {
         logger.info("[EventBus] realtime event bus started — GET /runtime/stream");
     } catch (err) {
         logger.warn("[EventBus] failed to start:", err.message);
+    }
+
+    // ── Browser schedule executor ─────────────────────────────────
+    try {
+        require("../agents/browser/browserScheduler.cjs").start();
+        logger.info("[BrowserScheduler] schedule executor started — checks every 60s");
+    } catch (err) {
+        logger.warn("[BrowserScheduler] failed to start:", err.message);
+    }
+
+    // ── Long-session drift monitor ────────────────────────────────
+    try {
+        require("../agents/runtime/driftMonitor.cjs").start();
+        logger.info("[DriftMonitor] leak/drift detection started");
+    } catch (err) {
+        logger.warn("[DriftMonitor] failed to start:", err.message);
+    }
+
+    // ── Operational metrics persistence ──────────────────────────
+    try {
+        require("../agents/runtime/metricsStore.cjs").start();
+        logger.info("[MetricsStore] 5-min snapshot persistence started");
+    } catch (err) {
+        logger.warn("[MetricsStore] failed to start:", err.message);
     }
 
     // ── Queue persistence integrity check ────────────────────────
@@ -338,6 +589,56 @@ _httpServer = app.listen(PORT, () => {
         }
     } catch (qErr) {
         logger.warn("[Startup] Queue integrity check failed:", qErr.message);
+    }
+
+    // ── Cold-start cache validation ───────────────────────────────
+    // Validate critical JSON data files before loading them.
+    // Corrupted files are backed up and reset rather than crashing startup.
+    try {
+        const _validateJsonFile = (filePath, defaultVal) => {
+            if (!_fs_native.existsSync(filePath)) return;
+            try {
+                JSON.parse(_fs_native.readFileSync(filePath, "utf8"));
+            } catch {
+                const backup = filePath + ".corrupt." + Date.now();
+                try { _fs_native.copyFileSync(filePath, backup); } catch {}
+                _fs_native.writeFileSync(filePath, JSON.stringify(defaultVal));
+                logger.warn(`[Startup:CacheValidate] ${require("path").basename(filePath)} was corrupt — reset (backup: ${require("path").basename(backup)})`);
+            }
+        };
+        const dataDir = require("path").join(__dirname, "../data");
+        _validateJsonFile(require("path").join(dataDir, "task-queue.json"),       []);
+        _validateJsonFile(require("path").join(dataDir, "dead-letter.json"),      []);
+        _validateJsonFile(require("path").join(dataDir, "workflow-trust.json"),   {});
+        _validateJsonFile(require("path").join(dataDir, "memory-store.json"),     {});
+    } catch (valErr) {
+        logger.warn("[Startup:CacheValidate] validation sweep failed (non-fatal):", valErr.message);
+    }
+
+    // ── Seed execution history from persistent log ────────────────
+    try {
+        require("../agents/runtime/executionHistory.cjs").seedFromLog(500);
+    } catch (seedErr) {
+        logger.warn("[Startup] History seed failed (non-fatal):", seedErr.message);
+    }
+
+    // ── Phase 31: startup reconciliation ─────────────────────────
+    // 1. Stale queue tasks: any task stuck in "running" state (crash recovery)
+    //    is reset to "pending" by recoverStale() (called below in diagnostics).
+    // 2. Crash snapshots: logged by runtimeOrchestrator at module load time.
+    // 3. Pending task count: surface in startup log so operator knows queue state.
+    try {
+        const tq = require("../agents/taskQueue.cjs");
+        const all = tq.getAll();
+        const stale = all.filter(t => t.status === "running");
+        if (stale.length > 0) {
+            logger.warn(`[Startup:Reconcile] ${stale.length} task(s) were running at shutdown — reset to pending:`);
+            stale.forEach(t => logger.warn(`  - ${t.id} input="${(t.input||"").slice(0,60)}"`));
+        }
+        const pending = all.filter(t => t.status === "pending").length;
+        if (pending > 0) logger.info(`[Startup:Reconcile] ${pending} pending task(s) queued for execution`);
+    } catch (recErr) {
+        logger.warn("[Startup:Reconcile] failed (non-fatal):", recErr.message);
     }
 
     // ── Startup diagnostics ───────────────────────────────────────

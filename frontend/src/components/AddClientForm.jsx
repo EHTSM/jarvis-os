@@ -22,7 +22,7 @@ export default function AddClientForm({ onSuccess, whatsappConnected }) {
   const set = (k, v) => setFields(f => ({ ...f, [k]: v }));
 
   const handleSubmit = async () => {
-    if (!fields.name.trim())  { setError("Client name is required."); return; }
+    if (!fields.name.trim())  { setError("Customer name is required."); return; }
     const cleanPhone = fields.phone.replace(/\D/g, "");
     if (!cleanPhone)          { setError("WhatsApp number is required."); return; }
     if (cleanPhone.length < 7) { setError("Enter a valid number with country code (e.g. 919876543210)."); return; }
@@ -61,15 +61,15 @@ export default function AddClientForm({ onSuccess, whatsappConnected }) {
             <p className="acf-success-title">{saved.name} added!</p>
             <p className="acf-success-sub">
               {whatsappConnected
-                ? "JARVIS will send the first follow-up automatically."
-                : "Connect WhatsApp below to activate follow-ups."}
+                ? "Jarvis will send a greeting and follow up automatically."
+                : "Connect WhatsApp below to start automated follow-ups."}
             </p>
           </div>
         </div>
 
         {whatsappConnected && (
           <div className="acf-schedule">
-            <p className="acf-sched-title">Scheduled follow-up sequence:</p>
+            <p className="acf-sched-title">Follow-up schedule:</p>
             <div className="acf-sched-list">
               {SCHEDULE.map((s, i) => (
                 <div key={i} className="acf-sched-row">
@@ -97,7 +97,7 @@ export default function AddClientForm({ onSuccess, whatsappConnected }) {
     return (
       <button className="acf-toggle" onClick={() => setOpen(true)}>
         <span className="acf-toggle-icon">+</span>
-        Add New Client
+        Add Client
       </button>
     );
   }
@@ -106,13 +106,13 @@ export default function AddClientForm({ onSuccess, whatsappConnected }) {
   return (
     <div className="acf-form">
       <div className="acf-form-header">
-        <h3 className="acf-form-title">Add New Client</h3>
+        <h3 className="acf-form-title">Add a client</h3>
         <button className="acf-close" onClick={() => { setOpen(false); setError(""); }}>✕</button>
       </div>
 
       <div className="acf-fields">
         <div className="acf-field">
-          <label className="acf-label">Name <span className="acf-req">*</span></label>
+          <label className="acf-label">Customer Name <span className="acf-req">*</span></label>
           <input
             className="acf-input"
             placeholder="e.g. Priya Sharma"
@@ -137,7 +137,7 @@ export default function AddClientForm({ onSuccess, whatsappConnected }) {
 
         <div className="acf-row-2">
           <div className="acf-field">
-            <label className="acf-label">What they want</label>
+            <label className="acf-label">Service / Product Requested</label>
             <input
               className="acf-input"
               placeholder="e.g. Logo design, SEO package…"
@@ -148,7 +148,7 @@ export default function AddClientForm({ onSuccess, whatsappConnected }) {
           </div>
 
           <div className="acf-field">
-            <label className="acf-label">Deal value (₹)</label>
+            <label className="acf-label">Contract Value (₹)</label>
             <input
               className="acf-input"
               placeholder="e.g. 5000"

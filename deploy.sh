@@ -59,8 +59,15 @@ fi
 
 # ── Build frontend ───────────────────────────────────────────────────────
 if [ "$NO_BUILD" = "0" ]; then
-  log "Building frontend (REACT_APP_API_URL=${BASE_URL})..."
-  REACT_APP_API_URL="${BASE_URL}" npm run build:frontend
+  # Single-server deployment: nginx serves frontend and proxies /api routes to
+  # the backend on port 5050. Frontend uses relative paths — REACT_APP_API_URL=""
+  # means all fetches go to the same origin and nginx handles routing.
+  #
+  # Split-server deployment (api.ooplix.com): set REACT_APP_API_URL in .env
+  # to https://api.ooplix.com — it will be picked up from there automatically.
+  BUILD_API_URL="${REACT_APP_API_URL:-}"
+  log "Building frontend (REACT_APP_API_URL='${BUILD_API_URL}')..."
+  REACT_APP_API_URL="${BUILD_API_URL}" npm run build:frontend
   log "Frontend build complete."
 fi
 
