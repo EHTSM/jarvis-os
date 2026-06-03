@@ -24,15 +24,17 @@ import RefundPolicy          from "./components/legal/RefundPolicy.jsx";
 import ContactPage           from "./components/legal/ContactPage.jsx";
 import TrustCompliance       from "./components/legal/TrustCompliance.jsx";
 import PricingPage           from "./components/PricingPage.jsx";
+import ControlCenter         from "./components/ControlCenter.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import "./App.css";
 
 // Web: 5 primary tabs — secondary modules in "More" overflow
 const TABS = [
-  { id: "runtime",  label: "Control Room", featured: true },
-  { id: "chat",     label: "Intelligence"  },
-  { id: "insights", label: "Pipeline"      },
-  { id: "clients",  label: "Contacts"      },
+  { id: "home",     label: "Control Center", featured: true },
+  { id: "runtime",  label: "Execution"       },
+  { id: "chat",     label: "Intelligence"    },
+  { id: "insights", label: "Pipeline"        },
+  { id: "clients",  label: "Contacts"        },
   { id: "more",     label: "More ▾"        },
 ];
 
@@ -104,11 +106,12 @@ const _PRODUCT   = _IS_DESKTOP ? "desktop" : _IS_SAAS ? "saas" : "public";
 
 // Desktop: same 5-tab structure — runtime is already default here
 const DESKTOP_TABS = [
-  { id: "runtime",  label: "Control Room", featured: true },
-  { id: "chat",     label: "Intelligence"  },
-  { id: "insights", label: "Pipeline"      },
-  { id: "clients",  label: "Contacts"      },
-  { id: "more",     label: "More ▾"        },
+  { id: "home",     label: "Control Center", featured: true },
+  { id: "runtime",  label: "Execution"       },
+  { id: "chat",     label: "Intelligence"    },
+  { id: "insights", label: "Pipeline"        },
+  { id: "clients",  label: "Contacts"        },
+  { id: "more",     label: "More ▾"          },
 ];
 
 function AppInner() {
@@ -122,8 +125,8 @@ function AppInner() {
   const [input,   setInput]   = useState("");
   const [loading, setLoading] = useState(false);
   const [online,  setOnline]  = useState(false);
-  // Both web and desktop default to Control Room — it IS the product
-  const [tab,      setTab]      = useState("runtime");
+  // Default: Control Center (home) — overview + dispatch + live status
+  const [tab,      setTab]      = useState("home");
   const [moreOpen, setMoreOpen] = useState(false);
   const [stats,     setStats]     = useState(null);
   const [opsData,   setOpsData]   = useState(null);
@@ -250,7 +253,7 @@ function AppInner() {
     }]);
     localStorage.setItem("jarvis_just_onboarded", "1");
     setScreen("app");
-    setTab("clients");
+    setTab("home");  // land on Control Center — shows live system state immediately
   };
 
   // ── First-launch hint (dismissible, shown once after onboarding) ──
@@ -327,8 +330,8 @@ function AppInner() {
           <span className="brand-name">Ooplix</span>
         </div>
         <div className="header-right">
-          {/* Phase 1657: emergency controls only shown on runtime/cockpit tab — reduce clutter */}
-          {tab === "runtime" && (
+          {/* Emergency controls on Control Center and Execution tabs */}
+          {(tab === "home" || tab === "runtime") && (
             opsData?.status === "critical" ? (
               <button
                 className="btn-sm btn-success"
@@ -419,7 +422,7 @@ function AppInner() {
             Not sure where to start?{" "}
             <button
               className="first-launch-link"
-              onClick={() => { setTab("overview"); dismissFirstLaunchHint(); }}
+              onClick={() => { setTab("home"); dismissFirstLaunchHint(); }}
             >
               See what Ooplix can do →
             </button>
@@ -429,6 +432,14 @@ function AppInner() {
       )}
 
       <main className="app-main">
+        {tab === "home"     && (
+          <ControlCenter
+            stats={stats}
+            opsData={opsData}
+            online={online}
+            onNavigate={setTab}
+          />
+        )}
         {tab === "chat" && (
           <Chat
             messages={messages}
