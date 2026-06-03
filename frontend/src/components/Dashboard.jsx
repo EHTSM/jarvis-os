@@ -148,8 +148,9 @@ function _wywaVisible(totalSent, dismissedAt) {
     if (timeSinceDismiss < WYWA_RESHOW_AFTER) return false;
   }
 
-  // Show when there's any outreach activity, or when contacts exist but WhatsApp not yet connected
-  return totalSent >= 0;
+  // Only show when there's real activity (sent > 0) or contacts are loaded
+  // totalSent >= 0 was always true — this was a bug that showed the card to everyone
+  return totalSent > 0;
 }
 
 function WywaCard({ stats, opsData, onDismiss }) {

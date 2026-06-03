@@ -13,7 +13,11 @@ const SCHEDULE = [
 ];
 
 export default function AddClientForm({ onSuccess, whatsappConnected }) {
-  const [open,    setOpen]    = useState(false);
+  // Auto-open on first visit (no leads added yet) so the critical first action
+  // is immediately visible rather than hidden behind a toggle button.
+  const [open,    setOpen]    = useState(
+    () => localStorage.getItem("jarvis_has_leads") !== "1"
+  );
   const [fields,  setFields]  = useState(EMPTY);
   const [loading, setLoading] = useState(false);
   const [saved,   setSaved]   = useState(null);   // null | { name, phone }
@@ -32,16 +36,25 @@ export default function AddClientForm({ onSuccess, whatsappConnected }) {
     try {
       const res = await createLead(fields);
       if (res.success === false) {
-        setError(res.error || "Could not add client. Please try again.");
+        const rawErr = res.error || "";
+        const msg = /unauthorized|forbidden|401|403/i.test(rawErr)
+          ? "Session expired — please refresh the page and sign in again."
+          : rawErr || "Could not add client. Please try again.";
+        setError(msg);
       } else if (res.duplicate) {
         setError("This number is already in your client list.");
       } else {
+        localStorage.setItem("jarvis_has_leads", "1");
         setSaved({ name: fields.name.trim(), phone: fields.phone.trim() });
         setFields(EMPTY);
+        setOpen(false); // collapse form after save so "+ Add another" is the next action
         onSuccess?.();
       }
     } catch (err) {
-      setError(err.message);
+      const msg = /unauthorized|forbidden/i.test(err.message)
+        ? "Session expired — please refresh the page and sign in again."
+        : err.message;
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -61,7 +74,7 @@ export default function AddClientForm({ onSuccess, whatsappConnected }) {
             <p className="acf-success-title">{saved.name} added!</p>
             <p className="acf-success-sub">
               {whatsappConnected
-                ? "Jarvis will send a greeting and follow up automatically."
+                ? "JARVIS will send a greeting and follow up automatically."
                 : "Connect WhatsApp below to start automated follow-ups."}
             </p>
           </div>
