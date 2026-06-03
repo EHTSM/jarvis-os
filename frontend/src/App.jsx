@@ -368,7 +368,7 @@ function AppInner() {
           />
         )}
         {tab === "overview"  && <CapabilitiesOverview onNavigate={setTab} />}
-        {tab === "insights"  && <Dashboard stats={stats} opsData={opsData} onNavigate={setTab} />}
+        {tab === "insights"  && <Dashboard stats={stats} opsData={opsData} onNavigate={setTab} online={online} />}
         {tab === "activity"  && <Logs opsData={opsData} stats={stats} onNavigate={setTab} />}
         {tab === "clients"   && (
           <PaymentPanel
