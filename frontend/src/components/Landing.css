@@ -1203,6 +1203,14 @@
   color: var(--text-dim, #8994b0);
   background: rgba(255, 255, 255, 0.04);
 }
+.landing-footer-link--accent {
+  color: var(--accent, #7c6fff);
+  font-weight: 700;
+}
+.landing-footer-link--accent:hover {
+  color: var(--accent, #7c6fff);
+  background: rgba(124, 111, 255, 0.08);
+}
 
 .landing-footer-legal {
   font-size: 10.5px;

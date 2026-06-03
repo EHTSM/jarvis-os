@@ -35,7 +35,7 @@ const PRICING = [
   { title: "Designed to scale", detail: "Upgrade when your team is ready with simple SaaS pricing and premium support.", badge: "Growth-ready" },
 ];
 
-export default function Landing({ onStart, onLogin, onLegal }) {
+export default function Landing({ onStart, onLogin, onLegal, onPricing }) {
   return (
     <div className="landing">
       <div className="landing-inner">
@@ -169,6 +169,7 @@ export default function Landing({ onStart, onLogin, onLegal }) {
             <span className="landing-footer-name">JARVIS <span className="landing-footer-by">by Ooplix</span></span>
           </div>
           <nav className="landing-footer-nav" aria-label="Legal">
+            <button className="landing-footer-link landing-footer-link--accent" onClick={onPricing}>Pricing</button>
             <button className="landing-footer-link" onClick={() => onLegal?.("company")}>Company</button>
             <button className="landing-footer-link" onClick={() => onLegal?.("privacy")}>Privacy Policy</button>
             <button className="landing-footer-link" onClick={() => onLegal?.("terms")}>Terms of Service</button>

@@ -23,6 +23,7 @@ import TermsOfService        from "./components/legal/TermsOfService.jsx";
 import RefundPolicy          from "./components/legal/RefundPolicy.jsx";
 import ContactPage           from "./components/legal/ContactPage.jsx";
 import TrustCompliance       from "./components/legal/TrustCompliance.jsx";
+import PricingPage           from "./components/PricingPage.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import "./App.css";
 
@@ -84,7 +85,7 @@ function _welcomeMessage(profile) {
   if (!hasLeads) {
     return `Hi! JARVIS is set up for ${profile.business || "your work"}.\n\nAdd your first contact in the Contacts tab — just a name and WhatsApp number — and I'll handle all follow-ups from there.\n\nOr open the Control Room to run a task, automate a workflow, or execute anything directly.`;
   }
-  return `Hi! Jarvis is running for ${profile.business || "your business"}.\n\nI'm monitoring your pipeline, sending follow-ups, and ready for your next command. Check the Pipeline tab for lead activity, or the History tab for what I've sent.\n\nWhat do you need?`;
+  return `Hi! JARVIS is running for ${profile.business || "your business"}.\n\nI'm monitoring your pipeline, sending follow-ups, and ready for your next command. Check the Pipeline tab for lead activity, or the History tab for what I've sent.\n\nWhat do you need?`;
 }
 
 export default function App() {
@@ -157,7 +158,7 @@ function AppInner() {
 
     const poll = async () => {
       const healthy = await checkHealth();
-      if (!wasOnline && healthy)  push("system", "Connected to Jarvis.");
+      if (!wasOnline && healthy)  push("system", "Connected to JARVIS.");
       if (wasOnline  && !healthy) push("system", "Connection lost — reconnecting…");
       wasOnline = healthy;
       setOnline(healthy);
@@ -235,7 +236,7 @@ function AppInner() {
   const handleOnboardingComplete = (profile) => {
     setMessages([{
       id: Date.now(), role: "jarvis",
-      text: `Setup complete! Jarvis is ready for your ${profile.business || "business"}.\n\nAdd your first client below — enter their name and WhatsApp number, and I'll take it from there.`,
+      text: `Setup complete! JARVIS is ready for your ${profile.business || "business"}.\n\nAdd your first client below — enter their name and WhatsApp number, and I'll take it from there.`,
       ts:   Date.now()
     }]);
     localStorage.setItem("jarvis_just_onboarded", "1");
@@ -259,7 +260,8 @@ function AppInner() {
   const closeLegal = useCallback(() => setLegalPage(null),     []);
 
   // ── Screen routing ────────────────────────────────────────────────
-  if (screen === "landing")    return <Landing onStart={handleStart} onLogin={handleLogin} onLegal={openLegal} />;
+  if (screen === "pricing")    return <PricingPage onBack={() => setScreen("landing")} onStart={handleStart} />;
+  if (screen === "landing")    return <Landing onStart={handleStart} onLogin={handleLogin} onLegal={openLegal} onPricing={() => setScreen("pricing")} />;
   if (screen === "onboarding") return <Onboarding onComplete={handleOnboardingComplete} />;
 
   // ── Explicit login screen (reached via "Sign in" on landing) ──────
@@ -293,6 +295,7 @@ function AppInner() {
       refund:  <RefundPolicy  onBack={closeLegal} />,
       contact: <ContactPage   onBack={closeLegal} />,
       trust:   <TrustCompliance onBack={closeLegal} />,
+      pricing: <PricingPage onBack={closeLegal} onStart={() => { closeLegal(); handleStart(); }} />,
     };
     return (
       <div className={`app app--${_PRODUCT}`}>
@@ -310,7 +313,7 @@ function AppInner() {
       <header className="app-header">
         <div className="brand">
           <span className="logo">J</span>
-          <span className="brand-name">Jarvis</span>
+          <span className="brand-name">JARVIS</span>
         </div>
         <div className="header-right">
           {/* Phase 1657: emergency controls only shown on runtime/cockpit tab — reduce clutter */}
@@ -366,14 +369,14 @@ function AppInner() {
 
       {showFirstLaunchHint && !_IS_DESKTOP && (
         <div className="first-launch-hint">
-          <span className="first-launch-title">Welcome to Jarvis!</span>
+          <span className="first-launch-title">Welcome to JARVIS!</span>
           <span className="first-launch-body">
             Not sure where to start?{" "}
             <button
               className="first-launch-link"
               onClick={() => { setTab("overview"); dismissFirstLaunchHint(); }}
             >
-              See what Jarvis can do →
+              See what JARVIS can do →
             </button>
           </span>
           <button className="first-launch-dismiss" onClick={dismissFirstLaunchHint}>✕</button>

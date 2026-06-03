@@ -66,7 +66,7 @@ function SystemStatusCard({ opsData, online }) {
 
   const items = [
     {
-      label: "Jarvis backend",
+      label: "JARVIS backend",
       ok:    online,
       value: online ? "Online" : "Offline",
     },
@@ -119,7 +119,7 @@ function FirstSuccessBanner({ stats, onDismiss }) {
           <p className="fs-headline">First payment collected!</p>
           <p className="fs-sub">
             {paid === 1
-              ? `1 client paid${revenue > 0 ? ` — ₹${revenue.toLocaleString("en-IN")} collected` : ""}. Jarvis is working.`
+              ? `1 client paid${revenue > 0 ? ` — ₹${revenue.toLocaleString("en-IN")} collected` : ""}. JARVIS is working.`
               : `${paid} clients paid${revenue > 0 ? ` — ₹${revenue.toLocaleString("en-IN")} collected` : ""}. Keep going.`
             }
           </p>
@@ -166,14 +166,14 @@ function WywaCard({ stats, opsData, onDismiss }) {
   let headline, sub;
 
   if (totalSent > 0) {
-    headline = `Jarvis sent ${totalSent.toLocaleString()} follow-up${totalSent !== 1 ? "s" : ""} since your last visit.`;
+    headline = `JARVIS sent ${totalSent.toLocaleString()} follow-up${totalSent !== 1 ? "s" : ""} since your last visit.`;
     sub = hotLeads > 0
       ? `${hotLeads} lead${hotLeads !== 1 ? "s are" : " is"} hot — worth a quick reply.`
       : lastActivity > 0
         ? `Last action ${_timeAgo(new Date(lastActivity).toISOString())}.`
         : "All automations running.";
   } else if (totalContacts > 0) {
-    headline = `Jarvis is ready — ${totalContacts} contact${totalContacts !== 1 ? "s" : ""} loaded.`;
+    headline = `JARVIS is ready — ${totalContacts} contact${totalContacts !== 1 ? "s" : ""} loaded.`;
     sub = "Connect WhatsApp to start automated follow-ups.";
   } else {
     return null;
@@ -259,7 +259,7 @@ export default function Dashboard({ stats, opsData, onNavigate, online = false }
           <div className="empty-icon-mark" aria-hidden="true" />
           <p className="empty-title">Your pipeline starts here</p>
           <p className="empty-sub">
-            Add your first lead — just a name and WhatsApp number. Jarvis handles all the follow-ups from there.
+            Add your first lead — just a name and WhatsApp number. JARVIS handles all the follow-ups from there.
           </p>
           <button className="empty-action-btn" onClick={() => onNavigate?.("clients")}>
             Add your first contact →
@@ -317,7 +317,7 @@ export default function Dashboard({ stats, opsData, onNavigate, online = false }
           <div className="empty-icon-mark" aria-hidden="true" />
           <p className="empty-title">Your pipeline starts here</p>
           <p className="empty-sub">
-            Go to the <strong>Clients</strong> tab and add your first lead — just a name and WhatsApp number. Jarvis handles all the follow-ups from there.
+            Go to the <strong>Clients</strong> tab and add your first lead — just a name and WhatsApp number. JARVIS handles all the follow-ups from there.
           </p>
           <button className="empty-action-btn" onClick={() => onNavigate?.("clients")}>
             Add your first contact →
@@ -372,7 +372,7 @@ export default function Dashboard({ stats, opsData, onNavigate, online = false }
             <span className="auto-empty-dot" />
             <div>
               <div className="auto-empty-title">Automations haven't started yet</div>
-              <div className="auto-empty-desc">Once you add a lead and connect WhatsApp, Jarvis runs scheduled follow-ups automatically — no manual sending needed.</div>
+              <div className="auto-empty-desc">Once you add a lead and connect WhatsApp, JARVIS runs scheduled follow-ups automatically — no manual sending needed.</div>
             </div>
           </div>
         ) : (
