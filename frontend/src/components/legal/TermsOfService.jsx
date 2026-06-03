@@ -19,7 +19,7 @@ export default function TermsOfService({ onBack }) {
         <div className="legal-section">
           <h2 className="legal-section-title">1. Acceptance</h2>
           <p className="legal-body">
-            By accessing or using JARVIS ("the Service"), operated by {COMPANY} under the {BRAND} brand,
+            By accessing or using Ooplix ("the Service"), operated by {COMPANY},
             you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.
           </p>
         </div>
@@ -27,7 +27,7 @@ export default function TermsOfService({ onBack }) {
         <div className="legal-section">
           <h2 className="legal-section-title">2. Description of Service</h2>
           <p className="legal-body">
-            JARVIS is an AI-powered business operating system that provides CRM automation, WhatsApp
+            Ooplix is an AI Operating System that provides CRM automation, WhatsApp
             follow-up management, payment link generation, and workflow execution tools. The Service is
             provided as-is on a subscription basis with a 7-day free trial.
           </p>
@@ -56,7 +56,7 @@ export default function TermsOfService({ onBack }) {
         <div className="legal-section">
           <h2 className="legal-section-title">5. WhatsApp Usage</h2>
           <p className="legal-body">
-            JARVIS uses the Meta WhatsApp Business API. You are solely responsible for ensuring your
+            Ooplix uses the Meta WhatsApp Business API. You are solely responsible for ensuring your
             messaging complies with Meta's Business Policy, WhatsApp's Terms of Service, and applicable
             laws (including the TCPA, GDPR, and India's IT Act). {COMPANY} is not liable for account
             suspension or penalties arising from your messaging practices.
@@ -75,7 +75,7 @@ export default function TermsOfService({ onBack }) {
         <div className="legal-section">
           <h2 className="legal-section-title">7. Intellectual Property</h2>
           <p className="legal-body">
-            JARVIS, Ooplix, and all associated software, designs, and documentation are the intellectual
+            Ooplix and all associated software, designs, and documentation are the intellectual
             property of {COMPANY}. You are granted a limited, non-exclusive, non-transferable licence
             to use the Service for your own business purposes.
           </p>

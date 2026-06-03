@@ -23,7 +23,7 @@ function _checkLocalStorage() {
     return { id: "local_storage", label: "localStorage", ok: true, severity: "critical", detail: "Available" };
   } catch {
     return { id: "local_storage", label: "localStorage", ok: false, severity: "critical",
-      detail: "localStorage unavailable — JARVIS cannot persist state",
+      detail: "localStorage unavailable — Ooplix cannot persist state",
       suggestedFix: "Check browser privacy settings or enable cookies/storage" };
   }
 }
@@ -61,7 +61,7 @@ function _checkStorageQuota() {
       ok,
       severity:    "medium",
       detail:      `~${usedKB} KB used`,
-      suggestedFix: ok ? null : "Clear old JARVIS data — localStorage approaching quota",
+      suggestedFix: ok ? null : "Clear old Ooplix data — localStorage approaching quota",
     };
   } catch {
     return { id: "storage_quota", label: "Storage quota", ok: true, severity: "medium", detail: "Unknown" };
@@ -90,11 +90,11 @@ function _checkJarvisKeys() {
 
   return {
     id:          "jarvis_keys",
-    label:       "JARVIS state keys",
+    label:       "Ooplix state keys",
     ok,
     severity:    "medium",
     detail,
-    suggestedFix: ok ? null : "Refresh the page — JARVIS will re-initialize missing keys",
+    suggestedFix: ok ? null : "Refresh the page — Ooplix will re-initialize missing keys",
   };
 }
 

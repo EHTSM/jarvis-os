@@ -80,7 +80,7 @@ export default function TrustCompliance({ onBack }) {
 
         <div className="legal-section">
           <p className="legal-body">
-            We build JARVIS with the assumption that your business data is sensitive and that your
+            We build Ooplix with the assumption that your business data is sensitive and that your
             clients trust you. These are the practices we hold ourselves to.
           </p>
         </div>

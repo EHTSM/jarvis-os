@@ -544,7 +544,7 @@ function RemindersView({ onToast }) {
       ) : allRems.length === 0 ? (
         <div className="pos-empty">
           <p className="pos-empty-title">No active reminders</p>
-          <p className="pos-empty-sub">Set a reminder and JARVIS will surface it when it's due.</p>
+          <p className="pos-empty-sub">Set a reminder and Ooplix will surface it when it's due.</p>
         </div>
       ) : (
         <div className="pos-list">

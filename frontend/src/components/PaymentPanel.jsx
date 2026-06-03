@@ -37,7 +37,7 @@ function PaymentSetupGuide({ onDismiss }) {
           <span className="pay-setup-step-num">3</span>
           <div>
             <p className="pay-setup-step-title">Add keys to your server .env</p>
-            <p className="pay-setup-step-desc">On your server, add these two lines then restart JARVIS:</p>
+            <p className="pay-setup-step-desc">On your server, add these two lines then restart Ooplix:</p>
             <div className="pay-setup-code">
               <code>RAZORPAY_KEY_ID=rzp_test_your_key_here</code>
               <code>RAZORPAY_KEY_SECRET=your_secret_here</code>
@@ -200,7 +200,7 @@ export default function Clients({ onMessage, onToast, whatsappConnected }) {
             <span className="wa-banner-icon">✉️</span>
             <div>
               <p className="wa-banner-title">Connect WhatsApp to enable follow-ups</p>
-              <p className="wa-banner-sub">JARVIS will automatically message your leads once WhatsApp is connected.</p>
+              <p className="wa-banner-sub">Ooplix will automatically message your leads once WhatsApp is connected.</p>
             </div>
           </div>
           <button className="wa-banner-btn" onClick={() => setView("setup")}>
@@ -266,7 +266,7 @@ export default function Clients({ onMessage, onToast, whatsappConnected }) {
             <span className="leads-empty-icon">📭</span>
             <p className="leads-empty-title">No clients yet</p>
             <p className="leads-empty-sub">
-              Add your first client above — JARVIS will start following up automatically.
+              Add your first client above — Ooplix will start following up automatically.
             </p>
           </div>
         ) : (

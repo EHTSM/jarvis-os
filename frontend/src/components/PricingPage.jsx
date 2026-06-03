@@ -73,8 +73,8 @@ const FAQ = [
     a: "You'll be prompted to select a plan. Your data and leads are preserved either way — nothing is deleted.",
   },
   {
-    q: "Does JARVIS charge per message?",
-    a: "No. The subscription covers JARVIS platform access. WhatsApp API usage is billed separately by Meta (typically very low cost). Razorpay charges a small transaction fee per payment collected.",
+    q: "Does Ooplix charge per message?",
+    a: "No. The subscription covers Ooplix platform access. WhatsApp API usage is billed separately by Meta (typically very low cost). Razorpay charges a small transaction fee per payment collected.",
   },
   {
     q: "Can I cancel anytime?",

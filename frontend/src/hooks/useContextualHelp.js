@@ -44,7 +44,7 @@ const HELP_ARTICLES = {
   deployment_guidance: {
     id:       "deployment_guidance",
     title:    "Safe deployment checklist",
-    summary:  "JARVIS blocks deploys when trust is below 55 or a crash was recorded in the last 30m.",
+    summary:  "Ooplix blocks deploys when trust is below 55 or a crash was recorded in the last 30m.",
     detail:   [
       "Pre-deploy: run health check, create backup, verify no recent crashes.",
       "Deployment confidence score shows HIGH / MEDIUM / LOW based on recent history.",
@@ -56,7 +56,7 @@ const HELP_ARTICLES = {
   replay_understanding: {
     id:       "replay_understanding",
     title:    "How replay restoration works",
-    summary:  "JARVIS stores a session snapshot for up to 6 hours, restored automatically on reconnect.",
+    summary:  "Ooplix stores a session snapshot for up to 6 hours, restored automatically on reconnect.",
     detail:   [
       "Snapshots include: trust score, predictions, and deploy confidence.",
       "Snapshots older than 6 hours are considered stale and not restored.",
@@ -70,7 +70,7 @@ const HELP_ARTICLES = {
     title:    "Recovery loop prevention",
     summary:  "Repeating the same failing command is a dead-end. Change approach.",
     detail:   [
-      "JARVIS detects when the same command fails 3+ times and surfaces a warning.",
+      "Ooplix detects when the same command fails 3+ times and surfaces a warning.",
       "Try: inspect logs first (pm2 logs --lines 100), then act on what you see.",
       "Use the Recovery bundle for guided step-by-step service restoration.",
       "After recovery, verify with pm2 status before continuing.",

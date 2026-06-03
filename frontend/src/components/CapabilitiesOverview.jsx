@@ -5,7 +5,7 @@ const CAPABILITIES = [
   {
     id:    "chat",
     icon:  "◈",
-    title: "Ask JARVIS",
+    title: "Ask Ooplix",
     desc:  "Chat with an AI that takes real action — runs code, sends messages, looks things up, and executes tasks on your behalf.",
     cta:   "Open Chat",
   },
@@ -20,7 +20,7 @@ const CAPABILITIES = [
     id:    "runtime",
     icon:  "⬡",
     title: "Control Room",
-    desc:  "Execute workflows, run automations, schedule tasks, and monitor everything JARVIS is doing in real time.",
+    desc:  "Execute workflows, run automations, schedule tasks, and monitor everything Ooplix is doing in real time.",
     cta:   "Open Control Room",
     featured: true,
   },
@@ -44,7 +44,7 @@ export default function CapabilitiesOverview({ onNavigate }) {
   return (
     <div className="cap-overview">
       <div className="cap-header">
-        <h2 className="cap-title">What JARVIS can do</h2>
+        <h2 className="cap-title">What Ooplix can do</h2>
         <p className="cap-sub">Five integrated modules. One operating system for your work.</p>
       </div>
 

@@ -18,7 +18,7 @@ export default function RefundPolicy({ onBack }) {
         <div className="legal-section">
           <h2 className="legal-section-title">1. Free Trial</h2>
           <p className="legal-body">
-            JARVIS offers a 7-day free trial with no credit card required. No charges are applied during
+            Ooplix offers a 7-day free trial with no credit card required. No charges are applied during
             the trial period. If you choose not to upgrade, your trial expires automatically with no action needed.
           </p>
         </div>
@@ -56,7 +56,7 @@ export default function RefundPolicy({ onBack }) {
           <h2 className="legal-section-title">5. SaaS Billing Disclosure</h2>
           <div className="legal-highlight-box">
             <p className="legal-body">
-              JARVIS is a Software-as-a-Service (SaaS) product. Subscriptions are recurring and will
+              Ooplix is a Software-as-a-Service (SaaS) product. Subscriptions are recurring and will
               auto-renew at the end of each billing period unless cancelled. You will receive a reminder
               email before any renewal charge. The subscription fee is for access to the software
               platform — it does not include WhatsApp API usage fees, Razorpay transaction fees, or

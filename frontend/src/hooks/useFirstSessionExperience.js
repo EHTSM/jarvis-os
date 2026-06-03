@@ -36,7 +36,7 @@ const ALL_TIPS = [
     id:       "replay_restore",
     phase:    "first_run",
     title:    "Reconnect-safe restoration",
-    body:     "If you disconnect and reconnect, JARVIS restores your last session context. Sessions are valid for 6 hours.",
+    body:     "If you disconnect and reconnect, Ooplix restores your last session context. Sessions are valid for 6 hours.",
     category: "replay",
   },
   {

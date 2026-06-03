@@ -37,7 +37,7 @@ export async function testWhatsAppSend(phone, message) {
   try {
     return await _fetch("/whatsapp/send", {
       method: "POST",
-      body: JSON.stringify({ phone, message: message || "JARVIS connected. WhatsApp automation is active." })
+      body: JSON.stringify({ phone, message: message || "Ooplix connected. WhatsApp automation is active." })
     });
   } catch (err) { return { success: false, error: err.message }; }
 }

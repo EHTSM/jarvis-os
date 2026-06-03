@@ -3,7 +3,7 @@ import "./Chat.css";
 
 const ROLE_LABELS = {
   user:   "You",
-  jarvis: "JARVIS",
+  jarvis: "Ooplix",
   system: "system",
   error:  "error"
 };
@@ -99,7 +99,7 @@ function _buildQuickActions() {
     const p = JSON.parse(localStorage.getItem("jarvis_biz_profile") || "null");
     if (!p) {
       return [
-        { label: "What can you do?",  cmd: "What can JARVIS do for me?"    },
+        { label: "What can you do?",  cmd: "What can Ooplix do for me?"    },
         { label: "Add a contact",     cmd: "How do I add my first contact?" },
         { label: "Show pipeline",     cmd: "Show my pipeline status"        },
         { label: "Control Room",      cmd: "What is the Control Room?"      },
@@ -124,7 +124,7 @@ function _buildQuickActions() {
     return [
       { label: "Show pipeline",    cmd: "Show my pipeline status"        },
       { label: "Payment link",     cmd: "Generate a payment link"        },
-      { label: "What can you do?", cmd: "What can JARVIS do for me?"     },
+      { label: "What can you do?", cmd: "What can Ooplix do for me?"     },
       { label: "Help",             cmd: "What should I do first?"        },
     ];
   }
@@ -157,7 +157,7 @@ export default function Chat({
               {workflowDone ? "✓ Completed" : "Running"}
             </span>
             <span className="chat-workflow-sub">
-              {currentWorkflow.workflow || (workflowDone ? "Workflow finished" : "JARVIS is working…")}
+              {currentWorkflow.workflow || (workflowDone ? "Workflow finished" : "Ooplix is working…")}
             </span>
           </div>
           {currentWorkflow.status && (
@@ -183,7 +183,7 @@ export default function Chat({
           <div className="msg msg--jarvis msg--ai">
             <div className="msg-header">
               <div className="msg-meta-left">
-                <span className="msg-role" style={{ color: ROLE_COLORS.jarvis }}>JARVIS</span>
+                <span className="msg-role" style={{ color: ROLE_COLORS.jarvis }}>Ooplix</span>
                 <span className="msg-thinking-label">thinking…</span>
               </div>
             </div>
@@ -219,7 +219,7 @@ export default function Chat({
           value={input}
           onChange={e => onInput(e.target.value)}
           onKeyDown={onKey}
-          placeholder={loading ? "JARVIS is responding…" : online ? "Message JARVIS, or type a command…" : "Connecting…"}
+          placeholder={loading ? "Ooplix is responding…" : online ? "Message Ooplix, or type a command…" : "Connecting…"}
           disabled={!online || loading}
           autoFocus
           autoComplete="off"

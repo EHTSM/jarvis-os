@@ -28,7 +28,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import "./App.css";
 
 const TABS = [
-  { id: "chat",       label: "Ask JARVIS"    },
+  { id: "chat",       label: "Ask Ooplix"    },
   { id: "overview",   label: "Overview"      },
   { id: "runtime",    label: "Control Room", featured: true },
   { id: "insights",   label: "Pipeline"      },
@@ -77,15 +77,15 @@ function _loadProfile() {
 
 function _welcomeMessage(profile) {
   if (!profile) {
-    return "Hi! I'm JARVIS — your AI Operating System.\n\nI manage your entire business in the background: follow up with leads automatically, run code and shell commands, execute workflows, track your pipeline, and take action while you're away.\n\nOpen the Control Room tab to execute tasks directly, or just tell me what you need.";
+    return "Hi! I'm Ooplix — your AI Operating System.\n\nI manage your entire business in the background: follow up with leads automatically, run code and shell commands, execute workflows, track your pipeline, and take action while you're away.\n\nOpen the Control Room tab to execute tasks directly, or just tell me what you need.";
   }
   const hasLeads = (() => {
     try { return localStorage.getItem("jarvis_has_leads") === "1"; } catch { return false; }
   })();
   if (!hasLeads) {
-    return `Hi! JARVIS is set up for ${profile.business || "your work"}.\n\nAdd your first contact in the Contacts tab — just a name and WhatsApp number — and I'll handle all follow-ups from there.\n\nOr open the Control Room to run a task, automate a workflow, or execute anything directly.`;
+    return `Hi! Ooplix is set up for ${profile.business || "your work"}.\n\nAdd your first contact in the Contacts tab — just a name and WhatsApp number — and I'll handle all follow-ups from there.\n\nOr open the Control Room to run a task, automate a workflow, or execute anything directly.`;
   }
-  return `Hi! JARVIS is running for ${profile.business || "your business"}.\n\nI'm monitoring your pipeline, sending follow-ups, and ready for your next command. Check the Pipeline tab for lead activity, or the History tab for what I've sent.\n\nWhat do you need?`;
+  return `Hi! Ooplix is running for ${profile.business || "your business"}.\n\nI'm monitoring your pipeline, sending follow-ups, and ready for your next command. Check the Pipeline tab for lead activity, or the History tab for what I've sent.\n\nWhat do you need?`;
 }
 
 export default function App() {
@@ -99,7 +99,7 @@ const _PRODUCT   = _IS_DESKTOP ? "desktop" : _IS_SAAS ? "saas" : "public";
 // Tabs shown in desktop shell: cockpit-focused, no marketing/onboarding tabs
 const DESKTOP_TABS = [
   { id: "runtime",    label: "Control Room", featured: true },
-  { id: "chat",       label: "Ask JARVIS"    },
+  { id: "chat",       label: "Ask Ooplix"    },
   { id: "insights",   label: "Pipeline"      },
   { id: "activity",   label: "History"       },
   { id: "clients",    label: "Contacts"      },
@@ -160,7 +160,7 @@ function AppInner() {
     const poll = async () => {
       const healthy = await checkHealth();
       if (!wasOnline && healthy && !connectedOnce) {
-        push("system", "Connected to JARVIS.");
+        push("system", "Connected to Ooplix.");
         connectedOnce = true;
       }
       if (wasOnline && !healthy) push("system", "Connection lost — reconnecting…");
@@ -242,7 +242,7 @@ function AppInner() {
   const handleOnboardingComplete = (profile) => {
     setMessages([{
       id: Date.now(), role: "jarvis",
-      text: `Setup complete! JARVIS is ready for your ${profile.business || "business"}.\n\nAdd your first client below — enter their name and WhatsApp number, and I'll take it from there.`,
+      text: `Setup complete! Ooplix is ready for your ${profile.business || "business"}.\n\nAdd your first client below — enter their name and WhatsApp number, and I'll take it from there.`,
       ts:   Date.now()
     }]);
     localStorage.setItem("jarvis_just_onboarded", "1");
@@ -319,7 +319,7 @@ function AppInner() {
       <header className="app-header">
         <div className="brand">
           <span className="logo">J</span>
-          <span className="brand-name">JARVIS</span>
+          <span className="brand-name">Ooplix</span>
         </div>
         <div className="header-right">
           {/* Phase 1657: emergency controls only shown on runtime/cockpit tab — reduce clutter */}
@@ -375,14 +375,14 @@ function AppInner() {
 
       {showFirstLaunchHint && !_IS_DESKTOP && (
         <div className="first-launch-hint">
-          <span className="first-launch-title">Welcome to JARVIS!</span>
+          <span className="first-launch-title">Welcome to Ooplix!</span>
           <span className="first-launch-body">
             Not sure where to start?{" "}
             <button
               className="first-launch-link"
               onClick={() => { setTab("overview"); dismissFirstLaunchHint(); }}
             >
-              See what JARVIS can do →
+              See what Ooplix can do →
             </button>
           </span>
           <button className="first-launch-dismiss" onClick={dismissFirstLaunchHint}>✕</button>

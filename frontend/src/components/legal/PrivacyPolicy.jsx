@@ -19,7 +19,7 @@ export default function PrivacyPolicy({ onBack }) {
           <h2 className="legal-section-title">1. Overview</h2>
           <p className="legal-body">
             This Privacy Policy explains how {COMPANY} ("we", "our", "Ooplix") collects, uses, stores,
-            and protects information when you use JARVIS ("the Service"). By using the Service, you agree
+            and protects information when you use Ooplix ("the Service"). By using the Service, you agree
             to the practices described in this policy.
           </p>
         </div>
@@ -38,7 +38,7 @@ export default function PrivacyPolicy({ onBack }) {
         <div className="legal-section">
           <h2 className="legal-section-title">3. How We Use Your Data</h2>
           <ul className="legal-list">
-            <li>To operate and deliver the JARVIS automation service</li>
+            <li>To operate and deliver the Ooplix automation service</li>
             <li>To send WhatsApp follow-up messages on your behalf to your leads</li>
             <li>To generate and track payment links via Razorpay</li>
             <li>To provide system health monitoring and error diagnostics</li>
@@ -49,7 +49,7 @@ export default function PrivacyPolicy({ onBack }) {
 
         <div className="legal-section">
           <h2 className="legal-section-title">4. Third-Party Services</h2>
-          <p className="legal-body">JARVIS integrates with the following third-party services, each governed by their own privacy policies:</p>
+          <p className="legal-body">Ooplix integrates with the following third-party services, each governed by their own privacy policies:</p>
           <ul className="legal-list">
             <li><strong>Meta (WhatsApp Business API)</strong> — for automated messaging</li>
             <li><strong>Razorpay</strong> — for payment link generation and collection</li>
@@ -90,7 +90,7 @@ export default function PrivacyPolicy({ onBack }) {
         <div className="legal-section">
           <h2 className="legal-section-title">8. Cookies and Local Storage</h2>
           <p className="legal-body">
-            JARVIS uses browser localStorage to store your business profile, session state, and UI
+            Ooplix uses browser localStorage to store your business profile, session state, and UI
             preferences. No cross-site tracking cookies are used. Session cookies are used for
             authentication only and expire when you sign out.
           </p>

@@ -13,7 +13,7 @@ function _loadPersistedMsgs() {
       if (Array.isArray(parsed) && parsed.length > 0) return parsed;
     }
   } catch { /* ignore corrupt storage */ }
-  return [{ id: 0, role: "sys", text: "JARVIS AI console — type commands or natural language" }];
+  return [{ id: 0, role: "sys", text: "Ooplix AI console — type commands or natural language" }];
 }
 
 function _savePersistedMsgs(msgs) {
@@ -46,9 +46,9 @@ export default function AIConsolePanel({ style }) {
   }, [msgs]);
 
   const assistantSummary = useMemo(() => {
-    if (loading) return "JARVIS is synthesizing the next operational insight…";
+    if (loading) return "Ooplix is synthesizing the next operational insight…";
     const last = [...msgs].reverse().find(m => m.role === "jarvis");
-    if (!last) return "JARVIS is ready for your next command.";
+    if (!last) return "Ooplix is ready for your next command.";
     const summary = (last.text || "").replace(/\s+/g, " ").trim();
     const firstLine = summary.split(/[\n\.]/)[0].trim();
     return firstLine.length > 100 ? `${firstLine.slice(0, 100)}…` : firstLine;
@@ -138,7 +138,7 @@ export default function AIConsolePanel({ style }) {
     <div className="op-panel op-aiconsole" style={style}>
       <div className="op-panel-header">
         <div>
-          <span className="op-panel-title">Ask JARVIS</span>
+          <span className="op-panel-title">Ask Ooplix</span>
           <span className="op-aiconsole-meta">Your AI operator — type anything</span>
           <div className="op-aiconsole-status">
             <span className="op-aiconsole-badge">● ready</span>
@@ -148,7 +148,7 @@ export default function AIConsolePanel({ style }) {
           </div>
         </div>
         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          {loading && <span className="op-aiconsole-thinking">JARVIS is thinking…</span>}
+          {loading && <span className="op-aiconsole-thinking">Ooplix is thinking…</span>}
           <button
             className="op-send-btn"
             onClick={handleClear}
@@ -160,7 +160,7 @@ export default function AIConsolePanel({ style }) {
 
       <div className="op-aiconsole-meta-row">
         <div className="op-aiconsole-summary-card">
-          <div className="op-aiconsole-summary-title">What JARVIS thinks</div>
+          <div className="op-aiconsole-summary-title">What Ooplix thinks</div>
           <div className="op-aiconsole-summary-text">{assistantSummary}</div>
         </div>
         <div className="op-aiconsole-summary-card op-aiconsole-memory-card">
@@ -234,7 +234,7 @@ export default function AIConsolePanel({ style }) {
           disabled={loading}
           autoComplete="off"
           spellCheck={false}
-          aria-label="Message JARVIS"
+          aria-label="Message Ooplix"
         />
         <button
           className={`op-send-btn op-send-btn--primary${input.trim() && !loading ? " op-send-btn--ready" : ""}`}
