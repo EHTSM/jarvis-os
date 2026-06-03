@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { dispatchTask } from "../runtimeApi";
 import VisualIntelligence from "./VisualIntelligence.jsx";
+import ActivityStream     from "./ActivityStream.jsx";
 import "./ControlCenter.css";
 
 // ── Helpers ────────────────────────────────────────────────────────
@@ -481,7 +482,15 @@ export default function ControlCenter({ stats, opsData, online, onNavigate }) {
       <div className="cc-content">
         <VisualIntelligence stats={stats} opsData={opsData} />
         <SystemsStrip  opsData={opsData} online={online}  onNavigate={onNavigate} />
-        <ActionsFeed   opsData={opsData} stats={stats}    onNavigate={onNavigate} />
+        <section className="cc-section">
+          <div className="cc-section-header">
+            <h2 className="cc-section-label">Live Activity</h2>
+            <button className="cc-section-link" onClick={() => onNavigate?.("activity")}>
+              Full history →
+            </button>
+          </div>
+          <ActivityStream opsData={opsData} stats={stats} onNavigate={onNavigate} />
+        </section>
         <HealthBar     opsData={opsData} online={online} />
         <DispatchBar   online={online}                    onNavigate={onNavigate} />
       </div>
