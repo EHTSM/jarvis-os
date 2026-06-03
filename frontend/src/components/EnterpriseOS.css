@@ -1,0 +1,48 @@
+.eos-wrap { display: flex; flex-direction: column; gap: 1rem; }
+.eos-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.eos-header h2 { margin: 0; font-size: 1.5rem; }
+.eos-subtitle { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem; }
+.eos-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.eos-tab { border: 1px solid var(--border); background: var(--surface); color: var(--text); padding: 0.65rem 0.9rem; border-radius: 999px; cursor: pointer; transition: background 0.2s ease; }
+.eos-tab.active { background: var(--accent); color: #fff; border-color: transparent; }
+.eos-view { margin-top: 1rem; }
+.eos-section { display: flex; flex-direction: column; gap: 1rem; }
+.eos-section-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.eos-grid { display: grid; grid-template-columns: repeat( auto-fit, minmax(180px, 1fr) ); gap: 1rem; }
+.eos-card { background: var(--surface-alt); border: 1px solid var(--border); border-radius: 1rem; padding: 1rem; }
+.eos-card-title { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+.eos-card-value { font-size: 2rem; font-weight: 700; }
+.eos-card-meta { color: var(--text-muted); margin-top: 0.5rem; }
+.eos-split-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.eos-box { background: var(--surface-alt); border: 1px solid var(--border); border-radius: 1rem; padding: 1rem; }
+.eos-box--secondary { background: rgba(148, 163, 184, 0.06); }
+.eos-box-row { display: flex; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
+.eos-badge { display: inline-flex; align-items: center; padding: 0.2rem 0.55rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; }
+.eos-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.eos-list--compact .eos-list-item { padding: 0.75rem 0.85rem; }
+.eos-list--tall { max-height: 560px; overflow-y: auto; }
+.eos-list-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 1rem; padding: 1rem; }
+.eos-list-item--stacked { flex-direction: column; }
+.eos-list-strong { font-weight: 700; margin-bottom: 0.25rem; }
+.eos-list-sub { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; }
+.eos-meta-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; color: var(--text-muted); font-size: 0.9rem; }
+.eos-list-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+.eos-list-meta { color: var(--text-muted); font-size: 0.9rem; }
+.eos-form-grid { display: grid; grid-template-columns: minmax(320px, 360px) 1fr; gap: 1rem; }
+.eos-form-panel { background: var(--surface-alt); border: 1px solid var(--border); border-radius: 1rem; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.eos-form-panel--narrow { max-width: 540px; }
+.eos-form-row { display: grid; grid-template-columns: repeat( auto-fit, minmax(140px, 1fr) ); gap: 0.75rem; margin-top: 0.75rem; }
+.eos-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+.eos-input, .eos-select, .eos-textarea { width: 100%; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--surface); color: var(--text); padding: 0.75rem 0.85rem; font: inherit; }
+.eos-textarea { min-height: 100px; resize: vertical; }
+.eos-btn { border: 1px solid transparent; background: var(--accent); color: #fff; padding: 0.75rem 1rem; border-radius: 0.75rem; cursor: pointer; }
+.eos-btn.outline { background: transparent; color: var(--text); border-color: var(--border); }
+.eos-btn.danger { background: var(--danger); border-color: transparent; }
+.eos-form-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.eos-loading { display: flex; flex-direction: column; gap: 0.75rem; }
+.eos-skeleton { height: 1rem; background: linear-gradient(90deg, rgba(148,163,184,0.1), rgba(148,163,184,0.25), rgba(148,163,184,0.1)); border-radius: 999px; animation: eos-shimmer 1.2s infinite; }
+.eos-skeleton--sm { width: 60%; }
+.eos-empty { text-align: center; padding: 2rem; color: var(--text-muted); }
+.eos-empty-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.eos-empty-text { font-size: 0.95rem; }
+@keyframes eos-shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
