@@ -1,68 +1,6 @@
 import React, { useState } from "react";
-import { testWhatsAppSend } from "../api";
+import { testWhatsAppSend } from "../crmApi";
 import "./WhatsAppSetup.css";
-
-const STEPS = [
-  {
-    num: 1,
-    title: "Create a Meta Developer Account",
-    body: (
-      <>
-        <p>Go to <strong>developers.facebook.com</strong> and log in with your Facebook account.</p>
-        <p>Click <strong>"My Apps"</strong> → <strong>"Create App"</strong> → choose <strong>"Business"</strong> type.</p>
-        <p>Give your app a name (e.g. "My Business Bot") and click <strong>Create App</strong>.</p>
-      </>
-    ),
-    action: {
-      label: "Open Meta Developers ↗",
-      href:  "https://developers.facebook.com/apps",
-    }
-  },
-  {
-    num: 2,
-    title: "Set Up WhatsApp in Your App",
-    body: (
-      <>
-        <p>Inside your app dashboard, click <strong>"Add Product"</strong> and select <strong>WhatsApp</strong>.</p>
-        <p>Go to <strong>WhatsApp → Getting Started</strong>.</p>
-        <p>You'll see a <strong>Temporary Access Token</strong> — copy it. It looks like:</p>
-        <code className="wz-code">EAARxxx...very long string...xxx</code>
-        <p style={{ marginTop: 10 }}>
-          For production, generate a <strong>Permanent Token</strong> via System Users in Business Manager.
-        </p>
-      </>
-    ),
-  },
-  {
-    num: 3,
-    title: "Get Your Phone Number ID",
-    body: (
-      <>
-        <p>On the same <strong>Getting Started</strong> page, find the <strong>Phone Number ID</strong>.</p>
-        <p>It's a long number, e.g. <code className="wz-code-inline">112345678901234</code></p>
-        <p>This is different from your actual WhatsApp number — it's the identifier Meta uses.</p>
-      </>
-    ),
-  },
-  {
-    num: 4,
-    title: "Add Credentials to Your Server",
-    body: (
-      <>
-        <p>On your server, edit your <code className="wz-code-inline">.env</code> file and add:</p>
-        <div className="wz-code-block">
-          <pre>{`WA_TOKEN=your_access_token_here\nWA_PHONE_ID=your_phone_number_id_here`}</pre>
-          <CopyButton text={"WA_TOKEN=your_access_token_here\nWA_PHONE_ID=your_phone_number_id_here"} />
-        </div>
-        <p style={{ marginTop: 10 }}>Then restart Jarvis:</p>
-        <div className="wz-code-block">
-          <pre>pm2 restart jarvis-os</pre>
-          <CopyButton text="pm2 restart jarvis-os" />
-        </div>
-      </>
-    ),
-  },
-];
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false);
@@ -79,11 +17,71 @@ function CopyButton({ text }) {
   );
 }
 
+function CredentialStep({ token, phoneId, onTokenChange, onPhoneIdChange }) {
+  const envBlock = `WA_TOKEN=${token || "your_access_token_here"}\nWA_PHONE_ID=${phoneId || "your_phone_number_id_here"}`;
+  const isReady  = token.trim().length > 10 && phoneId.trim().length > 5;
+
+  return (
+    <div className="wz-cred-step">
+      <p className="wz-cred-intro">
+        Paste your credentials here — Jarvis will build the exact config block for you to copy onto your server.
+      </p>
+
+      <div className="wz-cred-fields">
+        <div className="wz-field">
+          <label className="wz-field-label">Access Token</label>
+          <input
+            className="wz-input"
+            type="text"
+            placeholder="EAARxxx…"
+            value={token}
+            onChange={e => onTokenChange(e.target.value)}
+            autoComplete="off"
+            spellCheck={false}
+          />
+          <span className="wz-field-hint">From WhatsApp → Getting Started → Temporary Access Token</span>
+        </div>
+
+        <div className="wz-field">
+          <label className="wz-field-label">Phone Number ID</label>
+          <input
+            className="wz-input"
+            type="text"
+            placeholder="112345678901234"
+            value={phoneId}
+            onChange={e => onPhoneIdChange(e.target.value)}
+            autoComplete="off"
+            inputMode="numeric"
+          />
+          <span className="wz-field-hint">The numeric ID on the same page — not your phone number</span>
+        </div>
+      </div>
+
+      <div className="wz-cred-output">
+        <p className="wz-cred-output-label">
+          {isReady ? "Copy this block onto your server (.env file):" : "Your .env block (fill in fields above):"}
+        </p>
+        <div className={`wz-code-block${isReady ? " wz-code-block--ready" : ""}`}>
+          <pre>{envBlock}</pre>
+          <CopyButton text={envBlock} />
+        </div>
+        <p className="wz-cred-restart-label">Then restart Jarvis:</p>
+        <div className="wz-code-block">
+          <pre>pm2 restart jarvis-os</pre>
+          <CopyButton text="pm2 restart jarvis-os" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function WhatsAppSetup({ connected, onBack }) {
   const [testPhone,  setTestPhone]  = useState("");
-  const [testResult, setTestResult] = useState(null);  // null | "ok" | "fail"
+  const [testResult, setTestResult] = useState(null);
   const [testMsg,    setTestMsg]    = useState("");
   const [testing,    setTesting]    = useState(false);
+  const [waToken,    setWaToken]    = useState("");
+  const [waPhoneId,  setWaPhoneId]  = useState("");
 
   const handleTest = async () => {
     if (!testPhone.trim()) { setTestMsg("Enter a WhatsApp number to test."); return; }
@@ -99,7 +97,7 @@ export default function WhatsAppSetup({ connected, onBack }) {
       setTestResult("fail");
       setTestMsg(
         res.error?.includes("not set") || res.error?.includes("401")
-          ? "Credentials not found. Follow steps 1–4 above, then restart Jarvis."
+          ? "Credentials not found. Complete steps 1–4 above, then restart Jarvis and try again."
           : `Could not send: ${res.error || "Unknown error"}`
       );
     }
@@ -114,7 +112,6 @@ export default function WhatsAppSetup({ connected, onBack }) {
         <p className="wz-sub">5 minutes · One-time setup · Free</p>
       </div>
 
-      {/* ── Already connected state ─────────────────────────────── */}
       {connected && (
         <div className="wz-connected-banner">
           <span className="wz-conn-dot" />
@@ -122,38 +119,70 @@ export default function WhatsAppSetup({ connected, onBack }) {
         </div>
       )}
 
-      {/* ── Steps ──────────────────────────────────────────────── */}
       {!connected && (
         <div className="wz-steps">
-          {STEPS.map((step, i) => (
-            <div key={i} className="wz-step">
-              <div className="wz-step-num">{step.num}</div>
-              <div className="wz-step-body">
-                <h3 className="wz-step-title">{step.title}</h3>
-                <div className="wz-step-content">{step.body}</div>
-                {step.action && (
-                  <a
-                    href={step.action.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="wz-link-btn"
-                  >
-                    {step.action.label}
-                  </a>
-                )}
+
+          <div className="wz-step">
+            <div className="wz-step-num">1</div>
+            <div className="wz-step-body">
+              <h3 className="wz-step-title">Create a Meta Developer Account</h3>
+              <div className="wz-step-content">
+                <p>Go to <strong>developers.facebook.com</strong> and log in with Facebook.</p>
+                <p>Click <strong>My Apps → Create App → Business</strong>. Give it any name.</p>
+              </div>
+              <a href="https://developers.facebook.com/apps" target="_blank" rel="noreferrer" className="wz-link-btn">
+                Open Meta Developers ↗
+              </a>
+            </div>
+          </div>
+
+          <div className="wz-step">
+            <div className="wz-step-num">2</div>
+            <div className="wz-step-body">
+              <h3 className="wz-step-title">Add WhatsApp to Your App</h3>
+              <div className="wz-step-content">
+                <p>Inside your app, click <strong>Add Product → WhatsApp</strong>.</p>
+                <p>Go to <strong>WhatsApp → Getting Started</strong>. You'll see a Temporary Access Token — copy it.</p>
+                <code className="wz-code">EAARxxx…very long string…xxx</code>
               </div>
             </div>
-          ))}
+          </div>
+
+          <div className="wz-step">
+            <div className="wz-step-num">3</div>
+            <div className="wz-step-body">
+              <h3 className="wz-step-title">Copy Your Phone Number ID</h3>
+              <div className="wz-step-content">
+                <p>On the same <strong>Getting Started</strong> page, find the <strong>Phone Number ID</strong>.</p>
+                <p>It's a long number like <code className="wz-code-inline">112345678901234</code> — not your actual phone number.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="wz-step">
+            <div className="wz-step-num">4</div>
+            <div className="wz-step-body">
+              <h3 className="wz-step-title">Add Credentials to Your Server</h3>
+              <div className="wz-step-content">
+                <CredentialStep
+                  token={waToken}
+                  phoneId={waPhoneId}
+                  onTokenChange={setWaToken}
+                  onPhoneIdChange={setWaPhoneId}
+                />
+              </div>
+            </div>
+          </div>
+
         </div>
       )}
 
-      {/* ── Test connection ─────────────────────────────────────── */}
       <div className="wz-test-section">
         <h3 className="wz-test-title">
-          {connected ? "Test Your Connection" : "Step 5 — Test the Connection"}
+          {connected ? "Test Your Connection" : "Step 5 — Verify the Connection"}
         </h3>
         <p className="wz-test-desc">
-          Enter your own WhatsApp number to confirm everything is working.
+          After restarting Jarvis, enter your own number to confirm messages are sending.
         </p>
         <div className="wz-test-row">
           <input
@@ -171,10 +200,9 @@ export default function WhatsAppSetup({ connected, onBack }) {
             {testing ? "Sending…" : "Send Test"}
           </button>
         </div>
-
         {testMsg && (
           <div className={`wz-result wz-result--${testResult}`}>
-            {testResult === "ok" && <span className="wz-result-icon">✓</span>}
+            {testResult === "ok"   && <span className="wz-result-icon">✓</span>}
             {testResult === "fail" && <span className="wz-result-icon">✗</span>}
             {testMsg}
           </div>
