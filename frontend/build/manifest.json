@@ -1,0 +1,18 @@
+{
+  "short_name": "JARVIS",
+  "name": "JARVIS by Ooplix — AI Business Operating System",
+  "description": "AI-powered business automation by ALWALIY TECHNOLOGIES PRIVATE LIMITED.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#7c6fff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}

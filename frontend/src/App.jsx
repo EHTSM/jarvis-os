@@ -16,6 +16,13 @@ import BusinessOS      from "./components/BusinessOS.jsx";
 import DeveloperOS     from "./components/DeveloperOS.jsx";
 import EnterpriseOS          from "./components/EnterpriseOS.jsx";
 import CapabilitiesOverview  from "./components/CapabilitiesOverview.jsx";
+import CompanyFooter         from "./components/legal/CompanyFooter.jsx";
+import CompanyPage           from "./components/legal/CompanyPage.jsx";
+import PrivacyPolicy         from "./components/legal/PrivacyPolicy.jsx";
+import TermsOfService        from "./components/legal/TermsOfService.jsx";
+import RefundPolicy          from "./components/legal/RefundPolicy.jsx";
+import ContactPage           from "./components/legal/ContactPage.jsx";
+import TrustCompliance       from "./components/legal/TrustCompliance.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import "./App.css";
 
@@ -245,8 +252,14 @@ function AppInner() {
     setShowFirstLaunchHint(false);
   }, []);
 
+  // ── Legal page overlay ────────────────────────────────────────────
+  // null = no legal page; string = which page is open
+  const [legalPage, setLegalPage] = useState(null);
+  const openLegal  = useCallback((page) => setLegalPage(page), []);
+  const closeLegal = useCallback(() => setLegalPage(null),     []);
+
   // ── Screen routing ────────────────────────────────────────────────
-  if (screen === "landing")    return <Landing onStart={handleStart} onLogin={handleLogin} />;
+  if (screen === "landing")    return <Landing onStart={handleStart} onLogin={handleLogin} onLegal={openLegal} />;
   if (screen === "onboarding") return <Onboarding onComplete={handleOnboardingComplete} />;
 
   // ── Explicit login screen (reached via "Sign in" on landing) ──────
@@ -267,6 +280,24 @@ function AppInner() {
     return (
       <div className="app-auth-gate">
         <LoginPage onSuccess={() => {/* user state set by AuthContext */}} />
+      </div>
+    );
+  }
+
+  // ── Legal page overlay (renders over full app) ───────────────────
+  if (legalPage) {
+    const LEGAL_PAGES = {
+      company: <CompanyPage   onBack={closeLegal} />,
+      privacy: <PrivacyPolicy onBack={closeLegal} />,
+      terms:   <TermsOfService onBack={closeLegal} />,
+      refund:  <RefundPolicy  onBack={closeLegal} />,
+      contact: <ContactPage   onBack={closeLegal} />,
+      trust:   <TrustCompliance onBack={closeLegal} />,
+    };
+    return (
+      <div className={`app app--${_PRODUCT}`}>
+        {LEGAL_PAGES[legalPage] || <CompanyPage onBack={closeLegal} />}
+        <CompanyFooter onNavigate={openLegal} />
       </div>
     );
   }
@@ -383,6 +414,7 @@ function AppInner() {
         {tab === "enterprise" && <EnterpriseOS onToast={addToast} />}
         {tab === "runtime"   && <RuntimeTab product={_PRODUCT} />}
       </main>
+      {!_IS_DESKTOP && <CompanyFooter onNavigate={openLegal} />}
     </div>
   );
 }

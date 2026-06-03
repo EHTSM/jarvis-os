@@ -1,6 +1,8 @@
 import React from "react";
 import "./Landing.css";
 
+const YEAR = new Date().getFullYear();
+
 const FEATURES = [
   { icon: "✨", text: "Nurtures every relationship automatically with scheduled, warm follow-ups" },
   { icon: "💳", text: "Delivers secure payment links exactly when clients are ready to close"      },
@@ -33,7 +35,7 @@ const PRICING = [
   { title: "Designed to scale", detail: "Upgrade when your team is ready with simple SaaS pricing and premium support.", badge: "Growth-ready" },
 ];
 
-export default function Landing({ onStart, onLogin }) {
+export default function Landing({ onStart, onLogin, onLegal }) {
   return (
     <div className="landing">
       <div className="landing-inner">
@@ -158,6 +160,26 @@ export default function Landing({ onStart, onLogin }) {
             ))}
           </ol>
         </div>
+
+        <div className="landing-divider" />
+
+        <footer className="landing-footer">
+          <div className="landing-footer-brand">
+            <span className="landing-footer-logo">J</span>
+            <span className="landing-footer-name">JARVIS <span className="landing-footer-by">by Ooplix</span></span>
+          </div>
+          <nav className="landing-footer-nav" aria-label="Legal">
+            <button className="landing-footer-link" onClick={() => onLegal?.("company")}>Company</button>
+            <button className="landing-footer-link" onClick={() => onLegal?.("privacy")}>Privacy Policy</button>
+            <button className="landing-footer-link" onClick={() => onLegal?.("terms")}>Terms of Service</button>
+            <button className="landing-footer-link" onClick={() => onLegal?.("refund")}>Refund Policy</button>
+            <button className="landing-footer-link" onClick={() => onLegal?.("contact")}>Contact</button>
+            <button className="landing-footer-link" onClick={() => onLegal?.("trust")}>Trust & Compliance</button>
+          </nav>
+          <p className="landing-footer-legal">
+            &copy; {YEAR} ALWALIY TECHNOLOGIES PRIVATE LIMITED. JARVIS and Ooplix are trademarks of ALWALIY TECHNOLOGIES PRIVATE LIMITED.
+          </p>
+        </footer>
 
       </div>
     </div>

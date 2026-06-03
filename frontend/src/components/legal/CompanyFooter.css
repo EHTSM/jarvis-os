@@ -1,0 +1,98 @@
+/* ── Company Footer ─────────────────────────────────────────────────────── */
+
+.co-footer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  background: rgba(5, 7, 13, 0.96);
+  backdrop-filter: blur(12px);
+  padding: 20px 32px;
+}
+
+.co-footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 28px;
+}
+
+/* Brand mark */
+.co-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.co-footer-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: rgba(124, 111, 255, 0.10);
+  border: 1px solid rgba(124, 111, 255, 0.20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.co-footer-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.co-footer-product {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.co-footer-brand-sub {
+  font-size: 10px;
+  color: var(--text-faint, #4a5470);
+  line-height: 1;
+}
+
+/* Nav links */
+.co-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 4px;
+  flex: 1;
+  justify-content: center;
+}
+.co-footer-link {
+  background: none;
+  border: none;
+  color: var(--text-faint, #4a5470);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  transition: color var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out);
+}
+.co-footer-link:hover {
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Legal line */
+.co-footer-legal {
+  width: 100%;
+  text-align: center;
+  font-size: 10.5px;
+  color: var(--text-faint, #4a5470);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .co-footer { padding: 16px; }
+  .co-footer-nav { gap: 2px; justify-content: flex-start; }
+  .co-footer-link { font-size: 11px; padding: 4px 6px; }
+}
