@@ -56,6 +56,55 @@ const TIER_LABELS = {
 
 const FIRST_SUCCESS_KEY = "jarvis_first_success_seen";
 
+function SystemStatusCard({ opsData, online }) {
+  const services  = opsData?.services   || {};
+  const queue     = opsData?.queue      || null;
+  const autoStats = opsData?.automation || null;
+  const totalSent = autoStats
+    ? Object.values(autoStats).reduce((s, d) => s + (d.sent || 0), 0)
+    : 0;
+
+  const items = [
+    {
+      label: "Jarvis backend",
+      ok:    online,
+      value: online ? "Online" : "Offline",
+    },
+    {
+      label: "WhatsApp",
+      ok:    !!services.whatsapp,
+      value: services.whatsapp ? "Connected" : "Not connected",
+    },
+    {
+      label: "Message queue",
+      ok:    queue?.healthy !== false,
+      value: queue
+        ? (queue.healthy ? `Healthy · ${queue.counts?.pending ?? 0} pending` : `${queue.counts?.pending ?? 0} pending`)
+        : "No data",
+    },
+    {
+      label: "Follow-ups sent",
+      ok:    true,
+      value: totalSent > 0 ? totalSent.toLocaleString() : "None yet",
+    },
+  ];
+
+  return (
+    <div className="sys-card">
+      <h3 className="sys-title">System Status</h3>
+      <div className="sys-rows">
+        {items.map(item => (
+          <div key={item.label} className="sys-row">
+            <span className={`sys-dot sys-dot--${item.ok ? "ok" : "warn"}`} />
+            <span className="sys-label">{item.label}</span>
+            <span className={`sys-value ${item.ok ? "" : "sys-value--warn"}`}>{item.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function FirstSuccessBanner({ stats, onDismiss }) {
   const paid    = stats?.paid    ?? 0;
   const revenue = stats?.revenue ?? 0;
@@ -142,7 +191,7 @@ function WywaCard({ stats, opsData, onDismiss }) {
   );
 }
 
-export default function Dashboard({ stats, opsData, onNavigate }) {
+export default function Dashboard({ stats, opsData, onNavigate, online = false }) {
   const [nullCycles,   setNullCycles]   = useState(0);
   const [wywaShown,    setWywaShown]    = useState(false);
   const [wywaDismissed, setWywaDismissed] = useState(
@@ -310,6 +359,9 @@ export default function Dashboard({ stats, opsData, onNavigate }) {
           />
         </div>
       )}
+
+      {/* ── System Status ─────────────────────────────────────────── */}
+      <SystemStatusCard opsData={opsData} online={online} />
 
       {/* ── Automation Status ──────────────────────────────────────── */}
       <div className="dash-section">
