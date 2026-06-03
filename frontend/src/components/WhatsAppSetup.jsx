@@ -76,7 +76,7 @@ function CredentialStep({ token, phoneId, onTokenChange, onPhoneIdChange }) {
   return (
     <div className="wz-cred-step">
       <p className="wz-cred-intro">
-        Paste your credentials here — JARVIS will build the exact config block for you to copy onto your server.
+        Paste your credentials here — Ooplix will build the exact config block for you to copy onto your server.
       </p>
 
       <div className="wz-cred-fields">
@@ -117,7 +117,7 @@ function CredentialStep({ token, phoneId, onTokenChange, onPhoneIdChange }) {
           <pre>{envBlock}</pre>
           <CopyButton text={envBlock} />
         </div>
-        <p className="wz-cred-restart-label">Then restart JARVIS:</p>
+        <p className="wz-cred-restart-label">Then restart Ooplix:</p>
         <div className="wz-code-block">
           <pre>pm2 restart jarvis-os</pre>
           <CopyButton text="pm2 restart jarvis-os" />
@@ -149,7 +149,7 @@ export default function WhatsAppSetup({ connected, onBack }) {
       setTestResult("fail");
       setTestMsg(
         res.error?.includes("not set") || res.error?.includes("401")
-          ? "Credentials not found. Complete steps 1–4 above, then restart JARVIS and try again."
+          ? "Credentials not found. Complete steps 1–4 above, then restart Ooplix and try again."
           : `Could not send: ${res.error || "Unknown error"}`
       );
     }
@@ -167,7 +167,7 @@ export default function WhatsAppSetup({ connected, onBack }) {
       {connected && (
         <div className="wz-connected-banner">
           <span className="wz-conn-dot" />
-          <span>WhatsApp is connected and active. JARVIS is sending follow-ups automatically.</span>
+          <span>WhatsApp is connected and active. Ooplix is sending follow-ups automatically.</span>
         </div>
       )}
 
@@ -236,7 +236,7 @@ export default function WhatsAppSetup({ connected, onBack }) {
           {connected ? "Test Your Connection" : "Step 5 — Verify the Connection"}
         </h3>
         <p className="wz-test-desc">
-          After restarting JARVIS, enter your own number to confirm messages are sending.
+          After restarting Ooplix, enter your own number to confirm messages are sending.
         </p>
         <div className="wz-test-row">
           <input

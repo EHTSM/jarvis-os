@@ -104,12 +104,12 @@ function createMenu() {
             ]
         },
         { label: "Help", submenu: [
-            { label: "About JARVIS", click: () => {
+            { label: "About Ooplix", click: () => {
                 const { dialog } = require("electron");
                 dialog.showMessageBox(mainWindow, {
-                    type: "info", title: "JARVIS",
-                    message: "JARVIS — AI Operating System",
-                    detail: "by Ooplix\nALWALIY TECHNOLOGIES PRIVATE LIMITED\n\nAI-powered business automation.\nOperator console for WhatsApp & Telegram workflows."
+                    type: "info", title: "Ooplix",
+                    message: "Ooplix — AI Operating System",
+                    detail: "ALWALIY TECHNOLOGIES PRIVATE LIMITED\n\nAI-powered business automation.\nOperator console for WhatsApp & Telegram workflows."
                 });
             }},
             { type: "separator" },

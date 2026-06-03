@@ -5,14 +5,14 @@ const STEPS = [
   {
     key:         "business",
     question:    "What kind of business do you run?",
-    subtext:     "JARVIS uses this to write follow-up messages in the right tone — so messages feel personal, not automated.",
+    subtext:     "Ooplix uses this to write follow-up messages in the right tone — so messages feel personal, not automated.",
     placeholder: "e.g. Freelance designer, coaching, digital agency…",
     type:        "text",
   },
   {
     key:         "product",
     question:    "What do you sell or offer?",
-    subtext:     "This lets JARVIS mention your work naturally when following up with leads. No jargon, just clear and human.",
+    subtext:     "This lets Ooplix mention your work naturally when following up with leads. No jargon, just clear and human.",
     placeholder: "e.g. Logo packages, 1-on-1 coaching, SEO services…",
     type:        "text",
   },
@@ -62,7 +62,7 @@ export default function Onboarding({ onComplete }) {
           <div className="ob-header">
             <div className="ob-logo">J</div>
             <div className="ob-header-meta">
-              <span className="ob-title-brand">JARVIS</span>
+              <span className="ob-title-brand">Ooplix</span>
               <span className="ob-step-label">Setup complete</span>
             </div>
           </div>
@@ -76,7 +76,7 @@ export default function Onboarding({ onComplete }) {
               You're all set.
             </h2>
             <p className="ob-done-sub">
-              JARVIS is configured for <strong>{profile?.business || "your business"}</strong>. Here's exactly what to do first:
+              Ooplix is configured for <strong>{profile?.business || "your business"}</strong>. Here's exactly what to do first:
             </p>
             <ul className="ob-checklist">
               <li>
@@ -85,7 +85,7 @@ export default function Onboarding({ onComplete }) {
               </li>
               <li>
                 <span className="ob-check">2</span>
-                <span><strong>Watch follow-ups begin</strong> — JARVIS sends friendly messages on your behalf automatically. No manual work.</span>
+                <span><strong>Watch follow-ups begin</strong> — Ooplix sends friendly messages on your behalf automatically. No manual work.</span>
               </li>
               <li>
                 <span className="ob-check">3</span>
@@ -100,7 +100,7 @@ export default function Onboarding({ onComplete }) {
               className="ob-btn ob-btn--complete"
               onClick={() => onComplete(profile)}
             >
-              Open JARVIS →
+              Open Ooplix →
             </button>
             <p className="ob-confidence-note">Your setup is saved — you can update it any time in Settings.</p>
           </div>

@@ -74,7 +74,7 @@ export default function AddClientForm({ onSuccess, whatsappConnected }) {
             <p className="acf-success-title">{saved.name} added!</p>
             <p className="acf-success-sub">
               {whatsappConnected
-                ? "JARVIS will send a greeting and follow up automatically."
+                ? "Ooplix will send a greeting and follow up automatically."
                 : "Connect WhatsApp below to start automated follow-ups."}
             </p>
           </div>

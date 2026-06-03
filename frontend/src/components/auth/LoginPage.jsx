@@ -33,8 +33,8 @@ export default function LoginPage({ onSuccess } = {}) {
         <div className="login-brand">
           <div className="login-logo">J</div>
           <div className="login-brand-text">
-            <span className="login-brand-name">JARVIS</span>
-            <span className="login-brand-by">by Ooplix</span>
+            <span className="login-brand-name">Ooplix</span>
+            <span className="login-brand-by">AI Operating System</span>
           </div>
         </div>
 

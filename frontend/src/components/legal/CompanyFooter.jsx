@@ -11,8 +11,8 @@ export default function CompanyFooter({ onNavigate }) {
         <div className="co-footer-brand">
           <div className="co-footer-logo">J</div>
           <div className="co-footer-brand-text">
-            <span className="co-footer-product">JARVIS</span>
-            <span className="co-footer-brand-sub">by Ooplix</span>
+            <span className="co-footer-product">Ooplix</span>
+            <span className="co-footer-brand-sub">AI Operating System</span>
           </div>
         </div>
 
@@ -27,7 +27,7 @@ export default function CompanyFooter({ onNavigate }) {
 
         <p className="co-footer-legal">
           &copy; {YEAR} ALWALIY TECHNOLOGIES PRIVATE LIMITED. All rights reserved.
-          JARVIS and Ooplix are trademarks of ALWALIY TECHNOLOGIES PRIVATE LIMITED.
+          Ooplix is a trademark of ALWALIY TECHNOLOGIES PRIVATE LIMITED.
         </p>
 
       </div>

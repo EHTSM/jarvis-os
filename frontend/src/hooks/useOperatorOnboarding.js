@@ -18,7 +18,7 @@ const OB_TTL      = 30 * 24 * 60 * 60 * 1000; // 30 days before re-showing
 const FLOWS = {
   workspace_init: {
     id:    "workspace_init",
-    title: "Welcome to JARVIS",
+    title: "Welcome to Ooplix",
     steps: [
       {
         id:    "ws_health",
@@ -44,7 +44,7 @@ const FLOWS = {
       {
         id:    "ws_done",
         title: "You're set up",
-        body:  "Your session state is automatically saved. If you disconnect, JARVIS restores your last context on reconnect.",
+        body:  "Your session state is automatically saved. If you disconnect, Ooplix restores your last context on reconnect.",
         action: null,
         actionLabel: null,
       },
@@ -65,7 +65,7 @@ const FLOWS = {
       {
         id:    "dbg_replay",
         title: "Replay past sessions",
-        body:  "Recent command history is preserved across reconnects. If a session was interrupted, JARVIS highlights the last failed step.",
+        body:  "Recent command history is preserved across reconnects. If a session was interrupted, Ooplix highlights the last failed step.",
         action: null,
         actionLabel: null,
       },
@@ -86,7 +86,7 @@ const FLOWS = {
       {
         id:    "dep_trust",
         title: "Check trust before deploying",
-        body:  "JARVIS blocks deployment when trust score is below 55 (DEGRADED) or when a crash was recorded in the last 30 minutes.",
+        body:  "Ooplix blocks deployment when trust score is below 55 (DEGRADED) or when a crash was recorded in the last 30 minutes.",
         action: "check_health",
         actionLabel: "View trust score",
       },
@@ -121,7 +121,7 @@ const FLOWS = {
       {
         id:    "safe_destructive",
         title: "Destructive command protection",
-        body:  "JARVIS blocks commands matching known destructive patterns (rm -rf, fork bombs, pipe-to-shell). If you need to run one, disable the block in Settings.",
+        body:  "Ooplix blocks commands matching known destructive patterns (rm -rf, fork bombs, pipe-to-shell). If you need to run one, disable the block in Settings.",
         action: null,
         actionLabel: null,
       },

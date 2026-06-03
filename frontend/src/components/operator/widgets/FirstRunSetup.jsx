@@ -6,16 +6,16 @@ const FR_KEY = "jarvis_first_run_done";
 const STEPS = [
   {
     id: "welcome",
-    title: "Welcome to JARVIS",
+    title: "Welcome to Ooplix",
     icon: "⚡",
-    body: "JARVIS is your workspace for running tasks, managing clients, and automating follow-ups. Let's check that everything is connected.",
+    body: "Ooplix is your workspace for running tasks, managing clients, and automating follow-ups. Let's check that everything is connected.",
     cta: "Let's go",
   },
   {
     id: "runtime",
     title: "Checking your connection",
     icon: "🔗",
-    body: "JARVIS stays connected in the background. If it ever disconnects (yellow banner), it reconnects on its own — usually within 30 seconds. No action needed.",
+    body: "Ooplix stays connected in the background. If it ever disconnects (yellow banner), it reconnects on its own — usually within 30 seconds. No action needed.",
     education: "Tip: Press ⌘K to search commands, Ctrl+D to run, Ctrl+H for history.",
     cta: "Looks good",
   },
@@ -32,7 +32,7 @@ const STEPS = [
     title: "You're all set",
     icon: "✅",
     body: "Start by typing a command, or install a template pack from the Workflow panel to get pre-built shortcuts. If anything goes wrong, the ? Help button has answers.",
-    cta: "Open JARVIS",
+    cta: "Open Ooplix",
     releaseNotes: [
       "Install template packs from the Workflow panel → ▼ Install Template Pack",
       "Press ⌘K to search commands, macros, and quick actions",
@@ -113,7 +113,7 @@ export const FirstRunSetup = React.memo(({ onComplete, rtStatus }) => {
                 <div className="op-frs-recovery-title">To connect, start the backend:</div>
                 <code className="op-frs-recovery-cmd">npm run server</code>
                 <div>Or if using pm2: <code className="op-frs-recovery-cmd" style={{ display: "inline", padding: "0 4px" }}>pm2 restart jarvis-backend</code></div>
-                <div className="op-frs-recovery-alt">You can click Skip and come back — JARVIS reconnects automatically once the backend starts.</div>
+                <div className="op-frs-recovery-alt">You can click Skip and come back — Ooplix reconnects automatically once the backend starts.</div>
               </div>
             )}
           </div>

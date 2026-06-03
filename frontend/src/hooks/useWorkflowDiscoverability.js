@@ -77,7 +77,7 @@ function _buildRecommendations({ trustScore, failRate, reconnects, hasCrash, has
     type:     "replay",
     priority: "low",
     title:    "Session context explained",
-    body:     "JARVIS stores your last session context for up to 6 hours. After reconnecting, it restores your last known state automatically.",
+    body:     "Ooplix stores your last session context for up to 6 hours. After reconnecting, it restores your last known state automatically.",
     action:   null,
     shortcut: null,
   });

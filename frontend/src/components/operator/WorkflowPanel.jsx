@@ -1353,7 +1353,7 @@ const handleQueue = async () => {
             onFocus={handleFocus}
             onBlur={handleBlur}
             onKeyDown={handleKey}
-            placeholder="Type a command, question, or task — JARVIS will handle it…"
+            placeholder="Type a command, question, or task — Ooplix will handle it…"
             disabled={busy}
             aria-label="Command or task input"
             aria-describedby="cmd-risk-hint"

@@ -1453,7 +1453,7 @@ export default function ExecLogPanel({ history, rtStatus, ops, onPopulateInput, 
                filter === "success" ? "No completed tasks yet." :
                filter === "bookmarked" ? "No bookmarked entries yet." :
                search ? "No results match your search." :
-               "No activity yet — JARVIS is ready."}
+               "No activity yet — Ooplix is ready."}
             </div>
             <div className="op-exec-empty-sub">
               {filter === "all" && !search

@@ -227,7 +227,7 @@ export const RuntimeHealthCard = React.memo(({ ops, rtStatus }) => {
         </div>
 
         <div className="op-recovery-summary" aria-live="polite">
-          {stabilityScore >= 85 && "Everything looks healthy — JARVIS is running well."}
+          {stabilityScore >= 85 && "Everything looks healthy — Ooplix is running well."}
           {stabilityScore >= 60 && stabilityScore < 85 && "Running with minor warnings — keep an eye on things."}
           {stabilityScore < 60 && "System is under stress — avoid heavy workloads for now."}
           {qSize > 10 && ` Queue building up (${qSize} waiting).`}
