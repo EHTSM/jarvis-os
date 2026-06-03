@@ -403,7 +403,9 @@ function AppInner() {
         })}
       </nav>
 
-      {tab !== "runtime" && !_IS_DESKTOP && (
+      {/* ConnectBar only on tabs where service connectivity is directly relevant.
+          Not shown globally — prevents the permanent "broken state" signal. */}
+      {(tab === "insights" || tab === "clients") && !_IS_DESKTOP && (
         <ConnectBar
           services={opsData?.services || {}}
           onSetupWhatsApp={() => setTab("clients")}
