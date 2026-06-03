@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { testWhatsAppSend } from "../crmApi";
+import { saveWhatsAppCredentials } from "../settingsApi";
 import "./WhatsAppSetup.css";
 
 function _loadProfile() {
@@ -69,14 +70,29 @@ function CopyButton({ text }) {
   );
 }
 
-function CredentialStep({ token, phoneId, onTokenChange, onPhoneIdChange }) {
-  const envBlock = `WA_TOKEN=${token || "your_access_token_here"}\nWA_PHONE_ID=${phoneId || "your_phone_number_id_here"}`;
-  const isReady  = token.trim().length > 10 && phoneId.trim().length > 5;
+function CredentialStep({ token, phoneId, onTokenChange, onPhoneIdChange, onSaved }) {
+  const [saving,   setSaving]   = useState(false);
+  const [saveMsg,  setSaveMsg]  = useState(null);  // null | { ok, text }
+  const isReady = token.trim().length > 10 && /^\d{10,20}$/.test(phoneId.trim());
+
+  const handleSave = async () => {
+    if (!isReady) return;
+    setSaving(true);
+    setSaveMsg(null);
+    const res = await saveWhatsAppCredentials({ token: token.trim(), phoneId: phoneId.trim() });
+    setSaving(false);
+    if (res.success) {
+      setSaveMsg({ ok: true, text: res.message || "Credentials saved — WhatsApp is now active." });
+      onSaved?.();
+    } else {
+      setSaveMsg({ ok: false, text: res.error || "Failed to save. Check your credentials." });
+    }
+  };
 
   return (
     <div className="wz-cred-step">
       <p className="wz-cred-intro">
-        Paste your credentials here — Ooplix will build the exact config block for you to copy onto your server.
+        Paste your credentials — Ooplix saves them instantly, no server restart needed.
       </p>
 
       <div className="wz-cred-fields">
@@ -105,29 +121,43 @@ function CredentialStep({ token, phoneId, onTokenChange, onPhoneIdChange }) {
             autoComplete="off"
             inputMode="numeric"
           />
-          <span className="wz-field-hint">The numeric ID on the same page — not your phone number</span>
+          <span className="wz-field-hint">The numeric ID on the same page — not your actual phone number</span>
         </div>
       </div>
 
-      <div className="wz-cred-output">
-        <p className="wz-cred-output-label">
-          {isReady ? "Copy this block onto your server (.env file):" : "Your .env block (fill in fields above):"}
-        </p>
-        <div className={`wz-code-block${isReady ? " wz-code-block--ready" : ""}`}>
-          <pre>{envBlock}</pre>
-          <CopyButton text={envBlock} />
+      <button
+        className="wz-test-btn"
+        onClick={handleSave}
+        disabled={!isReady || saving}
+        style={{ alignSelf: "flex-start", marginTop: 4 }}
+      >
+        {saving ? "Saving…" : isReady ? "Save Credentials →" : "Fill in both fields above"}
+      </button>
+
+      {saveMsg && (
+        <div className={`wz-result wz-result--${saveMsg.ok ? "ok" : "fail"}`}>
+          <span className="wz-result-icon">{saveMsg.ok ? "✓" : "✗"}</span>
+          {saveMsg.text}
         </div>
-        <p className="wz-cred-restart-label">Then restart Ooplix:</p>
-        <div className="wz-code-block">
-          <pre>pm2 restart jarvis-os</pre>
-          <CopyButton text="pm2 restart jarvis-os" />
+      )}
+
+      <details className="wz-cred-manual" style={{ marginTop: 12 }}>
+        <summary style={{ fontSize: 12, color: "var(--text-faint, #4a5470)", cursor: "pointer" }}>
+          Prefer to set manually via .env?
+        </summary>
+        <div style={{ marginTop: 8 }}>
+          <div className="wz-code-block">
+            <pre>{`WA_TOKEN=${token || "your_access_token_here"}\nWA_PHONE_ID=${phoneId || "your_phone_number_id_here"}`}</pre>
+            <CopyButton text={`WA_TOKEN=${token || "your_access_token_here"}\nWA_PHONE_ID=${phoneId || "your_phone_number_id_here"}`} />
+          </div>
+          <p className="wz-cred-restart-label">Then restart: <code>pm2 restart jarvis-os</code></p>
         </div>
-      </div>
+      </details>
     </div>
   );
 }
 
-export default function WhatsAppSetup({ connected, onBack }) {
+export default function WhatsAppSetup({ connected, onBack, onCredentialsSaved }) {
   const [testPhone,  setTestPhone]  = useState("");
   const [testResult, setTestResult] = useState(null);
   const [testMsg,    setTestMsg]    = useState("");
@@ -223,6 +253,7 @@ export default function WhatsAppSetup({ connected, onBack }) {
                   phoneId={waPhoneId}
                   onTokenChange={setWaToken}
                   onPhoneIdChange={setWaPhoneId}
+                  onSaved={onCredentialsSaved}
                 />
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { getAuthStatus, loginOperator, logoutOperator, setOn401 } from "../api";
+import { loginWithEmail } from "../authApi";
 
 const AuthContext = createContext(null);
 
@@ -72,10 +73,14 @@ export function AuthProvider({ children }) {
     return () => _bc.removeEventListener("message", handler);
   }, []);
 
-  const login = useCallback(async (password) => {
-    const result = await loginOperator(password);
+  // login(password) — legacy operator login
+  // login(password, email) — per-user email+password login (P10)
+  const login = useCallback(async (password, email) => {
+    const result = email
+      ? await loginWithEmail(email, password)
+      : await loginOperator(password);
     if (result.success) {
-      const u = { role: result.role || "operator" };
+      const u = { role: result.role || "user", email: result.email || null };
       _setUserAndBroadcast(u, "login");
     }
     return result;

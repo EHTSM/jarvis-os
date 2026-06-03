@@ -4,6 +4,7 @@ const crypto      = require("crypto");
 const rateLimiter = require("../middleware/rateLimiter");
 const { signJWT, requireAuth, COOKIE_NAME, TOKEN_EXPIRY } = require("../middleware/authMiddleware");
 const auditLog    = require("../utils/auditLog.cjs");
+const accountSvc  = require("../services/accountService");
 
 const COOKIE_OPTS = {
   httpOnly: true,
@@ -24,18 +25,42 @@ function _verifyPassword(password, stored) {
   } catch { return false; }
 }
 
-// POST /auth/login — 10 attempts per 5 minutes per IP
+// POST /auth/login
+// Supports two auth paths (checked in order):
+//   1. Email + password → account identity system (P10)
+//   2. Password-only    → legacy operator password (backwards-compat)
 router.post("/auth/login", rateLimiter(10, 5 * 60_000), (req, res) => {
-  const { password } = req.body || {};
+  const { email, password } = req.body || {};
   if (!password) return res.status(400).json({ error: "Password required" });
 
+  // ── Path 1: email + password → account identity ──────────────────
+  if (email) {
+    const result = accountSvc.loginByEmail(email, password);
+    if (!result.success) {
+      return res.status(401).json({ error: result.error || "Invalid email or password" });
+    }
+    const jwtPayload = {
+      role:  result.account.role || "user",
+      sub:   result.account.id,
+      email: result.account.email,
+      iat:   Math.floor(Date.now() / 1000),
+      exp:   Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
+    };
+    try {
+      const token = signJWT(jwtPayload);
+      res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
+    } catch (e) {
+      return res.status(500).json({ error: "JWT signing failed — JWT_SECRET not configured" });
+    }
+    auditLog.recordAuth({ action: "login", operator: result.account.id, method: "email" });
+    return res.json({ success: true, role: result.account.role, email: result.account.email });
+  }
+
+  // ── Path 2: password-only → legacy operator passthrough ──────────
   const storedHash = process.env.OPERATOR_PASSWORD_HASH;
 
   if (!storedHash) {
-    // Dev passthrough: no password configured — requireAuth also bypasses in dev mode
     if (process.env.NODE_ENV !== "production") {
-      // Only set a cookie if JWT_SECRET is available; otherwise dev passthrough is enough
-      // (requireAuth checks no cookie when JWT_SECRET is unset in dev mode)
       if (process.env.JWT_SECRET) {
         try {
           const token = signJWT({
@@ -44,7 +69,7 @@ router.post("/auth/login", rateLimiter(10, 5 * 60_000), (req, res) => {
             exp: Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
           });
           res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
-        } catch { /* no-op: JWT_SECRET missing, dev passthrough sufficient */ }
+        } catch { /* no-op */ }
       }
       auditLog.recordAuth({ action: "login", operator: "dev", method: "dev_passthrough" });
       return res.json({ success: true, role: "operator" });

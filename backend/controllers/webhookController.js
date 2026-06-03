@@ -12,6 +12,7 @@ const errTracker = require("../utils/errorTracker");
 const payment    = require("../services/paymentService");
 const crm        = require("../services/crmService");
 const automation = require("../services/automationService");
+const billing    = require("../services/billingService");
 
 /**
  * POST /webhook/razorpay  and  POST /razorpay-webhook
@@ -50,6 +51,26 @@ async function handleRazorpayWebhook(req, res) {
                 });
                 await automation.triggerFulfillment(identifier, name);
             }
+        }
+
+        // Subscription events — activate/cancel Ooplix billing
+        if (event === "subscription.activated") {
+            const subId    = parsed?.payload?.subscription?.entity?.id;
+            const planId   = parsed?.payload?.subscription?.entity?.plan_id;
+            // Map Razorpay plan ID → our plan name via env vars
+            const planName = planId === process.env.RAZORPAY_PLAN_ID_GROWTH   ? "growth"
+                           : planId === process.env.RAZORPAY_PLAN_ID_SCALE    ? "scale"
+                           : "starter";
+            // Use subscription notes.accountId if set, otherwise fall back to "operator"
+            const accountId = parsed?.payload?.subscription?.entity?.notes?.accountId || "operator";
+            billing.activatePlan(accountId, planName, subId);
+            logger.info(`[Webhook] Subscription activated: ${accountId} → ${planName}`);
+        }
+
+        if (event === "subscription.cancelled" || event === "subscription.completed") {
+            const accountId = parsed?.payload?.subscription?.entity?.notes?.accountId || "operator";
+            billing.cancelPlan(accountId);
+            logger.info(`[Webhook] Subscription ended: ${accountId}`);
         }
 
         res.json({ status: "ok" });

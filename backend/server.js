@@ -76,6 +76,10 @@ const crm        = require("./services/crmService");
 const payment    = require("./services/paymentService");
 const wa         = require("./services/whatsappService");
 const automation = require("./services/automationService");
+// Apply any in-app credential overrides saved via /settings/* before routes start
+try { require("./routes/settings").applyPersistedSettings(); } catch { /* non-critical */ }
+// Bootstrap the operator account into the identity system (idempotent)
+try { require("./services/accountService").bootstrapOperatorAccount(); } catch { /* non-critical */ }
 
 const app = express();
 
