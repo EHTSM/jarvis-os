@@ -25,6 +25,7 @@ import ContactPage           from "./components/legal/ContactPage.jsx";
 import TrustCompliance       from "./components/legal/TrustCompliance.jsx";
 import PricingPage           from "./components/PricingPage.jsx";
 import ControlCenter         from "./components/ControlCenter.jsx";
+import CommandPalette        from "./components/CommandPalette.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import "./App.css";
 
@@ -127,7 +128,8 @@ function AppInner() {
   const [online,  setOnline]  = useState(false);
   // Default: Control Center (home) — overview + dispatch + live status
   const [tab,      setTab]      = useState("home");
-  const [moreOpen, setMoreOpen] = useState(false);
+  const [moreOpen,    setMoreOpen]    = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
   const [stats,     setStats]     = useState(null);
   const [opsData,   setOpsData]   = useState(null);
   const [toasts,    setToasts]    = useState([]);
@@ -191,6 +193,18 @@ function AppInner() {
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // ── Global Cmd+K / Ctrl+K shortcut ───────────────────────────────
+  useEffect(() => {
+    const handler = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setPaletteOpen(o => !o);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
 
   // ── Send ──────────────────────────────────────────────────────────
   const handleSend = useCallback(async (override) => {
@@ -354,6 +368,16 @@ function AppInner() {
               >Stop</button>
             )
           )}
+          <button
+            className="cmd-palette-trigger"
+            onClick={() => setPaletteOpen(true)}
+            title="Command Palette (⌘K)"
+            aria-label="Open command palette"
+          >
+            <span className="cmd-palette-trigger-icon">⌕</span>
+            <span className="cmd-palette-trigger-label">Search…</span>
+            <kbd className="cmd-palette-trigger-kbd">⌘K</kbd>
+          </button>
           <div className={`status-dot ${online ? "online" : "offline"}`}
                title={online ? "Connected" : "Offline"} />
           {!online && (
@@ -361,6 +385,17 @@ function AppInner() {
           )}
         </div>
       </header>
+
+      <CommandPalette
+        open={paletteOpen}
+        onClose={() => setPaletteOpen(false)}
+        onNavigate={(tabId) => { setTab(tabId); setMoreOpen(false); }}
+        onAsk={(text) => {
+          setTab("chat");
+          // Push the query into the chat input via the existing handleSend
+          if (text) setTimeout(() => handleSend(text), 150);
+        }}
+      />
 
       <nav className="tabs" onClick={() => setMoreOpen(false)}>
         {(_IS_DESKTOP ? DESKTOP_TABS : TABS).map(t => {
