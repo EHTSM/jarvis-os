@@ -52,18 +52,45 @@
   pointer-events: none;
 }
 
+/* Brand block */
+.login-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+.login-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+.login-brand-name {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text, #dde2ec);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.login-brand-by {
+  font-size: 11px;
+  color: var(--text-faint, #4a5470);
+  line-height: 1;
+}
+
 .login-logo {
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-sm);
   background: linear-gradient(135deg, rgba(124, 111, 255, 0.9), rgba(78, 205, 196, 0.82));
   color: #fff;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 22px;
+  flex-shrink: 0;
   box-shadow: 0 6px 22px rgba(124, 111, 255, 0.32), var(--glow-accent);
   letter-spacing: -0.5px;
 }
@@ -79,8 +106,21 @@
 .login-subtitle {
   font-size: 13px;
   color: var(--text-dim, #8994b0);
-  margin: 0 0 28px;
+  margin: 0 0 24px;
   line-height: 1.5;
+}
+
+/* Field with label */
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.login-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-dim, #8994b0);
+  letter-spacing: 0.04em;
 }
 
 .login-form {
@@ -115,13 +155,50 @@
 .login-input:disabled { opacity: 0.45; }
 
 .login-error {
-  font-size: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12.5px;
   color: var(--danger, #f55b5b);
   margin: 0;
-  padding: 8px 12px;
+  padding: 10px 12px;
   background: rgba(245, 91, 91, 0.07);
   border: 1px solid rgba(245, 91, 91, 0.18);
   border-radius: 8px;
+  line-height: 1.5;
+}
+.login-error-icon {
+  flex-shrink: 0;
+  font-size: 11px;
+  margin-top: 1px;
+  opacity: 0.8;
+}
+
+/* Footer */
+.login-footer {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+.login-footer-text {
+  font-size: 12px;
+  color: var(--text-faint, #4a5470);
+  text-align: center;
+}
+.login-footer-link {
+  color: var(--accent, #7c6fff);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 150ms ease;
+}
+.login-footer-link:hover { opacity: 0.78; }
+.login-footer-company {
+  font-size: 10px;
+  color: var(--text-faint, #4a5470);
+  letter-spacing: 0.03em;
+  text-align: center;
 }
 
 .login-btn {
