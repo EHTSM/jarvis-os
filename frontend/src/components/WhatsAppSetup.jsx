@@ -1,6 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { testWhatsAppSend } from "../crmApi";
 import "./WhatsAppSetup.css";
+
+function _loadProfile() {
+  try { return JSON.parse(localStorage.getItem("jarvis_biz_profile") || "null"); }
+  catch { return null; }
+}
+
+function MessagePreview() {
+  const profile = useMemo(_loadProfile, []);
+  const bizName = profile?.business || "your business";
+  const product = profile?.product  || "our services";
+
+  const messages = [
+    {
+      delay: "~10 minutes after adding",
+      label: "First message",
+      text: `Hi! I'm reaching out on behalf of ${bizName}. Thanks for your interest in ${product} — I'd love to learn more about what you're looking for. When's a good time to chat?`,
+    },
+    {
+      delay: "6 hours later",
+      label: "Same-day follow-up",
+      text: `Just following up from ${bizName}! Happy to answer any questions about ${product}. Let me know whenever works for you.`,
+    },
+    {
+      delay: "Next day",
+      label: "24-hour check-in",
+      text: `Hey! Checking back in from ${bizName}. Still interested in ${product}? I can send over more details or a pricing breakdown — just say the word.`,
+    },
+  ];
+
+  return (
+    <div className="wz-preview">
+      <div className="wz-preview-header">
+        <span className="wz-preview-badge">Preview</span>
+        <span className="wz-preview-title">What your leads will receive</span>
+      </div>
+      <p className="wz-preview-sub">
+        Based on your business profile — these exact messages go out automatically once WhatsApp is connected.
+      </p>
+      <div className="wz-preview-messages">
+        {messages.map((m, i) => (
+          <div key={i} className="wz-preview-msg">
+            <div className="wz-preview-msg-meta">
+              <span className="wz-preview-msg-label">{m.label}</span>
+              <span className="wz-preview-msg-delay">{m.delay}</span>
+            </div>
+            <div className="wz-preview-bubble">{m.text}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false);
@@ -118,6 +170,8 @@ export default function WhatsAppSetup({ connected, onBack }) {
           <span>WhatsApp is connected and active. Jarvis is sending follow-ups automatically.</span>
         </div>
       )}
+
+      {!connected && <MessagePreview />}
 
       {!connected && (
         <div className="wz-steps">
