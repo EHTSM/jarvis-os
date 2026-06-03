@@ -1142,3 +1142,72 @@
     margin-top: 2px;
   }
 }
+
+/* ── Landing footer ────────────────────────────────────────────────────── */
+.landing-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 0 8px;
+}
+
+.landing-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.landing-footer-logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: rgba(124, 111, 255, 0.10);
+  border: 1px solid rgba(124, 111, 255, 0.20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--accent, #7c6fff);
+}
+.landing-footer-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text, #dde2ec);
+  letter-spacing: 0.02em;
+}
+.landing-footer-by {
+  font-weight: 400;
+  color: var(--text-dim, #8994b0);
+  font-size: 12px;
+}
+
+.landing-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px 4px;
+}
+.landing-footer-link {
+  background: none;
+  border: none;
+  color: var(--text-faint, #4a5470);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: inherit;
+  transition: color 150ms ease, background 150ms ease;
+}
+.landing-footer-link:hover {
+  color: var(--text-dim, #8994b0);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.landing-footer-legal {
+  font-size: 10.5px;
+  color: var(--text-faint, #4a5470);
+  text-align: center;
+  line-height: 1.55;
+  max-width: 560px;
+}
