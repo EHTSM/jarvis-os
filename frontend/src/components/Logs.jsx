@@ -111,7 +111,7 @@ function QueueSection({ queueHealth }) {
   );
 }
 
-export default function Activity({ opsData, stats }) {
+export default function Activity({ opsData, stats, onNavigate }) {
   const autoStats   = opsData?.automation || null;
   const queueHealth = opsData?.queue      || null;
   const hasAuto     = autoStats && Object.keys(autoStats).length > 0;
@@ -157,8 +157,11 @@ export default function Activity({ opsData, stats }) {
           <div className="act-empty">
             <p className="act-empty-title">No outreach activity yet</p>
             <p className="act-empty-sub">
-              Add contacts in the Clients tab and connect WhatsApp. Sequences will register here.
+              Add contacts and connect WhatsApp. Follow-up sequences will appear here as they run.
             </p>
+            <button className="act-empty-btn" onClick={() => onNavigate?.("clients")}>
+              Add your first contact →
+            </button>
           </div>
         ) : (
           <div className="act-cards">

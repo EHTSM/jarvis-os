@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 
 function StatCard({ label, value, color, sub }) {
@@ -54,19 +54,55 @@ const TIER_LABELS = {
   "upsell":     "High Interest Action",
 };
 
-export default function Dashboard({ stats, opsData }) {
-  // Still loading — show skeleton rather than blank screen
+export default function Dashboard({ stats, opsData, onNavigate }) {
+  // Track how many consecutive render cycles have seen null data.
+  // Cycle count is updated whenever either prop changes.
+  // ≤2 cycles: genuine first-load — show skeleton.
+  // >2 cycles with still-null data: API is unreachable — show error state.
+  const [nullCycles, setNullCycles] = useState(0);
+
+  useEffect(() => {
+    if (stats === null && opsData === null) {
+      setNullCycles(n => n + 1);
+    } else {
+      setNullCycles(0);
+    }
+  }, [stats, opsData]);
+
   if (stats === null && opsData === null) {
+    if (nullCycles <= 2) {
+      // First load — brief skeleton is fine
+      return (
+        <div className="dashboard">
+          <div className="dash-header">
+            <h2 className="dash-title">Customer Pipeline</h2>
+            <p className="dash-subtitle">Track active relationships, automated outreach, and conversions</p>
+          </div>
+          <div className="dash-loading">
+            <div className="dash-skeleton" />
+            <div className="dash-skeleton dash-skeleton--sm" />
+            <div className="dash-skeleton" />
+          </div>
+        </div>
+      );
+    }
+    // Repeated failures — data never arrived. Show a recoverable empty state
+    // instead of a forever-spinning skeleton.
     return (
       <div className="dashboard">
         <div className="dash-header">
-          <h2 className="dash-title">Customer Pipeline</h2>
-          <p className="dash-subtitle">Track active relationships, automated outreach, and conversions</p>
+          <h2 className="dash-title">Revenue</h2>
+          <p className="dash-subtitle">Leads, follow-ups, and closed revenue at a glance.</p>
         </div>
-        <div className="dash-loading">
-          <div className="dash-skeleton" />
-          <div className="dash-skeleton dash-skeleton--sm" />
-          <div className="dash-skeleton" />
+        <div className="empty-state-block">
+          <div className="empty-icon-mark" aria-hidden="true" />
+          <p className="empty-title">Your pipeline starts here</p>
+          <p className="empty-sub">
+            Add your first lead — just a name and WhatsApp number. Jarvis handles all the follow-ups from there.
+          </p>
+          <button className="empty-action-btn" onClick={() => onNavigate?.("clients")}>
+            Add your first contact →
+          </button>
         </div>
       </div>
     );
@@ -107,7 +143,9 @@ export default function Dashboard({ stats, opsData }) {
           <p className="empty-sub">
             Go to the <strong>Clients</strong> tab and add your first lead — just a name and WhatsApp number. Jarvis handles all the follow-ups from there.
           </p>
-          <span className="empty-action-hint">Add your first client</span>
+          <button className="empty-action-btn" onClick={() => onNavigate?.("clients")}>
+            Add your first contact →
+          </button>
         </div>
       ) : (
         <div className="stats-grid">

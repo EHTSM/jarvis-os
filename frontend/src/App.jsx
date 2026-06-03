@@ -67,15 +67,15 @@ function _loadProfile() {
 
 function _welcomeMessage(profile) {
   if (!profile) {
-    return "Hi! I'm Jarvis — your AI Operating System.\n\nI can follow up with leads, run code and commands, automate workflows, manage your business pipeline, and execute tasks in the background.\n\nUse the Control Room tab for full execution power, or just ask me anything here.";
+    return "Hi! I'm Jarvis — your AI Operating System.\n\nI manage your entire business in the background: follow up with leads automatically, run code and shell commands, execute workflows, track your pipeline, and take action while you're away.\n\nOpen the Control Room tab to execute tasks directly, or just tell me what you need.";
   }
   const hasLeads = (() => {
     try { return localStorage.getItem("jarvis_has_leads") === "1"; } catch { return false; }
   })();
   if (!hasLeads) {
-    return `Hi! Jarvis is ready for ${profile.business || "your work"}.\n\nNext step: add your first contact in the Contacts tab and Jarvis will start following up automatically.\n\nOr ask me to run a task, check your pipeline, or anything else.`;
+    return `Hi! Jarvis is set up for ${profile.business || "your work"}.\n\nAdd your first contact in the Contacts tab — just a name and WhatsApp number — and I'll handle all follow-ups from there.\n\nOr open the Control Room to run a task, automate a workflow, or execute anything directly.`;
   }
-  return `Hi! Jarvis is running for ${profile.business || "your business"}.\n\nI'm monitoring your pipeline, sending follow-ups, and ready for your next command.\n\nAsk me anything, or open the Control Room for full execution power.`;
+  return `Hi! Jarvis is running for ${profile.business || "your business"}.\n\nI'm monitoring your pipeline, sending follow-ups, and ready for your next command. Check the Pipeline tab for lead activity, or the History tab for what I've sent.\n\nWhat do you need?`;
 }
 
 export default function App() {
@@ -353,8 +353,8 @@ function AppInner() {
             }])}
           />
         )}
-        {tab === "insights"  && <Dashboard stats={stats} opsData={opsData} />}
-        {tab === "activity"  && <Logs opsData={opsData} stats={stats} />}
+        {tab === "insights"  && <Dashboard stats={stats} opsData={opsData} onNavigate={setTab} />}
+        {tab === "activity"  && <Logs opsData={opsData} stats={stats} onNavigate={setTab} />}
         {tab === "clients"   && (
           <PaymentPanel
             onMessage={push}

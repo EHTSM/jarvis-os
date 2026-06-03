@@ -333,6 +333,34 @@
   opacity: 0.7;
 }
 
+/* Real CTA button replacing the old inert span */
+.empty-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 11px 22px;
+  background: rgba(124, 111, 255, 0.12);
+  border: 1px solid rgba(124, 111, 255, 0.28);
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-spring);
+}
+.empty-action-btn:hover {
+  background: rgba(124, 111, 255, 0.2);
+  border-color: rgba(124, 111, 255, 0.44);
+  transform: translateY(-1px);
+}
+.empty-action-btn:active {
+  transform: translateY(0);
+}
+
 /* Automation empty state: friendlier explanation */
 .auto-empty {
   flex-direction: column;

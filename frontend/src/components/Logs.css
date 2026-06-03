@@ -133,6 +133,32 @@
 .act-empty-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
 .act-empty-sub   { font-size: 13px; color: var(--text-dim); line-height: 1.65; max-width: 340px; margin: 0 auto; }
 
+.act-empty-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  padding: 10px 20px;
+  background: rgba(124, 111, 255, 0.10);
+  border: 1px solid rgba(124, 111, 255, 0.26);
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-spring);
+}
+.act-empty-btn:hover {
+  background: rgba(124, 111, 255, 0.18);
+  border-color: rgba(124, 111, 255, 0.42);
+  transform: translateY(-1px);
+}
+.act-empty-btn:active {
+  transform: translateY(0);
+}
+
 /* ── Pipeline bars ────────────────────────────────────────────────────── */
 .pipe-row   { display: flex; align-items: center; gap: 10px; }
 .pipe-label { width: 72px; font-size: 12px; color: var(--text-dim); flex-shrink: 0; }
