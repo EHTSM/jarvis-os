@@ -279,6 +279,70 @@
 
 .wz-result-icon { font-size: 15px; font-weight: 700; flex-shrink: 0; }
 
+/* ── Credential step (Step 4) ────────────────────────────────── */
+.wz-cred-step {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wz-cred-intro {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.65;
+}
+
+.wz-cred-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wz-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.wz-field-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.wz-field-hint {
+  font-size: 11px;
+  color: var(--text-faint, #4a5470);
+  line-height: 1.5;
+}
+
+.wz-cred-output {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wz-cred-output-label {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.wz-cred-restart-label {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.wz-code-block--ready {
+  border-left-color: rgba(124, 111, 255, 0.5);
+}
+.wz-code-block--ready pre {
+  color: #c0e0ff;
+}
+
 /* ── Mobile ───────────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .wz-wizard   { padding: 14px; gap: 16px; }
