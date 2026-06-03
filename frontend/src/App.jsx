@@ -154,12 +154,18 @@ function AppInner() {
   // ── Health + data polling (only when in app screen) ───────────────
   useEffect(() => {
     if (screen !== "app") return;
-    let wasOnline = false;
+    let wasOnline    = false;
+    let connectedOnce = false; // only announce connected once per session
 
     const poll = async () => {
       const healthy = await checkHealth();
-      if (!wasOnline && healthy)  push("system", "Connected to JARVIS.");
-      if (wasOnline  && !healthy) push("system", "Connection lost — reconnecting…");
+      if (!wasOnline && healthy && !connectedOnce) {
+        push("system", "Connected to JARVIS.");
+        connectedOnce = true;
+      }
+      if (wasOnline && !healthy) push("system", "Connection lost — reconnecting…");
+      // Re-arm so next reconnect after a drop also announces
+      if (!healthy) connectedOnce = false;
       wasOnline = healthy;
       setOnline(healthy);
 
