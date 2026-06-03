@@ -1,0 +1,156 @@
+/* ── Capabilities Overview ──────────────────────────────────────────────── */
+
+.cap-overview {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 32px 40px;
+  min-height: 0;
+}
+
+.cap-header {
+  margin-bottom: 28px;
+}
+.cap-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+.cap-sub {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* ── Cards grid ───────────────────────────────────────────────────────── */
+.cap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.cap-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 20px;
+  background: rgba(11, 15, 26, 0.95);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 14px);
+  backdrop-filter: blur(16px);
+  transition: border-color var(--dur-std) var(--ease-spring),
+              transform var(--dur-std) var(--ease-spring),
+              box-shadow var(--dur-std) var(--ease-spring);
+  animation: cap-arrive 320ms var(--ease-spring) both;
+}
+
+.cap-card:nth-child(1) { animation-delay: 0.04s; }
+.cap-card:nth-child(2) { animation-delay: 0.08s; }
+.cap-card:nth-child(3) { animation-delay: 0.12s; }
+.cap-card:nth-child(4) { animation-delay: 0.16s; }
+.cap-card:nth-child(5) { animation-delay: 0.20s; }
+
+@keyframes cap-arrive {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cap-card { animation: none; }
+}
+
+.cap-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(124,111,255,0.06);
+}
+
+/* Featured card — Control Room gets accent treatment */
+.cap-card--featured {
+  border-color: rgba(124, 111, 255, 0.24);
+  background: rgba(124, 111, 255, 0.04);
+}
+.cap-card--featured:hover {
+  border-color: rgba(124, 111, 255, 0.40);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(124,111,255,0.12), var(--glow-purple, 0 0 20px rgba(124,111,255,0.08));
+}
+
+/* ── Card internals ───────────────────────────────────────────────────── */
+.cap-icon {
+  font-size: 20px;
+  color: var(--accent);
+  line-height: 1;
+  opacity: 0.85;
+}
+.cap-card--featured .cap-icon {
+  color: var(--accent);
+}
+
+.cap-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.1px;
+  margin: 0;
+}
+
+.cap-card-desc {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.65;
+  flex: 1;
+  margin: 0;
+}
+
+.cap-card-btn {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 8px 16px;
+  background: rgba(124, 111, 255, 0.08);
+  border: 1px solid rgba(124, 111, 255, 0.20);
+  border-radius: var(--radius-pill, 999px);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-spring);
+}
+.cap-card-btn:hover {
+  background: rgba(124, 111, 255, 0.16);
+  border-color: rgba(124, 111, 255, 0.36);
+  transform: translateX(2px);
+}
+.cap-card-btn:active {
+  transform: translateX(0);
+}
+
+.cap-card--featured .cap-card-btn {
+  background: rgba(124, 111, 255, 0.13);
+  border-color: rgba(124, 111, 255, 0.30);
+}
+.cap-card--featured .cap-card-btn:hover {
+  background: rgba(124, 111, 255, 0.22);
+  border-color: rgba(124, 111, 255, 0.48);
+}
+
+/* ── Footer note ──────────────────────────────────────────────────────── */
+.cap-footer {
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.cap-footer-text {
+  font-size: 12px;
+  color: var(--text-faint, #4a5470);
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .cap-overview { padding: 18px 16px 28px; }
+  .cap-grid { grid-template-columns: 1fr; gap: 10px; }
+  .cap-card { padding: 18px 16px; }
+}

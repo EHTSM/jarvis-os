@@ -14,12 +14,14 @@ import LoginPage       from "./components/auth/LoginPage.jsx";
 import PersonalOS      from "./components/PersonalOS.jsx";
 import BusinessOS      from "./components/BusinessOS.jsx";
 import DeveloperOS     from "./components/DeveloperOS.jsx";
-import EnterpriseOS    from "./components/EnterpriseOS.jsx";
+import EnterpriseOS          from "./components/EnterpriseOS.jsx";
+import CapabilitiesOverview  from "./components/CapabilitiesOverview.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import "./App.css";
 
 const TABS = [
   { id: "chat",       label: "Ask Jarvis"    },
+  { id: "overview",   label: "Overview"      },
   { id: "runtime",    label: "Control Room", featured: true },
   { id: "insights",   label: "Pipeline"      },
   { id: "activity",   label: "History"       },
@@ -333,11 +335,17 @@ function AppInner() {
 
       {showFirstLaunchHint && !_IS_DESKTOP && (
         <div className="first-launch-hint">
-          <span className="first-launch-title">Welcome!</span>
+          <span className="first-launch-title">Welcome to Jarvis!</span>
           <span className="first-launch-body">
-            Add your first contact in the <strong>Clients</strong> tab — Jarvis will start following up automatically.
+            Not sure where to start?{" "}
+            <button
+              className="first-launch-link"
+              onClick={() => { setTab("overview"); dismissFirstLaunchHint(); }}
+            >
+              See what Jarvis can do →
+            </button>
           </span>
-          <button className="first-launch-dismiss" onClick={dismissFirstLaunchHint}>Got it</button>
+          <button className="first-launch-dismiss" onClick={dismissFirstLaunchHint}>✕</button>
         </div>
       )}
 
@@ -359,6 +367,7 @@ function AppInner() {
             }])}
           />
         )}
+        {tab === "overview"  && <CapabilitiesOverview onNavigate={setTab} />}
         {tab === "insights"  && <Dashboard stats={stats} opsData={opsData} onNavigate={setTab} />}
         {tab === "activity"  && <Logs opsData={opsData} stats={stats} onNavigate={setTab} />}
         {tab === "clients"   && (
