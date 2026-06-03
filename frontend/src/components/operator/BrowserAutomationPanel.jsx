@@ -1461,7 +1461,7 @@ function ImportModal({ onImport, onClose }) {
         </div>
         <div className="bap-modal-body">
           <div className="bap-import-instructions">
-            Paste a Jarvis workflow JSON string below, or load a <code>.jarvis.json</code> file exported from any Jarvis instance.
+            Paste a JARVIS workflow JSON string below, or load a <code>.jarvis.json</code> file exported from any JARVIS instance.
           </div>
           <textarea
             className="bap-import-textarea"
@@ -1977,7 +1977,7 @@ const FIRST_RUN_STEPS = [
     id:      "welcome",
     title:   "Welcome to Browser Automation",
     icon:    "⟳",
-    body:    "Jarvis can open real websites, fill forms, extract data, check uptime, and capture screenshots — automatically. No code, no configuration, no browser plugin required.",
+    body:    "JARVIS can open real websites, fill forms, extract data, check uptime, and capture screenshots — automatically. No code, no configuration, no browser plugin required.",
     hint:    null,
     cta:     "Get started →",
     skip:    "Skip intro",
@@ -2460,7 +2460,7 @@ function VariableManager({ vars, onUpdateVar, onClose }) {
         <button className="bap-modal-close" onClick={onClose}>✕</button>
       </div>
       <div className="bap-varman-hint">
-        Variables let you reuse values across workflows. Set a value once here, then type <code>{"{{variable_name}}"}</code> in any workflow field — Jarvis substitutes the real value when you run.
+        Variables let you reuse values across workflows. Set a value once here, then type <code>{"{{variable_name}}"}</code> in any workflow field — JARVIS substitutes the real value when you run.
         <br /><span style={{fontSize:"9px",color:"var(--op-text3)",marginTop:4,display:"block"}}>Example: set <code>website_url</code> to <code>https://mysite.com</code>, then use <code>{"{{website_url}}"}</code> in any URL field across all your workflows.</span>
       </div>
 
@@ -2594,7 +2594,7 @@ function SchedulePanel({ templateId, schedule, onSave, schedRun, health, templat
           <div className="bap-schedule-form-row">
             <label className="bap-schedule-form-label">
               Frequency
-              <HelpTip>Jarvis will run this workflow automatically at the time you choose. Daily = every day at that time. Weekly = once a week on the day you pick. Automatic runs appear in History and update the health score.</HelpTip>
+              <HelpTip>JARVIS will run this workflow automatically at the time you choose. Daily = every day at that time. Weekly = once a week on the day you pick. Automatic runs appear in History and update the health score.</HelpTip>
             </label>
             <select className="bap-param-input bap-schedule-select" value={freq} onChange={e=>setFreq(e.target.value)}>
               <option value="manual">Manual only</option>
@@ -2968,7 +2968,7 @@ function DetailView({ workflow, params, setParams, health, isFav, onToggleFav, o
     `Category: ${cat.label}  •  ~${est||"?"}s  •  ${diff.label}`,
     summary,
     tags.length ? `Tags: ${tags.map(t=>"#"+t).join("  ")}` : "",
-    `— Shared from Jarvis Browser Automation`,
+    `— Shared from JARVIS Browser Automation`,
   ].filter(Boolean).join("\n");
 
   return (
@@ -3182,7 +3182,7 @@ function OperatorEvidencePanel({ result, workflow }) {
     },
     {
       label:"Auto-recovered",
-      tip:"When a step fails, Jarvis tries reloading the page and retrying before giving up. 'Auto-recovered' means that page-reload recovery worked and the workflow continued.",
+      tip:"When a step fails, JARVIS tries reloading the page and retrying before giving up. 'Auto-recovered' means that page-reload recovery worked and the workflow continued.",
       value: recovered > 0 ? `${recovered} time${recovered!==1?"s":""}` : "No issues",
       ok: true,
     },
@@ -4491,7 +4491,7 @@ function EditorView({ editName, setEditName, editCategory, setEditCat, editSteps
                       )}
                       {isSelector && (
                         <>
-                          <HelpTip>A CSS selector tells Jarvis which element on the page to interact with. The easiest way: right-click the button or input on the real page → Inspect → look for id="" or class="" → use #id-name or .class-name. Click "⊹ Pick" for guided examples, or "? How to find this" for a step-by-step walkthrough.</HelpTip>
+                          <HelpTip>A CSS selector tells JARVIS which element on the page to interact with. The easiest way: right-click the button or input on the real page → Inspect → look for id="" or class="" → use #id-name or .class-name. Click "⊹ Pick" for guided examples, or "? How to find this" for a step-by-step walkthrough.</HelpTip>
                           <button className="bap-sel-pick-btn" onClick={()=>setSelectorPicker({stepIdx:idx,fieldKey:field.key})} title="Open selector picker">
                             ⊹ Pick
                           </button>

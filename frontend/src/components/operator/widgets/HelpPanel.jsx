@@ -79,8 +79,8 @@ const GUIDES = [
       {
         heading: "Stream disconnected (yellow banner)",
         content: [
-          "The yellow reconnecting banner means Jarvis lost its live connection. This is normal after sleep/wake or network changes.",
-          "Wait up to 60 seconds — Jarvis reconnects automatically with exponential backoff.",
+          "The yellow reconnecting banner means JARVIS lost its live connection. This is normal after sleep/wake or network changes.",
+          "Wait up to 60 seconds — JARVIS reconnects automatically with exponential backoff.",
           "If the banner persists, check the Stream Status card on the right — it shows retry count and next attempt time.",
           "After 5 failed attempts, guided recovery steps appear: check pm2 list, then pm2 restart jarvis-backend.",
         ],
@@ -292,7 +292,7 @@ export const HelpPanel = React.memo(({ onClose }) => {
         {/* Header */}
         <div className="op-help-header">
           <div className="op-help-title-row">
-            <span className="op-help-title">Jarvis Help</span>
+            <span className="op-help-title">JARVIS Help</span>
             <span className="op-help-version">v3.0</span>
           </div>
           <button className="op-help-close" onClick={onClose} aria-label="Close help">×</button>
