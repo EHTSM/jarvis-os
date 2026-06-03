@@ -54,6 +54,33 @@ const TIER_LABELS = {
   "upsell":     "High Interest Action",
 };
 
+const FIRST_SUCCESS_KEY = "jarvis_first_success_seen";
+
+function FirstSuccessBanner({ stats, onDismiss }) {
+  const paid    = stats?.paid    ?? 0;
+  const revenue = stats?.revenue ?? 0;
+  if (paid === 0) return null;
+
+  return (
+    <div className="fs-banner">
+      <div className="fs-banner-glow" aria-hidden="true" />
+      <div className="fs-banner-body">
+        <span className="fs-icon" aria-hidden="true">★</span>
+        <div className="fs-text">
+          <p className="fs-headline">First payment collected!</p>
+          <p className="fs-sub">
+            {paid === 1
+              ? `1 client paid${revenue > 0 ? ` — ₹${revenue.toLocaleString("en-IN")} collected` : ""}. Jarvis is working.`
+              : `${paid} clients paid${revenue > 0 ? ` — ₹${revenue.toLocaleString("en-IN")} collected` : ""}. Keep going.`
+            }
+          </p>
+        </div>
+      </div>
+      <button className="fs-dismiss" onClick={onDismiss} aria-label="Dismiss">✕</button>
+    </div>
+  );
+}
+
 const WYWA_DISMISS_KEY = "jarvis_wywa_dismissed_ts";
 const WYWA_VISIT_KEY   = "jarvis_last_visit_ts";
 const WYWA_MIN_ABSENCE = 5 * 60 * 1000;   // 5 minutes
@@ -121,6 +148,15 @@ export default function Dashboard({ stats, opsData, onNavigate }) {
   const [wywaDismissed, setWywaDismissed] = useState(
     () => parseInt(localStorage.getItem(WYWA_DISMISS_KEY) || "0", 10)
   );
+  const [showFirstSuccess, setShowFirstSuccess] = useState(false);
+
+  // Show first-success banner once when paid > 0 and not yet seen
+  useEffect(() => {
+    if (!stats) return;
+    if (stats.paid > 0 && !localStorage.getItem(FIRST_SUCCESS_KEY)) {
+      setShowFirstSuccess(true);
+    }
+  }, [stats]);
 
   // Evaluate WYWA visibility once data arrives
   useEffect(() => {
@@ -196,6 +232,16 @@ export default function Dashboard({ stats, opsData, onNavigate }) {
         <h2 className="dash-title">Revenue</h2>
         <p className="dash-subtitle">Leads, follow-ups, and closed revenue at a glance.</p>
       </div>
+
+      {showFirstSuccess && (
+        <FirstSuccessBanner
+          stats={stats}
+          onDismiss={() => {
+            localStorage.setItem(FIRST_SUCCESS_KEY, "1");
+            setShowFirstSuccess(false);
+          }}
+        />
+      )}
 
       {wywaShown && (
         <WywaCard stats={stats} opsData={opsData} onDismiss={handleWywaDismiss} />
