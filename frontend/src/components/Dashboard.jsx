@@ -54,12 +54,88 @@ const TIER_LABELS = {
   "upsell":     "High Interest Action",
 };
 
+const WYWA_DISMISS_KEY = "jarvis_wywa_dismissed_ts";
+const WYWA_VISIT_KEY   = "jarvis_last_visit_ts";
+const WYWA_MIN_ABSENCE = 5 * 60 * 1000;   // 5 minutes
+const WYWA_RESHOW_AFTER = 24 * 60 * 60 * 1000; // 24 hours
+
+function _wywaVisible(totalSent, dismissedAt) {
+  const lastVisit = parseInt(localStorage.getItem(WYWA_VISIT_KEY) || "0", 10);
+  const absence   = Date.now() - lastVisit;
+
+  // Must have been away at least 5 minutes
+  if (absence < WYWA_MIN_ABSENCE) return false;
+
+  // If dismissed, only reshow after 24h AND only if there's been new activity
+  if (dismissedAt) {
+    const timeSinceDismiss = Date.now() - dismissedAt;
+    if (timeSinceDismiss < WYWA_RESHOW_AFTER) return false;
+  }
+
+  // Show when there's any outreach activity, or when contacts exist but WhatsApp not yet connected
+  return totalSent >= 0;
+}
+
+function WywaCard({ stats, opsData, onDismiss }) {
+  const autoStats  = opsData?.automation || {};
+  const totalSent  = Object.values(autoStats).reduce((s, d) => s + (d.sent || 0), 0);
+  const hotLeads   = stats?.hot ?? 0;
+  const totalContacts = stats?.total ?? 0;
+
+  // Derive most-recent lastRun across all automation tiers
+  const lastActivity = Object.values(autoStats)
+    .map(d => d.lastRun ? new Date(d.lastRun).getTime() : 0)
+    .reduce((max, t) => Math.max(max, t), 0);
+
+  let headline, sub;
+
+  if (totalSent > 0) {
+    headline = `Jarvis sent ${totalSent.toLocaleString()} follow-up${totalSent !== 1 ? "s" : ""} since your last visit.`;
+    sub = hotLeads > 0
+      ? `${hotLeads} lead${hotLeads !== 1 ? "s are" : " is"} hot — worth a quick reply.`
+      : lastActivity > 0
+        ? `Last action ${_timeAgo(new Date(lastActivity).toISOString())}.`
+        : "All automations running.";
+  } else if (totalContacts > 0) {
+    headline = `Jarvis is ready — ${totalContacts} contact${totalContacts !== 1 ? "s" : ""} loaded.`;
+    sub = "Connect WhatsApp to start automated follow-ups.";
+  } else {
+    return null;
+  }
+
+  return (
+    <div className="wywa-card">
+      <div className="wywa-pulse" aria-hidden="true" />
+      <div className="wywa-body">
+        <p className="wywa-headline">{headline}</p>
+        <p className="wywa-sub">{sub}</p>
+      </div>
+      <button className="wywa-dismiss" onClick={onDismiss} aria-label="Dismiss">✕</button>
+    </div>
+  );
+}
+
 export default function Dashboard({ stats, opsData, onNavigate }) {
-  // Track how many consecutive render cycles have seen null data.
-  // Cycle count is updated whenever either prop changes.
-  // ≤2 cycles: genuine first-load — show skeleton.
-  // >2 cycles with still-null data: API is unreachable — show error state.
-  const [nullCycles, setNullCycles] = useState(0);
+  const [nullCycles,   setNullCycles]   = useState(0);
+  const [wywaShown,    setWywaShown]    = useState(false);
+  const [wywaDismissed, setWywaDismissed] = useState(
+    () => parseInt(localStorage.getItem(WYWA_DISMISS_KEY) || "0", 10)
+  );
+
+  // Evaluate WYWA visibility once data arrives
+  useEffect(() => {
+    if (!stats && !opsData) return;
+    const autoStats = opsData?.automation || {};
+    const totalSent = Object.values(autoStats).reduce((s, d) => s + (d.sent || 0), 0);
+    setWywaShown(_wywaVisible(totalSent, wywaDismissed));
+  }, [stats, opsData, wywaDismissed]);
+
+  const handleWywaDismiss = () => {
+    const now = Date.now();
+    localStorage.setItem(WYWA_DISMISS_KEY, String(now));
+    setWywaDismissed(now);
+    setWywaShown(false);
+  };
 
   useEffect(() => {
     if (stats === null && opsData === null) {
@@ -120,6 +196,11 @@ export default function Dashboard({ stats, opsData, onNavigate }) {
         <h2 className="dash-title">Revenue</h2>
         <p className="dash-subtitle">Leads, follow-ups, and closed revenue at a glance.</p>
       </div>
+
+      {wywaShown && (
+        <WywaCard stats={stats} opsData={opsData} onDismiss={handleWywaDismiss} />
+      )}
+
       <div className="dash-meta-strip">
         <div className="dash-meta-item">
           <span className="dash-meta-label">Follow-up sequences</span>

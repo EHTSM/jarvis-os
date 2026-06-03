@@ -135,6 +135,12 @@ function AppInner() {
     }]);
   }, []);
 
+  // ── Record last-visit timestamp on app mount ─────────────────────
+  useEffect(() => {
+    if (screen !== "app") return;
+    localStorage.setItem("jarvis_last_visit_ts", String(Date.now()));
+  }, [screen]);
+
   // ── Health + data polling (only when in app screen) ───────────────
   useEffect(() => {
     if (screen !== "app") return;

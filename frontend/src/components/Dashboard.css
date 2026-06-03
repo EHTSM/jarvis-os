@@ -486,3 +486,89 @@
   .stat-card { padding: 11px 10px; }
   .stat-value { font-size: 18px; }
 }
+
+/* ── While You Were Away card ─────────────────────────────────────────── */
+.wywa-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding: 16px 18px;
+  background: rgba(78, 205, 196, 0.05);
+  border: 1px solid rgba(78, 205, 196, 0.18);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+  animation: wywa-in 280ms var(--ease-spring) both;
+  position: relative;
+  overflow: hidden;
+}
+.wywa-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(78,205,196,0.03), transparent 55%);
+  pointer-events: none;
+}
+
+@keyframes wywa-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wywa-card { animation: none; }
+}
+
+/* Animated pulse dot — signals live/recent activity */
+.wywa-pulse {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: 5px;
+  border-radius: 50%;
+  background: var(--accent2, #4ecdc4);
+  box-shadow: 0 0 0 0 rgba(78, 205, 196, 0.5);
+  animation: wywa-pulse 2.4s ease-in-out infinite;
+}
+@keyframes wywa-pulse {
+  0%   { box-shadow: 0 0 0 0   rgba(78,205,196,0.5); }
+  60%  { box-shadow: 0 0 0 7px rgba(78,205,196,0);   }
+  100% { box-shadow: 0 0 0 0   rgba(78,205,196,0);   }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wywa-pulse { animation: none; }
+}
+
+.wywa-body {
+  flex: 1;
+  min-width: 0;
+}
+.wywa-headline {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 3px;
+  line-height: 1.4;
+}
+.wywa-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.wywa-dismiss {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--text-faint, #4a5470);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: color var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out);
+}
+.wywa-dismiss:hover {
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.06);
+}
