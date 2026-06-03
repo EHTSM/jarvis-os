@@ -25,8 +25,8 @@ const TRUST_POINTS = [
 ];
 
 const PILLARS = [
-  { title: "Clear messaging", desc: "Present your business with confidence — Jarvis writes follow-ups in the right tone for your work." },
-  { title: "Visible automation", desc: "See exactly what Jarvis is doing — no black boxes, just a clear timeline of every follow-up sent." },
+  { title: "Clear messaging", desc: "Present your business with confidence — JARVIS writes follow-ups in the right tone for your work." },
+  { title: "Visible automation", desc: "See exactly what JARVIS is doing — no black boxes, just a clear timeline of every follow-up sent." },
   { title: "One workspace", desc: "WhatsApp, payments, and your client list — all in one place, without switching apps." },
 ];
 
@@ -102,12 +102,12 @@ export default function Landing({ onStart, onLogin, onLegal, onPricing }) {
           <article className="landing-onboarding-card" tabIndex="0">
             <div className="landing-onboarding-step">1</div>
             <h3>Add your clients</h3>
-            <p>Enter a name and WhatsApp number. Jarvis is ready in under 30 seconds.</p>
+            <p>Enter a name and WhatsApp number. JARVIS is ready in under 30 seconds.</p>
             <div className="landing-onboarding-progress"><i /></div>
           </article>
           <article className="landing-onboarding-card" tabIndex="0">
             <div className="landing-onboarding-step">2</div>
-            <h3>Jarvis follows up</h3>
+            <h3>JARVIS follows up</h3>
             <p>Automated messages go out at the right time — no manual reminders needed.</p>
             <div className="landing-onboarding-progress"><i /></div>
           </article>

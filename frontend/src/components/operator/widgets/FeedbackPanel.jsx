@@ -6,17 +6,17 @@ import { getProductivitySummary, getFrictionSummary, detectConfusionPatterns, ge
 function _categorizeCrash(message = "") {
   const m = message.toLowerCase();
   if (m.includes("eaddrinuse") || m.includes("address in use"))
-    return { group: "Port conflict", explanation: "Another process is already using Jarvis's port. Restart with: pm2 restart jarvis-backend", severity: "high" };
+    return { group: "Port conflict", explanation: "Another process is already using JARVIS's port. Restart with: pm2 restart jarvis-backend", severity: "high" };
   if (m.includes("cannot find module") || m.includes("module not found"))
     return { group: "Missing dependency", explanation: "A required package is missing. Run: npm install", severity: "high" };
   if (m.includes("heap out of memory") || m.includes("javascript heap"))
-    return { group: "Memory exhaustion", explanation: "Jarvis ran out of memory. Restart the app or increase Node.js heap: NODE_OPTIONS=--max-old-space-size=4096", severity: "high" };
+    return { group: "Memory exhaustion", explanation: "JARVIS ran out of memory. Restart the app or increase Node.js heap: NODE_OPTIONS=--max-old-space-size=4096", severity: "high" };
   if (m.includes("econnrefused") || m.includes("econnreset"))
     return { group: "Connection refused", explanation: "The backend isn't accepting connections. Check it's running: pm2 list", severity: "medium" };
   if (m.includes("etimedout") || m.includes("timeout"))
     return { group: "Timeout", explanation: "A request took too long. The backend may be overloaded — check pm2 logs.", severity: "medium" };
   if (m.includes("permission denied") || m.includes("eacces"))
-    return { group: "Permission error", explanation: "Jarvis doesn't have permission to access a file or port. Check file ownership.", severity: "medium" };
+    return { group: "Permission error", explanation: "JARVIS doesn't have permission to access a file or port. Check file ownership.", severity: "medium" };
   if (m.includes("sqlite") || m.includes("database"))
     return { group: "Database error", explanation: "The local database encountered an issue. A backup may be needed.", severity: "high" };
   if (m.includes("syntaxerror") || m.includes("unexpected token"))
@@ -205,7 +205,7 @@ const RECOVERY_STEPS = [
     title: "Restart the backend",
     body: "Try a clean restart:",
     code: "pm2 restart jarvis-backend",
-    hint: "After restarting, wait 5-10 seconds then refresh the Jarvis app. The yellow reconnecting banner should clear.",
+    hint: "After restarting, wait 5-10 seconds then refresh the JARVIS app. The yellow reconnecting banner should clear.",
     cta: "It's working now ✓",
     ctaSkip: "Still broken →",
   },

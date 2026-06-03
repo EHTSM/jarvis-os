@@ -108,8 +108,8 @@ function createMenu() {
                 const { dialog } = require("electron");
                 dialog.showMessageBox(mainWindow, {
                     type: "info", title: "JARVIS",
-                    message: "JARVIS OS",
-                    detail: "AI-powered sales automation.\nOperator console for WhatsApp & Telegram workflows."
+                    message: "JARVIS — AI Operating System",
+                    detail: "by Ooplix\nALWALIY TECHNOLOGIES PRIVATE LIMITED\n\nAI-powered business automation.\nOperator console for WhatsApp & Telegram workflows."
                 });
             }},
             { type: "separator" },
