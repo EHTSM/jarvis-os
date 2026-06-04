@@ -20,7 +20,15 @@
   gap: 0;
   padding: 0 16px 0 14px;
   min-height: 44px;
+  animation: slide-right var(--dur-std) var(--ease-spring) both;
 }
+.as-feed .as-row:nth-child(1)  { animation-delay: 0ms;  }
+.as-feed .as-row:nth-child(2)  { animation-delay: 35ms; }
+.as-feed .as-row:nth-child(3)  { animation-delay: 70ms; }
+.as-feed .as-row:nth-child(4)  { animation-delay: 105ms;}
+.as-feed .as-row:nth-child(5)  { animation-delay: 140ms;}
+.as-feed .as-row:nth-child(n+6){ animation-delay: 175ms;}
+
 .as-row--new {
   animation: fade-in 300ms var(--ease-out) both;
 }

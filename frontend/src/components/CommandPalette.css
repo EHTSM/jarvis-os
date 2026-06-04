@@ -11,7 +11,7 @@
   align-items: flex-start;
   justify-content: center;
   padding-top: min(14vh, 120px);
-  animation: fade-in 100ms var(--ease-out) both;
+  animation: fade-in 120ms var(--ease-out) both;
 }
 
 .cp-panel {
@@ -28,6 +28,7 @@
   display: flex;
   flex-direction: column;
   max-height: min(72vh, 560px);
+  animation: scale-in 180ms var(--ease-spring) both;
 }
 
 /* ── Input row ────────────────────────────────────────────────────────── */

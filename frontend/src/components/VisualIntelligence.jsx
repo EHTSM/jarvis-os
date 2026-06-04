@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useMemo } from "react";
+import { useAnimatedValue } from "../hooks/useAnimatedValue";
 import "./VisualIntelligence.css";
 
 // ── Sparkline ─────────────────────────────────────────────────────
@@ -68,8 +69,13 @@ function Sparkline({ points, color, height = 36, fill = true }) {
 
 // ── Trend card ────────────────────────────────────────────────────
 
-function TrendCard({ label, value, sub, delta, points, color, unit = "" }) {
-  const trend = delta > 0 ? "up" : delta < 0 ? "down" : "flat";
+function TrendCard({ label, value, rawValue, sub, delta, points, color, unit = "" }) {
+  // Animate numeric values; display as-is for formatted strings (revenue)
+  const numericTarget = typeof rawValue === "number" ? rawValue : null;
+  const animatedNum   = useAnimatedValue(numericTarget ?? 0, 700);
+  const displayValue  = numericTarget !== null ? animatedNum : value;
+
+  const trend      = delta > 0 ? "up" : delta < 0 ? "down" : "flat";
   const deltaLabel = delta !== null
     ? `${delta > 0 ? "↑" : delta < 0 ? "↓" : "—"} ${Math.abs(delta)}${unit}`
     : null;
@@ -83,7 +89,7 @@ function TrendCard({ label, value, sub, delta, points, color, unit = "" }) {
         )}
       </div>
       <div className="vi-card-value-row">
-        <span className="vi-card-value">{value}</span>
+        <span className="vi-card-value">{displayValue}</span>
         <Sparkline points={points} color={color} />
       </div>
       {sub && <span className="vi-card-sub">{sub}</span>}
@@ -158,6 +164,7 @@ export default function VisualIntelligence({ stats, opsData }) {
       <TrendCard
         label="Pipeline"
         value={totalLeads}
+        rawValue={totalLeads}
         sub={`${stats?.hot ?? 0} hot · ${stats?.paid ?? 0} closed`}
         delta={leadDelta}
         unit=""
@@ -167,6 +174,7 @@ export default function VisualIntelligence({ stats, opsData }) {
       <TrendCard
         label="Automation"
         value={totalSent}
+        rawValue={totalSent}
         sub={`${Object.keys(autoStats).length} sequence${Object.keys(autoStats).length !== 1 ? "s" : ""} active`}
         delta={autoDelta}
         unit=""
@@ -176,6 +184,7 @@ export default function VisualIntelligence({ stats, opsData }) {
       <TrendCard
         label="Runtime"
         value={heapMb ? `${heapMb} MB` : "—"}
+        rawValue={heapMb || null}
         sub={
           opsData?.uptime?.human
             ? `Up ${opsData.uptime.human} · ${opsData?.errors?.errors_per_hour ?? 0} err/hr`

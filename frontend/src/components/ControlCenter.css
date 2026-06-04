@@ -39,6 +39,7 @@
   flex-direction: column;
   gap: 28px;
   flex: 1;
+  animation: fade-up var(--dur-enter) var(--ease-spring) both;
 }
 
 /* ── Section scaffold ────────────────────────────────────────────────── */
@@ -93,13 +94,22 @@
   font-family: inherit;
   transition: border-color var(--dur-fast) var(--ease-out),
               transform     var(--dur-std)  var(--ease-spring),
-              box-shadow    var(--dur-fast) var(--ease-out);
+              box-shadow    var(--dur-std)  var(--ease-spring);
+  animation: fade-up var(--dur-enter) var(--ease-spring) both;
 }
 .cc-system-card:hover {
   border-color: var(--border-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(124,111,255,0.06);
 }
+.cc-system-card:active { transform: translateY(0); }
+.cc-systems-grid .cc-system-card:nth-child(1) { animation-delay: 30ms; }
+.cc-systems-grid .cc-system-card:nth-child(2) { animation-delay: 60ms; }
+.cc-systems-grid .cc-system-card:nth-child(3) { animation-delay: 90ms; }
+.cc-systems-grid .cc-system-card:nth-child(4) { animation-delay: 120ms;}
+.cc-systems-grid .cc-system-card:nth-child(5) { animation-delay: 150ms;}
+.cc-systems-grid .cc-system-card:nth-child(6) { animation-delay: 180ms;}
+
 .cc-system-card--warn {
   border-color: var(--warning-border);
   background: rgba(240, 180, 41, 0.03);
