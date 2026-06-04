@@ -1,0 +1,55 @@
+/* ── Memory Intelligence Center ──────────────────────────────────── */
+.mic { flex: 1; overflow-y: auto; padding: 24px 28px 48px; display: flex; flex-direction: column; gap: 20px; max-width: 1060px; margin: 0 auto; width: 100%; }
+.mic-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.mic-title { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.3px; margin: 0; }
+.mic-subtitle { font-size: 13.5px; color: var(--text-dim); margin: 4px 0 0; }
+
+.mic-stats { display: grid; grid-template-columns: repeat(5,1fr); background: var(--surface-base); border: 1px solid var(--border); border-radius: var(--radius); }
+.mic-stat { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 14px 8px; border-right: 1px solid var(--border); text-align: center; }
+.mic-stat:last-child { border-right: none; }
+.mic-stat-val { font-size: 22px; font-weight: 800; }
+.mic-stat-lbl { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); font-weight: 700; }
+
+.mic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.mic-panel { background: var(--surface-base); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.mic-panel-full { grid-column: 1 / -1; }
+.mic-panel-title { font-size: 13px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; margin: 0; }
+
+.mic-memory-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface-raised); border: 1px solid var(--border); border-radius: var(--radius); }
+.mic-memory-icon { font-size: 18px; flex-shrink: 0; }
+.mic-memory-info { flex: 1; min-width: 0; }
+.mic-memory-key { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mic-memory-meta { font-size: 11px; color: var(--text-dim); margin: 2px 0 0; }
+.mic-memory-scores { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+.mic-score-badge { padding: 2px 8px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; }
+.mic-score-high   { background: rgba(0,220,130,0.15); color: #00dc82; }
+.mic-score-med    { background: rgba(255,186,0,0.15);  color: var(--warning); }
+.mic-score-low    { background: rgba(220,50,50,0.15);  color: #ff6464; }
+
+.mic-bar-row { display: flex; flex-direction: column; gap: 4px; }
+.mic-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); }
+.mic-bar-track { height: 6px; background: var(--surface-overlay); border-radius: 9px; overflow: hidden; }
+.mic-bar-fill { height: 100%; border-radius: 9px; transition: width 0.6s var(--ease-spring); }
+
+.mic-gap-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.mic-gap-row:last-child { border-bottom: none; }
+.mic-gap-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.mic-gap-text { flex: 1; font-size: 13px; color: var(--text); }
+.mic-gap-severity { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: var(--radius-pill); }
+.mic-gap-critical { background: rgba(220,50,50,0.12); color: #ff6464; }
+.mic-gap-moderate { background: rgba(255,186,0,0.12);  color: var(--warning); }
+.mic-gap-low      { background: rgba(0,220,130,0.12);  color: #00dc82; }
+
+.mic-decay-list { display: flex; flex-direction: column; gap: 6px; }
+.mic-decay-item { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+.mic-decay-name { flex: 1; color: var(--text); }
+.mic-decay-age  { color: var(--text-faint); }
+.mic-decay-bar  { width: 80px; height: 4px; background: var(--surface-overlay); border-radius: 9px; overflow: hidden; }
+.mic-decay-fill { height: 100%; border-radius: 9px; }
+
+.mic-rel-map { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 8px; }
+.mic-rel-node { background: var(--surface-overlay); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; text-align: center; cursor: pointer; transition: border-color var(--dur-std); }
+.mic-rel-node:hover { border-color: var(--accent); }
+.mic-rel-node-icon { font-size: 22px; }
+.mic-rel-node-name { font-size: 12px; font-weight: 700; color: var(--text); margin: 4px 0 2px; }
+.mic-rel-node-links { font-size: 10px; color: var(--text-faint); }

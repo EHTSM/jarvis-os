@@ -45,6 +45,10 @@ import AutonomousRevenueCenter      from "./components/AutonomousRevenueCenter.j
 import AutonomousMarketingCenter    from "./components/AutonomousMarketingCenter.jsx";
 import AutonomousSupportCenter      from "./components/AutonomousSupportCenter.jsx";
 import OoplixRunsOoplixCenter       from "./components/OoplixRunsOoplixCenter.jsx";
+import AgentFactoryCenter           from "./components/AgentFactoryCenter.jsx";
+import MemoryIntelligenceCenter     from "./components/MemoryIntelligenceCenter.jsx";
+import SelfImprovementCenter        from "./components/SelfImprovementCenter.jsx";
+import JarvisBrainCenter            from "./components/JarvisBrainCenter.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -135,6 +139,10 @@ const MORE_TABS = [
   { id: "automarketing",  label:"Auto Marketing" },
   { id: "autosupport",    label:"Auto Support"   },
   { id: "oroplix",        label:"Ooplix Runs Ooplix" },
+  { id: "agentfactory",  label:"Agent Factory"      },
+  { id: "memoryintel",   label:"Memory Intel"       },
+  { id: "selfimprove",   label:"Self-Improve"       },
+  { id: "jarvisbrain",   label:"Jarvis Brain"       },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -682,6 +690,10 @@ function AppInner() {
         {tab === "automarketing"     && <AutonomousMarketingCenter  onNavigate={setTab} />}
         {tab === "autosupport"       && <AutonomousSupportCenter    onNavigate={setTab} />}
         {tab === "oroplix"           && <OoplixRunsOoplixCenter     onNavigate={setTab} />}
+        {tab === "agentfactory"      && <AgentFactoryCenter         onNavigate={setTab} />}
+        {tab === "memoryintel"       && <MemoryIntelligenceCenter   onNavigate={setTab} />}
+        {tab === "selfimprove"       && <SelfImprovementCenter      onNavigate={setTab} />}
+        {tab === "jarvisbrain"       && <JarvisBrainCenter          onNavigate={setTab} />}
         {tab === "runtime"           && <RuntimeTab product={_PRODUCT} />}
         </div>
       </main>
