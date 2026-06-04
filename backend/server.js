@@ -91,6 +91,25 @@ app.use(require("./middleware/requestId"));   // x-request-id on every request
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.set("trust proxy", 1);
+app.disable("x-powered-by");   // don't advertise Express
+
+// ── Security headers (applied to every response) ───────────────────
+app.use((req, res, next) => {
+    res.setHeader("X-Content-Type-Options",    "nosniff");
+    res.setHeader("X-Frame-Options",           "DENY");
+    res.setHeader("X-XSS-Protection",          "1; mode=block");
+    res.setHeader("Referrer-Policy",           "strict-origin-when-cross-origin");
+    res.setHeader("Permissions-Policy",        "camera=(), microphone=(), geolocation=()");
+    // CSP — allows same-origin scripts + specific CDNs; tightened in production
+    const csp = process.env.NODE_ENV === "production"
+        ? "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none';"
+        : "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https:; frame-ancestors 'none';";
+    res.setHeader("Content-Security-Policy", csp);
+    if (process.env.NODE_ENV === "production") {
+        res.setHeader("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
+    }
+    next();
+});
 
 // CORS: allow credentials (httpOnly cookies) only from explicitly listed origins.
 // origin:"*" silently breaks credentials:include in browsers — use allowlist instead.

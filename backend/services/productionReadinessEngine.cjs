@@ -167,6 +167,17 @@ function validateSecurity() {
     const rateLimiterPath = path.join(__dirname, "../middleware/rateLimiter.js");
     checks.push(fs.existsSync(rateLimiterPath) ? _pass("rate_limiter", "Rate limiter middleware present") : _warn("rate_limiter", "Rate limiter not found"));
 
+    // CSP / security headers present in server.js
+    try {
+        const serverSrc = fs.readFileSync(path.join(__dirname, "../server.js"), "utf8");
+        const hasCSP     = serverSrc.includes("Content-Security-Policy");
+        const hasXFrame  = serverSrc.includes("X-Frame-Options");
+        const hasXCTO    = serverSrc.includes("X-Content-Type-Options");
+        checks.push(hasCSP    ? _pass("csp_header",    "Content-Security-Policy header set in server.js") : _warn("csp_header",    "CSP header not found in server.js"));
+        checks.push(hasXFrame ? _pass("xframe_header", "X-Frame-Options header set") : _warn("xframe_header", "X-Frame-Options not set"));
+        checks.push(hasXCTO   ? _pass("xcto_header",   "X-Content-Type-Options header set") : _warn("xcto_header",   "X-Content-Type-Options not set"));
+    } catch { checks.push(_warn("security_headers", "Could not read server.js")); }
+
     const passed = checks.filter(c => c.status === "pass").length;
     const failed = checks.filter(c => c.status === "fail").length;
     const score  = Math.max(0, Math.round(((passed - failed * 1.5) / checks.length) * 100));
