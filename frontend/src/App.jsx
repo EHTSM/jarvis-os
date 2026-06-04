@@ -13,6 +13,10 @@ import EmailMarketingOS   from "./components/EmailMarketingOS.jsx";
 import ReferralEngine     from "./components/ReferralEngine.jsx";
 import PartnerProgram     from "./components/PartnerProgram.jsx";
 import LaunchCommandCenter from "./components/LaunchCommandCenter.jsx";
+import TeamWorkspace      from "./components/TeamWorkspace.jsx";
+import EnterpriseCRM      from "./components/EnterpriseCRM.jsx";
+import ExecutiveReports   from "./components/ExecutiveReports.jsx";
+import WorkspaceSettings  from "./components/WorkspaceSettings.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -71,6 +75,10 @@ const MORE_TABS = [
   { id: "business",   label: "Business"    },
   { id: "developer",  label: "Developer"   },
   { id: "enterprise", label: "Enterprise"  },
+  { id: "team",       label: "Team"        },
+  { id: "ecrm",       label: "CRM"         },
+  { id: "reports",    label: "Reports"     },
+  { id: "settings",   label: "Settings"    },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -586,6 +594,10 @@ function AppInner() {
         {tab === "business"  && <BusinessOS  onToast={addToast} />}
         {tab === "developer" && <DeveloperOS onToast={addToast} />}
         {tab === "enterprise" && <EnterpriseOS onToast={addToast} />}
+        {tab === "team"      && <TeamWorkspace onNavigate={setTab} />}
+        {tab === "ecrm"      && <EnterpriseCRM onNavigate={setTab} />}
+        {tab === "reports"   && <ExecutiveReports onNavigate={setTab} />}
+        {tab === "settings"  && <WorkspaceSettings onNavigate={setTab} />}
         {tab === "runtime"   && <RuntimeTab product={_PRODUCT} />}
         </div>
       </main>
