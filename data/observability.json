@@ -1,0 +1,56 @@
+{
+  "metrics": {
+    "api": {
+      "request_count": {
+        "type": "counter",
+        "name": "request_count",
+        "labels": {},
+        "value": 42,
+        "lastUpdated": 1780600416409
+      },
+      "response_ms": {
+        "type": "histogram",
+        "name": "response_ms",
+        "labels": {},
+        "samples": [
+          142
+        ],
+        "count": 1,
+        "sum": 142,
+        "min": 142,
+        "max": 142,
+        "avg": 142,
+        "p50": 142,
+        "p95": 142,
+        "p99": 142,
+        "lastUpdated": 1780600416409
+      }
+    }
+  },
+  "traces": [],
+  "alerts": [],
+  "slos": {
+    "api-availability": {
+      "sloId": "api-availability",
+      "service": "api",
+      "name": "API Availability",
+      "targetPct": 99.9,
+      "windowDays": 30,
+      "errorBudgetPct": 0.09999999999999432,
+      "createdAt": "2026-06-04T19:13:36.410Z",
+      "events": [
+        {
+          "ts": 1780600416410,
+          "good": true
+        },
+        {
+          "ts": 1780600416410,
+          "good": true
+        }
+      ]
+    }
+  },
+  "alertRules": {},
+  "channels": {},
+  "seq": 0
+}

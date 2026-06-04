@@ -1,0 +1,77 @@
+{
+  "repos": {
+    "jarvis-main": {
+      "repoId": "jarvis-main",
+      "localPath": "/Users/ehtsm/jarvis-os",
+      "registeredAt": "2026-06-04T19:13:36.405Z",
+      "git": {
+        "remote": "https://github.com/EHTSM/jarvis-os.git",
+        "branch": "main",
+        "lastCommit": "eaa2e372e47efddb4fa2e0fb91b57f5062b55ab8 phase24a+24b+24c+24d: Launch readiness fixes, OAuth guide, Razorpay checklist, Play Store audit"
+      },
+      "pkg": {
+        "name": "jarvis-os",
+        "version": "3.0.0",
+        "description": "JARVIS AI Automation System"
+      },
+      "tags": [
+        "backend"
+      ],
+      "env": "production"
+    }
+  },
+  "tasks": {},
+  "deps": {},
+  "releases": {
+    "v3.1.0": {
+      "releaseId": "v3.1.0",
+      "repoIds": [
+        "jarvis-main"
+      ],
+      "buildOrder": [
+        "jarvis-main"
+      ],
+      "version": "patch",
+      "targetDate": null,
+      "status": "planned",
+      "checklist": [
+        {
+          "step": "Run tests for all repos",
+          "done": false
+        },
+        {
+          "step": "Bump versions",
+          "done": false
+        },
+        {
+          "step": "Build artifacts",
+          "done": false
+        },
+        {
+          "step": "Deploy in build order",
+          "done": false
+        },
+        {
+          "step": "Smoke test each service",
+          "done": false
+        },
+        {
+          "step": "Tag releases in git",
+          "done": false
+        },
+        {
+          "step": "Update shared dependency locks",
+          "done": false
+        }
+      ],
+      "repoVersions": {
+        "jarvis-main": "3.0.0"
+      },
+      "cycles": [],
+      "notes": "",
+      "createdAt": "2026-06-04T19:13:36.406Z",
+      "updatedAt": "2026-06-04T19:13:36.406Z"
+    }
+  },
+  "seq": 0
+}

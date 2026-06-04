@@ -1,0 +1,105 @@
+{
+  "name": "jarvis-engineering",
+  "displayName": "JARVIS Engineering",
+  "description": "Cursor-class AI engineering assistant — chat, repo intelligence, refactor, code gen, multi-provider",
+  "version": "1.0.0",
+  "publisher": "jarvis-os",
+  "engines": { "vscode": "^1.85.0" },
+  "categories": ["AI", "Programming Languages", "Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "jarvis.chat",          "title": "JARVIS: Open Chat" },
+      { "command": "jarvis.repoChat",      "title": "JARVIS: Chat with Repo" },
+      { "command": "jarvis.fileChat",      "title": "JARVIS: Chat with File" },
+      { "command": "jarvis.explainCode",   "title": "JARVIS: Explain Code" },
+      { "command": "jarvis.generateCode",  "title": "JARVIS: Generate Code" },
+      { "command": "jarvis.refactorCode",  "title": "JARVIS: Refactor Code" },
+      { "command": "jarvis.fixErrors",     "title": "JARVIS: Fix Errors" },
+      { "command": "jarvis.openTask",      "title": "JARVIS: Open Task" },
+      { "command": "jarvis.indexRepo",     "title": "JARVIS: Index Repository" }
+    ],
+    "menus": {
+      "editor/context": [
+        { "command": "jarvis.explainCode",  "group": "jarvis@1", "when": "editorHasSelection" },
+        { "command": "jarvis.refactorCode", "group": "jarvis@2", "when": "editorHasSelection" },
+        { "command": "jarvis.fixErrors",    "group": "jarvis@3" },
+        { "command": "jarvis.generateCode", "group": "jarvis@4" },
+        { "command": "jarvis.fileChat",     "group": "jarvis@5" }
+      ],
+      "commandPalette": [
+        { "command": "jarvis.chat" },
+        { "command": "jarvis.repoChat" },
+        { "command": "jarvis.fileChat" },
+        { "command": "jarvis.indexRepo" },
+        { "command": "jarvis.openTask" }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        { "id": "jarvis-sidebar", "title": "JARVIS", "icon": "resources/jarvis.svg" }
+      ]
+    },
+    "views": {
+      "jarvis-sidebar": [
+        { "type": "webview", "id": "jarvis.chatView",  "name": "Chat" },
+        { "type": "webview", "id": "jarvis.tasksView", "name": "Tasks" }
+      ]
+    },
+    "configuration": {
+      "title": "JARVIS Engineering",
+      "properties": {
+        "jarvis.serverUrl": {
+          "type": "string",
+          "default": "http://localhost:5050",
+          "description": "JARVIS backend server URL"
+        },
+        "jarvis.provider": {
+          "type": "string",
+          "enum": ["openrouter", "claude", "openai", "ollama"],
+          "default": "openrouter",
+          "description": "AI provider"
+        },
+        "jarvis.model": {
+          "type": "string",
+          "default": "anthropic/claude-3-5-sonnet",
+          "description": "Model name for the selected provider"
+        },
+        "jarvis.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key for the selected provider"
+        },
+        "jarvis.ollamaUrl": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "description": "Ollama base URL (when provider=ollama)"
+        },
+        "jarvis.autoIndex": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-index repo on workspace open"
+        }
+      }
+    },
+    "keybindings": [
+      { "command": "jarvis.chat",        "key": "ctrl+shift+j", "mac": "cmd+shift+j" },
+      { "command": "jarvis.explainCode", "key": "ctrl+shift+e", "mac": "cmd+shift+e", "when": "editorHasSelection" },
+      { "command": "jarvis.fixErrors",   "key": "ctrl+shift+f", "mac": "cmd+shift+f" }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}

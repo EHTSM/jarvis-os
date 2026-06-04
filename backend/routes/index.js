@@ -30,5 +30,7 @@ router.use(require("./phase20"));      // /p20/agents, /p20/memory, /p20/improve
 router.use(require("./phase21"));      // /oauth/*, /p21/obs, /p21/live, /p21/readiness
 router.use(require("./phase22"));      // /p22/secrets, /p22/security, /p22/deploy, /p22/alerts
 router.use(require("./phase23"));      // /p23/github, /p23/review, /p23/release, /p23/autopilot
+router.use(require("./phase24"));      // /p24/vscode, /p24/repo, /p24/refactor, /p24/multirepo
+router.use(require("./phase25"));      // /p25/deploy, /p25/secrets, /p25/obs, /p25/search
 
 module.exports = router;
