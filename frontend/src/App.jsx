@@ -37,6 +37,10 @@ import DataOwnershipCenter          from "./components/DataOwnershipCenter.jsx";
 import SupportCenter                from "./components/SupportCenter.jsx";
 import TrustComplianceCenter        from "./components/TrustComplianceCenter.jsx";
 import DisasterRecoveryCenter       from "./components/DisasterRecoveryCenter.jsx";
+import MobilePlatformCenter         from "./components/MobilePlatformCenter.jsx";
+import CommunityCenter              from "./components/CommunityCenter.jsx";
+import MarketplaceCenter            from "./components/MarketplaceCenter.jsx";
+import AICostCenter                 from "./components/AICostCenter.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -119,6 +123,10 @@ const MORE_TABS = [
   { id: "supportos",   label: "Support"      },
   { id: "trustcompliance",label:"Trust"      },
   { id: "disasterrecovery",label:"Recovery"  },
+  { id: "mobile",         label:"Mobile"     },
+  { id: "community",      label:"Community"  },
+  { id: "marketplace",    label:"Marketplace"},
+  { id: "aicost",         label:"AI Costs"   },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -658,6 +666,10 @@ function AppInner() {
         {tab === "supportos"         && <SupportCenter              onNavigate={setTab} />}
         {tab === "trustcompliance"   && <TrustComplianceCenter      onNavigate={setTab} />}
         {tab === "disasterrecovery"  && <DisasterRecoveryCenter     onNavigate={setTab} />}
+        {tab === "mobile"            && <MobilePlatformCenter       onNavigate={setTab} />}
+        {tab === "community"         && <CommunityCenter            onNavigate={setTab} />}
+        {tab === "marketplace"       && <MarketplaceCenter          onNavigate={setTab} />}
+        {tab === "aicost"            && <AICostCenter               onNavigate={setTab} />}
         {tab === "runtime"           && <RuntimeTab product={_PRODUCT} />}
         </div>
       </main>
