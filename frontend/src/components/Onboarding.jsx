@@ -4,23 +4,23 @@ import "./Onboarding.css";
 const STEPS = [
   {
     key:         "business",
-    question:    "What kind of business do you run?",
-    subtext:     "Ooplix uses this to write follow-up messages in the right tone — so messages feel personal, not automated.",
+    headline:    "What kind of business do you run?",
+    hint:        "Ooplix writes follow-up messages that sound like you — not a bot. This keeps them natural.",
     placeholder: "e.g. Freelance designer, coaching, digital agency…",
     type:        "text",
   },
   {
     key:         "product",
-    question:    "What do you sell or offer?",
-    subtext:     "This lets Ooplix mention your work naturally when following up with leads. No jargon, just clear and human.",
-    placeholder: "e.g. Logo packages, 1-on-1 coaching, SEO services…",
+    headline:    "What do you sell?",
+    hint:        "Your product or service appears in follow-up messages, so they feel relevant instead of generic.",
+    placeholder: "e.g. Logo packages, 1-on-1 coaching, SEO retainer…",
     type:        "text",
   },
   {
     key:         "price",
-    question:    "What's your typical price?",
-    subtext:     "Sets the default amount on your payment links. You can change it any time for individual clients.",
-    placeholder: "e.g. ₹999, ₹5000/month, ₹15,000 per project",
+    headline:    "What's your price?",
+    hint:        "Sets the default amount on payment links. You can override it per client at any time.",
+    placeholder: "e.g. ₹5,000, ₹15,000 per project",
     type:        "text",
   },
 ];
@@ -57,13 +57,13 @@ export default function Onboarding({ onComplete }) {
   if (done) {
     return (
       <div className="onboarding">
-        <div className="onboarding-inner">
+        <div className="onboarding-inner animate-scale-in">
 
           <div className="ob-header">
-            <div className="ob-logo">J</div>
+            <div className="ob-logo">O</div>
             <div className="ob-header-meta">
               <span className="ob-title-brand">Ooplix</span>
-              <span className="ob-step-label">Setup complete</span>
+              <span className="ob-step-label">Ready to run</span>
             </div>
           </div>
 
@@ -73,36 +73,40 @@ export default function Onboarding({ onComplete }) {
 
           <div className="ob-body">
             <h2 className="ob-done-heading">
-              You're all set.
+              Your AI OS is live.
             </h2>
             <p className="ob-done-sub">
-              Ooplix is configured for <strong>{profile?.business || "your business"}</strong>. Here's exactly what to do first:
+              Configured for <strong>{profile?.business || "your business"}</strong>. Three actions to start the loop:
             </p>
             <ul className="ob-checklist">
               <li>
                 <span className="ob-check">1</span>
-                <span><strong>Add a lead</strong> — go to the Clients tab and enter a name and WhatsApp number. Takes 30 seconds.</span>
+                <div>
+                  <strong>Add a contact</strong>
+                  <p className="ob-check-sub">Name + WhatsApp number. The first follow-up fires in 10 minutes — automatically.</p>
+                </div>
               </li>
               <li>
                 <span className="ob-check">2</span>
-                <span><strong>Watch follow-ups begin</strong> — Ooplix sends friendly messages on your behalf automatically. No manual work.</span>
+                <div>
+                  <strong>Connect WhatsApp</strong>
+                  <p className="ob-check-sub">One-time setup. After that, every follow-up runs without you touching anything.</p>
+                </div>
               </li>
               <li>
                 <span className="ob-check">3</span>
-                <span><strong>Send a payment link</strong> — one click from the client card when they're ready to buy.</span>
-              </li>
-              <li>
-                <span className="ob-check">4</span>
-                <span><strong>Track it all</strong> — the Revenue tab shows your full pipeline and what's converting.</span>
+                <div>
+                  <strong>Watch it run</strong>
+                  <p className="ob-check-sub">Control Center shows every action, send, and system event in real time.</p>
+                </div>
               </li>
             </ul>
             <button
               className="ob-btn ob-btn--complete"
               onClick={() => onComplete(profile)}
             >
-              Open Ooplix →
+              Open Control Center →
             </button>
-            <p className="ob-confidence-note">Your setup is saved — you can update it any time in Settings.</p>
           </div>
 
         </div>
@@ -112,13 +116,13 @@ export default function Onboarding({ onComplete }) {
 
   return (
     <div className="onboarding">
-      <div className="onboarding-inner">
+      <div className="onboarding-inner animate-scale-in">
 
         <div className="ob-header">
-          <div className="ob-logo">J</div>
+          <div className="ob-logo">O</div>
           <div className="ob-header-meta">
-            <span className="ob-title-brand">Quick setup</span>
-            <span className="ob-step-label">Step {step + 1} of {STEPS.length} — takes under a minute</span>
+            <span className="ob-title-brand">Setup — under a minute</span>
+            <span className="ob-step-label">Step {step + 1} of {STEPS.length}</span>
           </div>
           <span className="ob-step-count">{step + 1}/{STEPS.length}</span>
         </div>
@@ -128,8 +132,8 @@ export default function Onboarding({ onComplete }) {
         </div>
 
         <div className={`ob-body ob-step-${step + 1}`}>
-          <h2 className="ob-question">{current.question}</h2>
-          {current.subtext && <p className="ob-subtext">{current.subtext}</p>}
+          <h2 className="ob-question">{current.headline}</h2>
+          {current.hint && <p className="ob-subtext">{current.hint}</p>}
 
           <input
             key={current.key}
@@ -147,7 +151,7 @@ export default function Onboarding({ onComplete }) {
             onClick={handleNext}
             disabled={!value.trim()}
           >
-            {isLast ? "Complete Setup →" : "Continue →"}
+            {isLast ? "Finish Setup →" : "Continue →"}
           </button>
 
           {step > 0 ? (
@@ -155,7 +159,7 @@ export default function Onboarding({ onComplete }) {
               ← Back
             </button>
           ) : (
-            <p className="ob-confidence-note">No credit card needed. Setup is saved locally.</p>
+            <p className="ob-confidence-note">No credit card. No account needed yet.</p>
           )}
         </div>
 

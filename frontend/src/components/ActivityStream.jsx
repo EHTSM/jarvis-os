@@ -187,10 +187,10 @@ export default function ActivityStream({ opsData, stats, onNavigate }) {
       <div className="as-root">
         <div className="as-empty">
           <div className="as-empty-icon">◎</div>
-          <p className="as-empty-title">Ooplix is standing by</p>
+          <p className="as-empty-title">Waiting for your first action</p>
           <p className="as-empty-sub">
-            Autonomous activity will appear here as it happens — follow-ups sent,
-            payments received, runtime events, workflow executions.
+            Every message sent, payment collected, and task executed appears here in real time.
+            Add a contact to start the loop.
           </p>
           <button className="as-empty-btn" onClick={() => onNavigate?.("clients")}>
             Add first contact →

@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { dispatchTask } from "../runtimeApi";
-import VisualIntelligence from "./VisualIntelligence.jsx";
-import ActivityStream     from "./ActivityStream.jsx";
+import VisualIntelligence  from "./VisualIntelligence.jsx";
+import ActivityStream      from "./ActivityStream.jsx";
+import ExecutiveSummary    from "./ExecutiveSummary.jsx";
 import "./ControlCenter.css";
 
 // ── Helpers ────────────────────────────────────────────────────────
@@ -97,7 +98,7 @@ function SystemsStrip({ opsData, online, onNavigate }) {
         {systems.map(s => (
           <button
             key={s.id}
-            className={`cc-system-card${!s.ok ? " cc-system-card--warn" : ""}`}
+            className={`cc-system-card hover-glow${!s.ok ? " cc-system-card--warn" : ""}`}
             onClick={() => onNavigate?.(s.nav)}
             aria-label={`${s.label}: ${s.value}`}
           >
@@ -218,9 +219,9 @@ function ActionsFeed({ opsData, stats, onNavigate }) {
       <section className="cc-section">
         <h2 className="cc-section-label">Autonomous Actions</h2>
         <div className="cc-empty">
-          <p className="cc-empty-title">No activity yet</p>
+          <p className="cc-empty-title">Nothing running yet</p>
           <p className="cc-empty-sub">
-            Add contacts and connect WhatsApp — autonomous follow-ups will appear here as they run.
+            Add a contact with their WhatsApp number. Ooplix queues the first follow-up in 10 minutes — and handles every sequence after that without you.
           </p>
           <button className="cc-empty-btn" onClick={() => onNavigate?.("clients")}>
             Add first contact →
@@ -375,9 +376,9 @@ function DispatchBar({ online, onNavigate }) {
   return (
     <section className="cc-section">
       <div className="cc-section-header">
-        <h2 className="cc-section-label">Dispatch</h2>
+        <h2 className="cc-section-label">Run a Task</h2>
         <button className="cc-section-link" onClick={() => onNavigate?.("runtime")}>
-          Control Room →
+          Full Execution →
         </button>
       </div>
 
@@ -468,21 +469,23 @@ function BusinessStrip({ stats, onNavigate }) {
 
 export default function ControlCenter({ stats, opsData, online, onNavigate }) {
   return (
-    <div className="cc-root">
+    <div className="cc-root page-enter">
       <div className="cc-header">
         <div className="cc-header-brand">
           <span className={`status-indicator dot--${online ? "ok" : "crit"} dot--live`} />
           <span className="cc-header-title">Control Center</span>
         </div>
         <span className="cc-header-sub">
-          {online ? "System operational" : "Reconnecting…"}
+          {online ? "Live — your business is running" : "Reconnecting…"}
         </span>
       </div>
+
+      <ExecutiveSummary stats={stats} opsData={opsData} online={online} />
 
       <div className="cc-content">
         <VisualIntelligence stats={stats} opsData={opsData} />
         <SystemsStrip  opsData={opsData} online={online}  onNavigate={onNavigate} />
-        <section className="cc-section">
+        <section className="cc-section section-enter">
           <div className="cc-section-header">
             <h2 className="cc-section-label">Live Activity</h2>
             <button className="cc-section-link" onClick={() => onNavigate?.("activity")}>

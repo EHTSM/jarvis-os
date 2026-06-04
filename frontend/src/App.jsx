@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -467,6 +467,8 @@ function AppInner() {
       )}
 
       <main className="app-main">
+        {/* key forces remount on tab change — triggers page-enter CSS animation */}
+        <div key={tab} className="app-tab-pane">
         {tab === "home"     && (
           <ControlCenter
             stats={stats}
@@ -507,6 +509,7 @@ function AppInner() {
         {tab === "developer" && <DeveloperOS onToast={addToast} />}
         {tab === "enterprise" && <EnterpriseOS onToast={addToast} />}
         {tab === "runtime"   && <RuntimeTab product={_PRODUCT} />}
+        </div>
       </main>
       {!_IS_DESKTOP && <CompanyFooter onNavigate={openLegal} />}
     </div>
