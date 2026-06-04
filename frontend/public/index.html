@@ -15,12 +15,16 @@
     <meta name="language" content="en" />
     <meta name="category" content="Business Software, AI, Automation" />
 
-    <!-- Open Graph (Facebook, LinkedIn, WhatsApp previews) -->
+    <!-- Canonical -->
+    <link rel="canonical" href="https://ooplix.com/" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ooplix.com/" />
     <meta property="og:title" content="Ooplix — AI Operating System for Your Business" />
     <meta property="og:description" content="Run your business on autopilot. Ooplix follows up with leads, collects payments, and executes workflows autonomously — 24/7." />
     <meta property="og:site_name" content="Ooplix" />
-    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:image" content="https://ooplix.com/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Ooplix AI Operating System — live runtime feed showing autonomous business actions" />
@@ -28,9 +32,11 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Ooplix — AI Operating System" />
-    <meta name="twitter:description" content="Run your business on autopilot. Ooplix is an AI OS that follows up, collects payments, and executes workflows autonomously." />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:site" content="@ooplix" />
+    <meta name="twitter:creator" content="@ooplix" />
+    <meta name="twitter:title" content="Ooplix — AI Operating System for Your Business" />
+    <meta name="twitter:description" content="Run your business on autopilot. Ooplix is an AI OS that follows up with leads, collects payments, and executes workflows — 24/7." />
+    <meta name="twitter:image" content="https://ooplix.com/og-image.png" />
     <meta name="twitter:image:alt" content="Ooplix AI Operating System" />
 
     <!-- Favicon -->
@@ -44,6 +50,114 @@
     <meta name="brand" content="Ooplix" />
     <meta name="product" content="Ooplix" />
 
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://ooplix.com/#organization",
+          "name": "ALWALIY TECHNOLOGIES PRIVATE LIMITED",
+          "alternateName": "Ooplix",
+          "url": "https://ooplix.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://ooplix.com/favicon.svg",
+            "width": 512,
+            "height": 512
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer support",
+            "email": "support@ooplix.com",
+            "availableLanguage": ["English", "Hindi"]
+          },
+          "sameAs": []
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://ooplix.com/#software",
+          "name": "Ooplix",
+          "alternateName": "Ooplix AI Operating System",
+          "url": "https://ooplix.com",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "CRM, Automation, AI",
+          "operatingSystem": "Web, Android",
+          "offers": {
+            "@type": "Offer",
+            "priceCurrency": "INR",
+            "price": "0",
+            "priceValidUntil": "2026-12-31",
+            "description": "7-day free trial, no credit card required"
+          },
+          "description": "Ooplix is an AI Operating System for businesses — it runs automated WhatsApp follow-up sequences, collects payments via Razorpay, monitors live runtime health, and executes autonomous workflows 24/7.",
+          "featureList": [
+            "Autonomous WhatsApp follow-up sequences",
+            "One-tap Razorpay payment link generation",
+            "Live runtime monitoring and health dashboard",
+            "AI command interface for task execution",
+            "Lead pipeline and CRM management",
+            "Business and developer OS modules"
+          ],
+          "screenshot": "https://ooplix.com/og-image.png",
+          "publisher": {
+            "@id": "https://ooplix.com/#organization"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://ooplix.com/#website",
+          "url": "https://ooplix.com",
+          "name": "Ooplix",
+          "publisher": {
+            "@id": "https://ooplix.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://ooplix.com/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- ── Google Tag Manager ──────────────────────────────────────────── -->
+    <!-- Set GTM_ID env var or replace GTM-XXXXXXX with your container ID -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- ── Google Analytics 4 (direct, runs alongside GTM) ───────────── -->
+    <!-- Replace G-XXXXXXXXXX with your real Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX', {
+        send_page_view: false,
+        anonymize_ip: true,
+        cookie_flags: 'SameSite=None;Secure'
+      });
+    </script>
+    <!-- End Google Analytics 4 -->
+
+    <!-- ── Microsoft Clarity ──────────────────────────────────────────── -->
+    <!-- Replace CLARITY-XXXXXXXXX with your Project ID; remove block to disable -->
+    <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "CLARITY-XXXXXXXXX");
+    </script>
+    <!-- End Microsoft Clarity -->
+
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body { background: #0a0a0f; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -51,6 +165,11 @@
     </style>
   </head>
   <body>
+    <!-- Google Tag Manager (noscript fallback) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <noscript>You need JavaScript enabled to run Ooplix.</noscript>
     <div id="root"></div>
   </body>

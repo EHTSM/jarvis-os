@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { track, pageView } from "./analytics";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -199,7 +200,7 @@ function AppInner() {
     const handler = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        setPaletteOpen(o => !o);
+        setPaletteOpen(o => { if (!o) track.commandPaletteOpened("keyboard"); return !o; });
       }
     };
     window.addEventListener("keydown", handler);
@@ -249,6 +250,7 @@ function AppInner() {
   // ── Landing → Onboarding ──────────────────────────────────────────
   const handleStart = () => {
     localStorage.setItem("jarvis_started", "1");
+    track.signupStarted("landing_cta");
     setScreen("onboarding");
   };
 
@@ -265,6 +267,8 @@ function AppInner() {
       text: `Setup complete! Ooplix is ready for your ${profile.business || "business"}.\n\nAdd your first client below — enter their name and WhatsApp number, and I'll take it from there.`,
       ts:   Date.now()
     }]);
+    track.signupCompleted(profile?.business || "");
+    track.trialStarted();
     localStorage.setItem("jarvis_just_onboarded", "1");
     setScreen("app");
     setTab("home");  // land on Control Center — shows live system state immediately
@@ -294,7 +298,7 @@ function AppInner() {
   if (screen === "login") {
     return (
       <div className="app-auth-gate">
-        <LoginPage onSuccess={() => setScreen("app")} />
+        <LoginPage onSuccess={() => { track.login("local"); setScreen("app"); }} />
       </div>
     );
   }
@@ -433,7 +437,7 @@ function AppInner() {
             <button
               key={t.id}
               className={`tab${tab === t.id ? " active" : ""}${t.featured ? " tab--featured" : ""}`}
-              onClick={() => setTab(t.id)}
+              onClick={() => { setTab(t.id); track.tabChanged(t.id); }}
             >
               {t.label}
             </button>

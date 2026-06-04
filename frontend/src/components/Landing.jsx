@@ -1,4 +1,5 @@
 import React from "react";
+import { track } from "../analytics";
 import "./Landing.css";
 
 const YEAR = new Date().getFullYear();
@@ -57,6 +58,8 @@ const HOW_IT_WORKS = [
 ];
 
 export default function Landing({ onStart, onLogin, onLegal, onPricing }) {
+  const handleStart = (source) => { track.signupStarted(source); onStart(); };
+
   return (
     <div className="landing">
       <div className="landing-inner">
@@ -83,7 +86,7 @@ export default function Landing({ onStart, onLogin, onLegal, onPricing }) {
             </p>
 
             <div className="landing-actions">
-              <button className="landing-btn-primary" onClick={onStart}>
+              <button className="landing-btn-primary" onClick={() => handleStart("hero_primary")}>
                 Start Free Trial — 7 days free
               </button>
               <button className="landing-btn-ghost" onClick={onLogin}>
@@ -187,7 +190,7 @@ export default function Landing({ onStart, onLogin, onLegal, onPricing }) {
           <p className="landing-cta-sub">
             Join operators using Ooplix to close more leads, collect faster, and execute without the manual work.
           </p>
-          <button className="landing-btn-primary landing-btn-primary--lg" onClick={onStart}>
+          <button className="landing-btn-primary landing-btn-primary--lg" onClick={() => handleStart("bottom_cta")}>
             Start Free — 7 days, no card
           </button>
         </div>
