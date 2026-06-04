@@ -27,5 +27,6 @@ router.use(require("./browser"));      // /browser/run, /browser/action, /browse
 router.use(require("./phase18"));      // /p18/actions, /p18/agents, /p18/memory, /p18/cycles
 router.use(require("./phase19"));      // /p19/tools, /p19/coord, /p19/heal, /p19/learn
 router.use(require("./phase20"));      // /p20/agents, /p20/memory, /p20/improve, /p20/ooplix
+router.use(require("./phase21"));      // /oauth/*, /p21/obs, /p21/live, /p21/readiness
 
 module.exports = router;
