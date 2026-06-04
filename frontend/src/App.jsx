@@ -4,6 +4,7 @@ import { getBillingStatus } from "./billingApi";
 import TrialBanner   from "./components/TrialBanner.jsx";
 import UpgradeModal      from "./components/UpgradeModal.jsx";
 import BillingDashboard  from "./components/BillingDashboard.jsx";
+import SuccessCenter     from "./components/SuccessCenter.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -46,9 +47,11 @@ const TABS = [
 
 // Secondary tabs shown in the More dropdown
 const MORE_TABS = [
+  { id: "success",    label: "Getting Started" },
   { id: "overview",   label: "Overview"    },
   { id: "activity",   label: "History"     },
   { id: "billing",    label: "Billing"     },
+  { id: "help",       label: "Help & Guides" },
   { id: "personal",   label: "Personal"    },
   { id: "business",   label: "Business"    },
   { id: "developer",  label: "Developer"   },
@@ -542,6 +545,15 @@ function AppInner() {
             onMessage={push}
             onToast={addToast}
             whatsappConnected={opsData?.services?.whatsapp ?? false}
+          />
+        )}
+        {tab === "success"   && (
+          <SuccessCenter
+            stats={stats}
+            opsData={opsData}
+            billing={billing}
+            onNavigate={setTab}
+            onUpgrade={() => setUpgradeOpen(true)}
           />
         )}
         {tab === "billing"   && (
