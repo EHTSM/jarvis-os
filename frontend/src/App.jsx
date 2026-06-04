@@ -17,6 +17,10 @@ import TeamWorkspace      from "./components/TeamWorkspace.jsx";
 import EnterpriseCRM      from "./components/EnterpriseCRM.jsx";
 import ExecutiveReports   from "./components/ExecutiveReports.jsx";
 import WorkspaceSettings  from "./components/WorkspaceSettings.jsx";
+import KnowledgeCenter    from "./components/KnowledgeCenter.jsx";
+import MemoryCenter       from "./components/MemoryCenter.jsx";
+import IntegrationCenter  from "./components/IntegrationCenter.jsx";
+import AgentCenter        from "./components/AgentCenter.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -75,10 +79,14 @@ const MORE_TABS = [
   { id: "business",   label: "Business"    },
   { id: "developer",  label: "Developer"   },
   { id: "enterprise", label: "Enterprise"  },
-  { id: "team",       label: "Team"        },
-  { id: "ecrm",       label: "CRM"         },
-  { id: "reports",    label: "Reports"     },
-  { id: "settings",   label: "Settings"    },
+  { id: "team",        label: "Team"        },
+  { id: "ecrm",        label: "CRM"         },
+  { id: "reports",     label: "Reports"     },
+  { id: "settings",    label: "Settings"    },
+  { id: "knowledge",   label: "Knowledge"   },
+  { id: "memory",      label: "Memory"      },
+  { id: "integrations",label: "Integrations"},
+  { id: "agents",      label: "Agents"      },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -597,8 +605,12 @@ function AppInner() {
         {tab === "team"      && <TeamWorkspace onNavigate={setTab} />}
         {tab === "ecrm"      && <EnterpriseCRM onNavigate={setTab} />}
         {tab === "reports"   && <ExecutiveReports onNavigate={setTab} />}
-        {tab === "settings"  && <WorkspaceSettings onNavigate={setTab} />}
-        {tab === "runtime"   && <RuntimeTab product={_PRODUCT} />}
+        {tab === "settings"      && <WorkspaceSettings  onNavigate={setTab} />}
+        {tab === "knowledge"     && <KnowledgeCenter   onNavigate={setTab} />}
+        {tab === "memory"        && <MemoryCenter       onNavigate={setTab} />}
+        {tab === "integrations"  && <IntegrationCenter  onNavigate={setTab} />}
+        {tab === "agents"        && <AgentCenter        onNavigate={setTab} />}
+        {tab === "runtime"       && <RuntimeTab product={_PRODUCT} />}
         </div>
       </main>
       {!_IS_DESKTOP && <CompanyFooter onNavigate={openLegal} />}
