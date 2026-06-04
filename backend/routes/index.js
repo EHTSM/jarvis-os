@@ -25,5 +25,6 @@ router.use(require("../../agents/runtime/runtimeStream.cjs")); // GET /runtime/s
 router.use(require("./tasks"));        // /tasks, /scheduler/status, /queue/status
 router.use(require("./browser"));      // /browser/run, /browser/action, /browser/navigate, /browser/sessions, /browser/status
 router.use(require("./phase18"));      // /p18/actions, /p18/agents, /p18/memory, /p18/cycles
+router.use(require("./phase19"));      // /p19/tools, /p19/coord, /p19/heal, /p19/learn
 
 module.exports = router;
