@@ -17,10 +17,14 @@ import TeamWorkspace      from "./components/TeamWorkspace.jsx";
 import EnterpriseCRM      from "./components/EnterpriseCRM.jsx";
 import ExecutiveReports   from "./components/ExecutiveReports.jsx";
 import WorkspaceSettings  from "./components/WorkspaceSettings.jsx";
-import KnowledgeCenter    from "./components/KnowledgeCenter.jsx";
-import MemoryCenter       from "./components/MemoryCenter.jsx";
-import IntegrationCenter  from "./components/IntegrationCenter.jsx";
-import AgentCenter        from "./components/AgentCenter.jsx";
+import KnowledgeCenter         from "./components/KnowledgeCenter.jsx";
+import MemoryCenter            from "./components/MemoryCenter.jsx";
+import IntegrationCenter       from "./components/IntegrationCenter.jsx";
+import AgentCenter             from "./components/AgentCenter.jsx";
+import DeveloperCopilotCenter  from "./components/DeveloperCopilotCenter.jsx";
+import EngineeringCenter       from "./components/EngineeringCenter.jsx";
+import DevOpsCenter            from "./components/DevOpsCenter.jsx";
+import SelfHealingCenter       from "./components/SelfHealingCenter.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -87,6 +91,10 @@ const MORE_TABS = [
   { id: "memory",      label: "Memory"      },
   { id: "integrations",label: "Integrations"},
   { id: "agents",      label: "Agents"      },
+  { id: "copilot",     label: "Copilot"     },
+  { id: "engineering", label: "Engineering" },
+  { id: "devops",      label: "DevOps"      },
+  { id: "selfhealing", label: "Self-Healing"},
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -609,7 +617,11 @@ function AppInner() {
         {tab === "knowledge"     && <KnowledgeCenter   onNavigate={setTab} />}
         {tab === "memory"        && <MemoryCenter       onNavigate={setTab} />}
         {tab === "integrations"  && <IntegrationCenter  onNavigate={setTab} />}
-        {tab === "agents"        && <AgentCenter        onNavigate={setTab} />}
+        {tab === "agents"        && <AgentCenter             onNavigate={setTab} />}
+        {tab === "copilot"       && <DeveloperCopilotCenter onNavigate={setTab} />}
+        {tab === "engineering"   && <EngineeringCenter      onNavigate={setTab} />}
+        {tab === "devops"        && <DevOpsCenter           onNavigate={setTab} />}
+        {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
         {tab === "runtime"       && <RuntimeTab product={_PRODUCT} />}
         </div>
       </main>
