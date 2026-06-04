@@ -33,6 +33,10 @@ import AgentCollaborationCenter     from "./components/AgentCollaborationCenter.
 import ToolFabricCenter             from "./components/ToolFabricCenter.jsx";
 import AutonomousCompanyCenter      from "./components/AutonomousCompanyCenter.jsx";
 import ExecutionOrchestratorCenter  from "./components/ExecutionOrchestratorCenter.jsx";
+import DataOwnershipCenter          from "./components/DataOwnershipCenter.jsx";
+import SupportCenter                from "./components/SupportCenter.jsx";
+import TrustComplianceCenter        from "./components/TrustComplianceCenter.jsx";
+import DisasterRecoveryCenter       from "./components/DisasterRecoveryCenter.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -111,6 +115,10 @@ const MORE_TABS = [
   { id: "toolfabric",  label: "Tool Fabric"  },
   { id: "autonomy",    label: "Autonomous Co"},
   { id: "orchestrator",label: "Orchestrator" },
+  { id: "dataowner",   label: "Data"         },
+  { id: "supportos",   label: "Support"      },
+  { id: "trustcompliance",label:"Trust"      },
+  { id: "disasterrecovery",label:"Recovery"  },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -645,8 +653,12 @@ function AppInner() {
         {tab === "collab"        && <AgentCollaborationCenter    onNavigate={setTab} />}
         {tab === "toolfabric"    && <ToolFabricCenter            onNavigate={setTab} />}
         {tab === "autonomy"      && <AutonomousCompanyCenter     onNavigate={setTab} />}
-        {tab === "orchestrator"  && <ExecutionOrchestratorCenter onNavigate={setTab} />}
-        {tab === "runtime"       && <RuntimeTab product={_PRODUCT} />}
+        {tab === "orchestrator"      && <ExecutionOrchestratorCenter onNavigate={setTab} />}
+        {tab === "dataowner"         && <DataOwnershipCenter        onNavigate={setTab} />}
+        {tab === "supportos"         && <SupportCenter              onNavigate={setTab} />}
+        {tab === "trustcompliance"   && <TrustComplianceCenter      onNavigate={setTab} />}
+        {tab === "disasterrecovery"  && <DisasterRecoveryCenter     onNavigate={setTab} />}
+        {tab === "runtime"           && <RuntimeTab product={_PRODUCT} />}
         </div>
       </main>
       {!_IS_DESKTOP && <CompanyFooter onNavigate={openLegal} />}
