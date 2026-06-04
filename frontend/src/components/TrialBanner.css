@@ -1,0 +1,224 @@
+/* ── Trial Banner ────────────────────────────────────────────────────────
+   Urgency-tier system:
+     info     → teal (neutral)
+     warning  → amber (low urgency)
+     critical → red pulse (high urgency)
+     grace    → red solid (final warning)
+     blocked  → full-width hard block
+   ──────────────────────────────────────────────────────────────────────── */
+
+.trial-banner {
+  width: 100%;
+  flex-shrink: 0;
+  border-bottom: 1px solid transparent;
+  animation: slide-down var(--dur-std) var(--ease-spring) both;
+}
+
+.tb-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 28px;
+  flex-wrap: wrap;
+}
+
+/* ── Left: icon + text ──────────────────────────────────────────────── */
+.tb-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.tb-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tb-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.tb-label {
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tb-sub {
+  font-size: 11.5px;
+  line-height: 1.4;
+  opacity: 0.78;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Right: progress + CTA + dismiss ───────────────────────────────── */
+.tb-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* ── Progress track ─────────────────────────────────────────────────── */
+.tb-progress-track {
+  width: 80px;
+  height: 4px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 999px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.tb-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 600ms var(--ease-out);
+}
+
+/* ── CTA button ─────────────────────────────────────────────────────── */
+.tb-cta {
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  border: none;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  transition: transform var(--dur-std) var(--ease-spring),
+              box-shadow var(--dur-std) var(--ease-spring),
+              opacity var(--dur-fast) var(--ease-out);
+}
+.tb-cta--default {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+.tb-cta--default:hover {
+  background: rgba(255,255,255,0.22);
+  transform: translateY(-1px);
+}
+.tb-cta--urgent {
+  background: #fff;
+  color: #0a0a14;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.22);
+}
+.tb-cta--urgent:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+}
+.tb-cta:active { transform: translateY(0); opacity: 0.88; }
+
+/* ── Dismiss ────────────────────────────────────────────────────────── */
+.tb-dismiss {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.50);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: color var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out);
+  flex-shrink: 0;
+}
+.tb-dismiss:hover {
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.08);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   TIER THEMES
+   ════════════════════════════════════════════════════════════════════ */
+
+/* INFO — teal, neutral */
+.trial-banner--info {
+  background: linear-gradient(90deg,
+    rgba(78,205,196,0.18) 0%,
+    rgba(78,205,196,0.10) 60%,
+    rgba(78,205,196,0.06) 100%);
+  border-bottom-color: rgba(78,205,196,0.22);
+}
+.trial-banner--info .tb-dot    { background: var(--accent2); }
+.trial-banner--info .tb-label  { color: var(--accent2); }
+.trial-banner--info .tb-sub    { color: rgba(78,205,196,0.85); }
+
+/* WARNING — amber */
+.trial-banner--warning {
+  background: linear-gradient(90deg,
+    rgba(240,180,41,0.18) 0%,
+    rgba(240,180,41,0.10) 60%,
+    rgba(240,180,41,0.05) 100%);
+  border-bottom-color: rgba(240,180,41,0.28);
+}
+.trial-banner--warning .tb-dot    { background: var(--warning); animation: pulse-dot 2s ease-in-out infinite; }
+.trial-banner--warning .tb-label  { color: var(--warning); }
+.trial-banner--warning .tb-sub    { color: rgba(240,180,41,0.82); }
+
+/* CRITICAL — red, pulsing dot */
+.trial-banner--critical {
+  background: linear-gradient(90deg,
+    rgba(245,91,91,0.22) 0%,
+    rgba(245,91,91,0.12) 55%,
+    rgba(245,91,91,0.06) 100%);
+  border-bottom-color: rgba(245,91,91,0.32);
+}
+.trial-banner--critical .tb-dot {
+  background: var(--danger);
+  animation: pulse-dot 1.2s ease-in-out infinite;
+  box-shadow: 0 0 0 0 var(--danger);
+}
+.trial-banner--critical .tb-label { color: var(--danger); }
+.trial-banner--critical .tb-sub   { color: rgba(245,91,91,0.82); }
+
+/* GRACE — red solid bar */
+.trial-banner--grace {
+  background: linear-gradient(90deg,
+    rgba(245,91,91,0.28) 0%,
+    rgba(245,91,91,0.16) 55%,
+    rgba(245,91,91,0.08) 100%);
+  border-bottom-color: rgba(245,91,91,0.40);
+}
+.trial-banner--grace .tb-dot   { background: var(--danger); animation: pulse-dot 0.9s ease-in-out infinite; }
+.trial-banner--grace .tb-label { color: #ff7070; }
+.trial-banner--grace .tb-sub   { color: rgba(245,91,91,0.85); }
+
+/* BLOCKED — solid dark red, full prominence */
+.trial-banner--blocked {
+  background: rgba(32, 8, 8, 0.95);
+  border-bottom-color: rgba(245,91,91,0.30);
+}
+.trial-banner--blocked .tb-dot   { background: var(--danger); }
+.trial-banner--blocked .tb-label { color: var(--danger); }
+.trial-banner--blocked .tb-sub   { color: rgba(245,91,91,0.80); }
+.trial-banner--blocked .tb-content { padding: 12px 28px; }
+
+/* ── Mobile ─────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .tb-content {
+    padding: 10px 16px;
+    gap: 10px;
+  }
+  .tb-sub     { display: none; }           /* too long on mobile */
+  .tb-progress-track { display: none; }    /* saves horizontal space */
+  .tb-label   { font-size: 12px; }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .trial-banner { animation: none; }
+  .tb-dot { animation: none; }
+}

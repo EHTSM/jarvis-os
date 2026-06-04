@@ -3,6 +3,7 @@ import { dispatchTask } from "../runtimeApi";
 import VisualIntelligence  from "./VisualIntelligence.jsx";
 import ActivityStream      from "./ActivityStream.jsx";
 import ExecutiveSummary    from "./ExecutiveSummary.jsx";
+import { UsageBar, UpgradeNudge } from "./PremiumGate.jsx";
 import "./ControlCenter.css";
 
 // ── Helpers ────────────────────────────────────────────────────────
@@ -467,7 +468,7 @@ function BusinessStrip({ stats, onNavigate }) {
 
 // ── Root ───────────────────────────────────────────────────────────
 
-export default function ControlCenter({ stats, opsData, online, onNavigate }) {
+export default function ControlCenter({ stats, opsData, online, onNavigate, billing, onUpgrade }) {
   return (
     <div className="cc-root page-enter">
       <div className="cc-header">
@@ -496,6 +497,35 @@ export default function ControlCenter({ stats, opsData, online, onNavigate }) {
         </section>
         <HealthBar     opsData={opsData} online={online} />
         <DispatchBar   online={online}                    onNavigate={onNavigate} />
+
+        {/* Usage visibility — shown during trial, drives upgrade intent */}
+        {billing && (billing.status === "trialing" || billing.status === "expired") && (
+          <section className="cc-section">
+            <h2 className="cc-section-label">Trial Usage</h2>
+            <div className="cc-usage-grid">
+              <UsageBar
+                label="Leads"
+                used={stats?.total ?? 0}
+                limit={25}
+                plan="starter"
+                onUpgrade={onUpgrade}
+              />
+              <UsageBar
+                label="Messages sent"
+                used={Object.values(opsData?.automation || {}).reduce((s, d) => s + (d.sent || 0), 0)}
+                limit={100}
+                plan="starter"
+                onUpgrade={onUpgrade}
+              />
+            </div>
+            <UpgradeNudge
+              feature="Full Pipeline & Analytics"
+              plan="growth"
+              onUpgrade={onUpgrade}
+              compact
+            />
+          </section>
+        )}
       </div>
     </div>
   );

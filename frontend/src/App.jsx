@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { track, pageView } from "./analytics";
+import { getBillingStatus } from "./billingApi";
+import TrialBanner   from "./components/TrialBanner.jsx";
+import UpgradeModal      from "./components/UpgradeModal.jsx";
+import BillingDashboard  from "./components/BillingDashboard.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -44,6 +48,7 @@ const TABS = [
 const MORE_TABS = [
   { id: "overview",   label: "Overview"    },
   { id: "activity",   label: "History"     },
+  { id: "billing",    label: "Billing"     },
   { id: "personal",   label: "Personal"    },
   { id: "business",   label: "Business"    },
   { id: "developer",  label: "Developer"   },
@@ -134,6 +139,8 @@ function AppInner() {
   const [stats,     setStats]     = useState(null);
   const [opsData,   setOpsData]   = useState(null);
   const [toasts,    setToasts]    = useState([]);
+  const [billing,   setBilling]   = useState(null);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
   const _toastId = useRef(0);
 
   const addToast = useCallback((type, message, duration) => {
@@ -159,6 +166,15 @@ function AppInner() {
     if (screen !== "app") return;
     localStorage.setItem("jarvis_last_visit_ts", String(Date.now()));
   }, [screen]);
+
+  // ── Billing status polling ────────────────────────────────────────
+  useEffect(() => {
+    if (screen !== "app" || !user) return;
+    const fetchBilling = () => getBillingStatus().then(b => { if (b) setBilling(b); });
+    fetchBilling();
+    const id = setInterval(fetchBilling, 60_000); // refresh every minute
+    return () => clearInterval(id);
+  }, [screen, user]);
 
   // ── Health + data polling (only when in app screen) ───────────────
   useEffect(() => {
@@ -445,6 +461,14 @@ function AppInner() {
         })}
       </nav>
 
+      {/* Trial conversion banner — shown to trialing/expired users */}
+      {!_IS_DESKTOP && billing?.status !== "active" && (
+        <TrialBanner
+          billing={billing}
+          onUpgrade={() => setUpgradeOpen(true)}
+        />
+      )}
+
       {/* ConnectBar only on tabs where service connectivity is directly relevant.
           Not shown globally — prevents the permanent "broken state" signal. */}
       {(tab === "insights" || tab === "clients") && !_IS_DESKTOP && (
@@ -470,6 +494,16 @@ function AppInner() {
         </div>
       )}
 
+      <UpgradeModal
+        open={upgradeOpen}
+        onClose={() => setUpgradeOpen(false)}
+        billing={billing}
+        onSuccess={() => {
+          addToast("success", "Payment initiated — check your email for confirmation.");
+          setUpgradeOpen(false);
+        }}
+      />
+
       <main className="app-main">
         {/* key forces remount on tab change — triggers page-enter CSS animation */}
         <div key={tab} className="app-tab-pane">
@@ -479,6 +513,8 @@ function AppInner() {
             opsData={opsData}
             online={online}
             onNavigate={setTab}
+            billing={billing}
+            onUpgrade={() => setUpgradeOpen(true)}
           />
         )}
         {tab === "chat" && (
@@ -507,6 +543,9 @@ function AppInner() {
             onToast={addToast}
             whatsappConnected={opsData?.services?.whatsapp ?? false}
           />
+        )}
+        {tab === "billing"   && (
+          <BillingDashboard onUpgrade={() => setUpgradeOpen(true)} />
         )}
         {tab === "personal"  && <PersonalOS  onToast={addToast} />}
         {tab === "business"  && <BusinessOS  onToast={addToast} />}

@@ -461,6 +461,17 @@
   color: var(--text-faint);
 }
 
+/* ── Usage grid ─────────────────────────────────────────────────────── */
+.cc-usage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  padding: 14px 16px;
+  background: var(--surface-base);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
 /* ── Mobile ──────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
   .cc-header    { padding: 16px 16px 0; }
