@@ -5,6 +5,7 @@ import TrialBanner   from "./components/TrialBanner.jsx";
 import UpgradeModal      from "./components/UpgradeModal.jsx";
 import BillingDashboard  from "./components/BillingDashboard.jsx";
 import SuccessCenter     from "./components/SuccessCenter.jsx";
+import HelpHub          from "./components/HelpHub.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -556,6 +557,7 @@ function AppInner() {
             onUpgrade={() => setUpgradeOpen(true)}
           />
         )}
+        {tab === "help"      && <HelpHub onNavigate={setTab} />}
         {tab === "billing"   && (
           <BillingDashboard onUpgrade={() => setUpgradeOpen(true)} />
         )}
