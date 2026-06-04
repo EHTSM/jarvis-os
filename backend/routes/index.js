@@ -26,5 +26,6 @@ router.use(require("./tasks"));        // /tasks, /scheduler/status, /queue/stat
 router.use(require("./browser"));      // /browser/run, /browser/action, /browser/navigate, /browser/sessions, /browser/status
 router.use(require("./phase18"));      // /p18/actions, /p18/agents, /p18/memory, /p18/cycles
 router.use(require("./phase19"));      // /p19/tools, /p19/coord, /p19/heal, /p19/learn
+router.use(require("./phase20"));      // /p20/agents, /p20/memory, /p20/improve, /p20/ooplix
 
 module.exports = router;
