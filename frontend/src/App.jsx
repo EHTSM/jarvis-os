@@ -49,6 +49,10 @@ import AgentFactoryCenter           from "./components/AgentFactoryCenter.jsx";
 import MemoryIntelligenceCenter     from "./components/MemoryIntelligenceCenter.jsx";
 import SelfImprovementCenter        from "./components/SelfImprovementCenter.jsx";
 import JarvisBrainCenter            from "./components/JarvisBrainCenter.jsx";
+import ExecutionConnectorCenter     from "./components/ExecutionConnectorCenter.jsx";
+import AutonomousWorkflowCenter     from "./components/AutonomousWorkflowCenter.jsx";
+import AgentActionCenter            from "./components/AgentActionCenter.jsx";
+import AutonomyScoreCenter          from "./components/AutonomyScoreCenter.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -143,6 +147,10 @@ const MORE_TABS = [
   { id: "memoryintel",   label:"Memory Intel"       },
   { id: "selfimprove",   label:"Self-Improve"       },
   { id: "jarvisbrain",   label:"Jarvis Brain"       },
+  { id: "execconnector", label:"Exec Connectors"    },
+  { id: "autonomouswf",  label:"Auto Workflows"     },
+  { id: "agentactions",  label:"Agent Actions"      },
+  { id: "autonomyscore", label:"Autonomy Score"     },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -694,6 +702,10 @@ function AppInner() {
         {tab === "memoryintel"       && <MemoryIntelligenceCenter   onNavigate={setTab} />}
         {tab === "selfimprove"       && <SelfImprovementCenter      onNavigate={setTab} />}
         {tab === "jarvisbrain"       && <JarvisBrainCenter          onNavigate={setTab} />}
+        {tab === "execconnector"     && <ExecutionConnectorCenter   onNavigate={setTab} />}
+        {tab === "autonomouswf"      && <AutonomousWorkflowCenter   onNavigate={setTab} />}
+        {tab === "agentactions"      && <AgentActionCenter          onNavigate={setTab} />}
+        {tab === "autonomyscore"     && <AutonomyScoreCenter        onNavigate={setTab} />}
         {tab === "runtime"           && <RuntimeTab product={_PRODUCT} />}
         </div>
       </main>
