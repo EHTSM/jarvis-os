@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import EmptyState from "./EmptyState.jsx";
 import "./Dashboard.css";
 
 function StatCard({ label, value, color, sub }) {
@@ -248,24 +249,14 @@ export default function Dashboard({ stats, opsData, onNavigate, online = false }
         </div>
       );
     }
-    // Repeated failures — data never arrived. Show a recoverable empty state
-    // instead of a forever-spinning skeleton.
+    // Repeated failures — data never arrived.
     return (
       <div className="dashboard">
         <div className="dash-header">
-          <h2 className="dash-title">Revenue</h2>
+          <h2 className="dash-title">Pipeline</h2>
           <p className="dash-subtitle">Leads, follow-ups, and closed revenue at a glance.</p>
         </div>
-        <div className="empty-state-block">
-          <div className="empty-icon-mark" aria-hidden="true" />
-          <p className="empty-title">Your pipeline starts here</p>
-          <p className="empty-sub">
-            Add your first lead — just a name and WhatsApp number. Ooplix handles all the follow-ups from there.
-          </p>
-          <button className="empty-action-btn" onClick={() => onNavigate?.("clients")}>
-            Add your first contact →
-          </button>
-        </div>
+        <EmptyState variant="pipeline" onNavigate={onNavigate} />
       </div>
     );
   }
@@ -314,16 +305,7 @@ export default function Dashboard({ stats, opsData, onNavigate, online = false }
 
       {/* ── Lead Pipeline ─────────────────────────────────────────── */}
       {!hasLeads ? (
-        <div className="empty-state-block">
-          <div className="empty-icon-mark" aria-hidden="true" />
-          <p className="empty-title">Your pipeline starts here</p>
-          <p className="empty-sub">
-            Go to the <strong>Clients</strong> tab and add your first lead — just a name and WhatsApp number. Ooplix handles all the follow-ups from there.
-          </p>
-          <button className="empty-action-btn" onClick={() => onNavigate?.("clients")}>
-            Add your first contact →
-          </button>
-        </div>
+        <EmptyState variant="pipeline" onNavigate={onNavigate} />
       ) : (
         <div className="stats-grid">
           <StatCard

@@ -1,6 +1,34 @@
 import React from "react";
 import "./Chat.css";
 
+const CHAT_PROMPTS = [
+  "What's my pipeline status?",
+  "How many leads this week?",
+  "Run pm2 list",
+  "Show my revenue this week",
+  "Send daily pipeline summary",
+  "Check system health",
+];
+
+function ChatEmptyPrompts({ onSend }) {
+  return (
+    <div className="chat-empty-prompts">
+      <p className="chat-empty-label">Ask a question or run a command</p>
+      <div className="chat-empty-chips">
+        {CHAT_PROMPTS.map(p => (
+          <button
+            key={p}
+            className="chat-empty-chip"
+            onClick={() => onSend(p)}
+          >
+            {p}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const ROLE_LABELS = {
   user:   "You",
   jarvis: "Ooplix",
@@ -170,6 +198,9 @@ export default function Chat({
 
       {/* Message list */}
       <div className="chat-messages">
+        {messages.length === 1 && messages[0]?.role === "jarvis" && !loading && (
+          <ChatEmptyPrompts onSend={onSend} />
+        )}
         {messages.map((m, idx) => {
           const prev       = messages[idx - 1];
           const showHeader = !prev || prev.role !== m.role || prev.provider !== m.provider;
