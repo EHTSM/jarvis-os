@@ -9,6 +9,10 @@ import HelpHub            from "./components/HelpHub.jsx";
 import SeoCommandCenter   from "./components/SeoCommandCenter.jsx";
 import ContentEngine      from "./components/ContentEngine.jsx";
 import SocialHub          from "./components/SocialHub.jsx";
+import EmailMarketingOS   from "./components/EmailMarketingOS.jsx";
+import ReferralEngine     from "./components/ReferralEngine.jsx";
+import PartnerProgram     from "./components/PartnerProgram.jsx";
+import LaunchCommandCenter from "./components/LaunchCommandCenter.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -59,6 +63,10 @@ const MORE_TABS = [
   { id: "seo",        label: "SEO"         },
   { id: "content",    label: "Content"     },
   { id: "social",     label: "Social"      },
+  { id: "email",      label: "Email"       },
+  { id: "referral",   label: "Referral"    },
+  { id: "partners",   label: "Partners"    },
+  { id: "launch",     label: "Launch"      },
   { id: "personal",   label: "Personal"    },
   { id: "business",   label: "Business"    },
   { id: "developer",  label: "Developer"   },
@@ -567,6 +575,10 @@ function AppInner() {
         {tab === "seo"       && <SeoCommandCenter onNavigate={setTab} />}
         {tab === "content"   && <ContentEngine onNavigate={setTab} />}
         {tab === "social"    && <SocialHub onNavigate={setTab} />}
+        {tab === "email"     && <EmailMarketingOS onNavigate={setTab} />}
+        {tab === "referral"  && <ReferralEngine onNavigate={setTab} />}
+        {tab === "partners"  && <PartnerProgram onNavigate={setTab} />}
+        {tab === "launch"    && <LaunchCommandCenter onNavigate={setTab} />}
         {tab === "billing"   && (
           <BillingDashboard onUpgrade={() => setUpgradeOpen(true)} />
         )}

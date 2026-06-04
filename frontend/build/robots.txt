@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Block app-authenticated routes from crawlers (nothing useful there anyway)
+Disallow: /app/
+Disallow: /api/
+Disallow: /runtime/
+
+# Sitemap
+Sitemap: https://ooplix.com/sitemap.xml
+
+# Crawl-delay for well-behaved bots
+Crawl-delay: 5
