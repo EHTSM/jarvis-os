@@ -41,6 +41,10 @@ import MobilePlatformCenter         from "./components/MobilePlatformCenter.jsx"
 import CommunityCenter              from "./components/CommunityCenter.jsx";
 import MarketplaceCenter            from "./components/MarketplaceCenter.jsx";
 import AICostCenter                 from "./components/AICostCenter.jsx";
+import AutonomousRevenueCenter      from "./components/AutonomousRevenueCenter.jsx";
+import AutonomousMarketingCenter    from "./components/AutonomousMarketingCenter.jsx";
+import AutonomousSupportCenter      from "./components/AutonomousSupportCenter.jsx";
+import OoplixRunsOoplixCenter       from "./components/OoplixRunsOoplixCenter.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -127,6 +131,10 @@ const MORE_TABS = [
   { id: "community",      label:"Community"  },
   { id: "marketplace",    label:"Marketplace"},
   { id: "aicost",         label:"AI Costs"   },
+  { id: "autorevenue",    label:"Auto Revenue"   },
+  { id: "automarketing",  label:"Auto Marketing" },
+  { id: "autosupport",    label:"Auto Support"   },
+  { id: "oroplix",        label:"Ooplix Runs Ooplix" },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -670,6 +678,10 @@ function AppInner() {
         {tab === "community"         && <CommunityCenter            onNavigate={setTab} />}
         {tab === "marketplace"       && <MarketplaceCenter          onNavigate={setTab} />}
         {tab === "aicost"            && <AICostCenter               onNavigate={setTab} />}
+        {tab === "autorevenue"       && <AutonomousRevenueCenter    onNavigate={setTab} />}
+        {tab === "automarketing"     && <AutonomousMarketingCenter  onNavigate={setTab} />}
+        {tab === "autosupport"       && <AutonomousSupportCenter    onNavigate={setTab} />}
+        {tab === "oroplix"           && <OoplixRunsOoplixCenter     onNavigate={setTab} />}
         {tab === "runtime"           && <RuntimeTab product={_PRODUCT} />}
         </div>
       </main>
