@@ -28,7 +28,11 @@ import SelfHealingCenter       from "./components/SelfHealingCenter.jsx";
 import AgentRegistryCenter     from "./components/AgentRegistryCenter.jsx";
 import TaskRouterCenter        from "./components/TaskRouterCenter.jsx";
 import SharedMemoryCenter      from "./components/SharedMemoryCenter.jsx";
-import OperationsCenter        from "./components/OperationsCenter.jsx";
+import OperationsCenter             from "./components/OperationsCenter.jsx";
+import AgentCollaborationCenter     from "./components/AgentCollaborationCenter.jsx";
+import ToolFabricCenter             from "./components/ToolFabricCenter.jsx";
+import AutonomousCompanyCenter      from "./components/AutonomousCompanyCenter.jsx";
+import ExecutionOrchestratorCenter  from "./components/ExecutionOrchestratorCenter.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -103,6 +107,10 @@ const MORE_TABS = [
   { id: "taskrouter",  label: "Task Router" },
   { id: "sharedmem",   label: "Memory Fabric"},
   { id: "operations",  label: "Operations"  },
+  { id: "collab",      label: "Collaboration"},
+  { id: "toolfabric",  label: "Tool Fabric"  },
+  { id: "autonomy",    label: "Autonomous Co"},
+  { id: "orchestrator",label: "Orchestrator" },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -633,7 +641,11 @@ function AppInner() {
         {tab === "registry"      && <AgentRegistryCenter   onNavigate={setTab} />}
         {tab === "taskrouter"    && <TaskRouterCenter       onNavigate={setTab} />}
         {tab === "sharedmem"     && <SharedMemoryCenter     onNavigate={setTab} />}
-        {tab === "operations"    && <OperationsCenter       onNavigate={setTab} />}
+        {tab === "operations"    && <OperationsCenter            onNavigate={setTab} />}
+        {tab === "collab"        && <AgentCollaborationCenter    onNavigate={setTab} />}
+        {tab === "toolfabric"    && <ToolFabricCenter            onNavigate={setTab} />}
+        {tab === "autonomy"      && <AutonomousCompanyCenter     onNavigate={setTab} />}
+        {tab === "orchestrator"  && <ExecutionOrchestratorCenter onNavigate={setTab} />}
         {tab === "runtime"       && <RuntimeTab product={_PRODUCT} />}
         </div>
       </main>
