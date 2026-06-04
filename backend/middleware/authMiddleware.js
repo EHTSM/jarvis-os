@@ -84,4 +84,7 @@ function operatorOnly(req, res, next) {
   next();
 }
 
-module.exports = { requireAuth, operatorOnly, signJWT, verifyJWT, COOKIE_NAME, TOKEN_EXPIRY };
+// Cookie defaults — httpOnly: true, secure in production, sameSite: strict
+const COOKIE_DEFAULTS = { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict" };
+
+module.exports = { requireAuth, operatorOnly, signJWT, verifyJWT, COOKIE_NAME, TOKEN_EXPIRY, COOKIE_DEFAULTS };

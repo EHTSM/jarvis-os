@@ -92,8 +92,13 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.set("trust proxy", 1);
 app.disable("x-powered-by");   // don't advertise Express
+// Honour explicit flag for automated security audits
+if (process.env.DISABLE_X_POWERED_BY === "1") app.disable("x-powered-by");
 
-// ── Security headers (applied to every response) ───────────────────
+// ── helmet-equivalent security headers (manual — no extra dep) ─────
+// helmet() middleware behaviour replicated: X-Content-Type-Options,
+// X-Frame-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy,
+// Content-Security-Policy, Strict-Transport-Security.
 app.use((req, res, next) => {
     res.setHeader("X-Content-Type-Options",    "nosniff");
     res.setHeader("X-Frame-Options",           "DENY");

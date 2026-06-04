@@ -55,22 +55,35 @@ async function handleRazorpayWebhook(req, res) {
 
         // Subscription events — activate/cancel Ooplix billing
         if (event === "subscription.activated") {
-            const subId    = parsed?.payload?.subscription?.entity?.id;
-            const planId   = parsed?.payload?.subscription?.entity?.plan_id;
+            const sub       = parsed.subscription;
+            const subId     = sub?.id;
+            const planId    = sub?.plan_id;
             // Map Razorpay plan ID → our plan name via env vars
-            const planName = planId === process.env.RAZORPAY_PLAN_ID_GROWTH   ? "growth"
-                           : planId === process.env.RAZORPAY_PLAN_ID_SCALE    ? "scale"
-                           : "starter";
-            // Use subscription notes.accountId if set, otherwise fall back to "operator"
-            const accountId = parsed?.payload?.subscription?.entity?.notes?.accountId || "operator";
+            const planName  = planId === process.env.RAZORPAY_PLAN_ID_GROWTH ? "growth"
+                            : planId === process.env.RAZORPAY_PLAN_ID_SCALE  ? "scale"
+                            : "starter";
+            const accountId = sub?.notes?.accountId || "operator";
             billing.activatePlan(accountId, planName, subId);
-            logger.info(`[Webhook] Subscription activated: ${accountId} → ${planName}`);
+            logger.info(`[Webhook] Subscription activated: ${accountId} → ${planName} (${subId})`);
         }
 
         if (event === "subscription.cancelled" || event === "subscription.completed") {
-            const accountId = parsed?.payload?.subscription?.entity?.notes?.accountId || "operator";
+            const sub       = parsed.subscription;
+            const accountId = sub?.notes?.accountId || "operator";
             billing.cancelPlan(accountId);
-            logger.info(`[Webhook] Subscription ended: ${accountId}`);
+            logger.info(`[Webhook] Subscription ended: ${accountId} (${event})`);
+        }
+
+        // payment.failed — log for retry tracking
+        if (event === "payment.failed") {
+            const p = parsed.payment;
+            logger.warn(`[Webhook] Payment failed: id=${p?.id} reason=${p?.error_reason || "unknown"}`);
+        }
+
+        // refund.processed
+        if (event === "refund.processed") {
+            const r = parsed.refund;
+            logger.info(`[Webhook] Refund processed: id=${r?.id} amount=₹${(r?.amount || 0) / 100}`);
         }
 
         res.json({ status: "ok" });

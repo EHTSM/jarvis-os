@@ -95,10 +95,13 @@ function verifyWebhookSignature(rawBody, signature) {
  */
 function parseWebhookEvent(body) {
     try {
-        const payload = typeof body === "string" ? JSON.parse(body) : body;
-        const event   = payload?.event;
-        const payment = payload?.payload?.payment?.entity || null;
-        return { event, payment };
+        const payload  = typeof body === "string" ? JSON.parse(body) : body;
+        const event    = payload?.event;
+        const payment  = payload?.payload?.payment?.entity              || null;
+        const sub      = payload?.payload?.subscription?.entity         || null;
+        const order    = payload?.payload?.order?.entity                || null;
+        const refund   = payload?.payload?.refund?.entity               || null;
+        return { event, payment, subscription: sub, order, refund, raw: payload };
     } catch {
         return null;
     }

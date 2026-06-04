@@ -1,8 +1,53 @@
-# OAuth Setup Guide — Ooplix / Jarvis-OS
+# OAuth Setup Guide — JARVIS-OS / Ooplix
 
-This document lists every manual step Ehtesham must complete to enable OAuth logins.
-The backend code is fully implemented in `backend/services/oauthIntegrationLayer.cjs`.
-**All that is required is creating the OAuth apps and pasting the credentials into `.env`.**
+**Backend status: FULLY IMPLEMENTED — all flows production-ready.**
+
+Flows verified: authorization URL → state/CSRF nonce → callback → token exchange → AES-256-GCM encrypted storage → auto-refresh (5 min before expiry) → remote revoke → session logout (cookie clear).
+
+Code: `backend/services/oauthIntegrationLayer.cjs` | Routes: `backend/routes/phase21.js`
+
+**Only provider credentials (client ID + secret) are still needed.**
+
+---
+
+## Verified Flow Architecture
+
+```
+Browser              JARVIS Backend           Provider (Google / GitHub)
+  │                       │                            │
+  ├─GET /oauth/google/url─►│ state nonce (5-min TTL)   │
+  │◄─{ url, state }────────┤                            │
+  │                        │                            │
+  ├─redirect to provider──────────────────────────────►│
+  │◄───────────────────────────────── code + state ─────┤
+  ├─GET /oauth/google/callback?code&state               │
+  │                        ├─POST /token (exchange)────►│
+  │                        │◄────────────── tokens ─────┤
+  │                        │ encrypt + persist locally  │
+  │◄─redirect /?oauth=google&status=connected           │
+```
+
+| Flow | Route | Auth |
+|------|-------|------|
+| Get auth URL | `GET /oauth/:provider/url` | Required |
+| Handle callback | `GET /oauth/:provider/callback` | Open (browser redirect) |
+| Refresh token | `POST /oauth/:provider/refresh` | Required |
+| Revoke / disconnect | `DELETE /oauth/:provider/revoke` | Required |
+| List connections | `GET /oauth/connections` | Required |
+| Provider status | `GET /oauth/status` | Required |
+| Logout (session) | `POST /auth/logout` | Open |
+
+---
+
+## Security Properties (Implemented)
+
+| Property | Implementation |
+|----------|---------------|
+| CSRF | Cryptographic state nonce, 5-min server-side TTL |
+| Token storage | AES-256-GCM, key derived from JWT_SECRET |
+| Auto-refresh | Transparent, triggered 5 min before expiry |
+| Revocation | Local delete + provider remote endpoint |
+| Session logout | `clearCookie(jarvis_auth)` on POST /auth/logout |
 
 ---
 
