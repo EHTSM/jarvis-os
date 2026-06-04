@@ -1433,3 +1433,302 @@
   .landing-cap-grid { grid-template-columns: 1fr; }
   .landing-cta-headline { font-size: 18px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 3D — Conversion Optimisation additions
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Eyebrow — audience qualifier above headline ────────────────────── */
+.landing-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent2);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: -10px;
+  opacity: 0.85;
+}
+
+/* ── CTA nudge — friction reducer below bottom CTA ─────────────────── */
+.landing-cta-nudge {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: -6px;
+}
+
+/* ── Social proof bar ────────────────────────────────────────────────── */
+.landing-proof-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.landing-proof-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+}
+
+.landing-proof-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.landing-proof-tile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  color: var(--text-dim);
+  font-weight: 500;
+  transition: background var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+
+.landing-proof-tile:hover {
+  background: rgba(78,205,196,0.06);
+  border-color: rgba(78,205,196,0.20);
+  color: var(--text);
+}
+
+.landing-proof-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.landing-proof-type {
+  white-space: nowrap;
+}
+
+/* ── Objection busters ───────────────────────────────────────────────── */
+.landing-objections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.landing-objection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.landing-objection-card {
+  padding: 20px 22px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out);
+}
+
+.landing-objection-card:hover {
+  border-color: rgba(124,111,255,0.18);
+  background: rgba(255,255,255,0.035);
+}
+
+.landing-objection-q {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.landing-objection-a {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* ── Pricing entry point ─────────────────────────────────────────────── */
+.landing-pricing-entry {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 36px;
+  align-items: center;
+}
+
+.landing-pricing-entry-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.landing-pricing-entry-headline {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.4px;
+  line-height: 1.3;
+}
+
+.landing-pricing-entry-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.75;
+  max-width: 440px;
+}
+
+.landing-pricing-entry-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+/* Pricing card */
+.landing-pricing-entry-card {
+  background: rgba(10,14,26,0.97);
+  border: 1px solid rgba(124,111,255,0.22);
+  border-radius: var(--radius-lg);
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 0 0 1px rgba(124,111,255,0.08),
+              var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-pricing-entry-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+.landing-price-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 4px 12px;
+  background: rgba(78,205,196,0.10);
+  border: 1px solid rgba(78,205,196,0.24);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent2);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.landing-price-display {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  line-height: 1;
+}
+
+.landing-price-currency {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.landing-price-amount {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.landing-price-period {
+  font-size: 14px;
+  color: var(--text-faint);
+  margin-left: 4px;
+}
+
+.landing-price-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 0;
+  margin: 0;
+}
+
+.landing-price-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.landing-price-check {
+  color: var(--success);
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.landing-price-cta {
+  padding: 13px 20px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #06080e;
+  font-size: 14px;
+  font-weight: 800;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  letter-spacing: 0.04em;
+  transition: transform var(--dur-std) var(--ease-spring),
+              box-shadow var(--dur-std) var(--ease-spring),
+              opacity var(--dur-fast) var(--ease-out);
+  box-shadow: 0 4px 16px rgba(124,111,255,0.24);
+}
+
+.landing-price-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(124,111,255,0.34);
+}
+
+.landing-price-cta:active {
+  transform: translateY(0);
+  opacity: 0.88;
+}
+
+/* ── Responsive — pricing entry + proof bar + objections ────────────── */
+@media (max-width: 880px) {
+  .landing-pricing-entry {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .landing-pricing-entry-card {
+    max-width: 420px;
+  }
+  .landing-pricing-entry-headline { font-size: 22px; }
+}
+
+@media (max-width: 600px) {
+  .landing-objection-grid { grid-template-columns: 1fr; }
+  .landing-proof-tiles { gap: 8px; }
+  .landing-proof-tile { font-size: 12px; padding: 7px 12px; }
+  .landing-pricing-entry-card { max-width: 100%; }
+  .landing-pricing-entry-actions { flex-direction: column; }
+  .landing-pricing-entry-actions > button { width: 100%; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .landing-proof-tile,
+  .landing-objection-card,
+  .landing-price-cta { transition: none; }
+}
