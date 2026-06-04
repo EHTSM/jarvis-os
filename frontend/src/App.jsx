@@ -25,6 +25,10 @@ import DeveloperCopilotCenter  from "./components/DeveloperCopilotCenter.jsx";
 import EngineeringCenter       from "./components/EngineeringCenter.jsx";
 import DevOpsCenter            from "./components/DevOpsCenter.jsx";
 import SelfHealingCenter       from "./components/SelfHealingCenter.jsx";
+import AgentRegistryCenter     from "./components/AgentRegistryCenter.jsx";
+import TaskRouterCenter        from "./components/TaskRouterCenter.jsx";
+import SharedMemoryCenter      from "./components/SharedMemoryCenter.jsx";
+import OperationsCenter        from "./components/OperationsCenter.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -95,6 +99,10 @@ const MORE_TABS = [
   { id: "engineering", label: "Engineering" },
   { id: "devops",      label: "DevOps"      },
   { id: "selfhealing", label: "Self-Healing"},
+  { id: "registry",    label: "Registry"    },
+  { id: "taskrouter",  label: "Task Router" },
+  { id: "sharedmem",   label: "Memory Fabric"},
+  { id: "operations",  label: "Operations"  },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -622,6 +630,10 @@ function AppInner() {
         {tab === "engineering"   && <EngineeringCenter      onNavigate={setTab} />}
         {tab === "devops"        && <DevOpsCenter           onNavigate={setTab} />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
+        {tab === "registry"      && <AgentRegistryCenter   onNavigate={setTab} />}
+        {tab === "taskrouter"    && <TaskRouterCenter       onNavigate={setTab} />}
+        {tab === "sharedmem"     && <SharedMemoryCenter     onNavigate={setTab} />}
+        {tab === "operations"    && <OperationsCenter       onNavigate={setTab} />}
         {tab === "runtime"       && <RuntimeTab product={_PRODUCT} />}
         </div>
       </main>
