@@ -1,5 +1,6 @@
 import React from "react";
 import { track } from "../analytics";
+import TrustEngineSection, { TrustStrip } from "./TrustEngine.jsx";
 import "./Landing.css";
 
 const YEAR = new Date().getFullYear();
@@ -271,6 +272,11 @@ export default function Landing({ onStart, onLogin, onLegal, onPricing }) {
             ))}
           </div>
         </div>
+
+        <div className="landing-divider" />
+
+        {/* ── Trust Engine — testimonials, case studies, security ─── */}
+        <TrustEngineSection onStart={() => handleStart("trust_section_cta")} />
 
         <div className="landing-divider" />
 

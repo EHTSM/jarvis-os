@@ -1,0 +1,165 @@
+/* ── Social Publishing Hub ───────────────────────────────────────────── */
+
+.social-hub {
+  flex: 1; overflow-y: auto;
+  padding: 24px 28px 48px;
+  display: flex; flex-direction: column; gap: 20px;
+  max-width: 900px; margin: 0 auto; width: 100%;
+}
+
+.sh-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.sh-title   { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.3px; margin: 0; }
+.sh-subtitle { font-size: 13.5px; color: var(--text-dim); margin: 4px 0 0; }
+.sh-content-btn {
+  padding: 8px 16px; background: rgba(124,111,255,0.10); border: 1px solid rgba(124,111,255,0.22);
+  border-radius: var(--radius-sm); color: var(--accent); font-size: 12.5px; font-weight: 700;
+  cursor: pointer; font-family: inherit; white-space: nowrap; flex-shrink: 0;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.sh-content-btn:hover { background: rgba(124,111,255,0.18); }
+
+/* ── Summary strip ──────────────────────────────────────────────────── */
+.sh-summary-strip {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  padding: 16px 20px; background: var(--surface-base);
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+.sh-summary-item { display: flex; flex-direction: column; gap: 2px; }
+.sh-summary-val  { font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -0.3px; }
+.sh-summary-label { font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ── Tabs ───────────────────────────────────────────────────────────── */
+.sh-tabs {
+  display: flex; gap: 4px;
+  border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none;
+}
+.sh-tabs::-webkit-scrollbar { display: none; }
+.sh-tab {
+  padding: 8px 16px; background: none; border: none;
+  border-bottom: 2px solid transparent; color: var(--text-faint);
+  font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  margin-bottom: -1px;
+}
+.sh-tab:hover { color: var(--text-dim); }
+.sh-tab--active { color: var(--accent2); border-bottom-color: var(--accent2); }
+.sh-content { animation: fade-up var(--dur-enter) var(--ease-spring) both; }
+
+/* ── Channels grid ──────────────────────────────────────────────────── */
+.sh-channels-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;
+}
+
+.sh-channel-card {
+  background: var(--surface-base); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 14px;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+.sh-channel-card:hover { border-color: var(--border-hover); }
+.sh-channel-card--connected { border-color: rgba(82,214,138,0.22); }
+
+.sh-channel-header { display: flex; align-items: center; gap: 10px; }
+.sh-channel-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900; flex-shrink: 0;
+}
+.sh-channel-meta { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.sh-channel-name   { font-size: 14px; font-weight: 800; color: var(--text); }
+.sh-channel-handle { font-size: 11.5px; color: var(--text-faint); }
+.sh-channel-status-badge {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.sh-status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+.sh-channel-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.sh-channel-stat { display: flex; flex-direction: column; gap: 2px; }
+.sh-stat-label { font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+.sh-stat-val   { font-size: 12.5px; font-weight: 600; color: var(--text); }
+
+.sh-channel-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.sh-tips-btn {
+  padding: 6px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius-pill); color: var(--text-faint); font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.sh-tips-btn:hover { background: rgba(255,255,255,0.09); color: var(--text-dim); }
+
+.sh-setup-btn {
+  padding: 6px 14px; background: rgba(78,205,196,0.08); border: 1px solid rgba(78,205,196,0.20);
+  border-radius: var(--radius-pill); color: var(--accent2); font-size: 12px; font-weight: 700;
+  text-decoration: none; white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.sh-setup-btn:hover { background: rgba(78,205,196,0.14); }
+
+.sh-post-btn {
+  padding: 6px 14px; background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #06080e; font-size: 12px; font-weight: 800; border: none;
+  border-radius: var(--radius-pill); cursor: pointer; font-family: inherit;
+  box-shadow: 0 2px 8px rgba(124,111,255,0.22);
+}
+
+.sh-tips-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; animation: fade-up var(--dur-enter) var(--ease-spring) both; }
+.sh-tip { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+.sh-tip-dot { color: var(--accent2); font-size: 10px; flex-shrink: 0; margin-top: 2px; }
+
+/* ── Calendar ───────────────────────────────────────────────────────── */
+.sh-calendar { display: flex; flex-direction: column; gap: 10px; }
+.sh-cal-note { font-size: 12.5px; color: var(--text-faint); font-style: italic; margin: 0; }
+.sh-cal-list {
+  display: flex; flex-direction: column;
+  background: var(--surface-base); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+}
+.sh-cal-row {
+  display: grid; grid-template-columns: 36px 10px 80px 1fr 70px;
+  align-items: center; gap: 10px; padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sh-cal-row:last-child { border-bottom: none; }
+.sh-cal-day   { font-size: 12px; font-weight: 700; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+.sh-cal-channel-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.sh-cal-channel-name { font-size: 12px; font-weight: 700; white-space: nowrap; }
+.sh-cal-topic { font-size: 12.5px; color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sh-cal-status {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 2px 8px; border-radius: var(--radius-pill); text-align: center;
+}
+.sh-cal-status--plan    { background: rgba(255,255,255,0.05); color: var(--text-faint); }
+.sh-cal-status--ready   { background: rgba(78,205,196,0.10); color: var(--accent2); }
+.sh-cal-status--posted  { background: rgba(82,214,138,0.10); color: var(--success); }
+
+/* ── Publish checklist ──────────────────────────────────────────────── */
+.sh-checklist {
+  background: var(--surface-base); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.sh-sub-label {
+  font-size: var(--label-size); font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking); text-transform: uppercase; color: var(--text-faint);
+}
+.sh-check-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.sh-check-item:last-of-type { border-bottom: none; }
+.sh-check-item--done .sh-check-label { color: var(--text-faint); text-decoration: line-through; }
+.sh-checkbox { width: 15px; height: 15px; accent-color: var(--accent2); cursor: pointer; flex-shrink: 0; }
+.sh-check-label { font-size: 13.5px; color: var(--text); font-weight: 500; }
+.sh-check-ready { font-size: 13px; font-weight: 700; color: var(--success); margin-top: 4px; }
+
+/* ── Mobile ─────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .social-hub { padding: 18px 16px 36px; }
+  .sh-channels-grid { grid-template-columns: 1fr; }
+  .sh-cal-row { grid-template-columns: 36px 10px 70px 1fr; }
+  .sh-cal-status { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sh-content, .sh-tips-list { animation: none; }
+}

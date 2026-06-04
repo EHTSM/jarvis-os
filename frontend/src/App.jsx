@@ -5,7 +5,10 @@ import TrialBanner   from "./components/TrialBanner.jsx";
 import UpgradeModal      from "./components/UpgradeModal.jsx";
 import BillingDashboard  from "./components/BillingDashboard.jsx";
 import SuccessCenter     from "./components/SuccessCenter.jsx";
-import HelpHub          from "./components/HelpHub.jsx";
+import HelpHub            from "./components/HelpHub.jsx";
+import SeoCommandCenter   from "./components/SeoCommandCenter.jsx";
+import ContentEngine      from "./components/ContentEngine.jsx";
+import SocialHub          from "./components/SocialHub.jsx";
 import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "./api";
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
@@ -53,6 +56,9 @@ const MORE_TABS = [
   { id: "activity",   label: "History"     },
   { id: "billing",    label: "Billing"     },
   { id: "help",       label: "Help & Guides" },
+  { id: "seo",        label: "SEO"         },
+  { id: "content",    label: "Content"     },
+  { id: "social",     label: "Social"      },
   { id: "personal",   label: "Personal"    },
   { id: "business",   label: "Business"    },
   { id: "developer",  label: "Developer"   },
@@ -558,6 +564,9 @@ function AppInner() {
           />
         )}
         {tab === "help"      && <HelpHub onNavigate={setTab} />}
+        {tab === "seo"       && <SeoCommandCenter onNavigate={setTab} />}
+        {tab === "content"   && <ContentEngine onNavigate={setTab} />}
+        {tab === "social"    && <SocialHub onNavigate={setTab} />}
         {tab === "billing"   && (
           <BillingDashboard onUpgrade={() => setUpgradeOpen(true)} />
         )}
