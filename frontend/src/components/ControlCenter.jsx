@@ -4,6 +4,7 @@ import VisualIntelligence  from "./VisualIntelligence.jsx";
 import ActivityStream      from "./ActivityStream.jsx";
 import ExecutiveSummary    from "./ExecutiveSummary.jsx";
 import { UsageBar, UpgradeNudge } from "./PremiumGate.jsx";
+import RetentionSummary from "./RetentionSummary.jsx";
 import "./ControlCenter.css";
 
 // ── Helpers ────────────────────────────────────────────────────────
@@ -361,6 +362,7 @@ function DispatchBar({ online, onNavigate }) {
     setLoading(true);
     setResult(null);
     try {
+      localStorage.setItem("ooplix_first_dispatch", "1");
       const res = await dispatchTask(text, 20000);
       setResult({
         ok:   res.success !== false,
@@ -484,6 +486,7 @@ export default function ControlCenter({ stats, opsData, online, onNavigate, bill
       <ExecutiveSummary stats={stats} opsData={opsData} online={online} />
 
       <div className="cc-content">
+        <RetentionSummary stats={stats} opsData={opsData} onNavigate={onNavigate} />
         <VisualIntelligence stats={stats} opsData={opsData} />
         <SystemsStrip  opsData={opsData} online={online}  onNavigate={onNavigate} />
         <section className="cc-section section-enter">
