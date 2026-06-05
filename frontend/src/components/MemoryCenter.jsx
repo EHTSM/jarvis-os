@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
+import { listMemoryNodes, searchMemory, saveMemoryNode, archiveMemoryNode, memoryStats } from "../phase18Api";
 import "./MemoryCenter.css";
 
 // ── Persistence ───────────────────────────────────────────────────────
@@ -112,8 +113,35 @@ export default function MemoryCenter({ onNavigate }) {
   const [adding,      setAdding]      = useState(false);
   const [selected,    setSelected]    = useState(null);
   const [toast,       setToast]       = useState(null);
+  const [apiError,    setApiError]    = useState(null);
 
-  React.useEffect(() => { track.event("memory_center_viewed"); }, []);
+  useEffect(() => { track.event("memory_center_viewed"); }, []);
+
+  // Load live memory nodes from backend; fall back to localStorage seed on error
+  useEffect(() => {
+    let cancelled = false;
+    listMemoryNodes({ limit: 100 })
+      .then(res => {
+        if (cancelled) return;
+        const nodes = res?.nodes || res?.memories;
+        if (Array.isArray(nodes) && nodes.length > 0) {
+          const mapped = nodes.map(n => ({
+            id:         n.id,
+            type:       n.type || "user",
+            title:      n.title || n.key || "Memory",
+            body:       n.body || n.value || "",
+            importance: n.importance || n.priority || "medium",
+            tags:       Array.isArray(n.tags) ? n.tags : [],
+            created:    n.createdAt ? new Date(n.createdAt).toISOString().slice(0,10) : "",
+            used:       n.accessCount ?? 0,
+          }));
+          setMemories(mapped);
+          _save(MEM_KEY, mapped);
+        }
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
 
   const showToast = (m) => { setToast(m); setTimeout(() => setToast(null), 2400); };
 
@@ -124,6 +152,7 @@ export default function MemoryCenter({ onNavigate }) {
     persist([entry, ...memories]);
     setAdding(false); showToast("Memory saved");
     track.event("memory_added", { type: data.type });
+    saveMemoryNode(data).catch(() => {/* local save already done */});
   }, [memories, persist]);
 
   const handleEdit = useCallback((data) => {
@@ -135,6 +164,7 @@ export default function MemoryCenter({ onNavigate }) {
     persist(memories.filter(m => m.id !== id));
     if (selected === id) setSelected(null);
     showToast("Deleted");
+    archiveMemoryNode(id).catch(() => {});
   }, [memories, persist, selected]);
 
   const visible = memories.filter(m => {
@@ -149,6 +179,7 @@ export default function MemoryCenter({ onNavigate }) {
   return (
     <div className="memory-center page-enter">
       {toast && <div className="mc-toast">{toast}</div>}
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live memory unavailable — showing cached data ({apiError})</div>}
 
       <div className="mc-header">
         <div>

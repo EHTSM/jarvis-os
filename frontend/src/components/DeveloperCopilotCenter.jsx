@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
+import { listIndexedRepos, getGitHubStats, listReviews } from "../phase24Api";
+import { getGitHubActivity } from "../phase23Api";
 import "./DeveloperCopilotCenter.css";
 
 // ── Seed data ─────────────────────────────────────────────────────────
@@ -59,18 +61,61 @@ function Badge({ label, color }) {
 }
 
 export default function DeveloperCopilotCenter({ onNavigate }) {
-  const [section, setSection] = useState("repos");
-  const [selRepo, setSelRepo] = useState(null);
+  const [section,  setSection]  = useState("repos");
+  const [selRepo,  setSelRepo]  = useState(null);
+  const [repos,    setRepos]    = useState(REPOS);
+  const [reviews,  setReviews]  = useState(REVIEWS);
+  const [apiError, setApiError] = useState(null);
 
-  React.useEffect(() => { track.event("dev_copilot_viewed"); }, []);
+  useEffect(() => { track.event("dev_copilot_viewed"); }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([
+      listIndexedRepos(),
+      listReviews({ limit: 10 }),
+      getGitHubActivity({ limit: 10 }),
+    ]).then(([repoRes, reviewRes, actRes]) => {
+      if (cancelled) return;
+      const liveRepos = repoRes?.repos || repoRes?.repositories;
+      if (Array.isArray(liveRepos) && liveRepos.length > 0) {
+        setRepos(liveRepos.map(r => ({
+          id:         r.id || r.path,
+          name:       r.name || r.path?.split("/").pop() || "repo",
+          lang:       r.language || "—",
+          stars:      r.stars ?? 0,
+          health:     r.health || "healthy",
+          coverage:   r.coverage ?? 0,
+          lastCommit: r.lastCommit || "—",
+          branch:     r.branch || "main",
+          openIssues: r.openIssues ?? 0,
+          openPRs:    r.openPRs ?? 0,
+          ci:         r.ci || "passing",
+        })));
+      }
+      const liveReviews = reviewRes?.reviews;
+      if (Array.isArray(liveReviews) && liveReviews.length > 0) {
+        setReviews(liveReviews.map(r => ({
+          id:       r.id,
+          pr:       r.prTitle || r.pr || "PR",
+          repo:     r.repo || "—",
+          finding:  r.finding || r.comment || "",
+          severity: r.severity || "suggestion",
+          status:   r.status || "open",
+        })));
+      }
+    }).catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
 
   const openTasks  = TASKS.filter(t => t.status !== "done").length;
   const openPRs    = PULL_REQUESTS.filter(p => p.status !== "merged" && !p.draft).length;
-  const openReviews= REVIEWS.filter(r => r.status === "open").length;
-  const failingCI  = REPOS.filter(r => r.ci === "failing").length;
+  const openReviews= reviews.filter(r => r.status === "open").length;
+  const failingCI  = repos.filter(r => r.ci === "failing").length;
 
   return (
     <div className="dev-copilot-center page-enter">
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live repo data unavailable — showing cached data ({apiError})</div>}
       <div className="dcc-header">
         <div>
           <h1 className="dcc-title">Developer Copilot</h1>
@@ -81,12 +126,12 @@ export default function DeveloperCopilotCenter({ onNavigate }) {
       {/* Summary strip */}
       <div className="dcc-summary-strip">
         {[
-          { label: "Repos",        value: REPOS.length,   color: "var(--accent)"                                              },
+          { label: "Repos",        value: repos.length,   color: "var(--accent)"                                              },
           { label: "Open PRs",     value: openPRs,        color: openPRs > 0 ? "var(--accent2)" : "var(--text-faint)"         },
           { label: "Open tasks",   value: openTasks,      color: openTasks > 0 ? "var(--warning)" : "var(--success)"          },
           { label: "Review items", value: openReviews,    color: openReviews > 0 ? "var(--danger)" : "var(--success)"         },
           { label: "Failing CI",   value: failingCI,      color: failingCI > 0 ? "var(--danger)" : "var(--success)"           },
-          { label: "Active branches",value: BRANCHES.filter(b=>b.status==="active").length, color: "var(--accent2)"           },
+          { label: "Active branches",value: BRANCHES.filter(b=>b.status==="active").length, color: "var(--accent2)"          },
         ].map(s => (
           <div key={s.label} className="dcc-summary-tile">
             <span className="dcc-summary-val" style={{ color: s.color }}>{s.value}</span>
@@ -115,7 +160,7 @@ export default function DeveloperCopilotCenter({ onNavigate }) {
         {/* Repos */}
         {section === "repos" && (
           <div className="dcc-repo-list">
-            {REPOS.map(r => (
+            {repos.map(r => (
               <div key={r.id} className={`dcc-repo-row${selRepo === r.id ? " dcc-repo-row--sel" : ""}`} onClick={() => setSelRepo(prev => prev === r.id ? null : r.id)}>
                 <div className="dcc-repo-left">
                   <Dot color={HEALTH_COLORS[r.health]} />
@@ -200,7 +245,7 @@ export default function DeveloperCopilotCenter({ onNavigate }) {
         {/* Code Reviews */}
         {section === "reviews" && (
           <div className="dcc-review-list">
-            {REVIEWS.map(r => (
+            {reviews.map(r => (
               <div key={r.id} className={`dcc-review-row dcc-review-row--${r.severity}`}>
                 <div className="dcc-review-left">
                   <span className="dcc-sev-dot" style={{ background: SEV_COLORS[r.severity] }} />

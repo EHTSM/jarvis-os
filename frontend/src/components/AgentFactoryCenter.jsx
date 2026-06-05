@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
+import { listManagedAgents, createManagedAgent, getAgentFactoryStats } from "../phase20Api";
 import "./AgentFactoryCenter.css";
 
 const KEY = "ooplix_agent_factory_v1";
@@ -28,9 +29,28 @@ const SEED_AGENTS = [
 
 export default function AgentFactoryCenter({ onNavigate }) {
   const [agents, setAgents]   = useState(() => _load(KEY, SEED_AGENTS));
-  const [modal, setModal]     = useState(null); // null | "create" | "clone" | "train"
+  const [modal, setModal]     = useState(null);
   const [cloneSource, setClone] = useState(null);
   const [form, setForm]       = useState({ name: "", template: "sales", model: "claude-sonnet-4-6", description: "" });
+  const [apiError, setApiError] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    listManagedAgents().then(res => {
+      if (cancelled) return;
+      const live = res?.agents;
+      if (Array.isArray(live) && live.length > 0) {
+        const mapped = live.map(a => ({
+          id:       a.id, name: a.name, template: a.type || "custom",
+          status:   a.status || "idle", runsToday: a.runsToday ?? 0,
+          model:    a.model || "claude-sonnet-4-6",
+          created:  a.createdAt ? new Date(a.createdAt).toLocaleDateString() : "—",
+        }));
+        setAgents(mapped); _save(KEY, mapped);
+      }
+    }).catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
 
   const saveAgents = useCallback(a => { setAgents(a); _save(KEY, a); }, []);
 
@@ -42,6 +62,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
     const n = { id: "af_" + Date.now(), name: form.name || "New Agent", template: form.template, status: "idle", runsToday: 0, model: form.model, created: new Date().toISOString().slice(0,10) };
     saveAgents([n, ...agents]);
     track("agent_factory_create", { template: form.template });
+    createManagedAgent({ name: n.name, type: n.template, model: n.model }).catch(() => {});
     setModal(null);
   }
 

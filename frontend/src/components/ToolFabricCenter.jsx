@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
+import { listTools, toolStatus, setToolPermission } from "../phase19Api";
 import "./ToolFabricCenter.css";
 
 const TOOLS_KEY = "ooplix_tool_fabric";
@@ -101,8 +102,44 @@ export default function ToolFabricCenter({ onNavigate }) {
   const [catFilter, setCatFilter] = useState("all");
   const [staFilter, setStaFilter] = useState("all");
   const [toast,     setToast]     = useState(null);
+  const [apiError,  setApiError]  = useState(null);
 
-  React.useEffect(() => { track.event("tool_fabric_viewed"); }, []);
+  useEffect(() => { track.event("tool_fabric_viewed"); }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([listTools(), toolStatus()])
+      .then(([listRes, statusRes]) => {
+        if (cancelled) return;
+        const liveTool = listRes?.tools;
+        const statusMap = statusRes?.status || {};
+        if (Array.isArray(liveTool) && liveTool.length > 0) {
+          const mapped = liveTool.map(t => ({
+            id:          t.id || t.name,
+            name:        t.name,
+            icon:        t.icon || "◉",
+            color:       "#ffffff",
+            category:    t.category || "runtime",
+            status:      t.status || statusMap[t.id] || "healthy",
+            health:      t.health ?? 100,
+            owner:       t.owner || "Runtime",
+            permissions: Array.isArray(t.permissions) ? t.permissions : [],
+            usedBy:      Array.isArray(t.usedBy) ? t.usedBy : [],
+            callsToday:  t.callsToday ?? 0,
+            callsTotal:  t.callsTotal ?? 0,
+            errorRate:   t.errorRate ?? "0%",
+            lastCall:    t.lastCall || "—",
+            description: t.description || "",
+            config:      t.config || {},
+          }));
+          setTools(mapped);
+          _save(TOOLS_KEY, mapped);
+          setSelected(mapped[0]?.id || null);
+        }
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
   const showToast = m => { setToast(m); setTimeout(()=>setToast(null), 2400); };
 
   const handleConnect = useCallback(id => {
@@ -135,6 +172,7 @@ export default function ToolFabricCenter({ onNavigate }) {
   return (
     <div className="tool-fabric-center page-enter">
       {toast && <div className="tfc-toast">{toast}</div>}
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live tool data unavailable — showing cached data ({apiError})</div>}
 
       <div className="tfc-header">
         <div>

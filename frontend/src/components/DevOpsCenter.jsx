@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { track } from "../analytics";
+import { listDeployments, getDeployHistory, listSLOs, getSystemMetrics, listAlerts, resolveAlert } from "../phase25Api";
 import "./DevOpsCenter.css";
 
 // ── Seed data ─────────────────────────────────────────────────────────
@@ -53,22 +54,73 @@ function EnvBadge({ env }) {
 }
 
 export default function DevOpsCenter({ onNavigate }) {
-  const [section,  setSection]  = useState("deployments");
-  const [envFilter,setEnvFilter]= useState("all");
-  const [selected, setSelected] = useState(null);
+  const [section,     setSection]     = useState("deployments");
+  const [envFilter,   setEnvFilter]   = useState("all");
+  const [selected,    setSelected]    = useState(null);
+  const [deployments, setDeployments] = useState(DEPLOYMENTS);
+  const [slos,        setSlos]        = useState([]);
+  const [alerts,      setAlerts]      = useState([]);
+  const [metrics,     setMetrics]     = useState(null);
+  const [loading,     setLoading]     = useState(false);
+  const [apiError,    setApiError]    = useState(null);
 
-  React.useEffect(() => { track.event("devops_center_viewed"); }, []);
+  useEffect(() => { track.event("devops_center_viewed"); }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    Promise.all([
+      listDeployments({ limit: 20 }),
+      getDeployHistory({ limit: 10 }),
+      listSLOs(),
+      listAlerts({ limit: 20 }),
+      getSystemMetrics({ limit: 10 }),
+    ]).then(([listRes, histRes, sloRes, alertsRes, metricsRes]) => {
+        if (cancelled) return;
+        const liveDeps = listRes?.deployments || histRes?.history;
+        if (Array.isArray(liveDeps) && liveDeps.length > 0) {
+          setDeployments(liveDeps.map(d => ({
+            id:       d.id,
+            env:      d.environment || d.env || "production",
+            repo:     d.repo || d.service || "service",
+            version:  d.version || "—",
+            status:   d.status || "success",
+            duration: d.durationMs ? `${Math.round(d.durationMs/1000)}s` : "—",
+            by:       d.triggeredBy || d.by || "Autopilot",
+            ts:       d.startedAt ? new Date(d.startedAt).toLocaleString() : "—",
+            commit:   d.commit?.slice(0, 7) || "—",
+          })));
+        }
+        const liveSlos = sloRes?.slos || sloRes?.data;
+        if (Array.isArray(liveSlos)) setSlos(liveSlos);
+        const liveAlerts = alertsRes?.alerts || alertsRes?.data;
+        if (Array.isArray(liveAlerts)) setAlerts(liveAlerts);
+        if (metricsRes) setMetrics(metricsRes);
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const handleResolveAlert = useCallback((alertId) => {
+    resolveAlert(alertId)
+      .then(() => setAlerts(prev => prev.map(a => a.id === alertId ? { ...a, status: "resolved" } : a)))
+      .catch(() => {});
+  }, []);
 
   const healthyServices  = SERVICES.filter(s => s.status === "healthy").length;
   const degradedServices = SERVICES.filter(s => s.status !== "healthy").length;
   const activeIncidents  = INCIDENTS.filter(i => i.status === "active").length;
-  const successRate      = Math.round((DEPLOYMENTS.filter(d => d.status === "success").length / DEPLOYMENTS.length) * 100);
+  const activeAlerts     = alerts.filter(a => a.status !== "resolved").length;
+  const successRate      = deployments.length ? Math.round((deployments.filter(d => d.status === "success").length / deployments.length) * 100) : 0;
 
-  const filteredDeps = DEPLOYMENTS.filter(d => envFilter === "all" || d.env === envFilter);
+  const filteredDeps = deployments.filter(d => envFilter === "all" || d.env === envFilter);
   const filteredSvcs = SERVICES.filter(s => envFilter === "all" || s.env === envFilter);
 
   return (
     <div className="devops-center page-enter">
+      {loading && <div className="ac-api-banner ac-api-banner--loading">Loading live DevOps data…</div>}
+      {apiError && !loading && <div className="ac-api-banner ac-api-banner--error">⚠ Live DevOps data unavailable — showing cached data ({apiError})</div>}
       <div className="doc-header">
         <div>
           <h1 className="doc-title">DevOps Runtime</h1>
@@ -82,7 +134,7 @@ export default function DevOpsCenter({ onNavigate }) {
           { label: "Services healthy",   value: `${healthyServices}/${SERVICES.length}`, color: degradedServices > 0 ? "var(--warning)" : "var(--success)" },
           { label: "Active incidents",   value: activeIncidents,  color: activeIncidents > 0 ? "var(--danger)" : "var(--success)" },
           { label: "Deploy success rate",value: `${successRate}%`, color: successRate >= 90 ? "var(--success)" : "var(--warning)"  },
-          { label: "Total deploys",      value: DEPLOYMENTS.length, color: "var(--accent2)"                                         },
+          { label: "Total deploys",      value: deployments.length, color: "var(--accent2)"                                         },
         ].map(k => (
           <div key={k.label} className="doc-kpi-tile">
             <span className="doc-kpi-val" style={{ color: k.color }}>{k.value}</span>
@@ -114,6 +166,8 @@ export default function DevOpsCenter({ onNavigate }) {
           { id: "services",      label: `Services${degradedServices > 0 ? ` (${degradedServices} ⚠)` : ""}` },
           { id: "infrastructure",label: "Infrastructure"                       },
           { id: "incidents",     label: `Incidents${activeIncidents > 0 ? ` (${activeIncidents})` : ""}` },
+          { id: "slos",          label: `SLOs${slos.length > 0 ? ` (${slos.length})` : ""}` },
+          { id: "alerts",        label: `Alerts${activeAlerts > 0 ? ` (${activeAlerts})` : ""}` },
         ].map(t => (
           <button key={t.id} className={`doc-tab${section===t.id?" doc-tab--active":""}`} onClick={()=>setSection(t.id)}>
             {t.label}
@@ -209,6 +263,73 @@ export default function DevOpsCenter({ onNavigate }) {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* SLOs */}
+        {section === "slos" && (
+          <div className="doc-svc-list">
+            {slos.length === 0 ? (
+              <div className="doc-empty-state">
+                <span style={{ fontSize: 28 }}>◎</span>
+                <p>No SLOs configured — backend returned no data.</p>
+              </div>
+            ) : slos.map((s, i) => {
+              const pct = s.currentValue ?? s.value ?? 0;
+              const target = s.target ?? s.threshold ?? 99;
+              const ok = pct >= target;
+              return (
+                <div key={s.id || i} className="doc-svc-row">
+                  <div className="doc-svc-status-col">
+                    <span className="doc-svc-dot" style={{ background: ok ? "var(--success)" : "var(--danger)" }} />
+                  </div>
+                  <div className="doc-svc-info">
+                    <span className="doc-svc-name">{s.name || s.metric}</span>
+                    <span className="doc-svc-env">{s.service || s.source || "—"}</span>
+                  </div>
+                  <div className="doc-svc-metrics">
+                    <span className="doc-svc-metric"><span className="doc-svc-mv" style={{ color: ok ? "var(--success)" : "var(--danger)" }}>{pct}%</span> actual</span>
+                    <span className="doc-svc-metric"><span className="doc-svc-mv">{target}%</span> target</span>
+                    {s.window && <span className="doc-svc-metric"><span className="doc-svc-mv">{s.window}</span> window</span>}
+                  </div>
+                  <StatusBadge status={ok ? "healthy" : "degraded"} />
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Alerts */}
+        {section === "alerts" && (
+          <div className="doc-incident-list">
+            {alerts.length === 0 ? (
+              <div className="doc-empty-state">
+                <span style={{ fontSize: 28, color: "var(--success)" }}>✓</span>
+                <p>No active alerts — system is clean.</p>
+              </div>
+            ) : alerts.map((a, i) => {
+              const isActive = a.status !== "resolved";
+              return (
+                <div key={a.id || i} className={`doc-inc-row doc-inc-row--${a.severity || "warning"}`}>
+                  <div className="doc-inc-header">
+                    <span className="doc-inc-sev-dot" style={{ background: STATUS_COLORS[a.severity] || "var(--warning)" }} />
+                    <span className="doc-inc-title">{a.name || a.message || "Alert"}</span>
+                    <StatusBadge status={a.status || "active"} />
+                    {isActive && (
+                      <button
+                        onClick={() => handleResolveAlert(a.id)}
+                        style={{ marginLeft: "auto", padding: "3px 10px", fontSize: 11, fontWeight: 700, border: "1px solid var(--border)", borderRadius: "var(--radius-pill)", background: "var(--surface-raised)", cursor: "pointer", color: "var(--success)", fontFamily: "inherit" }}
+                      >Resolve</button>
+                    )}
+                  </div>
+                  <div className="doc-inc-body">
+                    {a.service && <span className="doc-inc-detail"><strong>Service:</strong> {a.service}</span>}
+                    {a.condition && <span className="doc-inc-detail"><strong>Condition:</strong> {a.condition}</span>}
+                    {a.firedAt && <span className="doc-inc-detail"><strong>Fired:</strong> {new Date(a.firedAt).toLocaleString()}</span>}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
 

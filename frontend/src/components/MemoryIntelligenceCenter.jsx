@@ -1,5 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
+import { getMemoryIntelligence, getMemoryInsights } from "../phase20Api";
+import { memoryStats } from "../phase18Api";
 import "./MemoryIntelligenceCenter.css";
 
 const MEM_KEY = "ooplix_memory_intel_v1";
@@ -41,9 +43,25 @@ function score(val) {
 }
 
 export default function MemoryIntelligenceCenter({ onNavigate }) {
-  const [tab, setTab] = useState("overview");
+  const [tab,     setTab]     = useState("overview");
+  const [stats,   setStats]   = useState(null);
+  const [insights, setInsights] = useState([]);
+  const [apiError, setApiError] = useState(null);
 
-  const totalMem  = SEED_MEMORIES.length;
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([memoryStats(), getMemoryIntelligence(), getMemoryInsights()])
+      .then(([statsRes, intelRes, insightRes]) => {
+        if (cancelled) return;
+        if (statsRes) setStats(statsRes);
+        const ins = insightRes?.insights || intelRes?.patterns || [];
+        if (Array.isArray(ins) && ins.length > 0) setInsights(ins);
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const totalMem  = stats?.total ?? SEED_MEMORIES.length;
   const avgImp    = Math.round(SEED_MEMORIES.reduce((s,m) => s + m.importance, 0) / totalMem);
   const avgConf   = Math.round(SEED_MEMORIES.reduce((s,m) => s + m.confidence, 0) / totalMem);
   const stale     = SEED_MEMORIES.filter(m => m.staleness > 20).length;
@@ -53,6 +71,7 @@ export default function MemoryIntelligenceCenter({ onNavigate }) {
 
   return (
     <div className="mic">
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live memory intelligence unavailable — showing cached data ({apiError})</div>}
       <div className="mic-header">
         <div>
           <h1 className="mic-title">Memory Intelligence</h1>

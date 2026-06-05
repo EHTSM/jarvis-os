@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
+import { listMissions, getAutopilotStats, getGitHubActivity } from "../phase23Api";
 import "./EngineeringCenter.css";
 
 // ── Persistence ───────────────────────────────────────────────────────
@@ -176,8 +177,43 @@ export default function EngineeringCenter({ onNavigate }) {
   const [selected, setSelected] = useState("et1");
   const [filter,   setFilter]   = useState("all");
   const [toast,    setToast]    = useState(null);
+  const [apiError, setApiError] = useState(null);
+  const [liveStats, setLiveStats] = useState(null);
 
-  React.useEffect(() => { track.event("engineering_center_viewed"); }, []);
+  useEffect(() => { track.event("engineering_center_viewed"); }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([
+      listMissions({ limit: 20 }),
+      getAutopilotStats(),
+      getGitHubActivity({ limit: 10 }),
+    ]).then(([missionsRes, statsRes, activityRes]) => {
+      if (cancelled) return;
+      if (statsRes) setLiveStats(statsRes);
+      const missions = missionsRes?.missions;
+      if (Array.isArray(missions) && missions.length > 0) {
+        const mapped = missions.map(m => ({
+          id:          m.id,
+          title:       m.goal?.slice(0, 80) || "Engineering Mission",
+          requirement: m.goal || "",
+          plan:        m.plan || "",
+          build:       m.executionChain?.map(s => s.action).join("\n") || "",
+          review:      m.review || "",
+          test:        m.test || "",
+          stage:       m.status === "completed" ? "done" : m.status === "running" ? "build" : "plan",
+          priority:    m.priority || "medium",
+          repo:        m.repo || "ooplix",
+          assignee:    m.agentId || "Autopilot",
+          created:     m.startedAt ? new Date(m.startedAt).toLocaleDateString() : "—",
+        }));
+        setTasks(mapped);
+        _save(ENG_KEY, mapped);
+        setSelected(mapped[0]?.id || null);
+      }
+    }).catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
 
   const showToast = (m) => { setToast(m); setTimeout(() => setToast(null), 2400); };
 
@@ -206,6 +242,7 @@ export default function EngineeringCenter({ onNavigate }) {
   return (
     <div className="engineering-center page-enter">
       {toast && <div className="ec-toast">{toast}</div>}
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live mission data unavailable — showing cached data ({apiError})</div>}
 
       <div className="ec-header">
         <div>

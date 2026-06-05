@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
+import { listCycles, cycleStats } from "../phase18Api";
 import "./AutonomousWorkflowCenter.css";
 
 const WORKFLOWS = [
@@ -51,19 +52,55 @@ const FLOW_STEPS = [
 export default function AutonomousWorkflowCenter({ onNavigate }) {
   const [selected, setSelected] = useState(WORKFLOWS[0]);
   const [tab, setTab]           = useState("all");
+  const [workflows, setWorkflows] = useState(WORKFLOWS);
+  const [stats,     setStats]     = useState(null);
+  const [apiError,  setApiError]  = useState(null);
 
-  const filtered = tab === "all" ? WORKFLOWS
-    : tab === "running" ? WORKFLOWS.filter(w => w.status === "running")
-    : tab === "failed"  ? WORKFLOWS.filter(w => w.status === "failed")
-    : WORKFLOWS.filter(w => w.status === "success" || w.status === "idle");
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([listCycles({ limit: 20 }), cycleStats()])
+      .then(([cyclesRes, statsRes]) => {
+        if (cancelled) return;
+        const cycles = cyclesRes?.cycles;
+        if (Array.isArray(cycles) && cycles.length > 0) {
+          const mapped = cycles.map(c => ({
+            id:          c.id,
+            icon:        "▷",
+            name:        c.goal?.slice(0, 50) || "Cycle",
+            trigger:     c.source || "ui",
+            agent:       c.agentId || "Runtime",
+            tool:        c.goalType || "general",
+            action:      c.currentStep || "running",
+            result:      c.outcome?.message || "In progress",
+            status:      c.status || "running",
+            successRate: c.successRate ?? 0,
+            failRate:    c.failRate ?? 0,
+            retries:     c.retryCount ?? 0,
+            lastRun:     c.startedAt ? new Date(c.startedAt).toLocaleTimeString() : "—",
+            runsToday:   c.stepsCompleted ?? 0,
+          }));
+          setWorkflows(mapped);
+          if (mapped.length) setSelected(mapped[0]);
+        }
+        if (statsRes) setStats(statsRes);
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
 
-  const totalRuns  = WORKFLOWS.reduce((s,w) => s + w.runsToday, 0);
-  const avgSuccess = Math.round(WORKFLOWS.reduce((s,w) => s + w.successRate, 0) / WORKFLOWS.length);
+  const filtered = tab === "all" ? workflows
+    : tab === "running" ? workflows.filter(w => w.status === "running")
+    : tab === "failed"  ? workflows.filter(w => w.status === "failed")
+    : workflows.filter(w => w.status === "success" || w.status === "idle");
+
+  const totalRuns  = stats?.totalCycles ?? workflows.reduce((s,w) => s + w.runsToday, 0);
+  const avgSuccess = stats?.avgSuccessRate ?? (workflows.length ? Math.round(workflows.reduce((s,w) => s + w.successRate, 0) / workflows.length) : 0);
   const avgFail    = 100 - avgSuccess;
-  const totalRetry = WORKFLOWS.reduce((s,w) => s + w.retries, 0);
+  const totalRetry = stats?.totalRetries ?? workflows.reduce((s,w) => s + w.retries, 0);
 
   return (
     <div className="awc">
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live cycles unavailable — showing seed data ({apiError})</div>}
       <div className="awc-header">
         <div>
           <h1 className="awc-title">Autonomous Workflow Center</h1>
@@ -76,8 +113,8 @@ export default function AutonomousWorkflowCenter({ onNavigate }) {
       </div>
 
       <div className="awc-stats">
-        <div className="awc-stat"><span className="awc-stat-val">{WORKFLOWS.length}</span><span className="awc-stat-lbl">Workflows</span></div>
-        <div className="awc-stat"><span className="awc-stat-val" style={{color:"var(--accent)"}}>{WORKFLOWS.filter(w=>w.status==="running").length}</span><span className="awc-stat-lbl">Running</span></div>
+        <div className="awc-stat"><span className="awc-stat-val">{workflows.length}</span><span className="awc-stat-lbl">Workflows</span></div>
+        <div className="awc-stat"><span className="awc-stat-val" style={{color:"var(--accent)"}}>{workflows.filter(w=>w.status==="running").length}</span><span className="awc-stat-lbl">Running</span></div>
         <div className="awc-stat"><span className="awc-stat-val" style={{color:"#00dc82"}}>{avgSuccess}%</span><span className="awc-stat-lbl">Success</span></div>
         <div className="awc-stat"><span className="awc-stat-val" style={{color:"#ff6464"}}>{avgFail}%</span><span className="awc-stat-lbl">Failure</span></div>
         <div className="awc-stat"><span className="awc-stat-val" style={{color:"var(--warning)"}}>{totalRetry}</span><span className="awc-stat-lbl">Retries</span></div>
@@ -112,7 +149,7 @@ export default function AutonomousWorkflowCenter({ onNavigate }) {
 
       <div className="awc-workflow-list">
         {filtered.map(w => (
-          <div key={w.id} className="awc-workflow-card" onClick={() => setSelected(w)} style={{cursor:"pointer", borderColor: selected.id===w.id?"var(--accent)":"var(--border)"}}>
+          <div key={w.id} className="awc-workflow-card" onClick={() => setSelected(w)} style={{cursor:"pointer", borderColor: selected?.id===w.id?"var(--accent)":"var(--border)"}}>
             <div className="awc-workflow-icon">{w.icon}</div>
             <div className="awc-workflow-info">
               <div className="awc-workflow-name">{w.name}</div>

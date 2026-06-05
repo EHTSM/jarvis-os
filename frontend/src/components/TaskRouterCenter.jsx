@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
+import { listAgents, getAgentHistory } from "../phase18Api";
 import "./TaskRouterCenter.css";
 
 const TASKS_KEY = "ooplix_router_tasks";
@@ -167,8 +168,47 @@ export default function TaskRouterCenter({ onNavigate }) {
   const [priFilter,    setPriFilter]   = useState("all");
   const [catFilter,    setCatFilter]   = useState("all");
   const [toast,        setToast]       = useState(null);
+  const [apiError,     setApiError]    = useState(null);
 
-  React.useEffect(() => { track.event("task_router_viewed"); }, []);
+  useEffect(() => { track.event("task_router_viewed"); }, []);
+
+  // Populate queue from live agent execution history
+  useEffect(() => {
+    let cancelled = false;
+    listAgents()
+      .then(async res => {
+        if (cancelled) return;
+        const agents = res?.agents;
+        if (!Array.isArray(agents) || !agents.length) return;
+        const histories = await Promise.all(
+          agents.slice(0, 5).map(a => getAgentHistory(a.id, { limit: 5 }).catch(() => null))
+        );
+        if (cancelled) return;
+        const liveTasks = histories.flatMap((h, i) => {
+          const runs = h?.history || h?.runs || [];
+          return runs.map((r, j) => ({
+            id:          `live_${i}_${j}`,
+            title:       r.input?.slice(0, 80) || "Agent task",
+            priority:    "medium",
+            status:      r.status === "completed" ? "completed" : r.status === "running" ? "in_progress" : "queued",
+            agentId:     agents[i]?.id || "unknown",
+            category:    "runtime",
+            createdAt:   r.startedAt ? new Date(r.startedAt).toLocaleTimeString() : "—",
+            completedAt: r.completedAt ? new Date(r.completedAt).toLocaleTimeString() : null,
+            result:      r.result?.message || r.result?.reply || null,
+            escalated:   false,
+          }));
+        });
+        if (liveTasks.length > 0) {
+          const merged = [...liveTasks, ...SEED_TASKS.slice(0, 3)];
+          setTasks(merged);
+          _save(TASKS_KEY, merged);
+          if (!selected || !merged.find(t => t.id === selected)) setSelected(merged[0]?.id || null);
+        }
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
   const showToast = m => { setToast(m); setTimeout(() => setToast(null), 2400); };
   const persist = next => { _save(TASKS_KEY, next); setTasks(next); };
 
@@ -198,6 +238,7 @@ export default function TaskRouterCenter({ onNavigate }) {
   return (
     <div className="task-router-center page-enter">
       {toast && <div className="trc-toast">{toast}</div>}
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live task data unavailable — showing cached data ({apiError})</div>}
 
       <div className="trc-header">
         <div>

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
+import { getLessons, getRecommendations, getLearningStats, runFullAnalysis } from "../phase19Api";
 import "./SelfImprovementCenter.css";
 
 const LESSONS = [
@@ -41,8 +42,51 @@ const RECS = [
 ];
 
 export default function SelfImprovementCenter({ onNavigate }) {
-  const [tab, setTab] = useState("lessons");
+  const [tab,       setTab]       = useState("lessons");
+  const [lessons,   setLessons]   = useState(LESSONS);
+  const [recs,      setRecs]      = useState(RECS);
+  const [stats,     setStats]     = useState(null);
+  const [apiError,  setApiError]  = useState(null);
+  const [analyzing, setAnalyzing] = useState(false);
   const TABS = ["lessons","failures","opportunities","performance","recommendations"];
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([getLessons({ limit: 20 }), getRecommendations({ limit: 10 }), getLearningStats()])
+      .then(([lessRes, recRes, statsRes]) => {
+        if (cancelled) return;
+        const liveLessons = lessRes?.lessons;
+        if (Array.isArray(liveLessons) && liveLessons.length > 0) {
+          setLessons(liveLessons.map(l => ({
+            icon: "💡",
+            text: l.insight || l.lesson || l.text,
+            meta: `${l.source || "System"} · ${l.createdAt ? new Date(l.createdAt).toLocaleDateString() : "recent"}`,
+          })));
+        }
+        const liveRecs = recRes?.recommendations;
+        if (Array.isArray(liveRecs) && liveRecs.length > 0) {
+          setRecs(liveRecs.map((r, i) => ({
+            priority: r.priority || i + 1,
+            title:    r.title || r.action,
+            desc:     r.description || r.detail || "",
+          })));
+        }
+        if (statsRes) setStats(statsRes);
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const handleAnalyze = () => {
+    setAnalyzing(true);
+    runFullAnalysis()
+      .then(r => {
+        if (Array.isArray(r?.lessons)) setLessons(r.lessons.map(l => ({ icon: "💡", text: l.insight || l.lesson, meta: "System · just now" })));
+        if (Array.isArray(r?.recommendations)) setRecs(r.recommendations.map((rec, i) => ({ priority: i + 1, title: rec.title || rec.action, desc: rec.description || "" })));
+      })
+      .catch(() => {})
+      .finally(() => setAnalyzing(false));
+  };
 
   return (
     <div className="sic">
@@ -63,18 +107,24 @@ export default function SelfImprovementCenter({ onNavigate }) {
         </div>
       </div>
 
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live learning data unavailable — showing cached data ({apiError})</div>}
       <div className="sic-stats">
-        <div className="sic-stat"><span className="sic-stat-val" style={{color:"#00dc82"}}>91%</span><span className="sic-stat-lbl">Success Rate</span></div>
-        <div className="sic-stat"><span className="sic-stat-val" style={{color:"var(--accent)"}}>{LESSONS.length}</span><span className="sic-stat-lbl">Lessons Learned</span></div>
+        <div className="sic-stat"><span className="sic-stat-val" style={{color:"#00dc82"}}>{stats?.successRate != null ? `${stats.successRate}%` : "91%"}</span><span className="sic-stat-lbl">Success Rate</span></div>
+        <div className="sic-stat"><span className="sic-stat-val" style={{color:"var(--accent)"}}>{lessons.length}</span><span className="sic-stat-lbl">Lessons Learned</span></div>
         <div className="sic-stat"><span className="sic-stat-val" style={{color:"#ff6464"}}>{FAILURES.length}</span><span className="sic-stat-lbl">Failure Patterns</span></div>
         <div className="sic-stat"><span className="sic-stat-val" style={{color:"var(--warning)"}}>{OPPS.length}</span><span className="sic-stat-lbl">Opportunities</span></div>
-        <div className="sic-stat"><span className="sic-stat-val" style={{color:"var(--accent2)"}}>{RECS.length}</span><span className="sic-stat-lbl">Recommendations</span></div>
+        <div className="sic-stat"><span className="sic-stat-val" style={{color:"var(--accent2)"}}>{recs.length}</span><span className="sic-stat-lbl">Recommendations</span></div>
       </div>
 
       {tab === "lessons" && (
         <div className="sic-panel sic-panel-full">
-          <div className="sic-panel-title">Lessons Learned</div>
-          {LESSONS.map((l,i) => (
+          <div className="sic-panel-title" style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            Lessons Learned
+            <button onClick={handleAnalyze} disabled={analyzing} style={{padding:"5px 12px",fontSize:11,fontWeight:700,border:"1px solid var(--border)",borderRadius:"var(--radius-pill)",background:"var(--surface-raised)",cursor:"pointer",fontFamily:"inherit",color:"var(--accent)"}}>
+              {analyzing ? "Analyzing…" : "↺ Re-analyze"}
+            </button>
+          </div>
+          {lessons.map((l,i) => (
             <div key={i} className="sic-lesson-row">
               <span className="sic-lesson-icon">{l.icon}</span>
               <div className="sic-lesson-info">
@@ -138,7 +188,7 @@ export default function SelfImprovementCenter({ onNavigate }) {
       {tab === "recommendations" && (
         <div className="sic-panel sic-panel-full">
           <div className="sic-panel-title">Agent Recommendations</div>
-          {RECS.map((r,i) => (
+          {recs.map((r,i) => (
             <div key={i} className="sic-rec-row">
               <div className={`sic-rec-priority sic-rec-priority-${r.priority}`}>{r.priority}</div>
               <div className="sic-rec-info">

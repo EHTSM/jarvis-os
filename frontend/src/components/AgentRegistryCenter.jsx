@@ -1,5 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
+import { listAgents } from "../phase18Api";
+import { listManagedAgents } from "../phase20Api";
 import "./AgentRegistryCenter.css";
 
 const REG_KEY = "ooplix_agent_registry_v2";
@@ -259,8 +261,44 @@ export default function AgentRegistryCenter({ onNavigate }) {
   const [showCreate, setShowCreate] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
   const [toast, setToast] = useState(null);
+  const [apiError, setApiError] = useState(null);
 
-  React.useEffect(() => { track.event("agent_registry_viewed"); }, []);
+  useEffect(() => { track.event("agent_registry_viewed"); }, []);
+
+  // Merge live agents from backend (p18 + p20) with local registry
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([listAgents(), listManagedAgents()])
+      .then(([p18Res, p20Res]) => {
+        if (cancelled) return;
+        const p18 = p18Res?.agents || [];
+        const p20 = p20Res?.agents || [];
+        const all = [...p18, ...p20];
+        if (all.length > 0) {
+          const mapped = all.map(a => ({
+            id:          a.id,
+            name:        a.name || a.id,
+            type:        a.type || "runtime",
+            icon:        a.icon || "▷",
+            color:       a.color || "var(--accent)",
+            status:      a.status || "active",
+            description: a.description || "",
+            capabilities: a.capabilities || [],
+            permissions: a.permissions || [],
+            model:       a.model || "—",
+            lastRun:     a.lastRun || "—",
+            runsToday:   a.runsToday ?? 0,
+            errorRate:   a.errorRate || "0%",
+            archived:    a.archived || false,
+          }));
+          setAgents(mapped);
+          _save(REG_KEY, mapped);
+          setSelected(mapped[0]?.id || null);
+        }
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
   const showToast = m => { setToast(m); setTimeout(() => setToast(null), 2400); };
   const persist = next => { _save(REG_KEY, next); setAgents(next); };
 
@@ -302,6 +340,7 @@ export default function AgentRegistryCenter({ onNavigate }) {
   return (
     <div className="agent-registry-center page-enter">
       {toast && <div className="arc-toast">{toast}</div>}
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live registry unavailable — showing cached data ({apiError})</div>}
       {showCreate && <CreateModal onSave={handleCreate} onClose={() => setShowCreate(false)} />}
 
       <div className="arc-header">

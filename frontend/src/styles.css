@@ -1,2 +1,22 @@
 /* Legacy stub — design system is in index.css and component CSS files. */
 /* This file is intentionally minimal so it does not override design tokens. */
+
+/* ── Phase-32 API status banners (shared across all wired components) ── */
+.ac-api-banner {
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  border: 1px solid transparent;
+}
+.ac-api-banner--loading {
+  background: var(--surface-raised, #1a1e2e);
+  border-color: var(--accent, #7c6cff);
+  color: var(--accent, #7c6cff);
+}
+.ac-api-banner--error {
+  background: rgba(255, 100, 100, 0.06);
+  border-color: rgba(255, 100, 100, 0.25);
+  color: var(--text-dim, #aaa);
+}

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
+import { listActions, getActionAuditTrail } from "../phase18Api";
 import "./AgentActionCenter.css";
 
 const KEY = "ooplix_agent_actions_v1";
@@ -44,6 +45,32 @@ const AUTO_APPROVALS = [
 export default function AgentActionCenter({ onNavigate }) {
   const [tab, setTab] = useState("executed");
   const [approvals, setApprovals] = useState(() => _load(KEY, HUMAN_APPROVALS_SEED));
+  const [liveExecuted, setLiveExecuted] = useState(EXECUTED);
+  const [liveFailed,   setLiveFailed]   = useState(FAILED);
+  const [livePending,  setLivePending]  = useState(PENDING);
+  const [apiError,     setApiError]     = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([
+      listActions({ status: "completed", limit: 20 }),
+      listActions({ status: "failed",    limit: 10 }),
+      listActions({ status: "pending",   limit: 10 }),
+      getActionAuditTrail(20),
+    ]).then(([doneRes, failRes, pendRes]) => {
+      if (cancelled) return;
+      const toRow = (a) => ({
+        id: a.id, icon: "▷", name: a.input?.slice(0, 60) || "Action",
+        agent: a.agentId || "Runtime", ts: a.createdAt ? new Date(a.createdAt).toLocaleTimeString() : "recently",
+        result: a.result?.message || a.result?.reply || a.error || "—",
+        status: a.status || "executed",
+      });
+      if (doneRes?.actions?.length) setLiveExecuted(doneRes.actions.map(toRow));
+      if (failRes?.actions?.length) setLiveFailed(failRes.actions.map(toRow));
+      if (pendRes?.actions?.length) setLivePending(pendRes.actions.map(toRow));
+    }).catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
 
   function approve(id, val) {
     const next = approvals.map(a => a.id === id ? { ...a, approved: val } : a);
@@ -68,10 +95,11 @@ export default function AgentActionCenter({ onNavigate }) {
         )}
       </div>
 
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live data unavailable — showing cached data ({apiError})</div>}
       <div className="aac-stats">
-        <div className="aac-stat"><span className="aac-stat-val" style={{color:"#00dc82"}}>{EXECUTED.length}</span><span className="aac-stat-lbl">Executed</span></div>
-        <div className="aac-stat"><span className="aac-stat-val" style={{color:"var(--warning)"}}>{PENDING.length}</span><span className="aac-stat-lbl">Pending</span></div>
-        <div className="aac-stat"><span className="aac-stat-val" style={{color:"#ff6464"}}>{FAILED.length}</span><span className="aac-stat-lbl">Failed</span></div>
+        <div className="aac-stat"><span className="aac-stat-val" style={{color:"#00dc82"}}>{liveExecuted.length}</span><span className="aac-stat-lbl">Executed</span></div>
+        <div className="aac-stat"><span className="aac-stat-val" style={{color:"var(--warning)"}}>{livePending.length}</span><span className="aac-stat-lbl">Pending</span></div>
+        <div className="aac-stat"><span className="aac-stat-val" style={{color:"#ff6464"}}>{liveFailed.length}</span><span className="aac-stat-lbl">Failed</span></div>
         <div className="aac-stat"><span className="aac-stat-val" style={{color:"var(--accent)"}}>{pending}</span><span className="aac-stat-lbl">Need Approval</span></div>
         <div className="aac-stat"><span className="aac-stat-val" style={{color:"var(--accent2)"}}>{AUTO_APPROVALS.length}</span><span className="aac-stat-lbl">Auto-Approved</span></div>
       </div>
@@ -84,7 +112,7 @@ export default function AgentActionCenter({ onNavigate }) {
 
       {(tab === "executed" || tab === "pending" || tab === "failed") && (
         <div className="aac-action-list">
-          {(tab==="executed"?EXECUTED:tab==="pending"?PENDING:FAILED).map(a => (
+          {(tab==="executed"?liveExecuted:tab==="pending"?livePending:liveFailed).map(a => (
             <div key={a.id} className="aac-action-row">
               <span className="aac-action-icon">{a.icon}</span>
               <div className="aac-action-info">

@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
+import { listAgents, getAgentFailures } from "../phase18Api";
 import "./AgentCenter.css";
 
 // ── Persistence ───────────────────────────────────────────────────────
@@ -251,8 +252,39 @@ export default function AgentCenter({ onNavigate }) {
   const [typeFilter, setTypeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [toast,    setToast]    = useState(null);
+  const [loading,  setLoading]  = useState(false);
+  const [apiError, setApiError] = useState(null);
 
-  React.useEffect(() => { track.event("agent_center_viewed"); }, []);
+  useEffect(() => { track.event("agent_center_viewed"); }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setApiError(null);
+    Promise.all([listAgents(), getAgentFailures()])
+      .then(([agentRes, failRes]) => {
+        if (cancelled) return;
+        const live = agentRes?.agents;
+        if (Array.isArray(live) && live.length > 0) {
+          setAgents(live);
+          _save(AGENTS_KEY, live);
+        }
+        const fails = failRes?.failures;
+        if (Array.isArray(fails) && fails.length > 0) {
+          const feedItems = fails.map((f, i) => ({
+            id: `live_f${i}`,
+            agentId: f.agentId || "unknown",
+            action: f.input || f.error || "Task failed",
+            ts: f.failedAt ? new Date(f.failedAt).toLocaleTimeString() : "recently",
+            status: "error",
+          }));
+          setActivity(prev => [...feedItems, ...prev].slice(0, 40));
+        }
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
 
   const showToast = (m) => { setToast(m); setTimeout(() => setToast(null), 2400); };
 
@@ -287,6 +319,8 @@ export default function AgentCenter({ onNavigate }) {
   return (
     <div className="agent-center page-enter">
       {toast && <div className="ac-toast">{toast}</div>}
+      {loading && <div className="ac-api-banner ac-api-banner--loading">Loading live agent data…</div>}
+      {apiError && !loading && <div className="ac-api-banner ac-api-banner--error">⚠ Live data unavailable — showing cached data ({apiError})</div>}
 
       <div className="ac-header">
         <div>

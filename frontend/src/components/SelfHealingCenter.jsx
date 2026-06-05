@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
+import { getHealStatus, getHealHistory, runProbe } from "../phase19Api";
 import "./SelfHealingCenter.css";
 
 // ── Seed data ─────────────────────────────────────────────────────────
@@ -50,23 +51,55 @@ const SEV_COLORS    = { critical: "var(--danger)", warning: "var(--warning)", in
 const ACTION_COLORS = { restart: "var(--warning)", rollback: "var(--accent)", scale: "var(--accent2)" };
 
 export default function SelfHealingCenter({ onNavigate }) {
-  const [section,  setSection]  = useState("checks");
-  const [rules,    setRules]    = useState(PREVENTION_RULES);
-  const [toast,    setToast]    = useState(null);
+  const [section,   setSection]   = useState("checks");
+  const [rules,     setRules]     = useState(PREVENTION_RULES);
+  const [toast,     setToast]     = useState(null);
+  const [liveStatus, setLiveStatus] = useState(null);
+  const [liveHistory, setLiveHistory] = useState(RECOVERY_ACTIONS);
+  const [apiError,  setApiError]  = useState(null);
 
-  React.useEffect(() => { track.event("self_healing_viewed"); }, []);
+  useEffect(() => { track.event("self_healing_viewed"); }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([getHealStatus(), getHealHistory({ limit: 20 })])
+      .then(([statusRes, histRes]) => {
+        if (cancelled) return;
+        if (statusRes) setLiveStatus(statusRes);
+        const hist = histRes?.history || histRes?.events;
+        if (Array.isArray(hist) && hist.length > 0) {
+          const mapped = hist.map((h, i) => ({
+            id:      h.id || `rh${i}`,
+            type:    h.strategy || "restart",
+            target:  h.targetId || h.target || "service",
+            trigger: h.reason || h.trigger || "health check",
+            status:  h.status || "success",
+            ts:      h.healedAt ? new Date(h.healedAt).toLocaleString() : "recently",
+            result:  h.outcome?.message || h.message || "Healed",
+            success: h.status === "healed" || h.status === "success",
+          }));
+          setLiveHistory(mapped);
+        }
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
 
   const showToast = (m) => { setToast(m); setTimeout(() => setToast(null), 2400); };
+
+  const handleProbe = useCallback(() => {
+    runProbe().then(r => showToast(`Probe complete — ${r?.checks ?? 0} checks run`)).catch(() => showToast("Probe failed"));
+  }, []);
 
   const toggleRule = useCallback((id) => {
     setRules(prev => prev.map(r => r.id === id ? { ...r, enabled: !r.enabled } : r));
     showToast("Rule updated");
   }, []);
 
-  const passing     = HEALTH_CHECKS.filter(h => h.status === "passing").length;
-  const failing     = HEALTH_CHECKS.filter(h => h.status === "failing").length;
-  const recoveries  = RECOVERY_ACTIONS.length;
-  const successRate = Math.round((RECOVERY_ACTIONS.filter(r => r.success).length / recoveries) * 100);
+  const passing     = liveStatus?.healthyChecks ?? HEALTH_CHECKS.filter(h => h.status === "passing").length;
+  const failing     = liveStatus?.failingChecks ?? HEALTH_CHECKS.filter(h => h.status === "failing").length;
+  const recoveries  = liveHistory.length;
+  const successRate = recoveries ? Math.round((liveHistory.filter(r => r.success).length / recoveries) * 100) : 0;
 
   // Failure prediction (heuristic from failCount)
   const atRisk = HEALTH_CHECKS.filter(h => h.failCount > 0 && h.status === "passing");
@@ -74,6 +107,7 @@ export default function SelfHealingCenter({ onNavigate }) {
   return (
     <div className="self-healing-center page-enter">
       {toast && <div className="shc-toast">{toast}</div>}
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live heal data unavailable — showing cached data ({apiError})</div>}
 
       <div className="shc-header">
         <div>
