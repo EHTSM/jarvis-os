@@ -509,14 +509,29 @@ _httpServer = app.listen(PORT, () => {
             [`Port: ${PORT}`, `Node: ${process.version}`, `Env: ${process.env.NODE_ENV || "development"}`]);
     }
 
-    // Scan for unread crash forensics from prior runs
+    // Scan for unread crash forensics from prior runs.
+    // EPIPE crashes are suppressed — they are caused by PM2 closing stdout on
+    // shutdown and trigger the crash handler spuriously, not a real process crash.
     try {
         const crashDir = require("path").join(__dirname, "../data/crashes");
         if (_fs_native.existsSync(crashDir)) {
-            const files = _fs_native.readdirSync(crashDir).filter(f => f.startsWith("crash_") && f.endsWith(".json")).sort().slice(-5);
-            if (files.length > 0) {
-                logger.warn(`[Startup:Forensics] ${files.length} crash report(s) from prior run(s) — check data/crashes/`);
-                for (const f of files.slice(-3)) {
+            const allFiles = _fs_native.readdirSync(crashDir)
+                .filter(f => f.startsWith("crash_") && f.endsWith(".json")).sort();
+            const realCrashes = allFiles.filter(f => {
+                try {
+                    const c = JSON.parse(_fs_native.readFileSync(require("path").join(crashDir, f), "utf8"));
+                    return c.error?.code !== "EPIPE";
+                } catch { return true; }
+            });
+            // Auto-delete EPIPE-only files silently — they are PM2 pipe noise
+            const epipeFiles = allFiles.filter(f => !realCrashes.includes(f));
+            for (const f of epipeFiles) {
+                try { _fs_native.unlinkSync(require("path").join(crashDir, f)); } catch {}
+            }
+            const recent = realCrashes.slice(-5);
+            if (recent.length > 0) {
+                logger.warn(`[Startup:Forensics] ${recent.length} crash report(s) from prior run(s) — check data/crashes/`);
+                for (const f of recent.slice(-3)) {
                     try {
                         const c = JSON.parse(_fs_native.readFileSync(require("path").join(crashDir, f), "utf8"));
                         logger.warn(`  ${f}: ${c.error?.message || "unknown"} (uptime=${c.pm2?.uptime}s restarts=${c.pm2?.restartCount})`);
