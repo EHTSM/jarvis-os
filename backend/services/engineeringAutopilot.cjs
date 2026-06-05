@@ -45,16 +45,19 @@ function _mid() { return `ap_${Date.now()}_${(++_seq).toString(36)}`; }
 function _save() { try { _wj(MISSIONS_FILE, _missions.slice(-500)); } catch { /* non-fatal */ } }
 
 // ── Goal analysis: map goal text to domain + tasks ────────────────────────
+// Order matters: specific domains before broad catch-alls.
+// "github_ops" and "code_quality" are broad — they must come AFTER specific domains
+// like security_audit, testing, documentation, devops to avoid misclassification.
 const DOMAIN_PATTERNS = [
-    { domain: "code_quality",   re: /review|quality|refactor|clean|smell|lint|improve code/i,           agent: "dev",       tool: null },
-    { domain: "github_ops",     re: /issue|pr|pull request|merge|branch|commit|push|repository/i,       agent: "dev",       tool: "github" },
-    { domain: "release",        re: /release|deploy|ship|version|bump|changelog|tag/i,                  agent: "devops",    tool: "github" },
-    { domain: "security_audit", re: /security|vulnerability|hardening|secret|token|auth|xss|injection/i,agent: "dev",       tool: null },
-    { domain: "performance",    re: /performance|speed|slow|latency|optimize|faster|bottleneck/i,       agent: "analytics", tool: null },
-    { domain: "documentation",  re: /doc|readme|comment|jsdoc|spec|api doc/i,                          agent: "content",   tool: "notion" },
-    { domain: "testing",        re: /test|spec|coverage|unit|integration|e2e|jest|mocha/i,             agent: "dev",       tool: null },
-    { domain: "devops",         re: /ci|cd|pipeline|deploy|infra|docker|nginx|server|pm2/i,            agent: "devops",    tool: "github" },
-    { domain: "research",       re: /research|investigate|analyze|understand|find|compare|evaluate/i,  agent: "research",  tool: "openrouter" },
+    { domain: "security_audit", re: /security|vulnerability|hardening|secret|token|audit|xss|injection|credential|rotation/i, agent: "dev",       tool: null },
+    { domain: "documentation",  re: /\bdoc\b|readme|jsdoc|api.doc|documentation|improve comments/i,                          agent: "content",   tool: "notion" },
+    { domain: "testing",        re: /\btest\b|\btests\b|missing test|test coverage|unit test|integration test|e2e|jest|mocha/i, agent: "dev",       tool: null },
+    { domain: "performance",    re: /performance|speed|slow|latency|optimize|faster|bottleneck/i,                              agent: "analytics", tool: null },
+    { domain: "release",        re: /release|changelog|version|bump|tag|ship/i,                                               agent: "devops",    tool: "github" },
+    { domain: "devops",         re: /ci|cd|pipeline|deploy|infra|docker|nginx|server|pm2|deployment|readiness/i,              agent: "devops",    tool: "github" },
+    { domain: "code_quality",   re: /review|quality|refactor|clean|smell|lint|improve code/i,                                 agent: "dev",       tool: null },
+    { domain: "github_ops",     re: /issue|pr|pull request|merge|branch|commit|push|repository|github/i,                     agent: "dev",       tool: "github" },
+    { domain: "research",       re: /research|investigate|analyze|understand|find|compare|evaluate/i,                         agent: "research",  tool: "openrouter" },
 ];
 
 function _analyzeDomain(goal) {

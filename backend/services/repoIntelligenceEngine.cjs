@@ -25,8 +25,42 @@ function _loadIndex() {
     catch { return { repos: {}, lastIndexed: null }; }
 }
 
+const MAX_REPOS_IN_INDEX = 20;  // cap to prevent unbounded file growth
+
 function _saveIndex(idx) {
-    fs.writeFileSync(INDEX_PATH, JSON.stringify(idx, null, 2));
+    // Trim the per-file map before serialising — it can reach 500MB+ on large repos.
+    // Callers that need the full fileMap query it from a fresh indexRepo() call.
+    const slim = { repos: {}, lastIndexed: idx.lastIndexed };
+    const keys = Object.keys(idx.repos);
+    // Keep only the most-recently indexed MAX_REPOS_IN_INDEX entries
+    const keep = keys.slice(-MAX_REPOS_IN_INDEX);
+    for (const k of keep) {
+        const r = idx.repos[k];
+        slim.repos[k] = {
+            path:        r.path,
+            indexedAt:   r.indexedAt,
+            fileCount:   r.fileCount,
+            symbolCount: r.symbolCount,
+            lineCount:   r.lineCount,
+            // Drop per-file content — too large; symbolGraph + depGraph kept for queries
+            symbolGraph: r.symbolGraph,
+            depGraph:    r.depGraph,
+        };
+    }
+    try {
+        const tmp = INDEX_PATH + '.tmp';
+        fs.writeFileSync(tmp, JSON.stringify(slim, null, 2));
+        fs.renameSync(tmp, INDEX_PATH);
+    } catch (e) {
+        // If even slim save fails (extremely large symbolGraph), save metadata only
+        const meta = { repos: {}, lastIndexed: idx.lastIndexed };
+        for (const k of keep) {
+            const r = idx.repos[k];
+            meta.repos[k] = { path: r.path, indexedAt: r.indexedAt,
+                fileCount: r.fileCount, symbolCount: r.symbolCount, lineCount: r.lineCount };
+        }
+        fs.writeFileSync(INDEX_PATH, JSON.stringify(meta, null, 2));
+    }
 }
 
 // ── File discovery ────────────────────────────────────────────────────────────
