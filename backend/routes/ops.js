@@ -17,7 +17,7 @@ router.get("/health",     (req, res) => {
     if (!process.env.GROQ_API_KEY)                                 svcWarnings.push("AI disabled — GROQ_API_KEY missing");
     if (!process.env.TELEGRAM_TOKEN)                               svcWarnings.push("Telegram disabled — TELEGRAM_TOKEN missing");
     if (!process.env.WA_TOKEN && !process.env.WHATSAPP_TOKEN)      svcWarnings.push("WhatsApp disabled — WA_TOKEN missing");
-    if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) svcWarnings.push("Payments disabled — RAZORPAY_KEY/SECRET missing");
+    if (!(process.env.RAZORPAY_KEY || process.env.RAZORPAY_KEY_ID) || !(process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET)) svcWarnings.push("Payments disabled — RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET missing");
 
     let base = { status: "ok", uptime_seconds: Math.round(process.uptime()), timestamp: new Date().toISOString() };
     try {
@@ -161,7 +161,7 @@ router.get("/ops", (req, res) => {
         requests:    reqMetrics,
         services: {
             whatsapp: !!(process.env.WA_TOKEN || process.env.WHATSAPP_TOKEN),
-            payments: !!process.env.RAZORPAY_KEY,
+            payments: !!((process.env.RAZORPAY_KEY || process.env.RAZORPAY_KEY_ID) && (process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET)),
             telegram: !!process.env.TELEGRAM_TOKEN,
             groq:     !!process.env.GROQ_API_KEY
         }
