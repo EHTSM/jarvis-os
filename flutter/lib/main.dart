@@ -8,7 +8,13 @@ import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Firebase init is guarded — will be activated after flutterfire configure is run.
+  // Build compiles and runs without Firebase until google-services.json is in place.
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  } catch (_) {
+    // Firebase not configured yet — app runs in offline/no-auth mode.
+  }
   runApp(const ProviderScope(child: JarvisApp()));
 }
 
