@@ -165,6 +165,17 @@ function recordAuth({ action, operator, method } = {}) {
 }
 
 /**
+ * Generic append — used by services that emit arbitrary event types
+ * (improvementLoopEngine, ooplixAutonomyEngine, toolExecutionLayer, etc.).
+ * Writes the entry as-is with the given type, or "event" if type is missing.
+ * @param {{ type, ...rest }} entry
+ */
+function append(entry = {}) {
+  const { type, ...rest } = entry;
+  _write(type || "event", rest);
+}
+
+/**
  * Read last N audit entries (newest first). Diagnostic use only.
  */
 function tail(n = 100) {
@@ -214,5 +225,6 @@ function _sanitizeOperator(op) {
 module.exports = {
   recordDispatch, recordRetry, recordCancel, recordReplay,
   recordEmergency, recordAuth,
+  append,
   tail, byTask, info,
 };
