@@ -38,6 +38,16 @@ async function createPaymentLink({ amount = 999, name = "Customer", phone = null
     if (!_paymentsEnabled) {
         return { success: false, error: "Payments not configured — set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in .env" };
     }
+
+    // Guard: refuse to create live payment links with a localhost callback URL.
+    // Payment confirmations will never reach the server if BASE_URL is localhost.
+    const _baseUrl = process.env.BASE_URL || "";
+    if (!_baseUrl || _baseUrl.includes("localhost") || _baseUrl.includes("127.0.0.1")) {
+        const msg = "BASE_URL is not set to a public domain. Set BASE_URL=https://yourdomain.com in .env so Razorpay can deliver payment webhooks.";
+        logger.error("[Payment] " + msg);
+        return { success: false, error: msg };
+    }
+
     try {
         const rz   = _getInstance();
         const body = {
@@ -47,7 +57,7 @@ async function createPaymentLink({ amount = 999, name = "Customer", phone = null
             customer:    { name },
             notify:      { sms: !!phone, email: false },
             reminder_enable: true,
-            callback_url:    `${process.env.BASE_URL || "http://localhost:5050"}/webhook/razorpay`,
+            callback_url:    `${_baseUrl}/webhook/razorpay`,
             callback_method: "get"
         };
 
