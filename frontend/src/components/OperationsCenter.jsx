@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { track } from "../analytics";
+import { getReadinessReport } from "../phase21Api";
 import "./OperationsCenter.css";
 
 // ── Static seed metrics ───────────────────────────────────────────────
@@ -59,9 +60,19 @@ function MiniBarChart({ data, colorFn }) {
 }
 
 export default function OperationsCenter({ onNavigate }) {
-  const [section, setSection] = useState("overview");
+  const [section,    setSection]    = useState("overview");
+  const [readiness,  setReadiness]  = useState(null);
+  const [apiError,   setApiError]   = useState(null);
 
   React.useEffect(() => { track.event("operations_center_viewed"); }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    getReadinessReport()
+      .then(res => { if (!cancelled && res) setReadiness(res?.report || res); })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
 
   const totalTasks  = AGENT_THROUGHPUT.reduce((s,a) => s + a.tasksToday, 0);
   const totalQueue  = QUEUE_STATUS.reduce((s,q) => s + q.depth, 0);
@@ -71,6 +82,12 @@ export default function OperationsCenter({ onNavigate }) {
 
   return (
     <div className="operations-center page-enter">
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live readiness data unavailable — showing cached data ({apiError})</div>}
+      {readiness?.score != null && (
+        <div style={{ padding: "8px 16px", background: "rgba(0,220,130,0.08)", border: "1px solid rgba(0,220,130,0.2)", borderRadius: "var(--radius)", marginBottom: 12, fontSize: 13, color: "var(--success)" }}>
+          Production Readiness Score: <strong>{readiness.score}%</strong>{readiness.status ? ` — ${readiness.status}` : ""}
+        </div>
+      )}
       <div className="oc-header">
         <div>
           <h1 className="oc-title">Operations Center</h1>

@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
+import { getOAuthProviderStatus, listOAuthConnections, revokeOAuth, getOAuthUrl } from "../phase21Api";
 import "./IntegrationCenter.css";
 
 // ── Integration definitions ───────────────────────────────────────────
@@ -234,21 +235,57 @@ export default function IntegrationCenter({ onNavigate }) {
   const [category,  setCategory] = useState("all");
   const [selected,  setSelected] = useState(null);
   const [toast,     setToast]    = useState(null);
-
-  React.useEffect(() => { track.event("integration_center_viewed"); }, []);
+  const [loading,   setLoading]  = useState(true);
 
   const showToast = (m) => { setToast(m); setTimeout(() => setToast(null), 2600); };
 
-  const handleConnect = useCallback((id) => {
-    setInteg(prev => prev.map(i => i.id === id
-      ? { ...i, status: "connected", syncStatus: "synced", lastSync: "just now", health: "healthy" }
-      : i
-    ));
-    showToast(`${INTEGRATIONS.find(i=>i.id===id)?.name} connected`);
-    track.event("integration_connected", { id });
+  // Merge live OAuth status from backend over static definitions
+  const _applyLiveStatus = useCallback((providerStatus, connections) => {
+    setInteg(prev => prev.map(integ => {
+      const pStatus = providerStatus?.[integ.id];
+      const conn    = connections?.find(c => c.provider === integ.id);
+      if (!pStatus && !conn) return integ;
+      return {
+        ...integ,
+        status:     conn ? "connected" : (pStatus?.configured ? "disconnected" : "disconnected"),
+        syncStatus: conn ? "synced" : null,
+        lastSync:   conn?.updatedAt ? new Date(conn.updatedAt).toLocaleString() : null,
+        health:     conn ? "healthy" : null,
+      };
+    }));
   }, []);
 
-  const handleDisconnect = useCallback((id) => {
+  useEffect(() => {
+    track.event("integration_center_viewed");
+    Promise.all([getOAuthProviderStatus(), listOAuthConnections()])
+      .then(([ps, cs]) => {
+        _applyLiveStatus(ps?.providers, cs?.connections);
+      })
+      .catch(() => {}) // backend may not have OAuth keys — fail silently, show static state
+      .finally(() => setLoading(false));
+  }, [_applyLiveStatus]);
+
+  const handleConnect = useCallback(async (id) => {
+    track.event("integration_connect_clicked", { id });
+    try {
+      const res = await getOAuthUrl(id);
+      if (res?.url) {
+        // Redirect to provider OAuth page; callback will return to app
+        window.location.href = res.url;
+      } else {
+        // OAuth not configured — show instructional toast
+        const name = INTEGRATIONS.find(i => i.id === id)?.name || id;
+        showToast(`${name}: OAuth credentials not yet configured in .env`);
+      }
+    } catch {
+      showToast("Connect failed — check server configuration");
+    }
+  }, []);
+
+  const handleDisconnect = useCallback(async (id) => {
+    try {
+      await revokeOAuth(id);
+    } catch {} // best-effort revoke
     setInteg(prev => prev.map(i => i.id === id
       ? { ...i, status: "disconnected", syncStatus: null, lastSync: null, health: null }
       : i
@@ -291,7 +328,7 @@ export default function IntegrationCenter({ onNavigate }) {
       </div>
 
       {/* Health banner when all disconnected */}
-      {connectedCount === 0 && (
+      {!loading && connectedCount === 0 && (
         <div className="ic-banner">
           <span className="ic-banner-icon">◎</span>
           <div>

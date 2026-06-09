@@ -1,0 +1,302 @@
+[
+  {
+    "blueprintId": "bp_1780347708536",
+    "idea": "A SaaS subscription management platform where businesses can create plans, manage customers, process payments via Stripe, and track MRR analytics",
+    "productName": "SubscriptionMaster",
+    "description": "A SaaS subscription management platform for businesses",
+    "features": [
+      {
+        "id": "f1",
+        "name": "Plan Management",
+        "description": "Create and manage subscription plans",
+        "priority": "high"
+      },
+      {
+        "id": "f2",
+        "name": "Customer Management",
+        "description": "Manage customer subscriptions and information",
+        "priority": "high"
+      },
+      {
+        "id": "f3",
+        "name": "Payment Processing",
+        "description": "Process payments via Stripe",
+        "priority": "medium"
+      },
+      {
+        "id": "f4",
+        "name": "MRR Analytics",
+        "description": "Track monthly recurring revenue analytics",
+        "priority": "low"
+      }
+    ],
+    "pages": [
+      {
+        "id": "p1",
+        "name": "Dashboard",
+        "route": "/dashboard",
+        "description": "Overview of subscription plans and customer information",
+        "featureIds": [
+          "f1",
+          "f2"
+        ]
+      },
+      {
+        "id": "p2",
+        "name": "Plan Creation",
+        "route": "/plans/create",
+        "description": "Create new subscription plans",
+        "featureIds": [
+          "f1"
+        ]
+      },
+      {
+        "id": "p3",
+        "name": "Customer Management",
+        "route": "/customers",
+        "description": "Manage customer subscriptions and information",
+        "featureIds": [
+          "f2",
+          "f3"
+        ]
+      },
+      {
+        "id": "p4",
+        "name": "Analytics",
+        "route": "/analytics",
+        "description": "View MRR analytics and track revenue",
+        "featureIds": [
+          "f4"
+        ]
+      }
+    ],
+    "apis": [
+      {
+        "id": "a1",
+        "method": "POST",
+        "path": "/plans",
+        "description": "Create a new subscription plan",
+        "featureIds": [
+          "f1"
+        ]
+      },
+      {
+        "id": "a2",
+        "method": "GET",
+        "path": "/plans",
+        "description": "Retrieve a list of subscription plans",
+        "featureIds": [
+          "f1"
+        ]
+      },
+      {
+        "id": "a3",
+        "method": "POST",
+        "path": "/customers",
+        "description": "Create a new customer subscription",
+        "featureIds": [
+          "f2",
+          "f3"
+        ]
+      },
+      {
+        "id": "a4",
+        "method": "GET",
+        "path": "/customers",
+        "description": "Retrieve a list of customer subscriptions",
+        "featureIds": [
+          "f2"
+        ]
+      },
+      {
+        "id": "a5",
+        "method": "GET",
+        "path": "/analytics/mrr",
+        "description": "Retrieve MRR analytics",
+        "featureIds": [
+          "f4"
+        ]
+      },
+      {
+        "id": "a6",
+        "method": "POST",
+        "path": "/payments",
+        "description": "Process a payment via Stripe",
+        "featureIds": [
+          "f3"
+        ]
+      }
+    ],
+    "database": {
+      "tables": [
+        {
+          "id": "t1",
+          "name": "plans",
+          "columns": [
+            "id",
+            "name",
+            "price"
+          ],
+          "featureIds": [
+            "f1"
+          ]
+        },
+        {
+          "id": "t2",
+          "name": "customers",
+          "columns": [
+            "id",
+            "name",
+            "email"
+          ],
+          "featureIds": [
+            "f2"
+          ]
+        },
+        {
+          "id": "t3",
+          "name": "subscriptions",
+          "columns": [
+            "id",
+            "customer_id",
+            "plan_id"
+          ],
+          "featureIds": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "t4",
+          "name": "payments",
+          "columns": [
+            "id",
+            "subscription_id",
+            "amount"
+          ],
+          "featureIds": [
+            "f3",
+            "f4"
+          ]
+        }
+      ]
+    },
+    "taskGraph": [
+      {
+        "seq": 1,
+        "request": "Create plans table with columns (id, name, price) in backend/db/migrations/001_plans.sql",
+        "description": "Database: create plans table",
+        "dependsOn": []
+      },
+      {
+        "seq": 2,
+        "request": "Create customers table with columns (id, name, email) in backend/db/migrations/002_customers.sql",
+        "description": "Database: create customers table",
+        "dependsOn": []
+      },
+      {
+        "seq": 3,
+        "request": "Create subscriptions table with columns (id, customer_id, plan_id) in backend/db/migrations/003_subscriptions.sql",
+        "description": "Database: create subscriptions table",
+        "dependsOn": []
+      },
+      {
+        "seq": 4,
+        "request": "Create payments table with columns (id, subscription_id, amount) in backend/db/migrations/004_payments.sql",
+        "description": "Database: create payments table",
+        "dependsOn": []
+      },
+      {
+        "seq": 5,
+        "request": "Implement POST /plans endpoint in backend/routes/plan-management.js — Create a new subscription plan",
+        "description": "API: POST /plans — Create a new subscription plan",
+        "dependsOn": [
+          1
+        ]
+      },
+      {
+        "seq": 6,
+        "request": "Implement GET /plans endpoint in backend/routes/plan-management.js — Retrieve a list of subscription plans",
+        "description": "API: GET /plans — Retrieve a list of subscription plans",
+        "dependsOn": [
+          1
+        ]
+      },
+      {
+        "seq": 7,
+        "request": "Implement POST /customers endpoint in backend/routes/customer-management.js — Create a new customer subscription",
+        "description": "API: POST /customers — Create a new customer subscription",
+        "dependsOn": [
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "seq": 8,
+        "request": "Implement GET /customers endpoint in backend/routes/customer-management.js — Retrieve a list of customer subscriptions",
+        "description": "API: GET /customers — Retrieve a list of customer subscriptions",
+        "dependsOn": [
+          2,
+          3
+        ]
+      },
+      {
+        "seq": 9,
+        "request": "Implement GET /analytics/mrr endpoint in backend/routes/mrr-analytics.js — Retrieve MRR analytics",
+        "description": "API: GET /analytics/mrr — Retrieve MRR analytics",
+        "dependsOn": [
+          4
+        ]
+      },
+      {
+        "seq": 10,
+        "request": "Implement POST /payments endpoint in backend/routes/payment-processing.js — Process a payment via Stripe",
+        "description": "API: POST /payments — Process a payment via Stripe",
+        "dependsOn": [
+          3,
+          4
+        ]
+      },
+      {
+        "seq": 11,
+        "request": "Build Dashboard page at route /dashboard in frontend/pages/dashboard.jsx — Overview of subscription plans and customer information",
+        "description": "Frontend: Dashboard page (/dashboard)",
+        "dependsOn": [
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "seq": 12,
+        "request": "Build Plan Creation page at route /plans/create in frontend/pages/plancreation.jsx — Create new subscription plans",
+        "description": "Frontend: Plan Creation page (/plans/create)",
+        "dependsOn": [
+          5,
+          6
+        ]
+      },
+      {
+        "seq": 13,
+        "request": "Build Customer Management page at route /customers in frontend/pages/customermanagement.jsx — Manage customer subscriptions and information",
+        "description": "Frontend: Customer Management page (/customers)",
+        "dependsOn": [
+          7,
+          8,
+          10
+        ]
+      },
+      {
+        "seq": 14,
+        "request": "Build Analytics page at route /analytics in frontend/pages/analytics.jsx — View MRR analytics and track revenue",
+        "description": "Frontend: Analytics page (/analytics)",
+        "dependsOn": [
+          9
+        ]
+      }
+    ],
+    "createdAt": "2026-06-01T21:01:48.536Z"
+  }
+]

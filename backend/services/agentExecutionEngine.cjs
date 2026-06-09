@@ -105,7 +105,7 @@ async function executeTask(agentId, input, opts = {}) {
         const agentCtx = `[Agent: ${agentId}] `;
         const result   = await orchestrator.dispatch(agentCtx + input, {
             timeoutMs: opts.timeoutMs || 30_000,
-            retries:   0,
+            retries:   1,
             meta:      { agentId },
         });
 

@@ -1,0 +1,47 @@
+[
+  {
+    "skeletonId": "sk_1780348167227",
+    "blueprintId": "bp_1780347708536",
+    "productName": "SubscriptionMaster",
+    "targetDir": "/tmp/claude-501/jarvis-skeleton-test2-1780348167224",
+    "stats": {
+      "total": 25,
+      "byLayer": {
+        "root": 4,
+        "backend": 11,
+        "frontend": 7,
+        "devops": 3
+      }
+    },
+    "written": [
+      "package.json",
+      "README.md",
+      ".env.example",
+      ".gitignore",
+      "backend/server.js",
+      "backend/middleware/auth.js",
+      "backend/db/index.js",
+      "backend/db/migrations/001_plans.sql",
+      "backend/db/migrations/002_customers.sql",
+      "backend/db/migrations/003_subscriptions.sql",
+      "backend/db/migrations/004_payments.sql",
+      "backend/routes/plan-management.js",
+      "backend/routes/customer-management.js",
+      "backend/routes/payment-processing.js",
+      "backend/routes/mrr-analytics.js",
+      "frontend/package.json",
+      "frontend/src/App.jsx",
+      "frontend/src/api/client.js",
+      "frontend/src/pages/dashboard.jsx",
+      "frontend/src/pages/plancreation.jsx",
+      "frontend/src/pages/customermanagement.jsx",
+      "frontend/src/pages/analytics.jsx",
+      "Dockerfile",
+      "docker-compose.yml",
+      ".github/workflows/ci.yml"
+    ],
+    "skipped": [],
+    "errors": [],
+    "generatedAt": "2026-06-01T21:09:27.227Z"
+  }
+]

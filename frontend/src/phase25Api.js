@@ -28,12 +28,12 @@ export async function promoteCanary(deployId) {
   return _fetch(`/p25/deploy/canary/${deployId}/promote`, { method: "POST" });
 }
 export async function startBlueGreen(spec) {
-  return _fetch("/p25/deploy/blue-green", {
+  return _fetch("/p25/deploy/bluegreen", {
     method: "POST", body: JSON.stringify(spec),
   });
 }
 export async function switchBlueGreen(deployId) {
-  return _fetch(`/p25/deploy/blue-green/${deployId}/switch`, { method: "POST" });
+  return _fetch(`/p25/deploy/bluegreen/${deployId}/switch`, { method: "POST" });
 }
 export async function rollbackDeploy(deployId, opts = {}) {
   return _fetch(`/p25/deploy/${deployId}/rollback`, {
@@ -78,7 +78,7 @@ export async function getTrace(traceId) {
   return _fetch(`/p25/obs/traces/${traceId}`);
 }
 export async function getServiceMap() {
-  return _fetch("/p25/obs/service-map");
+  return _fetch("/p25/obs/servicemap");
 }
 export async function listAlerts(params = {}) {
   const q = new URLSearchParams(params).toString();
@@ -88,12 +88,12 @@ export async function resolveAlert(alertId) {
   return _fetch(`/p25/obs/alerts/${alertId}/resolve`, { method: "POST" });
 }
 export async function setAlertRule(rule) {
-  return _fetch("/p25/obs/alert-rules", {
+  return _fetch("/p25/obs/alerts/rules", {
     method: "POST", body: JSON.stringify(rule),
   });
 }
 export async function listAlertRules() {
-  return _fetch("/p25/obs/alert-rules");
+  return _fetch("/p25/obs/alerts/rules");
 }
 export async function listSLOs() {
   return _fetch("/p25/obs/slos");

@@ -1,23 +1,19 @@
-import React, { useState, useCallback, useMemo } from "react";
-import { dispatchTask } from "../runtimeApi";
-import VisualIntelligence  from "./VisualIntelligence.jsx";
-import ActivityStream      from "./ActivityStream.jsx";
-import ExecutiveSummary    from "./ExecutiveSummary.jsx";
-import { UsageBar, UpgradeNudge } from "./PremiumGate.jsx";
-import RetentionSummary from "./RetentionSummary.jsx";
+import React, { useState, useCallback, useEffect, useRef, useMemo } from "react";
+import { dispatchTask, emergencyStop, emergencyResume } from "../runtimeApi";
+import { getStats, getOpsData } from "../telemetryApi";
 import "./ControlCenter.css";
 
-// ── Helpers ────────────────────────────────────────────────────────
+// ── Helpers ────────────────────────────────────────────────────────────────────
 
 function _timeAgo(isoStr) {
   if (!isoStr) return "";
   const ms   = Date.now() - new Date(isoStr).getTime();
   const secs = Math.floor(ms / 1000);
-  if (secs < 60)   return `${secs}s ago`;
+  if (secs < 60)  return `${secs}s ago`;
   const mins = Math.floor(secs / 60);
-  if (mins < 60)   return `${mins}m ago`;
+  if (mins < 60)  return `${mins}m ago`;
   const hrs  = Math.floor(mins / 60);
-  if (hrs  < 24)   return `${hrs}h ago`;
+  if (hrs  < 24)  return `${hrs}h ago`;
   return `${Math.floor(hrs / 24)}d ago`;
 }
 
@@ -29,103 +25,215 @@ function _fmtUptime(secs) {
   return `${m}m`;
 }
 
-// ── AI Systems Strip ───────────────────────────────────────────────
+function _fmtINR(n) {
+  if (!n) return "₹0";
+  return `₹${Number(n).toLocaleString("en-IN")}`;
+}
 
-function SystemsStrip({ opsData, online, onNavigate }) {
-  const services  = opsData?.services  || {};
-  const memory    = opsData?.memory?.current || {};
-  const errors    = opsData?.errors    || {};
-  const uptime    = opsData?.uptime?.seconds;
-  const qPending  = opsData?.queue?.counts?.pending ?? 0;
+function _dot(ok, warn) {
+  if (warn) return "dot--warn";
+  return ok ? "dot--ok" : "dot--crit";
+}
 
-  const systems = [
+// ── System Status Strip ────────────────────────────────────────────────────────
+
+function StatusStrip({ opsData, online, emergencyActive, onResume }) {
+  const services = opsData?.services || {};
+  const memory   = opsData?.memory?.current || {};
+  const uptime   = opsData?.uptime?.seconds;
+
+  const indicators = [
+    { label: "AI",        ok: !!(services.ai || services.groq) },
+    { label: "Queue",     ok: opsData?.queue?.healthy !== false && online },
+    { label: "WhatsApp",  ok: !!services.whatsapp },
+    { label: "Payments",  ok: !!services.payments },
+  ];
+
+  return (
+    <div className={`cc2-strip${emergencyActive ? " cc2-strip--emergency" : ""}`}>
+      {emergencyActive ? (
+        <div className="cc2-strip-emergency">
+          <span className="cc2-strip-dot dot--crit dot--live" />
+          <span className="cc2-strip-emerg-label">EMERGENCY STOP ACTIVE</span>
+          <button className="cc2-strip-resume" onClick={onResume}>Resume →</button>
+        </div>
+      ) : (
+        <div className="cc2-strip-inner">
+          <div className="cc2-strip-services">
+            {indicators.map(s => (
+              <span key={s.label} className="cc2-strip-svc">
+                <span className={`cc2-strip-dot dot--${s.ok ? "ok" : "warn"} dot--live`} />
+                <span className="cc2-strip-svc-label">{s.label}</span>
+              </span>
+            ))}
+          </div>
+          <div className="cc2-strip-meta">
+            {uptime != null && (
+              <span className="cc2-strip-stat">Uptime: {_fmtUptime(uptime)}</span>
+            )}
+            {memory.heap_mb != null && (
+              <span className="cc2-strip-stat">Memory: {memory.heap_mb} MB</span>
+            )}
+            {!online && (
+              <span className="cc2-strip-offline">● Reconnecting…</span>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Service Health Tiles ────────────────────────────────────────────────────────
+
+function ServiceTiles({ opsData, stats, online, onNavigate }) {
+  const services = opsData?.services || {};
+  const queue    = opsData?.queue    || {};
+  const qRun     = queue?.counts?.running   ?? 0;
+  const qQueued  = queue?.counts?.pending   ?? 0;
+  const qFailed  = queue?.counts?.failed    ?? 0;
+  const msgs     = stats?.messages_today    ?? null;
+
+  const tiles = [
     {
-      id:    "runtime",
-      label: "Runtime",
-      value: online ? "Live" : "Offline",
-      ok:    online,
-      sub:   online ? `Up ${_fmtUptime(uptime)}` : "Reconnecting…",
-      nav:   "runtime",
+      id:    "ai",
+      icon:  "⚡",
+      label: "AI Engine",
+      ok:    !!(services.ai || services.groq),
+      value: (services.ai || services.groq) ? "Online" : "Not configured",
+      sub1:  "Groq / Mixtral",
+      sub2:  (services.ai || services.groq) ? "Ready for tasks" : "Add GROQ_API_KEY",
+      nav:   "devops",
     },
     {
       id:    "queue",
+      icon:  "◎",
       label: "Queue",
-      value: qPending > 0 ? `${qPending} pending` : "Clear",
-      ok:    qPending === 0,
-      sub:   opsData?.queue?.counts?.running > 0
-               ? `${opsData.queue.counts.running} running`
-               : "Idle",
-      nav:   "runtime",
+      ok:    qFailed === 0 && online,
+      value: qRun > 0 ? `${qRun} running` : qQueued > 0 ? `${qQueued} queued` : "Idle",
+      sub1:  `${qQueued} queued`,
+      sub2:  qFailed > 0 ? `${qFailed} failed` : "No failures",
+      sub2Warn: qFailed > 0,
+      nav:   "activity",
     },
     {
-      id:    "whatsapp",
-      label: "WhatsApp",
-      value: services.whatsapp ? "Connected" : "Not set up",
+      id:    "comms",
+      icon:  "✉",
+      label: "Communications",
       ok:    !!services.whatsapp,
-      sub:   services.whatsapp ? "Sending follow-ups" : "Setup required",
+      value: services.whatsapp ? "WhatsApp active" : "Not connected",
+      sub1:  msgs != null ? `${msgs} messages today` : "—",
+      sub2:  services.whatsapp ? "Sending follow-ups" : "Setup required",
       nav:   "clients",
-    },
-    {
-      id:    "ai",
-      label: "AI",
-      value: (services.ai || services.groq) ? "Active" : "Not configured",
-      ok:    !!(services.ai || services.groq),
-      sub:   (services.ai || services.groq) ? "Ready for tasks" : "Add GROQ_API_KEY",
-      nav:   "runtime",
-    },
-    {
-      id:    "payments",
-      label: "Payments",
-      value: services.payments ? "Ready" : "Not configured",
-      ok:    !!services.payments,
-      sub:   services.payments ? "Razorpay active" : "Setup required",
-      nav:   "clients",
-    },
-    {
-      id:    "memory",
-      label: "Memory",
-      value: memory.heap_mb ? `${memory.heap_mb} MB` : "—",
-      ok:    !opsData?.memory?.warn && !opsData?.memory?.critical,
-      sub:   errors.errors_per_hour > 0
-               ? `${errors.errors_per_hour} err/hr`
-               : "Healthy",
-      nav:   "runtime",
     },
   ];
 
   return (
-    <section className="cc-section">
-      <h2 className="cc-section-label">AI Systems</h2>
-      <div className="cc-systems-grid">
-        {systems.map(s => (
-          <button
-            key={s.id}
-            className={`cc-system-card hover-glow${!s.ok ? " cc-system-card--warn" : ""}`}
-            onClick={() => onNavigate?.(s.nav)}
-            aria-label={`${s.label}: ${s.value}`}
-          >
-            <div className="cc-system-header">
-              <span className={`status-indicator dot--${s.ok ? "ok" : "warn"} dot--live`} />
-              <span className="cc-system-label">{s.label}</span>
-            </div>
-            <div className="cc-system-value">{s.value}</div>
-            <div className="cc-system-sub">{s.sub}</div>
-          </button>
-        ))}
-      </div>
-    </section>
+    <div className="cc2-tiles">
+      {tiles.map(t => (
+        <button
+          key={t.id}
+          className={`cc2-tile hover-glow${!t.ok ? " cc2-tile--warn" : ""}`}
+          onClick={() => onNavigate?.(t.nav)}
+          aria-label={`${t.label}: ${t.value}`}
+        >
+          <div className="cc2-tile-header">
+            <span className="cc2-tile-icon" aria-hidden="true">{t.icon}</span>
+            <span className={`cc2-status-dot dot--${t.ok ? "ok" : "warn"} dot--live`} />
+          </div>
+          <div className="cc2-tile-label">{t.label}</div>
+          <div className={`cc2-tile-value${!t.ok ? " cc2-tile-value--warn" : ""}`}>{t.value}</div>
+          <div className="cc2-tile-meta">
+            <span>{t.sub1}</span>
+            {t.sub2 && (
+              <span className={t.sub2Warn ? "cc2-tile-meta--warn" : ""}>{t.sub2}</span>
+            )}
+          </div>
+        </button>
+      ))}
+    </div>
   );
 }
 
-// ── Autonomous Actions Feed ────────────────────────────────────────
+// ── KPI Cards ──────────────────────────────────────────────────────────────────
+
+function KpiCard({ icon, label, value, delta, deltaLabel, deltaOk, loading }) {
+  return (
+    <div className="cc2-kpi">
+      <div className="cc2-kpi-top">
+        <span className="cc2-kpi-icon" aria-hidden="true">{icon}</span>
+        <span className="cc2-kpi-label">{label}</span>
+      </div>
+      {loading ? (
+        <div className="cc2-skeleton cc2-skeleton--value" />
+      ) : (
+        <div className="cc2-kpi-value">{value}</div>
+      )}
+      {loading ? (
+        <div className="cc2-skeleton cc2-skeleton--delta" />
+      ) : delta != null ? (
+        <div className={`cc2-kpi-delta${deltaOk === false ? " cc2-kpi-delta--bad" : ""}`}>
+          {deltaOk !== false ? "↑ " : "↓ "}{deltaLabel}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function KpiRow({ stats, opsData, loading }) {
+  const qRun    = opsData?.queue?.counts?.running  ?? 0;
+  const qPend   = opsData?.queue?.counts?.pending  ?? 0;
+
+  const cards = [
+    {
+      icon:       "◈",
+      label:      "Leads",
+      value:      stats?.total     ?? "—",
+      delta:      stats?.hot,
+      deltaLabel: `${stats?.hot ?? 0} hot`,
+      deltaOk:    (stats?.hot ?? 0) > 0,
+    },
+    {
+      icon:       "₹",
+      label:      "Revenue",
+      value:      _fmtINR(stats?.revenue),
+      delta:      stats?.paid,
+      deltaLabel: `${stats?.paid ?? 0} paid`,
+      deltaOk:    (stats?.paid ?? 0) > 0,
+    },
+    {
+      icon:       "✉",
+      label:      "Messages",
+      value:      stats?.messages_today ?? Object.values(opsData?.automation || {}).reduce((s, d) => s + (d.sent || 0), 0),
+      delta:      null,
+      deltaLabel: null,
+    },
+    {
+      icon:       "⚙",
+      label:      "Tasks",
+      value:      qRun + qPend,
+      delta:      qRun,
+      deltaLabel: `${qRun} running`,
+      deltaOk:    true,
+    },
+  ];
+
+  return (
+    <div className="cc2-kpi-row">
+      {cards.map(c => (
+        <KpiCard key={c.label} {...c} loading={loading} />
+      ))}
+    </div>
+  );
+}
+
+// ── Activity Feed ──────────────────────────────────────────────────────────────
 
 function _buildFeed(opsData, stats) {
   const entries = [];
   const auto    = opsData?.automation || {};
-
-  // Automation tier events
   const tierLabels = {
-    "10min":      "Immediate greeting",
+    "10min":      "First message sent",
     "6hr":        "Same-day follow-up",
     "24hr":       "Next-day check-in",
     "3day":       "3-day closing",
@@ -137,64 +245,31 @@ function _buildFeed(opsData, stats) {
     if (data.sent > 0 && data.lastRun) {
       entries.push({
         id:    `auto-${key}`,
-        type:  "automation",
-        label: `${tierLabels[key] || key} sent`,
-        meta:  `${data.sent} total · ${data.sent - (data.failed || 0)} delivered`,
+        type:  "task",
+        label: tierLabels[key] || key,
+        meta:  `${data.sent} sent · ${data.sent - (data.failed || 0)} delivered`,
         ts:    data.lastRun,
         ok:    true,
       });
     }
   });
 
-  // Queue DLQ events
   const dlq = opsData?.queue?.dlq ?? 0;
   if (dlq > 0) {
-    entries.push({
-      id:    "dlq",
-      type:  "error",
-      label: `${dlq} task${dlq > 1 ? "s" : ""} in dead-letter queue`,
-      meta:  "Requires attention",
-      ts:    null,
-      ok:    false,
-    });
+    entries.push({ id: "dlq", type: "error", label: `${dlq} task${dlq > 1 ? "s" : ""} failed`, meta: "Dead-letter queue", ts: null, ok: false });
   }
 
-  // Failures
-  const fails = opsData?.failures || [];
-  fails.slice(0, 2).forEach((f, i) => {
-    entries.push({
-      id:    `fail-${i}`,
-      type:  "error",
-      label: (f.input || "Task").slice(0, 60),
-      meta:  `Failed · ${(f.error || "").slice(0, 50)}`,
-      ts:    f.ts || f.timestamp,
-      ok:    false,
-    });
+  (opsData?.failures || []).slice(0, 2).forEach((f, i) => {
+    entries.push({ id: `fail-${i}`, type: "error", label: (f.input || "Task").slice(0, 55), meta: (f.error || "").slice(0, 50), ts: f.ts || f.timestamp, ok: false });
   });
 
-  // CRM events
   if (stats?.paid > 0) {
-    entries.push({
-      id:    "paid",
-      type:  "revenue",
-      label: `${stats.paid} client${stats.paid > 1 ? "s" : ""} paid`,
-      meta:  stats.revenue ? `₹${stats.revenue.toLocaleString("en-IN")} collected` : "",
-      ts:    null,
-      ok:    true,
-    });
+    entries.push({ id: "paid", type: "revenue", label: `${stats.paid} client${stats.paid > 1 ? "s" : ""} paid`, meta: _fmtINR(stats.revenue) + " collected", ts: null, ok: true });
   }
   if (stats?.hot > 0) {
-    entries.push({
-      id:    "hot",
-      type:  "lead",
-      label: `${stats.hot} hot lead${stats.hot > 1 ? "s" : ""}`,
-      meta:  "Ready to close",
-      ts:    null,
-      ok:    true,
-    });
+    entries.push({ id: "hot", type: "lead", label: `${stats.hot} hot lead${stats.hot > 1 ? "s" : ""}`, meta: "Ready to close", ts: null, ok: true });
   }
 
-  // Sort by ts (most recent first), ts=null goes to top
   return entries
     .sort((a, b) => {
       if (!a.ts && !b.ts) return 0;
@@ -202,167 +277,170 @@ function _buildFeed(opsData, stats) {
       if (!b.ts) return 1;
       return new Date(b.ts) - new Date(a.ts);
     })
-    .slice(0, 8);
+    .slice(0, 6);
 }
 
-const TYPE_ICON = {
-  automation: "◎",
-  revenue:    "✦",
-  lead:       "◈",
-  error:      "⚠",
-  system:     "◇",
-};
+const FEED_ICON = { task: "⚡", revenue: "₹", lead: "◈", error: "⚠", agent: "◎", whatsapp: "✉" };
+const FEED_COLOR = { task: "var(--accent)", revenue: "var(--success)", lead: "var(--warning)", error: "var(--danger)", agent: "var(--accent2)", whatsapp: "var(--accent2)" };
 
-function ActionsFeed({ opsData, stats, onNavigate }) {
+function ActivityFeed({ opsData, stats, loading, onNavigate }) {
   const entries = useMemo(() => _buildFeed(opsData, stats), [opsData, stats]);
+
+  if (loading) {
+    return (
+      <div className="cc2-feed-list">
+        {[0, 1, 2].map(i => (
+          <div key={i} className="cc2-feed-row cc2-feed-row--skeleton">
+            <div className="cc2-skeleton cc2-skeleton--icon" />
+            <div className="cc2-skeleton cc2-skeleton--text" />
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   if (entries.length === 0) {
     return (
-      <section className="cc-section">
-        <h2 className="cc-section-label">Autonomous Actions</h2>
-        <div className="cc-empty">
-          <p className="cc-empty-title">Nothing running yet</p>
-          <p className="cc-empty-sub">
-            Add a contact with their WhatsApp number. Ooplix queues the first follow-up in 10 minutes — and handles every sequence after that without you.
-          </p>
-          <button className="cc-empty-btn" onClick={() => onNavigate?.("clients")}>
-            Add first contact →
-          </button>
-        </div>
-      </section>
+      <div className="cc2-empty">
+        <div className="cc2-empty-icon">◎</div>
+        <p className="cc2-empty-title">Nothing running yet</p>
+        <p className="cc2-empty-sub">Add a contact with their WhatsApp number — Ooplix queues the first follow-up in 10 minutes.</p>
+        <button className="cc2-empty-btn" onClick={() => onNavigate?.("clients")}>Add first contact →</button>
+      </div>
     );
   }
 
   return (
-    <section className="cc-section">
-      <div className="cc-section-header">
-        <h2 className="cc-section-label">Autonomous Actions</h2>
-        <button className="cc-section-link" onClick={() => onNavigate?.("activity")}>
-          See all →
-        </button>
-      </div>
-      <div className="cc-feed">
-        {entries.map(e => (
-          <div key={e.id} className={`cc-feed-row${e.ok ? "" : " cc-feed-row--error"}`}>
-            <span className="cc-feed-icon">{TYPE_ICON[e.type] || "◇"}</span>
-            <div className="cc-feed-body">
-              <span className="cc-feed-label">{e.label}</span>
-              {e.meta && <span className="cc-feed-meta">{e.meta}</span>}
-            </div>
-            {e.ts && <span className="cc-feed-ts">{_timeAgo(e.ts)}</span>}
+    <div className="cc2-feed-list">
+      {entries.map(e => (
+        <div key={e.id} className={`cc2-feed-row${e.ok ? "" : " cc2-feed-row--error"}`}>
+          <span className="cc2-feed-icon" style={{ color: FEED_COLOR[e.type] || "var(--text-dim)" }} aria-hidden="true">
+            {FEED_ICON[e.type] || "◇"}
+          </span>
+          <div className="cc2-feed-body">
+            <span className="cc2-feed-label">{e.label}</span>
+            {e.meta && <span className="cc2-feed-meta">{e.meta}</span>}
           </div>
-        ))}
-      </div>
-    </section>
+          {e.ts && <span className="cc2-feed-ts">{_timeAgo(e.ts)}</span>}
+        </div>
+      ))}
+    </div>
   );
 }
 
-// ── Runtime Health Bar ─────────────────────────────────────────────
+// ── Quick Actions ──────────────────────────────────────────────────────────────
 
-function HealthBar({ opsData, online }) {
-  const memory   = opsData?.memory?.current || {};
-  const errors   = opsData?.errors || {};
-  const queue    = opsData?.queue  || {};
-  const status   = opsData?.status || (online ? "ok" : "offline");
-  const warnings = opsData?.warnings || [];
+function QuickActions({ online, onNavigate, onEmergencyStop, emergencyActive }) {
+  const [stopBusy, setStopBusy] = useState(false);
 
-  const heapPct  = memory.heap_mb  ? Math.min(100, Math.round((memory.heap_mb  / 512) * 100)) : 0;
-  const qPending = queue?.counts?.pending ?? 0;
-  const errRate  = errors.errors_per_hour ?? 0;
+  const handleStop = useCallback(async () => {
+    if (!window.confirm("Activate Emergency Stop? All running tasks will be halted.")) return;
+    setStopBusy(true);
+    try { await onEmergencyStop?.(); } finally { setStopBusy(false); }
+  }, [onEmergencyStop]);
 
-  const statusColor = status === "ok"       ? "var(--success)"
-                    : status === "degraded" ? "var(--warning)"
-                    : status === "critical" ? "var(--danger)"
-                    : "var(--text-faint)";
-  const statusLabel = status === "ok"       ? "Healthy"
-                    : status === "degraded" ? "Degraded"
-                    : status === "critical" ? "Critical"
-                    : "Offline";
+  const actions = [
+    { icon: "◈", label: "Add Contact",           onClick: () => onNavigate?.("clients") },
+    { icon: "⚡", label: "Launch Workflow",        onClick: () => onNavigate?.("workflows") },
+    { icon: "◎", label: "Create Agent",           onClick: () => onNavigate?.("agents") },
+    { icon: "₹", label: "Generate Payment Link",  onClick: () => onNavigate?.("clients") },
+  ];
 
   return (
-    <section className="cc-section">
-      <h2 className="cc-section-label">Runtime Health</h2>
-      <div className="cc-health-bar">
-        <div className="cc-health-status">
-          <span className={`status-indicator dot--${status === "ok" ? "ok" : status === "degraded" ? "warn" : "crit"} dot--live`} />
-          <span className="cc-health-status-label" style={{ color: statusColor }}>{statusLabel}</span>
-        </div>
+    <div className="cc2-actions-list">
+      {actions.map(a => (
+        <button
+          key={a.label}
+          className="cc2-action-btn"
+          onClick={a.onClick}
+          disabled={!online}
+        >
+          <span className="cc2-action-icon" aria-hidden="true">{a.icon}</span>
+          <span className="cc2-action-label">{a.label}</span>
+          <span className="cc2-action-arrow" aria-hidden="true">›</span>
+        </button>
+      ))}
 
-        <div className="cc-health-metrics">
-          <div className="cc-health-metric">
-            <span className="cc-health-metric-label">Memory</span>
-            <div className="cc-health-bar-track">
-              <div
-                className="cc-health-bar-fill"
-                style={{
-                  width: `${heapPct}%`,
-                  background: heapPct > 80 ? "var(--danger)"
-                            : heapPct > 60 ? "var(--warning)"
-                            : "var(--success)",
-                }}
-              />
-            </div>
-            <span className="cc-health-metric-val">{memory.heap_mb ?? "—"} MB</span>
-          </div>
+      <div className="cc2-actions-divider" />
 
-          <div className="cc-health-metric">
-            <span className="cc-health-metric-label">Queue</span>
-            <span className={`cc-health-metric-val ${qPending > 10 ? "cc-val--warn" : ""}`}>
-              {qPending} pending
-            </span>
-          </div>
-
-          <div className="cc-health-metric">
-            <span className="cc-health-metric-label">Errors/hr</span>
-            <span className={`cc-health-metric-val ${errRate > 5 ? "cc-val--warn" : ""}`}>
-              {errRate}
-            </span>
-          </div>
-
-          <div className="cc-health-metric">
-            <span className="cc-health-metric-label">Uptime</span>
-            <span className="cc-health-metric-val">{_fmtUptime(opsData?.uptime?.seconds)}</span>
-          </div>
-        </div>
-
-        {warnings.length > 0 && (
-          <div className="cc-warnings">
-            {warnings.slice(0, 2).map((w, i) => (
-              <div key={i} className={`cc-warning cc-warning--${w.level || "warn"}`}>
-                <span className="cc-warning-icon">⚠</span>
-                {w.detail || w.code}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
+      <button
+        className={`cc2-action-btn cc2-action-btn--danger${emergencyActive ? " cc2-action-btn--active-stop" : ""}`}
+        onClick={emergencyActive ? () => onNavigate?.("stop-resume") : handleStop}
+        disabled={stopBusy}
+      >
+        <span className="cc2-action-icon" aria-hidden="true">⏹</span>
+        <span className="cc2-action-label">
+          {emergencyActive ? "Emergency Stop Active" : "Emergency Stop"}
+        </span>
+        {stopBusy && <span className="cc2-spinner" />}
+      </button>
+    </div>
   );
 }
 
-// ── Dispatch Bar ───────────────────────────────────────────────────
+// ── Health Indicators ──────────────────────────────────────────────────────────
+
+function HealthIndicators({ opsData, online }) {
+  const services = opsData?.services || {};
+  const memory   = opsData?.memory?.current || {};
+  const heap     = memory.heap_mb ?? 0;
+  const heapPct  = Math.min(100, Math.round((heap / 512) * 100));
+
+  const rows = [
+    { label: "AI Engine",  ok: !!(services.ai || services.groq), value: (services.ai || services.groq) ? "Active" : "Offline" },
+    { label: "WhatsApp",   ok: !!services.whatsapp,              value: services.whatsapp  ? "Connected" : "Not set up" },
+    { label: "Payments",   ok: !!services.payments,              value: services.payments  ? "Razorpay live" : "Not configured" },
+    { label: "Runtime",    ok: online,                           value: online ? "Online" : "Offline" },
+  ];
+
+  return (
+    <div className="cc2-health">
+      {rows.map(r => (
+        <div key={r.label} className="cc2-health-row">
+          <span className={`cc2-health-dot dot--${r.ok ? "ok" : "warn"} dot--live`} />
+          <span className="cc2-health-label">{r.label}</span>
+          <span className={`cc2-health-val${!r.ok ? " cc2-health-val--warn" : ""}`}>{r.value}</span>
+        </div>
+      ))}
+
+      {heap > 0 && (
+        <div className="cc2-mem-row">
+          <span className="cc2-health-label">Memory</span>
+          <div className="cc2-mem-track">
+            <div
+              className="cc2-mem-fill"
+              style={{
+                width: `${heapPct}%`,
+                background: heapPct > 80 ? "var(--danger)" : heapPct > 60 ? "var(--warning)" : "var(--success)",
+              }}
+            />
+          </div>
+          <span className="cc2-health-val">{heap} MB</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Command Dispatch ──────────────────────────────────────────────────────────
 
 const QUICK_CMDS = [
-  { label: "pm2 list",       cmd: "run pm2 list"             },
-  { label: "git status",     cmd: "run git status"           },
-  { label: "System check",   cmd: "run pm2 status"           },
-  { label: "Pipeline",       cmd: "Show my pipeline summary" },
+  { label: "Pipeline summary", cmd: "Show my pipeline summary" },
+  { label: "Queue status",     cmd: "run pm2 list"             },
+  { label: "System check",     cmd: "run pm2 status"           },
 ];
 
-function DispatchBar({ online, onNavigate }) {
+function CommandDispatch({ online }) {
   const [input,   setInput]   = useState("");
-  const [result,  setResult]  = useState(null);  // {ok, text}
-  const [loading, setLoading] = useState(false);
+  const [result,  setResult]  = useState(null);
+  const [busy,    setBusy]    = useState(false);
 
-  const handleDispatch = useCallback(async (cmd) => {
+  const run = useCallback(async (cmd) => {
     const text = (cmd || input).trim();
-    if (!text || loading) return;
-    if (!online) { setResult({ ok: false, text: "Backend offline" }); return; }
-
-    setLoading(true);
+    if (!text || busy || !online) return;
+    setBusy(true);
     setResult(null);
     try {
-      localStorage.setItem("ooplix_first_dispatch", "1");
       const res = await dispatchTask(text, 20000);
       setResult({
         ok:   res.success !== false,
@@ -371,165 +449,161 @@ function DispatchBar({ online, onNavigate }) {
     } catch (e) {
       setResult({ ok: false, text: e.message });
     } finally {
-      setLoading(false);
+      setBusy(false);
       if (!cmd) setInput("");
     }
-  }, [input, loading, online]);
+  }, [input, busy, online]);
 
   return (
-    <section className="cc-section">
-      <div className="cc-section-header">
-        <h2 className="cc-section-label">Run a Task</h2>
-        <button className="cc-section-link" onClick={() => onNavigate?.("runtime")}>
-          Full Execution →
+    <div className="cc2-dispatch">
+      <div className="cc2-dispatch-row">
+        <input
+          className="cc2-dispatch-input"
+          placeholder={online ? "Run a command, workflow, or task…" : "Backend offline"}
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); run(); } }}
+          disabled={!online || busy}
+          autoComplete="off"
+          spellCheck={false}
+        />
+        <button className="cc2-dispatch-btn" onClick={() => run()} disabled={!online || busy || !input.trim()}>
+          {busy ? <span className="cc2-spinner-sm" /> : "Run →"}
         </button>
       </div>
-
-      <div className="cc-dispatch">
-        <div className="cc-dispatch-input-row">
-          <input
-            className="cc-dispatch-input"
-            placeholder={online ? "Run a command, workflow, or task…" : "Backend offline"}
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleDispatch(); } }}
-            disabled={!online || loading}
-            autoComplete="off"
-            spellCheck={false}
-          />
-          <button
-            className="cc-dispatch-run"
-            onClick={() => handleDispatch()}
-            disabled={!online || loading || !input.trim()}
-          >
-            {loading ? "…" : "Run →"}
+      <div className="cc2-dispatch-chips">
+        {QUICK_CMDS.map(q => (
+          <button key={q.cmd} className="cc2-dispatch-chip" onClick={() => run(q.cmd)} disabled={!online || busy}>
+            {q.label}
           </button>
-        </div>
-
-        <div className="cc-dispatch-quick">
-          {QUICK_CMDS.map(q => (
-            <button
-              key={q.cmd}
-              className="cc-dispatch-chip"
-              onClick={() => handleDispatch(q.cmd)}
-              disabled={!online || loading}
-            >
-              {q.label}
-            </button>
-          ))}
-        </div>
-
-        {result && (
-          <div className={`cc-dispatch-result cc-dispatch-result--${result.ok ? "ok" : "err"}`}>
-            <span className="cc-dispatch-result-icon">{result.ok ? "✓" : "✗"}</span>
-            <span className="cc-dispatch-result-text mono truncate">{result.text}</span>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
-
-// ── Business Activity Strip ────────────────────────────────────────
-
-function BusinessStrip({ stats, onNavigate }) {
-  if (!stats) return null;
-
-  const metrics = [
-    { label: "Total leads",  value: stats.total  ?? 0, color: "var(--text)"    },
-    { label: "Hot",          value: stats.hot    ?? 0, color: "var(--warning)" },
-    { label: "Paid",         value: stats.paid   ?? 0, color: "var(--success)" },
-    {
-      label: "Revenue",
-      value: stats.revenue
-        ? `₹${Number(stats.revenue).toLocaleString("en-IN")}`
-        : "₹0",
-      color: "var(--accent2)",
-    },
-  ];
-
-  return (
-    <section className="cc-section">
-      <div className="cc-section-header">
-        <h2 className="cc-section-label">Business Activity</h2>
-        <button className="cc-section-link" onClick={() => onNavigate?.("insights")}>
-          Pipeline →
-        </button>
-      </div>
-      <div className="cc-biz-strip">
-        {metrics.map(m => (
-          <div key={m.label} className="cc-biz-metric">
-            <span className="cc-biz-value" style={{ color: m.color }}>{m.value}</span>
-            <span className="cc-biz-label">{m.label}</span>
-          </div>
         ))}
       </div>
-    </section>
+      {result && (
+        <div className={`cc2-dispatch-result${result.ok ? "" : " cc2-dispatch-result--err"}`}>
+          <span className="cc2-dispatch-result-icon">{result.ok ? "✓" : "✗"}</span>
+          <span className="cc2-dispatch-result-text">{result.text}</span>
+        </div>
+      )}
+    </div>
   );
 }
 
-// ── Root ───────────────────────────────────────────────────────────
+// ── Root ───────────────────────────────────────────────────────────────────────
 
 export default function ControlCenter({ stats, opsData, online, onNavigate, billing, onUpgrade }) {
+  const [loading,         setLoading]         = useState(!stats && !opsData);
+  const [emergencyActive, setEmergencyActive] = useState(() => opsData?.emergencyStop?.active ?? false);
+
+  useEffect(() => {
+    if (stats !== null || opsData !== null) setLoading(false);
+  }, [stats, opsData]);
+
+  useEffect(() => {
+    setEmergencyActive(opsData?.emergencyStop?.active ?? false);
+  }, [opsData]);
+
+  const handleEmergencyStop = useCallback(async () => {
+    const res = await emergencyStop("operator_initiated");
+    if (res?.success !== false) setEmergencyActive(true);
+  }, []);
+
+  const handleEmergencyResume = useCallback(async () => {
+    const res = await emergencyResume();
+    if (res?.success !== false) setEmergencyActive(false);
+  }, []);
+
+  const today = new Date().toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+
   return (
-    <div className="cc-root page-enter">
-      <div className="cc-header">
-        <div className="cc-header-brand">
-          <span className={`status-indicator dot--${online ? "ok" : "crit"} dot--live`} />
-          <span className="cc-header-title">Control Center</span>
+    <div className="cc2-root page-enter">
+
+      {/* System Status Strip */}
+      <StatusStrip
+        opsData={opsData}
+        online={online}
+        emergencyActive={emergencyActive}
+        onResume={handleEmergencyResume}
+      />
+
+      {/* Page Header */}
+      <div className="cc2-header">
+        <div className="cc2-header-left">
+          <h1 className="cc2-page-title">Control Center</h1>
+          <p className="cc2-page-sub">Today's operations · {today}</p>
         </div>
-        <span className="cc-header-sub">
-          {online ? "Live — your business is running" : "Reconnecting…"}
-        </span>
+        <div className="cc2-header-right">
+          {online && (
+            <span className="cc2-active-badge">
+              <span className="cc2-active-dot dot--ok dot--live" />
+              Live
+            </span>
+          )}
+        </div>
       </div>
 
-      <ExecutiveSummary stats={stats} opsData={opsData} online={online} />
+      {/* Service Health Tiles */}
+      <ServiceTiles opsData={opsData} stats={stats} online={online} onNavigate={onNavigate} />
 
-      <div className="cc-content">
-        <RetentionSummary stats={stats} opsData={opsData} onNavigate={onNavigate} />
-        <VisualIntelligence stats={stats} opsData={opsData} />
-        <SystemsStrip  opsData={opsData} online={online}  onNavigate={onNavigate} />
-        <section className="cc-section section-enter">
-          <div className="cc-section-header">
-            <h2 className="cc-section-label">Live Activity</h2>
-            <button className="cc-section-link" onClick={() => onNavigate?.("activity")}>
-              Full history →
-            </button>
-          </div>
-          <ActivityStream opsData={opsData} stats={stats} onNavigate={onNavigate} />
-        </section>
-        <HealthBar     opsData={opsData} online={online} />
-        <DispatchBar   online={online}                    onNavigate={onNavigate} />
+      {/* KPI Row */}
+      <section className="cc2-section">
+        <h2 className="cc2-section-label">Today's Metrics</h2>
+        <KpiRow stats={stats} opsData={opsData} loading={loading} />
+      </section>
 
-        {/* Usage visibility — shown during trial, drives upgrade intent */}
-        {billing && (billing.status === "trialing" || billing.status === "expired") && (
-          <section className="cc-section">
-            <h2 className="cc-section-label">Trial Usage</h2>
-            <div className="cc-usage-grid">
-              <UsageBar
-                label="Leads"
-                used={stats?.total ?? 0}
-                limit={25}
-                plan="starter"
-                onUpgrade={onUpgrade}
-              />
-              <UsageBar
-                label="Messages sent"
-                used={Object.values(opsData?.automation || {}).reduce((s, d) => s + (d.sent || 0), 0)}
-                limit={100}
-                plan="starter"
-                onUpgrade={onUpgrade}
-              />
+      {/* Main Content Grid */}
+      <div className="cc2-grid">
+
+        {/* Left: Activity Feed */}
+        <div className="cc2-grid-main">
+          <section className="cc2-panel">
+            <div className="cc2-panel-header">
+              <h2 className="cc2-section-label">Recent Activity</h2>
+              <button className="cc2-panel-link" onClick={() => onNavigate?.("activity")}>
+                See all →
+              </button>
             </div>
-            <UpgradeNudge
-              feature="Full Pipeline & Analytics"
-              plan="growth"
-              onUpgrade={onUpgrade}
-              compact
+            <ActivityFeed opsData={opsData} stats={stats} loading={loading} onNavigate={onNavigate} />
+          </section>
+
+          {/* Command Dispatch */}
+          <section className="cc2-panel cc2-panel--dispatch">
+            <h2 className="cc2-section-label">Run a Task</h2>
+            <CommandDispatch online={online} />
+          </section>
+        </div>
+
+        {/* Right: Quick Actions + Health */}
+        <div className="cc2-grid-side">
+          <section className="cc2-panel">
+            <h2 className="cc2-section-label">Quick Actions</h2>
+            <QuickActions
+              online={online}
+              onNavigate={onNavigate}
+              onEmergencyStop={handleEmergencyStop}
+              emergencyActive={emergencyActive}
             />
           </section>
-        )}
+
+          <section className="cc2-panel">
+            <h2 className="cc2-section-label">Health</h2>
+            <HealthIndicators opsData={opsData} online={online} />
+          </section>
+        </div>
       </div>
+
+      {/* Trial usage nudge */}
+      {billing && (billing.status === "trialing" || billing.status === "expired") && stats && (
+        <section className="cc2-trial-nudge">
+          <div className="cc2-trial-inner">
+            <span className="cc2-trial-icon">⚡</span>
+            <div className="cc2-trial-text">
+              <strong>Trial active</strong> — {stats.total ?? 0} of 25 leads used.
+              {" "}<button className="cc2-trial-upgrade" onClick={onUpgrade}>Upgrade for unlimited →</button>
+            </div>
+          </div>
+        </section>
+      )}
+
     </div>
   );
 }

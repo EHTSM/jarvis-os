@@ -1,0 +1,49 @@
+[
+  {
+    "repoId": "repo_1780405758032",
+    "name": "jarvis-mobile",
+    "description": "",
+    "language": "Kotlin",
+    "defaultBranch": "main",
+    "remoteUrl": "",
+    "status": "archived",
+    "tags": [
+      "mobile"
+    ],
+    "createdAt": "2026-06-02T13:09:18.037Z",
+    "updatedAt": "2026-06-02T13:09:18.039Z",
+    "archivedAt": "2026-06-02T13:09:18.039Z"
+  },
+  {
+    "repoId": "repo_1780405758031",
+    "name": "jarvis-ui",
+    "description": "Frontend dashboard",
+    "language": "TypeScript",
+    "defaultBranch": "main",
+    "remoteUrl": "",
+    "status": "active",
+    "tags": [
+      "frontend"
+    ],
+    "createdAt": "2026-06-02T13:09:18.037Z",
+    "updatedAt": "2026-06-02T13:09:18.037Z",
+    "archivedAt": null
+  },
+  {
+    "repoId": "repo_1780405758030",
+    "name": "jarvis-core",
+    "description": "Core runtime — updated",
+    "language": "JavaScript",
+    "defaultBranch": "main",
+    "remoteUrl": "https://github.com/org/jarvis-core",
+    "status": "active",
+    "tags": [
+      "backend",
+      "core",
+      "v5"
+    ],
+    "createdAt": "2026-06-02T13:09:18.034Z",
+    "updatedAt": "2026-06-02T13:09:18.038Z",
+    "archivedAt": null
+  }
+]

@@ -523,3 +523,52 @@
   justify-content: center;
   background: linear-gradient(180deg, rgba(6, 8, 18, 0.98), rgba(4, 5, 12, 1));
 }
+
+/* ── Coming Soon banner — shared across NEEDS-BACKEND screens ────────── */
+.coming-soon-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: rgba(248, 180, 0, 0.07);
+  border: 1px solid rgba(248, 180, 0, 0.22);
+  border-radius: 10px;
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1.25rem;
+}
+.csb-icon { font-size: 1.1rem; color: var(--warning, #f8b400); flex-shrink: 0; margin-top: 1px; }
+.csb-body { display: flex; flex-direction: column; gap: 0.25rem; }
+.csb-title { font-size: 0.78rem; font-weight: 700; color: var(--warning, #f8b400); letter-spacing: 0.02em; }
+.csb-sub   { font-size: 0.72rem; color: rgba(255,255,255,0.55); line-height: 1.5; }
+/* BETA badge — shared across all module Coming Soon banners and inline stubs */
+.csb-beta-badge {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--warning, #f8b400);
+  background: rgba(248,180,0,0.12);
+  border: 1px solid rgba(248,180,0,0.35);
+  border-radius: 4px;
+  padding: 1px 5px;
+  vertical-align: middle;
+  margin-left: 5px;
+  line-height: 1.4;
+}
+
+/* WorkspaceSettings — WhatsApp credentials form */
+.ws-wa-form { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.6rem; }
+
+/* TrustComplianceCenter — live posture strip */
+.tcc-live-posture { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; padding: 0.6rem 0.9rem; background: rgba(255,255,255,0.04); border-radius: 8px; border: 1px solid rgba(255,255,255,0.07); }
+.tcc-lp-label { font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.06em; }
+.tcc-lp-items { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.tcc-lp-svc { font-size: 0.72rem; padding: 2px 8px; border-radius: 4px; }
+.tcc-lp-svc--ok   { color: var(--success, #52d68a); background: rgba(82,214,138,0.08); }
+.tcc-lp-svc--fail { color: var(--danger,  #ff5e57); background: rgba(255,94,87,0.08);  }
+.tcc-lp-overall { font-size: 0.72rem; font-weight: 700; margin-left: 0.25rem; color: rgba(255,255,255,0.6); }
+
+/* ContentEngine — Generate button */
+.ce-generate-btn { margin-top: 0.5rem; padding: 0.45rem 1rem; border-radius: 7px; border: 1px solid rgba(124,111,255,0.35); background: rgba(124,111,255,0.12); color: var(--accent, #7c6fff); font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+.ce-generate-btn:hover:not(:disabled) { background: rgba(124,111,255,0.22); }
+.ce-generate-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
+import { getAutonomyStatus, getAutonomyScore, getAutonomyHistory } from "../phase20Api";
 import "./OoplixRunsOoplixCenter.css";
 
 const DOMAINS = [
@@ -103,12 +104,26 @@ function ScoreGauge({ value, color, label }) {
 }
 
 export default function OoplixRunsOoplixCenter({ onNavigate }) {
-  const [section, setSection]   = useState("overview");
+  const [section,      setSection]      = useState("overview");
   const [activeDomain, setActiveDomain] = useState("revenue");
+  const [liveStatus,   setLiveStatus]   = useState(null);
+  const [apiError,     setApiError]     = useState(null);
 
   React.useEffect(() => { track.event("ooplix_runs_ooplix_viewed"); }, []);
 
-  const automationScore    = Math.round(DOMAINS.reduce((a,d)=>a+d.score,0)/DOMAINS.length);
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([getAutonomyStatus(), getAutonomyScore()])
+      .then(([statusRes, scoreRes]) => {
+        if (cancelled) return;
+        if (statusRes || scoreRes) setLiveStatus({ ...statusRes, ...scoreRes });
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const liveOverallScore = liveStatus?.overallScore ?? liveStatus?.score;
+  const automationScore    = liveOverallScore ?? Math.round(DOMAINS.reduce((a,d)=>a+d.score,0)/DOMAINS.length);
   const humanDependency    = 100 - automationScore;
   const autonomousExecScore= Math.round((DOMAINS.filter(d=>d.score>=80).length/DOMAINS.length)*100);
 
@@ -123,6 +138,7 @@ export default function OoplixRunsOoplixCenter({ onNavigate }) {
 
   return (
     <div className="ooplix-runs-ooplix-center page-enter">
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live autonomy data unavailable — showing seed data ({apiError})</div>}
       <div className="oro-header">
         <div>
           <h1 className="oro-title">Ooplix Runs Ooplix</h1>

@@ -85,6 +85,13 @@ export default function DisasterRecoveryCenter({ onNavigate }) {
 
   return (
     <div className="disaster-recovery-center page-enter">
+      <div className="coming-soon-banner">
+        <span className="csb-icon">◎</span>
+        <div className="csb-body">
+          <span className="csb-title">Backup & Recovery Engine <span className="csb-beta-badge">BETA</span></span>
+          <span className="csb-sub">Live backup scheduling, automated restore, and failover switching require the BackupRecoveryEngine (not yet built). The runbooks and failover plans below reflect the target architecture.</span>
+        </div>
+      </div>
       <div className="drc-header">
         <div>
           <h1 className="drc-title">Disaster Recovery Center</h1>

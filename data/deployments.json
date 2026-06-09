@@ -1,0 +1,233 @@
+{
+  "deployments": {
+    "deploy-1": {
+      "deployId": "deploy-1",
+      "type": "canary",
+      "service": "ooplix-frontend",
+      "version": "v9.5.0",
+      "environment": "production",
+      "trafficPct": 5,
+      "promoteThreshold": 99,
+      "rollbackOnErrorRate": 2,
+      "healthUrl": null,
+      "status": "running",
+      "errorRate": 0,
+      "probeHistory": [
+        {
+          "ok": true,
+          "status": 200,
+          "latencyMs": 0,
+          "ts": "2026-06-05T19:02:43.094Z"
+        }
+      ],
+      "startedAt": "2026-06-05T19:02:43.095Z",
+      "promotedAt": null,
+      "rolledBackAt": null
+    },
+    "deploy-2": {
+      "deployId": "deploy-2",
+      "type": "canary",
+      "service": "ooplix-frontend",
+      "version": "v9.5.0-rc",
+      "environment": "production",
+      "trafficPct": 5,
+      "promoteThreshold": 99,
+      "rollbackOnErrorRate": 2,
+      "healthUrl": null,
+      "status": "running",
+      "errorRate": 0,
+      "probeHistory": [
+        {
+          "ok": true,
+          "status": 200,
+          "latencyMs": 0,
+          "ts": "2026-06-05T20:44:21.760Z"
+        }
+      ],
+      "startedAt": "2026-06-05T20:44:21.760Z",
+      "promotedAt": null,
+      "rolledBackAt": null
+    },
+    "deploy-3": {
+      "deployId": "deploy-3",
+      "type": "canary",
+      "service": "ooplix-frontend",
+      "version": "v9.5.0-rc",
+      "environment": "production",
+      "trafficPct": 5,
+      "promoteThreshold": 99,
+      "rollbackOnErrorRate": 2,
+      "healthUrl": null,
+      "status": "running",
+      "errorRate": 0,
+      "probeHistory": [
+        {
+          "ok": true,
+          "status": 200,
+          "latencyMs": 0,
+          "ts": "2026-06-05T20:44:30.712Z"
+        }
+      ],
+      "startedAt": "2026-06-05T20:44:30.712Z",
+      "promotedAt": null,
+      "rolledBackAt": null
+    },
+    "deploy-4": {
+      "deployId": "deploy-4",
+      "type": "canary",
+      "service": "ooplix-frontend",
+      "version": "v9.5.0",
+      "environment": "production",
+      "trafficPct": 5,
+      "promoteThreshold": 99,
+      "rollbackOnErrorRate": 2,
+      "healthUrl": null,
+      "status": "running",
+      "errorRate": 0,
+      "probeHistory": [
+        {
+          "ok": true,
+          "status": 200,
+          "latencyMs": 0,
+          "ts": "2026-06-05T21:23:18.040Z"
+        }
+      ],
+      "startedAt": "2026-06-05T21:23:18.040Z",
+      "promotedAt": null,
+      "rolledBackAt": null
+    }
+  },
+  "canaries": {
+    "deploy-1": {
+      "deployId": "deploy-1",
+      "type": "canary",
+      "service": "ooplix-frontend",
+      "version": "v9.5.0",
+      "environment": "production",
+      "trafficPct": 5,
+      "promoteThreshold": 99,
+      "rollbackOnErrorRate": 2,
+      "healthUrl": null,
+      "status": "running",
+      "errorRate": 0,
+      "probeHistory": [
+        {
+          "ok": true,
+          "status": 200,
+          "latencyMs": 0,
+          "ts": "2026-06-05T19:02:43.094Z"
+        }
+      ],
+      "startedAt": "2026-06-05T19:02:43.095Z",
+      "promotedAt": null,
+      "rolledBackAt": null
+    },
+    "deploy-2": {
+      "deployId": "deploy-2",
+      "type": "canary",
+      "service": "ooplix-frontend",
+      "version": "v9.5.0-rc",
+      "environment": "production",
+      "trafficPct": 5,
+      "promoteThreshold": 99,
+      "rollbackOnErrorRate": 2,
+      "healthUrl": null,
+      "status": "running",
+      "errorRate": 0,
+      "probeHistory": [
+        {
+          "ok": true,
+          "status": 200,
+          "latencyMs": 0,
+          "ts": "2026-06-05T20:44:21.760Z"
+        }
+      ],
+      "startedAt": "2026-06-05T20:44:21.760Z",
+      "promotedAt": null,
+      "rolledBackAt": null
+    },
+    "deploy-3": {
+      "deployId": "deploy-3",
+      "type": "canary",
+      "service": "ooplix-frontend",
+      "version": "v9.5.0-rc",
+      "environment": "production",
+      "trafficPct": 5,
+      "promoteThreshold": 99,
+      "rollbackOnErrorRate": 2,
+      "healthUrl": null,
+      "status": "running",
+      "errorRate": 0,
+      "probeHistory": [
+        {
+          "ok": true,
+          "status": 200,
+          "latencyMs": 0,
+          "ts": "2026-06-05T20:44:30.712Z"
+        }
+      ],
+      "startedAt": "2026-06-05T20:44:30.712Z",
+      "promotedAt": null,
+      "rolledBackAt": null
+    },
+    "deploy-4": {
+      "deployId": "deploy-4",
+      "type": "canary",
+      "service": "ooplix-frontend",
+      "version": "v9.5.0",
+      "environment": "production",
+      "trafficPct": 5,
+      "promoteThreshold": 99,
+      "rollbackOnErrorRate": 2,
+      "healthUrl": null,
+      "status": "running",
+      "errorRate": 0,
+      "probeHistory": [
+        {
+          "ok": true,
+          "status": 200,
+          "latencyMs": 0,
+          "ts": "2026-06-05T21:23:18.040Z"
+        }
+      ],
+      "startedAt": "2026-06-05T21:23:18.040Z",
+      "promotedAt": null,
+      "rolledBackAt": null
+    }
+  },
+  "history": [
+    {
+      "deployId": "deploy-1",
+      "event": "canary_started",
+      "service": "ooplix-frontend",
+      "version": "v9.5.0",
+      "environment": "production",
+      "ts": "2026-06-05T19:02:43.095Z"
+    },
+    {
+      "deployId": "deploy-2",
+      "event": "canary_started",
+      "service": "ooplix-frontend",
+      "version": "v9.5.0-rc",
+      "environment": "production",
+      "ts": "2026-06-05T20:44:21.760Z"
+    },
+    {
+      "deployId": "deploy-3",
+      "event": "canary_started",
+      "service": "ooplix-frontend",
+      "version": "v9.5.0-rc",
+      "environment": "production",
+      "ts": "2026-06-05T20:44:30.712Z"
+    },
+    {
+      "deployId": "deploy-4",
+      "event": "canary_started",
+      "service": "ooplix-frontend",
+      "version": "v9.5.0",
+      "environment": "production",
+      "ts": "2026-06-05T21:23:18.040Z"
+    }
+  ],
+  "seq": 4
+}

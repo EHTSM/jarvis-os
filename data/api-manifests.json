@@ -1,0 +1,433 @@
+[
+  {
+    "apiId": "a6",
+    "apiMethod": "POST",
+    "apiPath": "/payments",
+    "description": "Process a payment via Stripe",
+    "featureIds": [
+      "f3"
+    ],
+    "blueprintId": "bp_1780347708536",
+    "productName": "SubscriptionMaster",
+    "projectId": "proj_1780352411770",
+    "status": "implemented",
+    "filePaths": {
+      "featureName": "payment-processing",
+      "feature": {
+        "id": "f3",
+        "name": "Payment Processing",
+        "description": "Process payments via Stripe",
+        "priority": "medium"
+      },
+      "tables": [
+        {
+          "id": "t3",
+          "name": "subscriptions",
+          "columns": [
+            "id",
+            "customer_id",
+            "plan_id"
+          ],
+          "featureIds": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "t4",
+          "name": "payments",
+          "columns": [
+            "id",
+            "subscription_id",
+            "amount"
+          ],
+          "featureIds": [
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "migrations": [
+        "backend/db/migrations/003_subscriptions.sql",
+        "backend/db/migrations/004_payments.sql"
+      ],
+      "validatorFile": "backend/validators/payment-processing.js",
+      "routeFile": "backend/routes/payment-processing.js",
+      "serviceFile": "backend/services/payment-processing.js",
+      "errorFile": "backend/middleware/errorHandler.js",
+      "testFile": "tests/api/payment-processing/post_payments.test.cjs",
+      "docsFile": "backend/docs/payment-processing.json"
+    },
+    "completed": 6,
+    "failed": 0,
+    "tests": {
+      "pass": 6,
+      "fail": 0
+    },
+    "coordinator": {
+      "ok": true,
+      "verdict": "DEPLOY",
+      "deploy": true,
+      "risks": [],
+      "summary": "OK",
+      "perSpecialist": {
+        "backend": "APPROVE"
+      }
+    },
+    "implementedAt": "2026-06-01T22:20:11.824Z"
+  },
+  {
+    "apiId": "a5",
+    "apiMethod": "GET",
+    "apiPath": "/analytics/mrr",
+    "description": "Retrieve MRR analytics",
+    "featureIds": [
+      "f4"
+    ],
+    "blueprintId": "bp_1780347708536",
+    "productName": "SubscriptionMaster",
+    "projectId": "proj_1780352411715",
+    "status": "implemented",
+    "filePaths": {
+      "featureName": "mrr-analytics",
+      "feature": {
+        "id": "f4",
+        "name": "MRR Analytics",
+        "description": "Track monthly recurring revenue analytics",
+        "priority": "low"
+      },
+      "tables": [
+        {
+          "id": "t4",
+          "name": "payments",
+          "columns": [
+            "id",
+            "subscription_id",
+            "amount"
+          ],
+          "featureIds": [
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "migrations": [
+        "backend/db/migrations/004_payments.sql"
+      ],
+      "validatorFile": "backend/validators/mrr-analytics.js",
+      "routeFile": "backend/routes/mrr-analytics.js",
+      "serviceFile": "backend/services/mrr-analytics.js",
+      "errorFile": "backend/middleware/errorHandler.js",
+      "testFile": "tests/api/mrr-analytics/get_analytics_mrr.test.cjs",
+      "docsFile": "backend/docs/mrr-analytics.json"
+    },
+    "completed": 6,
+    "failed": 0,
+    "tests": {
+      "pass": 6,
+      "fail": 0
+    },
+    "coordinator": {
+      "ok": true,
+      "verdict": "DEPLOY",
+      "deploy": true,
+      "risks": [],
+      "summary": "OK",
+      "perSpecialist": {
+        "backend": "APPROVE"
+      }
+    },
+    "implementedAt": "2026-06-01T22:20:11.769Z"
+  },
+  {
+    "apiId": "a4",
+    "apiMethod": "GET",
+    "apiPath": "/customers",
+    "description": "Retrieve a list of customer subscriptions",
+    "featureIds": [
+      "f2"
+    ],
+    "blueprintId": "bp_1780347708536",
+    "productName": "SubscriptionMaster",
+    "projectId": "proj_1780352411618",
+    "status": "implemented",
+    "filePaths": {
+      "featureName": "customer-management",
+      "feature": {
+        "id": "f2",
+        "name": "Customer Management",
+        "description": "Manage customer subscriptions and information",
+        "priority": "high"
+      },
+      "tables": [
+        {
+          "id": "t2",
+          "name": "customers",
+          "columns": [
+            "id",
+            "name",
+            "email"
+          ],
+          "featureIds": [
+            "f2"
+          ]
+        },
+        {
+          "id": "t3",
+          "name": "subscriptions",
+          "columns": [
+            "id",
+            "customer_id",
+            "plan_id"
+          ],
+          "featureIds": [
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "migrations": [
+        "backend/db/migrations/002_customers.sql",
+        "backend/db/migrations/003_subscriptions.sql"
+      ],
+      "validatorFile": "backend/validators/customer-management.js",
+      "routeFile": "backend/routes/customer-management.js",
+      "serviceFile": "backend/services/customer-management.js",
+      "errorFile": "backend/middleware/errorHandler.js",
+      "testFile": "tests/api/customer-management/get_customers.test.cjs",
+      "docsFile": "backend/docs/customer-management.json"
+    },
+    "completed": 12,
+    "failed": 0,
+    "tests": {
+      "pass": 12,
+      "fail": 0
+    },
+    "coordinator": {
+      "ok": true,
+      "verdict": "DEPLOY",
+      "deploy": true,
+      "risks": [],
+      "summary": "OK",
+      "perSpecialist": {
+        "backend": "APPROVE"
+      }
+    },
+    "implementedAt": "2026-06-01T22:20:11.714Z"
+  },
+  {
+    "apiId": "a3",
+    "apiMethod": "POST",
+    "apiPath": "/customers",
+    "description": "Create a new customer subscription",
+    "featureIds": [
+      "f2",
+      "f3"
+    ],
+    "blueprintId": "bp_1780347708536",
+    "productName": "SubscriptionMaster",
+    "projectId": "proj_1780352411618",
+    "status": "implemented",
+    "filePaths": {
+      "featureName": "customer-management",
+      "feature": {
+        "id": "f2",
+        "name": "Customer Management",
+        "description": "Manage customer subscriptions and information",
+        "priority": "high"
+      },
+      "tables": [
+        {
+          "id": "t2",
+          "name": "customers",
+          "columns": [
+            "id",
+            "name",
+            "email"
+          ],
+          "featureIds": [
+            "f2"
+          ]
+        },
+        {
+          "id": "t3",
+          "name": "subscriptions",
+          "columns": [
+            "id",
+            "customer_id",
+            "plan_id"
+          ],
+          "featureIds": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "t4",
+          "name": "payments",
+          "columns": [
+            "id",
+            "subscription_id",
+            "amount"
+          ],
+          "featureIds": [
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "migrations": [
+        "backend/db/migrations/002_customers.sql",
+        "backend/db/migrations/003_subscriptions.sql",
+        "backend/db/migrations/004_payments.sql"
+      ],
+      "validatorFile": "backend/validators/customer-management.js",
+      "routeFile": "backend/routes/customer-management.js",
+      "serviceFile": "backend/services/customer-management.js",
+      "errorFile": "backend/middleware/errorHandler.js",
+      "testFile": "tests/api/customer-management/post_customers.test.cjs",
+      "docsFile": "backend/docs/customer-management.json"
+    },
+    "completed": 12,
+    "failed": 0,
+    "tests": {
+      "pass": 12,
+      "fail": 0
+    },
+    "coordinator": {
+      "ok": true,
+      "verdict": "DEPLOY",
+      "deploy": true,
+      "risks": [],
+      "summary": "OK",
+      "perSpecialist": {
+        "backend": "APPROVE"
+      }
+    },
+    "implementedAt": "2026-06-01T22:20:11.714Z"
+  },
+  {
+    "apiId": "a2",
+    "apiMethod": "GET",
+    "apiPath": "/plans",
+    "description": "Retrieve a list of subscription plans",
+    "featureIds": [
+      "f1"
+    ],
+    "blueprintId": "bp_1780347708536",
+    "productName": "SubscriptionMaster",
+    "projectId": "proj_1780352411521",
+    "status": "implemented",
+    "filePaths": {
+      "featureName": "plan-management",
+      "feature": {
+        "id": "f1",
+        "name": "Plan Management",
+        "description": "Create and manage subscription plans",
+        "priority": "high"
+      },
+      "tables": [
+        {
+          "id": "t1",
+          "name": "plans",
+          "columns": [
+            "id",
+            "name",
+            "price"
+          ],
+          "featureIds": [
+            "f1"
+          ]
+        }
+      ],
+      "migrations": [
+        "backend/db/migrations/001_plans.sql"
+      ],
+      "validatorFile": "backend/validators/plan-management.js",
+      "routeFile": "backend/routes/plan-management.js",
+      "serviceFile": "backend/services/plan-management.js",
+      "errorFile": "backend/middleware/errorHandler.js",
+      "testFile": "tests/api/plan-management/get_plans.test.cjs",
+      "docsFile": "backend/docs/plan-management.json"
+    },
+    "completed": 12,
+    "failed": 0,
+    "tests": {
+      "pass": 12,
+      "fail": 0
+    },
+    "coordinator": {
+      "ok": true,
+      "verdict": "DEPLOY",
+      "deploy": true,
+      "risks": [],
+      "summary": "OK",
+      "perSpecialist": {
+        "backend": "APPROVE"
+      }
+    },
+    "implementedAt": "2026-06-01T22:20:11.618Z"
+  },
+  {
+    "apiId": "a1",
+    "apiMethod": "POST",
+    "apiPath": "/plans",
+    "description": "Create a new subscription plan",
+    "featureIds": [
+      "f1"
+    ],
+    "blueprintId": "bp_1780347708536",
+    "productName": "SubscriptionMaster",
+    "projectId": "proj_1780352411521",
+    "status": "implemented",
+    "filePaths": {
+      "featureName": "plan-management",
+      "feature": {
+        "id": "f1",
+        "name": "Plan Management",
+        "description": "Create and manage subscription plans",
+        "priority": "high"
+      },
+      "tables": [
+        {
+          "id": "t1",
+          "name": "plans",
+          "columns": [
+            "id",
+            "name",
+            "price"
+          ],
+          "featureIds": [
+            "f1"
+          ]
+        }
+      ],
+      "migrations": [
+        "backend/db/migrations/001_plans.sql"
+      ],
+      "validatorFile": "backend/validators/plan-management.js",
+      "routeFile": "backend/routes/plan-management.js",
+      "serviceFile": "backend/services/plan-management.js",
+      "errorFile": "backend/middleware/errorHandler.js",
+      "testFile": "tests/api/plan-management/post_plans.test.cjs",
+      "docsFile": "backend/docs/plan-management.json"
+    },
+    "completed": 12,
+    "failed": 0,
+    "tests": {
+      "pass": 12,
+      "fail": 0
+    },
+    "coordinator": {
+      "ok": true,
+      "verdict": "DEPLOY",
+      "deploy": true,
+      "risks": [],
+      "summary": "OK",
+      "perSpecialist": {
+        "backend": "APPROVE"
+      }
+    },
+    "implementedAt": "2026-06-01T22:20:11.617Z"
+  }
+]

@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { track } from "../analytics";
+import { getSettingsStatus, saveWhatsAppCredentials } from "../settingsApi";
 import "./WorkspaceSettings.css";
 
 // ── Storage helpers ───────────────────────────────────────────────────
@@ -123,10 +124,16 @@ export default function WorkspaceSettings({ onNavigate }) {
     weeklyReport:     false,
     teamActivity:     true,
   }));
-  const [toast,      setToast]    = useState(null);
-  const [apiKeyShown,setApiKeyShown] = useState(false);
+  const [toast,         setToast]        = useState(null);
+  const [apiKeyShown,   setApiKeyShown]   = useState(false);
+  const [settingsStatus, setSettingsStatus] = useState(null);
+  const [waForm,        setWaForm]        = useState({ token: "", phoneId: "", verifyToken: "", apiVersion: "v18.0" });
+  const [waSaving,      setWaSaving]      = useState(false);
 
-  React.useEffect(() => { track.event("workspace_settings_viewed"); }, []);
+  useEffect(() => {
+    track.event("workspace_settings_viewed");
+    getSettingsStatus().then(s => { if (s && !s.error) setSettingsStatus(s); });
+  }, []);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -151,6 +158,7 @@ export default function WorkspaceSettings({ onNavigate }) {
   };
 
   const handleIntegrationAction = (integ) => {
+    if (integ.id === "whatsapp") return; // handled by dedicated form below
     if (integ.status === "check") {
       showToast(`${integ.name} is connected`);
     } else {
@@ -158,6 +166,20 @@ export default function WorkspaceSettings({ onNavigate }) {
     }
     track.event("integration_action", { id: integ.id, status: integ.status });
   };
+
+  const handleSaveWhatsApp = useCallback(async () => {
+    if (!waForm.token || !waForm.phoneId) { showToast("Token and Phone ID are required"); return; }
+    setWaSaving(true);
+    const res = await saveWhatsAppCredentials(waForm);
+    setWaSaving(false);
+    if (res?.success !== false) {
+      showToast("WhatsApp credentials saved");
+      track.event("ws_whatsapp_saved");
+      getSettingsStatus().then(s => { if (s && !s.error) setSettingsStatus(s); });
+    } else {
+      showToast(res.error || "Failed to save WhatsApp credentials");
+    }
+  }, [waForm]);
 
   return (
     <div className="workspace-settings page-enter">
@@ -394,29 +416,49 @@ export default function WorkspaceSettings({ onNavigate }) {
               <h2 className="ws-section-title">Integrations</h2>
               <p className="ws-section-desc">Connect Ooplix to the tools your business already uses.</p>
               <div className="ws-integrations-list">
-                {INTEGRATIONS.map(integ => (
-                  <div key={integ.id} className={`ws-integ-card${integ.status === "check" ? " ws-integ-card--connected" : ""}`}>
-                    <span className="ws-integ-icon" style={{ color: integ.color }}>{integ.icon}</span>
-                    <div className="ws-integ-info">
-                      <div className="ws-integ-top">
-                        <span className="ws-integ-name">{integ.name}</span>
-                        <span className={`ws-integ-status ws-integ-status--${integ.status}`}>
-                          {integ.status === "check" ? "Connected" : "Not connected"}
-                        </span>
+                {INTEGRATIONS.map(integ => {
+                  const liveConnected = integ.id === "whatsapp"
+                    ? settingsStatus?.whatsapp?.configured
+                    : integ.status === "check";
+                  return (
+                    <div key={integ.id} className={`ws-integ-card${liveConnected ? " ws-integ-card--connected" : ""}`}>
+                      <span className="ws-integ-icon" style={{ color: integ.color }}>{integ.icon}</span>
+                      <div className="ws-integ-info">
+                        <div className="ws-integ-top">
+                          <span className="ws-integ-name">{integ.name}</span>
+                          <span className={`ws-integ-status ws-integ-status--${liveConnected ? "check" : "disconnected"}`}>
+                            {liveConnected ? "Connected" : "Not connected"}
+                          </span>
+                        </div>
+                        <span className="ws-integ-desc">{integ.desc}</span>
+                        {integ.id === "whatsapp" && (
+                          <div className="ws-wa-form">
+                            <input className="ws-input ws-input--mono" placeholder="WA_TOKEN (Bearer token)"
+                              value={waForm.token} onChange={e => setWaForm(f => ({ ...f, token: e.target.value }))} />
+                            <input className="ws-input ws-input--mono" placeholder="Phone Number ID"
+                              value={waForm.phoneId} onChange={e => setWaForm(f => ({ ...f, phoneId: e.target.value }))} />
+                            <input className="ws-input ws-input--mono" placeholder="Verify Token (webhook)"
+                              value={waForm.verifyToken} onChange={e => setWaForm(f => ({ ...f, verifyToken: e.target.value }))} />
+                            <button className="ws-save-btn" onClick={handleSaveWhatsApp} disabled={waSaving}>
+                              {waSaving ? "Saving…" : "Save WhatsApp credentials"}
+                            </button>
+                          </div>
+                        )}
+                        {integ.id !== "whatsapp" && !liveConnected && (
+                          <span className="ws-integ-setup">{integ.setup}</span>
+                        )}
                       </div>
-                      <span className="ws-integ-desc">{integ.desc}</span>
-                      {integ.status !== "check" && (
-                        <span className="ws-integ-setup">{integ.setup}</span>
+                      {integ.id !== "whatsapp" && (
+                        <button
+                          className={`ws-integ-btn ws-integ-btn--${liveConnected ? "connected" : "connect"}`}
+                          onClick={() => handleIntegrationAction(integ)}
+                        >
+                          {liveConnected ? "Manage" : "Connect"}
+                        </button>
                       )}
                     </div>
-                    <button
-                      className={`ws-integ-btn ws-integ-btn--${integ.status === "check" ? "connected" : "connect"}`}
-                      onClick={() => handleIntegrationAction(integ)}
-                    >
-                      {integ.status === "check" ? "Manage" : "Connect"}
-                    </button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}

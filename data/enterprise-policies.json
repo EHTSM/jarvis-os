@@ -1,0 +1,65 @@
+[
+  {
+    "policyId": "pol_1780406363973",
+    "orgId": "org_1780406363943",
+    "name": "Compliance Policy",
+    "description": "",
+    "type": "compliance",
+    "rules": [],
+    "enforcement": "advisory",
+    "status": "archived",
+    "createdAt": "2026-06-02T13:19:23.963Z",
+    "updatedAt": "2026-06-02T13:19:23.965Z",
+    "archivedAt": "2026-06-02T13:19:23.965Z",
+    "lastEvaluatedAt": null,
+    "lastViolation": null,
+    "evaluationCount": 0,
+    "violationCount": 0
+  },
+  {
+    "policyId": "pol_1780406363971",
+    "orgId": "org_1780406363941",
+    "name": "Data Retention Policy",
+    "description": "",
+    "type": "data",
+    "rules": [
+      {
+        "condition": "data_older_than_7years",
+        "action": "flag",
+        "severity": "major"
+      }
+    ],
+    "enforcement": "warn",
+    "status": "active",
+    "createdAt": "2026-06-02T13:19:23.962Z",
+    "updatedAt": "2026-06-02T13:19:23.962Z",
+    "archivedAt": null,
+    "lastEvaluatedAt": null,
+    "lastViolation": null,
+    "evaluationCount": 0,
+    "violationCount": 0
+  },
+  {
+    "policyId": "pol_1780406363969",
+    "orgId": "org_1780406363941",
+    "name": "MFA Required",
+    "description": "MFA required for all operator accounts",
+    "type": "security",
+    "rules": [
+      {
+        "condition": "mfa_disabled",
+        "action": "deny",
+        "severity": "critical"
+      }
+    ],
+    "enforcement": "block",
+    "status": "active",
+    "createdAt": "2026-06-02T13:19:23.961Z",
+    "updatedAt": "2026-06-02T13:19:23.964Z",
+    "archivedAt": null,
+    "lastEvaluatedAt": "2026-06-02T13:19:23.964Z",
+    "lastViolation": "2026-06-02T13:19:23.964Z",
+    "evaluationCount": 2,
+    "violationCount": 1
+  }
+]

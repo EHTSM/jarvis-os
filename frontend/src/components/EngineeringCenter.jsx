@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
-import { listMissions, getAutopilotStats, getGitHubActivity } from "../phase23Api";
+import { listMissions, getAutopilotStats, getGitHubActivity, runMission } from "../phase23Api";
 import "./EngineeringCenter.css";
 
 // ── Persistence ───────────────────────────────────────────────────────
@@ -172,13 +172,19 @@ function TaskDetail({ task }) {
 }
 
 export default function EngineeringCenter({ onNavigate }) {
-  const [tasks,    setTasks]    = useState(() => _load(ENG_KEY, SEED_TASKS));
-  const [section,  setSection]  = useState("board");
-  const [selected, setSelected] = useState("et1");
-  const [filter,   setFilter]   = useState("all");
-  const [toast,    setToast]    = useState(null);
-  const [apiError, setApiError] = useState(null);
-  const [liveStats, setLiveStats] = useState(null);
+  const [tasks,       setTasks]       = useState(() => _load(ENG_KEY, SEED_TASKS));
+  const [section,     setSection]     = useState("board");
+  const [selected,    setSelected]    = useState("et1");
+  const [filter,      setFilter]      = useState("all");
+  const [toast,       setToast]       = useState(null);
+  const [apiError,    setApiError]    = useState(null);
+  const [liveStats,   setLiveStats]   = useState(null);
+  const [showMission, setShowMission] = useState(false);
+  const [msnGoal,     setMsnGoal]     = useState("");
+  const [msnRepo,     setMsnRepo]     = useState("ooplix");
+  const [msnRunning,  setMsnRunning]  = useState(false);
+  const [msnResult,   setMsnResult]   = useState(null);
+  const [msnErr,      setMsnErr]      = useState(null);
 
   useEffect(() => { track.event("engineering_center_viewed"); }, []);
 
@@ -239,6 +245,21 @@ export default function EngineeringCenter({ onNavigate }) {
   // Stage counts
   const stageCounts = STAGES.reduce((acc, s) => { acc[s.id] = tasks.filter(t => t.stage === s.id).length; return acc; }, {});
 
+  function handleMission() {
+    if (!msnGoal.trim() || msnRunning) return;
+    setMsnRunning(true); setMsnResult(null); setMsnErr(null);
+    runMission(msnGoal.trim(), { repo: msnRepo })
+      .then(r => {
+        setMsnResult(r);
+        const mTask = { id: r.missionId || `msn_${Date.now()}`, title: msnGoal.slice(0,80), requirement: msnGoal, plan: r.steps?.map(s=>s.action).join("\n") || "", build:"", review:"", test:"", stage: r.status === "completed" ? "done" : "build", priority:"high", repo: msnRepo, assignee:"Autopilot", created: new Date().toISOString().slice(0,10) };
+        const next = [mTask, ...tasks]; _save(ENG_KEY, next); setTasks(next); setSelected(mTask.id);
+        track.event("eng_mission_launched", { repo: msnRepo });
+        setTimeout(() => { setShowMission(false); setMsnResult(null); }, 1800);
+      })
+      .catch(e => setMsnErr(e.message))
+      .finally(() => setMsnRunning(false));
+  }
+
   return (
     <div className="engineering-center page-enter">
       {toast && <div className="ec-toast">{toast}</div>}
@@ -249,10 +270,13 @@ export default function EngineeringCenter({ onNavigate }) {
           <h1 className="ec-title">Engineering Center</h1>
           <p className="ec-subtitle">Autonomous engineering lifecycle — Requirement → Plan → Build → Review → Test → Done.</p>
         </div>
-        <button className="ec-new-btn" onClick={() => {
-          const t = { id: `et${Date.now()}`, title: "New task", requirement: "", plan: "", build: "", review: "", test: "", stage: "requirement", priority: "medium", repo: "ooplix-frontend", assignee: "Dev Agent", created: new Date().toISOString().slice(0,10) };
-          const next = [t, ...tasks]; _save(ENG_KEY, next); setTasks(next); setSelected(t.id); showToast("Task created");
-        }}>+ New task</button>
+        <div style={{ display:"flex", gap:8 }}>
+          <button className="ec-new-btn" onClick={() => { setShowMission(true); setMsnGoal(""); setMsnResult(null); setMsnErr(null); }} style={{ background:"linear-gradient(135deg,var(--accent),var(--accent2))", color:"#06080e" }}>⚡ Launch Mission</button>
+          <button className="ec-new-btn" onClick={() => {
+            const t = { id: `et${Date.now()}`, title: "New task", requirement: "", plan: "", build: "", review: "", test: "", stage: "requirement", priority: "medium", repo: "ooplix-frontend", assignee: "Dev Agent", created: new Date().toISOString().slice(0,10) };
+            const next = [t, ...tasks]; _save(ENG_KEY, next); setTasks(next); setSelected(t.id); showToast("Task created");
+          }}>+ New task</button>
+        </div>
       </div>
 
       {/* Stage pipeline overview */}
@@ -328,6 +352,35 @@ export default function EngineeringCenter({ onNavigate }) {
         })}
 
       </div>
+
+      {showMission && (
+        <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.6)", zIndex:1000, display:"flex", alignItems:"center", justifyContent:"center" }}
+          onClick={e => e.target === e.currentTarget && setShowMission(false)}>
+          <div style={{ background:"var(--surface-base)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:24, width:"min(500px,90vw)", display:"flex", flexDirection:"column", gap:14 }}>
+            <h3 style={{ margin:0, fontSize:16, fontWeight:700 }}>⚡ Launch Engineering Autopilot Mission</h3>
+            <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+              <label style={{ fontSize:12, fontWeight:700, color:"var(--text-dim)" }}>Goal</label>
+              <textarea rows={3} style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"8px 12px", color:"var(--text)", fontSize:13, fontFamily:"inherit", resize:"vertical" }}
+                value={msnGoal} onChange={e => setMsnGoal(e.target.value)}
+                placeholder="e.g. Review code quality and identify security issues in auth module" autoFocus />
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+              <label style={{ fontSize:12, fontWeight:700, color:"var(--text-dim)" }}>Repository</label>
+              <input style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"8px 12px", color:"var(--text)", fontSize:13, fontFamily:"inherit" }}
+                value={msnRepo} onChange={e => setMsnRepo(e.target.value)} placeholder="repo name" />
+            </div>
+            {msnErr && <p style={{ margin:0, fontSize:12, color:"var(--danger)" }}>Error: {msnErr}</p>}
+            {msnResult && <p style={{ margin:0, fontSize:12, color:"var(--success)" }}>✓ Mission started: {msnResult.missionId}</p>}
+            <div style={{ display:"flex", gap:8, justifyContent:"flex-end" }}>
+              <button onClick={() => setShowMission(false)} style={{ padding:"8px 16px", background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius-pill)", cursor:"pointer", fontSize:13, color:"var(--text-dim)", fontFamily:"inherit" }}>Cancel</button>
+              <button onClick={handleMission} disabled={msnRunning || !msnGoal.trim()}
+                style={{ padding:"8px 18px", background:"linear-gradient(135deg,var(--accent),var(--accent2))", color:"#06080e", border:"none", borderRadius:"var(--radius-pill)", fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"inherit" }}>
+                {msnRunning ? "Launching…" : "⚡ Launch"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

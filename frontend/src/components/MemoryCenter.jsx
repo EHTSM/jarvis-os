@@ -125,15 +125,19 @@ export default function MemoryCenter({ onNavigate }) {
         if (cancelled) return;
         const nodes = res?.nodes || res?.memories;
         if (Array.isArray(nodes) && nodes.length > 0) {
+          const _impLabel = (v) => {
+            if (typeof v === "string") return v;
+            if (v >= 90) return "critical"; if (v >= 70) return "high"; if (v >= 40) return "medium"; return "low";
+          };
           const mapped = nodes.map(n => ({
-            id:         n.id,
+            id:         n.nodeId || n.id,
             type:       n.type || "user",
             title:      n.title || n.key || "Memory",
-            body:       n.body || n.value || "",
-            importance: n.importance || n.priority || "medium",
+            body:       n.body || (typeof n.value === "string" ? n.value : JSON.stringify(n.value ?? "")) || "",
+            importance: _impLabel(n.importance ?? n.priority),
             tags:       Array.isArray(n.tags) ? n.tags : [],
             created:    n.createdAt ? new Date(n.createdAt).toISOString().slice(0,10) : "",
-            used:       n.accessCount ?? 0,
+            used:       n.usageCount ?? n.accessCount ?? 0,
           }));
           setMemories(mapped);
           _save(MEM_KEY, mapped);
@@ -152,7 +156,7 @@ export default function MemoryCenter({ onNavigate }) {
     persist([entry, ...memories]);
     setAdding(false); showToast("Memory saved");
     track.event("memory_added", { type: data.type });
-    saveMemoryNode(data).catch(() => {/* local save already done */});
+    saveMemoryNode({ key: data.title, value: data.body, type: data.type, tags: data.tags, importance: data.importance === "critical" ? 95 : data.importance === "high" ? 80 : data.importance === "medium" ? 50 : 20 }).catch(() => {});
   }, [memories, persist]);
 
   const handleEdit = useCallback((data) => {

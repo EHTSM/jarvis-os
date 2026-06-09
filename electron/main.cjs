@@ -5,7 +5,7 @@
  * All business logic lives in the Node.js backend on port 5050.
  */
 
-const { app, BrowserWindow, Menu, ipcMain } = require("electron");
+const { app, BrowserWindow, Menu, ipcMain, shell } = require("electron");
 const path  = require("path");
 const fs    = require("fs");
 const axios = require("axios");
@@ -165,6 +165,16 @@ ipcMain.handle("create-floating-window", () => {
     }
     floatingWindow.show();
     floatingWindow.on("closed", () => { floatingWindow = null; });
+});
+
+// ── Safe external URL opener (used by Firebase Google auth in Electron) ──────
+// Renderer calls window.electronAPI.openExternal(url) for OAuth flows that
+// can't run inside a BrowserWindow (popup origin restrictions).
+// Only allows https:// URLs to prevent protocol-handler abuse.
+ipcMain.handle("open-external", (_e, url) => {
+    if (typeof url !== "string" || !url.startsWith("https://")) return { ok: false };
+    shell.openExternal(url);
+    return { ok: true };
 });
 
 // ── Renderer crash recovery ────────────────────────────────────────

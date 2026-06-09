@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { track } from "../analytics";
+import { listCoordSessions, getCoordStats, agentCollaborate, agentHandoff, agentDelegate } from "../phase19Api";
 import "./AgentCollaborationCenter.css";
 
 // ── Agent roster ─────────────────────────────────────────────────────
@@ -153,11 +154,52 @@ const TYPE_COLORS  = { handoff: "#4ecdc4", escalation: "#f55b5b", trigger: "#f0b
 const STA_COLORS   = { success: "#52d68a", active: "#4ecdc4", pending: "#f0b429", failed: "#f55b5b" };
 
 export default function AgentCollaborationCenter({ onNavigate }) {
-  const [section,  setSection]  = useState("graph");
-  const [selEdge,  setSelEdge]  = useState(null);
+  const [section,    setSection]    = useState("graph");
+  const [selEdge,    setSelEdge]    = useState(null);
   const [typeFilter, setTypeFilter] = useState("all");
+  const [sessions,   setSessions]   = useState([]);
+  const [coordStats, setCoordStats] = useState(null);
+  const [apiError,   setApiError]   = useState(null);
+  const [showCoord,  setShowCoord]  = useState(false);
+  const [coordMode,  setCoordMode]  = useState("collaborate");
+  const [coordFrom,  setCoordFrom]  = useState("seo");
+  const [coordTo,    setCoordTo]    = useState("content");
+  const [coordGoal,  setCoordGoal]  = useState("");
+  const [coordRunning,setCoordRunning] = useState(false);
+  const [coordResult, setCoordResult] = useState(null);
+  const [coordErr,   setCoordErr]   = useState(null);
+
+  function handleCoord() {
+    if (!coordGoal.trim() || coordRunning) return;
+    setCoordRunning(true); setCoordResult(null); setCoordErr(null);
+    const agentNames = Object.keys(AGENTS);
+    const fn = coordMode === "handoff" ? agentHandoff(coordFrom, coordTo, coordGoal)
+             : coordMode === "delegate" ? agentDelegate(coordFrom, coordTo, coordGoal)
+             : agentCollaborate([coordFrom, coordTo], coordGoal);
+    fn.then(r => {
+        setCoordResult(r);
+        track.event("coord_session_started", { mode: coordMode });
+        listCoordSessions({ limit: 20 }).then(res => { if (res?.sessions) setSessions(res.sessions); }).catch(()=>{});
+        setTimeout(() => { setShowCoord(false); setCoordResult(null); }, 1800);
+      })
+      .catch(e => setCoordErr(e.message))
+      .finally(() => setCoordRunning(false));
+  }
 
   React.useEffect(() => { track.event("agent_collab_viewed"); }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([listCoordSessions({ limit: 20 }), getCoordStats()])
+      .then(([sessRes, statsRes]) => {
+        if (cancelled) return;
+        const liveSessions = sessRes?.sessions;
+        if (Array.isArray(liveSessions)) setSessions(liveSessions);
+        if (statsRes) setCoordStats(statsRes);
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
 
   const filtered = HANDOFFS.filter(h => typeFilter === "all" || h.type === typeFilter);
   const edgeHandoffs = selEdge
@@ -168,11 +210,16 @@ export default function AgentCollaborationCenter({ onNavigate }) {
 
   return (
     <div className="agent-collab-center page-enter">
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live coordination data unavailable — showing cached data ({apiError})</div>}
       <div className="acc-header">
         <div>
           <h1 className="acc-title">Agent Collaboration Engine</h1>
           <p className="acc-subtitle">Handoffs, shared tasks, escalations, dependencies, and collaboration graph.</p>
         </div>
+        <button onClick={() => { setShowCoord(true); setCoordGoal(""); setCoordResult(null); setCoordErr(null); }}
+          style={{ padding:"9px 18px", background:"linear-gradient(135deg,var(--accent),var(--accent2))", color:"#06080e", border:"none", borderRadius:"var(--radius-pill)", fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"inherit", whiteSpace:"nowrap" }}>
+          + Start Session
+        </button>
       </div>
 
       {/* Summary */}
@@ -184,6 +231,7 @@ export default function AgentCollaborationCenter({ onNavigate }) {
           { label: "Triggers",      value: byType("trigger"),  color: "#f0b429"        },
           { label: "Dependencies",  value: byType("dependency"),color:"#a78bfa"        },
           { label: "Active now",    value: HANDOFFS.filter(h=>h.status==="active").length, color:"var(--accent2)" },
+          { label: "Live sessions", value: sessions.length ?? coordStats?.totalSessions ?? 0, color: "var(--success)" },
         ].map(s => (
           <div key={s.label} className="acc-summary-tile">
             <span className="acc-sv" style={{ color: s.color }}>{s.value}</span>
@@ -310,6 +358,57 @@ export default function AgentCollaborationCenter({ onNavigate }) {
         )}
 
       </div>
+
+      {showCoord && (
+        <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.6)", zIndex:1000, display:"flex", alignItems:"center", justifyContent:"center" }}
+          onClick={e => e.target === e.currentTarget && setShowCoord(false)}>
+          <div style={{ background:"var(--surface-base)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:24, width:"min(480px,90vw)", display:"flex", flexDirection:"column", gap:14 }}>
+            <h3 style={{ margin:0, fontSize:16, fontWeight:700 }}>Start Coordination Session</h3>
+            <div style={{ display:"flex", gap:8 }}>
+              {["collaborate","handoff","delegate"].map(m => (
+                <button key={m} onClick={() => setCoordMode(m)}
+                  style={{ flex:1, padding:"7px 0", border:"1px solid var(--border)", borderRadius:"var(--radius-pill)", background: coordMode===m ? "var(--accent)" : "var(--surface-raised)", color: coordMode===m ? "#06080e" : "var(--text-dim)", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"inherit", textTransform:"capitalize" }}>
+                  {m}
+                </button>
+              ))}
+            </div>
+            <div style={{ display:"flex", gap:8 }}>
+              <div style={{ flex:1, display:"flex", flexDirection:"column", gap:4 }}>
+                <label style={{ fontSize:11, fontWeight:700, color:"var(--text-dim)" }}>From</label>
+                <select value={coordFrom} onChange={e => setCoordFrom(e.target.value)}
+                  style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"7px 10px", color:"var(--text)", fontSize:12, fontFamily:"inherit" }}>
+                  {Object.entries(AGENTS).map(([k,v]) => <option key={k} value={k}>{v.name}</option>)}
+                </select>
+              </div>
+              {coordMode !== "collaborate" && (
+                <div style={{ flex:1, display:"flex", flexDirection:"column", gap:4 }}>
+                  <label style={{ fontSize:11, fontWeight:700, color:"var(--text-dim)" }}>To</label>
+                  <select value={coordTo} onChange={e => setCoordTo(e.target.value)}
+                    style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"7px 10px", color:"var(--text)", fontSize:12, fontFamily:"inherit" }}>
+                    {Object.entries(AGENTS).map(([k,v]) => <option key={k} value={k}>{v.name}</option>)}
+                  </select>
+                </div>
+              )}
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+              <label style={{ fontSize:12, fontWeight:700, color:"var(--text-dim)" }}>{coordMode === "delegate" ? "Task" : "Goal / context"}</label>
+              <textarea rows={3} style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"8px 12px", color:"var(--text)", fontSize:13, fontFamily:"inherit", resize:"vertical" }}
+                value={coordGoal} onChange={e => setCoordGoal(e.target.value)}
+                placeholder={coordMode === "handoff" ? "Handoff context…" : coordMode === "delegate" ? "Task to delegate…" : "Collaboration goal…"}
+                autoFocus />
+            </div>
+            {coordErr && <p style={{ margin:0, fontSize:12, color:"var(--danger)" }}>Error: {coordErr}</p>}
+            {coordResult && <p style={{ margin:0, fontSize:12, color:"var(--success)" }}>✓ Session started: {coordResult.sessionId || JSON.stringify(coordResult).slice(0,60)}</p>}
+            <div style={{ display:"flex", gap:8, justifyContent:"flex-end" }}>
+              <button onClick={() => setShowCoord(false)} style={{ padding:"8px 16px", background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius-pill)", cursor:"pointer", fontSize:13, color:"var(--text-dim)", fontFamily:"inherit" }}>Cancel</button>
+              <button onClick={handleCoord} disabled={coordRunning || !coordGoal.trim()}
+                style={{ padding:"8px 18px", background:"linear-gradient(135deg,var(--accent),var(--accent2))", color:"#06080e", border:"none", borderRadius:"var(--radius-pill)", fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"inherit" }}>
+                {coordRunning ? "Starting…" : "▷ Start"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

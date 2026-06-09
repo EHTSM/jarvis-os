@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
+import { getAutonomyScore, getAutonomyStatus } from "../phase20Api";
 import "./AutonomyScoreCenter.css";
 
 const SCORES = [
@@ -38,8 +39,25 @@ const R = 30; // ring radius
 const CIR = 2 * Math.PI * R;
 
 export default function AutonomyScoreCenter({ onNavigate }) {
-  const [tab, setTab] = useState("scores");
-  const overallScore = Math.round(SCORES.reduce((s,x) => s + x.score, 0) / SCORES.length);
+  const [tab,       setTab]       = useState("scores");
+  const [liveScore, setLiveScore] = useState(null);
+  const [apiError,  setApiError]  = useState(null);
+
+  useEffect(() => {
+    track.event("autonomy_score_viewed");
+    let cancelled = false;
+    Promise.all([getAutonomyScore(), getAutonomyStatus()])
+      .then(([scoreRes, statusRes]) => {
+        if (cancelled) return;
+        if (scoreRes?.score != null || scoreRes?.overallScore != null) {
+          setLiveScore(scoreRes);
+        }
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const overallScore = liveScore?.overallScore ?? liveScore?.score ?? Math.round(SCORES.reduce((s,x) => s + x.score, 0) / SCORES.length);
   const humanPct = 100 - overallScore;
   const autoPct  = overallScore;
 
@@ -52,6 +70,7 @@ export default function AutonomyScoreCenter({ onNavigate }) {
 
   return (
     <div className="asc">
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live autonomy data unavailable — showing seed scores ({apiError})</div>}
       <div className="asc-header">
         <div>
           <h1 className="asc-title">Autonomy Score Center</h1>

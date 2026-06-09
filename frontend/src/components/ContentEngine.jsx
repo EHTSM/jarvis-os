@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { track } from "../analytics";
+import { sendMessage } from "../api";
 import "./ContentEngine.css";
 
 // ── Content type catalogue ───────────────────────────────────────────
@@ -98,12 +99,22 @@ function CharCount({ content, type }) {
 
 // ── Editor pane ───────────────────────────────────────────────────────
 function DraftEditor({ draft, onSave, onClose, onDelete }) {
-  const [title,   setTitle]   = useState(draft.title   || "");
-  const [content, setContent] = useState(draft.content || "");
-  const [prompt,  setPrompt]  = useState(draft.prompt  || "");
-  const [copied,  setCopied]  = useState(false);
+  const [title,      setTitle]      = useState(draft.title   || "");
+  const [content,    setContent]    = useState(draft.content || "");
+  const [prompt,     setPrompt]     = useState(draft.prompt  || "");
+  const [copied,     setCopied]     = useState(false);
+  const [generating, setGenerating] = useState(false);
   const typeDef  = CONTENT_TYPES.find(t => t.id === draft.type) || CONTENT_TYPES[0];
   const templates = TEMPLATES[draft.type] || [];
+
+  const handleGenerate = useCallback(async () => {
+    if (!prompt.trim()) return;
+    setGenerating(true);
+    track.event("content_generate_clicked", { type: draft.type });
+    const res = await sendMessage(prompt.trim(), "smart");
+    if (res?.reply) setContent(res.reply);
+    setGenerating(false);
+  }, [prompt, draft.type]);
 
   const handleSave = useCallback(() => {
     const updated = { ...draft, title, content, prompt, updatedAt: new Date().toISOString() };
@@ -170,6 +181,13 @@ function DraftEditor({ draft, onSave, onClose, onDelete }) {
           onChange={e => setPrompt(e.target.value)}
           rows={4}
         />
+        <button
+          className="ce-generate-btn"
+          onClick={handleGenerate}
+          disabled={generating || !prompt.trim()}
+        >
+          {generating ? "Generating…" : "⚡ Generate with Jarvis"}
+        </button>
       </div>
 
       {/* Content section */}

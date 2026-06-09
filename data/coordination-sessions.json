@@ -1,0 +1,74 @@
+[
+  {
+    "sessionId": "coord_1780692270739_1",
+    "pattern": "collaboration",
+    "agents": [
+      "seo",
+      "content"
+    ],
+    "input": "WhatsApp automation for freelancers",
+    "status": "failed",
+    "createdAt": "2026-06-05T20:44:30.739Z",
+    "completedAt": "2026-06-05T20:44:30.769Z",
+    "durationMs": 30,
+    "steps": [
+      {
+        "ts": "2026-06-05T20:44:30.769Z",
+        "agent": "seo",
+        "action": "collaborate",
+        "success": false,
+        "output": "unknown",
+        "error": null,
+        "runId": "run_1780692270740_jj"
+      },
+      {
+        "ts": "2026-06-05T20:44:30.769Z",
+        "agent": "content",
+        "action": "collaborate",
+        "success": false,
+        "output": "unknown",
+        "error": null,
+        "runId": "run_1780692270757_jk"
+      }
+    ],
+    "output": "",
+    "error": "2 agent(s) failed",
+    "metadata": {}
+  },
+  {
+    "sessionId": "coord_1780694598068_2",
+    "pattern": "collaboration",
+    "agents": [
+      "seo",
+      "content"
+    ],
+    "input": "phase34 validation",
+    "status": "failed",
+    "createdAt": "2026-06-05T21:23:18.068Z",
+    "completedAt": "2026-06-05T21:23:50.839Z",
+    "durationMs": 32771,
+    "steps": [
+      {
+        "ts": "2026-06-05T21:23:50.809Z",
+        "agent": "seo",
+        "action": "collaborate",
+        "success": false,
+        "output": "Timeout: ai/ai exceeded 30000ms",
+        "error": null,
+        "runId": "run_1780694598098_1a1"
+      },
+      {
+        "ts": "2026-06-05T21:23:50.816Z",
+        "agent": "content",
+        "action": "collaborate",
+        "success": false,
+        "output": "Timeout: ai/ai exceeded 30000ms",
+        "error": null,
+        "runId": "run_1780694598112_1a2"
+      }
+    ],
+    "output": "",
+    "error": "2 agent(s) failed",
+    "metadata": {}
+  }
+]

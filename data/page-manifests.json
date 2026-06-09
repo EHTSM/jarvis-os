@@ -1,0 +1,549 @@
+[
+  {
+    "pageId": "p4",
+    "pageName": "Analytics",
+    "pageType": "analytics",
+    "route": "/analytics",
+    "blueprintId": "bp_1780347708536",
+    "productName": "SubscriptionMaster",
+    "projectId": "proj_1780384407921",
+    "status": "implemented",
+    "apiBindings": {
+      "get": [
+        {
+          "id": "a5",
+          "method": "GET",
+          "path": "/analytics/mrr",
+          "description": "Retrieve MRR analytics",
+          "featureIds": [
+            "f4"
+          ]
+        }
+      ],
+      "post": []
+    },
+    "features": [
+      {
+        "id": "f4",
+        "name": "MRR Analytics"
+      }
+    ],
+    "tasks": [
+      {
+        "seq": 1,
+        "request": "Create the page shell in frontend/src/pages/analytics.jsx. Export default function Analytics() that: (1) Imports: import { useAnalytics } from '../hooks/useAnalytics'; import DataView from '../components/analytics/DataView'; import ActionForm from '../components/analytics/ActionForm'. (2) Calls const { data, loading, error, mutate } = useAnalytics(). (3) Returns JSX with: a <header> containing an <h1>Analytics</h1>; a <main> containing {loading && <p>Loading...</p>}, {error && <p className=\"error\">{error}</p>}, {data && <DataView data={data} />}. (4) Import and apply styles from ../components/analytics/styles.css. Page type: analytics. Features: MRR Analytics. Keep state management minimal in the shell — delegate to the hook.",
+        "description": "Page shell for Analytics",
+        "dependsOn": [],
+        "filePath": "frontend/src/pages/analytics.jsx"
+      },
+      {
+        "seq": 2,
+        "request": "Create frontend/src/hooks/useAnalytics.js. Export default function useAnalytics() that: (1) Imports useState, useEffect, useCallback from 'react' and api from '../api/client'. (2) Declares: const [data, setData] = useState([]); const [loading, setLoading] = useState(true); const [error, setError] = useState(null). (3) useEffect on mount: setLoading(true); api.get('/analytics/mrr').then(r => setData(r.data.data)).catch(e => setError(e.message)).finally(() => setLoading(false)). (4) const mutate = null. Returns { data, loading, error, mutate }. Page type: analytics. Bound GET APIs: GET /analytics/mrr. Bound POST APIs: none.",
+        "description": "API hook useAnalytics",
+        "dependsOn": [],
+        "filePath": "frontend/src/hooks/useAnalytics.js"
+      },
+      {
+        "seq": 3,
+        "request": "Create frontend/src/components/analytics/DataView.jsx. Export default function DataView({ data }) that: (1) Renders a <div className=\"analytics-view\"> containing: a <div className=\"metric-cards\"> with one <div className=\"metric-card\"> per item in data showing key=value pairs; a <div className=\"data-table\"> with a <table> showing all data rows with columns [subscription_id, amount]; a <p className=\"summary\">Total records: {data?.length || 0}</p>. (2) Handle empty data: show <p className=\"empty\">No analytics data available.</p>. (3) Accepts prop: data (array). PropTypes optional. This is the analytics/read-only display for Analytics.",
+        "description": "DataView component for Analytics",
+        "dependsOn": [
+          1
+        ],
+        "filePath": "frontend/src/components/analytics/DataView.jsx"
+      },
+      {
+        "seq": 4,
+        "request": "Create frontend/src/components/analytics/ActionForm.jsx. Export default function ActionForm() that: (1) Returns a <div className=\"empty-action\"><p>No actions available for this view.</p></div>. This page is read-only — no mutation form is required.",
+        "description": "ActionForm component for Analytics",
+        "dependsOn": [
+          1
+        ],
+        "filePath": "frontend/src/components/analytics/ActionForm.jsx"
+      },
+      {
+        "seq": 5,
+        "request": "Update frontend/src/pages/analytics.jsx to wire all components together with full state flow. The page must: (1) Call const { data, loading, error, mutate } = useAnalytics(). (2) Manage local UI state: const [selected, setSelected] = useState(null); const [showForm, setShowForm] = useState(false). (3) No form submission handler needed (read-only page). (4) Render the full page: <div className=\"analytics-page\"> <header><h1>Analytics</h1></header> {loading && <div className=\"loading-spinner\">Loading...</div>} {error && <div className=\"error-banner\">{error}</div>} {!loading && <DataView data={data} onSelect={setSelected} />} </div>. (5) The component must be fully self-contained — no props required. Page type: analytics. Data sources: /analytics/mrr. Mutations: none.",
+        "description": "Full integration for Analytics",
+        "dependsOn": [
+          2,
+          3,
+          4
+        ],
+        "filePath": "frontend/src/pages/analytics.jsx"
+      },
+      {
+        "seq": 6,
+        "request": "Create tests/pages/analytics.test.cjs with a node:test suite for the Analytics page. Import the page component from frontend/src/pages/analytics.jsx. Mock the API client at frontend/src/api/client.js to return controlled data. Test cases: (1) Renders without crashing — import Analytics and verify it is a function. (2) Hook data loading — mock api.get('/analytics/mrr') to return { data: { data: [{ id: 1, subscription_id: \"test\", amount: \"test\" }] } }; verify the hook resolves loading=false and data has the expected shape. (3) Error handling — mock api.get to reject with 'Network error'; verify error state is set. Use node:assert for assertions. Use async test() blocks. No React rendering framework required — test the hook and data logic directly.",
+        "description": "Page tests for Analytics",
+        "dependsOn": [
+          5
+        ],
+        "filePath": "tests/pages/analytics.test.cjs"
+      },
+      {
+        "seq": 7,
+        "request": "Create frontend/src/pages/analytics.manifest.json as a valid JSON file documenting the Analytics page. Include: \"pageId\": \"p4\", \"pageName\": \"Analytics\", \"route\": \"/analytics\", \"pageType\": \"analytics\", \"componentTree\": {\"page\":\"Analytics\",\"shell\":\"frontend/src/pages/analytics.jsx\",\"hook\":\"frontend/src/hooks/useAnalytics.js\",\"components\":[\"frontend/src/components/analytics/DataView.jsx\",\"frontend/src/components/analytics/ActionForm.jsx\"]}, \"apiBindings\": [{\"method\":\"GET\",\"path\":\"/analytics/mrr\",\"role\":\"data-source\"}], \"stateShape\": {\"data\":\"array\",\"loading\":\"boolean\",\"error\":\"string|null\",\"mutate\":\"function|null\",\"selected\":\"object|null\",\"showForm\":\"boolean\"}, \"features\": [\"MRR Analytics\"], \"tables\": [\"payments\"]. Write valid JSON only — no comments.",
+        "description": "Page manifest for Analytics",
+        "dependsOn": [
+          5
+        ],
+        "filePath": "frontend/src/pages/analytics.manifest.json"
+      }
+    ],
+    "filePaths": {
+      "shellFile": "frontend/src/pages/analytics.jsx",
+      "hookFile": "frontend/src/hooks/useAnalytics.js",
+      "displayFile": "frontend/src/components/analytics/DataView.jsx",
+      "formFile": "frontend/src/components/analytics/ActionForm.jsx",
+      "stylesFile": "frontend/src/components/analytics/styles.css",
+      "testFile": "tests/pages/analytics.test.cjs",
+      "manifestFile": "frontend/src/pages/analytics.manifest.json"
+    },
+    "completed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "tests": {
+      "pass": 7,
+      "fail": 0
+    },
+    "coordinator": {
+      "ok": true,
+      "verdict": "DEPLOY",
+      "deploy": true,
+      "risks": [],
+      "summary": "OK",
+      "perSpecialist": {
+        "frontend": "APPROVE"
+      }
+    },
+    "implementedAt": "2026-06-02T07:13:27.955Z"
+  },
+  {
+    "pageId": "p3",
+    "pageName": "Customer Management",
+    "pageType": "dashboard",
+    "route": "/customers",
+    "blueprintId": "bp_1780347708536",
+    "productName": "SubscriptionMaster",
+    "projectId": "proj_1780384407888",
+    "status": "implemented",
+    "apiBindings": {
+      "get": [
+        {
+          "id": "a4",
+          "method": "GET",
+          "path": "/customers",
+          "description": "Retrieve a list of customer subscriptions",
+          "featureIds": [
+            "f2"
+          ]
+        }
+      ],
+      "post": [
+        {
+          "id": "a3",
+          "method": "POST",
+          "path": "/customers",
+          "description": "Create a new customer subscription",
+          "featureIds": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "a6",
+          "method": "POST",
+          "path": "/payments",
+          "description": "Process a payment via Stripe",
+          "featureIds": [
+            "f3"
+          ]
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "f2",
+        "name": "Customer Management"
+      },
+      {
+        "id": "f3",
+        "name": "Payment Processing"
+      }
+    ],
+    "tasks": [
+      {
+        "seq": 1,
+        "request": "Create the page shell in frontend/src/pages/customermanagement.jsx. Export default function CustomerManagement() that: (1) Imports: import { useCustomerManagement } from '../hooks/useCustomerManagement'; import DataView from '../components/customermanagement/DataView'; import ActionForm from '../components/customermanagement/ActionForm'. (2) Calls const { data, loading, error, mutate } = useCustomerManagement(). (3) Returns JSX with: a <header> containing an <h1>Customer Management</h1>; a <main> containing {loading && <p>Loading...</p>}, {error && <p className=\"error\">{error}</p>}, {data && <DataView data={data} />}, and <ActionForm onSubmit={mutate} />. (4) Import and apply styles from ../components/customermanagement/styles.css. Page type: dashboard. Features: Customer Management, Payment Processing. Keep state management minimal in the shell — delegate to the hook.",
+        "description": "Page shell for Customer Management",
+        "dependsOn": [],
+        "filePath": "frontend/src/pages/customermanagement.jsx"
+      },
+      {
+        "seq": 2,
+        "request": "Create frontend/src/hooks/useCustomerManagement.js. Export default function useCustomerManagement() that: (1) Imports useState, useEffect, useCallback from 'react' and api from '../api/client'. (2) Declares: const [data, setData] = useState([]); const [loading, setLoading] = useState(true); const [error, setError] = useState(null). (3) useEffect on mount: setLoading(true); api.get('/customers').then(r => setData(r.data.data)).catch(e => setError(e.message)).finally(() => setLoading(false)). (4) const mutate = useCallback(async (formData) => { api.post('/customers', formData).then(r => { setData(prev => [...prev, r.data.data]); }) }, []). Returns { data, loading, error, mutate }. Page type: dashboard. Bound GET APIs: GET /customers. Bound POST APIs: POST /customers, POST /payments.",
+        "description": "API hook useCustomerManagement",
+        "dependsOn": [],
+        "filePath": "frontend/src/hooks/useCustomerManagement.js"
+      },
+      {
+        "seq": 3,
+        "request": "Create frontend/src/components/customermanagement/DataView.jsx. Export default function DataView({ data }) that: (1) Renders a <div className=\"dashboard-view\"> containing: a <div className=\"summary-cards\"> with summary cards: one card per feature area (Customer Management, Payment Processing) showing count badges; a <div className=\"data-table\"> with a <table> for the primary data list (customers) with headers [name, email] and rows: {data?.map(row => <tr key={row.id}><td>{row.name}</td><td>{row.email}</td></tr>)}. (2) Handle empty data: show <p className=\"empty\">No customers found.</p>. (3) Accepts props: data (array). This is the dashboard overview for CustomerManagement.",
+        "description": "DataView component for Customer Management",
+        "dependsOn": [
+          1
+        ],
+        "filePath": "frontend/src/components/customermanagement/DataView.jsx"
+      },
+      {
+        "seq": 4,
+        "request": "Create frontend/src/components/customermanagement/ActionForm.jsx. Export default function ActionForm({ onSubmit }) that: (1) Declares const [form, setForm] = useState({name: \"\", email: \"\"}); const [submitting, setSubmitting] = useState(false); const [formError, setFormError] = useState(null). (2) const handleChange = e => setForm(prev => ({ ...prev, [e.target.name]: e.target.value })). (3) const handleSubmit = async e => { e.preventDefault(); setSubmitting(true); setFormError(null); try { await onSubmit?.(form); setForm({name: \"\", email: \"\"}); } catch(err) { setFormError(err.message); } finally { setSubmitting(false); } }. (4) Returns a <form onSubmit={handleSubmit} className=\"action-form\"> containing: <label>name: <input type=\"text\" name=\"name\" value={form.name} onChange={handleChange} required /></label> <label>email: <input type=\"email\" name=\"email\" value={form.email} onChange={handleChange} required /></label> {formError && <p className=\"form-error\">{formError}</p>} <button type=\"submit\" disabled={submitting}>{submitting ? 'Saving...' : 'Save'}</button>. This form submits to: POST /customers. Page: CustomerManagement. Imports: useState from 'react'.",
+        "description": "ActionForm component for Customer Management",
+        "dependsOn": [
+          1
+        ],
+        "filePath": "frontend/src/components/customermanagement/ActionForm.jsx"
+      },
+      {
+        "seq": 5,
+        "request": "Update frontend/src/pages/customermanagement.jsx to wire all components together with full state flow. The page must: (1) Call const { data, loading, error, mutate } = useCustomerManagement(). (2) Manage local UI state: const [selected, setSelected] = useState(null); const [showForm, setShowForm] = useState(false). (3) Handle form submission: const handleSubmit = async (formData) => { await mutate(formData); setShowForm(false); }. (4) Render the full page: <div className=\"customermanagement-page\"> <header><h1>Customer Management</h1><button onClick={() => setShowForm(s => !s)}>+ New</button></header> {loading && <div className=\"loading-spinner\">Loading...</div>} {error && <div className=\"error-banner\">{error}</div>} {!loading && <DataView data={data} onSelect={setSelected} />} {showForm && <ActionForm onSubmit={handleSubmit} />}</div>. (5) The component must be fully self-contained — no props required. Page type: dashboard. Data sources: /customers. Mutations: /customers, /payments.",
+        "description": "Full integration for Customer Management",
+        "dependsOn": [
+          2,
+          3,
+          4
+        ],
+        "filePath": "frontend/src/pages/customermanagement.jsx"
+      },
+      {
+        "seq": 6,
+        "request": "Create tests/pages/customermanagement.test.cjs with a node:test suite for the CustomerManagement page. Import the page component from frontend/src/pages/customermanagement.jsx. Mock the API client at frontend/src/api/client.js to return controlled data. Test cases: (1) Renders without crashing — import CustomerManagement and verify it is a function. (2) Hook data loading — mock api.get('/customers') to return { data: { data: [{ id: 1, name: \"test\", email: \"test\" }] } }; verify the hook resolves loading=false and data has the expected shape. (3) Form submission — mock api.post('/customers') to return { data: { data: { id: 99 } } }; call mutate({ name: \"test\", email: \"test\" }); verify data array length increases. (4) Error handling — mock api.get to reject with 'Network error'; verify error state is set. Use node:assert for assertions. Use async test() blocks. No React rendering framework required — test the hook and data logic directly.",
+        "description": "Page tests for Customer Management",
+        "dependsOn": [
+          5
+        ],
+        "filePath": "tests/pages/customermanagement.test.cjs"
+      },
+      {
+        "seq": 7,
+        "request": "Create frontend/src/pages/customermanagement.manifest.json as a valid JSON file documenting the CustomerManagement page. Include: \"pageId\": \"p3\", \"pageName\": \"Customer Management\", \"route\": \"/customers\", \"pageType\": \"dashboard\", \"componentTree\": {\"page\":\"CustomerManagement\",\"shell\":\"frontend/src/pages/customermanagement.jsx\",\"hook\":\"frontend/src/hooks/useCustomerManagement.js\",\"components\":[\"frontend/src/components/customermanagement/DataView.jsx\",\"frontend/src/components/customermanagement/ActionForm.jsx\"]}, \"apiBindings\": [{\"method\":\"GET\",\"path\":\"/customers\",\"role\":\"data-source\"},{\"method\":\"POST\",\"path\":\"/customers\",\"role\":\"mutation\"},{\"method\":\"POST\",\"path\":\"/payments\",\"role\":\"mutation\"}], \"stateShape\": {\"data\":\"array\",\"loading\":\"boolean\",\"error\":\"string|null\",\"mutate\":\"function|null\",\"selected\":\"object|null\",\"showForm\":\"boolean\"}, \"features\": [\"Customer Management\", \"Payment Processing\"], \"tables\": [\"customers\", \"subscriptions\", \"payments\"]. Write valid JSON only — no comments.",
+        "description": "Page manifest for Customer Management",
+        "dependsOn": [
+          5
+        ],
+        "filePath": "frontend/src/pages/customermanagement.manifest.json"
+      }
+    ],
+    "filePaths": {
+      "shellFile": "frontend/src/pages/customermanagement.jsx",
+      "hookFile": "frontend/src/hooks/useCustomerManagement.js",
+      "displayFile": "frontend/src/components/customermanagement/DataView.jsx",
+      "formFile": "frontend/src/components/customermanagement/ActionForm.jsx",
+      "stylesFile": "frontend/src/components/customermanagement/styles.css",
+      "testFile": "tests/pages/customermanagement.test.cjs",
+      "manifestFile": "frontend/src/pages/customermanagement.manifest.json"
+    },
+    "completed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "tests": {
+      "pass": 7,
+      "fail": 0
+    },
+    "coordinator": {
+      "ok": true,
+      "verdict": "DEPLOY",
+      "deploy": true,
+      "risks": [],
+      "summary": "OK",
+      "perSpecialist": {
+        "frontend": "APPROVE"
+      }
+    },
+    "implementedAt": "2026-06-02T07:13:27.920Z"
+  },
+  {
+    "pageId": "p2",
+    "pageName": "Plan Creation",
+    "pageType": "crud",
+    "route": "/plans/create",
+    "blueprintId": "bp_1780347708536",
+    "productName": "SubscriptionMaster",
+    "projectId": "proj_1780384407856",
+    "status": "implemented",
+    "apiBindings": {
+      "get": [
+        {
+          "id": "a2",
+          "method": "GET",
+          "path": "/plans",
+          "description": "Retrieve a list of subscription plans",
+          "featureIds": [
+            "f1"
+          ]
+        }
+      ],
+      "post": [
+        {
+          "id": "a1",
+          "method": "POST",
+          "path": "/plans",
+          "description": "Create a new subscription plan",
+          "featureIds": [
+            "f1"
+          ]
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "f1",
+        "name": "Plan Management"
+      }
+    ],
+    "tasks": [
+      {
+        "seq": 1,
+        "request": "Create the page shell in frontend/src/pages/plancreation.jsx. Export default function PlanCreation() that: (1) Imports: import { usePlanCreation } from '../hooks/usePlanCreation'; import DataView from '../components/plancreation/DataView'; import ActionForm from '../components/plancreation/ActionForm'. (2) Calls const { data, loading, error, mutate } = usePlanCreation(). (3) Returns JSX with: a <header> containing an <h1>Plan Creation</h1>; a <main> containing {loading && <p>Loading...</p>}, {error && <p className=\"error\">{error}</p>}, {data && <DataView data={data} />}, and <ActionForm onSubmit={mutate} />. (4) Import and apply styles from ../components/plancreation/styles.css. Page type: crud. Features: Plan Management. Keep state management minimal in the shell — delegate to the hook.",
+        "description": "Page shell for Plan Creation",
+        "dependsOn": [],
+        "filePath": "frontend/src/pages/plancreation.jsx"
+      },
+      {
+        "seq": 2,
+        "request": "Create frontend/src/hooks/usePlanCreation.js. Export default function usePlanCreation() that: (1) Imports useState, useEffect, useCallback from 'react' and api from '../api/client'. (2) Declares: const [data, setData] = useState([]); const [loading, setLoading] = useState(true); const [error, setError] = useState(null). (3) useEffect on mount: setLoading(true); api.get('/plans').then(r => setData(r.data.data)).catch(e => setError(e.message)).finally(() => setLoading(false)). (4) const mutate = useCallback(async (formData) => { api.post('/plans', formData).then(r => { setData(prev => [...prev, r.data.data]); }) }, []). Returns { data, loading, error, mutate }. Page type: crud. Bound GET APIs: GET /plans. Bound POST APIs: POST /plans.",
+        "description": "API hook usePlanCreation",
+        "dependsOn": [],
+        "filePath": "frontend/src/hooks/usePlanCreation.js"
+      },
+      {
+        "seq": 3,
+        "request": "Create frontend/src/components/plancreation/DataView.jsx. Export default function DataView({ data, onSelect }) that: (1) Renders a <div className=\"data-view\"> containing a <table> with: <thead><tr><th>name</th><th>price</th><th>Actions</th></tr></thead> and <tbody>{data?.map(row => <tr key={row.id}><td>{row.name}</td><td>{row.price}</td><td><button onClick={() => onSelect?.(row)}>Edit</button></td></tr>)}</tbody>. (2) Shows <p className=\"empty\">No plans yet.</p> when data is empty or null. (3) Accepts props: data (array), onSelect (function, optional). Add a simple <input placeholder=\"Search...\" onChange={e => ...} /> above the table for client-side filtering on the name column.",
+        "description": "DataView component for Plan Creation",
+        "dependsOn": [
+          1
+        ],
+        "filePath": "frontend/src/components/plancreation/DataView.jsx"
+      },
+      {
+        "seq": 4,
+        "request": "Create frontend/src/components/plancreation/ActionForm.jsx. Export default function ActionForm({ onSubmit }) that: (1) Declares const [form, setForm] = useState({name: \"\", price: \"\"}); const [submitting, setSubmitting] = useState(false); const [formError, setFormError] = useState(null). (2) const handleChange = e => setForm(prev => ({ ...prev, [e.target.name]: e.target.value })). (3) const handleSubmit = async e => { e.preventDefault(); setSubmitting(true); setFormError(null); try { await onSubmit?.(form); setForm({name: \"\", price: \"\"}); } catch(err) { setFormError(err.message); } finally { setSubmitting(false); } }. (4) Returns a <form onSubmit={handleSubmit} className=\"action-form\"> containing: <label>name: <input type=\"text\" name=\"name\" value={form.name} onChange={handleChange} required /></label> <label>price: <input type=\"number\" name=\"price\" min=\"0\" step=\"0.01\" value={form.price} onChange={handleChange} required /></label> {formError && <p className=\"form-error\">{formError}</p>} <button type=\"submit\" disabled={submitting}>{submitting ? 'Saving...' : 'Save'}</button>. This form submits to: POST /plans. Page: PlanCreation. Imports: useState from 'react'.",
+        "description": "ActionForm component for Plan Creation",
+        "dependsOn": [
+          1
+        ],
+        "filePath": "frontend/src/components/plancreation/ActionForm.jsx"
+      },
+      {
+        "seq": 5,
+        "request": "Update frontend/src/pages/plancreation.jsx to wire all components together with full state flow. The page must: (1) Call const { data, loading, error, mutate } = usePlanCreation(). (2) Manage local UI state: const [selected, setSelected] = useState(null); const [showForm, setShowForm] = useState(false). (3) Handle form submission: const handleSubmit = async (formData) => { await mutate(formData); setShowForm(false); }. (4) Render the full page: <div className=\"plancreation-page\"> <header><h1>Plan Creation</h1><button onClick={() => setShowForm(s => !s)}>+ New</button></header> {loading && <div className=\"loading-spinner\">Loading...</div>} {error && <div className=\"error-banner\">{error}</div>} {!loading && <DataView data={data} onSelect={setSelected} />} {showForm && <ActionForm onSubmit={handleSubmit} />}</div>. (5) The component must be fully self-contained — no props required. Page type: crud. Data sources: /plans. Mutations: /plans.",
+        "description": "Full integration for Plan Creation",
+        "dependsOn": [
+          2,
+          3,
+          4
+        ],
+        "filePath": "frontend/src/pages/plancreation.jsx"
+      },
+      {
+        "seq": 6,
+        "request": "Create tests/pages/plancreation.test.cjs with a node:test suite for the PlanCreation page. Import the page component from frontend/src/pages/plancreation.jsx. Mock the API client at frontend/src/api/client.js to return controlled data. Test cases: (1) Renders without crashing — import PlanCreation and verify it is a function. (2) Hook data loading — mock api.get('/plans') to return { data: { data: [{ id: 1, name: \"test\", price: \"test\" }] } }; verify the hook resolves loading=false and data has the expected shape. (3) Form submission — mock api.post('/plans') to return { data: { data: { id: 99 } } }; call mutate({ name: \"test\", price: \"test\" }); verify data array length increases. (4) Error handling — mock api.get to reject with 'Network error'; verify error state is set. Use node:assert for assertions. Use async test() blocks. No React rendering framework required — test the hook and data logic directly.",
+        "description": "Page tests for Plan Creation",
+        "dependsOn": [
+          5
+        ],
+        "filePath": "tests/pages/plancreation.test.cjs"
+      },
+      {
+        "seq": 7,
+        "request": "Create frontend/src/pages/plancreation.manifest.json as a valid JSON file documenting the PlanCreation page. Include: \"pageId\": \"p2\", \"pageName\": \"Plan Creation\", \"route\": \"/plans/create\", \"pageType\": \"crud\", \"componentTree\": {\"page\":\"PlanCreation\",\"shell\":\"frontend/src/pages/plancreation.jsx\",\"hook\":\"frontend/src/hooks/usePlanCreation.js\",\"components\":[\"frontend/src/components/plancreation/DataView.jsx\",\"frontend/src/components/plancreation/ActionForm.jsx\"]}, \"apiBindings\": [{\"method\":\"GET\",\"path\":\"/plans\",\"role\":\"data-source\"},{\"method\":\"POST\",\"path\":\"/plans\",\"role\":\"mutation\"}], \"stateShape\": {\"data\":\"array\",\"loading\":\"boolean\",\"error\":\"string|null\",\"mutate\":\"function|null\",\"selected\":\"object|null\",\"showForm\":\"boolean\"}, \"features\": [\"Plan Management\"], \"tables\": [\"plans\"]. Write valid JSON only — no comments.",
+        "description": "Page manifest for Plan Creation",
+        "dependsOn": [
+          5
+        ],
+        "filePath": "frontend/src/pages/plancreation.manifest.json"
+      }
+    ],
+    "filePaths": {
+      "shellFile": "frontend/src/pages/plancreation.jsx",
+      "hookFile": "frontend/src/hooks/usePlanCreation.js",
+      "displayFile": "frontend/src/components/plancreation/DataView.jsx",
+      "formFile": "frontend/src/components/plancreation/ActionForm.jsx",
+      "stylesFile": "frontend/src/components/plancreation/styles.css",
+      "testFile": "tests/pages/plancreation.test.cjs",
+      "manifestFile": "frontend/src/pages/plancreation.manifest.json"
+    },
+    "completed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "tests": {
+      "pass": 7,
+      "fail": 0
+    },
+    "coordinator": {
+      "ok": true,
+      "verdict": "DEPLOY",
+      "deploy": true,
+      "risks": [],
+      "summary": "OK",
+      "perSpecialist": {
+        "frontend": "APPROVE"
+      }
+    },
+    "implementedAt": "2026-06-02T07:13:27.887Z"
+  },
+  {
+    "pageId": "p1",
+    "pageName": "Dashboard",
+    "pageType": "dashboard",
+    "route": "/dashboard",
+    "blueprintId": "bp_1780347708536",
+    "productName": "SubscriptionMaster",
+    "projectId": "proj_1780384407822",
+    "status": "implemented",
+    "apiBindings": {
+      "get": [
+        {
+          "id": "a2",
+          "method": "GET",
+          "path": "/plans",
+          "description": "Retrieve a list of subscription plans",
+          "featureIds": [
+            "f1"
+          ]
+        },
+        {
+          "id": "a4",
+          "method": "GET",
+          "path": "/customers",
+          "description": "Retrieve a list of customer subscriptions",
+          "featureIds": [
+            "f2"
+          ]
+        }
+      ],
+      "post": [
+        {
+          "id": "a1",
+          "method": "POST",
+          "path": "/plans",
+          "description": "Create a new subscription plan",
+          "featureIds": [
+            "f1"
+          ]
+        },
+        {
+          "id": "a3",
+          "method": "POST",
+          "path": "/customers",
+          "description": "Create a new customer subscription",
+          "featureIds": [
+            "f2",
+            "f3"
+          ]
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "f1",
+        "name": "Plan Management"
+      },
+      {
+        "id": "f2",
+        "name": "Customer Management"
+      }
+    ],
+    "tasks": [
+      {
+        "seq": 1,
+        "request": "Create the page shell in frontend/src/pages/dashboard.jsx. Export default function Dashboard() that: (1) Imports: import { useDashboard } from '../hooks/useDashboard'; import DataView from '../components/dashboard/DataView'; import ActionForm from '../components/dashboard/ActionForm'. (2) Calls const { data, loading, error, mutate } = useDashboard(). (3) Returns JSX with: a <header> containing an <h1>Dashboard</h1>; a <main> containing {loading && <p>Loading...</p>}, {error && <p className=\"error\">{error}</p>}, {data && <DataView data={data} />}, and <ActionForm onSubmit={mutate} />. (4) Import and apply styles from ../components/dashboard/styles.css. Page type: dashboard. Features: Plan Management, Customer Management. Keep state management minimal in the shell — delegate to the hook.",
+        "description": "Page shell for Dashboard",
+        "dependsOn": [],
+        "filePath": "frontend/src/pages/dashboard.jsx"
+      },
+      {
+        "seq": 2,
+        "request": "Create frontend/src/hooks/useDashboard.js. Export default function useDashboard() that: (1) Imports useState, useEffect, useCallback from 'react' and api from '../api/client'. (2) Declares: const [data, setData] = useState([]); const [loading, setLoading] = useState(true); const [error, setError] = useState(null). (3) useEffect on mount: setLoading(true); api.get('/plans').then(r => setData(r.data.data)).catch(e => setError(e.message)).finally(() => setLoading(false)). (4) const mutate = useCallback(async (formData) => { api.post('/plans', formData).then(r => { setData(prev => [...prev, r.data.data]); }) }, []). (5) Additional data sources: const [customersData, setCustomersData] = useState([]); useEffect(() => { api.get('/customers').then(r => setCustomersData(r.data.data || [])).catch(() => {}); }, []); Returns { data, loading, error, mutate, ...extraData }. Page type: dashboard. Bound GET APIs: GET /plans, GET /customers. Bound POST APIs: POST /plans, POST /customers.",
+        "description": "API hook useDashboard",
+        "dependsOn": [],
+        "filePath": "frontend/src/hooks/useDashboard.js"
+      },
+      {
+        "seq": 3,
+        "request": "Create frontend/src/components/dashboard/DataView.jsx. Export default function DataView({ data }) that: (1) Renders a <div className=\"dashboard-view\"> containing: a <div className=\"summary-cards\"> with summary cards: one card per feature area (Plan Management, Customer Management) showing count badges; a <div className=\"data-table\"> with a <table> for the primary data list (plans) with headers [name, price] and rows: {data?.map(row => <tr key={row.id}><td>{row.name}</td><td>{row.price}</td></tr>)}. (2) Handle empty data: show <p className=\"empty\">No plans found.</p>. (3) Accepts props: data (array). This is the dashboard overview for Dashboard.",
+        "description": "DataView component for Dashboard",
+        "dependsOn": [
+          1
+        ],
+        "filePath": "frontend/src/components/dashboard/DataView.jsx"
+      },
+      {
+        "seq": 4,
+        "request": "Create frontend/src/components/dashboard/ActionForm.jsx. Export default function ActionForm({ onSubmit }) that: (1) Declares const [form, setForm] = useState({name: \"\", price: \"\"}); const [submitting, setSubmitting] = useState(false); const [formError, setFormError] = useState(null). (2) const handleChange = e => setForm(prev => ({ ...prev, [e.target.name]: e.target.value })). (3) const handleSubmit = async e => { e.preventDefault(); setSubmitting(true); setFormError(null); try { await onSubmit?.(form); setForm({name: \"\", price: \"\"}); } catch(err) { setFormError(err.message); } finally { setSubmitting(false); } }. (4) Returns a <form onSubmit={handleSubmit} className=\"action-form\"> containing: <label>name: <input type=\"text\" name=\"name\" value={form.name} onChange={handleChange} required /></label> <label>price: <input type=\"number\" name=\"price\" min=\"0\" step=\"0.01\" value={form.price} onChange={handleChange} required /></label> {formError && <p className=\"form-error\">{formError}</p>} <button type=\"submit\" disabled={submitting}>{submitting ? 'Saving...' : 'Save'}</button>. This form submits to: POST /plans. Page: Dashboard. Imports: useState from 'react'.",
+        "description": "ActionForm component for Dashboard",
+        "dependsOn": [
+          1
+        ],
+        "filePath": "frontend/src/components/dashboard/ActionForm.jsx"
+      },
+      {
+        "seq": 5,
+        "request": "Update frontend/src/pages/dashboard.jsx to wire all components together with full state flow. The page must: (1) Call const { data, loading, error, mutate } = useDashboard(). (2) Manage local UI state: const [selected, setSelected] = useState(null); const [showForm, setShowForm] = useState(false). (3) Handle form submission: const handleSubmit = async (formData) => { await mutate(formData); setShowForm(false); }. (4) Render the full page: <div className=\"dashboard-page\"> <header><h1>Dashboard</h1><button onClick={() => setShowForm(s => !s)}>+ New</button></header> {loading && <div className=\"loading-spinner\">Loading...</div>} {error && <div className=\"error-banner\">{error}</div>} {!loading && <DataView data={data} onSelect={setSelected} />} {showForm && <ActionForm onSubmit={handleSubmit} />}</div>. (5) The component must be fully self-contained — no props required. Page type: dashboard. Data sources: /plans, /customers. Mutations: /plans, /customers.",
+        "description": "Full integration for Dashboard",
+        "dependsOn": [
+          2,
+          3,
+          4
+        ],
+        "filePath": "frontend/src/pages/dashboard.jsx"
+      },
+      {
+        "seq": 6,
+        "request": "Create tests/pages/dashboard.test.cjs with a node:test suite for the Dashboard page. Import the page component from frontend/src/pages/dashboard.jsx. Mock the API client at frontend/src/api/client.js to return controlled data. Test cases: (1) Renders without crashing — import Dashboard and verify it is a function. (2) Hook data loading — mock api.get('/plans') to return { data: { data: [{ id: 1, name: \"test\", price: \"test\" }] } }; verify the hook resolves loading=false and data has the expected shape. (3) Form submission — mock api.post('/plans') to return { data: { data: { id: 99 } } }; call mutate({ name: \"test\", price: \"test\" }); verify data array length increases. (4) Error handling — mock api.get to reject with 'Network error'; verify error state is set. Use node:assert for assertions. Use async test() blocks. No React rendering framework required — test the hook and data logic directly.",
+        "description": "Page tests for Dashboard",
+        "dependsOn": [
+          5
+        ],
+        "filePath": "tests/pages/dashboard.test.cjs"
+      },
+      {
+        "seq": 7,
+        "request": "Create frontend/src/pages/dashboard.manifest.json as a valid JSON file documenting the Dashboard page. Include: \"pageId\": \"p1\", \"pageName\": \"Dashboard\", \"route\": \"/dashboard\", \"pageType\": \"dashboard\", \"componentTree\": {\"page\":\"Dashboard\",\"shell\":\"frontend/src/pages/dashboard.jsx\",\"hook\":\"frontend/src/hooks/useDashboard.js\",\"components\":[\"frontend/src/components/dashboard/DataView.jsx\",\"frontend/src/components/dashboard/ActionForm.jsx\"]}, \"apiBindings\": [{\"method\":\"GET\",\"path\":\"/plans\",\"role\":\"data-source\"},{\"method\":\"GET\",\"path\":\"/customers\",\"role\":\"data-source\"},{\"method\":\"POST\",\"path\":\"/plans\",\"role\":\"mutation\"},{\"method\":\"POST\",\"path\":\"/customers\",\"role\":\"mutation\"}], \"stateShape\": {\"data\":\"array\",\"loading\":\"boolean\",\"error\":\"string|null\",\"mutate\":\"function|null\",\"selected\":\"object|null\",\"showForm\":\"boolean\"}, \"features\": [\"Plan Management\", \"Customer Management\"], \"tables\": [\"plans\", \"customers\", \"subscriptions\"]. Write valid JSON only — no comments.",
+        "description": "Page manifest for Dashboard",
+        "dependsOn": [
+          5
+        ],
+        "filePath": "frontend/src/pages/dashboard.manifest.json"
+      }
+    ],
+    "filePaths": {
+      "shellFile": "frontend/src/pages/dashboard.jsx",
+      "hookFile": "frontend/src/hooks/useDashboard.js",
+      "displayFile": "frontend/src/components/dashboard/DataView.jsx",
+      "formFile": "frontend/src/components/dashboard/ActionForm.jsx",
+      "stylesFile": "frontend/src/components/dashboard/styles.css",
+      "testFile": "tests/pages/dashboard.test.cjs",
+      "manifestFile": "frontend/src/pages/dashboard.manifest.json"
+    },
+    "completed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "tests": {
+      "pass": 7,
+      "fail": 0
+    },
+    "coordinator": {
+      "ok": true,
+      "verdict": "DEPLOY",
+      "deploy": true,
+      "risks": [],
+      "summary": "OK",
+      "perSpecialist": {
+        "frontend": "APPROVE"
+      }
+    },
+    "implementedAt": "2026-06-02T07:13:27.855Z"
+  }
+]

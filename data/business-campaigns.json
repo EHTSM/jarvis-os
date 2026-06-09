@@ -1,0 +1,63 @@
+[
+  {
+    "campaignId": "camp_1780405116633",
+    "name": "Social Ads",
+    "channel": "social",
+    "status": "draft",
+    "budget": 5000,
+    "spent": 0,
+    "startDate": null,
+    "endDate": null,
+    "goals": {
+      "leads": 0,
+      "conversions": 0,
+      "revenue": 0
+    },
+    "metrics": {
+      "impressions": 0,
+      "clicks": 0,
+      "opens": 0,
+      "conversions": 0,
+      "leadsGen": 0,
+      "revenue": 0,
+      "spend": 0
+    },
+    "tags": [],
+    "notes": "",
+    "createdAt": "2026-06-02T12:58:36.636Z",
+    "updatedAt": "2026-06-02T12:58:36.636Z",
+    "completedAt": null
+  },
+  {
+    "campaignId": "camp_1780405116632",
+    "name": "Q3 Email Blast",
+    "channel": "email",
+    "status": "completed",
+    "budget": 2000,
+    "spent": 800,
+    "startDate": null,
+    "endDate": null,
+    "goals": {
+      "leads": 100,
+      "conversions": 20,
+      "revenue": 50000
+    },
+    "metrics": {
+      "impressions": 5000,
+      "clicks": 250,
+      "opens": 0,
+      "conversions": 8,
+      "leadsGen": 15,
+      "revenue": 0,
+      "spend": 800
+    },
+    "tags": [
+      "q3",
+      "email"
+    ],
+    "notes": "Q3 wrap",
+    "createdAt": "2026-06-02T12:58:36.636Z",
+    "updatedAt": "2026-06-02T12:58:36.638Z",
+    "completedAt": "2026-06-02T12:58:36.638Z"
+  }
+]

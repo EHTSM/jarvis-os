@@ -69,7 +69,12 @@ function _buildHandlers() {
             payload:       task.payload
         }),
 
-        ai: async () => null,
+        ai: async (task) => {
+            const { callAI } = require("../backend/services/aiService.js");
+            const query = task.payload?.query || task.input || task.label || "";
+            const reply = await callAI(query);
+            return { type: "ai", result: reply, message: reply, success: !!reply };
+        },
 
         research: async (task) => {
             const researchAgent = require("./researchAgent.cjs");

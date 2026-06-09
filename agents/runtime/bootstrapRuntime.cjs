@@ -183,4 +183,23 @@ if (enableLocalDesktop) {
     }
 }
 
+// ── AI Agent — handles "ai" task type via aiService.callAI ───────────
+try {
+    const { callAI } = require("../../backend/services/aiService.js");
+
+    orchestrator.registerAgent({
+        id:           "ai",
+        capabilities: ["ai", "intelligence"],
+        maxConcurrent: 5,
+        handler: async (task) => {
+            const query = task.payload?.query || task.input || task.label || "";
+            const reply = await callAI(query);
+            return { type: "ai", result: reply, message: reply, success: !!reply && !reply.startsWith("AI backend unavailable") };
+        },
+    });
+    logger.info("[Bootstrap] AI agent registered");
+} catch (err) {
+    logger.warn("[Bootstrap] AI agent skipped:", err.message);
+}
+
 logger.info("[Bootstrap] Runtime agent registration complete");

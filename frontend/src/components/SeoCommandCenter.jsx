@@ -217,6 +217,13 @@ export default function SeoCommandCenter({ onNavigate }) {
 
   return (
     <div className="seo-center page-enter">
+      <div className="coming-soon-banner">
+        <span className="csb-icon">◎</span>
+        <div className="csb-body">
+          <span className="csb-title">SEO Monitoring Engine <span className="csb-beta-badge">BETA</span></span>
+          <span className="csb-sub">Live keyword ranking, automated audits, and GSC data sync require the SEOMonitoringEngine (not yet built). The readiness checks and content opportunities below are manually maintained.</span>
+        </div>
+      </div>
 
       {/* Header */}
       <div className="seo-header">

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { track } from "../analytics";
+import { listMemoryNodes, memoryStats } from "../phase18Api";
 import "./SharedMemoryCenter.css";
 
 // ── Seed memory fabric ────────────────────────────────────────────────
@@ -150,19 +151,48 @@ export default function SharedMemoryCenter({ onNavigate }) {
   const [section,  setSection]  = useState("list");
   const [selected, setSelected] = useState("gm1");
   const [search,   setSearch]   = useState("");
+  const [nodes,    setNodes]    = useState(MEMORY_NODES);
+  const [apiError, setApiError] = useState(null);
 
   React.useEffect(() => { track.event("shared_memory_viewed"); }, []);
 
-  const visible = MEMORY_NODES.filter(n =>
+  useEffect(() => {
+    let cancelled = false;
+    listMemoryNodes({ limit: 100 })
+      .then(res => {
+        if (cancelled) return;
+        const live = res?.nodes || res?.memories;
+        if (Array.isArray(live) && live.length > 0) {
+          const mapped = live.map(n => ({
+            id:          n.id,
+            scope:       n.scope || n.type || "global",
+            category:    n.category || n.type || "general",
+            title:       n.title || n.key || "Memory",
+            body:        n.body || n.value || "",
+            importance:  n.importance || "medium",
+            usedBy:      Array.isArray(n.usedBy) ? n.usedBy : [],
+            accessCount: n.accessCount ?? 0,
+            lastAccessed: n.updatedAt ? new Date(n.updatedAt).toLocaleTimeString() : "—",
+          }));
+          setNodes(mapped);
+          if (mapped.length && !mapped.find(n => n.id === selected)) setSelected(mapped[0].id);
+        }
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const visible = nodes.filter(n =>
     (scope === "all" || n.scope === scope) &&
     (!search || n.title.toLowerCase().includes(search.toLowerCase()) || n.body.toLowerCase().includes(search.toLowerCase()))
   );
-  const selNode = selected ? MEMORY_NODES.find(n => n.id === selected) : null;
+  const selNode = selected ? nodes.find(n => n.id === selected) : null;
 
-  const scopeCounts = ["global","company","agent","project"].reduce((acc,s)=>{acc[s]=MEMORY_NODES.filter(n=>n.scope===s).length;return acc;},{});
+  const scopeCounts = ["global","company","agent","project"].reduce((acc,s)=>{acc[s]=nodes.filter(n=>n.scope===s).length;return acc;},{});
 
   return (
     <div className="shared-memory-center page-enter">
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live memory data unavailable — showing seed data ({apiError})</div>}
       <div className="smc-header">
         <div>
           <h1 className="smc-title">Shared Memory Fabric</h1>
@@ -179,7 +209,7 @@ export default function SharedMemoryCenter({ onNavigate }) {
             onClick={()=>setScope(sc.id)}
           >
             <span className="smc-scope-label" style={{ color: sc.color }}>{sc.label}</span>
-            <span className="smc-scope-count">{sc.id==="all"?MEMORY_NODES.length:scopeCounts[sc.id]||0}</span>
+            <span className="smc-scope-count">{sc.id==="all"?nodes.length:scopeCounts[sc.id]||0}</span>
           </button>
         ))}
       </div>
@@ -201,7 +231,7 @@ export default function SharedMemoryCenter({ onNavigate }) {
         {section === "graph" && (
           <div className="smc-graph-section">
             <div className="smc-graph-wrap">
-              <MemoryGraph nodes={MEMORY_NODES} onSelect={id=>{setSelected(id);}} />
+              <MemoryGraph nodes={nodes} onSelect={id=>{setSelected(id);}} />
             </div>
             {selNode && (
               <div className="smc-graph-detail">
@@ -275,12 +305,12 @@ export default function SharedMemoryCenter({ onNavigate }) {
                 <div className="smc-detail-section">
                   <p className="smc-ds-label">References</p>
                   <div className="smc-refs">
-                    {MEMORY_NODES.filter(n => n.id !== selNode.id && n.category === selNode.category).slice(0,3).map(ref=>(
+                    {nodes.filter(n => n.id !== selNode.id && n.category === selNode.category).slice(0,3).map(ref=>(
                       <button key={ref.id} className="smc-ref-chip" onClick={()=>setSelected(ref.id)}>
                         <span style={{ color: SCOPE_COLORS[ref.scope] }}>●</span> {ref.title}
                       </button>
                     ))}
-                    {MEMORY_NODES.filter(n => n.id !== selNode.id && n.category === selNode.category).length === 0 && (
+                    {nodes.filter(n => n.id !== selNode.id && n.category === selNode.category).length === 0 && (
                       <span className="smc-no-refs">No related memories</span>
                     )}
                   </div>

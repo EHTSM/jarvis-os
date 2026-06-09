@@ -1,0 +1,79 @@
+[
+  {
+    "recId": "rec_1780641346391_m",
+    "status": "open",
+    "priority": 1,
+    "createdAt": "2026-06-05T06:35:46.391Z",
+    "title": "Fix: not_configured: OPENROUTER_API_KEY not s",
+    "detail": "High-severity failure cluster (138 occurrences). Root cause: missing credentials — set required environment variable",
+    "type": "fix",
+    "source": "auto_analysis",
+    "updatedAt": "2026-06-07T19:32:36.938Z"
+  },
+  {
+    "recId": "rec_1780685881463_5g",
+    "status": "open",
+    "priority": 2,
+    "createdAt": "2026-06-05T18:58:01.463Z",
+    "title": "Investigate: unknown",
+    "detail": "Medium-severity failure (6 occurrences). Root cause: unclassified error — review logs for detail",
+    "type": "investigate",
+    "source": "auto_analysis",
+    "updatedAt": "2026-06-05T18:59:51.574Z"
+  },
+  {
+    "recId": "rec_1780686503298_5i",
+    "status": "open",
+    "priority": 1,
+    "createdAt": "2026-06-05T19:08:23.298Z",
+    "title": "Fix: unknown",
+    "detail": "High-severity failure cluster (2318 occurrences). Root cause: unclassified error — review logs for detail",
+    "type": "fix",
+    "source": "auto_analysis",
+    "updatedAt": "2026-06-07T19:32:36.938Z"
+  },
+  {
+    "recId": "rec_1780686503298_5j",
+    "status": "open",
+    "priority": 1,
+    "createdAt": "2026-06-05T19:08:23.298Z",
+    "title": "Fix: _learning.push is not a function",
+    "detail": "High-severity failure cluster (284 occurrences). Root cause: application error — review stack trace",
+    "type": "fix",
+    "source": "auto_analysis",
+    "updatedAt": "2026-06-05T21:21:16.510Z"
+  },
+  {
+    "recId": "rec_1780693820617_5n",
+    "status": "open",
+    "priority": 2,
+    "createdAt": "2026-06-05T21:10:20.617Z",
+    "title": "Investigate: ENOENT: no such file or directory, renam",
+    "detail": "Medium-severity failure (4 occurrences). Root cause: application error — review stack trace",
+    "type": "investigate",
+    "source": "auto_analysis",
+    "updatedAt": "2026-06-05T21:21:16.511Z"
+  },
+  {
+    "recId": "rec_1780693820617_5o",
+    "status": "open",
+    "priority": 2,
+    "createdAt": "2026-06-05T21:10:20.617Z",
+    "title": "Investigate: not_configured: GITHUB_TOKEN not set",
+    "detail": "Medium-severity failure (3 occurrences). Root cause: missing credentials — set required environment variable",
+    "type": "investigate",
+    "source": "auto_analysis",
+    "updatedAt": "2026-06-07T19:32:36.939Z"
+  },
+  {
+    "recId": "rec_1780694015891_5p",
+    "status": "open",
+    "priority": 1,
+    "createdAt": "2026-06-05T21:13:35.891Z",
+    "title": "Fix: ENOENT: no such file or directory, renam",
+    "detail": "High-severity failure cluster (182 occurrences). Root cause: application error — review stack trace",
+    "type": "fix",
+    "source": "auto_analysis",
+    "updatedAt": "2026-06-07T19:32:36.938Z"
+  }
+]

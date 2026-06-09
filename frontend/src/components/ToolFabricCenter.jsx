@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
-import { listTools, toolStatus, setToolPermission } from "../phase19Api";
+import { listTools, toolStatus, setToolPermission, executeTool } from "../phase19Api";
 import "./ToolFabricCenter.css";
 
 const TOOLS_KEY = "ooplix_tool_fabric";
@@ -97,12 +97,16 @@ function HealthBar({ pct, color }) {
 }
 
 export default function ToolFabricCenter({ onNavigate }) {
-  const [tools,     setTools]     = useState(() => _load(TOOLS_KEY, SEED_TOOLS));
-  const [selected,  setSelected]  = useState("t_openrouter");
-  const [catFilter, setCatFilter] = useState("all");
-  const [staFilter, setStaFilter] = useState("all");
-  const [toast,     setToast]     = useState(null);
-  const [apiError,  setApiError]  = useState(null);
+  const [tools,      setTools]      = useState(() => _load(TOOLS_KEY, SEED_TOOLS));
+  const [selected,   setSelected]   = useState("t_openrouter");
+  const [catFilter,  setCatFilter]  = useState("all");
+  const [staFilter,  setStaFilter]  = useState("all");
+  const [toast,      setToast]      = useState(null);
+  const [apiError,   setApiError]   = useState(null);
+  const [toolInput,  setToolInput]  = useState("");
+  const [toolRunning,setToolRunning]= useState(false);
+  const [toolResult, setToolResult] = useState(null);
+  const [toolErr,    setToolErr]    = useState(null);
 
   useEffect(() => { track.event("tool_fabric_viewed"); }, []);
 
@@ -297,6 +301,49 @@ export default function ToolFabricCenter({ onNavigate }) {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              <div className="tfc-detail-section">
+                <p className="tfc-ds-label">Execute tool</p>
+                <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+                  <input
+                    className="mc-form-input"
+                    style={{ flex:1, minWidth:0 }}
+                    value={toolInput}
+                    onChange={e => { setToolInput(e.target.value); setToolResult(null); setToolErr(null); }}
+                    onKeyDown={e => {
+                      if (e.key === "Enter" && toolInput.trim() && !toolRunning) {
+                        setToolRunning(true);
+                        executeTool(selTool.id, toolInput.trim())
+                          .then(r => setToolResult(r))
+                          .catch(e => setToolErr(e.message))
+                          .finally(() => setToolRunning(false));
+                      }
+                    }}
+                    placeholder={`Input for ${selTool.name}…`}
+                  />
+                  <button
+                    disabled={toolRunning || !toolInput.trim()}
+                    onClick={() => {
+                      if (!toolInput.trim() || toolRunning) return;
+                      setToolRunning(true); setToolResult(null); setToolErr(null);
+                      executeTool(selTool.id, toolInput.trim())
+                        .then(r => setToolResult(r))
+                        .catch(e => setToolErr(e.message))
+                        .finally(() => setToolRunning(false));
+                    }}
+                    style={{ padding:"8px 16px", background:"linear-gradient(135deg,var(--accent),var(--accent2))", color:"#06080e", border:"none", borderRadius:"var(--radius-pill)", fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"inherit", whiteSpace:"nowrap" }}
+                  >{toolRunning ? "Running…" : "▷ Run"}</button>
+                </div>
+                {toolErr && <p style={{ color:"var(--danger)", fontSize:12, marginTop:6 }}>Error: {toolErr}</p>}
+                {toolResult && (
+                  <div style={{ marginTop:8, padding:"8px 12px", background:"var(--surface-raised)", borderRadius:"var(--radius)", fontSize:12 }}>
+                    <span style={{ color: toolResult.success ? "var(--success)" : "var(--warning)", fontWeight:700 }}>
+                      {toolResult.success ? "✓ Success" : "⚠ Result"}
+                    </span>
+                    {" — "}{typeof toolResult.output === "string" ? toolResult.output : JSON.stringify(toolResult.output || toolResult.result || toolResult.error || "done")}
+                  </div>
+                )}
               </div>
 
               <div className="tfc-detail-actions">

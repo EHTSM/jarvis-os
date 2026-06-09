@@ -1,0 +1,15 @@
+{
+  "openrouter": {
+    "chat_completion": true,
+    "stream_completion": true,
+    "list_models": true
+  },
+  "github": {
+    "create_pr": false,
+    "push_commit": false,
+    "merge_pr": false,
+    "read_repo": true,
+    "list_issues": true,
+    "create_issue": true
+  }
+}

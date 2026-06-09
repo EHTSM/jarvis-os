@@ -15,7 +15,6 @@ import PartnerProgram     from "./components/PartnerProgram.jsx";
 import LaunchCommandCenter from "./components/LaunchCommandCenter.jsx";
 import TeamWorkspace      from "./components/TeamWorkspace.jsx";
 import EnterpriseCRM      from "./components/EnterpriseCRM.jsx";
-import ExecutiveReports   from "./components/ExecutiveReports.jsx";
 import WorkspaceSettings  from "./components/WorkspaceSettings.jsx";
 import KnowledgeCenter         from "./components/KnowledgeCenter.jsx";
 import MemoryCenter            from "./components/MemoryCenter.jsx";
@@ -57,7 +56,15 @@ import { sendMessage, checkHealth, getStats, getOpsData, emergencyStop, emergenc
 import Chat            from "./components/Chat.jsx";
 import Dashboard       from "./components/Dashboard.jsx";
 import Logs            from "./components/Logs.jsx";
-import PaymentPanel    from "./components/PaymentPanel.jsx";
+import ContactsV2      from "./components/ContactsV2.jsx";
+import PaymentsV2      from "./components/PaymentsV2.jsx";
+import ReportsV2       from "./components/ReportsV2.jsx";
+import AgentOSV2      from "./components/AgentOSV2.jsx";
+import MemoryOSV2     from "./components/MemoryOSV2.jsx";
+import WorkflowOSV2   from "./components/WorkflowOSV2.jsx";
+import DeveloperCopilotV2 from "./components/DeveloperCopilotV2.jsx";
+import DevOpsCenterV2    from "./components/DevOpsCenterV2.jsx";
+import GrowthOSV2       from "./components/GrowthOSV2.jsx";
 import Landing         from "./components/Landing.jsx";
 import Onboarding      from "./components/Onboarding.jsx";
 import ConnectBar      from "./components/ConnectBar.jsx";
@@ -65,6 +72,8 @@ import ToastContainer  from "./components/Toast.jsx";
 import ProgressBar     from "./components/ProgressBar.jsx";
 import OperatorConsole from "./components/operator/OperatorConsole.jsx";
 import LoginPage       from "./components/auth/LoginPage.jsx";
+import SignupPage      from "./components/auth/SignupPage.jsx";
+import ForgotPassword  from "./components/auth/ForgotPassword.jsx";
 import PersonalOS      from "./components/PersonalOS.jsx";
 import BusinessOS      from "./components/BusinessOS.jsx";
 import DeveloperOS     from "./components/DeveloperOS.jsx";
@@ -79,17 +88,18 @@ import ContactPage           from "./components/legal/ContactPage.jsx";
 import TrustCompliance       from "./components/legal/TrustCompliance.jsx";
 import PricingPage           from "./components/PricingPage.jsx";
 import ControlCenter         from "./components/ControlCenter.jsx";
+import MissionControlV1      from "./components/MissionControlV1.jsx";
 import CommandPalette        from "./components/CommandPalette.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import "./App.css";
 
 // Web: 5 primary tabs — secondary modules in "More" overflow
 const TABS = [
-  { id: "home",     label: "Control Center", featured: true },
+  { id: "mission",  label: "Mission Control", featured: true },
+  { id: "home",     label: "Control Center"  },
   { id: "runtime",  label: "Execution"       },
   { id: "chat",     label: "Intelligence"    },
   { id: "insights", label: "Pipeline"        },
-  { id: "clients",  label: "Contacts"        },
   { id: "more",     label: "More ▾"        },
 ];
 
@@ -113,6 +123,7 @@ const MORE_TABS = [
   { id: "enterprise", label: "Enterprise"  },
   { id: "team",        label: "Team"        },
   { id: "ecrm",        label: "CRM"         },
+  { id: "payments",    label: "Payments"    },
   { id: "reports",     label: "Reports"     },
   { id: "settings",    label: "Settings"    },
   { id: "knowledge",   label: "Knowledge"   },
@@ -211,11 +222,11 @@ const _PRODUCT   = _IS_DESKTOP ? "desktop" : _IS_SAAS ? "saas" : "public";
 
 // Desktop: same 5-tab structure — runtime is already default here
 const DESKTOP_TABS = [
-  { id: "home",     label: "Control Center", featured: true },
+  { id: "mission",  label: "Mission Control", featured: true },
+  { id: "home",     label: "Control Center"  },
   { id: "runtime",  label: "Execution"       },
   { id: "chat",     label: "Intelligence"    },
   { id: "insights", label: "Pipeline"        },
-  { id: "clients",  label: "Contacts"        },
   { id: "more",     label: "More ▾"          },
 ];
 
@@ -374,18 +385,27 @@ function AppInner() {
     setScreen("login");
   };
 
-  // ── Onboarding complete ───────────────────────────────────────────
+  // ── Onboarding complete → Signup ─────────────────────────────────
+  // Profile is saved to localStorage by Onboarding component.
+  // User now needs to create an account (email + password) to activate their trial.
   const handleOnboardingComplete = (profile) => {
+    track.signupCompleted(profile?.business || "");
+    // Route to signup — account creation fires POST /accounts/register which
+    // also creates the billing trial record server-side.
+    setScreen("signup");
+  };
+
+  // ── Signup complete → App ─────────────────────────────────────────
+  const handleSignupComplete = () => {
     setMessages([{
       id: Date.now(), role: "jarvis",
-      text: `Setup complete! Ooplix is ready for your ${profile.business || "business"}.\n\nAdd your first client below — enter their name and WhatsApp number, and I'll take it from there.`,
+      text: `Welcome! Your 7-day free trial has started.\n\nAdd your first contact in the Contacts tab — enter their name and WhatsApp number, and I'll handle follow-ups from there.`,
       ts:   Date.now()
     }]);
-    track.signupCompleted(profile?.business || "");
     track.trialStarted();
     localStorage.setItem("jarvis_just_onboarded", "1");
     setScreen("app");
-    setTab("home");  // land on Control Center — shows live system state immediately
+    setTab("home");
   };
 
   // ── First-launch hint (dismissible, shown once after onboarding) ──
@@ -408,11 +428,36 @@ function AppInner() {
   if (screen === "landing")    return <Landing onStart={handleStart} onLogin={handleLogin} onLegal={openLegal} onPricing={() => setScreen("pricing")} />;
   if (screen === "onboarding") return <Onboarding onComplete={handleOnboardingComplete} />;
 
-  // ── Explicit login screen (reached via "Sign in" on landing) ──────
+  // ── Signup screen (reached after Onboarding, or from Login "Create account") ──
+  if (screen === "signup") {
+    return (
+      <div className="app-auth-gate">
+        <SignupPage
+          onSuccess={handleSignupComplete}
+          onLogin={() => setScreen("login")}
+        />
+      </div>
+    );
+  }
+
+  // ── Forgot password screen ────────────────────────────────────────────────
+  if (screen === "forgot") {
+    return (
+      <div className="app-auth-gate">
+        <ForgotPassword onBack={() => setScreen("login")} />
+      </div>
+    );
+  }
+
+  // ── Explicit login screen (reached via "Sign in" on landing or from Signup) ──
   if (screen === "login") {
     return (
       <div className="app-auth-gate">
-        <LoginPage onSuccess={() => { track.login("local"); setScreen("app"); }} />
+        <LoginPage
+          onSuccess={() => setScreen("app")}
+          onSignup={() => setScreen("signup")}
+          onForgot={() => setScreen("forgot")}
+        />
       </div>
     );
   }
@@ -423,11 +468,29 @@ function AppInner() {
   // while the session cookie is being verified.
   if (authLoading) return <div className="runtime-auth-loading">Loading…</div>;
   if (!user) {
-    // context="fresh" when user just came through onboarding — explains the password ask
+    // Show signup if they just came through onboarding but haven't created an account yet,
+    // otherwise show login for returning users.
     const justOnboarded = localStorage.getItem("jarvis_just_onboarded") === "1";
+    const hasProfile    = !!localStorage.getItem("jarvis_biz_profile");
+    if (hasProfile && !justOnboarded) {
+      // Returning user who completed onboarding — show login
+      return (
+        <div className="app-auth-gate">
+          <LoginPage
+            onSuccess={() => {/* AuthContext user update re-renders */}}
+            onSignup={() => setScreen("signup")}
+            onForgot={() => setScreen("forgot")}
+          />
+        </div>
+      );
+    }
+    // New user who came through onboarding — show signup to create their account
     return (
       <div className="app-auth-gate">
-        <LoginPage context={justOnboarded ? "fresh" : undefined} onSuccess={() => {/* AuthContext updates user */}} />
+        <SignupPage
+          onSuccess={handleSignupComplete}
+          onLogin={() => setScreen("login")}
+        />
       </div>
     );
   }
@@ -605,6 +668,7 @@ function AppInner() {
       <main className="app-main">
         {/* key forces remount on tab change — triggers page-enter CSS animation */}
         <div key={tab} className="app-tab-pane">
+        {tab === "mission"  && <MissionControlV1 onNavigate={setTab} />}
         {tab === "home"     && (
           <ControlCenter
             stats={stats}
@@ -635,13 +699,8 @@ function AppInner() {
         {tab === "overview"  && <CapabilitiesOverview onNavigate={setTab} />}
         {tab === "insights"  && <Dashboard stats={stats} opsData={opsData} onNavigate={setTab} online={online} />}
         {tab === "activity"  && <Logs opsData={opsData} stats={stats} onNavigate={setTab} />}
-        {tab === "clients"   && (
-          <PaymentPanel
-            onMessage={push}
-            onToast={addToast}
-            whatsappConnected={opsData?.services?.whatsapp ?? false}
-          />
-        )}
+        {tab === "clients"   && <ContactsV2 onNavigate={setTab} />}
+        {tab === "payments"  && <PaymentsV2 onNavigate={setTab} />}
         {tab === "success"   && (
           <SuccessCenter
             stats={stats}
@@ -652,13 +711,13 @@ function AppInner() {
           />
         )}
         {tab === "help"      && <HelpHub onNavigate={setTab} />}
-        {tab === "seo"       && <SeoCommandCenter onNavigate={setTab} />}
-        {tab === "content"   && <ContentEngine onNavigate={setTab} />}
-        {tab === "social"    && <SocialHub onNavigate={setTab} />}
-        {tab === "email"     && <EmailMarketingOS onNavigate={setTab} />}
-        {tab === "referral"  && <ReferralEngine onNavigate={setTab} />}
+        {tab === "seo"       && <GrowthOSV2 onNavigate={setTab} />}
+        {tab === "content"   && <GrowthOSV2 onNavigate={setTab} />}
+        {tab === "social"    && <GrowthOSV2 onNavigate={setTab} />}
+        {tab === "email"     && <GrowthOSV2 onNavigate={setTab} />}
+        {tab === "referral"  && <GrowthOSV2 onNavigate={setTab} />}
         {tab === "partners"  && <PartnerProgram onNavigate={setTab} />}
-        {tab === "launch"    && <LaunchCommandCenter onNavigate={setTab} />}
+        {tab === "launch"    && <GrowthOSV2 onNavigate={setTab} />}
         {tab === "billing"   && (
           <BillingDashboard onUpgrade={() => setUpgradeOpen(true)} />
         )}
@@ -668,15 +727,15 @@ function AppInner() {
         {tab === "enterprise" && <EnterpriseOS onToast={addToast} />}
         {tab === "team"      && <TeamWorkspace onNavigate={setTab} />}
         {tab === "ecrm"      && <EnterpriseCRM onNavigate={setTab} />}
-        {tab === "reports"   && <ExecutiveReports onNavigate={setTab} />}
+        {tab === "reports"   && <ReportsV2 onNavigate={setTab} online={online} />}
         {tab === "settings"      && <WorkspaceSettings  onNavigate={setTab} />}
         {tab === "knowledge"     && <KnowledgeCenter   onNavigate={setTab} />}
-        {tab === "memory"        && <MemoryCenter       onNavigate={setTab} />}
+        {tab === "memory"        && <MemoryOSV2          onNavigate={setTab} />}
         {tab === "integrations"  && <IntegrationCenter  onNavigate={setTab} />}
-        {tab === "agents"        && <AgentCenter             onNavigate={setTab} />}
-        {tab === "copilot"       && <DeveloperCopilotCenter onNavigate={setTab} />}
+        {tab === "agents"        && <AgentOSV2               onNavigate={setTab} online={online} />}
+        {tab === "copilot"       && <DeveloperCopilotV2 onNavigate={setTab} />}
         {tab === "engineering"   && <EngineeringCenter      onNavigate={setTab} />}
-        {tab === "devops"        && <DevOpsCenter           onNavigate={setTab} />}
+        {tab === "devops"        && <DevOpsCenterV2         onNavigate={setTab} />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
         {tab === "registry"      && <AgentRegistryCenter   onNavigate={setTab} />}
         {tab === "taskrouter"    && <TaskRouterCenter       onNavigate={setTab} />}
@@ -703,7 +762,7 @@ function AppInner() {
         {tab === "selfimprove"       && <SelfImprovementCenter      onNavigate={setTab} />}
         {tab === "jarvisbrain"       && <JarvisBrainCenter          onNavigate={setTab} />}
         {tab === "execconnector"     && <ExecutionConnectorCenter   onNavigate={setTab} />}
-        {tab === "autonomouswf"      && <AutonomousWorkflowCenter   onNavigate={setTab} />}
+        {tab === "autonomouswf"      && <WorkflowOSV2               onNavigate={setTab} />}
         {tab === "agentactions"      && <AgentActionCenter          onNavigate={setTab} />}
         {tab === "autonomyscore"     && <AutonomyScoreCenter        onNavigate={setTab} />}
         {tab === "runtime"           && <RuntimeTab product={_PRODUCT} />}

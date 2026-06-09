@@ -1,0 +1,40 @@
+[
+  {
+    "teamId": "team_1780406363955",
+    "orgId": "org_1780406363941",
+    "deptId": null,
+    "name": "Sales Team",
+    "description": "",
+    "type": "sales",
+    "members": [],
+    "status": "archived",
+    "tags": [],
+    "createdAt": "2026-06-02T13:19:23.954Z",
+    "updatedAt": "2026-06-02T13:19:23.956Z",
+    "archivedAt": "2026-06-02T13:19:23.956Z"
+  },
+  {
+    "teamId": "team_1780406363954",
+    "orgId": "org_1780406363941",
+    "deptId": "dept_1780406363948",
+    "name": "Platform Team",
+    "description": "Core platform — updated",
+    "type": "engineering",
+    "members": [
+      {
+        "memberId": "dev-alice",
+        "name": "Alice Dev",
+        "email": "alice@acme.com",
+        "role": "lead",
+        "joinedAt": "2026-06-02T13:19:23.955Z"
+      }
+    ],
+    "status": "active",
+    "tags": [
+      "backend"
+    ],
+    "createdAt": "2026-06-02T13:19:23.954Z",
+    "updatedAt": "2026-06-02T13:19:23.956Z",
+    "archivedAt": null
+  }
+]

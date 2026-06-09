@@ -343,6 +343,13 @@ export default function EmailMarketingOS({ onNavigate }) {
 
   return (
     <div className="email-os page-enter">
+      <div className="coming-soon-banner">
+        <span className="csb-icon">◎</span>
+        <div className="csb-body">
+          <span className="csb-title">Email Automation Engine <span className="csb-beta-badge">BETA</span></span>
+          <span className="csb-sub">Campaign sending, subscriber management, and open-rate analytics require the EmailAutomationEngine (not yet built). Drafts and campaign plans are saved locally.</span>
+        </div>
+      </div>
 
       {/* Header */}
       <div className="em-header">

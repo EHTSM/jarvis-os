@@ -283,6 +283,8 @@
   animation: slide-down var(--dur-fast) var(--ease-spring) both;
 }
 .um-error-icon { flex-shrink: 0; font-size: 11px; margin-top: 1px; }
+.um-error--rich { align-items: flex-start; }
+.um-error-link  { color: var(--accent, #7c6fff); text-decoration: underline; text-underline-offset: 2px; }
 
 /* ── Feature comparison ─────────────────────────────────────────────── */
 .um-compare-toggle {

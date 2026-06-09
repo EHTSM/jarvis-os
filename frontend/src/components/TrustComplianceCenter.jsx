@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
+import { getOpsData } from "../telemetryApi";
 import "./TrustComplianceCenter.css";
 
 // ── Frameworks ────────────────────────────────────────────────────────
@@ -92,10 +93,14 @@ const RISK_IMPACT  = { critical:"var(--danger)", high:"var(--warning)", medium:"
 const RISK_STATUS  = { mitigated:"var(--success)", open:"var(--danger)", in_progress:"var(--accent2)", accepted:"var(--text-faint)" };
 
 export default function TrustComplianceCenter({ onNavigate }) {
-  const [section,  setSection]  = useState("overview");
-  const [selFw,    setSelFw]    = useState("gdpr");
+  const [section,   setSection]   = useState("overview");
+  const [selFw,     setSelFw]     = useState("gdpr");
+  const [liveOps,   setLiveOps]   = useState(null);
 
-  React.useEffect(() => { track.event("trust_compliance_viewed"); }, []);
+  useEffect(() => {
+    track.event("trust_compliance_viewed");
+    getOpsData().then(d => { if (d) setLiveOps(d); });
+  }, []);
 
   const selFramework = FRAMEWORKS.find(f=>f.id===selFw);
   const overallScore = Math.round(FRAMEWORKS.reduce((s,f)=>s+f.completeness,0)/FRAMEWORKS.length);
@@ -147,6 +152,24 @@ export default function TrustComplianceCenter({ onNavigate }) {
 
         {section==="overview" && (
           <div className="tcc-overview">
+            {/* Live system security posture from /ops */}
+            {liveOps && (
+              <div className="tcc-live-posture">
+                <span className="tcc-lp-label">Live system status</span>
+                <div className="tcc-lp-items">
+                  {Object.entries(liveOps.services || {}).map(([svc, ok]) => (
+                    <span key={svc} className={`tcc-lp-svc tcc-lp-svc--${ok ? "ok" : "fail"}`}>
+                      {ok ? "✓" : "✗"} {svc}
+                    </span>
+                  ))}
+                  {liveOps.status && (
+                    <span className={`tcc-lp-overall tcc-lp-overall--${liveOps.status}`}>
+                      System: {liveOps.status}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
             <div className="tcc-ov-cards">
               {FRAMEWORKS.map(f=>{
                 const done    = f.controls.filter(c=>c.status==="done").length;

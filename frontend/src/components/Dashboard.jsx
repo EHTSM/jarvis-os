@@ -1,279 +1,317 @@
-import React, { useState, useEffect } from "react";
-import EmptyState from "./EmptyState.jsx";
+import React, { useState, useEffect, useMemo } from "react";
 import "./Dashboard.css";
 
-function StatCard({ label, value, color, sub }) {
-  return (
-    <div className="stat-card">
-      <div className="stat-value" style={{ color }}>{value ?? "—"}</div>
-      <div className="stat-label">{label}</div>
-      {sub && <div className="stat-sub">{sub}</div>}
-    </div>
-  );
-}
+// ── Helpers ────────────────────────────────────────────────────────────────────
 
-function AutoTierRow({ label, data }) {
-  if (!data) return null;
-  const { sent = 0, attempts = 0, lastRun } = data;
-  const rate = attempts > 0 ? Math.round((sent / attempts) * 100) : null;
-  const ago  = lastRun ? _timeAgo(lastRun) : "never";
-
-  return (
-    <div className="auto-row">
-      <div className="auto-row-left">
-        <span className="auto-label">{label}</span>
-        <span className="auto-last">Last run: {ago}</span>
-      </div>
-      <div className="auto-row-right">
-        <span className="auto-sent">{sent} sent</span>
-        {rate !== null && (
-          <span className="auto-rate" style={{ color: rate >= 50 ? "var(--success)" : "var(--text-dim)" }}>
-            {rate}%
-          </span>
-        )}
-      </div>
-    </div>
-  );
+function _fmtINR(n) {
+  if (!n) return "₹0";
+  const v = Number(n);
+  if (v >= 100000) return `₹${(v / 100000).toFixed(1)}L`;
+  if (v >= 1000)   return `₹${(v / 1000).toFixed(1)}k`;
+  return `₹${v.toLocaleString("en-IN")}`;
 }
 
 function _timeAgo(isoStr) {
-  const diffMs = Date.now() - new Date(isoStr).getTime();
-  const mins   = Math.floor(diffMs / 60_000);
-  if (mins < 1)   return "just now";
-  if (mins < 60)  return `${mins}m ago`;
+  if (!isoStr) return "never";
+  const ms   = Date.now() - new Date(isoStr).getTime();
+  const mins = Math.floor(ms / 60_000);
+  if (mins < 1)  return "just now";
+  if (mins < 60) return `${mins}m ago`;
   const hrs = Math.floor(mins / 60);
-  if (hrs  < 24)  return `${hrs}h ago`;
+  if (hrs < 24)  return `${hrs}h ago`;
   return `${Math.floor(hrs / 24)}d ago`;
 }
 
-const TIER_LABELS = {
-  "10min":      "Immediate Greeting",
-  "6hr":        "Same-day Follow-up",
-  "24hr":       "Next-day Touchpoint",
-  "3day":       "Gentle Closing Sequence",
-  "onboarding": "Welcome & Onboarding",
-  "upsell":     "High Interest Action",
+// ── Skeleton ───────────────────────────────────────────────────────────────────
+
+function Skeleton({ w, h }) {
+  return (
+    <div
+      className="dv2-skeleton"
+      style={{ width: w || "100%", height: h || 18, borderRadius: 6 }}
+    />
+  );
+}
+
+// ── Metric Card ────────────────────────────────────────────────────────────────
+
+function MetricCard({ icon, label, value, sub, accent, loading }) {
+  return (
+    <div className="dv2-metric">
+      <div className="dv2-metric-top">
+        <span className="dv2-metric-icon" style={{ color: accent || "var(--accent)" }} aria-hidden="true">{icon}</span>
+        <span className="dv2-metric-label">{label}</span>
+      </div>
+      {loading
+        ? <Skeleton w="60%" h={28} />
+        : <div className="dv2-metric-value" style={{ color: accent || "var(--text)" }}>{value ?? "—"}</div>
+      }
+      {loading
+        ? <Skeleton w="40%" h={12} />
+        : sub && <div className="dv2-metric-sub">{sub}</div>
+      }
+    </div>
+  );
+}
+
+// ── Status Bar Chart (CSS-only, no library) ────────────────────────────────────
+
+const STATUS_META = {
+  new:       { label: "New",       color: "var(--accent,  #7c6fff)" },
+  qualified: { label: "Qualified", color: "var(--accent2, #4ecdc4)" },
+  proposal:  { label: "Proposal",  color: "var(--warning, #f0b429)" },
+  won:       { label: "Won",       color: "var(--success, #52d68a)" },
+  lost:      { label: "Lost",      color: "var(--text-faint, #4a5470)" },
+  cold:      { label: "Cold",      color: "var(--info, #5dc8f5)"   },
+  hot:       { label: "Hot",       color: "var(--warning, #f0b429)" },
+  paid:      { label: "Paid",      color: "var(--success, #52d68a)" },
 };
 
-const FIRST_SUCCESS_KEY = "jarvis_first_success_seen";
+function LeadsChart({ stats, loading }) {
+  const bars = useMemo(() => {
+    if (!stats) return [];
+    const raw = [
+      { key: "hot",       count: stats.hot       ?? 0 },
+      { key: "qualified", count: stats.qualified  ?? 0 },
+      { key: "paid",      count: stats.paid       ?? 0 },
+      { key: "cold",      count: (stats.total ?? 0) - (stats.hot ?? 0) - (stats.paid ?? 0) - (stats.hot ?? 0) },
+      { key: "lost",      count: stats.lost       ?? 0 },
+    ]
+      .filter(b => b.count > 0)
+      .sort((a, b) => b.count - a.count);
 
-function SystemStatusCard({ opsData, online }) {
-  const services  = opsData?.services   || {};
-  const queue     = opsData?.queue      || null;
-  const autoStats = opsData?.automation || null;
-  const totalSent = autoStats
-    ? Object.values(autoStats).reduce((s, d) => s + (d.sent || 0), 0)
-    : 0;
-
-  const items = [
-    {
-      label: "Ooplix backend",
-      ok:    online,
-      value: online ? "Online" : "Offline",
-    },
-    {
-      label: "WhatsApp",
-      ok:    !!services.whatsapp,
-      value: services.whatsapp ? "Connected" : "Not connected",
-    },
-    {
-      label: "Message queue",
-      ok:    queue?.healthy !== false,
-      value: queue
-        ? (queue.healthy ? `Healthy · ${queue.counts?.pending ?? 0} pending` : `${queue.counts?.pending ?? 0} pending`)
-        : "No data",
-    },
-    {
-      label: "Follow-ups sent",
-      ok:    true,
-      value: totalSent > 0 ? totalSent.toLocaleString() : "None yet",
-    },
-  ];
-
-  return (
-    <div className="sys-card">
-      <h3 className="sys-title">System Status</h3>
-      <div className="sys-rows">
-        {items.map(item => (
-          <div key={item.label} className="sys-row">
-            <span className={`sys-dot sys-dot--${item.ok ? "ok" : "warn"}`} />
-            <span className="sys-label">{item.label}</span>
-            <span className={`sys-value ${item.ok ? "" : "sys-value--warn"}`}>{item.value}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function FirstSuccessBanner({ stats, onDismiss }) {
-  const paid    = stats?.paid    ?? 0;
-  const revenue = stats?.revenue ?? 0;
-  if (paid === 0) return null;
-
-  return (
-    <div className="fs-banner">
-      <div className="fs-banner-glow" aria-hidden="true" />
-      <div className="fs-banner-body">
-        <span className="fs-icon" aria-hidden="true">★</span>
-        <div className="fs-text">
-          <p className="fs-headline">First payment collected!</p>
-          <p className="fs-sub">
-            {paid === 1
-              ? `1 client paid${revenue > 0 ? ` — ₹${revenue.toLocaleString("en-IN")} collected` : ""}. Ooplix is working.`
-              : `${paid} clients paid${revenue > 0 ? ` — ₹${revenue.toLocaleString("en-IN")} collected` : ""}. Keep going.`
-            }
-          </p>
-        </div>
-      </div>
-      <button className="fs-dismiss" onClick={onDismiss} aria-label="Dismiss">✕</button>
-    </div>
-  );
-}
-
-const WYWA_DISMISS_KEY = "jarvis_wywa_dismissed_ts";
-const WYWA_VISIT_KEY   = "jarvis_last_visit_ts";
-const WYWA_MIN_ABSENCE = 5 * 60 * 1000;   // 5 minutes
-const WYWA_RESHOW_AFTER = 24 * 60 * 60 * 1000; // 24 hours
-
-function _wywaVisible(totalSent, dismissedAt) {
-  const lastVisit = parseInt(localStorage.getItem(WYWA_VISIT_KEY) || "0", 10);
-  const absence   = Date.now() - lastVisit;
-
-  // Must have been away at least 5 minutes
-  if (absence < WYWA_MIN_ABSENCE) return false;
-
-  // If dismissed, only reshow after 24h AND only if there's been new activity
-  if (dismissedAt) {
-    const timeSinceDismiss = Date.now() - dismissedAt;
-    if (timeSinceDismiss < WYWA_RESHOW_AFTER) return false;
-  }
-
-  // Only show when there's real activity (sent > 0) or contacts are loaded
-  // totalSent >= 0 was always true — this was a bug that showed the card to everyone
-  return totalSent > 0;
-}
-
-function WywaCard({ stats, opsData, onDismiss }) {
-  const autoStats  = opsData?.automation || {};
-  const totalSent  = Object.values(autoStats).reduce((s, d) => s + (d.sent || 0), 0);
-  const hotLeads   = stats?.hot ?? 0;
-  const totalContacts = stats?.total ?? 0;
-
-  // Derive most-recent lastRun across all automation tiers
-  const lastActivity = Object.values(autoStats)
-    .map(d => d.lastRun ? new Date(d.lastRun).getTime() : 0)
-    .reduce((max, t) => Math.max(max, t), 0);
-
-  let headline, sub;
-
-  if (totalSent > 0) {
-    headline = `Ooplix sent ${totalSent.toLocaleString()} follow-up${totalSent !== 1 ? "s" : ""} since your last visit.`;
-    sub = hotLeads > 0
-      ? `${hotLeads} lead${hotLeads !== 1 ? "s are" : " is"} hot — worth a quick reply.`
-      : lastActivity > 0
-        ? `Last action ${_timeAgo(new Date(lastActivity).toISOString())}.`
-        : "All automations running.";
-  } else if (totalContacts > 0) {
-    headline = `Ooplix is ready — ${totalContacts} contact${totalContacts !== 1 ? "s" : ""} loaded.`;
-    sub = "Connect WhatsApp to start automated follow-ups.";
-  } else {
-    return null;
-  }
-
-  return (
-    <div className="wywa-card">
-      <div className="wywa-pulse" aria-hidden="true" />
-      <div className="wywa-body">
-        <p className="wywa-headline">{headline}</p>
-        <p className="wywa-sub">{sub}</p>
-      </div>
-      <button className="wywa-dismiss" onClick={onDismiss} aria-label="Dismiss">✕</button>
-    </div>
-  );
-}
-
-export default function Dashboard({ stats, opsData, onNavigate, online = false }) {
-  const [nullCycles,   setNullCycles]   = useState(0);
-  const [wywaShown,    setWywaShown]    = useState(false);
-  const [wywaDismissed, setWywaDismissed] = useState(
-    () => parseInt(localStorage.getItem(WYWA_DISMISS_KEY) || "0", 10)
-  );
-  const [showFirstSuccess, setShowFirstSuccess] = useState(false);
-
-  // Show first-success banner once when paid > 0 and not yet seen
-  useEffect(() => {
-    if (!stats) return;
-    if (stats.paid > 0 && !localStorage.getItem(FIRST_SUCCESS_KEY)) {
-      setShowFirstSuccess(true);
-    }
+    const max = Math.max(...raw.map(b => b.count), 1);
+    return raw.map(b => ({ ...b, pct: Math.round((b.count / max) * 100), ...STATUS_META[b.key] }));
   }, [stats]);
 
-  // Evaluate WYWA visibility once data arrives
-  useEffect(() => {
-    if (!stats && !opsData) return;
-    const autoStats = opsData?.automation || {};
-    const totalSent = Object.values(autoStats).reduce((s, d) => s + (d.sent || 0), 0);
-    setWywaShown(_wywaVisible(totalSent, wywaDismissed));
-  }, [stats, opsData, wywaDismissed]);
-
-  const handleWywaDismiss = () => {
-    const now = Date.now();
-    localStorage.setItem(WYWA_DISMISS_KEY, String(now));
-    setWywaDismissed(now);
-    setWywaShown(false);
-  };
-
-  useEffect(() => {
-    if (stats === null && opsData === null) {
-      setNullCycles(n => n + 1);
-    } else {
-      setNullCycles(0);
-    }
-  }, [stats, opsData]);
-
-  if (stats === null && opsData === null) {
-    if (nullCycles <= 2) {
-      // First load — brief skeleton is fine
-      return (
-        <div className="dashboard">
-          <div className="dash-header">
-            <h2 className="dash-title">Customer Pipeline</h2>
-            <p className="dash-subtitle">Track active relationships, automated outreach, and conversions</p>
-          </div>
-          <div className="dash-loading">
-            <div className="dash-skeleton" />
-            <div className="dash-skeleton dash-skeleton--sm" />
-            <div className="dash-skeleton" />
-          </div>
-        </div>
-      );
-    }
-    // Repeated failures — data never arrived.
+  if (loading) {
     return (
-      <div className="dashboard">
-        <div className="dash-header">
-          <h2 className="dash-title">Pipeline</h2>
-          <p className="dash-subtitle">Leads, follow-ups, and closed revenue at a glance.</p>
-        </div>
-        <EmptyState variant="pipeline" onNavigate={onNavigate} />
+      <div className="dv2-chart-bars">
+        {[80, 60, 45, 30, 18].map((w, i) => (
+          <div key={i} className="dv2-bar-row">
+            <div className="dv2-skeleton dv2-skeleton--label" />
+            <div className="dv2-bar-track"><div className="dv2-skeleton dv2-skeleton--bar" style={{ width: `${w}%` }} /></div>
+            <div className="dv2-skeleton dv2-skeleton--count" />
+          </div>
+        ))}
       </div>
     );
   }
 
-  const hasLeads = stats && stats.total > 0;
-  const autoStats = opsData?.automation || null;
-  const workflowCount = autoStats ? Object.keys(autoStats).length : 0;
-  const totalActions = autoStats ? Object.values(autoStats).reduce((sum, item) => sum + (item.sent || 0), 0) : 0;
-  const activityLabel = totalActions > 0 ? `${totalActions.toLocaleString()} follow-up actions sent` : "Automations are ready to launch";
+  if (bars.length === 0) {
+    return (
+      <div className="dv2-chart-empty">
+        <span>No lead data yet.</span>
+        <span className="dv2-chart-empty-sub">Add contacts to see pipeline distribution.</span>
+      </div>
+    );
+  }
 
   return (
-    <div className="dashboard">
-      <div className="dash-header">
-        <h2 className="dash-title">Revenue</h2>
-        <p className="dash-subtitle">Leads, follow-ups, and closed revenue at a glance.</p>
+    <div className="dv2-chart-bars">
+      {bars.map(b => (
+        <div key={b.key} className="dv2-bar-row">
+          <span className="dv2-bar-label">{b.label}</span>
+          <div className="dv2-bar-track">
+            <div
+              className="dv2-bar-fill"
+              style={{ width: `${b.pct}%`, background: b.color }}
+            />
+          </div>
+          <span className="dv2-bar-count" style={{ color: b.color }}>{b.count}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── Automation Summary ─────────────────────────────────────────────────────────
+
+const TIER_LABELS = {
+  "10min":      "First message",
+  "6hr":        "Same-day follow-up",
+  "24hr":       "Next-day check-in",
+  "3day":       "3-day closing",
+  "onboarding": "Welcome message",
+  "upsell":     "Upsell nudge",
+};
+
+function AutomationRows({ opsData, loading }) {
+  const autoStats = opsData?.automation || {};
+  const entries   = Object.entries(autoStats);
+
+  if (loading) {
+    return (
+      <div className="dv2-auto-list">
+        {[0, 1, 2].map(i => (
+          <div key={i} className="dv2-auto-row">
+            <div className="dv2-skeleton dv2-skeleton--auto-label" />
+            <div className="dv2-skeleton dv2-skeleton--auto-val" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (entries.length === 0) {
+    return (
+      <div className="dv2-auto-empty">
+        <span className="dv2-auto-empty-dot" />
+        <div>
+          <div className="dv2-auto-empty-title">Automations haven't started yet</div>
+          <div className="dv2-auto-empty-desc">Once you add a lead and connect WhatsApp, Ooplix runs scheduled follow-ups automatically.</div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dv2-auto-list">
+      {entries.map(([key, data]) => {
+        const { sent = 0, attempts = 0, failed = 0, lastRun } = data;
+        const rate = attempts > 0 ? Math.round((sent / attempts) * 100) : null;
+        return (
+          <div key={key} className="dv2-auto-row">
+            <div className="dv2-auto-row-left">
+              <span className="dv2-auto-label">{TIER_LABELS[key] || key}</span>
+              <span className="dv2-auto-last">Last: {_timeAgo(lastRun)}</span>
+            </div>
+            <div className="dv2-auto-row-right">
+              <span className="dv2-auto-sent">{sent} sent</span>
+              {failed > 0 && <span className="dv2-auto-failed">{failed} failed</span>}
+              {rate !== null && (
+                <span className="dv2-auto-rate" style={{ color: rate >= 50 ? "var(--success)" : "var(--text-dim)" }}>
+                  {rate}%
+                </span>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── Service Health ─────────────────────────────────────────────────────────────
+
+function ServiceHealth({ opsData, online, loading, onNavigate }) {
+  const services = opsData?.services || {};
+
+  const rows = [
+    { label: "AI Engine",  ok: !!(services.ai || services.groq), detail: (services.ai || services.groq) ? "Active" : "Not configured" },
+    { label: "WhatsApp",   ok: !!services.whatsapp,              detail: services.whatsapp  ? "Connected" : "Not set up" },
+    { label: "Payments",   ok: !!services.payments,              detail: services.payments  ? "Razorpay live" : "Not configured" },
+    { label: "Runtime",    ok: online,                           detail: online ? "Online" : "Reconnecting…" },
+  ];
+
+  return (
+    <div className="dv2-health">
+      {loading
+        ? [0, 1, 2, 3].map(i => (
+            <div key={i} className="dv2-health-row">
+              <div className="dv2-skeleton dv2-skeleton--health" />
+            </div>
+          ))
+        : rows.map(r => (
+            <div key={r.label} className="dv2-health-row">
+              <span className={`dv2-health-dot dot--${r.ok ? "ok" : "warn"} dot--live`} />
+              <span className="dv2-health-label">{r.label}</span>
+              <span className={`dv2-health-detail${!r.ok ? " dv2-health-detail--warn" : ""}`}>
+                {r.detail}
+              </span>
+            </div>
+          ))
+      }
+    </div>
+  );
+}
+
+// ── First Success Banner ───────────────────────────────────────────────────────
+
+const FIRST_SUCCESS_KEY = "jarvis_first_success_seen";
+
+function FirstSuccessBanner({ stats, onDismiss }) {
+  if (!stats?.paid) return null;
+  return (
+    <div className="dv2-success-banner">
+      <div className="dv2-success-glow" aria-hidden="true" />
+      <span className="dv2-success-icon" aria-hidden="true">★</span>
+      <div className="dv2-success-text">
+        <p className="dv2-success-headline">First payment collected!</p>
+        <p className="dv2-success-sub">
+          {stats.paid === 1
+            ? `1 client paid${stats.revenue ? ` — ${_fmtINR(stats.revenue)} collected` : ""}. Ooplix is working.`
+            : `${stats.paid} clients paid${stats.revenue ? ` — ${_fmtINR(stats.revenue)} collected` : ""}. Keep going.`}
+        </p>
+      </div>
+      <button className="dv2-success-dismiss" onClick={onDismiss} aria-label="Dismiss">✕</button>
+    </div>
+  );
+}
+
+// ── Root Pipeline V2 ──────────────────────────────────────────────────────────
+
+export default function Dashboard({ stats, opsData, onNavigate, online = false }) {
+  const [nullCycles,       setNullCycles]       = useState(0);
+  const [showFirstSuccess, setShowFirstSuccess] = useState(false);
+
+  const loading = stats === null && opsData === null && nullCycles <= 2;
+
+  useEffect(() => {
+    if (stats === null && opsData === null) setNullCycles(n => n + 1);
+    else setNullCycles(0);
+  }, [stats, opsData]);
+
+  useEffect(() => {
+    if (stats?.paid > 0 && !localStorage.getItem(FIRST_SUCCESS_KEY)) {
+      setShowFirstSuccess(true);
+    }
+  }, [stats]);
+
+  const totalActions = Object.values(opsData?.automation || {}).reduce((s, d) => s + (d.sent || 0), 0);
+  const convRate     = stats?.conversionRate
+    ? (typeof stats.conversionRate === "string"
+        ? stats.conversionRate
+        : `${stats.conversionRate}%`)
+    : (stats?.total > 0 && stats?.paid > 0
+        ? `${Math.round((stats.paid / stats.total) * 100)}%`
+        : "0%");
+
+  // Hard backend error state
+  if (stats === null && opsData === null && nullCycles > 2) {
+    return (
+      <div className="dv2-root page-enter">
+        <div className="dv2-header">
+          <h1 className="dv2-page-title">Pipeline</h1>
+          <p className="dv2-page-sub">Business performance</p>
+        </div>
+        <div className="dv2-offline">
+          <div className="dv2-offline-icon">◎</div>
+          <p className="dv2-offline-title">Backend unavailable</p>
+          <p className="dv2-offline-sub">Pipeline data will appear when the backend reconnects.</p>
+          <button className="dv2-offline-btn" onClick={() => window.location.reload()}>Retry →</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dv2-root page-enter">
+
+      {/* Page Header */}
+      <div className="dv2-header">
+        <div className="dv2-header-left">
+          <h1 className="dv2-page-title">Pipeline</h1>
+          <p className="dv2-page-sub">Business performance</p>
+        </div>
+        <div className="dv2-header-right">
+          <button className="dv2-header-btn" onClick={() => onNavigate?.("clients")} title="View contacts">
+            Contacts →
+          </button>
+        </div>
       </div>
 
+      {/* First success banner */}
       {showFirstSuccess && (
         <FirstSuccessBanner
           stats={stats}
@@ -284,93 +322,100 @@ export default function Dashboard({ stats, opsData, onNavigate, online = false }
         />
       )}
 
-      {wywaShown && (
-        <WywaCard stats={stats} opsData={opsData} onDismiss={handleWywaDismiss} />
-      )}
-
-      <div className="dash-meta-strip">
-        <div className="dash-meta-item">
-          <span className="dash-meta-label">Follow-up sequences</span>
-          <span className="dash-meta-value">{workflowCount > 0 ? `${workflowCount} running` : "None yet"}</span>
-        </div>
-        <div className="dash-meta-item">
-          <span className="dash-meta-label">Total contacts</span>
-          <span className="dash-meta-value">{stats?.total ?? 0}</span>
-        </div>
-        <div className="dash-meta-item">
-          <span className="dash-meta-label">Outreach sent</span>
-          <span className="dash-meta-value">{activityLabel}</span>
-        </div>
+      {/* KPI Metrics Row */}
+      <div className="dv2-metrics-row">
+        <MetricCard
+          icon="◈"
+          label="Total Leads"
+          value={stats?.total ?? 0}
+          sub={`${stats?.hot ?? 0} hot`}
+          accent="var(--accent)"
+          loading={loading}
+        />
+        <MetricCard
+          icon="✦"
+          label="In Follow-up"
+          value={(stats?.total ?? 0) - (stats?.paid ?? 0)}
+          sub="automated outreach"
+          accent="var(--accent2)"
+          loading={loading}
+        />
+        <MetricCard
+          icon="₹"
+          label="Revenue"
+          value={_fmtINR(stats?.revenue)}
+          sub={`${stats?.paid ?? 0} paid`}
+          accent="var(--success)"
+          loading={loading}
+        />
+        <MetricCard
+          icon="◎"
+          label="Close Rate"
+          value={convRate}
+          sub={`${totalActions.toLocaleString()} messages sent`}
+          accent={parseFloat(convRate) >= 30 ? "var(--success)" : "var(--warning)"}
+          loading={loading}
+        />
       </div>
 
-      {/* ── Lead Pipeline ─────────────────────────────────────────── */}
-      {!hasLeads ? (
-        <EmptyState variant="pipeline" onNavigate={onNavigate} />
-      ) : (
-        <div className="stats-grid">
-          <StatCard
-            label="Total Leads"
-            value={stats.total}
-            color="var(--text)"
-          />
-          <StatCard
-            label="In Follow-up"
-            value={(stats.total ?? 0) - (stats.paid ?? 0)}
-            color="var(--accent)"
-            sub="automated outreach active"
-          />
-          <StatCard
-            label="Closed / Paid"
-            value={stats.paid ?? 0}
-            color="var(--success)"
-          />
-          <StatCard
-            label="Revenue Collected"
-            value={stats.revenue ? `₹${stats.revenue.toLocaleString("en-IN")}` : "₹0"}
-            color="var(--accent2)"
-          />
-          <StatCard
-            label="Close Rate"
-            value={stats.conversionRate ?? "0%"}
-            color={parseFloat(stats.conversionRate) >= 30 ? "var(--success)" : "var(--warning)"}
-          />
-          <StatCard
-            label="Hot Leads"
-            value={stats.hot ?? 0}
-            color="var(--warning)"
-            sub="respond soon"
-          />
-        </div>
-      )}
+      {/* Main Content Grid */}
+      <div className="dv2-grid">
 
-      {/* ── System Status ─────────────────────────────────────────── */}
-      <SystemStatusCard opsData={opsData} online={online} />
+        {/* Left: Chart + Automation */}
+        <div className="dv2-grid-main">
 
-      {/* ── Automation Status ──────────────────────────────────────── */}
-      <div className="dash-section">
-        <h3 className="section-title">Automated Follow-ups</h3>
-
-        {!autoStats || Object.keys(autoStats).length === 0 ? (
-          <div className="auto-empty">
-            <span className="auto-empty-dot" />
-            <div>
-              <div className="auto-empty-title">Automations haven't started yet</div>
-              <div className="auto-empty-desc">Once you add a lead and connect WhatsApp, Ooplix runs scheduled follow-ups automatically — no manual sending needed.</div>
+          <section className="dv2-panel">
+            <div className="dv2-panel-header">
+              <h2 className="dv2-section-label">Leads by Status</h2>
             </div>
-          </div>
-        ) : (
-          <div className="auto-list">
-            {Object.entries(autoStats).map(([key, data]) => (
-              <AutoTierRow
-                key={key}
-                label={TIER_LABELS[key] || key}
-                data={data}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+            <LeadsChart stats={stats} loading={loading} />
+          </section>
 
+          <section className="dv2-panel">
+            <div className="dv2-panel-header">
+              <h2 className="dv2-section-label">Automated Follow-ups</h2>
+              <button className="dv2-panel-link" onClick={() => onNavigate?.("activity")}>
+                Activity →
+              </button>
+            </div>
+            <AutomationRows opsData={opsData} loading={loading} />
+          </section>
+
+        </div>
+
+        {/* Right: Health + Quick nav */}
+        <div className="dv2-grid-side">
+
+          <section className="dv2-panel">
+            <div className="dv2-panel-header">
+              <h2 className="dv2-section-label">Service Health</h2>
+              <button className="dv2-panel-link" onClick={() => onNavigate?.("devops")}>
+                DevOps →
+              </button>
+            </div>
+            <ServiceHealth opsData={opsData} online={online} loading={loading} onNavigate={onNavigate} />
+          </section>
+
+          <section className="dv2-panel">
+            <h2 className="dv2-section-label">Quick Nav</h2>
+            <div className="dv2-quicknav">
+              {[
+                { label: "Add Contact",        nav: "clients",   icon: "◈" },
+                { label: "Payment Links",      nav: "clients",   icon: "₹" },
+                { label: "Automation Logs",    nav: "activity",  icon: "⚡" },
+                { label: "Control Center",     nav: "home",      icon: "◎" },
+              ].map(a => (
+                <button key={a.label} className="dv2-quicknav-btn" onClick={() => onNavigate?.(a.nav)}>
+                  <span className="dv2-quicknav-icon" aria-hidden="true">{a.icon}</span>
+                  <span>{a.label}</span>
+                  <span className="dv2-quicknav-arrow" aria-hidden="true">›</span>
+                </button>
+              ))}
+            </div>
+          </section>
+
+        </div>
+      </div>
     </div>
   );
 }

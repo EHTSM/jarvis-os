@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
-import { listCycles, cycleStats } from "../phase18Api";
+import { listCycles, cycleStats, startCycle } from "../phase18Api";
 import "./AutonomousWorkflowCenter.css";
 
 const WORKFLOWS = [
@@ -50,11 +50,29 @@ const FLOW_STEPS = [
 ];
 
 export default function AutonomousWorkflowCenter({ onNavigate }) {
-  const [selected, setSelected] = useState(WORKFLOWS[0]);
-  const [tab, setTab]           = useState("all");
-  const [workflows, setWorkflows] = useState(WORKFLOWS);
-  const [stats,     setStats]     = useState(null);
-  const [apiError,  setApiError]  = useState(null);
+  const [selected,    setSelected]    = useState(WORKFLOWS[0]);
+  const [tab,         setTab]         = useState("all");
+  const [workflows,   setWorkflows]   = useState(WORKFLOWS);
+  const [stats,       setStats]       = useState(null);
+  const [apiError,    setApiError]    = useState(null);
+  const [showLaunch,  setShowLaunch]  = useState(false);
+  const [launchGoal,  setLaunchGoal]  = useState("");
+  const [launchType,  setLaunchType]  = useState("general");
+  const [launching,   setLaunching]   = useState(false);
+  const [launchToast, setLaunchToast] = useState(null);
+
+  function handleLaunch() {
+    if (!launchGoal.trim() || launching) return;
+    setLaunching(true);
+    startCycle(launchGoal.trim(), launchType, "ui")
+      .then(r => {
+        setLaunchToast({ ok: true, msg: `Cycle started: ${r.cycleId || "running"}` });
+        track("awc_cycle_launched", { goalType: launchType });
+        setTimeout(() => { setShowLaunch(false); setLaunchToast(null); }, 1500);
+      })
+      .catch(e => setLaunchToast({ ok: false, msg: `Error: ${e.message}` }))
+      .finally(() => setLaunching(false));
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -106,7 +124,7 @@ export default function AutonomousWorkflowCenter({ onNavigate }) {
           <h1 className="awc-title">Autonomous Workflow Center</h1>
           <p className="awc-subtitle">Trigger → Agent → Tool → Action → Result. Full workflow visibility.</p>
         </div>
-        <button onClick={() => track("awc_new_workflow")} style={{
+        <button onClick={() => { setShowLaunch(true); setLaunchGoal(""); setLaunchToast(null); }} style={{
           padding:"9px 18px", background:"linear-gradient(135deg,var(--accent),var(--accent2))",
           color:"#06080e", border:"none", borderRadius:"var(--radius-pill)", fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"inherit"
         }}>+ New Workflow</button>
@@ -173,6 +191,47 @@ export default function AutonomousWorkflowCenter({ onNavigate }) {
           </div>
         ))}
       </div>
+
+      {/* Launch cycle modal */}
+      {showLaunch && (
+        <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.6)", zIndex:1000, display:"flex", alignItems:"center", justifyContent:"center" }}
+          onClick={e => e.target === e.currentTarget && setShowLaunch(false)}>
+          <div style={{ background:"var(--surface-base)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:24, width:"min(480px,90vw)", display:"flex", flexDirection:"column", gap:14 }}>
+            <h3 style={{ margin:0, fontSize:16, fontWeight:700, color:"var(--text)" }}>Launch Autonomous Workflow</h3>
+            <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+              <label style={{ fontSize:12, fontWeight:700, color:"var(--text-dim)" }}>Goal</label>
+              <input
+                style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"8px 12px", color:"var(--text)", fontSize:13, fontFamily:"inherit" }}
+                value={launchGoal} onChange={e => setLaunchGoal(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && launchGoal.trim() && !launching && handleLaunch()}
+                placeholder="e.g. Qualify new leads from today's sign-ups"
+                autoFocus
+              />
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+              <label style={{ fontSize:12, fontWeight:700, color:"var(--text-dim)" }}>Type</label>
+              <select
+                style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"8px 12px", color:"var(--text)", fontSize:13, fontFamily:"inherit" }}
+                value={launchType} onChange={e => setLaunchType(e.target.value)}
+              >
+                {["general","sales","marketing","content","support","engineering","devops","research","analytics"].map(t =>
+                  <option key={t} value={t}>{t}</option>
+                )}
+              </select>
+            </div>
+            {launchToast && <p style={{ margin:0, fontSize:12, color: launchToast.ok ? "var(--success)" : "var(--danger)" }}>{launchToast.msg}</p>}
+            <div style={{ display:"flex", gap:8, justifyContent:"flex-end" }}>
+              <button onClick={() => setShowLaunch(false)} style={{ padding:"8px 16px", background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius-pill)", cursor:"pointer", fontSize:13, color:"var(--text-dim)", fontFamily:"inherit" }}>Cancel</button>
+              <button
+                onClick={handleLaunch}
+                disabled={launching || !launchGoal.trim()}
+                style={{ padding:"8px 18px", background:"linear-gradient(135deg,var(--accent),var(--accent2))", color:"#06080e", border:"none", borderRadius:"var(--radius-pill)", fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"inherit" }}
+              >{launching ? "Launching…" : "▷ Launch"}</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+

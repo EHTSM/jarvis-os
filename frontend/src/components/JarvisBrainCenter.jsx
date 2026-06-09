@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
+import { cycleStats } from "../phase18Api";
+import { getAutonomyStatus } from "../phase20Api";
 import "./JarvisBrainCenter.css";
 
 const FLOW_NODES = [
@@ -46,7 +48,8 @@ const LOOPS = [
 
 export default function JarvisBrainCenter({ onNavigate }) {
   const [activeNode, setActiveNode] = useState("execution");
-  const [tick, setTick] = useState(0);
+  const [tick,       setTick]       = useState(0);
+  const [liveStats,  setLiveStats]  = useState(null);
 
   useEffect(() => {
     const t = setInterval(() => setTick(x => x + 1), 2800);
@@ -58,9 +61,19 @@ export default function JarvisBrainCenter({ onNavigate }) {
     setActiveNode(FLOW_NODES[idx].key);
   }, [tick]);
 
-  const totalRuns  = 1847;
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([cycleStats(), getAutonomyStatus()])
+      .then(([statsRes, statusRes]) => {
+        if (!cancelled) setLiveStats({ ...statsRes, ...statusRes });
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
+  const totalRuns   = liveStats?.totalCycles ?? liveStats?.totalRuns ?? 1847;
   const activeGoals = GOALS.filter(g => g.status === "active").length;
-  const loopCycles = LOOPS.reduce((s,l) => s + l.count, 0);
+  const loopCycles  = liveStats?.totalCycles ?? LOOPS.reduce((s,l) => s + l.count, 0);
 
   return (
     <div className="jbc">

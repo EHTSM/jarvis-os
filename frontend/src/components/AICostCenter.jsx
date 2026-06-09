@@ -124,6 +124,13 @@ export default function AICostCenter({ onNavigate }) {
 
   return (
     <div className="ai-cost-center page-enter">
+      <div className="coming-soon-banner">
+        <span className="csb-icon">◎</span>
+        <div className="csb-body">
+          <span className="csb-title">AI Cost Tracking Engine <span className="csb-beta-badge">BETA</span></span>
+          <span className="csb-sub">Live token usage and cost aggregation require the CostTrackingEngine (not yet built). The provider breakdown and routing rules below reflect the target configuration.</span>
+        </div>
+      </div>
       <div className="acc-header">
         <div>
           <h1 className="acc-title">AI Cost Management</h1>

@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
+import { listActions, getActionAuditTrail } from "../phase18Api";
 import "./ExecutionConnectorCenter.css";
 
 const KEY = "ooplix_exec_connectors_v1";
@@ -56,9 +57,33 @@ const iconOf = id => CONNECTORS.find(c => c.id === id)?.icon || "🔌";
 const nameOf = id => CONNECTORS.find(c => c.id === id)?.name || id;
 
 export default function ExecutionConnectorCenter({ onNavigate }) {
-  const [connected, setConnected] = useState(() => _load(KEY, SEED_CONNECTED));
-  const [tab, setTab] = useState("connectors");
+  const [connected,   setConnected]   = useState(() => _load(KEY, SEED_CONNECTED));
+  const [tab,         setTab]         = useState("connectors");
+  const [liveActions, setLiveActions] = useState([]);
+  const [apiError,    setApiError]    = useState(null);
   const TABS = ["connectors","actions","history","failures"];
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([
+      listActions({ status: "completed", limit: 20 }),
+      listActions({ status: "failed", limit: 10 }),
+    ]).then(([doneRes, failRes]) => {
+      if (cancelled) return;
+      const done = doneRes?.actions || [];
+      const failed = failRes?.actions || [];
+      if (done.length || failed.length) {
+        setLiveActions([...done, ...failed].map(a => ({
+          id:     a.id,
+          name:   a.input?.slice(0, 60) || "Action",
+          status: a.status || "executed",
+          ts:     a.createdAt ? new Date(a.createdAt).toLocaleTimeString() : "—",
+          result: a.result?.message || a.error || "—",
+        })));
+      }
+    }).catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
 
   function toggle(id) {
     const next = connected.includes(id) ? connected.filter(x => x !== id) : [...connected, id];
@@ -68,6 +93,7 @@ export default function ExecutionConnectorCenter({ onNavigate }) {
 
   return (
     <div className="ecc">
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live action data unavailable — showing cached data ({apiError})</div>}
       <div className="ecc-header">
         <div>
           <h1 className="ecc-title">Execution Connector Center</h1>

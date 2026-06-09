@@ -37,7 +37,7 @@ export async function listIndexedRepos() {
 }
 export async function indexRepo(repoPath, opts = {}) {
   return _fetch("/p24/repo/index", {
-    method: "POST", body: JSON.stringify({ repoPath, ...opts }),
+    method: "POST", body: JSON.stringify({ workspacePath: repoPath, ...opts }),
   });
 }
 export async function getRepoStatus(repoId) {
@@ -65,7 +65,7 @@ export async function getRefactorPlan(planId) {
   return _fetch(`/p24/refactor/plans/${planId}`);
 }
 export async function detectDuplication(repoPath) {
-  return _fetch("/p24/refactor/detect/duplication", {
+  return _fetch("/p24/refactor/detect/dup", {
     method: "POST", body: JSON.stringify({ repoPath }),
   });
 }

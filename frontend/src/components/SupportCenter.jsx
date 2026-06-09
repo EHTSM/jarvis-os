@@ -154,6 +154,13 @@ export default function SupportCenter({ onNavigate }) {
   return (
     <div className="support-center page-enter">
       {toast && <div className="sc-toast">{toast}</div>}
+      <div className="coming-soon-banner">
+        <span className="csb-icon">◎</span>
+        <div className="csb-body">
+          <span className="csb-title">Support Ticket Engine <span className="csb-beta-badge">BETA</span></span>
+          <span className="csb-sub">Backend ticket routing, SLA enforcement, and AI-assisted replies require the SupportTicketEngine (not yet built). Tickets below are stored locally for planning purposes.</span>
+        </div>
+      </div>
 
       <div className="sc-header">
         <div>

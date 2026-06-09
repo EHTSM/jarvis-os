@@ -1,0 +1,42 @@
+[
+  {
+    "deptId": "dept_1780406363952",
+    "orgId": "org_1780406363943",
+    "name": "Finance",
+    "description": "Finance dept",
+    "headId": "",
+    "status": "active",
+    "tags": [],
+    "createdAt": "2026-06-02T13:19:23.953Z",
+    "updatedAt": "2026-06-02T13:19:23.953Z",
+    "archivedAt": null
+  },
+  {
+    "deptId": "dept_1780406363950",
+    "orgId": "org_1780406363941",
+    "name": "Sales",
+    "description": "Revenue generation",
+    "headId": "",
+    "status": "archived",
+    "tags": [
+      "business"
+    ],
+    "createdAt": "2026-06-02T13:19:23.952Z",
+    "updatedAt": "2026-06-02T13:19:23.953Z",
+    "archivedAt": "2026-06-02T13:19:23.953Z"
+  },
+  {
+    "deptId": "dept_1780406363948",
+    "orgId": "org_1780406363941",
+    "name": "Engineering",
+    "description": "Core engineering — updated",
+    "headId": "vp-eng-002",
+    "status": "active",
+    "tags": [
+      "technical"
+    ],
+    "createdAt": "2026-06-02T13:19:23.952Z",
+    "updatedAt": "2026-06-02T13:19:23.953Z",
+    "archivedAt": null
+  }
+]

@@ -42,7 +42,9 @@ function _writeJson(file, data) {
 }
 
 let _cycles  = _readJson(CYCLE_FILE, []);
-let _learning = _readJson(LEARNING_FILE, []);
+// learning-patterns.json may be a legacy {patterns,history,meta} object — extract the history array
+const _rawLearning = _readJson(LEARNING_FILE, []);
+let _learning = Array.isArray(_rawLearning) ? _rawLearning : (Array.isArray(_rawLearning.history) ? _rawLearning.history : []);
 let _seq = _cycles.length;
 function _cycleId() { return `cyc_${Date.now()}_${(++_seq).toString(36)}`; }
 

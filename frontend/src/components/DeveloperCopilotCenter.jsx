@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
-import { listIndexedRepos, getGitHubStats, listReviews } from "../phase24Api";
+import { listIndexedRepos, getGitHubStats, listReviews, reviewCode, detectDuplication, detectOversizedFiles, listRefactorPlans, indexRepo } from "../phase24Api";
 import { getGitHubActivity } from "../phase23Api";
 import "./DeveloperCopilotCenter.css";
 
@@ -61,11 +61,24 @@ function Badge({ label, color }) {
 }
 
 export default function DeveloperCopilotCenter({ onNavigate }) {
-  const [section,  setSection]  = useState("repos");
-  const [selRepo,  setSelRepo]  = useState(null);
-  const [repos,    setRepos]    = useState(REPOS);
-  const [reviews,  setReviews]  = useState(REVIEWS);
-  const [apiError, setApiError] = useState(null);
+  const [section,      setSection]      = useState("repos");
+  const [selRepo,      setSelRepo]      = useState(null);
+  const [repos,        setRepos]        = useState(REPOS);
+  const [reviews,      setReviews]      = useState(REVIEWS);
+  const [apiError,     setApiError]     = useState(null);
+  const [revCode,      setRevCode]      = useState("");
+  const [revLang,      setRevLang]      = useState("javascript");
+  const [revRunning,   setRevRunning]   = useState(false);
+  const [revResult,    setRevResult]    = useState(null);
+  const [revErr,       setRevErr]       = useState(null);
+  const [refactorPath, setRefactorPath] = useState(".");
+  const [refRunning,   setRefRunning]   = useState(false);
+  const [refPlans,     setRefPlans]     = useState([]);
+  const [refErr,       setRefErr]       = useState(null);
+  const [idxPath,      setIdxPath]      = useState("/Users/ehtsm/jarvis-os");
+  const [idxRunning,   setIdxRunning]   = useState(false);
+  const [idxResult,    setIdxResult]    = useState(null);
+  const [idxErr,       setIdxErr]       = useState(null);
 
   useEffect(() => { track.event("dev_copilot_viewed"); }, []);
 
@@ -148,6 +161,7 @@ export default function DeveloperCopilotCenter({ onNavigate }) {
           { id: "branches", label: "Branches"     },
           { id: "prs",      label: `Pull Requests (${openPRs})` },
           { id: "reviews",  label: `Code Reviews (${openReviews})` },
+          { id: "refactor", label: "Refactor Detection" },
         ].map(t => (
           <button key={t.id} className={`dcc-tab${section === t.id ? " dcc-tab--active" : ""}`} onClick={() => setSection(t.id)}>
             {t.label}
@@ -159,6 +173,25 @@ export default function DeveloperCopilotCenter({ onNavigate }) {
 
         {/* Repos */}
         {section === "repos" && (
+          <div>
+            <div style={{ marginBottom:12, display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+              <input value={idxPath} onChange={e => setIdxPath(e.target.value)}
+                style={{ flex:1, minWidth:200, background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"7px 12px", color:"var(--text)", fontSize:12, fontFamily:"monospace" }}
+                placeholder="Repo path to index" />
+              <button disabled={idxRunning || !idxPath.trim()}
+                onClick={() => {
+                  setIdxRunning(true); setIdxResult(null); setIdxErr(null);
+                  indexRepo(idxPath.trim())
+                    .then(r => setIdxResult(r))
+                    .catch(e => setIdxErr(e.message))
+                    .finally(() => setIdxRunning(false));
+                }}
+                style={{ padding:"7px 16px", background:"var(--surface-raised)", border:"1px solid var(--accent)", borderRadius:"var(--radius-pill)", color:"var(--accent)", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"inherit" }}>
+                {idxRunning ? "Indexing…" : "⬡ Index repo"}
+              </button>
+              {idxErr && <span style={{ fontSize:12, color:"var(--danger)" }}>Error: {idxErr}</span>}
+              {idxResult && <span style={{ fontSize:12, color:"var(--success)" }}>✓ Indexed: {idxResult.fileCount} files, {idxResult.symbolCount} symbols</span>}
+            </div>
           <div className="dcc-repo-list">
             {repos.map(r => (
               <div key={r.id} className={`dcc-repo-row${selRepo === r.id ? " dcc-repo-row--sel" : ""}`} onClick={() => setSelRepo(prev => prev === r.id ? null : r.id)}>
@@ -178,6 +211,7 @@ export default function DeveloperCopilotCenter({ onNavigate }) {
                 </div>
               </div>
             ))}
+          </div>
           </div>
         )}
 
@@ -244,21 +278,93 @@ export default function DeveloperCopilotCenter({ onNavigate }) {
 
         {/* Code Reviews */}
         {section === "reviews" && (
-          <div className="dcc-review-list">
-            {reviews.map(r => (
-              <div key={r.id} className={`dcc-review-row dcc-review-row--${r.severity}`}>
-                <div className="dcc-review-left">
-                  <span className="dcc-sev-dot" style={{ background: SEV_COLORS[r.severity] }} />
-                  <div className="dcc-review-body">
-                    <span className="dcc-review-pr">{r.pr}</span>
-                    <span className="dcc-review-repo">{r.repo}</span>
-                    <p className="dcc-review-finding">{r.finding}</p>
+          <div>
+            {/* Submit for review */}
+            <div style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:16, marginBottom:16, display:"flex", flexDirection:"column", gap:10 }}>
+              <p style={{ margin:0, fontSize:13, fontWeight:700, color:"var(--text)" }}>Submit code for review</p>
+              <div style={{ display:"flex", gap:8 }}>
+                <textarea rows={5}
+                  style={{ flex:1, background:"var(--surface-base)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"8px 12px", color:"var(--text)", fontSize:12, fontFamily:"monospace", resize:"vertical" }}
+                  value={revCode} onChange={e => setRevCode(e.target.value)}
+                  placeholder="Paste code here…" />
+              </div>
+              <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+                <select value={revLang} onChange={e => setRevLang(e.target.value)}
+                  style={{ background:"var(--surface-base)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"6px 10px", color:"var(--text)", fontSize:12, fontFamily:"inherit" }}>
+                  {["javascript","typescript","python","go","java","ruby","rust","cpp"].map(l => <option key={l} value={l}>{l}</option>)}
+                </select>
+                <button disabled={revRunning || !revCode.trim()}
+                  onClick={() => {
+                    setRevRunning(true); setRevResult(null); setRevErr(null);
+                    reviewCode(revCode, revLang)
+                      .then(r => { setRevResult(r); if (r) setReviews(prev => [{ id:`rv_${Date.now()}`, pr:"Manual review", repo:"—", finding: r.summary || `Score: ${r.score}/100`, severity: r.score >= 80 ? "info" : r.score >= 60 ? "warning" : "error", status:"open" }, ...prev]); })
+                      .catch(e => setRevErr(e.message))
+                      .finally(() => setRevRunning(false));
+                  }}
+                  style={{ padding:"7px 16px", background:"linear-gradient(135deg,var(--accent),var(--accent2))", color:"#06080e", border:"none", borderRadius:"var(--radius-pill)", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"inherit" }}>
+                  {revRunning ? "Reviewing…" : "◉ Review code"}
+                </button>
+              </div>
+              {revErr && <p style={{ margin:0, fontSize:12, color:"var(--danger)" }}>Error: {revErr}</p>}
+              {revResult && (
+                <div style={{ padding:"8px 12px", background:"var(--surface-base)", borderRadius:"var(--radius)", fontSize:12 }}>
+                  <span style={{ color: revResult.score >= 80 ? "var(--success)" : "var(--warning)", fontWeight:700 }}>Score: {revResult.score}/100 ({revResult.grade})</span>
+                  {revResult.findings?.length > 0 && <p style={{ margin:"4px 0 0", color:"var(--text-dim)" }}>{revResult.findings.length} finding(s): {revResult.findings.slice(0,2).map(f=>f.message||f).join("; ")}</p>}
+                </div>
+              )}
+            </div>
+            <div className="dcc-review-list">
+              {reviews.map(r => (
+                <div key={r.id} className={`dcc-review-row dcc-review-row--${r.severity}`}>
+                  <div className="dcc-review-left">
+                    <span className="dcc-sev-dot" style={{ background: SEV_COLORS[r.severity] }} />
+                    <div className="dcc-review-body">
+                      <span className="dcc-review-pr">{r.pr}</span>
+                      <span className="dcc-review-repo">{r.repo}</span>
+                      <p className="dcc-review-finding">{r.finding}</p>
+                    </div>
+                  </div>
+                  <div className="dcc-review-right">
+                    <Badge label={r.severity} color={SEV_COLORS[r.severity]} />
+                    <span className={`dcc-review-status dcc-review-status--${r.status}`}>{r.status}</span>
                   </div>
                 </div>
-                <div className="dcc-review-right">
-                  <Badge label={r.severity} color={SEV_COLORS[r.severity]} />
-                  <span className={`dcc-review-status dcc-review-status--${r.status}`}>{r.status}</span>
-                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+
+        {/* Refactor detection tab */}
+        {section === "refactor" && (
+          <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+            <div style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:16, display:"flex", flexDirection:"column", gap:10 }}>
+              <p style={{ margin:0, fontSize:13, fontWeight:700 }}>Detect code issues</p>
+              <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+                <input value={refactorPath} onChange={e => setRefactorPath(e.target.value)}
+                  style={{ flex:1, minWidth:180, background:"var(--surface-base)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"7px 12px", color:"var(--text)", fontSize:12, fontFamily:"monospace" }}
+                  placeholder="Repo path" />
+                <button disabled={refRunning} onClick={() => {
+                    setRefRunning(true); setRefErr(null);
+                    Promise.all([detectDuplication(refactorPath), detectOversizedFiles(refactorPath)])
+                      .then(([dupRes, sizeRes]) => {
+                        const plans = [...(dupRes?.plan ? [dupRes.plan] : []), ...(sizeRes?.plan ? [sizeRes.plan] : [])];
+                        if (plans.length) setRefPlans(plans);
+                        else setRefPlans([{ id:"r1", type:"none", description:"No issues detected" }]);
+                      })
+                      .catch(e => setRefErr(e.message))
+                      .finally(() => setRefRunning(false));
+                  }}
+                  style={{ padding:"7px 16px", background:"linear-gradient(135deg,var(--accent),var(--accent2))", color:"#06080e", border:"none", borderRadius:"var(--radius-pill)", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"inherit" }}>
+                  {refRunning ? "Scanning…" : "⬟ Scan for issues"}
+                </button>
+              </div>
+              {refErr && <p style={{ margin:0, fontSize:12, color:"var(--danger)" }}>Error: {refErr}</p>}
+            </div>
+            {refPlans.map((p, i) => (
+              <div key={p.id || i} style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:14 }}>
+                <div style={{ fontWeight:700, fontSize:13, marginBottom:4 }}>{p.type || p.planType || "Refactor Plan"}</div>
+                <p style={{ margin:0, fontSize:12, color:"var(--text-dim)" }}>{p.description || p.summary || JSON.stringify(p).slice(0,200)}</p>
               </div>
             ))}
           </div>

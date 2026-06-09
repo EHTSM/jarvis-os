@@ -1,0 +1,76 @@
+/* ── SignupPage — extends LoginPage.css shell ───────────────────────────── */
+
+/* Password show/hide wrapper */
+.su-pw-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.su-pw-input {
+  padding-right: 60px !important;
+}
+
+.su-pw-toggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--text-dim, #8994b0);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  letter-spacing: 0.04em;
+  transition: color 120ms ease;
+}
+.su-pw-toggle:hover { color: var(--accent, #7c6fff); }
+
+/* Password strength hint */
+.su-pw-hint {
+  font-size: 11px;
+  color: var(--warning, #f8b400);
+  margin-top: 4px;
+  display: block;
+}
+
+/* Trust signals strip */
+.su-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.su-trust-item {
+  font-size: 11px;
+  color: var(--text-faint, #4a5470);
+}
+.su-trust-sep {
+  font-size: 11px;
+  color: var(--text-faint, #4a5470);
+  opacity: 0.5;
+}
+
+/* Sign-in link button */
+.su-link-btn {
+  background: none;
+  border: none;
+  color: var(--accent, #7c6fff);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 120ms ease;
+}
+.su-link-btn:hover:not(:disabled) { opacity: 0.78; }
+.su-link-btn:disabled { opacity: 0.38; cursor: not-allowed; }
+
+@media (max-width: 360px) {
+  .su-trust { gap: 4px; }
+  .su-trust-sep { display: none; }
+  .su-trust-item { font-size: 10px; }
+}

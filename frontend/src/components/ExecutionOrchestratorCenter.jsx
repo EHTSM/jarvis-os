@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
+import { listCycles, cycleStats, listActions } from "../phase18Api";
 import "./ExecutionOrchestratorCenter.css";
 
 const EXC_KEY = "ooplix_exec_chains";
@@ -132,8 +133,44 @@ export default function ExecutionOrchestratorCenter({ onNavigate }) {
   const [selected, setSelected] = useState("ec1");
   const [section,  setSection]  = useState("chains");
   const [toast,    setToast]    = useState(null);
+  const [apiError, setApiError] = useState(null);
+  const [liveStats, setLiveStats] = useState(null);
 
   React.useEffect(() => { track.event("exec_orchestrator_viewed"); }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([listCycles({ limit: 20 }), cycleStats()])
+      .then(([cyclesRes, statsRes]) => {
+        if (cancelled) return;
+        if (statsRes) setLiveStats(statsRes);
+        const cycles = cyclesRes?.cycles;
+        if (Array.isArray(cycles) && cycles.length > 0) {
+          const mapped = cycles.map(c => ({
+            id:          c.id,
+            goal:        c.goal || "Execution cycle",
+            status:      c.status || "in_progress",
+            successRate: c.successRate ?? null,
+            startedAt:   c.startedAt ? new Date(c.startedAt).toLocaleTimeString() : "—",
+            tasks: (c.steps || []).map((s, i) => ({
+              id:     `${c.id}_t${i}`,
+              title:  s.action || s.description || "Step",
+              agent:  s.agentId || "Runtime",
+              tool:   s.tool || "runtime",
+              status: s.status === "completed" ? "done" : s.status || "pending",
+              result: s.result?.message || s.output || null,
+              retries: s.retryCount || 0,
+            })),
+          }));
+          setChains(mapped);
+          _save(EXC_KEY, mapped);
+          if (mapped.length && !mapped.find(c => c.id === selected)) setSelected(mapped[0].id);
+        }
+      })
+      .catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
+
   const showToast = m => { setToast(m); setTimeout(()=>setToast(null),2400); };
 
   const selChain = chains.find(c => c.id === selected);
@@ -149,6 +186,7 @@ export default function ExecutionOrchestratorCenter({ onNavigate }) {
   return (
     <div className="execution-orchestrator-center page-enter">
       {toast && <div className="eoc-toast">{toast}</div>}
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live cycle data unavailable — showing cached data ({apiError})</div>}
 
       <div className="eoc-header">
         <div>

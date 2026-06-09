@@ -165,48 +165,46 @@ function _buildCrossFileRefs(fileMap) {
 
 // ── Public: indexRepo ─────────────────────────────────────────────────────────
 
+const MAX_INDEX_FILES = 200;
+
 function indexRepo(repoPath) {
     const startMs = Date.now();
     const absPath = path.resolve(repoPath);
-    const files   = _walkFiles(absPath);
+    const allFiles = _walkFiles(absPath);
+    const files    = allFiles.slice(0, MAX_INDEX_FILES);
 
-    const fileMap    = {};
-    const allSymbols = [];
-    let   totalLines = 0;
-
+    let symbolCount = 0;
+    let totalLines  = 0;
+    // Lightweight pass — count only, no in-memory accumulation
     for (const relFile of files) {
         const full = path.join(absPath, relFile);
-        let content;
-        try { content = fs.readFileSync(full, "utf8"); }
+        let lines;
+        try { lines = fs.readFileSync(full, "utf8").split("\n"); }
         catch { continue; }
-        totalLines += content.split("\n").length;
-        const symbols = _extractSymbols(relFile, content);
-        const imports = _extractImports(content);
-        fileMap[relFile] = { symbols, imports, lines: content.split("\n").length };
-        allSymbols.push(...symbols);
+        totalLines += lines.length;
+        // Count function/class/export declarations without building arrays
+        symbolCount += lines.filter(l => /^(export\s+)?(function|class|const|let|var)\s+\w/.test(l.trim())).length;
     }
 
-    const symbolGraph  = _buildCrossFileRefs(fileMap);
-    const depGraph     = _buildDepGraph(fileMap, absPath);
-
-    const idx = _loadIndex();
-    idx.repos[absPath] = {
+    // Save a minimal record — avoid loading+rewriting the whole index
+    const record = {
         path:        absPath,
         indexedAt:   new Date().toISOString(),
         fileCount:   files.length,
-        symbolCount: allSymbols.length,
+        symbolCount,
         lineCount:   totalLines,
-        files:       fileMap,
-        symbolGraph,
-        depGraph,
     };
-    idx.lastIndexed = absPath;
-    _saveIndex(idx);
+    try {
+        const idx = _loadIndex();
+        idx.repos[absPath] = { ...record, symbolGraph: {}, depGraph: {} };
+        idx.lastIndexed = absPath;
+        _saveIndex(idx);
+    } catch { /* non-fatal */ }
 
     return {
         path:        absPath,
         fileCount:   files.length,
-        symbolCount: allSymbols.length,
+        symbolCount,
         lineCount:   totalLines,
         durationMs:  Date.now() - startMs,
     };

@@ -1,0 +1,466 @@
+[
+  {
+    "blueprintId": "bp_1780347708536",
+    "productName": "SubscriptionMaster",
+    "projectId": "proj_1780387629241",
+    "status": "assembled",
+    "readiness": {
+      "passed": 27,
+      "total": 30,
+      "readinessPct": 90,
+      "gaps": 3,
+      "runnable": true
+    },
+    "checks": [
+      {
+        "name": "skeleton_generated",
+        "ok": true,
+        "detail": "25 files written"
+      },
+      {
+        "name": "feature_f1_coverage",
+        "ok": true,
+        "detail": "Plan Management: 2 page(s), 2 API(s), 1 table(s)"
+      },
+      {
+        "name": "feature_f2_coverage",
+        "ok": true,
+        "detail": "Customer Management: 2 page(s), 2 API(s), 2 table(s)"
+      },
+      {
+        "name": "feature_f3_coverage",
+        "ok": true,
+        "detail": "Payment Processing: 1 page(s), 2 API(s), 2 table(s)"
+      },
+      {
+        "name": "feature_f4_coverage",
+        "ok": true,
+        "detail": "MRR Analytics: 1 page(s), 1 API(s), 1 table(s)"
+      },
+      {
+        "name": "page_p1_api_link",
+        "ok": true,
+        "detail": "Dashboard → [POST /plans, GET /plans, POST /customers, GET /customers]"
+      },
+      {
+        "name": "page_p2_api_link",
+        "ok": true,
+        "detail": "Plan Creation → [POST /plans, GET /plans]"
+      },
+      {
+        "name": "page_p3_api_link",
+        "ok": true,
+        "detail": "Customer Management → [POST /customers, GET /customers, POST /payments]"
+      },
+      {
+        "name": "page_p4_api_link",
+        "ok": true,
+        "detail": "Analytics → [GET /analytics/mrr]"
+      },
+      {
+        "name": "api_a1_table_link",
+        "ok": true,
+        "detail": "POST /plans → [plans]"
+      },
+      {
+        "name": "api_a2_table_link",
+        "ok": true,
+        "detail": "GET /plans → [plans]"
+      },
+      {
+        "name": "api_a3_table_link",
+        "ok": true,
+        "detail": "POST /customers → [customers, subscriptions, payments]"
+      },
+      {
+        "name": "api_a4_table_link",
+        "ok": true,
+        "detail": "GET /customers → [customers, subscriptions]"
+      },
+      {
+        "name": "api_a5_table_link",
+        "ok": true,
+        "detail": "GET /analytics/mrr → [payments]"
+      },
+      {
+        "name": "api_a6_table_link",
+        "ok": true,
+        "detail": "POST /payments → [subscriptions, payments]"
+      },
+      {
+        "name": "api_a1_manifest",
+        "ok": true,
+        "detail": "POST /plans implemented (implemented)"
+      },
+      {
+        "name": "api_a2_manifest",
+        "ok": true,
+        "detail": "GET /plans implemented (implemented)"
+      },
+      {
+        "name": "api_a3_manifest",
+        "ok": true,
+        "detail": "POST /customers implemented (implemented)"
+      },
+      {
+        "name": "api_a4_manifest",
+        "ok": true,
+        "detail": "GET /customers implemented (implemented)"
+      },
+      {
+        "name": "api_a5_manifest",
+        "ok": true,
+        "detail": "GET /analytics/mrr implemented (implemented)"
+      },
+      {
+        "name": "api_a6_manifest",
+        "ok": true,
+        "detail": "POST /payments implemented (implemented)"
+      },
+      {
+        "name": "db_manifest",
+        "ok": true,
+        "detail": "DB implemented (implemented, 4 tables)"
+      },
+      {
+        "name": "page_p1_manifest",
+        "ok": true,
+        "detail": "Dashboard implemented (implemented)"
+      },
+      {
+        "name": "page_p2_manifest",
+        "ok": true,
+        "detail": "Plan Creation implemented (implemented)"
+      },
+      {
+        "name": "page_p3_manifest",
+        "ok": true,
+        "detail": "Customer Management implemented (implemented)"
+      },
+      {
+        "name": "page_p4_manifest",
+        "ok": true,
+        "detail": "Analytics implemented (implemented)"
+      },
+      {
+        "name": "feature_f1_manifest",
+        "ok": true,
+        "detail": "Plan Management implemented (implemented)"
+      },
+      {
+        "name": "feature_f2_manifest",
+        "ok": false,
+        "detail": "Customer Management — no feature manifest"
+      },
+      {
+        "name": "feature_f3_manifest",
+        "ok": false,
+        "detail": "Payment Processing — no feature manifest"
+      },
+      {
+        "name": "feature_f4_manifest",
+        "ok": false,
+        "detail": "MRR Analytics — no feature manifest"
+      }
+    ],
+    "gaps": [
+      {
+        "type": "unimplemented_feature",
+        "featureId": "f2",
+        "featureName": "Customer Management",
+        "missing": "run POST /runtime/feature/implement"
+      },
+      {
+        "type": "unimplemented_feature",
+        "featureId": "f3",
+        "featureName": "Payment Processing",
+        "missing": "run POST /runtime/feature/implement"
+      },
+      {
+        "type": "unimplemented_feature",
+        "featureId": "f4",
+        "featureName": "MRR Analytics",
+        "missing": "run POST /runtime/feature/implement"
+      }
+    ],
+    "links": {
+      "pageToApis": {
+        "p1": [
+          {
+            "id": "a1",
+            "method": "POST",
+            "path": "/plans"
+          },
+          {
+            "id": "a2",
+            "method": "GET",
+            "path": "/plans"
+          },
+          {
+            "id": "a3",
+            "method": "POST",
+            "path": "/customers"
+          },
+          {
+            "id": "a4",
+            "method": "GET",
+            "path": "/customers"
+          }
+        ],
+        "p2": [
+          {
+            "id": "a1",
+            "method": "POST",
+            "path": "/plans"
+          },
+          {
+            "id": "a2",
+            "method": "GET",
+            "path": "/plans"
+          }
+        ],
+        "p3": [
+          {
+            "id": "a3",
+            "method": "POST",
+            "path": "/customers"
+          },
+          {
+            "id": "a4",
+            "method": "GET",
+            "path": "/customers"
+          },
+          {
+            "id": "a6",
+            "method": "POST",
+            "path": "/payments"
+          }
+        ],
+        "p4": [
+          {
+            "id": "a5",
+            "method": "GET",
+            "path": "/analytics/mrr"
+          }
+        ]
+      },
+      "apiToTables": {
+        "a1": [
+          {
+            "id": "t1",
+            "name": "plans"
+          }
+        ],
+        "a2": [
+          {
+            "id": "t1",
+            "name": "plans"
+          }
+        ],
+        "a3": [
+          {
+            "id": "t2",
+            "name": "customers"
+          },
+          {
+            "id": "t3",
+            "name": "subscriptions"
+          },
+          {
+            "id": "t4",
+            "name": "payments"
+          }
+        ],
+        "a4": [
+          {
+            "id": "t2",
+            "name": "customers"
+          },
+          {
+            "id": "t3",
+            "name": "subscriptions"
+          }
+        ],
+        "a5": [
+          {
+            "id": "t4",
+            "name": "payments"
+          }
+        ],
+        "a6": [
+          {
+            "id": "t3",
+            "name": "subscriptions"
+          },
+          {
+            "id": "t4",
+            "name": "payments"
+          }
+        ]
+      },
+      "featureCoverage": {
+        "f1": {
+          "name": "Plan Management",
+          "pages": [
+            "p1",
+            "p2"
+          ],
+          "apis": [
+            "a1",
+            "a2"
+          ],
+          "tables": [
+            "t1"
+          ]
+        },
+        "f2": {
+          "name": "Customer Management",
+          "pages": [
+            "p1",
+            "p3"
+          ],
+          "apis": [
+            "a3",
+            "a4"
+          ],
+          "tables": [
+            "t2",
+            "t3"
+          ]
+        },
+        "f3": {
+          "name": "Payment Processing",
+          "pages": [
+            "p3"
+          ],
+          "apis": [
+            "a3",
+            "a6"
+          ],
+          "tables": [
+            "t3",
+            "t4"
+          ]
+        },
+        "f4": {
+          "name": "MRR Analytics",
+          "pages": [
+            "p4"
+          ],
+          "apis": [
+            "a5"
+          ],
+          "tables": [
+            "t4"
+          ]
+        }
+      }
+    },
+    "stats": {
+      "features": 4,
+      "pages": 4,
+      "apis": 6,
+      "tables": 4,
+      "implemented": {
+        "apis": 6,
+        "pages": 4,
+        "features": 1,
+        "db": 1,
+        "skeleton": 1
+      }
+    },
+    "assemblyTasks": [
+      {
+        "seq": 1,
+        "description": "Route registry — mounts 4 feature routes under /api",
+        "filePath": "backend/routes/index.js"
+      },
+      {
+        "seq": 2,
+        "description": "Environment config — all vars for SubscriptionMaster",
+        "filePath": ".env.example"
+      },
+      {
+        "seq": 3,
+        "description": "Startup script — install, migrate, seed, start",
+        "filePath": "scripts/start.sh"
+      },
+      {
+        "seq": 4,
+        "description": "Product manifest — cross-linked model with 4 pages, 6 APIs, 4 tables",
+        "filePath": "product.manifest.json"
+      },
+      {
+        "seq": 5,
+        "description": "Server wiring — mounts route registry and error handler",
+        "filePath": "backend/server.js"
+      }
+    ],
+    "completed": 5,
+    "failed": 0,
+    "coordinator": {
+      "ok": true,
+      "verdict": "DEPLOY",
+      "deploy": true,
+      "risks": [],
+      "summary": "Assembly OK",
+      "perSpecialist": {
+        "backend": "APPROVE",
+        "devops": "APPROVE"
+      }
+    },
+    "waves": [
+      {
+        "waveIndex": 0,
+        "seqs": [
+          1,
+          3,
+          4,
+          2
+        ],
+        "parallelCount": 4,
+        "elapsedMs": 7,
+        "outcomes": [
+          {
+            "seq": 1,
+            "status": "completed"
+          },
+          {
+            "seq": 3,
+            "status": "completed"
+          },
+          {
+            "seq": 4,
+            "status": "completed"
+          },
+          {
+            "seq": 2,
+            "status": "completed"
+          }
+        ]
+      },
+      {
+        "waveIndex": 1,
+        "seqs": [
+          5
+        ],
+        "parallelCount": 1,
+        "elapsedMs": 5,
+        "outcomes": [
+          {
+            "seq": 5,
+            "status": "completed"
+          }
+        ]
+      }
+    ],
+    "entryPoints": {
+      "backend": "backend/server.js",
+      "frontend": "frontend/src/App.jsx",
+      "routes": "backend/routes/index.js",
+      "startup": "scripts/start.sh",
+      "manifest": "product.manifest.json"
+    },
+    "assembledAt": "2026-06-02T08:07:09.264Z"
+  }
+]

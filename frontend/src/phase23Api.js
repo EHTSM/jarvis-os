@@ -77,7 +77,7 @@ export async function getMission(missionId) {
   return _fetch(`/p23/autopilot/missions/${missionId}`);
 }
 export async function runMission(goal, opts = {}) {
-  return _fetch("/p23/autopilot/mission", {
+  return _fetch("/p23/autopilot/missions", {
     method: "POST", body: JSON.stringify({ goal, ...opts }),
   });
 }

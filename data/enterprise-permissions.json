@@ -1,0 +1,55 @@
+[
+  {
+    "permId": "perm_1780406363966",
+    "orgId": "org_1780406363941",
+    "memberId": "dev-bob",
+    "memberName": "Bob Dev",
+    "roleId": "role_1780406363961",
+    "resource": "*",
+    "actions": [
+      "read"
+    ],
+    "grantedBy": "admin-001",
+    "grantedAt": "2026-06-02T13:19:23.959Z",
+    "expiresAt": null,
+    "revokedAt": "2026-06-02T13:19:23.961Z",
+    "revokedBy": "admin-001",
+    "active": false
+  },
+  {
+    "permId": "perm_1780406363964",
+    "orgId": "org_1780406363941",
+    "memberId": "dev-alice",
+    "memberName": "Alice Dev",
+    "roleId": "role_1780406363959",
+    "resource": "builds",
+    "actions": [
+      "read",
+      "write"
+    ],
+    "grantedBy": "admin-001",
+    "grantedAt": "2026-06-02T13:19:23.958Z",
+    "expiresAt": null,
+    "revokedAt": null,
+    "revokedBy": null,
+    "active": true
+  },
+  {
+    "permId": "perm_1780406363962",
+    "orgId": "org_1780406363941",
+    "memberId": "dev-alice",
+    "memberName": "Alice Dev",
+    "roleId": "role_1780406363959",
+    "resource": "issues",
+    "actions": [
+      "read",
+      "write"
+    ],
+    "grantedBy": "admin-001",
+    "grantedAt": "2026-06-02T13:19:23.958Z",
+    "expiresAt": null,
+    "revokedAt": null,
+    "revokedBy": null,
+    "active": true
+  }
+]

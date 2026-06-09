@@ -1,1 +1,103 @@
-{}
+{
+  "operator": {
+    "id": "operator",
+    "email": "operator@local",
+    "passwordHash": "2104a14b9ed4365e6e6c18ba0350c6b1:83dcec03b16d2f637c702d262f3a5ed48ae63791f87d51d8d27410bd11ea5700d2ba977cb7c26f00a4c4de42cb71e7df68c1c6e6ec63ad849ec3a8334354068d",
+    "name": "Operator",
+    "role": "operator",
+    "createdAt": "2026-06-03T21:49:43.318Z",
+    "lastLoginAt": null,
+    "active": true,
+    "_legacy": true
+  },
+  "0f6261c6d5f1be70851f51b3": {
+    "id": "0f6261c6d5f1be70851f51b3",
+    "email": "fresh@test.com",
+    "passwordHash": "2c149a46a07c18063c26ab60068b28f2:b103dbc9df1925b0dbb2bb3c5e4fe9effad2538a0f916e30c06a9e0b5ac676ee897c183bf2034713c5c7db738645987c0876756f80742cc19d76f921f80b32b8",
+    "name": "Fresh",
+    "role": "user",
+    "createdAt": "2026-06-03T21:51:32.375Z",
+    "lastLoginAt": null,
+    "active": true
+  },
+  "4f388cd491bb6ad10d487785": {
+    "id": "4f388cd491bb6ad10d487785",
+    "email": "z@test.com",
+    "passwordHash": "a0315a6aacfef0ae3daf7ab2bcb321b8:3efe4b2fed8a2e79adde2ad4187170d10904fd0310f1b9da7cf61c3faebf431639ba5581f680a50a5fbbbc198d873381d9427f72fcc2bb4dcbdf2992e9f81fb8",
+    "name": "Z",
+    "role": "user",
+    "createdAt": "2026-06-03T21:53:09.542Z",
+    "lastLoginAt": null,
+    "active": true
+  },
+  "cfb5371d05089656446a51f1": {
+    "id": "cfb5371d05089656446a51f1",
+    "email": "launch@ooplix.com",
+    "passwordHash": "5341b164f50f2788e073385c835e1323:afef4da7fc2d95978220e499db0312de3ae754bbd7ef5bba076bb490bf56840031ba663466098074997a08cb806187dfdd6041a8bb673c663063013a686ef571",
+    "name": "Launch User",
+    "role": "user",
+    "createdAt": "2026-06-03T21:54:18.093Z",
+    "lastLoginAt": "2026-06-03T21:54:18.127Z",
+    "active": true
+  },
+  "3be3eacb69aae016c87149e7": {
+    "id": "3be3eacb69aae016c87149e7",
+    "email": "audit@test.com",
+    "passwordHash": "20ba18ba24a3c8e10a672f4f5b0d4503:736815aa8ae48f852cc35542cf61b72df9a3662d3437f9efc0c857552581ba40bc0c51617a716d64ddd3d5b11cf69b12d2f5c84ab09dc839900c1f22a7a1f8db",
+    "name": "Auditor",
+    "role": "user",
+    "createdAt": "2026-06-05T18:48:25.340Z",
+    "lastLoginAt": "2026-06-05T21:21:31.948Z",
+    "active": true
+  },
+  "7a217c74881271d4f47ec0fe": {
+    "id": "7a217c74881271d4f47ec0fe",
+    "email": "p38test_1780730929@example.com",
+    "passwordHash": "2ff61bcf0e736adf0aeb5c2c17eb51b5:d578e12339676d292c82799fb26a073e84f0249e2d2ed1620250b0e2d272376d95f590d9a3d04568521feef6857eb52cf3dda956b38401eb6a831a8d1a06de3c",
+    "name": "Test User",
+    "role": "user",
+    "createdAt": "2026-06-06T07:28:49.127Z",
+    "lastLoginAt": "2026-06-06T07:29:52.004Z",
+    "active": true
+  },
+  "e663aec55ab9e90978aa95ac": {
+    "id": "e663aec55ab9e90978aa95ac",
+    "email": "test@x.com",
+    "passwordHash": "2e809971106441ac825443acd64297f2:144574db5b162bd1347292597e9944319978aa66472d728bbcc3aba614763a3e5c5d64fd44935796816f1fe340e62167d5f2cf20be55614542c45fa3560ce5a9",
+    "name": "Test",
+    "role": "user",
+    "createdAt": "2026-06-07T21:26:16.546Z",
+    "lastLoginAt": null,
+    "active": true
+  },
+  "8e9bef3af00e4f7c0bafb4cb": {
+    "id": "8e9bef3af00e4f7c0bafb4cb",
+    "email": "phase49e@verify.local",
+    "passwordHash": "b286e1c6a7b7b430c4c77a4b11de355c:b3b6015567edc724d0544b78e8472c61b4069073491e1a9fe213bf3eb798d1e00e6bad4489521e294d8b9fa26afe42b72e269f0f72c6611eaaf573bcb44242d0",
+    "name": "Verifier",
+    "role": "user",
+    "createdAt": "2026-06-07T21:51:56.676Z",
+    "lastLoginAt": "2026-06-07T21:52:02.927Z",
+    "active": true
+  },
+  "e5d97b2d12d49672c324ccb0": {
+    "id": "e5d97b2d12d49672c324ccb0",
+    "email": "flowtest@phase49e.local",
+    "passwordHash": "149087a1378f4feb277ee5904bd6c96c:0f7ee30b0aacb4ed93f41173c22313d49a758d748253d0657d112c4401f03e29e0627092e12c9dbc16e3d973b3f010a2b008160712b4360f84aab58a11e88af7",
+    "name": "Flow Test",
+    "role": "user",
+    "createdAt": "2026-06-07T21:56:46.040Z",
+    "lastLoginAt": "2026-06-07T22:09:42.139Z",
+    "active": true
+  },
+  "c717d112b120f37018f5bfec": {
+    "id": "c717d112b120f37018f5bfec",
+    "email": "audit49h@golive.local",
+    "passwordHash": "b32aa30ad16bd9464acb50b0f7961567:5f04e7777096fa083686f7bcda91d16b38ddb38796babf6d04206b050a4768b36b8b07902021dcec236c6082f848b3d825364e41ae68b9f6e890a6effd56715a",
+    "name": "Audit 49H",
+    "role": "user",
+    "createdAt": "2026-06-07T22:32:24.812Z",
+    "lastLoginAt": "2026-06-09T11:15:18.867Z",
+    "active": true
+  }
+}

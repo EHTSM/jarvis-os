@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
-import { listAgents, getAgentFailures } from "../phase18Api";
+import { listAgents, getAgentFailures, executeAgentTask } from "../phase18Api";
 import "./AgentCenter.css";
 
 // ── Persistence ───────────────────────────────────────────────────────
@@ -170,9 +170,22 @@ function AgentCard({ agent, selected, onSelect, onToggle }) {
   );
 }
 
-function AgentDetail({ agent, activity, onToggle, onClose }) {
+function AgentDetail({ agent, activity, onToggle, onClose, onExecResult }) {
   const sc = STATUS_CONFIG[agent.status] || STATUS_CONFIG.idle;
   const agentActivity = activity.filter(a => a.agentId === agent.id);
+  const [taskInput,  setTaskInput]  = useState("");
+  const [executing,  setExecuting]  = useState(false);
+  const [execResult, setExecResult] = useState(null);
+  const [execError,  setExecError]  = useState(null);
+
+  function handleExecute() {
+    if (!taskInput.trim()) return;
+    setExecuting(true); setExecResult(null); setExecError(null);
+    executeAgentTask(agent.id, taskInput.trim())
+      .then(r => { setExecResult(r); if (onExecResult) onExecResult(r); })
+      .catch(e => setExecError(e.message))
+      .finally(() => setExecuting(false));
+  }
 
   return (
     <div className="ac-detail">
@@ -237,6 +250,34 @@ function AgentDetail({ agent, activity, onToggle, onClose }) {
                 <span className="ac-mini-ts">{a.ts}</span>
               </div>
             ))}
+          </div>
+        )}
+      </div>
+
+      <div className="ac-detail-section">
+        <p className="ac-dl">Execute task</p>
+        <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+          <input
+            className="mc-form-input"
+            style={{ flex:1, minWidth:0 }}
+            value={taskInput}
+            onChange={e => setTaskInput(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && handleExecute()}
+            placeholder={`Give ${agent.name} a task…`}
+          />
+          <button
+            onClick={handleExecute}
+            disabled={executing || !taskInput.trim()}
+            style={{ padding:"8px 16px", background:"linear-gradient(135deg,var(--accent),var(--accent2))", color:"#06080e", border:"none", borderRadius:"var(--radius-pill)", fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"inherit", whiteSpace:"nowrap" }}
+          >{executing ? "Running…" : "▷ Execute"}</button>
+        </div>
+        {execError && <p style={{ color:"var(--danger)", fontSize:12, marginTop:6 }}>Error: {execError}</p>}
+        {execResult && (
+          <div style={{ marginTop:8, padding:"8px 12px", background:"var(--surface-raised)", borderRadius:"var(--radius)", fontSize:12 }}>
+            <span style={{ color: execResult.success ? "var(--success)" : "var(--warning)", fontWeight:700 }}>
+              {execResult.success ? "✓ Success" : "⚠ Completed"}
+            </span>
+            {" — "}{execResult.output || execResult.result?.message || execResult.reply || "Done"}
           </div>
         )}
       </div>
@@ -406,6 +447,10 @@ export default function AgentCenter({ onNavigate }) {
                   activity={activity}
                   onToggle={handleToggle}
                   onClose={() => setSelected(null)}
+                  onExecResult={r => {
+                    const item = { id: `exec_${Date.now()}`, agentId: selectedAgent.id, action: r.output || "Task executed", ts: "just now", status: r.success ? "success" : "warning" };
+                    setActivity(prev => [item, ...prev].slice(0, 40));
+                  }}
                 />
               )}
             </div>

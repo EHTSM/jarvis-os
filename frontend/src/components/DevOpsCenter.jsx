@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { track } from "../analytics";
-import { listDeployments, getDeployHistory, listSLOs, getSystemMetrics, listAlerts, resolveAlert } from "../phase25Api";
+import { listDeployments, getDeployHistory, listSLOs, getSystemMetrics, listAlerts, resolveAlert, startCanary, rollbackDeploy } from "../phase25Api";
 import "./DevOpsCenter.css";
 
 // ── Seed data ─────────────────────────────────────────────────────────
@@ -63,6 +63,13 @@ export default function DevOpsCenter({ onNavigate }) {
   const [metrics,     setMetrics]     = useState(null);
   const [loading,     setLoading]     = useState(false);
   const [apiError,    setApiError]    = useState(null);
+  const [showDeploy,  setShowDeploy]  = useState(false);
+  const [depService,  setDepService]  = useState("ooplix-frontend");
+  const [depVersion,  setDepVersion]  = useState("");
+  const [depPct,      setDepPct]      = useState(10);
+  const [depRunning,  setDepRunning]  = useState(false);
+  const [depResult,   setDepResult]   = useState(null);
+  const [depErr,      setDepErr]      = useState(null);
 
   useEffect(() => { track.event("devops_center_viewed"); }, []);
 
@@ -126,6 +133,10 @@ export default function DevOpsCenter({ onNavigate }) {
           <h1 className="doc-title">DevOps Runtime</h1>
           <p className="doc-subtitle">Deployments, services, infrastructure, and incidents — live runtime view.</p>
         </div>
+        <button onClick={() => { setShowDeploy(true); setDepVersion(""); setDepResult(null); setDepErr(null); }}
+          style={{ padding:"9px 18px", background:"linear-gradient(135deg,var(--accent),var(--accent2))", color:"#06080e", border:"none", borderRadius:"var(--radius-pill)", fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"inherit", whiteSpace:"nowrap" }}>
+          ▷ Deploy Canary
+        </button>
       </div>
 
       {/* KPI strip */}
@@ -334,6 +345,57 @@ export default function DevOpsCenter({ onNavigate }) {
         )}
 
       </div>
+
+      {showDeploy && (
+        <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.6)", zIndex:1000, display:"flex", alignItems:"center", justifyContent:"center" }}
+          onClick={e => e.target === e.currentTarget && setShowDeploy(false)}>
+          <div style={{ background:"var(--surface-base)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:24, width:"min(460px,90vw)", display:"flex", flexDirection:"column", gap:14 }}>
+            <h3 style={{ margin:0, fontSize:16, fontWeight:700 }}>▷ Deploy Canary</h3>
+            <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+              <label style={{ fontSize:12, fontWeight:700, color:"var(--text-dim)" }}>Service</label>
+              <input value={depService} onChange={e => setDepService(e.target.value)}
+                style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"8px 12px", color:"var(--text)", fontSize:13, fontFamily:"inherit" }}
+                placeholder="ooplix-frontend" autoFocus />
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+              <label style={{ fontSize:12, fontWeight:700, color:"var(--text-dim)" }}>Version</label>
+              <input value={depVersion} onChange={e => setDepVersion(e.target.value)}
+                style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"8px 12px", color:"var(--text)", fontSize:13, fontFamily:"inherit" }}
+                placeholder="v9.5.0" />
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+              <label style={{ fontSize:12, fontWeight:700, color:"var(--text-dim)" }}>Canary traffic %</label>
+              <input type="number" min={1} max={100} value={depPct} onChange={e => setDepPct(Number(e.target.value))}
+                style={{ background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:"8px 12px", color:"var(--text)", fontSize:13, fontFamily:"inherit" }} />
+            </div>
+            {depErr && <p style={{ margin:0, fontSize:12, color:"var(--danger)" }}>Error: {depErr}</p>}
+            {depResult && <p style={{ margin:0, fontSize:12, color:"var(--success)" }}>✓ Canary started: {depResult.deployId} — {depResult.status}</p>}
+            <div style={{ display:"flex", gap:8, justifyContent:"flex-end" }}>
+              <button onClick={() => setShowDeploy(false)} style={{ padding:"8px 16px", background:"var(--surface-raised)", border:"1px solid var(--border)", borderRadius:"var(--radius-pill)", cursor:"pointer", fontSize:13, color:"var(--text-dim)", fontFamily:"inherit" }}>Cancel</button>
+              <button
+                disabled={depRunning || !depService.trim() || !depVersion.trim()}
+                onClick={() => {
+                  setDepRunning(true); setDepResult(null); setDepErr(null);
+                  startCanary({ service: depService, version: depVersion, percentage: depPct })
+                    .then(r => {
+                      setDepResult(r);
+                      setDeployments(prev => [{
+                        id: r.deployId, env:"staging", repo: depService, version: depVersion,
+                        status: r.status || "running", duration:"—", by:"UI", ts: new Date().toLocaleString(), commit:"—"
+                      }, ...prev].slice(0,20));
+                      track.event("devops_canary_started", { service: depService, version: depVersion });
+                      setTimeout(() => { setShowDeploy(false); setDepResult(null); }, 1800);
+                    })
+                    .catch(e => setDepErr(e.message))
+                    .finally(() => setDepRunning(false));
+                }}
+                style={{ padding:"8px 18px", background:"linear-gradient(135deg,var(--accent),var(--accent2))", color:"#06080e", border:"none", borderRadius:"var(--radius-pill)", fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"inherit" }}>
+                {depRunning ? "Deploying…" : "▷ Deploy"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

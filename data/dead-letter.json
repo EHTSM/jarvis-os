@@ -1,1289 +1,2909 @@
 [
   {
-    "taskId": "dlq-wf9-1778841888189",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
-    "agentId": null,
-    "deadAt": "2026-05-15T10:44:48.189Z"
-  },
-  {
-    "taskId": "t-mp6sm6bo",
-    "taskType": "terminal",
-    "input": "concurrent task 0",
-    "error": "fail attempt 1",
-    "attempts": 1,
+    "taskId": "disp_1780736913761_tehbn",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:47:09.447Z"
+    "deadAt": "2026-06-06T09:08:39.130Z"
   },
   {
-    "taskId": "t-mp6sm6bp",
-    "taskType": "terminal",
-    "input": "concurrent task 1",
-    "error": "fail attempt 2",
-    "attempts": 1,
+    "taskId": "disp_1780736910151_kva3d",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:47:09.447Z"
+    "deadAt": "2026-06-06T09:08:39.136Z"
   },
   {
-    "taskId": "t-mp6sm6bp",
-    "taskType": "terminal",
-    "input": "concurrent task 2",
-    "error": "fail attempt 3",
-    "attempts": 1,
+    "taskId": "disp_1780736919227_88mjk",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:47:09.448Z"
+    "deadAt": "2026-06-06T09:08:39.231Z"
   },
   {
-    "taskId": "t-mp6sm6bp",
-    "taskType": "terminal",
-    "input": "concurrent task 3",
-    "error": "fail attempt 4",
-    "attempts": 1,
+    "taskId": "disp_1780736913761_tehbn",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:47:09.448Z"
+    "deadAt": "2026-06-06T09:08:39.232Z"
   },
   {
-    "taskId": "t-mp6sm6bp",
-    "taskType": "terminal",
-    "input": "concurrent task 4",
-    "error": "fail attempt 5",
-    "attempts": 1,
+    "taskId": "disp_1780736919253_gedkw",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new leads",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:47:09.448Z"
+    "deadAt": "2026-06-06T09:08:39.254Z"
   },
   {
-    "taskId": "t-mp6sm6bp",
-    "taskType": "terminal",
-    "input": "concurrent task 5",
-    "error": "fail attempt 6",
-    "attempts": 1,
+    "taskId": "disp_1780736910078_jk9u7",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:39.256Z"
+  },
+  {
+    "taskId": "disp_1780736919727_qnpxd",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:39.731Z"
+  },
+  {
+    "taskId": "disp_1780736919787_xbq5v",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:39.788Z"
+  },
+  {
+    "taskId": "disp_1780736919727_qnpxd",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:39.799Z"
+  },
+  {
+    "taskId": "disp_1780736920020_t2yb0",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:40.023Z"
+  },
+  {
+    "taskId": "disp_1780736920194_jnj7u",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:40.198Z"
+  },
+  {
+    "taskId": "disp_1780736919787_xbq5v",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:40.304Z"
+  },
+  {
+    "taskId": "disp_1780736919253_gedkw",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new leads",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:40.311Z"
+  },
+  {
+    "taskId": "disp_1780736920194_jnj7u",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:40.574Z"
+  },
+  {
+    "taskId": "disp_1780736919787_xbq5v",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:40.575Z"
+  },
+  {
+    "taskId": "disp_1780736919253_gedkw",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new leads",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:40.577Z"
+  },
+  {
+    "taskId": "disp_1780736919727_qnpxd",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:41.133Z"
+  },
+  {
+    "taskId": "disp_1780736920020_t2yb0",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:41.133Z"
+  },
+  {
+    "taskId": "disp_1780736920194_jnj7u",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:41.210Z"
+  },
+  {
+    "taskId": "disp_1780736919787_xbq5v",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:41.211Z"
+  },
+  {
+    "taskId": "disp_1780736919253_gedkw",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new leads",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:41.211Z"
+  },
+  {
+    "taskId": "disp_1780736922568_6mg6f",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.569Z"
+  },
+  {
+    "taskId": "disp_1780736922574_s25ga",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.577Z"
+  },
+  {
+    "taskId": "disp_1780736920194_jnj7u",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.579Z"
+  },
+  {
+    "taskId": "disp_1780736919787_xbq5v",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.582Z"
+  },
+  {
+    "taskId": "disp_1780736922574_s25ga",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.590Z"
+  },
+  {
+    "taskId": "disp_1780736920194_jnj7u",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.591Z"
+  },
+  {
+    "taskId": "disp_1780736922624_fj2u4",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.625Z"
+  },
+  {
+    "taskId": "disp_1780736922574_s25ga",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.648Z"
+  },
+  {
+    "taskId": "disp_1780736919727_qnpxd",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.675Z"
+  },
+  {
+    "taskId": "disp_1780736920020_t2yb0",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.676Z"
+  },
+  {
+    "taskId": "disp_1780736922568_6mg6f",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.677Z"
+  },
+  {
+    "taskId": "disp_1780736922707_idbh8",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: P34 validation: qualify new leads",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.708Z"
+  },
+  {
+    "taskId": "disp_1780736922574_s25ga",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:42.709Z"
+  },
+  {
+    "taskId": "disp_1780736919727_qnpxd",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:43.299Z"
+  },
+  {
+    "taskId": "disp_1780736920020_t2yb0",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:43.302Z"
+  },
+  {
+    "taskId": "disp_1780736922568_6mg6f",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:43.305Z"
+  },
+  {
+    "taskId": "disp_1780736924291_fycbr",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:44.332Z"
+  },
+  {
+    "taskId": "disp_1780736922574_s25ga",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:44.333Z"
+  },
+  {
+    "taskId": "disp_1780736920020_t2yb0",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:44.459Z"
+  },
+  {
+    "taskId": "disp_1780736922568_6mg6f",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:44.492Z"
+  },
+  {
+    "taskId": "disp_1780736924598_6i23i",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:44.604Z"
+  },
+  {
+    "taskId": "disp_1780736922568_6mg6f",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:45.076Z"
+  },
+  {
+    "taskId": "disp_1780736927032_kaf11",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:47.251Z"
+  },
+  {
+    "taskId": "disp_1780736929889_xsa3a",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:49.929Z"
+  },
+  {
+    "taskId": "disp_1780736929844_fybc4",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:08:49.951Z"
+  },
+  {
+    "taskId": "disp_1780736965077_ds7bi",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:09:25.516Z"
+  },
+  {
+    "taskId": "disp_1780736965077_ds7bi",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:09:26.428Z"
+  },
+  {
+    "taskId": "disp_1780736965077_ds7bi",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:09:38.486Z"
+  },
+  {
+    "taskId": "disp_1780736978822_zm50g",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:09:38.909Z"
+  },
+  {
+    "taskId": "disp_1780736978822_zm50g",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:47:09.448Z"
+    "deadAt": "2026-06-06T09:09:39.376Z"
   },
   {
-    "taskId": "t-mp6sm6bp",
-    "taskType": "terminal",
-    "input": "concurrent task 6",
-    "error": "fail attempt 7",
+    "taskId": "disp_1780736940775_o8toj",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "Timeout: ai/ai exceeded 30000ms",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-05-15T10:47:09.449Z"
+    "deadAt": "2026-06-06T09:09:41.465Z"
   },
   {
-    "taskId": "t-mp6sm6bp",
-    "taskType": "terminal",
-    "input": "concurrent task 7",
-    "error": "fail attempt 8",
+    "taskId": "disp_1780736948252_9g8ov",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "Timeout: ai/ai exceeded 30000ms",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-05-15T10:47:09.449Z"
+    "deadAt": "2026-06-06T09:09:42.291Z"
   },
   {
-    "taskId": "t-mp6sm6bp",
-    "taskType": "terminal",
-    "input": "concurrent task 8",
-    "error": "fail attempt 9",
+    "taskId": "disp_1780736951590_b6pir",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "Timeout: ai/ai exceeded 30000ms",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-05-15T10:47:09.449Z"
+    "deadAt": "2026-06-06T09:09:42.847Z"
   },
   {
-    "taskId": "t-mp6sm6bp",
-    "taskType": "terminal",
-    "input": "concurrent task 9",
-    "error": "fail attempt 10",
+    "taskId": "disp_1780736906295_6cvf2",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: [Cycle cyc_1780736863441_dy] Execute primary action — context: Test autonomous workflow, Cycle summary: Te",
+    "error": "Timeout: ai/ai exceeded 30000ms",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-05-15T10:47:09.449Z"
+    "deadAt": "2026-06-06T09:09:43.291Z"
   },
   {
-    "taskId": "t-mp6sm6gl",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780736987555_c3jun",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:47:10.625Z"
+    "deadAt": "2026-06-06T09:09:47.689Z"
   },
   {
-    "taskId": "t-mp6so5hj",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "taskId": "disp_1780736906053_0ajqh",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: [Cycle cyc_1780736863441_dy] Execute primary action — context: Test autonomous workflow, Cycle summary: Te",
+    "error": "Timeout: ai/ai exceeded 30000ms",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-05-15T10:48:41.773Z"
+    "deadAt": "2026-06-06T09:09:47.742Z"
   },
   {
-    "taskId": "t-mp6so7vx",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780736978822_zm50g",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:48:45.786Z"
+    "deadAt": "2026-06-06T09:09:47.937Z"
   },
   {
-    "taskId": "dlq-wf9-1778842140867",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780736982004_8gruj",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:49:00.868Z"
+    "deadAt": "2026-06-06T09:09:48.003Z"
   },
   {
-    "taskId": "t-mp6sokam",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780736987712_a3te3",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:49:00.964Z"
+    "deadAt": "2026-06-06T09:09:48.007Z"
   },
   {
-    "taskId": "t-mp6somoz",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780736988115_02adx",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:49:04.975Z"
+    "deadAt": "2026-06-06T09:09:48.134Z"
   },
   {
-    "taskId": "dlq-wf9-1778842169875",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780736989103_eupf8",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:49:29.876Z"
+    "deadAt": "2026-06-06T09:09:49.206Z"
   },
   {
-    "taskId": "t-mp6sp6oj",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780736978822_zm50g",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:49:29.976Z"
+    "deadAt": "2026-06-06T09:09:50.088Z"
   },
   {
-    "taskId": "t-mp6sp92v",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780736982004_8gruj",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:49:33.987Z"
+    "deadAt": "2026-06-06T09:09:53.085Z"
   },
   {
-    "taskId": "dlq-wf9-1778842275774",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780736987555_c3jun",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:51:15.774Z"
+    "deadAt": "2026-06-06T09:09:53.113Z"
   },
   {
-    "taskId": "t-mp6srgcb",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780736987712_a3te3",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:51:15.808Z"
+    "deadAt": "2026-06-06T09:09:53.178Z"
   },
   {
-    "taskId": "t-mp6sriqn",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780736993751_g7z40",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T10:51:19.820Z"
+    "deadAt": "2026-06-06T09:09:53.793Z"
   },
   {
-    "taskId": "dlq-wf9-1778843743560",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780736978822_zm50g",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:15:43.560Z"
+    "deadAt": "2026-06-06T09:09:59.695Z"
   },
   {
-    "taskId": "t-mp6tmwvw",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780736982004_8gruj",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:15:43.586Z"
+    "deadAt": "2026-06-06T09:09:59.704Z"
   },
   {
-    "taskId": "t-mp6tmzaj",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780736987712_a3te3",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:15:47.618Z"
+    "deadAt": "2026-06-06T09:09:59.710Z"
   },
   {
-    "taskId": "dlq-wf9-1778844228250",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780736999917_9mg4a",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:23:48.251Z"
+    "deadAt": "2026-06-06T09:09:59.963Z"
   },
   {
-    "taskId": "t-mp6txavt",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780736987712_a3te3",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:23:48.286Z"
+    "deadAt": "2026-06-06T09:09:59.995Z"
   },
   {
-    "taskId": "t-mp6txdc1",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737003980_chsys",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:23:52.365Z"
+    "deadAt": "2026-06-06T09:10:04.113Z"
   },
   {
-    "taskId": "dlq-wf9-1778845075407",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737006988_ilerm",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:37:55.408Z"
+    "deadAt": "2026-06-06T09:10:07.004Z"
   },
   {
-    "taskId": "t-mp6ufgjw",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "taskId": "disp_1780736906971_emvdl",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: [Cycle cyc_1780736863441_dy] Execute primary action — context: Test autonomous workflow, Cycle summary: Te",
+    "error": "Timeout: ai/ai exceeded 30000ms",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-05-15T11:37:55.443Z"
+    "deadAt": "2026-06-06T09:10:07.133Z"
   },
   {
-    "taskId": "t-mp6ufj3e",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737003980_chsys",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:37:59.645Z"
+    "deadAt": "2026-06-06T09:10:07.181Z"
   },
   {
-    "taskId": "dlq-wf9-1778845090886",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737007100_75qd7",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:38:10.888Z"
+    "deadAt": "2026-06-06T09:10:07.612Z"
   },
   {
-    "taskId": "t-mp6ufsh8",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780736965077_ds7bi",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:10:08.588Z"
+  },
+  {
+    "taskId": "disp_1780736987555_c3jun",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:10:08.623Z"
+  },
+  {
+    "taskId": "disp_1780737008889_1w9lo",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:38:10.899Z"
+    "deadAt": "2026-06-06T09:10:08.947Z"
   },
   {
-    "taskId": "t-mp6ufuwc",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737006988_ilerm",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:38:14.939Z"
+    "deadAt": "2026-06-06T09:10:08.967Z"
   },
   {
-    "taskId": "t-mp6ug6gv",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
+    "taskId": "disp_1780736951646_j7ixc",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow",
+    "error": "Timeout: ai/ai exceeded 30000ms",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-05-15T11:38:29.033Z"
+    "deadAt": "2026-06-06T09:10:12.222Z"
   },
   {
-    "taskId": "dlq-wf9-1778845109093",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780736989103_eupf8",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:38:29.094Z"
+    "deadAt": "2026-06-06T09:10:17.320Z"
   },
   {
-    "taskId": "t-mp6ug8wf",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737007100_75qd7",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:38:33.086Z"
+    "deadAt": "2026-06-06T09:10:17.389Z"
   },
   {
-    "taskId": "t-mp6ugi4d",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780736987555_c3jun",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:38:44.136Z"
+    "deadAt": "2026-06-06T09:10:17.519Z"
   },
   {
-    "taskId": "dlq-wf9-1778845124193",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737018219_bbbjg",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:38:44.193Z"
+    "deadAt": "2026-06-06T09:10:18.275Z"
   },
   {
-    "taskId": "t-mp6ugkje",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737003980_chsys",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:38:48.168Z"
+    "deadAt": "2026-06-06T09:10:18.306Z"
   },
   {
-    "taskId": "dlq-wf9-1778845139782",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737008889_1w9lo",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:38:59.782Z"
+    "deadAt": "2026-06-06T09:10:18.334Z"
   },
   {
-    "taskId": "t-mp6ugu7f",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737003980_chsys",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:38:59.794Z"
+    "deadAt": "2026-06-06T09:10:20.919Z"
   },
   {
-    "taskId": "t-mp6ugwls",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737008889_1w9lo",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:39:03.806Z"
+    "deadAt": "2026-06-06T09:10:20.950Z"
   },
   {
-    "taskId": "t-mp6uhykv",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737023386_o140q",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:39:52.119Z"
+    "deadAt": "2026-06-06T09:10:24.955Z"
   },
   {
-    "taskId": "dlq-wf9-1778845192137",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780736989103_eupf8",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:39:52.137Z"
+    "deadAt": "2026-06-06T09:10:28.171Z"
   },
   {
-    "taskId": "t-mp6ui0zb",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737007100_75qd7",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:39:56.130Z"
+    "deadAt": "2026-06-06T09:10:28.677Z"
   },
   {
-    "taskId": "t-mp6uii3f",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780736987555_c3jun",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:40:17.409Z"
+    "deadAt": "2026-06-06T09:10:28.937Z"
   },
   {
-    "taskId": "dlq-wf9-1778845217421",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737023386_o140q",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:40:17.421Z"
+    "deadAt": "2026-06-06T09:10:28.947Z"
   },
   {
-    "taskId": "t-mp6uikhs",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780736989103_eupf8",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:40:21.421Z"
+    "deadAt": "2026-06-06T09:10:28.971Z"
   },
   {
-    "taskId": "t-mp6ujvq4",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737007100_75qd7",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:41:21.730Z"
+    "deadAt": "2026-06-06T09:10:28.989Z"
   },
   {
-    "taskId": "dlq-wf9-1778845281769",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737029129_u0722",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:41:21.769Z"
+    "deadAt": "2026-06-06T09:10:29.271Z"
   },
   {
-    "taskId": "t-mp6ujy4i",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737003980_chsys",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:41:25.742Z"
+    "deadAt": "2026-06-06T09:10:31.617Z"
   },
   {
-    "taskId": "t-mp6ukf4v",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737008889_1w9lo",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:41:46.894Z"
+    "deadAt": "2026-06-06T09:10:31.624Z"
   },
   {
-    "taskId": "dlq-wf9-1778845306920",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737023386_o140q",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:41:46.921Z"
+    "deadAt": "2026-06-06T09:10:31.829Z"
   },
   {
-    "taskId": "t-mp6ukhjt",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737007100_75qd7",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:41:50.926Z"
+    "deadAt": "2026-06-06T09:10:31.848Z"
   },
   {
-    "taskId": "dlq-wf9-1778845334150",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737032286_x94nr",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new l",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:42:14.150Z"
+    "deadAt": "2026-06-06T09:10:32.362Z"
   },
   {
-    "taskId": "dlq-wf9-rm-1778845334151",
-    "taskType": "wf9-remove",
-    "input": "remove me",
-    "error": "err",
-    "attempts": 1,
+    "taskId": "disp_1780737029129_u0722",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:42:14.151Z"
+    "deadAt": "2026-06-06T09:10:32.409Z"
   },
   {
-    "taskId": "t-mp6ul06a",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737033020_uwe3v",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:42:14.152Z"
+    "deadAt": "2026-06-06T09:10:33.137Z"
   },
   {
-    "taskId": "t-mp6ul2ko",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737023386_o140q",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:42:18.164Z"
+    "deadAt": "2026-06-06T09:10:33.369Z"
   },
   {
-    "taskId": "dlq-wf9-1778845357065",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737007100_75qd7",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:42:37.065Z"
+    "deadAt": "2026-06-06T09:10:34.498Z"
   },
   {
-    "taskId": "t-mp6ulhuw",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737033020_uwe3v",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:42:37.070Z"
+    "deadAt": "2026-06-06T09:10:34.871Z"
   },
   {
-    "taskId": "t-mp6ulk99",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737042238_uoym3",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:42:41.080Z"
+    "deadAt": "2026-06-06T09:10:44.056Z"
   },
   {
-    "taskId": "t-mp6um0t1",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737023386_o140q",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:43:01.627Z"
+    "deadAt": "2026-06-06T09:10:44.325Z"
   },
   {
-    "taskId": "dlq-wf9-1778845381639",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737033020_uwe3v",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:43:01.639Z"
+    "deadAt": "2026-06-06T09:10:46.090Z"
   },
   {
-    "taskId": "t-mp6um37g",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737046168_007hj",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:43:05.639Z"
+    "deadAt": "2026-06-06T09:10:46.368Z"
   },
   {
-    "taskId": "t-mp6umk47",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737008889_1w9lo",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:43:26.652Z"
+    "deadAt": "2026-06-06T09:10:46.460Z"
   },
   {
-    "taskId": "dlq-wf9-1778845406659",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737032286_x94nr",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new l",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:43:26.659Z"
+    "deadAt": "2026-06-06T09:10:46.514Z"
   },
   {
-    "taskId": "t-mp6ummin",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737029129_u0722",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:43:30.668Z"
+    "deadAt": "2026-06-06T09:10:46.554Z"
   },
   {
-    "taskId": "t-mp6un2dr",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737046168_007hj",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:43:50.330Z"
+    "deadAt": "2026-06-06T09:10:46.645Z"
   },
   {
-    "taskId": "dlq-wf9-1778845430358",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737032286_x94nr",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new l",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:43:50.359Z"
+    "deadAt": "2026-06-06T09:10:47.863Z"
   },
   {
-    "taskId": "t-mp6un4sf",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737029129_u0722",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:43:54.346Z"
+    "deadAt": "2026-06-06T09:10:47.886Z"
   },
   {
-    "taskId": "dlq-wf9-1778845455534",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737046168_007hj",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:44:15.535Z"
+    "deadAt": "2026-06-06T09:10:48.036Z"
   },
   {
-    "taskId": "t-mp6unluj",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737050355_103jr",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:44:15.553Z"
+    "deadAt": "2026-06-06T09:10:50.566Z"
   },
   {
-    "taskId": "t-mp6uno8v",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737032286_x94nr",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new l",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:44:19.560Z"
+    "deadAt": "2026-06-06T09:10:52.334Z"
   },
   {
-    "taskId": "dlq-wf9-1778845484888",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737029129_u0722",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:44:44.889Z"
+    "deadAt": "2026-06-06T09:10:52.500Z"
   },
   {
-    "taskId": "t-mp6uoays",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737046168_007hj",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:44:49.048Z"
+    "deadAt": "2026-06-06T09:10:52.799Z"
   },
   {
-    "taskId": "dlq-wf9-1778845592257",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737033020_uwe3v",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:46:32.257Z"
+    "deadAt": "2026-06-06T09:10:53.074Z"
   },
   {
-    "taskId": "t-mp6uqjc0",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737050355_103jr",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:46:32.263Z"
+    "deadAt": "2026-06-06T09:10:53.141Z"
   },
   {
-    "taskId": "t-mp6uqlqc",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737053239_gtn88",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:46:36.274Z"
+    "deadAt": "2026-06-06T09:10:53.252Z"
   },
   {
-    "taskId": "t-mp6urk7i",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737033020_uwe3v",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:47:20.056Z"
+    "deadAt": "2026-06-06T09:10:53.257Z"
   },
   {
-    "taskId": "dlq-wf9-1778845640080",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737053504_ztr5s",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:47:20.080Z"
+    "deadAt": "2026-06-06T09:10:53.935Z"
   },
   {
-    "taskId": "t-mp6urmm6",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737057379_utyv4",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:47:24.075Z"
+    "deadAt": "2026-06-06T09:10:57.485Z"
   },
   {
-    "taskId": "dlq-wf9-1778846337823",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737050355_103jr",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:58:57.824Z"
+    "deadAt": "2026-06-06T09:10:57.532Z"
   },
   {
-    "taskId": "t-mp6v6in7",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737053239_gtn88",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:58:57.886Z"
+    "deadAt": "2026-06-06T09:10:57.554Z"
   },
   {
-    "taskId": "t-mp6v6l2t",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737053504_ztr5s",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:59:01.924Z"
+    "deadAt": "2026-06-06T09:10:57.666Z"
   },
   {
-    "taskId": "t-mp6v7myn",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737050355_103jr",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:59:50.127Z"
+    "deadAt": "2026-06-06T09:10:57.700Z"
   },
   {
-    "taskId": "dlq-wf9-1778846390159",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737053504_ztr5s",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:59:50.159Z"
+    "deadAt": "2026-06-06T09:10:58.697Z"
   },
   {
-    "taskId": "t-mp6v7pdt",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737050355_103jr",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T11:59:54.156Z"
+    "deadAt": "2026-06-06T09:11:02.173Z"
   },
   {
-    "taskId": "dlq-wf9-1778855295706",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737064192_qsk76",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T14:28:15.707Z"
+    "deadAt": "2026-06-06T09:11:04.408Z"
   },
   {
-    "taskId": "t-mp70iikq",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737032286_x94nr",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new l",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T14:28:15.729Z"
+    "deadAt": "2026-06-06T09:11:04.500Z"
   },
   {
-    "taskId": "t-mp70ikz5",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737046168_007hj",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T14:28:19.742Z"
+    "deadAt": "2026-06-06T09:11:04.546Z"
   },
   {
-    "taskId": "t-mp70mff5",
-    "taskType": "terminal",
-    "input": "timeout test",
-    "error": "Timeout: stress-terminal/terminal exceeded 100ms",
-    "attempts": 1,
+    "taskId": "disp_1780737064983_cg9yc",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: P34 validation: qualify new leads",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T14:31:18.263Z"
+    "deadAt": "2026-06-06T09:11:05.203Z"
   },
   {
-    "taskId": "dlq-wf9-1778855478277",
-    "taskType": "wf9-dlq",
-    "input": "dlq test",
-    "error": "test error",
-    "attempts": 3,
+    "taskId": "disp_1780737053504_ztr5s",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T14:31:18.277Z"
+    "deadAt": "2026-06-06T09:11:05.473Z"
   },
   {
-    "taskId": "t-mp70mhtn",
-    "taskType": "automation",
-    "input": "dlq test — deliberate failure",
-    "error": "deliberate automation failure",
-    "attempts": 2,
+    "taskId": "disp_1780737053504_ztr5s",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T14:31:22.281Z"
+    "deadAt": "2026-06-06T09:11:14.077Z"
   },
   {
-    "taskId": "t-mp7i8acg",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737074496_2fe4u",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:44:12.493Z"
+    "deadAt": "2026-06-06T09:11:14.506Z"
   },
   {
-    "taskId": "t-mp7i8b4f",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737074534_f2ege",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:44:13.500Z"
+    "deadAt": "2026-06-06T09:11:14.551Z"
   },
   {
-    "taskId": "t-mp7i8bwf",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737075648_vkj78",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:44:14.507Z"
+    "deadAt": "2026-06-06T09:11:15.714Z"
   },
   {
-    "taskId": "t-mp7i8coe",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737074534_f2ege",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:44:14.511Z"
+    "deadAt": "2026-06-06T09:11:15.864Z"
   },
   {
-    "taskId": "t-mp7i8cog",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737076008_njxl4",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:44:14.513Z"
+    "deadAt": "2026-06-06T09:11:16.284Z"
   },
   {
-    "taskId": "t-mp7i8coi",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737079613_6drj1",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:44:14.514Z"
+    "deadAt": "2026-06-06T09:11:20.157Z"
   },
   {
-    "taskId": "t-mp7i8coj",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737080047_a8cbt",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:44:14.516Z"
+    "deadAt": "2026-06-06T09:11:21.170Z"
   },
   {
-    "taskId": "t-mp7i8com",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737075648_vkj78",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:44:14.519Z"
+    "deadAt": "2026-06-06T09:11:21.313Z"
   },
   {
-    "taskId": "t-mp7i9j6v",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737076008_njxl4",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:45:10.608Z"
+    "deadAt": "2026-06-06T09:11:21.444Z"
   },
   {
-    "taskId": "t-mp7i9jyp",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737087743_sacqg",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:45:11.613Z"
+    "deadAt": "2026-06-06T09:11:28.180Z"
   },
   {
-    "taskId": "t-mp7i9kqo",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737090248_jl814",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:45:12.620Z"
+    "deadAt": "2026-06-06T09:11:30.272Z"
   },
   {
-    "taskId": "t-mp7i9lim",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737090344_h8d18",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:45:12.623Z"
+    "deadAt": "2026-06-06T09:11:30.349Z"
   },
   {
-    "taskId": "t-mp7i9lio",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737080047_a8cbt",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:45:12.624Z"
+    "deadAt": "2026-06-06T09:11:30.375Z"
   },
   {
-    "taskId": "t-mp7i9lip",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737075648_vkj78",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:45:12.626Z"
+    "deadAt": "2026-06-06T09:11:30.385Z"
   },
   {
-    "taskId": "t-mp7i9liq",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737076008_njxl4",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:45:12.626Z"
+    "deadAt": "2026-06-06T09:11:30.388Z"
   },
   {
-    "taskId": "t-mp7i9lis",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737079613_6drj1",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:45:12.628Z"
+    "deadAt": "2026-06-06T09:11:30.463Z"
   },
   {
-    "taskId": "t-mp7ilyzc",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737090248_jl814",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:54:50.949Z"
+    "deadAt": "2026-06-06T09:11:30.500Z"
   },
   {
-    "taskId": "t-mp7ilzrc",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737074534_f2ege",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:54:51.955Z"
+    "deadAt": "2026-06-06T09:11:30.513Z"
   },
   {
-    "taskId": "t-mp7im0ja",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737079613_6drj1",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:54:52.963Z"
+    "deadAt": "2026-06-06T09:11:30.541Z"
   },
   {
-    "taskId": "t-mp7im1ba",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737091045_au9gz",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:54:52.967Z"
+    "deadAt": "2026-06-06T09:11:31.171Z"
   },
   {
-    "taskId": "t-mp7im1bd",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737093209_0goa6",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:54:52.969Z"
+    "deadAt": "2026-06-06T09:11:33.732Z"
   },
   {
-    "taskId": "t-mp7im1be",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737080047_a8cbt",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:54:52.971Z"
+    "deadAt": "2026-06-06T09:11:33.785Z"
   },
   {
-    "taskId": "t-mp7im1bf",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737075648_vkj78",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:54:52.972Z"
+    "deadAt": "2026-06-06T09:11:33.853Z"
   },
   {
-    "taskId": "t-mp7im1bh",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737076008_njxl4",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-15T22:54:52.976Z"
+    "deadAt": "2026-06-06T09:11:34.068Z"
   },
   {
-    "taskId": "t-mpit7xz5",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737091045_au9gz",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:37:20.173Z"
+    "deadAt": "2026-06-06T09:11:34.139Z"
   },
   {
-    "taskId": "t-mpit7yr2",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737080047_a8cbt",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:37:21.177Z"
+    "deadAt": "2026-06-06T09:11:34.555Z"
   },
   {
-    "taskId": "t-mpit7ziz",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737075648_vkj78",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:37:22.183Z"
+    "deadAt": "2026-06-06T09:11:34.608Z"
   },
   {
-    "taskId": "t-mpit80ax",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737076008_njxl4",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:37:22.186Z"
+    "deadAt": "2026-06-06T09:11:34.720Z"
   },
   {
-    "taskId": "t-mpit80az",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737091045_au9gz",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:37:22.187Z"
+    "deadAt": "2026-06-06T09:11:34.886Z"
   },
   {
-    "taskId": "t-mpit80b0",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737090248_jl814",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:37:22.189Z"
+    "deadAt": "2026-06-06T09:11:39.135Z"
   },
   {
-    "taskId": "t-mpit80b1",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737080047_a8cbt",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:37:22.191Z"
+    "deadAt": "2026-06-06T09:11:39.676Z"
   },
   {
-    "taskId": "t-mpit80b4",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737091045_au9gz",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:37:22.193Z"
+    "deadAt": "2026-06-06T09:11:39.829Z"
   },
   {
-    "taskId": "t-mpitijro",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737074534_f2ege",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:45:34.978Z"
+    "deadAt": "2026-06-06T09:11:40.707Z"
   },
   {
-    "taskId": "t-mpitikjp",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737079613_6drj1",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:45:35.983Z"
+    "deadAt": "2026-06-06T09:11:40.733Z"
   },
   {
-    "taskId": "t-mpitilbl",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737091045_au9gz",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:45:36.988Z"
+    "deadAt": "2026-06-06T09:11:41.527Z"
   },
   {
-    "taskId": "t-mpitim3k",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737101954_d75xd",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: P34 validation: qualify new leads",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:45:36.993Z"
+    "deadAt": "2026-06-06T09:11:42.203Z"
   },
   {
-    "taskId": "t-mpitim3n",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737103032_jb05o",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:45:36.995Z"
+    "deadAt": "2026-06-06T09:11:43.188Z"
   },
   {
-    "taskId": "t-mpitim3o",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737103644_wfgt5",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:45:36.996Z"
+    "deadAt": "2026-06-06T09:11:43.825Z"
   },
   {
-    "taskId": "t-mpitim3p",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737103644_wfgt5",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:45:36.998Z"
+    "deadAt": "2026-06-06T09:11:44.028Z"
   },
   {
-    "taskId": "t-mpitim3r",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737103644_wfgt5",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T20:45:36.999Z"
+    "deadAt": "2026-06-06T09:11:47.797Z"
   },
   {
-    "taskId": "t-mpiu6oj5",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737109567_aadw5",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T21:04:20.893Z"
+    "deadAt": "2026-06-06T09:11:49.838Z"
   },
   {
-    "taskId": "t-mpiu6pb2",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737090248_jl814",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T21:04:21.897Z"
+    "deadAt": "2026-06-06T09:11:49.901Z"
   },
   {
-    "taskId": "t-mpiu6q31",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1780737079613_6drj1",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T21:04:22.903Z"
+    "deadAt": "2026-06-06T09:11:54.466Z"
   },
   {
-    "taskId": "t-mpiu6qux",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737109567_aadw5",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T21:04:22.905Z"
+    "deadAt": "2026-06-06T09:11:54.483Z"
   },
   {
-    "taskId": "t-mpiu6quy",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
+    "taskId": "disp_1780737114484_dta2h",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:11:54.501Z"
+  },
+  {
+    "taskId": "disp_1780737103644_wfgt5",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:11:54.511Z"
+  },
+  {
+    "taskId": "disp_1780737114772_kp4lz",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: P34 validation: qualify new leads",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:11:54.793Z"
+  },
+  {
+    "taskId": "disp_1780737114484_dta2h",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:11:54.797Z"
+  },
+  {
+    "taskId": "disp_1780737103644_wfgt5",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:11:54.809Z"
+  },
+  {
+    "taskId": "disp_1780737114484_dta2h",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:11:54.824Z"
+  },
+  {
+    "taskId": "disp_1780737109567_aadw5",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:11:54.862Z"
+  },
+  {
+    "taskId": "disp_1780737114484_dta2h",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:11:54.955Z"
+  },
+  {
+    "taskId": "disp_1780737114484_dta2h",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:11:55.659Z"
+  },
+  {
+    "taskId": "disp_1780737115789_tadse",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:11:55.854Z"
+  },
+  {
+    "taskId": "disp_1780737109567_aadw5",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:11:58.743Z"
+  },
+  {
+    "taskId": "disp_1780737119048_wzgpr",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:11:59.137Z"
+  },
+  {
+    "taskId": "disp_1780737121709_xafnv",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:01.877Z"
+  },
+  {
+    "taskId": "disp_1780737122071_yz3al",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:02.166Z"
+  },
+  {
+    "taskId": "disp_1780737109567_aadw5",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:02.205Z"
+  },
+  {
+    "taskId": "disp_1780737125934_4k52y",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T21:04:22.907Z"
+    "deadAt": "2026-06-06T09:12:06.662Z"
   },
   {
-    "taskId": "t-mpiu6qv0",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
+    "taskId": "disp_1780736940775_o8toj",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "Timeout: ai/ai exceeded 30000ms",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-05-23T21:04:22.908Z"
+    "deadAt": "2026-06-06T09:12:09.788Z"
   },
   {
-    "taskId": "t-mpiu6qv1",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
+    "taskId": "disp_1780737131089_xfaoc",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:11.942Z"
+  },
+  {
+    "taskId": "disp_1780736948252_9g8ov",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "Timeout: ai/ai exceeded 30000ms",
     "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:12.900Z"
+  },
+  {
+    "taskId": "disp_1780737131089_xfaoc",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:13.948Z"
+  },
+  {
+    "taskId": "disp_1780737134233_11qyr",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:14.505Z"
+  },
+  {
+    "taskId": "disp_1780737138319_ynhrn",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:18.376Z"
+  },
+  {
+    "taskId": "disp_1780737138522_tivax",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:18.803Z"
+  },
+  {
+    "taskId": "disp_1780737131089_xfaoc",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:18.859Z"
+  },
+  {
+    "taskId": "disp_1780737138522_tivax",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:18.868Z"
+  },
+  {
+    "taskId": "disp_1780737138957_msjlo",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:18.970Z"
+  },
+  {
+    "taskId": "disp_1780737134233_11qyr",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:18.979Z"
+  },
+  {
+    "taskId": "disp_1780737138957_msjlo",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:18.989Z"
+  },
+  {
+    "taskId": "disp_1780737134233_11qyr",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:18.993Z"
+  },
+  {
+    "taskId": "disp_1780737138957_msjlo",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:19.177Z"
+  },
+  {
+    "taskId": "disp_1780737139183_l7unh",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:19.214Z"
+  },
+  {
+    "taskId": "disp_1780737131089_xfaoc",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:19.301Z"
+  },
+  {
+    "taskId": "disp_1780737138522_tivax",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:19.319Z"
+  },
+  {
+    "taskId": "disp_1780737139183_l7unh",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:19.387Z"
+  },
+  {
+    "taskId": "disp_1780737139586_4sog3",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:19.614Z"
+  },
+  {
+    "taskId": "disp_1780737138957_msjlo",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:19.639Z"
+  },
+  {
+    "taskId": "disp_1780737134233_11qyr",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:19.694Z"
+  },
+  {
+    "taskId": "disp_1780737139586_4sog3",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:19.699Z"
+  },
+  {
+    "taskId": "disp_1780737138957_msjlo",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:19.733Z"
+  },
+  {
+    "taskId": "disp_1780737139586_4sog3",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:19.751Z"
+  },
+  {
+    "taskId": "disp_1780737139586_4sog3",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:19.985Z"
+  },
+  {
+    "taskId": "disp_1780737139981_dyn1r",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:20.012Z"
+  },
+  {
+    "taskId": "disp_1780737131089_xfaoc",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:20.149Z"
+  },
+  {
+    "taskId": "disp_1780737138522_tivax",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:20.188Z"
+  },
+  {
+    "taskId": "disp_1780737139183_l7unh",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:20.255Z"
+  },
+  {
+    "taskId": "disp_1780737139981_dyn1r",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:20.292Z"
+  },
+  {
+    "taskId": "disp_1780737140566_sm477",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:20.608Z"
+  },
+  {
+    "taskId": "disp_1780737139586_4sog3",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads from ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:20.618Z"
+  },
+  {
+    "taskId": "disp_1780737140750_4h41w",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:20.772Z"
+  },
+  {
+    "taskId": "disp_1780737144202_v0x7o",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:24.418Z"
+  },
+  {
+    "taskId": "disp_1780737131089_xfaoc",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:25.285Z"
+  },
+  {
+    "taskId": "disp_1780737138522_tivax",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:25.350Z"
+  },
+  {
+    "taskId": "disp_1780737139183_l7unh",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:25.468Z"
+  },
+  {
+    "taskId": "disp_1780737139981_dyn1r",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:25.510Z"
+  },
+  {
+    "taskId": "disp_1780737144202_v0x7o",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:25.775Z"
+  },
+  {
+    "taskId": "disp_1780737139183_l7unh",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:28.645Z"
+  },
+  {
+    "taskId": "disp_1780737139981_dyn1r",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:28.763Z"
+  },
+  {
+    "taskId": "disp_1780737144202_v0x7o",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:29.198Z"
+  },
+  {
+    "taskId": "disp_1780737149802_a6el3",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:29.860Z"
+  },
+  {
+    "taskId": "disp_1780737139981_dyn1r",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:34.259Z"
+  },
+  {
+    "taskId": "disp_1780737144202_v0x7o",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:34.271Z"
+  },
+  {
+    "taskId": "disp_1780736951590_b6pir",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:39.515Z"
+  },
+  {
+    "taskId": "disp_1780736988636_e3kkn",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Store result in memory — context: Test autonomous workflow",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:39.914Z"
+  },
+  {
+    "taskId": "disp_1780737144202_v0x7o",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:43.639Z"
+  },
+  {
+    "taskId": "disp_1780737159742_hm7iz",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:43.687Z"
+  },
+  {
+    "taskId": "disp_1780736906971_emvdl",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: [Cycle cyc_1780736863441_dy] Execute primary action — context: Test autonomous workflow, Cycle summary: Te",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:45.956Z"
+  },
+  {
+    "taskId": "disp_1780737170699_9cncg",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:50.923Z"
+  },
+  {
+    "taskId": "disp_1780737171659_zdefx",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:51.951Z"
+  },
+  {
+    "taskId": "disp_1780737144202_v0x7o",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:53.548Z"
+  },
+  {
+    "taskId": "disp_1780737170699_9cncg",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:53.764Z"
+  },
+  {
+    "taskId": "disp_1780737176394_945yh",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:56.420Z"
+  },
+  {
+    "taskId": "disp_1780737170699_9cncg",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:12:56.852Z"
+  },
+  {
+    "taskId": "disp_1780737180835_rbyze",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:00.953Z"
+  },
+  {
+    "taskId": "disp_1780737180835_rbyze",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:02.652Z"
+  },
+  {
+    "taskId": "disp_1780737182820_5l48w",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:02.903Z"
+  },
+  {
+    "taskId": "disp_1780737170699_9cncg",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:02.918Z"
+  },
+  {
+    "taskId": "disp_1780737183439_18wgi",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:04.034Z"
+  },
+  {
+    "taskId": "disp_1780737058496_ri9zo",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: [Cycle cyc_1780736863441_dy] Understand the goal context — context: Test autonomous workf, [Cycle cyc",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:07.199Z"
+  },
+  {
+    "taskId": "disp_1780737187002_7w5qs",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: P34 validation: qualify new leads",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:07.952Z"
+  },
+  {
+    "taskId": "disp_1780737182820_5l48w",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:08.010Z"
+  },
+  {
+    "taskId": "disp_1780737170699_9cncg",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:08.080Z"
+  },
+  {
+    "taskId": "disp_1780737183439_18wgi",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:08.155Z"
+  },
+  {
+    "taskId": "disp_1780737188290_pxoru",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:08.557Z"
+  },
+  {
+    "taskId": "disp_1780737189212_85t32",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:09.275Z"
+  },
+  {
+    "taskId": "disp_1780737187002_7w5qs",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: P34 validation: qualify new leads",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:09.291Z"
+  },
+  {
+    "taskId": "disp_1780737182820_5l48w",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:09.295Z"
+  },
+  {
+    "taskId": "disp_1780737183439_18wgi",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:09.301Z"
+  },
+  {
+    "taskId": "disp_1780737189212_85t32",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:09.308Z"
+  },
+  {
+    "taskId": "disp_1780737182820_5l48w",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:09.331Z"
+  },
+  {
+    "taskId": "disp_1780737183439_18wgi",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:09.626Z"
+  },
+  {
+    "taskId": "disp_1780737189212_85t32",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:09.636Z"
+  },
+  {
+    "taskId": "disp_1780737182820_5l48w",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new l",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:09.866Z"
+  },
+  {
+    "taskId": "disp_1780737192360_ufsvj",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:12.660Z"
+  },
+  {
+    "taskId": "disp_1780737183439_18wgi",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:12.745Z"
+  },
+  {
+    "taskId": "disp_1780737189212_85t32",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:12.776Z"
+  },
+  {
+    "taskId": "disp_1780737192923_is9sb",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:12.981Z"
+  },
+  {
+    "taskId": "disp_1780737180835_rbyze",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:16.447Z"
+  },
+  {
+    "taskId": "disp_1780737192923_is9sb",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:16.764Z"
+  },
+  {
+    "taskId": "disp_1780737197832_2e878",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:18.038Z"
+  },
+  {
+    "taskId": "disp_1780737189212_85t32",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:20.279Z"
+  },
+  {
+    "taskId": "disp_1780737197832_2e878",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:20.303Z"
+  },
+  {
+    "taskId": "disp_1780737200500_azi8t",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:20.530Z"
+  },
+  {
+    "taskId": "disp_1780737180835_rbyze",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:20.588Z"
+  },
+  {
+    "taskId": "disp_1780737192923_is9sb",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:20.605Z"
+  },
+  {
+    "taskId": "disp_1780737200500_azi8t",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:20.611Z"
+  },
+  {
+    "taskId": "disp_1780737197832_2e878",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:24.692Z"
+  },
+  {
+    "taskId": "disp_1780737206068_wt5mc",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:26.264Z"
+  },
+  {
+    "taskId": "disp_1780737192923_is9sb",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:26.272Z"
+  },
+  {
+    "taskId": "disp_1780737200500_azi8t",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:26.279Z"
+  },
+  {
+    "taskId": "disp_1780737204194_bjaer",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:26.309Z"
+  },
+  {
+    "taskId": "disp_1780737206123_gqe80",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:26.412Z"
+  },
+  {
+    "taskId": "disp_1780737192923_is9sb",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:26.421Z"
+  },
+  {
+    "taskId": "disp_1780737200500_azi8t",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Understand the goal context — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:26.425Z"
+  },
+  {
+    "taskId": "disp_1780737204194_bjaer",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:26.443Z"
+  },
+  {
+    "taskId": "disp_1780737206454_mjt6b",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:26.468Z"
+  },
+  {
+    "taskId": "disp_1780737197832_2e878",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:26.531Z"
+  },
+  {
+    "taskId": "disp_1780737206778_rblzv",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:26.883Z"
+  },
+  {
+    "taskId": "disp_1780737206068_wt5mc",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:27.237Z"
+  },
+  {
+    "taskId": "disp_1780737208846_kmt36",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:28.854Z"
+  },
+  {
+    "taskId": "disp_1780737197832_2e878",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: P34 validation: qualify new leads\n\n[Memory context: Cycle summary: P34 validation: qualify new leads, Cycle summary: P34 validation: qualify",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:28.885Z"
+  },
+  {
+    "taskId": "disp_1780737206778_rblzv",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:28.908Z"
+  },
+  {
+    "taskId": "disp_1780737206068_wt5mc",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:28.911Z"
+  },
+  {
+    "taskId": "disp_1780737204194_bjaer",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:28.920Z"
+  },
+  {
+    "taskId": "disp_1780737206123_gqe80",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:28.931Z"
+  },
+  {
+    "taskId": "disp_1780737206778_rblzv",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:28.941Z"
+  },
+  {
+    "taskId": "disp_1780737206068_wt5mc",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:28.946Z"
+  },
+  {
+    "taskId": "disp_1780737209082_qmbt7",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:29.094Z"
+  },
+  {
+    "taskId": "disp_1780737206778_rblzv",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:29.186Z"
+  },
+  {
+    "taskId": "disp_1780737206068_wt5mc",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:29.200Z"
+  },
+  {
+    "taskId": "disp_1780737209082_qmbt7",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:29.209Z"
+  },
+  {
+    "taskId": "disp_1780737209362_5ahwv",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:29.652Z"
+  },
+  {
+    "taskId": "disp_1780737204194_bjaer",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:30.080Z"
+  },
+  {
+    "taskId": "disp_1780737206123_gqe80",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Identify the best agent for the task — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summ",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:31.338Z"
+  },
+  {
+    "taskId": "disp_1780737214164_1tik2",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Draft personalised outreach email — context: P34 validation: qualify new leads",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:34.972Z"
+  },
+  {
+    "taskId": "disp_1780737206778_rblzv",
+    "taskType": "get_leads",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, Cycle summary: Qualify new leads f",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:34.999Z"
+  },
+  {
+    "taskId": "disp_1780737209082_qmbt7",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-06-06T09:13:35.051Z"
+  },
+  {
+    "taskId": "disp_1780737209362_5ahwv",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-05-23T21:04:22.910Z"
+    "deadAt": "2026-06-06T09:13:35.072Z"
   },
   {
-    "taskId": "t-mpiu6qv2",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
+    "taskId": "disp_1780748199963_yfk2g",
+    "taskType": "ai",
+    "input": "[Agent: runtime] Execute primary action — context: Test autonomous workflow\n\n[Memory context: Cycle summary: Test autonomous workflow, Cycle summary: Test autonomous workflow, Cycle summary: Test auto",
+    "error": "Timeout: ai/ai exceeded 30000ms",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-05-23T21:04:22.910Z"
+    "deadAt": "2026-06-06T12:17:10.424Z"
   }
 ]

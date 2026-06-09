@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-06-02T08:46:59.931Z",
+  "windowMins": 60,
+  "eventCount": 8,
+  "deploy": {
+    "total": 4,
+    "ok": 2,
+    "failed": 1,
+    "lastDeployAt": "2026-06-02T08:42:47.220Z",
+    "lastStatus": "completed",
+    "lastOk": true,
+    "avgElapsedMs": 6378
+  },
+  "api": {
+    "total": 1,
+    "ok": 1,
+    "errors": 1,
+    "errorRate": 100,
+    "p50Ms": 45,
+    "p95Ms": 45,
+    "topErrors": [
+      {
+        "key": "500:DB_ERROR",
+        "count": 1
+      }
+    ]
+  },
+  "pages": {
+    "total": 2,
+    "topRoutes": [
+      {
+        "route": "/dashboard",
+        "count": 2
+      }
+    ]
+  },
+  "overall": "critical"
+}

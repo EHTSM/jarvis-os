@@ -43,7 +43,7 @@ export async function setLiveMode(enabled, reason = "") {
 
 // ── Production readiness ─────────────────────────────────────────────
 export async function getReadinessReport() {
-  return _fetch("/p21/readiness");
+  return _fetch("/p21/readiness/report");
 }
 export async function runReadinessCheck() {
   return _fetch("/p21/readiness/check", { method: "POST" });

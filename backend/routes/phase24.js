@@ -104,12 +104,24 @@ router.get("/p24/vscode/providers", (_req, res) => {
 // ── 24B Repo Intelligence ─────────────────────────────────────────────────────
 
 router.post("/p24/repo/index", (req, res) => {
-    try {
-        const { workspacePath } = req.body;
-        if (!workspacePath) return res.status(400).json({ success: false, error: "workspacePath required" });
-        const result = rie.indexRepo(workspacePath);
-        res.json({ success: true, ...result });
-    } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+    const { workspacePath } = req.body;
+    if (!workspacePath) return res.status(400).json({ success: false, error: "workspacePath required" });
+    // Run in a child process to avoid OOM-killing the main server
+    const { execFile } = require("child_process");
+    const script = `
+const rie = require(${JSON.stringify(require.resolve("../services/repoIntelligenceEngine.cjs"))});
+try { const r = rie.indexRepo(${JSON.stringify(workspacePath)}); process.stdout.write(JSON.stringify(r)); }
+catch(e) { process.stdout.write(JSON.stringify({error:e.message})); }
+`;
+    const child = execFile(process.execPath, ["--max-old-space-size=512", "-e", script], { timeout: 30000 }, (err, stdout) => {
+        if (res.headersSent) return;
+        try {
+            const result = JSON.parse(stdout || "{}");
+            res.json({ success: !result.error, ...result });
+        } catch {
+            res.json({ success: false, error: err?.message || "Index failed" });
+        }
+    });
 });
 
 router.get("/p24/repo/status", (_req, res) => {

@@ -52,6 +52,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
         ipcRenderer.removeAllListeners('network-change');
         ipcRenderer.removeAllListeners('window-restored');
     },
+
+    // Firebase auth: open OAuth URLs in system browser (popup can't work in BrowserWindow)
+    openExternal: (url) => ipcRenderer.invoke('open-external', url),
+
+    // Context detection: lets renderer know it's running inside Electron
+    isElectron: true,
 });
 
 console.log('[JARVIS-PRELOAD] electronAPI exposed successfully!');

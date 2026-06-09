@@ -171,6 +171,13 @@ export default function KnowledgeCenter({ onNavigate }) {
 
   return (
     <div className="knowledge-center page-enter">
+      <div className="coming-soon-banner">
+        <span className="csb-icon">◎</span>
+        <div className="csb-body">
+          <span className="csb-title">Knowledge Base Engine <span className="csb-beta-badge">BETA</span></span>
+          <span className="csb-sub">Semantic search and real document indexing require the KnowledgeBaseEngine (not yet built). Documents and websites below are stored locally — they will sync to the backend engine when available.</span>
+        </div>
+      </div>
       {toast && <div className="kc-toast">{toast}</div>}
       {showAdd && <AddDocModal collections={collections} onAdd={handleAddDoc} onClose={() => setShowAdd(false)} />}
 

@@ -138,7 +138,15 @@ export default function UpgradeModal({ open, onClose, onSuccess, billing }) {
       onSuccess?.();
       onClose?.();
     } else {
-      setError(res?.error || "Could not initiate payment. Please try again or contact support.");
+      // Surface actionable error — Razorpay keys may need regeneration
+      const isAuthErr = (res?.error || "").toLowerCase().includes("authentication") ||
+                        (res?.error || "").toLowerCase().includes("401") ||
+                        (res?.error || "").toLowerCase().includes("not configured");
+      setError(
+        isAuthErr
+          ? "payment_auth_failed"   // sentinel — rendered as rich block below
+          : (res?.error || "Could not initiate payment. Please try again or contact support.")
+      );
     }
   }, [onClose, onSuccess]);
 
@@ -199,11 +207,25 @@ export default function UpgradeModal({ open, onClose, onSuccess, billing }) {
           ))}
         </div>
 
-        {/* Error */}
-        {error && (
+        {/* Error — rich block for payment auth failure, plain text for others */}
+        {error && error === "payment_auth_failed" && (
+          <div className="um-error um-error--rich" role="alert">
+            <span className="um-error-icon">⚠</span>
+            <div>
+              <div style={{ fontWeight: 700, marginBottom: 4 }}>Payment processing is temporarily unavailable.</div>
+              <div style={{ fontSize: "0.82rem", lineHeight: 1.55 }}>
+                To upgrade now, email us and we'll send you a payment link directly:
+                {" "}<a href="mailto:billing@ooplix.com?subject=Upgrade request&body=Plan: " className="um-error-link">billing@ooplix.com</a>
+              </div>
+            </div>
+          </div>
+        )}
+        {error && error !== "payment_auth_failed" && (
           <div className="um-error" role="alert">
             <span className="um-error-icon">⚠</span>
             {error}
+            {" — "}
+            <a href="mailto:billing@ooplix.com" className="um-error-link">contact billing ↗</a>
           </div>
         )}
 

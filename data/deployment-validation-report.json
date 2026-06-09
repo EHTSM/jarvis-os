@@ -1,0 +1,281 @@
+{
+  "ts": "2026-06-05T09:11:04.639Z",
+  "score": 49,
+  "grade": "BLOCKED",
+  "categories": {
+    "environment": {
+      "score": 38
+    },
+    "build_artifacts": {
+      "score": 86
+    },
+    "process_management": {
+      "score": 60
+    },
+    "nginx": {
+      "score": 67
+    },
+    "ssl": {
+      "score": 0
+    },
+    "domain": {
+      "score": 0
+    }
+  },
+  "breakdown": {
+    "environment": {
+      "category": "environment",
+      "score": 38,
+      "checks": [
+        {
+          "name": "NODE_ENV",
+          "status": "warn",
+          "detail": "NODE_ENV=unset — set to 'production'"
+        },
+        {
+          "name": "PORT",
+          "status": "warn",
+          "detail": "PORT not set — defaulting to 5050"
+        },
+        {
+          "name": "JWT_SECRET",
+          "status": "fail",
+          "detail": "JWT_SECRET missing — auth will fail"
+        },
+        {
+          "name": "OPERATOR_PASSWORD_HASH",
+          "status": "fail",
+          "detail": "Missing — operator login disabled"
+        },
+        {
+          "name": "env_file",
+          "status": "pass",
+          "detail": ".env file present"
+        },
+        {
+          "name": "APP_URL",
+          "status": "warn",
+          "detail": "APP_URL/BASE_URL not set — OAuth redirects may break"
+        },
+        {
+          "name": "node_version",
+          "status": "pass",
+          "detail": "Node v24.11.1"
+        },
+        {
+          "name": "data_writable",
+          "status": "pass",
+          "detail": "data/ writable"
+        }
+      ]
+    },
+    "build_artifacts": {
+      "category": "build_artifacts",
+      "score": 86,
+      "checks": [
+        {
+          "name": "frontend_index",
+          "status": "pass",
+          "detail": "frontend/build/index.html present"
+        },
+        {
+          "name": "asset_manifest",
+          "status": "pass",
+          "detail": "asset-manifest.json present"
+        },
+        {
+          "name": "js_bundle",
+          "status": "pass",
+          "detail": "1 JS bundle(s) found"
+        },
+        {
+          "name": "css_bundle",
+          "status": "pass",
+          "detail": "1 CSS bundle(s) found"
+        },
+        {
+          "name": "package_json",
+          "status": "pass",
+          "detail": "package.json present"
+        },
+        {
+          "name": "node_modules",
+          "status": "pass",
+          "detail": "node_modules present"
+        },
+        {
+          "name": "no_sourcemaps_exposed",
+          "status": "warn",
+          "detail": "Source maps present in build — consider removing in production"
+        }
+      ]
+    },
+    "process_management": {
+      "category": "process_management",
+      "score": 60,
+      "checks": [
+        {
+          "name": "pm2_running",
+          "status": "warn",
+          "detail": "Not running under PM2 — no auto-restart on crash"
+        },
+        {
+          "name": "pm2_installed",
+          "status": "pass",
+          "detail": "PM2 installed at /Users/ehtsm/.nvm/versions/node/v24.11.1/bin/pm2"
+        },
+        {
+          "name": "ecosystem_config",
+          "status": "pass",
+          "detail": "PM2 ecosystem config found"
+        },
+        {
+          "name": "process_stable",
+          "status": "warn",
+          "detail": "Uptime 0s — may be in restart loop"
+        },
+        {
+          "name": "memory_usage",
+          "status": "pass",
+          "detail": "RSS 78MB — within limits"
+        }
+      ]
+    },
+    "nginx": {
+      "category": "nginx",
+      "score": 67,
+      "checks": [
+        {
+          "name": "nginx_installed",
+          "status": "warn",
+          "detail": "nginx not found in PATH — may not be installed or using different proxy"
+        },
+        {
+          "name": "nginx_running",
+          "status": "warn",
+          "detail": "nginx not running — check if behind a different reverse proxy"
+        },
+        {
+          "name": "nginx_config",
+          "status": "pass",
+          "detail": "Nginx config file present in repo"
+        },
+        {
+          "name": "nginx_proxy",
+          "status": "pass",
+          "detail": "proxy_pass configured in nginx.conf"
+        },
+        {
+          "name": "nginx_rate_limit",
+          "status": "pass",
+          "detail": "Nginx rate limiting (limit_req) configured"
+        },
+        {
+          "name": "nginx_ssl",
+          "status": "pass",
+          "detail": "SSL configured in nginx"
+        }
+      ]
+    },
+    "ssl": {
+      "category": "ssl",
+      "score": 0,
+      "checks": [
+        {
+          "name": "ssl_domain",
+          "status": "warn",
+          "detail": "No production domain configured — SSL checks skipped (localhost)"
+        }
+      ]
+    },
+    "domain": {
+      "category": "domain",
+      "score": 0,
+      "checks": [
+        {
+          "name": "domain_config",
+          "status": "warn",
+          "detail": "APP_URL not set or is localhost — domain checks skipped"
+        }
+      ]
+    }
+  },
+  "failures": [
+    {
+      "category": "environment",
+      "name": "JWT_SECRET",
+      "status": "fail",
+      "detail": "JWT_SECRET missing — auth will fail"
+    },
+    {
+      "category": "environment",
+      "name": "OPERATOR_PASSWORD_HASH",
+      "status": "fail",
+      "detail": "Missing — operator login disabled"
+    }
+  ],
+  "warnings": [
+    {
+      "category": "environment",
+      "name": "NODE_ENV",
+      "status": "warn",
+      "detail": "NODE_ENV=unset — set to 'production'"
+    },
+    {
+      "category": "environment",
+      "name": "PORT",
+      "status": "warn",
+      "detail": "PORT not set — defaulting to 5050"
+    },
+    {
+      "category": "environment",
+      "name": "APP_URL",
+      "status": "warn",
+      "detail": "APP_URL/BASE_URL not set — OAuth redirects may break"
+    },
+    {
+      "category": "build_artifacts",
+      "name": "no_sourcemaps_exposed",
+      "status": "warn",
+      "detail": "Source maps present in build — consider removing in production"
+    },
+    {
+      "category": "process_management",
+      "name": "pm2_running",
+      "status": "warn",
+      "detail": "Not running under PM2 — no auto-restart on crash"
+    },
+    {
+      "category": "process_management",
+      "name": "process_stable",
+      "status": "warn",
+      "detail": "Uptime 0s — may be in restart loop"
+    },
+    {
+      "category": "nginx",
+      "name": "nginx_installed",
+      "status": "warn",
+      "detail": "nginx not found in PATH — may not be installed or using different proxy"
+    },
+    {
+      "category": "nginx",
+      "name": "nginx_running",
+      "status": "warn",
+      "detail": "nginx not running — check if behind a different reverse proxy"
+    },
+    {
+      "category": "ssl",
+      "name": "ssl_domain",
+      "status": "warn",
+      "detail": "No production domain configured — SSL checks skipped (localhost)"
+    },
+    {
+      "category": "domain",
+      "name": "domain_config",
+      "status": "warn",
+      "detail": "APP_URL not set or is localhost — domain checks skipped"
+    }
+  ],
+  "totalChecks": 28,
+  "passing": 16
+}

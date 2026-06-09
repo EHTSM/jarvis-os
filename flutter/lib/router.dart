@@ -6,6 +6,10 @@ import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
 import 'screens/dashboard_screen.dart';
+import 'screens/chat_screen.dart';
+import 'screens/tasks_screen.dart';
+import 'screens/metrics_screen.dart';
+import 'screens/settings_screen.dart';
 import 'services/auth_service.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -41,6 +45,22 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/dashboard',
         builder: (context, state) => const DashboardScreen(),
+      ),
+      GoRoute(
+        path: '/chat',
+        builder: (context, state) => const ChatScreen(),
+      ),
+      GoRoute(
+        path: '/tasks',
+        builder: (context, state) => const TasksScreen(),
+      ),
+      GoRoute(
+        path: '/metrics',
+        builder: (context, state) => const MetricsScreen(),
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

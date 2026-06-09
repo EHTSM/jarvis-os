@@ -1,0 +1,47 @@
+[
+  {
+    "buildId": "bld_1780405758040",
+    "repoId": "repo_1780405758031",
+    "branch": "main",
+    "commit": "i9j0k1l2",
+    "trigger": "manual",
+    "status": "success",
+    "outcome": "pass",
+    "startedAt": "2026-06-02T13:09:18.043Z",
+    "finishedAt": "2026-06-02T13:09:18.043Z",
+    "durationMs": 18000,
+    "failureReason": "",
+    "log": "",
+    "tags": []
+  },
+  {
+    "buildId": "bld_1780405758039",
+    "repoId": "repo_1780405758030",
+    "branch": "feature/dark-mode",
+    "commit": "e5f6g7h8",
+    "trigger": "pr",
+    "status": "failed",
+    "outcome": "fail",
+    "startedAt": "2026-06-02T13:09:18.042Z",
+    "finishedAt": "2026-06-02T13:09:18.043Z",
+    "durationMs": 120000,
+    "failureReason": "test suite timeout",
+    "log": "",
+    "tags": []
+  },
+  {
+    "buildId": "bld_1780405758038",
+    "repoId": "repo_1780405758030",
+    "branch": "main",
+    "commit": "a1b2c3d4",
+    "trigger": "push",
+    "status": "success",
+    "outcome": "pass",
+    "startedAt": "2026-06-02T13:09:18.042Z",
+    "finishedAt": "2026-06-02T13:09:18.042Z",
+    "durationMs": 42000,
+    "failureReason": "",
+    "log": "",
+    "tags": []
+  }
+]
