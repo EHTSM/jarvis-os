@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { registerAccount, loginWithEmail } from "../../authApi";
+import { registerAccount, loginWithEmail, firebaseSession } from "../../authApi";
 import {
   firebaseSignUpEmail,
   firebaseSignInGoogle,
@@ -181,7 +181,7 @@ function EmailSignupForm({ onSuccess, onLogin, busy, setBusy }) {
 
 // ── Google Signup ─────────────────────────────────────────────────────────────
 function GoogleSignupButton({ onSuccess, onLogin, busy, setBusy }) {
-  const { login } = useAuth();
+  const { silentCheck } = useAuth();
   const [err, setErr] = useState("");
 
   if (!isFirebaseConfigured()) {
@@ -213,33 +213,23 @@ function GoogleSignupButton({ onSuccess, onLogin, busy, setBusy }) {
       return;
     }
 
-    const { user: fbUser, isNew } = fbRes;
+    const { user: fbUser } = fbRes;
 
-    // Register backend account for new Google users
-    if (isNew) {
-      const reg = await registerAccount({
-        email:    fbUser.email,
-        password: `google_${fbUser.uid}_${Date.now()}`, // non-interactive password
-        name:     fbUser.displayName || fbUser.email.split("@")[0],
-      });
-      // 409 = already exists → that's fine, proceed to login
-      if (!reg?.success && !reg?.error?.includes("already exists")) {
-        setErr(reg?.error || "Could not create account.");
-        setBusy(false);
-        return;
-      }
+    // Exchange Firebase token for a backend session cookie.
+    // /auth/firebase-session auto-registers the account on first login.
+    const idToken = await fbUser.getIdToken();
+    const sessionRes = await firebaseSession({
+      idToken,
+      email:    fbUser.email,
+      name:     fbUser.displayName || fbUser.email.split("@")[0],
+      provider: "google",
+    });
+    if (!sessionRes.success) {
+      setErr(sessionRes.error || "Sign-up failed. Please try again.");
+      setBusy(false);
+      return;
     }
-
-    // Backend login (session cookie)
-    const loggedIn = await loginWithEmail(fbUser.email, `google_${fbUser.uid}_`);
-    // Google users may need a special login path — try operator login as fallback
-    if (!loggedIn?.success) {
-      // Session established via Firebase token — use AuthContext directly
-      login(null, fbUser.email);
-    } else {
-      await login(null, fbUser.email);
-    }
-
+    await silentCheck();
     track.event("signup_completed_with_account", { method: "google" });
     setBusy(false);
     onSuccess?.();

@@ -61,3 +61,21 @@ export async function upgradeAccount(plan) {
     });
   } catch (err) { return { success: false, error: err.message }; }
 }
+
+// Exchange a Firebase ID token for a backend session cookie.
+// Works for Google, Phone, and Email OAuth flows.
+export async function firebaseSession({ idToken, email, name, provider }) {
+  try {
+    return await _fetch("/auth/firebase-session", {
+      method: "POST",
+      body: JSON.stringify({ idToken, email, name, provider }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+// Re-issue a fresh session cookie for an already-authenticated user.
+export async function refreshSession() {
+  try {
+    return await _fetch("/auth/refresh", { method: "POST", body: "{}" });
+  } catch (err) { return { success: false, error: err.message }; }
+}

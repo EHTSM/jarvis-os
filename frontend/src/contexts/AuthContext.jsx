@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { getAuthStatus, loginOperator, logoutOperator, setOn401 } from "../api";
-import { loginWithEmail } from "../authApi";
+import { loginWithEmail, refreshSession } from "../authApi";
 
 const AuthContext = createContext(null);
 
@@ -91,8 +91,18 @@ export function AuthProvider({ children }) {
     _setUserAndBroadcast(null, "logout");
   }, [_setUserAndBroadcast]);
 
+  const refresh = useCallback(async () => {
+    const result = await refreshSession();
+    if (result.success) {
+      const u = await getAuthStatus();
+      if (u) _setUserAndBroadcast(u, "login");
+      setSessionExpiring(false);
+    }
+    return result;
+  }, [_setUserAndBroadcast]);
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, sessionExpiring, silentCheck }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, refresh, sessionExpiring, silentCheck }}>
       {children}
     </AuthContext.Provider>
   );

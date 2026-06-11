@@ -103,4 +103,83 @@ router.get("/auth/me", requireAuth, (req, res) => {
   res.json({ success: true, user: req.user });
 });
 
+// POST /auth/refresh — re-issue a fresh JWT for an authenticated session
+// Client calls this before the 8h session expires to stay logged in
+router.post("/auth/refresh", requireAuth, (req, res) => {
+  const u = req.user;
+  try {
+    const token = signJWT({
+      role:  u.role,
+      sub:   u.sub,
+      email: u.email || undefined,
+      iat:   Math.floor(Date.now() / 1000),
+      exp:   Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
+    });
+    res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
+    auditLog.recordAuth({ action: "refresh", operator: u.sub || u.role, method: "cookie" });
+    res.json({ success: true, role: u.role });
+  } catch {
+    res.status(500).json({ error: "JWT signing failed" });
+  }
+});
+
+// POST /auth/forgot-password — always returns 200 to prevent email enumeration
+// Actual reset email is sent via Firebase on the client side; this endpoint
+// exists so the frontend can confirm the flow reached the server.
+router.post("/auth/forgot-password", rateLimiter(5, 15 * 60_000), (req, res) => {
+  const { email } = req.body || {};
+  if (!email || typeof email !== "string" || !email.includes("@")) {
+    return res.status(400).json({ error: "Valid email required" });
+  }
+  // Anti-enumeration: always 200 regardless of whether email exists
+  auditLog.recordAuth({ action: "forgot_password", operator: email.toLowerCase().trim(), method: "email" });
+  res.json({ success: true, message: "If an account exists, a reset link will be sent." });
+});
+
+// POST /auth/firebase-session — exchange a Firebase ID token for a backend session cookie
+// Called after Google/Phone OAuth completes on the client. Creates the backend account
+// on first login (auto-register) then issues a session cookie.
+router.post("/auth/firebase-session", rateLimiter(20, 5 * 60_000), async (req, res) => {
+  const { idToken, email, name, provider } = req.body || {};
+  if (!idToken || !email) {
+    return res.status(400).json({ error: "idToken and email are required" });
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+
+  // Auto-register if account doesn't exist
+  let account = accountSvc.getByEmail(cleanEmail);
+  if (!account) {
+    const synthetic = `firebase_${Buffer.from(cleanEmail).toString("base64").slice(0, 16)}_${crypto.randomBytes(8).toString("hex")}`;
+    const reg = accountSvc.createAccount({
+      email:    cleanEmail,
+      password: synthetic,
+      name:     name || cleanEmail.split("@")[0],
+      role:     "user",
+    });
+    if (!reg.success) {
+      // 409 means already exists — race condition, fetch it
+      account = accountSvc.getByEmail(cleanEmail);
+      if (!account) return res.status(500).json({ error: reg.error || "Account creation failed" });
+    } else {
+      account = reg.account;
+    }
+  }
+
+  try {
+    const token = signJWT({
+      role:  account.role || "user",
+      sub:   account.id,
+      email: account.email,
+      iat:   Math.floor(Date.now() / 1000),
+      exp:   Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
+    });
+    res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
+    auditLog.recordAuth({ action: "login", operator: account.id, method: provider || "firebase" });
+    res.json({ success: true, role: account.role, email: account.email });
+  } catch {
+    res.status(500).json({ error: "JWT signing failed" });
+  }
+});
+
 module.exports = router;

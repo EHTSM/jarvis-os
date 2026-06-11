@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { loginWithEmail } from "../../authApi";
+import { loginWithEmail, firebaseSession } from "../../authApi";
 import {
   firebaseSignInEmail,
   firebaseSignInGoogle,
@@ -116,7 +116,7 @@ function EmailLoginForm({ onSuccess, onSignup, onForgot, busy, setBusy }) {
 
 // ── Google Login ──────────────────────────────────────────────────────────────
 function GoogleLoginButton({ onSuccess, busy, setBusy }) {
-  const { login } = useAuth();
+  const { silentCheck } = useAuth();
   const [err, setErr] = useState("");
 
   if (!isFirebaseConfigured()) {
@@ -149,7 +149,19 @@ function GoogleLoginButton({ onSuccess, busy, setBusy }) {
     }
 
     const { user: fbUser } = fbRes;
-    await login(null, fbUser.email);
+    const idToken = await fbUser.getIdToken();
+    const sessionRes = await firebaseSession({
+      idToken,
+      email:    fbUser.email,
+      name:     fbUser.displayName || fbUser.email.split("@")[0],
+      provider: "google",
+    });
+    if (!sessionRes.success) {
+      setErr(sessionRes.error || "Sign-in failed. Please try again.");
+      setBusy(false);
+      return;
+    }
+    await silentCheck();
     track.login("google");
     setBusy(false);
     onSuccess?.();
