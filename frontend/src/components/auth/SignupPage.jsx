@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { registerAccount, loginWithEmail, firebaseSession } from "../../authApi";
+import { registerAccount, firebaseSession } from "../../authApi";
 import {
   firebaseSignUpEmail,
   firebaseSignInGoogle,
@@ -75,16 +75,22 @@ function EmailSignupForm({ onSuccess, onLogin, busy, setBusy }) {
     setBusy(true);
     setErr("");
 
-    // If Firebase is configured, create Firebase account first
+    // Attempt Firebase account creation — non-blocking.
+    // If Firebase is unconfigured, unreachable, or returns a non-fatal error
+    // we fall through to the backend (source of truth for trial + billing).
+    // The only hard stop is a definitive duplicate-email error from Firebase.
     if (isFirebaseConfigured()) {
       const fbRes = await firebaseSignUpEmail(email.trim().toLowerCase(), password, name.trim());
-      if (!fbRes.success && fbRes.error !== "firebase_not_configured") {
-        // Email already in Firebase — surface friendly message
-        if (fbRes.error.includes("already exists")) {
+      if (!fbRes.success &&
+          fbRes.error !== "firebase_not_configured" &&
+          !fbRes.error?.includes("Network error") &&
+          !fbRes.error?.includes("internal error")) {
+        if (fbRes.error?.includes("already exists")) {
           setErr("An account with this email already exists. Sign in instead?");
           setBusy(false);
           return;
         }
+        // For all other Firebase errors (weak password etc.) surface them
         setErr(fbRes.error);
         setBusy(false);
         return;
@@ -103,16 +109,14 @@ function EmailSignupForm({ onSuccess, onLogin, busy, setBusy }) {
       return;
     }
 
-    // Auto-login
-    const loggedIn = await loginWithEmail(email.trim().toLowerCase(), password);
+    // Auto-login via AuthContext (sets user state + broadcasts to other tabs)
+    const loggedIn = await login(password, email.trim().toLowerCase());
     if (!loggedIn?.success) {
       setErr("Account created — please sign in.");
       setBusy(false);
       onLogin?.();
       return;
     }
-
-    await login(password, email.trim().toLowerCase());
     track.event("signup_completed_with_account", { method: "email" });
     setBusy(false);
     onSuccess?.();
@@ -252,7 +256,7 @@ function GoogleSignupButton({ onSuccess, onLogin, busy, setBusy }) {
 
 // ── Phone OTP Signup ──────────────────────────────────────────────────────────
 function PhoneSignupForm({ onSuccess, busy, setBusy }) {
-  const { login } = useAuth();
+  const { silentCheck } = useAuth();
   const [phone,       setPhone]       = useState("");
   const [otp,         setOtp]         = useState(["", "", "", "", "", ""]);
   const [step,        setStep]        = useState("phone"); // phone | otp
@@ -319,24 +323,21 @@ function PhoneSignupForm({ onSuccess, busy, setBusy }) {
     const res = await verifyPhoneOtp(confirmation, code);
     if (!res.success) { setErr(res.error); setBusy(false); return; }
 
-    const { user: fbUser, isNew } = res;
-    const phoneEmail = `phone_${fbUser.uid}@ooplix.app`;
+    const { user: fbUser, idToken: phoneIdToken } = res;
 
-    if (isNew) {
-      const reg = await registerAccount({
-        email:    phoneEmail,
-        password: `phone_${fbUser.uid}_${Date.now()}`,
-        name:     fbUser.phone || fbUser.uid.slice(0, 8),
-      });
-      if (!reg?.success && !reg?.error?.includes("already exists")) {
-        setErr(reg?.error || "Could not create account.");
-        setBusy(false);
-        return;
-      }
+    // Exchange Firebase token for backend session cookie (auto-registers on first login)
+    const sessionRes = await firebaseSession({
+      idToken:  phoneIdToken,
+      email:    `phone_${fbUser.uid}@ooplix.app`,
+      name:     fbUser.phone || fbUser.uid.slice(0, 8),
+      provider: "phone",
+    });
+    if (!sessionRes.success) {
+      setErr(sessionRes.error || "Could not create account. Please try again.");
+      setBusy(false);
+      return;
     }
-
-    // Update AuthContext
-    login(null, phoneEmail);
+    await silentCheck();
     track.event("signup_completed_with_account", { method: "phone" });
     setBusy(false);
     onSuccess?.();

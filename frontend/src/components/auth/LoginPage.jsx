@@ -184,7 +184,7 @@ function GoogleLoginButton({ onSuccess, busy, setBusy }) {
 
 // ── Phone Login ───────────────────────────────────────────────────────────────
 function PhoneLoginForm({ onSuccess, busy, setBusy }) {
-  const { login } = useAuth();
+  const { silentCheck } = useAuth();
   const [phone,        setPhone]        = useState("");
   const [otp,          setOtp]          = useState(["", "", "", "", "", ""]);
   const [step,         setStep]         = useState("phone");
@@ -248,8 +248,19 @@ function PhoneLoginForm({ onSuccess, busy, setBusy }) {
     const res = await verifyPhoneOtp(confirmation, code);
     if (!res.success) { setErr(res.error); setBusy(false); return; }
 
-    const { user: fbUser } = res;
-    await login(null, `phone_${fbUser.uid}@ooplix.app`);
+    const { user: fbUser, idToken: phoneIdToken } = res;
+    const sessionRes = await firebaseSession({
+      idToken:  phoneIdToken,
+      email:    `phone_${fbUser.uid}@ooplix.app`,
+      name:     fbUser.phone || fbUser.uid.slice(0, 8),
+      provider: "phone",
+    });
+    if (!sessionRes.success) {
+      setErr(sessionRes.error || "Sign-in failed. Please try again.");
+      setBusy(false);
+      return;
+    }
+    await silentCheck();
     track.login("phone");
     setBusy(false);
     onSuccess?.();
