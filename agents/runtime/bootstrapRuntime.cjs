@@ -207,7 +207,7 @@ try {
     });
     logger.info("[Bootstrap] CRM agent registered");
 } catch (err) {
-    logger.warn("[Bootstrap] CRM agent skipped:", err.message);
+    logger.error("[Bootstrap] CRM agent FAILED to register:", err.message, err.stack);
 }
 
 // ── AI Agent — handles "ai" task type via aiService.callAI ───────────
@@ -229,4 +229,6 @@ try {
     logger.warn("[Bootstrap] AI agent skipped:", err.message);
 }
 
-logger.info("[Bootstrap] Runtime agent registration complete");
+const _registry = require("./agentRegistry.cjs");
+const _registered = _registry.listAll().map(a => `${a.id}[${a.capabilities.join(",")}]`);
+logger.info("[Bootstrap] Runtime agent registration complete — " + _registered.join(" | "));

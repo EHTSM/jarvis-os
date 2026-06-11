@@ -144,7 +144,8 @@ async function executeTask(task, options = {}) {
             } else {
                 // Nothing can handle this — bail immediately, no retry
                 const msg = `No handler for capability "${capability}" (type: ${task.type})`;
-                logger.warn(`[ExecEngine] ${msg}`);
+                const registeredIds = registry.listAll().map(a => a.id).join(", ") || "(none)";
+                logger.warn(`[ExecEngine] ${msg} — registered agents: [${registeredIds}]`);
                 return { success: false, result: null, agentId: null, durationMs: 0, attempts: 1, error: msg };
             }
         }
