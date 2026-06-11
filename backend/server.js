@@ -118,12 +118,20 @@ app.use((req, res, next) => {
 
 // CORS: allow credentials (httpOnly cookies) only from explicitly listed origins.
 // origin:"*" silently breaks credentials:include in browsers — use allowlist instead.
-const _allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
+// Production domains are always included; ALLOWED_ORIGINS env var adds extras (e.g. localhost in dev).
+const _PRODUCTION_ORIGINS = [
+    "https://ooplix.com",
+    "https://www.ooplix.com",
+    "https://app.ooplix.com",
+    "https://api.ooplix.com",
+];
+const _envOrigins = (process.env.ALLOWED_ORIGINS || "")
     .split(",").map(s => s.trim()).filter(Boolean);
+const _allowedOrigins = [...new Set([..._PRODUCTION_ORIGINS, ..._envOrigins])];
 app.use(cors({
     origin: (origin, cb) => {
         // Allow same-origin requests (origin === undefined in server-to-server or
-        // same-origin fetches) and any listed ALLOWED_ORIGINS.
+        // same-origin fetches) and any listed origin.
         if (!origin || _allowedOrigins.includes(origin)) return cb(null, true);
         cb(new Error(`CORS: origin '${origin}' not allowed`));
     },
