@@ -133,9 +133,8 @@ function _buildHandlers() {
         },
 
         leads: async () => {
-            const { RealLeadsEngine } = require("./realLeadsEngine.cjs");
-            const engine = new RealLeadsEngine();
-            const leads  = await engine.getLeads();
+            const crmService = require("../backend/services/crmService");
+            const leads = crmService.getLeads();
             return { type: "leads", result: leads };
         },
 

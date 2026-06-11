@@ -183,6 +183,33 @@ if (enableLocalDesktop) {
     }
 }
 
+// ── CRM Agent — handles get_leads / note / reminder via crmService ───
+try {
+    const crm = require("../../backend/services/crmService");
+
+    orchestrator.registerAgent({
+        id:           "crm",
+        capabilities: ["crm"],
+        maxConcurrent: 5,
+        handler: async (task) => {
+            const type = task.type || "";
+            if (type === "get_leads") {
+                const leads = crm.getLeads();
+                return { type: "leads", result: leads, success: true };
+            }
+            if (type === "note" || type === "reminder") {
+                const p = task.payload || {};
+                if (p.phone) crm.updateLead(p.phone, { note: p.note || p.text || task.input, updatedAt: new Date().toISOString() });
+                return { type, result: "saved", success: true };
+            }
+            return { type, result: null, success: false, error: `unsupported_crm_task: ${type}` };
+        },
+    });
+    logger.info("[Bootstrap] CRM agent registered");
+} catch (err) {
+    logger.warn("[Bootstrap] CRM agent skipped:", err.message);
+}
+
 // ── AI Agent — handles "ai" task type via aiService.callAI ───────────
 try {
     const { callAI } = require("../../backend/services/aiService.js");
