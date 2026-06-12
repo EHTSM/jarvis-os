@@ -148,8 +148,7 @@ function GoogleLoginButton({ onSuccess, busy, setBusy }) {
       return;
     }
 
-    const { user: fbUser } = fbRes;
-    const idToken = await fbUser.getIdToken();
+    const { user: fbUser, idToken } = fbRes;
     const sessionRes = await firebaseSession({
       idToken,
       email:    fbUser.email,

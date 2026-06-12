@@ -217,11 +217,10 @@ function GoogleSignupButton({ onSuccess, onLogin, busy, setBusy }) {
       return;
     }
 
-    const { user: fbUser } = fbRes;
+    const { user: fbUser, idToken } = fbRes;
 
     // Exchange Firebase token for a backend session cookie.
     // /auth/firebase-session auto-registers the account on first login.
-    const idToken = await fbUser.getIdToken();
     const sessionRes = await firebaseSession({
       idToken,
       email:    fbUser.email,
