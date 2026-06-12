@@ -105,9 +105,13 @@ app.use((req, res, next) => {
     res.setHeader("X-XSS-Protection",          "1; mode=block");
     res.setHeader("Referrer-Policy",           "strict-origin-when-cross-origin");
     res.setHeader("Permissions-Policy",        "camera=(), microphone=(), geolocation=()");
-    // CSP — allows same-origin scripts + specific CDNs; tightened in production
+    // CSP — allows same-origin scripts + Firebase Auth domains required for
+    // Google Sign-In popup and Phone OTP reCAPTCHA.
+    const FIREBASE_CONNECT = "https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com";
+    const FIREBASE_SCRIPT   = "https://www.gstatic.com https://www.recaptcha.net https://www.google.com";
+    const FIREBASE_FRAME    = "https://ooplix-jarvis.firebaseapp.com https://www.google.com https://www.recaptcha.net";
     const csp = process.env.NODE_ENV === "production"
-        ? "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none';"
+        ? `default-src 'self'; script-src 'self' ${FIREBASE_SCRIPT}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https: ${FIREBASE_CONNECT}; frame-src ${FIREBASE_FRAME}; frame-ancestors 'none';`
         : "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https:; frame-ancestors 'none';";
     res.setHeader("Content-Security-Policy", csp);
     if (process.env.NODE_ENV === "production") {
