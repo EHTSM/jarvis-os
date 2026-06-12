@@ -473,22 +473,24 @@ function AppInner() {
     const justOnboarded = localStorage.getItem("jarvis_just_onboarded") === "1";
     const hasProfile    = !!localStorage.getItem("jarvis_biz_profile");
     if (hasProfile && !justOnboarded) {
-      // Returning user who completed onboarding — show login
+      // Returning user — show login. onSuccess must set screen to "app" because
+      // screen may still be "landing"/"onboarding" from _initialScreen(); relying
+      // on AuthContext re-render alone is not enough to advance past those screens.
       return (
         <div className="app-auth-gate">
           <LoginPage
-            onSuccess={() => {/* AuthContext user update re-renders */}}
+            onSuccess={() => setScreen("app")}
             onSignup={() => setScreen("signup")}
             onForgot={() => setScreen("forgot")}
           />
         </div>
       );
     }
-    // New user who came through onboarding — show signup to create their account
+    // New user — show signup. handleSignupComplete already calls setScreen("app").
     return (
       <div className="app-auth-gate">
         <SignupPage
-          onSuccess={handleSignupComplete}
+          onSuccess={() => setScreen("app")}
           onLogin={() => setScreen("login")}
         />
       </div>
