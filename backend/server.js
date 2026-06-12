@@ -107,8 +107,8 @@ app.use((req, res, next) => {
     res.setHeader("Permissions-Policy",        "camera=(), microphone=(), geolocation=()");
     // CSP — allows same-origin scripts + Firebase Auth domains required for
     // Google Sign-In popup and Phone OTP reCAPTCHA.
-    const FIREBASE_CONNECT = "https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com";
-    const FIREBASE_SCRIPT   = "https://www.gstatic.com https://www.recaptcha.net https://www.google.com";
+    const FIREBASE_CONNECT = "https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://www.googletagmanager.com https://www.clarity.ms";
+    const FIREBASE_SCRIPT   = "https://www.gstatic.com https://www.recaptcha.net https://www.google.com https://apis.google.com https://www.googletagmanager.com https://www.clarity.ms";
     const FIREBASE_FRAME    = "https://ooplix-jarvis.firebaseapp.com https://www.google.com https://www.recaptcha.net";
     const csp = process.env.NODE_ENV === "production"
         ? `default-src 'self'; script-src 'self' ${FIREBASE_SCRIPT}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https: ${FIREBASE_CONNECT}; frame-src ${FIREBASE_FRAME}; frame-ancestors 'none';`
