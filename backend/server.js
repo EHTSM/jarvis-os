@@ -110,10 +110,12 @@ app.use((req, res, next) => {
     // Domains sourced from: index.html (GTM, GA4, Clarity), Firebase SDK (apis.google.com,
     // gstatic.com, identitytoolkit, securetoken), Phone OTP (recaptcha.net), Google OAuth popup.
     const CSP_SCRIPT  = "https://apis.google.com https://www.gstatic.com https://www.googleapis.com https://www.google.com https://www.recaptcha.net https://www.googletagmanager.com https://www.clarity.ms";
-    const CSP_CONNECT = "https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://www.googletagmanager.com https://www.clarity.ms";
+    // connect-src: add www.google.com (reCAPTCHA token XHR), www.gstatic.com (reCAPTCHA assets),
+    // recaptchaenterprise.googleapis.com (Enterprise init attempted before v2 fallback)
+    const CSP_CONNECT = "https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://recaptchaenterprise.googleapis.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://www.clarity.ms";
     const CSP_FRAME   = "https://ooplix-jarvis.firebaseapp.com https://www.google.com https://www.recaptcha.net https://www.googletagmanager.com";
     const csp = process.env.NODE_ENV === "production"
-        ? `default-src 'self'; script-src 'self' 'unsafe-inline' ${CSP_SCRIPT}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https: ${CSP_CONNECT}; frame-src ${CSP_FRAME}; frame-ancestors 'none';`
+        ? `default-src 'self'; script-src 'self' 'unsafe-inline' ${CSP_SCRIPT}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://www.gstatic.com; connect-src 'self' https: ${CSP_CONNECT}; frame-src ${CSP_FRAME}; frame-ancestors 'none';`
         : "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https:; frame-ancestors 'none';";
     res.setHeader("Content-Security-Policy", csp);
     if (process.env.NODE_ENV === "production") {
