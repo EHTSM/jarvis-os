@@ -23,10 +23,11 @@ export function AuthProvider({ children }) {
   // If 401 comes back, clears user — no hard redirect, just shows login overlay
   const silentCheck = useCallback(async () => {
     const u = await getAuthStatus();
-    if (!u && user) {
-      _setUserAndBroadcast(null, "expired");
+    if (!u) {
+      if (user) _setUserAndBroadcast(null, "expired");
       setSessionExpiring(false);
-    } else if (u) {
+    } else {
+      _setUserAndBroadcast(u, "login");
       setSessionExpiring(false);
     }
   }, [user, _setUserAndBroadcast]);
