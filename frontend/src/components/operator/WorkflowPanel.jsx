@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { safeDispatch as _apiDispatch, queueTask } from "../../api";
+import PatchApprovalPanel from "./PatchApprovalPanel";
 import { useProductivityAnalytics, generateSessionNarrative } from "../../hooks/useProductivityAnalytics"; // Phase 329
 import { useExecutionMemory } from "../../hooks/useExecutionMemory"; // Phase 242
 import { useWorkflowAssistant } from "../../hooks/useWorkflowAssistant"; // Phase 243 + 266
@@ -403,6 +404,7 @@ export default function WorkflowPanel({ onRefresh, addNotification, onAction, ex
   const [priority,    setPriority]    = useState("1");
   const [timeout,     setTimeout_]    = useState("30");
   const [result,      setResult]      = useState(null);  // { ok, text }
+  const [pendingPatch, setPendingPatch] = useState(null); // { patchId, targetFile }
   // Flood protection: debounce rapid dispatches
   const lastDispatchRef = React.useRef(0);
   const safeDispatch = async (cmd, t) => {
@@ -783,6 +785,10 @@ const handleDispatch = async (confirmedCmd = null) => {
         const out = r.output || r.result || r.reply || "Dispatched";
         const raw = typeof out === "string" ? out : JSON.stringify(out);
         _cacheSet(cmd, raw); // Phase 293: cache read-only results for 60s
+        // Patch approval gate — devAgent returns requiresApproval + patchId
+        if (r.requiresApproval && r.patchId) {
+          setPendingPatch({ patchId: r.patchId, targetFile: r.targetFile || "" });
+        }
         showResult(true, raw.slice(0, 200) + (raw.length > 200 ? "… (truncated)" : ""));
         _addToHistory(cmd, true, raw.slice(0, 40));
         addNotification?.(`Task succeeded: ${cmd.slice(0, 20)}`, "ok");
@@ -2058,6 +2064,23 @@ const handleQueue = async () => {
               aria-label="Dismiss result"
             >×</button>
           </div>
+        )}
+
+        {/* Patch approval gate — shown when devAgent proposes a patch */}
+        {pendingPatch && (
+          <PatchApprovalPanel
+            patchId={pendingPatch.patchId}
+            targetFile={pendingPatch.targetFile}
+            addNotification={addNotification}
+            onDone={(outcome) => {
+              setPendingPatch(null);
+              if (outcome === "applied") {
+                showResult(true, `Patch applied to ${pendingPatch.targetFile || "file"}`);
+              } else if (outcome === "rejected") {
+                showResult(false, "Patch rejected.");
+              }
+            }}
+          />
         )}
 
         {/* completion summary digest — improved readability */}

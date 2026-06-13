@@ -33,6 +33,7 @@ const ALLOWLIST = new Set([
     "node", "npm", "npx",
     "git",
     "python", "python3",
+    "pm2",
 ]);
 
 // Argument fragments that are always blocked regardless of command.
@@ -121,6 +122,26 @@ function validate(cmd, args = []) {
     // Allowlist check
     if (!ALLOWLIST.has(base)) {
         return { ok: false, reason: `command_not_allowlisted: ${base}` };
+    }
+
+    // pm2 argument restriction — only safe observability and lifecycle subcommands allowed
+    if (base === "pm2") {
+        const PM2_ALLOWED_SUBCMDS = new Set([
+            "list", "ls", "status", "describe", "info",
+            "logs", "monit",
+            "reload", "restart",
+            "start",
+        ]);
+        const PM2_BLOCKED_SUBCMDS = new Set([
+            "delete", "del", "kill", "stop", "flush", "dump", "save",
+            "startup", "unstartup", "link", "unlink", "update",
+        ]);
+        const subcmd = (args[0] || "").toLowerCase().replace(/^--?/, "");
+        if (!subcmd) return { ok: false, reason: "pm2 requires a subcommand" };
+        if (PM2_BLOCKED_SUBCMDS.has(subcmd))
+            return { ok: false, reason: `pm2 subcommand blocked: ${subcmd}` };
+        if (!PM2_ALLOWED_SUBCMDS.has(subcmd))
+            return { ok: false, reason: `pm2 subcommand not allowed: ${subcmd}` };
     }
 
     // Argument validation

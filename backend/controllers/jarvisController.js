@@ -272,6 +272,7 @@ async function handleJarvis(req, res) {
         metricsStore.trackIntent(intent);
 
         mode = _clean(req.body.mode || "smart");
+        if (mode === "code") mode = "execution"; // DeveloperCopilotV2 sends mode=code — route to dev pipeline
         if (mode === "smart") {
             if (/\b(buy|pay|price|demo|purchase|payment|cost|interested|yes)\b/i.test(input)) mode = "sales";
             else if (/\s+(and|then)\s+.{4,}|\s*;\s*.{4,}|\s*\+\s*.{4,}/i.test(input)) mode = "intelligence";
@@ -320,8 +321,21 @@ async function handleWhatsAppWebhook(req, res) {
     const _waStart = Date.now();
 
     try {
+        // Log every raw POST so we can distinguish: (A) Meta not sending vs (B) parse failure
+        logger.info(`[WA-RAW] POST body: ${JSON.stringify(req.body).slice(0, 500)}`);
+
         const msg = wa.parseIncomingMessage(req.body);
-        if (!msg || !msg.text) return;
+        if (!msg) {
+            // Status updates (delivery/read receipts) land here — log them so we know Meta is connected
+            const statuses = req.body?.entry?.[0]?.changes?.[0]?.value?.statuses;
+            if (statuses) logger.info(`[WA-STATUS] ${JSON.stringify(statuses[0]).slice(0, 200)}`);
+            else logger.warn(`[WA-PARSE] No message extracted — body: ${JSON.stringify(req.body).slice(0, 300)}`);
+            return;
+        }
+        if (!msg.text) {
+            logger.info(`[WA-NOOP] Non-text message type="${msg.type}" from=${msg.phone}`);
+            return;
+        }
 
         const { phone, text } = msg;
         logger.info(`[WA] Incoming from ${phone}: ${text}`);

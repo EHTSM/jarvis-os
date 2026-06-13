@@ -4205,6 +4205,67 @@ router.get("/runtime/patch-sets/:id", rateLimiter(20, 60_000), (req, res) => {
     return res.json({ success: true, set: s });
 });
 
+// Phase B1: Engineering Pipeline Routes (pipelineOrchestrator + projectRunner exposed via HTTP)
+const _pipelineOrch  = _tryRequirePhase571("../../agents/dev/pipelineOrchestrator.cjs");
+const _projectRunner  = _tryRequirePhase571("../../agents/dev/projectRunner.cjs");
+const _blueprintGen   = _tryRequirePhase571("../../agents/dev/blueprintGenerator.cjs");
+
+// POST /runtime/pipeline/run — 7-stage Plan→Code→Patch→Apply→Test→Review→Deploy
+router.post("/runtime/pipeline/run", rateLimiter(5, 60_000), async (req, res) => {
+    if (!_pipelineOrch) return res.status(503).json({ success: false, error: "pipelineOrchestrator_unavailable" });
+    const { request, autoApply = true, autoRollback = true, autoDeploy = false, testCommand } = req.body || {};
+    if (!request || typeof request !== "string" || !request.trim())
+        return res.status(400).json({ success: false, error: "request is required" });
+    try {
+        const result = await _pipelineOrch.run(request.trim(), { autoApply, autoRollback, autoDeploy, testCommand });
+        return res.json({ success: result.ok, ...result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// POST /runtime/pipeline/run-multi — multi-file pipeline
+router.post("/runtime/pipeline/run-multi", rateLimiter(3, 60_000), async (req, res) => {
+    if (!_pipelineOrch) return res.status(503).json({ success: false, error: "pipelineOrchestrator_unavailable" });
+    const { request, autoApply = false, autoRollback = true, autoDeploy = false } = req.body || {};
+    if (!request || typeof request !== "string" || !request.trim())
+        return res.status(400).json({ success: false, error: "request is required" });
+    try {
+        const result = await _pipelineOrch.runMulti(request.trim(), { autoApply, autoRollback, autoDeploy });
+        return res.json({ success: result.ok, ...result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// POST /runtime/project/run — goal→specialist waves via projectRunner
+router.post("/runtime/project/run", rateLimiter(3, 60_000), async (req, res) => {
+    if (!_projectRunner) return res.status(503).json({ success: false, error: "projectRunner_unavailable" });
+    const { goal, opts } = req.body || {};
+    if (!goal || typeof goal !== "string" || !goal.trim())
+        return res.status(400).json({ success: false, error: "goal is required" });
+    try {
+        const result = await _projectRunner.runProject(goal.trim(), opts || {});
+        return res.json({ success: true, ...result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// POST /runtime/blueprint/generate — idea→blueprint JSON
+router.post("/runtime/blueprint/generate", rateLimiter(5, 60_000), async (req, res) => {
+    if (!_blueprintGen) return res.status(503).json({ success: false, error: "blueprintGenerator_unavailable" });
+    const { idea, opts } = req.body || {};
+    if (!idea || typeof idea !== "string" || !idea.trim())
+        return res.status(400).json({ success: false, error: "idea is required" });
+    try {
+        const result = await _blueprintGen.generateBlueprint(idea.trim(), opts || {});
+        return res.json({ success: true, blueprint: result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: err.message });
+    }
+});
+
 // Phase 572 — Task Understanding
 router.post("/runtime/engineering/understand", rateLimiter(30, 60_000), (req, res) => {
     if (!taskUnderstand) return res.status(503).json({ success: false, error: "taskUnderstanding_unavailable" });
