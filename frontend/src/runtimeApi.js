@@ -245,3 +245,50 @@ export async function getIncidentAutoFixStatus(incidentId) {
   try { return await _fetch(`/runtime/incidents/${encodeURIComponent(incidentId)}/auto-fix/status`); }
   catch (err) { return { success: false, error: err.message }; }
 }
+
+// ── B5 Intelligence / Learning → Recommendation APIs ─────────────────
+
+export async function getSimilarFixes(q = "", limit = 10) {
+  try { return await _fetch(`/runtime/intel/similar-fixes?q=${encodeURIComponent(q)}&limit=${limit}`); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getPatternRanking(type = "both") {
+  try { return await _fetch(`/runtime/intel/pattern-ranking?type=${type}`); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function recommendPatch(description = "", filePath = "", limit = 8) {
+  try {
+    return await _fetch("/runtime/intel/recommend-patch", {
+      method: "POST",
+      body: JSON.stringify({ description, filePath, limit }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getIncidentKB(q = "", opts = {}) {
+  try {
+    const params = new URLSearchParams({ q, ...opts }).toString();
+    return await _fetch(`/runtime/intel/incident-kb?${params}`);
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function engineeringSearch(q, scope = "all", limit = 20) {
+  try { return await _fetch(`/runtime/intel/search?q=${encodeURIComponent(q)}&scope=${scope}&limit=${limit}`); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function correlateExecution(executionId, input, limit = 10) {
+  try {
+    const qs = executionId
+      ? `executionId=${encodeURIComponent(executionId)}`
+      : `input=${encodeURIComponent(input || "")}`;
+    return await _fetch(`/runtime/intel/correlate?${qs}&limit=${limit}`);
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getIntelSummary() {
+  try { return await _fetch("/runtime/intel/summary"); }
+  catch (err) { return { success: false, error: err.message }; }
+}

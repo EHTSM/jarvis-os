@@ -4271,6 +4271,12 @@ const _incidentEngine   = _tryRequirePhase571("../../agents/runtime/incidentEngi
 const _autoFixPlanner   = _tryRequirePhase571("../../agents/runtime/autoFixPlanner.cjs");
 const _selfHealPipeline = _tryRequirePhase571("../../agents/runtime/selfHealingPipeline.cjs");
 const _engMemory        = _tryRequirePhase571("../../agents/runtime/engineeringMemory.cjs");
+// Phase B5 — Intelligence layer
+const _execHistory      = _tryRequirePhase571("../../agents/runtime/executionHistory.cjs");
+const _knowledgeMem     = _tryRequirePhase571("../../agents/runtime/engineeringKnowledgeMemory.cjs");
+const _learningEngine   = _tryRequirePhase571("../../agents/runtime/learningMemoryEngine.cjs");
+const _failIntelEngine  = _tryRequirePhase571("../../agents/runtime/failureIntelligenceEngine.cjs");
+const _rootCauseAnalyzer= _tryRequirePhase571("../../agents/runtime/rootCauseAnalyzer.cjs");
 
 // GET /runtime/incidents — list incidents
 router.get("/runtime/incidents", rateLimiter(20, 60_000), (req, res) => {
@@ -4530,6 +4536,388 @@ router.get("/runtime/incidents/:id/auto-fix/status", rateLimiter(20, 60_000), (r
             ? _autoFixPlanner.listPlans({}).filter(p => p.incidentId === req.params.id)
             : [];
         return res.json({ success: true, incident: inc, relatedPatches, relatedPlans });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// ── Phase B5 — Learning → Recommendation Intelligence ────────────────
+
+// B5.1  GET /runtime/intel/similar-fixes?q=&limit=
+//   Similar Fix Finder — keyword match across patches + knowledge memory
+router.get("/runtime/intel/similar-fixes", rateLimiter(30, 60_000), (req, res) => {
+    try {
+        const q     = (req.query.q || "").toLowerCase().trim();
+        const limit = Math.min(20, parseInt(req.query.limit) || 10);
+        const results = [];
+
+        // 1. Patch history — match reason/filePath/diff preview against q
+        if (patchAssist) {
+            const patches = patchAssist.listPatches({});
+            for (const p of patches) {
+                if (!q) { results.push({ source: "patch", score: 50, patchId: p.id, filePath: p.filePath, reason: p.reason, status: p.status, proposedAt: p.proposedAt, preview: p.diff?.preview }); continue; }
+                const haystack = `${p.filePath || ""} ${p.reason || ""} ${p.diff?.preview || ""}`.toLowerCase();
+                const words = q.split(/\s+/).filter(Boolean);
+                const hits  = words.filter(w => haystack.includes(w)).length;
+                if (hits > 0) results.push({ source: "patch", score: Math.round((hits / words.length) * 100), patchId: p.id, filePath: p.filePath, reason: p.reason, status: p.status, proposedAt: p.proposedAt, preview: p.diff?.preview });
+            }
+        }
+
+        // 2. Knowledge memory known-fixes
+        if (_knowledgeMem) {
+            const fixes = _knowledgeMem.query({ kind: "known-fix", search: q || undefined, limit: 20 });
+            for (const f of fixes) {
+                results.push({ source: "knowledge", score: 70, key: f.key, fix: f.fix, problem: f.problem, kind: f.kind, ts: f.ts });
+            }
+        }
+
+        // 3. Engineering memory — validated steps
+        if (_engMemory) {
+            const mem = _engMemory.query(q || "fix", "validated-step");
+            for (const m of mem) {
+                const score = q ? 60 : 40;
+                results.push({ source: "memory", score, chainName: m.chainName, goalPattern: m.goalPattern, confidence: m.confidence, stepCount: m.stepCount, ts: m.ts });
+            }
+        }
+
+        results.sort((a, b) => b.score - a.score);
+        return res.json({ success: true, query: q, results: results.slice(0, limit), total: results.length });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B5.2  GET /runtime/intel/pattern-ranking?type=success|failure
+//   Success + Failure Pattern Ranking
+router.get("/runtime/intel/pattern-ranking", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const type = req.query.type || "both";
+
+        // Derive from patch history
+        const patches = patchAssist ? patchAssist.listPatches({}) : [];
+        const byFile  = {};
+        for (const p of patches) {
+            const key = p.filePath || "unknown";
+            if (!byFile[key]) byFile[key] = { file: key, applied: 0, rolled_back: 0, pending: 0, total: 0 };
+            byFile[key].total++;
+            if (p.status === "applied")     byFile[key].applied++;
+            if (p.status === "rolled_back") byFile[key].rolled_back++;
+            if (p.status === "pending")     byFile[key].pending++;
+        }
+        const fileStats = Object.values(byFile).map(f => ({
+            ...f,
+            successRate: f.total > 0 ? Math.round((f.applied / f.total) * 100) : null,
+        }));
+
+        const success = fileStats
+            .filter(f => f.applied > 0)
+            .sort((a, b) => (b.successRate ?? 0) - (a.successRate ?? 0))
+            .slice(0, 10);
+
+        const failure = fileStats
+            .filter(f => f.rolled_back > 0)
+            .sort((a, b) => b.rolled_back - a.rolled_back)
+            .slice(0, 10);
+
+        // Also pull from learningMemoryEngine if available
+        let learnPatterns = null;
+        if (_learningEngine) {
+            try { learnPatterns = _learningEngine.getPatterns(); } catch (_) {}
+        }
+
+        // Pull known failure patterns from failureIntelligenceEngine
+        let failurePatterns = null;
+        if (_failIntelEngine) {
+            try { failurePatterns = _failIntelEngine.FAILURE_PATTERNS || null; } catch (_) {}
+        }
+
+        return res.json({ success: true, type,
+            successPatterns: type !== "failure" ? success : [],
+            failurePatterns: type !== "success" ? failure : [],
+            learnPatterns,
+            knownFailurePatterns: failurePatterns,
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B5.3  POST /runtime/intel/recommend-patch
+//   Patch Recommendation Engine — given a description, return ranked patch suggestions
+router.post("/runtime/intel/recommend-patch", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const { description = "", filePath = "", limit = 8 } = req.body || {};
+        const query = `${description} ${filePath}`.toLowerCase().trim();
+        const recommendations = [];
+
+        // Source 1: past successful patches on same/similar files
+        if (patchAssist) {
+            const patches = patchAssist.listPatches({ status: "applied" });
+            for (const p of patches) {
+                let score = 0;
+                const hay = `${p.filePath || ""} ${p.reason || ""} ${p.diff?.preview || ""}`.toLowerCase();
+                if (filePath && p.filePath === filePath) score += 50;
+                if (filePath && p.filePath?.split("/").pop() === filePath.split("/").pop()) score += 20;
+                if (query) {
+                    const words = query.split(/\s+/).filter(w => w.length > 3);
+                    const hits = words.filter(w => hay.includes(w)).length;
+                    score += hits > 0 ? Math.round((hits / Math.max(words.length, 1)) * 40) : 0;
+                }
+                if (score > 0) recommendations.push({ source: "patch_history", score, patchId: p.id, filePath: p.filePath, reason: p.reason, preview: p.diff?.preview, status: p.status, proposedAt: p.proposedAt });
+            }
+        }
+
+        // Source 2: knowledge memory known-fixes
+        if (_knowledgeMem) {
+            const fixes = _knowledgeMem.query({ search: description || undefined, limit: 15 });
+            for (const f of fixes) {
+                recommendations.push({ source: "knowledge_base", score: 65, key: f.key, problem: f.problem, fix: f.fix, kind: f.kind });
+            }
+        }
+
+        // Source 3: engineering memory chains matching description
+        if (_engMemory) {
+            const chains = _engMemory.suggestChains(description || "fix");
+            for (const c of chains) {
+                recommendations.push({ source: "eng_memory", score: 55, chain: typeof c === "string" ? c : c.chainName, confidence: typeof c === "object" ? c.confidence : null });
+            }
+        }
+
+        // Source 4: learning engine recommendations
+        if (_learningEngine) {
+            try {
+                const recs = _learningEngine.getRecommendations();
+                for (const r of recs.slice(0, 5)) {
+                    recommendations.push({ source: "learning_engine", score: 45, ...r });
+                }
+            } catch (_) {}
+        }
+
+        recommendations.sort((a, b) => b.score - a.score);
+        return res.json({ success: true, description, filePath, recommendations: recommendations.slice(0, limit), total: recommendations.length });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B5.4  GET /runtime/intel/incident-kb?q=&severity=
+//   Incident Knowledge Base — incidents + rca reports + known failure patterns
+router.get("/runtime/intel/incident-kb", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const q        = (req.query.q || "").toLowerCase().trim();
+        const severity = req.query.severity || null;
+        const limit    = Math.min(30, parseInt(req.query.limit) || 15);
+
+        // Incidents
+        let incidents = _incidentEngine ? _incidentEngine.listIncidents({ status: req.query.status || null, limit: 50 }) : [];
+        if (q) incidents = incidents.filter(i => JSON.stringify(i).toLowerCase().includes(q));
+        if (severity) incidents = incidents.filter(i => (i.severity || "").toLowerCase() === severity.toLowerCase());
+
+        // RCA reports
+        let rcaReports = [];
+        if (_rootCauseAnalyzer) {
+            try { rcaReports = _rootCauseAnalyzer.listReports(); } catch (_) {}
+            if (q) rcaReports = rcaReports.filter(r => JSON.stringify(r).toLowerCase().includes(q));
+        }
+
+        // Learning engine top incidents
+        let topIncidents = [];
+        let topCauses    = [];
+        let topFixes     = [];
+        if (_learningEngine) {
+            try {
+                const sum = _learningEngine.getSummary();
+                topIncidents = sum.topIncidents || [];
+                topCauses    = sum.topCauses    || [];
+                topFixes     = sum.topFixes     || [];
+            } catch (_) {}
+        }
+
+        // Known failure patterns from failureIntelligenceEngine
+        let knownPatterns = _failIntelEngine?.FAILURE_PATTERNS || [];
+        if (q) knownPatterns = knownPatterns.filter(p => JSON.stringify(p).toLowerCase().includes(q));
+
+        return res.json({ success: true, query: q,
+            incidents: incidents.slice(0, limit),
+            rcaReports: rcaReports.slice(0, 10),
+            topIncidents, topCauses, topFixes,
+            knownPatterns: knownPatterns.slice(0, 10),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B5.5  GET /runtime/intel/search?q=&scope=
+//   Engineering Search — unified search across patches, history, memory, knowledge, incidents
+router.get("/runtime/intel/search", rateLimiter(30, 60_000), (req, res) => {
+    try {
+        const q     = (req.query.q || "").toLowerCase().trim();
+        const scope = (req.query.scope || "all").toLowerCase();
+        const limit = Math.min(40, parseInt(req.query.limit) || 20);
+        if (!q) return res.json({ success: true, query: "", results: [], total: 0 });
+
+        const results = [];
+        const words = q.split(/\s+/).filter(w => w.length > 2);
+
+        function _score(haystack) {
+            const lower = haystack.toLowerCase();
+            const hits = words.filter(w => lower.includes(w)).length;
+            return hits > 0 ? Math.round((hits / words.length) * 100) : 0;
+        }
+
+        // Patches
+        if (scope === "all" || scope === "patches") {
+            const patches = patchAssist ? patchAssist.listPatches({}) : [];
+            for (const p of patches) {
+                const s = _score(`${p.filePath} ${p.reason} ${p.diff?.preview || ""}`);
+                if (s > 0) results.push({ type: "patch", score: s, id: p.id, title: p.filePath || p.id?.slice(0,12), subtitle: p.reason, status: p.status, ts: p.proposedAt, meta: { patchId: p.id, filePath: p.filePath } });
+            }
+        }
+
+        // Execution history
+        if (scope === "all" || scope === "history") {
+            const hist = _execHistory ? _execHistory.recent(100) : [];
+            for (const e of hist) {
+                const s = _score(`${e.input || ""} ${e.output || ""} ${e.agentId || ""} ${e.taskType || ""}`);
+                if (s > 0) results.push({ type: "execution", score: s, id: e.executionId || e.id, title: e.input || "(unknown)", subtitle: e.agentId || e.taskType, status: e.success === false ? "failed" : "ok", ts: e.ts, meta: { agentId: e.agentId, durationMs: e.durationMs } });
+            }
+        }
+
+        // Engineering memory
+        if ((scope === "all" || scope === "memory") && _engMemory) {
+            const mem = _engMemory.query(q, null);
+            for (const m of mem) {
+                const s = _score(`${m.goalPattern || ""} ${m.chainName || ""}`);
+                results.push({ type: "memory", score: Math.max(s, 40), id: `mem-${m.ts}`, title: m.goalPattern || m.chainName, subtitle: `${m.type} · confidence ${m.confidence}%`, status: "ok", ts: m.ts, meta: m });
+            }
+        }
+
+        // Knowledge base
+        if ((scope === "all" || scope === "knowledge") && _knowledgeMem) {
+            const kb = _knowledgeMem.query({ search: q, limit: 20 });
+            for (const k of kb) {
+                const s = _score(`${k.key || ""} ${k.problem || ""} ${k.fix || ""} ${k.description || ""}`);
+                results.push({ type: "knowledge", score: Math.max(s, 50), id: `kb-${k.ts}`, title: k.key || k.problem || k.description, subtitle: k.kind, status: "ok", ts: k.ts, meta: k });
+            }
+        }
+
+        // Incidents
+        if ((scope === "all" || scope === "incidents") && _incidentEngine) {
+            const incs = _incidentEngine.listIncidents({ limit: 50 });
+            for (const inc of incs) {
+                const s = _score(`${inc.title || ""} ${inc.message || ""} ${inc.type || ""} ${inc.service || ""} ${inc.description || ""}`);
+                if (s > 0) results.push({ type: "incident", score: s, id: inc.id, title: inc.title || inc.message || inc.type, subtitle: `${inc.severity} · ${inc.service || "—"}`, status: inc.status, ts: inc.detectedAt || inc.ts, meta: { severity: inc.severity } });
+            }
+        }
+
+        results.sort((a, b) => b.score - a.score);
+        return res.json({ success: true, query: q, scope, results: results.slice(0, limit), total: results.length });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B5.6  GET /runtime/intel/correlate?executionId= OR ?input=
+//   Cross-Execution Correlation — find executions with overlapping context/errors
+router.get("/runtime/intel/correlate", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const { executionId, input, limit = 10 } = req.query;
+        const cap = Math.min(20, parseInt(limit) || 10);
+        if (!executionId && !input) return res.status(400).json({ success: false, error: "executionId or input required" });
+
+        const all = _execHistory ? _execHistory.recent(200) : [];
+        const anchor = executionId ? all.find(e => (e.executionId || e.id) === executionId) : { input };
+        if (!anchor) return res.status(404).json({ success: false, error: "execution_not_found" });
+
+        const anchorWords = new Set((anchor.input || "").toLowerCase().split(/\W+/).filter(w => w.length > 3));
+        const anchorErr   = (anchor.error || "").toLowerCase();
+
+        const correlated = [];
+        for (const e of all) {
+            if ((e.executionId || e.id) === executionId) continue;
+            let score = 0;
+            // Shared input words
+            const eWords = (e.input || "").toLowerCase().split(/\W+/).filter(w => w.length > 3);
+            const shared = eWords.filter(w => anchorWords.has(w)).length;
+            if (shared > 0) score += Math.round((shared / Math.max(anchorWords.size, 1)) * 60);
+            // Same agent
+            if (anchor.agentId && e.agentId === anchor.agentId) score += 15;
+            // Same task type
+            if (anchor.taskType && e.taskType === anchor.taskType) score += 10;
+            // Same error pattern
+            if (anchorErr && e.error && e.error.toLowerCase().includes(anchorErr.slice(0, 30))) score += 20;
+            // Same outcome
+            if (anchor.success === false && e.success === false) score += 5;
+            if (score > 0) correlated.push({ score, executionId: e.executionId || e.id, input: e.input, agentId: e.agentId, taskType: e.taskType, success: e.success, error: e.error, durationMs: e.durationMs, ts: e.ts, sharedWords: shared });
+        }
+
+        correlated.sort((a, b) => b.score - a.score);
+
+        // Also correlate with patches on same files
+        const relatedPatches = [];
+        if (patchAssist && anchor.input) {
+            const words = (anchor.input || "").toLowerCase().split(/\W+/).filter(w => w.length > 3);
+            const patches = patchAssist.listPatches({});
+            for (const p of patches) {
+                const hay = `${p.filePath || ""} ${p.reason || ""}`.toLowerCase();
+                if (words.some(w => hay.includes(w))) relatedPatches.push({ patchId: p.id, filePath: p.filePath, status: p.status, proposedAt: p.proposedAt });
+            }
+        }
+
+        return res.json({
+            success: true,
+            anchor: { executionId: anchor.executionId || anchor.id, input: anchor.input, agentId: anchor.agentId, ts: anchor.ts },
+            correlated: correlated.slice(0, cap),
+            relatedPatches: relatedPatches.slice(0, 8),
+            total: correlated.length,
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B5.7  GET /runtime/intel/summary — full intelligence summary (all sources)
+router.get("/runtime/intel/summary", rateLimiter(10, 60_000), (req, res) => {
+    try {
+        // Patch stats
+        const patches = patchAssist ? patchAssist.listPatches({}) : [];
+        const patchStats = patches.reduce((acc, p) => {
+            acc.total++;
+            acc[p.status] = (acc[p.status] || 0) + 1;
+            return acc;
+        }, { total: 0 });
+        const successRate = patches.length > 0
+            ? Math.round(((patchStats.applied || 0) / patches.length) * 100) : null;
+
+        // Execution history stats
+        const hist = _execHistory ? _execHistory.recent(200) : [];
+        const histStats = hist.reduce((acc, e) => {
+            acc.total++;
+            if (e.success === false) acc.failed++; else acc.succeeded++;
+            return acc;
+        }, { total: 0, succeeded: 0, failed: 0 });
+
+        // Knowledge base
+        const kbStats = _knowledgeMem ? _knowledgeMem.stats() : null;
+
+        // Engineering memory
+        const memStats = _engMemory ? _engMemory.stats() : null;
+
+        // Learning engine summary
+        let learnSummary = null;
+        if (_learningEngine) {
+            try { learnSummary = _learningEngine.getSummary(); } catch (_) {}
+        }
+
+        // Failure intel
+        let deployRisk = null;
+        if (_failIntelEngine) {
+            try {
+                const rpt = _failIntelEngine.report();
+                deployRisk = rpt.deploymentRisk || null;
+            } catch (_) {}
+        }
+
+        // Incident summary
+        const incSummary = _incidentEngine ? _incidentEngine.getIncidentSummary() : null;
+
+        return res.json({ success: true,
+            patch:    { ...patchStats, successRate },
+            history:  histStats,
+            knowledge: kbStats,
+            memory:   memStats,
+            learning: learnSummary,
+            deployRisk,
+            incidents: incSummary,
+            generatedAt: new Date().toISOString(),
+        });
     } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
 });
 
