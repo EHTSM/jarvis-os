@@ -458,3 +458,39 @@ export async function getAutonomousReadiness() {
   try { return await _fetch("/runtime/recommend/autonomous-readiness"); }
   catch (err) { return { success: false, error: err.message }; }
 }
+
+// ── B9 Execution Center APIs ──────────────────────────────────────────
+
+export async function getUnifiedQueue() {
+  try { return await _fetch("/runtime/exec/unified-queue"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function executeItem(id, type = "patch_apply", opts = {}) {
+  try {
+    return await _fetch(`/runtime/exec/execute/${encodeURIComponent(id)}`, {
+      method: "POST",
+      body: JSON.stringify({ type, operatorId: "operator", ...opts }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getExecAnalytics() {
+  try { return await _fetch("/runtime/exec/analytics"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getConfidenceCalibration() {
+  try { return await _fetch("/runtime/exec/confidence-calibration"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getRankedCandidates() {
+  try { return await _fetch("/runtime/exec/ranked-candidates"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getExecReadinessDashboard() {
+  try { return await _fetch("/runtime/exec/readiness-dashboard"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
