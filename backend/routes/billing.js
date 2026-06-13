@@ -59,6 +59,7 @@ router.post("/billing/upgrade", requireAuth, async (req, res) => {
       amount:      result.amount,
       name:        accountId,
       description: `Ooplix ${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan — Monthly`,
+      accountId,
     });
 
     if (link.success) {

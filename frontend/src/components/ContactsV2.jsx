@@ -52,7 +52,7 @@ const STATUS_META = {
   onboarded: { label: "Onboarded", cls: "chip--won"  },
 };
 
-const ALL_STATUSES = ["all", "new", "hot", "qualified", "won", "paid", "lost"];
+const ALL_STATUSES = ["all", "new", "hot", "qualified", "won", "paid", "onboarded", "lost"];
 
 const WA_TEMPLATES = [
   { id: "checkin",  label: "Check-in (casual)",    text: (name) => `Hi ${name}! Just checking in — did you get a chance to look at our proposal? Happy to answer any questions. 😊` },
@@ -258,7 +258,7 @@ function PaymentLinkModal({ prefill, onClose }) {
 
 // ── Contact Drawer ─────────────────────────────────────────────────────────────
 
-const STATUS_OPTIONS = ["new", "hot", "qualified", "won", "paid", "lost"];
+const STATUS_OPTIONS = ["new", "hot", "qualified", "won", "paid", "onboarded", "lost"];
 
 function ContactDrawer({ contact, onClose, onPayLink, onStatusUpdate, onFieldUpdate }) {
   const [sending,        setSending]        = useState(false);

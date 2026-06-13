@@ -139,12 +139,23 @@ export async function generatePaymentLink({ amount = 999, name, phone, descripti
   } catch (err) { return { success: false, error: err.message }; }
 }
 
+function normalizePhone(raw) {
+  if (!raw) throw new Error("Phone number is required");
+  let digits = String(raw).replace(/[\s\-().+]/g, "");
+  if (!/^\d+$/.test(digits)) throw new Error(`Invalid phone number: "${raw}"`);
+  if (digits.length === 11 && digits.startsWith("0")) digits = "92" + digits.slice(1);
+  if (digits.length === 10) digits = "92" + digits;
+  if (digits.length < 7 || digits.length > 15) throw new Error(`Phone number out of range: "${raw}"`);
+  return "+" + digits;
+}
+
 // ── WhatsApp follow-up ────────────────────────────────────────────
 export async function sendFollowUp(phone, message) {
   try {
+    const normalized = normalizePhone(phone);
     return await _fetch("/send-followup", {
       method: "POST",
-      body:   JSON.stringify({ phone, message })
+      body:   JSON.stringify({ phone: normalized, message })
     });
   } catch (err) { return { success: false, error: err.message }; }
 }

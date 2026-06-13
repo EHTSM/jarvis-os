@@ -86,8 +86,11 @@ const FAQ = [
   },
 ];
 
-export default function PricingPage({ onBack, onStart }) {
+// onUpgrade(planId) — called when user is already authenticated and wants to pay.
+// onStart() — called from public landing page (routes to onboarding/signup flow).
+export default function PricingPage({ onBack, onStart, onUpgrade }) {
   const [openFaq, setOpenFaq] = useState(null);
+  const isAuthenticated = !!onUpgrade;
 
   return (
     <div className="pricing-page">
@@ -135,12 +138,13 @@ export default function PricingPage({ onBack, onStart }) {
 
               <button
                 className={`pricing-cta${plan.featured ? " pricing-cta--featured" : ""}`}
-                onClick={() => plan.id === "scale"
-                  ? window.location.href = "mailto:sales@ooplix.com"
-                  : onStart?.()
-                }
+                onClick={() => {
+                  if (plan.id === "scale") { window.location.href = "mailto:sales@ooplix.com"; return; }
+                  if (isAuthenticated) onUpgrade(plan.id);
+                  else onStart?.();
+                }}
               >
-                {plan.cta}
+                {plan.id === "scale" ? plan.cta : isAuthenticated ? `Upgrade to ${plan.name}` : plan.cta}
               </button>
             </div>
           ))}

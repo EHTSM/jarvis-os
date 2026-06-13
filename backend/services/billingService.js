@@ -202,6 +202,7 @@ async function createRazorpaySubscription(accountId, plan, customerEmail) {
       quantity:      1,
       customer_notify: 1,
       notify_info: customerEmail ? { notify_email: customerEmail } : undefined,
+      notes:         { accountId },
     });
 
     logger.info(`[Billing] Razorpay subscription created: ${sub.id} for ${accountId}`);

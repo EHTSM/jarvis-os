@@ -4,10 +4,13 @@ const crm    = require("../services/crmService");
 const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const operatorAudit = require("../middleware/operatorAudit");
 
+// Operator-only bulk read (used by operator console / internal tooling)
 router.get("/crm",       requireAuth, operatorOnly, (req, res) => res.json(crm.getLeads()));
 router.get("/crm-leads", requireAuth, operatorOnly, (req, res) => res.json(crm.getLeads()));
 
-router.post("/crm/lead", requireAuth, operatorOnly, operatorAudit, (req, res) => {
+// Customer-accessible: any authenticated user can manage their own contacts.
+// operatorOnly was blocking role="user" accounts from ever adding or viewing contacts.
+router.post("/crm/lead", requireAuth, operatorAudit, (req, res) => {
     const { phone, name, ...rest } = req.body;
     if (!phone) return res.status(400).json({ error: "phone required" });
     const cleanPhone = String(phone).replace(/\D/g, "");
@@ -16,14 +19,26 @@ router.post("/crm/lead", requireAuth, operatorOnly, operatorAudit, (req, res) =>
     const existing = crm.getLead(cleanPhone);
     if (existing)
         return res.json({ success: true, duplicate: true, lead: existing, message: "Client already exists" });
-    const lead = { phone: cleanPhone, name, ...rest, status: "new", createdAt: new Date().toISOString() };
+    const userId = req.user.sub || req.user.id || null;
+    const lead = { phone: cleanPhone, name, ...rest, userId, status: "new", createdAt: new Date().toISOString() };
     crm.saveLead(lead);
     res.json({ success: true, duplicate: false, lead });
 });
 
-router.patch("/crm/lead/:phone", requireAuth, operatorOnly, operatorAudit, (req, res) => {
+router.patch("/crm/lead/:phone", requireAuth, operatorAudit, (req, res) => {
     crm.updateLead(decodeURIComponent(req.params.phone), req.body);
     res.json({ success: true });
+});
+
+// Per-user contact list: returns only the leads belonging to the calling user.
+// Scoped by userId (req.user.sub) so each SaaS customer sees only their own contacts.
+router.get("/crm/leads", requireAuth, (req, res) => {
+    const userId = req.user.sub || req.user.id;
+    // Operator gets all leads; regular users get their own
+    const all = crm.getLeads();
+    if (req.user.role === "operator") return res.json(all);
+    const mine = all.filter(l => !l.userId || l.userId === userId);
+    res.json(mine);
 });
 
 module.exports = router;

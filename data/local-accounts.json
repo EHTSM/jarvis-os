@@ -99,5 +99,35 @@
     "createdAt": "2026-06-07T22:32:24.812Z",
     "lastLoginAt": "2026-06-09T11:15:18.867Z",
     "active": true
+  },
+  "7b0ec48b627f93096a25fb4e": {
+    "id": "7b0ec48b627f93096a25fb4e",
+    "email": "testdebug_1781194013326@example.com",
+    "passwordHash": "3d625234dee00486e28a08ccc81daa93:65e29538a43d5d50b11f4ca2b6420ac86bb0ef65f45cb9d7511613051d4882771229e29ff199cdba17f2e194c388d8cc2ee6e03ccbf1773648820fbc2132fadf",
+    "name": "Debug User",
+    "role": "user",
+    "createdAt": "2026-06-11T16:06:53.368Z",
+    "lastLoginAt": null,
+    "active": true
+  },
+  "5b10a57a22dbf3ef057aaa8b": {
+    "id": "5b10a57a22dbf3ef057aaa8b",
+    "email": "debugtest2_1781194051@example.com",
+    "passwordHash": "c655eaf6c5b496c3ad4074985b2b4414:f0720d66f5583615f45d66d218bc3bd75cce512b7b04f5053d5fd0d290a58e0d3a2d4a1129a8daea147b688c3338aa474b264e481caa62804f5e3f0cbcfe12ca",
+    "name": "Debug User",
+    "role": "user",
+    "createdAt": "2026-06-11T16:07:31.310Z",
+    "lastLoginAt": null,
+    "active": true
+  },
+  "3de4f158b5eecb25d125efbd": {
+    "id": "3de4f158b5eecb25d125efbd",
+    "email": "authtest_1781194137@example.com",
+    "passwordHash": "db7b88902f0bacf4230cfc97a9a5f81b:4bca8f91475e6adb7baaccce362a4c026245d327b40ff00779b4c574495d8ee5bb50fe2ddbfd3f39d3be394722edb93194682007e4294666424cd1578dda189e",
+    "name": "Test User",
+    "role": "user",
+    "createdAt": "2026-06-11T16:08:57.898Z",
+    "lastLoginAt": "2026-06-11T16:08:57.991Z",
+    "active": true
   }
 }

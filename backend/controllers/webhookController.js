@@ -35,13 +35,14 @@ async function handleRazorpayWebhook(req, res) {
         logger.info(`[Webhook] Event: ${event}`);
 
         if (event === "payment.captured" && p) {
-            const phone  = p.contact || "";
-            const userId = p.customer_details?.contact || phone;
-            const name   = p.customer_details?.name    || "";
+            const phone     = p.contact || "";
+            const name      = p.customer_details?.name || "";
+            const accountId = p.notes?.accountId || parsed.raw?.payload?.payment_link?.entity?.notes?.accountId || null;
 
-            logger.info(`[Webhook] Payment captured — phone=${phone} id=${p.id}`);
+            logger.info(`[Webhook] Payment captured — phone=${phone} id=${p.id} accountId=${accountId || "unknown"}`);
 
-            const identifier = phone || userId;
+            // CRM: mark lead paid and trigger WhatsApp onboarding message
+            const identifier = String(phone).replace(/\D/g, "");
             if (identifier) {
                 crm.updateLead(identifier, {
                     status:        "paid",
@@ -50,6 +51,14 @@ async function handleRazorpayWebhook(req, res) {
                     paidAt:        new Date().toISOString()
                 });
                 await automation.triggerFulfillment(identifier, name);
+            }
+
+            // Billing: activate the account that initiated the payment
+            if (accountId) {
+                billing.activatePlan(accountId, "starter", null);
+                logger.info(`[Webhook] Billing activated via payment.captured: ${accountId} → starter`);
+            } else {
+                logger.warn(`[Webhook] payment.captured has no notes.accountId — billing not auto-activated. Payment id=${p.id}`);
             }
         }
 

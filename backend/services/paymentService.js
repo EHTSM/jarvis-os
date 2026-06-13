@@ -31,7 +31,7 @@ function isEnabled() { return _paymentsEnabled; }
  * Create a Razorpay payment link.
  * @returns {Promise<{success:boolean, link?:string, error?:string}>}
  */
-async function createPaymentLink({ amount = 999, name = "Customer", phone = null, description = "JARVIS Access" }) {
+async function createPaymentLink({ amount = 999, name = "Customer", phone = null, description = "JARVIS Access", accountId = null }) {
     if (process.env.DISABLE_PAYMENTS === "true") {
         return { success: false, error: "Payments disabled (DISABLE_PAYMENTS=true in .env)" };
     }
@@ -58,7 +58,8 @@ async function createPaymentLink({ amount = 999, name = "Customer", phone = null
             notify:      { sms: !!phone, email: false },
             reminder_enable: true,
             callback_url:    `${_baseUrl}/webhook/razorpay`,
-            callback_method: "get"
+            callback_method: "get",
+            notes:       { accountId: accountId || "" },
         };
 
         if (phone) {

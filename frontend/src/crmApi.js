@@ -14,7 +14,7 @@ function normalizePhone(raw) {
 }
 
 export async function getLeads() {
-  try { return await _fetch("/crm"); }
+  try { return await _fetch("/crm/leads"); }
   catch { return []; }
 }
 

@@ -8,7 +8,10 @@ const automation = require("../services/automationService");
 const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const operatorAudit = require("../middleware/operatorAudit");
 
-router.post("/send-followup", requireAuth, operatorOnly, operatorAudit, async (req, res) => {
+// /send-followup — any authenticated user (operator or customer) may send a follow-up
+// to a contact they own. operatorOnly was too restrictive: SaaS customers with role="user"
+// were getting 403 on every send from the Contacts drawer.
+router.post("/send-followup", requireAuth, async (req, res) => {
     const { phone, message } = req.body;
     if (!phone) return res.status(400).json({ error: "phone required" });
     const result = await automation.sendManualFollowUp(phone, message);

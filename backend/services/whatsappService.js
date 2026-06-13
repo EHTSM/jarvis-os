@@ -97,7 +97,11 @@ async function sendMessage(phone, text, retries = 2) {
  * Verify WhatsApp webhook challenge (GET /whatsapp/webhook).
  */
 function verifyWebhook(query) {
-    const verifyToken = process.env.WA_VERIFY_TOKEN || process.env.VERIFY_TOKEN || "jarvis_verify";
+    const verifyToken = process.env.WA_VERIFY_TOKEN || process.env.VERIFY_TOKEN;
+    if (!verifyToken) {
+        logger.error("[WA] WA_VERIFY_TOKEN not set — webhook verification will always fail. Set it in .env and on the Meta dashboard.");
+        return { valid: false };
+    }
     if (query["hub.mode"] === "subscribe" && query["hub.verify_token"] === verifyToken) {
         return { valid: true, challenge: query["hub.challenge"] };
     }
