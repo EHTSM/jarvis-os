@@ -206,3 +206,42 @@ export async function removeDLQEntry(taskId) {
     return await _fetch(`/runtime/dead-letter/${encodeURIComponent(taskId)}`, { method: "DELETE" });
   } catch (err) { return { success: false, error: err.message }; }
 }
+
+// ── B4 Autonomous Engineering Loop APIs ──────────────────────────────
+
+export async function runAutoPipeline(patchId, opts = {}) {
+  try {
+    return await _fetch(`/runtime/patches/${encodeURIComponent(patchId)}/auto-pipeline`, {
+      method: "POST",
+      body: JSON.stringify({ autoRollback: true, ...opts }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function learnFromPatch(patchId, outcome = {}) {
+  try {
+    return await _fetch(`/runtime/patches/${encodeURIComponent(patchId)}/learn`, {
+      method: "POST",
+      body: JSON.stringify(outcome),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getPatchLearningSummary() {
+  try { return await _fetch("/runtime/patches/learning/summary"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function runIncidentAutoFix(incidentId, opts = {}) {
+  try {
+    return await _fetch(`/runtime/incidents/${encodeURIComponent(incidentId)}/auto-fix`, {
+      method: "POST",
+      body: JSON.stringify({ queueApproval: true, ...opts }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getIncidentAutoFixStatus(incidentId) {
+  try { return await _fetch(`/runtime/incidents/${encodeURIComponent(incidentId)}/auto-fix/status`); }
+  catch (err) { return { success: false, error: err.message }; }
+}

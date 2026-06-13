@@ -4354,6 +4354,185 @@ router.get("/runtime/memory/engineering", rateLimiter(20, 60_000), (req, res) =>
     } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
 });
 
+// Phase B4 — Autonomous Engineering Loop
+// B4.1  POST /runtime/patches/:id/auto-pipeline — apply → verify → auto-rollback chain
+router.post("/runtime/patches/:id/auto-pipeline", rateLimiter(5, 60_000), async (req, res) => {
+    if (!patchAssist) return res.status(503).json({ success: false, error: "patchAssistant_unavailable" });
+    const patchId = req.params.id;
+    const { command, autoRollback = true, operatorId = null } = req.body || {};
+    const timeline = [];
+    try {
+        // Step 1 — Apply
+        const apply = patchAssist.applyPatch(patchId, { approved: true, operatorId });
+        timeline.push({ step: "apply", ok: apply.ok, ts: new Date().toISOString(), detail: apply.error || apply.filePath });
+        if (!apply.ok) return res.json({ success: false, stage: "apply", timeline, error: apply.error });
+
+        // Step 2 — Verify
+        const verify = typeof patchAssist.verifyPatch === "function"
+            ? await patchAssist.verifyPatch(patchId, { command, autoRollback: false })
+            : { ok: true, verdict: "skipped", pass: 0, fail: 0 };
+        timeline.push({ step: "verify", ok: verify.ok, ts: new Date().toISOString(),
+            verdict: verify.verdict, pass: verify.pass, fail: verify.fail, output: (verify.output || "").slice(0, 400) });
+
+        const passed = verify.verdict === "pass" || verify.verdict === "skipped";
+
+        // Step 3 — Auto-rollback on failure
+        let rolledBack = false;
+        if (!passed && autoRollback) {
+            const rb = patchAssist.rollbackPatch(patchId, { approved: true });
+            rolledBack = rb.ok;
+            timeline.push({ step: "rollback", ok: rb.ok, ts: new Date().toISOString(), detail: rb.error || rb.filePath });
+        }
+
+        // Step 4 — Record learning
+        if (_engMemory) {
+            try {
+                const patch = patchAssist.getPatch(patchId);
+                if (patch) {
+                    const key = passed ? "recordValidatedStep" : "recordSessionOutcome";
+                    if (typeof _engMemory[key] === "function") {
+                        _engMemory[key]({ patchId, filePath: patch.filePath, verdict: verify.verdict, pass: verify.pass, fail: verify.fail, rolledBack, ts: new Date().toISOString() });
+                    } else if (typeof _engMemory.recordRecoveryPath === "function" && !passed) {
+                        _engMemory.recordRecoveryPath({ patchId, filePath: patch.filePath, error: `Test failure: ${verify.fail} failing`, rolledBack });
+                    }
+                }
+            } catch (_) {}
+        }
+
+        return res.json({
+            success: true,
+            patchId,
+            passed,
+            rolledBack,
+            timeline,
+            verdict: verify.verdict,
+            pass: verify.pass,
+            fail: verify.fail,
+        });
+    } catch (err) {
+        timeline.push({ step: "error", ok: false, ts: new Date().toISOString(), detail: err.message });
+        return res.status(500).json({ success: false, error: err.message, timeline });
+    }
+});
+
+// B4.2  POST /runtime/patches/:id/learn — store patch outcome in engineering memory
+router.post("/runtime/patches/:id/learn", rateLimiter(20, 60_000), (req, res) => {
+    if (!patchAssist) return res.status(503).json({ success: false, error: "patchAssistant_unavailable" });
+    try {
+        const patch = patchAssist.getPatch(req.params.id);
+        if (!patch) return res.status(404).json({ success: false, error: "patch_not_found" });
+        const { outcome, verdict, pass, fail, notes } = req.body || {};
+        const success = outcome === "success" || verdict === "pass";
+        const entry = { patchId: patch.id, filePath: patch.filePath, success, verdict, pass, fail, notes, ts: new Date().toISOString() };
+        if (_engMemory) {
+            const fn = success ? "recordValidatedStep" : "recordRecoveryPath";
+            if (typeof _engMemory[fn] === "function") _engMemory[fn](entry);
+        }
+        return res.json({ success: true, recorded: entry });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B4.3  GET /runtime/patches/learning/summary — success/failure pattern stats
+router.get("/runtime/patches/learning/summary", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const patches = patchAssist ? patchAssist.listPatches({}) : [];
+        const applied    = patches.filter(p => p.status === "applied").length;
+        const rolled     = patches.filter(p => p.status === "rolled_back").length;
+        const pending    = patches.filter(p => p.status === "pending").length;
+        const total      = patches.length;
+        const byFile = {};
+        for (const p of patches) {
+            if (!p.filePath) continue;
+            if (!byFile[p.filePath]) byFile[p.filePath] = { applied: 0, rolled_back: 0, total: 0 };
+            byFile[p.filePath].total++;
+            if (p.status === "applied")     byFile[p.filePath].applied++;
+            if (p.status === "rolled_back") byFile[p.filePath].rolled_back++;
+        }
+        const hotspots = Object.entries(byFile)
+            .sort(([,a],[,b]) => b.rolled_back - a.rolled_back)
+            .slice(0, 5)
+            .map(([file, stats]) => ({ file, ...stats }));
+        const memStats = _engMemory ? _engMemory.stats() : null;
+        return res.json({ success: true, total, applied, rolled_back: rolled, pending, hotspots, memoryStats: memStats });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B4.4  POST /runtime/incidents/:id/auto-fix — incident → autofix plan → patch → verify queue
+router.post("/runtime/incidents/:id/auto-fix", rateLimiter(5, 60_000), async (req, res) => {
+    if (!_incidentEngine) return res.status(503).json({ success: false, error: "incidentEngine_unavailable" });
+    const incidentId = req.params.id;
+    const { operatorId = null, queueApproval = true } = req.body || {};
+    const timeline = [];
+    try {
+        // Step 1 — Load incident
+        const inc = _incidentEngine.getIncident(incidentId);
+        if (!inc) return res.status(404).json({ success: false, error: "incident_not_found" });
+        timeline.push({ step: "incident_loaded", ts: new Date().toISOString(), severity: inc.severity, title: inc.title || inc.type });
+
+        // Step 2 — Acknowledge
+        const ack = _incidentEngine.acknowledge(incidentId, { operatorId });
+        timeline.push({ step: "acknowledged", ok: ack.ok !== false, ts: new Date().toISOString() });
+
+        // Step 3 — Generate auto-fix plan
+        let plan = null;
+        if (_autoFixPlanner && typeof _autoFixPlanner.planInline === "function") {
+            plan = _autoFixPlanner.planInline({ incidentId, title: inc.title, description: inc.description, severity: inc.severity, service: inc.service });
+            timeline.push({ step: "plan_generated", ts: new Date().toISOString(), planId: plan?.id, steps: plan?.steps?.length });
+        } else if (_autoFixPlanner && typeof _autoFixPlanner.plan === "function") {
+            plan = _autoFixPlanner.plan({ incidentId, title: inc.title, severity: inc.severity });
+            timeline.push({ step: "plan_generated", ts: new Date().toISOString(), planId: plan?.id });
+        }
+
+        // Step 4 — If plan has a filePath/patch target, propose patch (approval gated)
+        let patchId = null;
+        let patchProposed = false;
+        const patchTarget = plan?.filePath || inc.filePath || null;
+        if (patchAssist && patchTarget && plan) {
+            const patchDesc = plan.description || plan.title || `Auto-fix for incident ${incidentId}`;
+            const proposed = patchAssist.proposePatch({ filePath: patchTarget, description: patchDesc, operatorId, source: "incident_auto_fix", incidentId });
+            if (proposed.ok) {
+                patchId = proposed.patchId;
+                patchProposed = true;
+                timeline.push({ step: "patch_proposed", ts: new Date().toISOString(), patchId, requiresApproval: queueApproval });
+            }
+        }
+
+        // Step 5 — Record in engineering memory
+        if (_engMemory && typeof _engMemory.recordRecoveryPath === "function") {
+            _engMemory.recordRecoveryPath({ incidentId, planId: plan?.id, patchId, severity: inc.severity, service: inc.service, ts: new Date().toISOString() });
+        }
+
+        return res.json({
+            success: true,
+            incidentId,
+            planId: plan?.id || null,
+            patchId,
+            patchProposed,
+            requiresApproval: queueApproval,
+            timeline,
+        });
+    } catch (err) {
+        timeline.push({ step: "error", ts: new Date().toISOString(), detail: err.message });
+        return res.status(500).json({ success: false, error: err.message, timeline });
+    }
+});
+
+// B4.4b  GET /runtime/incidents/:id/auto-fix/status — check auto-fix status for an incident
+router.get("/runtime/incidents/:id/auto-fix/status", rateLimiter(20, 60_000), (req, res) => {
+    if (!_incidentEngine) return res.status(503).json({ success: false, error: "incidentEngine_unavailable" });
+    try {
+        const inc = _incidentEngine.getIncident(req.params.id);
+        if (!inc) return res.status(404).json({ success: false, error: "incident_not_found" });
+        const relatedPatches = patchAssist
+            ? patchAssist.listPatches({}).filter(p => p.source === "incident_auto_fix" && p.incidentId === req.params.id)
+            : [];
+        const relatedPlans = _autoFixPlanner
+            ? _autoFixPlanner.listPlans({}).filter(p => p.incidentId === req.params.id)
+            : [];
+        return res.json({ success: true, incident: inc, relatedPatches, relatedPlans });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
 // Phase 572 — Task Understanding
 router.post("/runtime/engineering/understand", rateLimiter(30, 60_000), (req, res) => {
     if (!taskUnderstand) return res.status(503).json({ success: false, error: "taskUnderstanding_unavailable" });

@@ -22,6 +22,7 @@ import IntegrationCenter       from "./components/IntegrationCenter.jsx";
 import AgentCenter             from "./components/AgentCenter.jsx";
 import DeveloperCopilotCenter  from "./components/DeveloperCopilotCenter.jsx";
 import EngineeringCenter       from "./components/EngineeringCenter.jsx";
+import EngineeringWorkspace    from "./components/EngineeringWorkspace.jsx";
 import DevOpsCenter            from "./components/DevOpsCenter.jsx";
 import SelfHealingCenter       from "./components/SelfHealingCenter.jsx";
 import AgentRegistryCenter     from "./components/AgentRegistryCenter.jsx";
@@ -94,74 +95,77 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import "./App.css";
 
 // Web: 5 primary tabs — secondary modules in "More" overflow
+// Primary nav — what a new customer needs immediately
 const TABS = [
-  { id: "mission",  label: "Mission Control", featured: true },
-  { id: "home",     label: "Control Center"  },
-  { id: "runtime",  label: "Execution"       },
-  { id: "chat",     label: "Intelligence"    },
-  { id: "insights", label: "Pipeline"        },
-  { id: "more",     label: "More ▾"        },
+  { id: "home",     label: "Dashboard"   },
+  { id: "clients",  label: "Contacts"    },
+  { id: "payments", label: "Payments"    },
+  { id: "insights", label: "Pipeline"    },
+  { id: "chat",     label: "AI"          },
+  { id: "more",     label: "More ▾"     },
 ];
 
-// Secondary tabs shown in the More dropdown
+// Power-user overflow — all secondary modules
 const MORE_TABS = [
   { id: "success",    label: "Getting Started" },
-  { id: "overview",   label: "Overview"    },
-  { id: "activity",   label: "History"     },
-  { id: "billing",    label: "Billing"     },
-  { id: "help",       label: "Help & Guides" },
-  { id: "seo",        label: "SEO"         },
-  { id: "content",    label: "Content"     },
-  { id: "social",     label: "Social"      },
-  { id: "email",      label: "Email"       },
-  { id: "referral",   label: "Referral"    },
-  { id: "partners",   label: "Partners"    },
-  { id: "launch",     label: "Launch"      },
-  { id: "personal",   label: "Personal"    },
-  { id: "business",   label: "Business"    },
-  { id: "developer",  label: "Developer"   },
-  { id: "enterprise", label: "Enterprise"  },
-  { id: "team",        label: "Team"        },
-  { id: "ecrm",        label: "CRM"         },
-  { id: "payments",    label: "Payments"    },
-  { id: "reports",     label: "Reports"     },
-  { id: "settings",    label: "Settings"    },
-  { id: "knowledge",   label: "Knowledge"   },
-  { id: "memory",      label: "Memory"      },
-  { id: "integrations",label: "Integrations"},
-  { id: "agents",      label: "Agents"      },
-  { id: "copilot",     label: "Copilot"     },
-  { id: "engineering", label: "Engineering" },
-  { id: "devops",      label: "DevOps"      },
-  { id: "selfhealing", label: "Self-Healing"},
-  { id: "registry",    label: "Registry"    },
-  { id: "taskrouter",  label: "Task Router" },
-  { id: "sharedmem",   label: "Memory Fabric"},
-  { id: "operations",  label: "Operations"  },
-  { id: "collab",      label: "Collaboration"},
-  { id: "toolfabric",  label: "Tool Fabric"  },
-  { id: "autonomy",    label: "Autonomous Co"},
-  { id: "orchestrator",label: "Orchestrator" },
-  { id: "dataowner",   label: "Data"         },
-  { id: "supportos",   label: "Support"      },
-  { id: "trustcompliance",label:"Trust"      },
-  { id: "disasterrecovery",label:"Recovery"  },
-  { id: "mobile",         label:"Mobile"     },
-  { id: "community",      label:"Community"  },
-  { id: "marketplace",    label:"Marketplace"},
-  { id: "aicost",         label:"AI Costs"   },
-  { id: "autorevenue",    label:"Auto Revenue"   },
-  { id: "automarketing",  label:"Auto Marketing" },
-  { id: "autosupport",    label:"Auto Support"   },
-  { id: "oroplix",        label:"Ooplix Runs Ooplix" },
-  { id: "agentfactory",  label:"Agent Factory"      },
-  { id: "memoryintel",   label:"Memory Intel"       },
-  { id: "selfimprove",   label:"Self-Improve"       },
-  { id: "jarvisbrain",   label:"Jarvis Brain"       },
-  { id: "execconnector", label:"Exec Connectors"    },
-  { id: "autonomouswf",  label:"Auto Workflows"     },
-  { id: "agentactions",  label:"Agent Actions"      },
-  { id: "autonomyscore", label:"Autonomy Score"     },
+  { id: "activity",   label: "History"         },
+  { id: "billing",    label: "Billing"         },
+  { id: "help",       label: "Help & Guides"   },
+  { id: "reports",    label: "Reports"         },
+  { id: "settings",   label: "Settings"        },
+  { id: "mission",    label: "Mission Control" },
+  { id: "runtime",    label: "Execution"       },
+  { id: "agents",     label: "Agents"          },
+  { id: "seo",        label: "SEO"             },
+  { id: "content",    label: "Content"         },
+  { id: "social",     label: "Social"          },
+  { id: "email",      label: "Email"           },
+  { id: "referral",   label: "Referral"        },
+  { id: "partners",   label: "Partners"        },
+  { id: "launch",     label: "Launch"          },
+  { id: "personal",   label: "Personal"        },
+  { id: "business",   label: "Business"        },
+  { id: "developer",  label: "Developer"       },
+  { id: "enterprise", label: "Enterprise"      },
+  { id: "team",       label: "Team"            },
+  { id: "ecrm",       label: "Enterprise CRM"  },
+  { id: "knowledge",  label: "Knowledge"       },
+  { id: "memory",     label: "Memory"          },
+  { id: "integrations",label:"Integrations"    },
+  { id: "copilot",    label: "Copilot"         },
+  { id: "engineering",label: "Engineering"     },
+  { id: "workspace",  label: "Eng Workspace"  },
+  { id: "devops",     label: "DevOps"          },
+  { id: "selfhealing",label: "Self-Healing"    },
+  { id: "registry",   label: "Registry"        },
+  { id: "taskrouter", label: "Task Router"     },
+  { id: "sharedmem",  label: "Memory Fabric"   },
+  { id: "operations", label: "Operations"      },
+  { id: "collab",     label: "Collaboration"   },
+  { id: "toolfabric", label: "Tool Fabric"     },
+  { id: "autonomy",   label: "Autonomous Co"   },
+  { id: "orchestrator",label:"Orchestrator"    },
+  { id: "dataowner",  label: "Data"            },
+  { id: "supportos",  label: "Support"         },
+  { id: "trustcompliance", label:"Trust"       },
+  { id: "disasterrecovery",label:"Recovery"    },
+  { id: "mobile",     label: "Mobile"          },
+  { id: "community",  label: "Community"       },
+  { id: "marketplace",label: "Marketplace"     },
+  { id: "aicost",     label: "AI Costs"        },
+  { id: "autorevenue",  label:"Auto Revenue"   },
+  { id: "automarketing",label:"Auto Marketing" },
+  { id: "autosupport",  label:"Auto Support"   },
+  { id: "oroplix",    label: "Ooplix Runs Ooplix" },
+  { id: "agentfactory", label:"Agent Factory"  },
+  { id: "memoryintel",  label:"Memory Intel"   },
+  { id: "selfimprove",  label:"Self-Improve"   },
+  { id: "jarvisbrain",  label:"Jarvis Brain"   },
+  { id: "execconnector",label:"Exec Connectors"},
+  { id: "autonomouswf", label:"Auto Workflows" },
+  { id: "agentactions", label:"Agent Actions"  },
+  { id: "autonomyscore",label:"Autonomy Score" },
+  { id: "overview",   label: "Overview"        },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -220,14 +224,13 @@ const _IS_DESKTOP = _isDesktopShell();
 const _IS_SAAS    = _isSaasApp();
 const _PRODUCT   = _IS_DESKTOP ? "desktop" : _IS_SAAS ? "saas" : "public";
 
-// Desktop: same 5-tab structure — runtime is already default here
 const DESKTOP_TABS = [
-  { id: "mission",  label: "Mission Control", featured: true },
-  { id: "home",     label: "Control Center"  },
-  { id: "runtime",  label: "Execution"       },
-  { id: "chat",     label: "Intelligence"    },
-  { id: "insights", label: "Pipeline"        },
-  { id: "more",     label: "More ▾"          },
+  { id: "home",     label: "Dashboard"  },
+  { id: "clients",  label: "Contacts"   },
+  { id: "payments", label: "Payments"   },
+  { id: "insights", label: "Pipeline"   },
+  { id: "chat",     label: "AI"         },
+  { id: "more",     label: "More ▾"    },
 ];
 
 function AppInner() {
@@ -506,7 +509,7 @@ function AppInner() {
       refund:  <RefundPolicy  onBack={closeLegal} />,
       contact: <ContactPage   onBack={closeLegal} />,
       trust:   <TrustCompliance onBack={closeLegal} />,
-      pricing: <PricingPage onBack={closeLegal} onStart={() => { closeLegal(); handleStart(); }} />,
+      pricing: <PricingPage onBack={closeLegal} onStart={() => { closeLegal(); handleStart(); }} onUpgrade={(planId) => { closeLegal(); setUpgradeOpen(true); }} />,
     };
     return (
       <div className={`app app--${_PRODUCT}`}>
@@ -634,7 +637,7 @@ function AppInner() {
 
       {/* ConnectBar only on tabs where service connectivity is directly relevant.
           Not shown globally — prevents the permanent "broken state" signal. */}
-      {(tab === "insights" || tab === "clients") && !_IS_DESKTOP && (
+      {(tab === "insights" || tab === "clients" || tab === "payments") && !_IS_DESKTOP && (
         <ConnectBar
           services={opsData?.services || {}}
           onSetupWhatsApp={() => setTab("clients")}
@@ -643,14 +646,14 @@ function AppInner() {
 
       {showFirstLaunchHint && !_IS_DESKTOP && (
         <div className="first-launch-hint">
-          <span className="first-launch-title">Welcome to Ooplix!</span>
+          <span className="first-launch-title">Trial started — 7 days free.</span>
           <span className="first-launch-body">
-            Not sure where to start?{" "}
+            Add your first contact and Ooplix will send a WhatsApp follow-up automatically.{" "}
             <button
               className="first-launch-link"
-              onClick={() => { setTab("home"); dismissFirstLaunchHint(); }}
+              onClick={() => { setTab("clients"); dismissFirstLaunchHint(); }}
             >
-              See what Ooplix can do →
+              Add a contact →
             </button>
           </span>
           <button className="first-launch-dismiss" onClick={dismissFirstLaunchHint}>✕</button>
@@ -713,13 +716,13 @@ function AppInner() {
           />
         )}
         {tab === "help"      && <HelpHub onNavigate={setTab} />}
-        {tab === "seo"       && <GrowthOSV2 onNavigate={setTab} />}
-        {tab === "content"   && <GrowthOSV2 onNavigate={setTab} />}
-        {tab === "social"    && <GrowthOSV2 onNavigate={setTab} />}
-        {tab === "email"     && <GrowthOSV2 onNavigate={setTab} />}
-        {tab === "referral"  && <GrowthOSV2 onNavigate={setTab} />}
+        {tab === "seo"       && <GrowthOSV2 onNavigate={setTab} initialTab="seo"      />}
+        {tab === "content"   && <GrowthOSV2 onNavigate={setTab} initialTab="content"   />}
+        {tab === "social"    && <GrowthOSV2 onNavigate={setTab} initialTab="social"    />}
+        {tab === "email"     && <GrowthOSV2 onNavigate={setTab} initialTab="email"     />}
+        {tab === "referral"  && <GrowthOSV2 onNavigate={setTab} initialTab="referral"  />}
         {tab === "partners"  && <PartnerProgram onNavigate={setTab} />}
-        {tab === "launch"    && <GrowthOSV2 onNavigate={setTab} />}
+        {tab === "launch"    && <GrowthOSV2 onNavigate={setTab} initialTab="launch"    />}
         {tab === "billing"   && (
           <BillingDashboard onUpgrade={() => setUpgradeOpen(true)} />
         )}
@@ -737,6 +740,7 @@ function AppInner() {
         {tab === "agents"        && <AgentOSV2               onNavigate={setTab} online={online} />}
         {tab === "copilot"       && <DeveloperCopilotV2 onNavigate={setTab} />}
         {tab === "engineering"   && <EngineeringCenter      onNavigate={setTab} />}
+        {tab === "workspace"     && <EngineeringWorkspace   onNavigate={setTab} />}
         {tab === "devops"        && <DevOpsCenterV2         onNavigate={setTab} />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
         {tab === "registry"      && <AgentRegistryCenter   onNavigate={setTab} />}
