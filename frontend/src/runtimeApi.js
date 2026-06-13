@@ -292,3 +292,51 @@ export async function getIntelSummary() {
   try { return await _fetch("/runtime/intel/summary"); }
   catch (err) { return { success: false, error: err.message }; }
 }
+
+// ── B6 Prediction APIs ────────────────────────────────────────────────
+
+export async function predictFailureRisk(request = "", filePath = "", pipelineName = "standard-deploy") {
+  try {
+    return await _fetch("/runtime/predict/failure-risk", {
+      method: "POST",
+      body: JSON.stringify({ request, filePath, pipelineName }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function predictDeployRisk(pipelineName = "standard-deploy", request = "", filePaths = []) {
+  try {
+    return await _fetch("/runtime/predict/deploy-risk", {
+      method: "POST",
+      body: JSON.stringify({ pipelineName, request, filePaths }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getCrossProjectKnowledge(q = "", limit = 20) {
+  try { return await _fetch(`/runtime/predict/cross-project?q=${encodeURIComponent(q)}&limit=${limit}`); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getPrePatchAdvice(filePath = "", description = "") {
+  try {
+    return await _fetch("/runtime/predict/pre-patch-advice", {
+      method: "POST",
+      body: JSON.stringify({ filePath, description }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function explainRisk(subject = "", subjectType = "patch", filePath = "", riskScore = null) {
+  try {
+    return await _fetch("/runtime/predict/explain", {
+      method: "POST",
+      body: JSON.stringify({ subject, subjectType, filePath, riskScore }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getReadinessScore() {
+  try { return await _fetch("/runtime/predict/readiness-score"); }
+  catch (err) { return { success: false, error: err.message }; }
+}

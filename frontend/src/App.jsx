@@ -24,6 +24,7 @@ import DeveloperCopilotCenter  from "./components/DeveloperCopilotCenter.jsx";
 import EngineeringCenter       from "./components/EngineeringCenter.jsx";
 import EngineeringWorkspace    from "./components/EngineeringWorkspace.jsx";
 import IntelligencePanel       from "./components/IntelligencePanel.jsx";
+import PredictionPanel        from "./components/PredictionPanel.jsx";
 import DevOpsCenter            from "./components/DevOpsCenter.jsx";
 import SelfHealingCenter       from "./components/SelfHealingCenter.jsx";
 import AgentRegistryCenter     from "./components/AgentRegistryCenter.jsx";
@@ -137,6 +138,7 @@ const MORE_TABS = [
   { id: "engineering",label: "Engineering"     },
   { id: "workspace",  label: "Eng Workspace"  },
   { id: "intel",      label: "Intelligence"   },
+  { id: "predict",    label: "Prediction"     },
   { id: "devops",     label: "DevOps"          },
   { id: "selfhealing",label: "Self-Healing"    },
   { id: "registry",   label: "Registry"        },
@@ -744,6 +746,7 @@ function AppInner() {
         {tab === "engineering"   && <EngineeringCenter      onNavigate={setTab} />}
         {tab === "workspace"     && <EngineeringWorkspace   onNavigate={setTab} />}
         {tab === "intel"         && <IntelligencePanel      onNavigate={setTab} />}
+        {tab === "predict"       && <PredictionPanel        onNavigate={setTab} />}
         {tab === "devops"        && <DevOpsCenterV2         onNavigate={setTab} />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
         {tab === "registry"      && <AgentRegistryCenter   onNavigate={setTab} />}

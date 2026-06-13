@@ -4277,6 +4277,10 @@ const _knowledgeMem     = _tryRequirePhase571("../../agents/runtime/engineeringK
 const _learningEngine   = _tryRequirePhase571("../../agents/runtime/learningMemoryEngine.cjs");
 const _failIntelEngine  = _tryRequirePhase571("../../agents/runtime/failureIntelligenceEngine.cjs");
 const _rootCauseAnalyzer= _tryRequirePhase571("../../agents/runtime/rootCauseAnalyzer.cjs");
+// Phase B6 — Prediction layer (same modules, new computed endpoints)
+const _patchExecEngine  = _tryRequirePhase571("../../agents/runtime/patchExecutionEngine.cjs");
+const _deployPipeline   = _tryRequirePhase571("../../agents/runtime/deploymentPipeline.cjs");
+const _deployAssistB6   = _tryRequirePhase571("../../agents/runtime/deploymentAssist.cjs");
 
 // GET /runtime/incidents — list incidents
 router.get("/runtime/incidents", rateLimiter(20, 60_000), (req, res) => {
@@ -4916,6 +4920,503 @@ router.get("/runtime/intel/summary", rateLimiter(10, 60_000), (req, res) => {
             learning: learnSummary,
             deployRisk,
             incidents: incSummary,
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// ── Phase B6 — Learning → Prediction ─────────────────────────────────
+
+// ── shared helpers (B6 only) ──────────────────────────────────────────
+function _b6PatchStats() {
+    const patches = patchAssist ? patchAssist.listPatches({}) : [];
+    const total   = patches.length;
+    const applied  = patches.filter(p => p.status === "applied").length;
+    const rolled   = patches.filter(p => p.status === "rolled-back" || p.status === "rolled_back").length;
+    const pending  = patches.filter(p => p.status === "pending").length;
+    const rollbackRate = total > 0 ? rolled / total : 0;
+    const successRate  = total > 0 ? applied / total : null;
+    // per-file breakdown
+    const byFile = {};
+    for (const p of patches) {
+        const k = p.filePath || "unknown";
+        if (!byFile[k]) byFile[k] = { applied: 0, rolledBack: 0, pending: 0, total: 0 };
+        byFile[k].total++;
+        if (p.status === "applied")                                  byFile[k].applied++;
+        if (p.status === "rolled-back" || p.status === "rolled_back") byFile[k].rolledBack++;
+        if (p.status === "pending")                                  byFile[k].pending++;
+    }
+    return { patches, total, applied, rolled, pending, rollbackRate, successRate, byFile };
+}
+
+function _b6HealStats() {
+    try {
+        const fs   = require("fs");
+        const path = require("path");
+        const file = path.join(__dirname, "../../data/healing-history.json");
+        const raw  = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : [];
+        const arr  = Array.isArray(raw) ? raw : [];
+        const total     = arr.length;
+        const succeeded = arr.filter(h => h.success !== false).length;
+        const failed    = arr.filter(h => h.success === false).length;
+        const healRate  = total > 0 ? succeeded / total : null;
+        // last 30 days
+        const cutoff = Date.now() - 30 * 86400_000;
+        const recent = arr.filter(h => new Date(h.ts).getTime() > cutoff);
+        const recentSucceeded = recent.filter(h => h.success !== false).length;
+        const recentHealRate  = recent.length > 0 ? recentSucceeded / recent.length : null;
+        // frequency: events per day
+        if (arr.length >= 2) {
+            const oldest = new Date(arr[0].ts).getTime();
+            const newest = new Date(arr[arr.length - 1].ts).getTime();
+            const days   = Math.max(1, (newest - oldest) / 86400_000);
+            var perDay   = total / days;
+        } else {
+            var perDay = 0;
+        }
+        return { total, succeeded, failed, healRate, recentHealRate, perDay, recent: recent.length };
+    } catch { return { total: 0, succeeded: 0, failed: 0, healRate: null, recentHealRate: null, perDay: 0, recent: 0 }; }
+}
+
+// B6.1  POST /runtime/predict/failure-risk
+//   Predictive failure risk score before a pipeline/task runs.
+//   Inputs: { request, filePath, pipelineName }
+router.post("/runtime/predict/failure-risk", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const { request = "", filePath = "", pipelineName = "standard-deploy" } = req.body || {};
+        const query = `${request} ${filePath}`.toLowerCase().trim();
+        const words = query.split(/\W+/).filter(w => w.length > 3);
+
+        const factors   = [];
+        let   riskScore = 0;
+
+        // Factor 1: patch rollback rate for this file
+        const ps = _b6PatchStats();
+        if (filePath && ps.byFile[filePath]) {
+            const fs = ps.byFile[filePath];
+            const fileRb = fs.total > 0 ? fs.rolledBack / fs.total : 0;
+            if (fileRb > 0.5) {
+                riskScore += 35;
+                factors.push({ factor: "high_file_rollback_rate", weight: 35, detail: `${Math.round(fileRb * 100)}% rollbacks on ${filePath.split("/").pop()}`, evidence: `${fs.rolledBack}/${fs.total} patches rolled back` });
+            } else if (fileRb > 0.2) {
+                riskScore += 15;
+                factors.push({ factor: "moderate_file_rollback_rate", weight: 15, detail: `${Math.round(fileRb * 100)}% rollbacks on ${filePath.split("/").pop()}`, evidence: `${fs.rolledBack}/${fs.total} patches rolled back` });
+            }
+        }
+
+        // Factor 2: overall platform rollback rate
+        if (ps.rollbackRate > 0.4) {
+            riskScore += 20;
+            factors.push({ factor: "high_platform_rollback_rate", weight: 20, detail: `Platform rollback rate ${Math.round(ps.rollbackRate * 100)}%`, evidence: `${ps.rolled}/${ps.total} patches failed` });
+        } else if (ps.rollbackRate > 0.25) {
+            riskScore += 8;
+            factors.push({ factor: "moderate_platform_rollback_rate", weight: 8, detail: `Platform rollback rate ${Math.round(ps.rollbackRate * 100)}%`, evidence: `${ps.rolled}/${ps.total} patches failed` });
+        }
+
+        // Factor 3: execution history error rate
+        const hist = _execHistory ? _execHistory.recent(100) : [];
+        if (hist.length >= 5) {
+            const failed = hist.filter(e => e.success === false).length;
+            const errRate = failed / hist.length;
+            if (errRate > 0.4) {
+                riskScore += 20;
+                factors.push({ factor: "high_exec_error_rate", weight: 20, detail: `${Math.round(errRate * 100)}% execution error rate`, evidence: `${failed}/${hist.length} recent executions failed` });
+            } else if (errRate > 0.2) {
+                riskScore += 8;
+                factors.push({ factor: "moderate_exec_error_rate", weight: 8, detail: `${Math.round(errRate * 100)}% execution error rate`, evidence: `${failed}/${hist.length} recent executions failed` });
+            }
+            // Factor 4: similar previous failures
+            if (words.length > 0) {
+                const similar = hist.filter(e => {
+                    if (e.success !== false) return false;
+                    const hay = (e.input || "").toLowerCase();
+                    return words.some(w => hay.includes(w));
+                });
+                if (similar.length > 0) {
+                    riskScore += Math.min(25, similar.length * 8);
+                    factors.push({ factor: "similar_previous_failures", weight: Math.min(25, similar.length * 8), detail: `${similar.length} similar failed execution(s) found`, evidence: similar.slice(0, 2).map(e => e.input?.slice(0, 60) || "").join(" | ") });
+                }
+            }
+        }
+
+        // Factor 5: healing frequency (high heal rate → unstable system)
+        const hs = _b6HealStats();
+        if (hs.perDay > 50) {
+            riskScore += 15;
+            factors.push({ factor: "high_healing_frequency", weight: 15, detail: `${hs.perDay.toFixed(1)} heal events/day`, evidence: `System healing ${hs.total} times total` });
+        } else if (hs.perDay > 20) {
+            riskScore += 6;
+            factors.push({ factor: "elevated_healing_frequency", weight: 6, detail: `${hs.perDay.toFixed(1)} heal events/day` });
+        }
+
+        // Factor 6: deployment risk from failureIntelligenceEngine
+        if (_failIntelEngine) {
+            try {
+                const dr = _failIntelEngine.estimateDeploymentRisk(pipelineName);
+                if (dr.riskScore > 0) {
+                    const w = Math.round(dr.riskScore * 0.3);
+                    riskScore += w;
+                    factors.push({ factor: "pipeline_preflight_risk", weight: w, detail: dr.recommendation, evidence: dr.riskFactors.join("; ") });
+                }
+            } catch (_) {}
+        }
+
+        // Factor 7: open incidents
+        const openInc = _incidentEngine ? _incidentEngine.listIncidents({ status: null, limit: 100 }).filter(i => i.status === "open" || i.status === "detected") : [];
+        if (openInc.length > 0) {
+            const w = Math.min(20, openInc.length * 7);
+            riskScore += w;
+            factors.push({ factor: "open_incidents", weight: w, detail: `${openInc.length} open incident(s)`, evidence: openInc.slice(0, 2).map(i => i.title || i.type || "incident").join(", ") });
+        }
+
+        riskScore = Math.min(100, Math.round(riskScore));
+        const riskLevel = riskScore >= 70 ? "critical" : riskScore >= 45 ? "high" : riskScore >= 20 ? "moderate" : "low";
+        const confidence = Math.min(95, 40 + Math.min(hist.length, 50) + Math.min(ps.total * 2, 30));
+
+        // Positive signals (risk reducers)
+        const mitigations = [];
+        if (ps.successRate > 0.7)  mitigations.push(`High patch success rate (${Math.round(ps.successRate * 100)}%)`);
+        if (hs.healRate > 0.9)     mitigations.push(`Self-healing success rate ${Math.round(hs.healRate * 100)}%`);
+        if (openInc.length === 0)  mitigations.push("No open incidents");
+        if (hist.length > 10 && hist.filter(e => e.success !== false).length / hist.length > 0.8) mitigations.push("Strong execution success history");
+
+        return res.json({ success: true, riskScore, riskLevel, confidence,
+            factors: factors.sort((a, b) => b.weight - a.weight),
+            mitigations,
+            recommendation: riskLevel === "critical" ? "Do NOT deploy — resolve critical factors first"
+                : riskLevel === "high" ? "High risk — review all factors and run extra tests"
+                : riskLevel === "moderate" ? "Moderate risk — proceed with caution and monitoring"
+                : "Low risk — safe to proceed",
+            meta: { patchTotal: ps.total, rollbackRate: Math.round(ps.rollbackRate * 100), execHistory: hist.length, openIncidents: openInc.length, healTotal: hs.total },
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B6.2  POST /runtime/predict/deploy-risk
+//   Deploy Risk Assessment — similar failed/successful deploys + risk + confidence
+router.post("/runtime/predict/deploy-risk", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const { pipelineName = "standard-deploy", request = "", filePaths = [] } = req.body || {};
+
+        // Base risk from fiE
+        const baseRisk = _failIntelEngine
+            ? _failIntelEngine.estimateDeploymentRisk(pipelineName)
+            : { riskScore: 10, riskLevel: "low", riskFactors: [], recommendation: "Insufficient data" };
+
+        const ps = _b6PatchStats();
+        const hs = _b6HealStats();
+
+        // Similar successful patches on these files
+        const similarSuccessful = [];
+        const similarFailed     = [];
+        if (filePaths.length > 0 && patchAssist) {
+            for (const fp of filePaths) {
+                const filePatch = ps.byFile[fp];
+                if (!filePatch) continue;
+                const filePatches = ps.patches.filter(p => p.filePath === fp);
+                filePatches.filter(p => p.status === "applied").forEach(p => similarSuccessful.push({ patchId: p.id, filePath: p.filePath, proposedAt: p.proposedAt }));
+                filePatches.filter(p => p.status === "rolled-back" || p.status === "rolled_back").forEach(p => similarFailed.push({ patchId: p.id, filePath: p.filePath, rolledBackAt: p.rolledBackAt }));
+            }
+        } else {
+            // No specific files — use overall
+            ps.patches.filter(p => p.status === "applied").slice(-5).forEach(p => similarSuccessful.push({ patchId: p.id, filePath: p.filePath, proposedAt: p.proposedAt }));
+            ps.patches.filter(p => p.status === "rolled-back" || p.status === "rolled_back").slice(-5).forEach(p => similarFailed.push({ patchId: p.id, filePath: p.filePath }));
+        }
+
+        // Recovery confidence
+        let recoveryConf = null;
+        if (_failIntelEngine) {
+            try { recoveryConf = _failIntelEngine.recoveryConfidence("backend-restore"); } catch (_) {}
+        }
+
+        // Compute composite risk
+        let compositeRisk = baseRisk.riskScore;
+        if (ps.rollbackRate > 0.3) compositeRisk = Math.min(100, compositeRisk + Math.round(ps.rollbackRate * 30));
+        if (hs.perDay > 50)        compositeRisk = Math.min(100, compositeRisk + 10);
+
+        const riskPct  = compositeRisk;
+        const confPct  = Math.min(95, 50 + Math.min(ps.total * 3, 35) + (hs.total > 100 ? 10 : 0));
+        const level    = riskPct >= 70 ? "critical" : riskPct >= 45 ? "high" : riskPct >= 20 ? "moderate" : "low";
+
+        return res.json({ success: true,
+            pipelineName, riskPercentage: riskPct, confidenceScore: confPct,
+            riskLevel: level,
+            baseRisk: { score: baseRisk.riskScore, level: baseRisk.riskLevel, factors: baseRisk.riskFactors, recommendation: baseRisk.recommendation },
+            similarSuccessful: similarSuccessful.slice(0, 6),
+            similarFailed:     similarFailed.slice(0, 6),
+            platformStats: { totalPatches: ps.total, successRate: ps.successRate != null ? Math.round(ps.successRate * 100) : null, rollbackRate: Math.round(ps.rollbackRate * 100), healRate: hs.healRate != null ? Math.round(hs.healRate * 100) : null },
+            recoveryConfidence: recoveryConf,
+            recommendation: level === "critical" ? "Critical deploy risk — halt and resolve blockers"
+                : level === "high" ? "High deploy risk — requires peer review and extra smoke tests"
+                : level === "moderate" ? "Moderate risk — deploy with staged rollout + monitoring"
+                : "Low risk — deploy following standard checklist",
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B6.3  GET /runtime/predict/cross-project?q=
+//   Cross-Project Knowledge — similar fixes + incidents across all stored knowledge
+router.get("/runtime/predict/cross-project", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const q     = (req.query.q || "").toLowerCase().trim();
+        const limit = Math.min(20, parseInt(req.query.limit) || 10);
+
+        const results = [];
+
+        // All knowledge memory entries (known-fix, stable-chain, runtime-failure, project-knowledge)
+        if (_knowledgeMem) {
+            const entries = _knowledgeMem.query({ search: q || undefined, limit: 50 });
+            for (const e of entries) {
+                const hay   = JSON.stringify(e).toLowerCase();
+                const words = q.split(/\W+/).filter(w => w.length > 3);
+                const hits  = q ? words.filter(w => hay.includes(w)).length : 1;
+                const score = q ? Math.round((hits / Math.max(words.length, 1)) * 80) : 60;
+                results.push({ source: "knowledge_base", kind: e.kind, score, key: e.key, problem: e.problem, fix: e.fix, description: e.description, ts: e.ts, chainName: e.chainName });
+            }
+        }
+
+        // Engineering memory chains
+        if (_engMemory) {
+            const mem = q ? _engMemory.query(q, null) : _engMemory.query("", null);
+            for (const m of mem) {
+                results.push({ source: "eng_memory", kind: m.type, score: 55, chainName: m.chainName, goalPattern: m.goalPattern, confidence: m.confidence, stepCount: m.stepCount, ts: m.ts });
+            }
+        }
+
+        // Similar patches by query
+        if (patchAssist && q) {
+            const patches = patchAssist.listPatches({ status: "applied" });
+            const words   = q.split(/\W+/).filter(w => w.length > 3);
+            for (const p of patches) {
+                const hay  = `${p.filePath || ""} ${p.reason || ""} ${p.diff?.preview || ""}`.toLowerCase();
+                const hits = words.filter(w => hay.includes(w)).length;
+                if (hits > 0) results.push({ source: "patch_history", kind: "applied_patch", score: Math.round((hits / words.length) * 70), patchId: p.id, filePath: p.filePath, reason: p.reason, ts: p.proposedAt });
+            }
+        }
+
+        // Ranking: sort by score, deduplicate by key/chainName
+        results.sort((a, b) => b.score - a.score);
+        const seen = new Set();
+        const deduped = results.filter(r => {
+            const key = r.key || r.chainName || r.patchId || JSON.stringify(r).slice(0, 40);
+            if (seen.has(key)) return false;
+            seen.add(key); return true;
+        });
+
+        return res.json({ success: true, query: q, results: deduped.slice(0, limit), total: deduped.length });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B6.4  POST /runtime/predict/pre-patch-advice
+//   Recommendation Assistant — before applying a patch: top success/failure patterns + safest path
+router.post("/runtime/predict/pre-patch-advice", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const { filePath = "", description = "", patchId = null } = req.body || {};
+
+        const ps   = _b6PatchStats();
+        const hs   = _b6HealStats();
+        const file = ps.byFile[filePath] || null;
+
+        // Top success patterns
+        const successPatterns = Object.entries(ps.byFile)
+            .filter(([, s]) => s.applied > 0 && s.rolledBack === 0)
+            .sort(([, a], [, b]) => b.applied - a.applied)
+            .slice(0, 5)
+            .map(([f, s]) => ({ file: f.split("/").slice(-2).join("/"), applied: s.applied, rollbackRate: 0, recommendation: "Safe file — all patches applied cleanly" }));
+
+        // Top failure patterns
+        const failurePatterns = Object.entries(ps.byFile)
+            .filter(([, s]) => s.rolledBack > 0)
+            .sort(([, a], [, b]) => (b.rolledBack / Math.max(b.total, 1)) - (a.rolledBack / Math.max(a.total, 1)))
+            .slice(0, 5)
+            .map(([f, s]) => ({ file: f.split("/").slice(-2).join("/"), rolledBack: s.rolledBack, total: s.total, rollbackRate: Math.round((s.rolledBack / s.total) * 100), warning: "High rollback rate — extra caution required" }));
+
+        // Known failure patterns matching this file
+        const fileExt  = filePath.split(".").pop();
+        const knownRisk = (_failIntelEngine?.FAILURE_PATTERNS || []).filter(p =>
+            description && p.rootCause.toLowerCase().includes(description.toLowerCase().split(" ")[0])
+        );
+
+        // Safest path advice
+        const safestPath = [];
+        safestPath.push("Run tests before applying: POST /runtime/patches/:id/verify");
+        if (file && file.rolledBack > 0) safestPath.push(`Warning: ${file.rolledBack} previous rollback(s) on this file — review diff carefully`);
+        if (file && file.applied > 0)    safestPath.push(`${file.applied} previous patch(es) applied successfully on this file`);
+        if (hs.healRate != null && hs.healRate < 0.9) safestPath.push("System heal rate below 90% — deploy with extra rollback readiness");
+        safestPath.push("Use autoRollback:true in auto-pipeline for safety net");
+
+        // Lookup in knowledge base
+        let kbFix = null;
+        if (_knowledgeMem && description) {
+            try { kbFix = _knowledgeMem.query({ search: description, limit: 3 }); } catch (_) {}
+        }
+
+        return res.json({ success: true, filePath, description,
+            fileHistory: file ? { ...file, rollbackRate: file.total > 0 ? Math.round((file.rolledBack / file.total) * 100) : 0 } : null,
+            successPatterns,
+            failurePatterns,
+            knownRiskPatterns: knownRisk.slice(0, 3),
+            safestPath,
+            kbMatches: kbFix ? kbFix.slice(0, 3) : [],
+            platformHealth: { patchSuccessRate: ps.successRate != null ? Math.round(ps.successRate * 100) : null, rollbackRate: Math.round(ps.rollbackRate * 100), healRate: hs.healRate != null ? Math.round(hs.healRate * 100) : null },
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B6.5  POST /runtime/predict/explain
+//   Engineering Advisor — "why is this risky?" / "why is this recommended?"
+//   Evidence-backed explanation for a risk score or recommendation
+router.post("/runtime/predict/explain", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const { subject = "", subjectType = "patch", patchId = null, filePath = "", riskScore = null } = req.body || {};
+
+        const ps  = _b6PatchStats();
+        const hs  = _b6HealStats();
+        const evidence = [];
+        const reasoning = [];
+        let verdict = "neutral";
+        let score   = riskScore;
+
+        // Patch-specific evidence
+        if (subjectType === "patch" || subjectType === "file") {
+            const file = ps.byFile[filePath] || null;
+            if (file) {
+                const rb  = file.rolledBack;
+                const app = file.applied;
+                const tot = file.total;
+                const rbPct = tot > 0 ? Math.round((rb / tot) * 100) : 0;
+                evidence.push({ type: "file_history", label: `${filePath.split("/").pop()} patch history`, value: `${app} applied, ${rb} rolled back (${rbPct}% failure rate)`, weight: rbPct > 40 ? "high" : rbPct > 20 ? "medium" : "low" });
+                if (rb > app) { reasoning.push(`More rollbacks (${rb}) than successful patches (${app}) on this file.`); verdict = "risky"; score = score ?? 70; }
+                else if (app > 0 && rb === 0) { reasoning.push(`All ${app} previous patches on this file were applied cleanly.`); verdict = "safe"; score = score ?? 15; }
+            }
+        }
+
+        // Platform evidence
+        evidence.push({ type: "platform_rollback_rate", label: "Platform-wide rollback rate", value: `${Math.round(ps.rollbackRate * 100)}% (${ps.rolled}/${ps.total} patches)`, weight: ps.rollbackRate > 0.3 ? "high" : "low" });
+        if (ps.rollbackRate > 0.3) reasoning.push(`Platform rollback rate is elevated at ${Math.round(ps.rollbackRate * 100)}%.`);
+        else reasoning.push(`Platform rollback rate is healthy at ${Math.round(ps.rollbackRate * 100)}%.`);
+
+        // Healing evidence
+        evidence.push({ type: "healing", label: "System heal events", value: `${hs.total} total, ${hs.perDay.toFixed(1)}/day, ${hs.healRate != null ? Math.round(hs.healRate * 100) + "% success" : "unknown rate"}`, weight: hs.perDay > 50 ? "high" : "low" });
+        if (hs.healRate != null && hs.healRate < 0.9) reasoning.push(`Self-healing success rate is ${Math.round(hs.healRate * 100)}% — system under strain.`);
+        else if (hs.healRate != null) reasoning.push(`Self-healing rate is strong (${Math.round(hs.healRate * 100)}%).`);
+
+        // Knowledge base matches
+        let kbMatches = [];
+        if (_knowledgeMem && subject) {
+            try {
+                kbMatches = _knowledgeMem.query({ search: subject, limit: 3 });
+                for (const k of kbMatches) {
+                    evidence.push({ type: "knowledge_base", label: k.key || k.kind, value: k.fix || k.description || "(see detail)", weight: "medium" });
+                    reasoning.push(`Known fix in KB: "${k.fix || k.description}"`);
+                }
+            } catch (_) {}
+        }
+
+        // Failure intelligence
+        if (_failIntelEngine && subject) {
+            const matched = (_failIntelEngine.FAILURE_PATTERNS || []).filter(p => p.rootCause.toLowerCase().includes(subject.toLowerCase().split(" ")[0]));
+            for (const m of matched.slice(0, 2)) {
+                evidence.push({ type: "failure_pattern", label: m.id, value: `${m.rootCause} — risk: ${m.riskLevel}`, weight: m.riskLevel === "critical" ? "high" : "medium" });
+                reasoning.push(`Matches known failure pattern "${m.id}": ${m.rootCause}.`);
+                if (m.recovery) reasoning.push(`Recommended recovery chain: ${m.recovery}.`);
+            }
+        }
+
+        // Exec history
+        const hist = _execHistory ? _execHistory.recent(100) : [];
+        if (subject && hist.length > 0) {
+            const words = subject.toLowerCase().split(/\W+/).filter(w => w.length > 3);
+            const similar = hist.filter(e => words.some(w => (e.input || "").toLowerCase().includes(w)));
+            if (similar.length > 0) {
+                const failedSim = similar.filter(e => e.success === false).length;
+                evidence.push({ type: "execution_history", label: "Similar past executions", value: `${similar.length} found, ${failedSim} failed`, weight: failedSim > similar.length / 2 ? "high" : "low" });
+                if (failedSim > 0) reasoning.push(`${failedSim}/${similar.length} similar past execution(s) failed.`);
+            }
+        }
+
+        score = score ?? (verdict === "risky" ? 65 : verdict === "safe" ? 15 : 30);
+
+        return res.json({ success: true, subject, subjectType, filePath,
+            verdict, riskScore: Math.min(100, Math.round(score)),
+            reasoning,
+            evidence: evidence.sort((a, b) => (b.weight === "high" ? 2 : b.weight === "medium" ? 1 : 0) - (a.weight === "high" ? 2 : a.weight === "medium" ? 1 : 0)),
+            kbMatches: kbMatches.slice(0, 3),
+            summary: reasoning.length > 0 ? reasoning[0] : "No evidence collected.",
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B6.6  GET /runtime/predict/readiness-score
+//   Production Readiness Score — single composite score from all signals
+router.get("/runtime/predict/readiness-score", rateLimiter(10, 60_000), (req, res) => {
+    try {
+        const ps  = _b6PatchStats();
+        const hs  = _b6HealStats();
+        const inc = _incidentEngine ? _incidentEngine.listIncidents({ limit: 200, status: null }) : [];
+
+        // Incident frequency component (inverted: low = good)
+        const openInc    = inc.filter(i => i.status === "open" || i.status === "detected").length;
+        const resolvedInc = inc.filter(i => i.status === "resolved" || i.status === "auto-resolved").length;
+        const incFreqScore = Math.max(0, 100 - openInc * 15 - Math.max(0, inc.length - resolvedInc) * 5);
+
+        // Rollback frequency component (lower rollback = higher score)
+        const rollbackScore = Math.max(0, Math.round((1 - ps.rollbackRate) * 100));
+
+        // Test pass rate — derive from patches that have been verified
+        // We use apply rate as proxy for test pass rate
+        const testPassScore = ps.successRate != null ? Math.round(ps.successRate * 100) : 50;
+
+        // Deployment success rate (applied patches / total non-pending)
+        const deployable = ps.total - ps.pending;
+        const deploySuccessScore = deployable > 0
+            ? Math.round((ps.applied / deployable) * 100)
+            : 50;
+
+        // Healing success rate
+        const healScore = hs.healRate != null ? Math.round(hs.healRate * 100) : 70;
+
+        // Weights
+        const WEIGHTS = {
+            incidentFrequency:     0.20,
+            rollbackFrequency:     0.25,
+            testPassRate:          0.20,
+            deploymentSuccessRate: 0.20,
+            healingSuccessRate:    0.15,
+        };
+
+        const composite = Math.round(
+            incFreqScore      * WEIGHTS.incidentFrequency +
+            rollbackScore     * WEIGHTS.rollbackFrequency +
+            testPassScore     * WEIGHTS.testPassRate +
+            deploySuccessScore * WEIGHTS.deploymentSuccessRate +
+            healScore         * WEIGHTS.healingSuccessRate
+        );
+
+        const level = composite >= 85 ? "production_ready"
+            : composite >= 70 ? "mostly_ready"
+            : composite >= 50 ? "needs_attention"
+            : "not_ready";
+
+        const signals = [
+            { name: "Incident frequency",      score: incFreqScore,       weight: WEIGHTS.incidentFrequency,     rawValue: `${openInc} open incident(s)`, detail: `${inc.length} total, ${resolvedInc} resolved` },
+            { name: "Rollback frequency",      score: rollbackScore,      weight: WEIGHTS.rollbackFrequency,     rawValue: `${Math.round(ps.rollbackRate * 100)}% rollback rate`, detail: `${ps.rolled}/${ps.total} patches rolled back` },
+            { name: "Test pass rate",          score: testPassScore,      weight: WEIGHTS.testPassRate,          rawValue: `${testPassScore}%`, detail: `${ps.applied}/${ps.total} patches applied (proxy)` },
+            { name: "Deployment success rate", score: deploySuccessScore, weight: WEIGHTS.deploymentSuccessRate, rawValue: `${deploySuccessScore}%`, detail: `${ps.applied}/${deployable} non-pending patches applied` },
+            { name: "Healing success rate",    score: healScore,          weight: WEIGHTS.healingSuccessRate,    rawValue: `${healScore}%`, detail: `${hs.succeeded}/${hs.total} healing events succeeded` },
+        ];
+
+        const blockers = signals.filter(s => s.score < 50).map(s => ({ signal: s.name, score: s.score, recommendation: `Improve ${s.name.toLowerCase()} (currently ${s.rawValue})` }));
+        const strengths = signals.filter(s => s.score >= 80).map(s => s.name);
+
+        return res.json({ success: true,
+            compositeScore: composite,
+            level,
+            badge: level === "production_ready" ? "🟢 Production Ready" : level === "mostly_ready" ? "🟡 Mostly Ready" : level === "needs_attention" ? "🟠 Needs Attention" : "🔴 Not Ready",
+            signals,
+            blockers,
+            strengths,
+            meta: { patchTotal: ps.total, incidentTotal: inc.length, healTotal: hs.total },
             generatedAt: new Date().toISOString(),
         });
     } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
