@@ -4266,6 +4266,94 @@ router.post("/runtime/blueprint/generate", rateLimiter(5, 60_000), async (req, r
     }
 });
 
+// Phase B3 — Self-healing, Incidents, Memory Explorer, Execution History
+const _incidentEngine   = _tryRequirePhase571("../../agents/runtime/incidentEngine.cjs");
+const _autoFixPlanner   = _tryRequirePhase571("../../agents/runtime/autoFixPlanner.cjs");
+const _selfHealPipeline = _tryRequirePhase571("../../agents/runtime/selfHealingPipeline.cjs");
+const _engMemory        = _tryRequirePhase571("../../agents/runtime/engineeringMemory.cjs");
+
+// GET /runtime/incidents — list incidents
+router.get("/runtime/incidents", rateLimiter(20, 60_000), (req, res) => {
+    if (!_incidentEngine) return res.status(503).json({ success: false, error: "incidentEngine_unavailable" });
+    try {
+        const limit = Math.min(50, parseInt(req.query.limit) || 20);
+        const status = req.query.status || null;
+        const incidents = _incidentEngine.listIncidents({ status, limit });
+        const summary   = _incidentEngine.getIncidentSummary();
+        return res.json({ success: true, incidents, summary });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+router.get("/runtime/incidents/:id", rateLimiter(20, 60_000), (req, res) => {
+    if (!_incidentEngine) return res.status(503).json({ success: false, error: "incidentEngine_unavailable" });
+    try {
+        const inc = _incidentEngine.getIncident(req.params.id);
+        if (!inc) return res.status(404).json({ success: false, error: "incident_not_found" });
+        return res.json({ success: true, incident: inc });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+router.post("/runtime/incidents/:id/acknowledge", rateLimiter(10, 60_000), (req, res) => {
+    if (!_incidentEngine) return res.status(503).json({ success: false, error: "incidentEngine_unavailable" });
+    try {
+        const result = _incidentEngine.acknowledge(req.params.id, { operatorId: req.body?.operatorId });
+        return res.json({ success: true, ...result });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// GET /runtime/autofix/plans — list fix plans
+router.get("/runtime/autofix/plans", rateLimiter(20, 60_000), (req, res) => {
+    if (!_autoFixPlanner) return res.status(503).json({ success: false, error: "autoFixPlanner_unavailable" });
+    try {
+        const plans = _autoFixPlanner.listPlans({ status: req.query.status, limit: Math.min(30, parseInt(req.query.limit) || 20) });
+        return res.json({ success: true, plans });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// GET /runtime/healing/runs — list self-healing pipeline runs
+router.get("/runtime/healing/runs", rateLimiter(20, 60_000), (req, res) => {
+    if (!_selfHealPipeline) return res.status(503).json({ success: false, error: "selfHealPipeline_unavailable" });
+    try {
+        const runs = _selfHealPipeline.listHealingRuns({ status: req.query.status, limit: Math.min(30, parseInt(req.query.limit) || 20) });
+        return res.json({ success: true, runs });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+router.get("/runtime/healing/runs/:runId", rateLimiter(20, 60_000), (req, res) => {
+    if (!_selfHealPipeline) return res.status(503).json({ success: false, error: "selfHealPipeline_unavailable" });
+    try {
+        const run = _selfHealPipeline.getHealingRun(req.params.runId);
+        if (!run) return res.status(404).json({ success: false, error: "run_not_found" });
+        return res.json({ success: true, run });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// GET /runtime/healing/history — healing-history.json entries
+router.get("/runtime/healing/history", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const fs = require("fs");
+        const path = require("path");
+        const file = path.join(__dirname, "../../data/healing-history.json");
+        const raw  = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : [];
+        const arr  = Array.isArray(raw) ? raw : [];
+        const limit = Math.min(100, parseInt(req.query.limit) || 50);
+        return res.json({ success: true, history: arr.slice(-limit).reverse(), total: arr.length });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// GET /runtime/memory/engineering — query engineering memory entries
+router.get("/runtime/memory/engineering", rateLimiter(20, 60_000), (req, res) => {
+    if (!_engMemory) return res.status(503).json({ success: false, error: "engMemory_unavailable" });
+    try {
+        const goal  = req.query.goal  || "";
+        const type  = req.query.type  || null;
+        const limit = Math.min(30, parseInt(req.query.limit) || 20);
+        const entries     = _engMemory.query(goal, type);
+        const suggestions = goal ? _engMemory.suggestChains(goal) : [];
+        return res.json({ success: true, entries: entries.slice(0, limit), suggestions, stats: _engMemory.stats() });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
 // Phase 572 — Task Understanding
 router.post("/runtime/engineering/understand", rateLimiter(30, 60_000), (req, res) => {
     if (!taskUnderstand) return res.status(503).json({ success: false, error: "taskUnderstanding_unavailable" });
