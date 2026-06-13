@@ -146,3 +146,63 @@ export async function addTask(input, type = "auto") {
     });
   } catch (err) { return { success: false, error: err.message }; }
 }
+
+// ── Engineering pipeline APIs (Phase B2) ─────────────────────────────
+
+export async function runPipeline(request, opts = {}) {
+  try {
+    return await _fetch("/runtime/pipeline/run", {
+      method: "POST",
+      body: JSON.stringify({ request, ...opts })
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function runProject(goal, opts = {}) {
+  try {
+    return await _fetch("/runtime/project/run", {
+      method: "POST",
+      body: JSON.stringify({ goal, opts })
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function generateBlueprint(idea, opts = {}) {
+  try {
+    return await _fetch("/runtime/blueprint/generate", {
+      method: "POST",
+      body: JSON.stringify({ idea, opts })
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function symbolSearch(name) {
+  try {
+    return await _fetch(`/runtime/symbol-search?name=${encodeURIComponent(name)}`);
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function listPatches(status) {
+  try {
+    const q = status ? `?status=${status}` : "";
+    return await _fetch(`/runtime/patches${q}`);
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getDLQ(limit = 20) {
+  try {
+    return await _fetch(`/runtime/dead-letter?limit=${limit}`);
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function recoverDLQ() {
+  try {
+    return await _fetch("/runtime/recover/dlq", { method: "POST" });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function removeDLQEntry(taskId) {
+  try {
+    return await _fetch(`/runtime/dead-letter/${encodeURIComponent(taskId)}`, { method: "DELETE" });
+  } catch (err) { return { success: false, error: err.message }; }
+}

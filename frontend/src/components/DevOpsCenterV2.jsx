@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { track } from "../analytics";
 import { checkHealth, getOpsData, getMetrics } from "../telemetryApi";
-import { getRuntimeStatus, getRuntimeHistory, emergencyStop, emergencyResume } from "../runtimeApi";
+import { getRuntimeStatus, getRuntimeHistory, emergencyStop, emergencyResume, listPatches, getDLQ, recoverDLQ, removeDLQEntry } from "../runtimeApi";
 import {
   listDeployments, getDeployHistory, listSLOs, getSystemMetrics,
   listAlerts, resolveAlert, getServiceMap,
@@ -20,6 +20,8 @@ const TABS = [
   { id: "logs",        label: "Logs"         },
   { id: "alerts",      label: "Alerts"       },
   { id: "services",    label: "Service Health"},
+  { id: "patches",     label: "Patches"      },
+  { id: "dlq",         label: "Recovery"     },
 ];
 
 const SEED_DEPLOYMENTS = [
@@ -1080,6 +1082,257 @@ function TabServices({ addToast }) {
   );
 }
 
+// ── Tab: Patches ──────────────────────────────────────────────────────
+
+const PATCH_STATUS_COLOR = { pending:"#f0b429", applied:"#52d68a", rolled_back:"#f55b5b", failed:"#f55b5b" };
+
+function TabPatches({ addToast }) {
+  const [patches,    setPatches]    = useState([]);
+  const [loading,    setLoading]    = useState(true);
+  const [statusF,    setStatusF]    = useState("all");
+  const [applying,   setApplying]   = useState(null);
+  const [verifying,  setVerifying]  = useState(null);
+  const [expanded,   setExpanded]   = useState(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const r = await listPatches(statusF === "all" ? undefined : statusF);
+      setPatches(r?.patches || []);
+    } catch { setPatches([]); }
+    finally { setLoading(false); }
+  }, [statusF]);
+
+  useEffect(() => { load(); }, [load]);
+
+  async function handleApply(p) {
+    if (applying) return;
+    setApplying(p.id);
+    try {
+      const r = await fetch(`/runtime/patches/${p.id}/apply`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        credentials: "include", body: JSON.stringify({ approved: true }),
+      }).then(x => x.json());
+      if (r.success) {
+        addToast(`Applied patch to ${p.filePath || p.id}`, "success");
+        setPatches(prev => prev.map(x => x.id === p.id ? { ...x, status: "applied" } : x));
+      } else {
+        addToast(`Apply failed: ${r.error}`, "error");
+      }
+      track("patch_applied");
+    } catch (e) { addToast(`Error: ${e.message}`, "error"); }
+    finally { setApplying(null); }
+  }
+
+  async function handleVerify(p) {
+    if (verifying) return;
+    setVerifying(p.id);
+    try {
+      const r = await fetch(`/runtime/patches/${p.id}/verify`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        credentials: "include", body: JSON.stringify({ autoRollback: false }),
+      }).then(x => x.json());
+      if (r.pass !== undefined) {
+        addToast(`Tests: ${r.pass} pass / ${r.fail} fail`, r.fail > 0 ? "error" : "success");
+      } else {
+        addToast(`Verify: ${r.error || "done"}`, "info");
+      }
+      track("patch_verified");
+    } catch (e) { addToast(`Error: ${e.message}`, "error"); }
+    finally { setVerifying(null); }
+  }
+
+  async function handleRollback(p) {
+    try {
+      const r = await fetch(`/runtime/patches/${p.id}/rollback`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        credentials: "include", body: JSON.stringify({ approved: true }),
+      }).then(x => x.json());
+      if (r.success) {
+        addToast(`Rolled back ${p.filePath || p.id}`, "success");
+        setPatches(prev => prev.map(x => x.id === p.id ? { ...x, status: "rolled_back" } : x));
+      } else {
+        addToast(`Rollback failed: ${r.error}`, "error");
+      }
+      track("patch_rollback");
+    } catch (e) { addToast(`Error: ${e.message}`, "error"); }
+  }
+
+  return (
+    <div style={{ padding: "4px 0" }}>
+      <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 12, flexWrap: "wrap" }}>
+        {["all","pending","applied","rolled_back"].map(s => (
+          <button key={s}
+            className={`dv2-filter-chip${statusF === s ? " dv2-filter-chip--active" : ""}`}
+            onClick={() => setStatusF(s)}
+          >{s === "rolled_back" ? "rolled back" : s}</button>
+        ))}
+        <button className="dv2-btn dv2-btn--ghost dv2-btn--sm" style={{ marginLeft: "auto" }} onClick={load}>⟳ Refresh</button>
+      </div>
+
+      {loading ? [0,1,2].map(i => <div key={i} className="dv2-alert-row"><SkelRow cols={4} /></div>) : (
+        patches.length === 0 ? (
+          <div className="dv2-empty">
+            <span className="dv2-empty-icon" style={{ color:"#52d68a" }}>✓</span>
+            <p className="dv2-empty-title">No patches in this view</p>
+            <p className="dv2-empty-sub">Patches are created when you ask JARVIS to fix or modify a file.</p>
+          </div>
+        ) : (
+          patches.map(p => {
+            const col = PATCH_STATUS_COLOR[p.status] || "#8994b0";
+            const isOpen = expanded === p.id;
+            return (
+              <div key={p.id}
+                className={`dv2-alert-row${isOpen ? " dv2-alert-row--open" : ""}`}
+                onClick={() => setExpanded(isOpen ? null : p.id)}
+              >
+                <div className="dv2-ar-top">
+                  <span className="dv2-sev-pill" style={{ color: col, background: col + "15" }}>{p.status || "pending"}</span>
+                  <span className="dv2-ar-title dv2-mono" style={{ fontSize: 11 }}>{p.filePath || p.id?.slice(0,16)}</span>
+                  <span className="dv2-ar-ts" style={{ fontSize: 10 }}>+{p.diff?.linesAdded || 0} / −{p.diff?.linesRemoved || 0}</span>
+                  <span className="dv2-ar-ts">{_timeAgo(p.proposedAt)}</span>
+                  <span className="dv2-ar-toggle">{isOpen ? "▲" : "▼"}</span>
+                </div>
+                {isOpen && (
+                  <div className="dv2-ar-expand" onClick={e => e.stopPropagation()}>
+                    {p.description && <p className="dv2-ar-detail">{p.description}</p>}
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 6 }}>
+                      {p.status === "pending" && (
+                        <>
+                          <button className="dv2-btn dv2-btn--primary dv2-btn--sm"
+                            disabled={applying === p.id}
+                            onClick={() => handleApply(p)}
+                          >{applying === p.id ? "Applying…" : "Apply"}</button>
+                          <button className="dv2-btn dv2-btn--ghost dv2-btn--sm"
+                            disabled={verifying === p.id}
+                            onClick={() => handleVerify(p)}
+                          >{verifying === p.id ? "Running…" : "Run Tests"}</button>
+                        </>
+                      )}
+                      {p.status === "applied" && (
+                        <button className="dv2-btn dv2-btn--ghost dv2-btn--sm" onClick={() => handleRollback(p)}>
+                          ↩ Rollback
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })
+        )
+      )}
+    </div>
+  );
+}
+
+// ── Tab: Recovery (DLQ) ───────────────────────────────────────────────
+
+function TabDLQ({ addToast }) {
+  const [entries,    setEntries]    = useState([]);
+  const [total,      setTotal]      = useState(0);
+  const [loading,    setLoading]    = useState(true);
+  const [recovering, setRecovering] = useState(false);
+  const [removing,   setRemoving]   = useState(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const r = await getDLQ(30);
+      setEntries(r?.entries || []);
+      setTotal(r?.total || 0);
+    } catch { setEntries([]); }
+    finally { setLoading(false); }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  async function handleRecoverAll() {
+    setRecovering(true);
+    try {
+      const r = await recoverDLQ();
+      addToast(r.success ? `Requeued ${r.queued || 0} task(s)` : `Recovery failed: ${r.error}`, r.success ? "success" : "error");
+      if (r.success) await load();
+      track("dlq_recover_all");
+    } catch (e) { addToast(`Error: ${e.message}`, "error"); }
+    finally { setRecovering(false); }
+  }
+
+  async function handleRemove(taskId) {
+    setRemoving(taskId);
+    try {
+      const r = await removeDLQEntry(taskId);
+      if (r.success !== false) {
+        setEntries(prev => prev.filter(e => e.taskId !== taskId));
+        addToast("Entry removed from DLQ", "info");
+      } else {
+        addToast(`Remove failed: ${r.error}`, "error");
+      }
+      track("dlq_remove");
+    } catch (e) { addToast(`Error: ${e.message}`, "error"); }
+    finally { setRemoving(null); }
+  }
+
+  return (
+    <div style={{ padding: "4px 0" }}>
+      <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 14 }}>
+        <div>
+          <span style={{ fontSize: 22, fontWeight: 700, color: total > 0 ? "#f0b429" : "#52d68a" }}>{total}</span>
+          <span style={{ fontSize: 11, color: "var(--dv2-text2)", marginLeft: 6 }}>failed task{total !== 1 ? "s" : ""} in queue</span>
+        </div>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
+          <button className="dv2-btn dv2-btn--ghost dv2-btn--sm" onClick={load}>⟳ Refresh</button>
+          {entries.length > 0 && (
+            <button
+              className="dv2-btn dv2-btn--primary dv2-btn--sm"
+              disabled={recovering}
+              onClick={handleRecoverAll}
+            >
+              {recovering ? "Requeuing…" : `↑ Requeue all (${Math.min(entries.length, 20)})`}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {loading ? [0,1,2].map(i => <div key={i} className="dv2-alert-row"><SkelRow cols={4} /></div>) : (
+        entries.length === 0 ? (
+          <div className="dv2-empty">
+            <span className="dv2-empty-icon" style={{ color:"#52d68a" }}>✓</span>
+            <p className="dv2-empty-title">Dead letter queue is empty</p>
+            <p className="dv2-empty-sub">Failed tasks that exhaust retries will appear here for manual recovery.</p>
+          </div>
+        ) : (
+          entries.map(e => (
+            <div key={e.taskId} className="dv2-alert-row">
+              <div className="dv2-ar-top">
+                <span className="dv2-sev-pill" style={{ color:"#f55b5b", background:"rgba(245,91,91,.1)" }}>failed</span>
+                <span className="dv2-ar-title" style={{ flex: 1 }}>
+                  {(e.task?.input || e.input || e.taskId || "").slice(0, 60)}
+                </span>
+                <span className="dv2-ar-ts">{e.attempts || 0} attempt{(e.attempts || 0) !== 1 ? "s" : ""}</span>
+                <span className="dv2-ar-ts">{_timeAgo(e.failedAt || e.ts)}</span>
+                <button
+                  className="dv2-btn dv2-btn--ghost dv2-btn--sm"
+                  disabled={removing === e.taskId}
+                  onClick={ev => { ev.stopPropagation(); handleRemove(e.taskId); }}
+                  style={{ fontSize: 10, padding: "1px 7px" }}
+                >
+                  {removing === e.taskId ? "…" : "✕ Discard"}
+                </button>
+              </div>
+              {e.error && (
+                <div style={{ padding: "4px 8px 6px", fontSize: 10, color: "#f55b5b", fontFamily: "monospace", wordBreak: "break-all" }}>
+                  {e.error.slice(0, 200)}
+                </div>
+              )}
+            </div>
+          ))
+        )
+      )}
+    </div>
+  );
+}
+
 // ── Root ──────────────────────────────────────────────────────────────
 
 export default function DevOpsCenterV2({ onNavigate }) {
@@ -1124,6 +1377,8 @@ export default function DevOpsCenterV2({ onNavigate }) {
         {tab === "logs"         && <TabLogs          addToast={addToast} />}
         {tab === "alerts"       && <TabAlerts        addToast={addToast} />}
         {tab === "services"     && <TabServices      addToast={addToast} />}
+        {tab === "patches"      && <TabPatches       addToast={addToast} />}
+        {tab === "dlq"          && <TabDLQ           addToast={addToast} />}
       </div>
 
       <div className="dv2-toast-container">

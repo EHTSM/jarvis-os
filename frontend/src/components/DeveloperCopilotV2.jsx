@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { track } from "../analytics";
 import { sendMessage, checkHealth } from "../api";
 import { checkHealth as getHealth, getOpsData, getMetrics } from "../telemetryApi";
-import { getRuntimeHistory } from "../runtimeApi";
+import { getRuntimeHistory, runPipeline, runProject, generateBlueprint, symbolSearch } from "../runtimeApi";
 import {
   listIndexedRepos, indexRepo, getRepoStatus, semanticSearch,
   vsCodeChat,
@@ -19,6 +19,8 @@ import "./DeveloperCopilotV2.css";
 
 const TABS = [
   { id: "copilot",      label: "Copilot Chat"     },
+  { id: "pipeline",     label: "Pipeline"         },
+  { id: "blueprint",    label: "Blueprint"        },
   { id: "repos",        label: "Repo Intelligence" },
   { id: "review",       label: "Code Review"       },
   { id: "architecture", label: "Architecture"      },
@@ -240,18 +242,337 @@ function TabCopilot({ addToast }) {
   );
 }
 
+// ── Tab: Pipeline ─────────────────────────────────────────────────────
+
+const PIPELINE_STAGES = ["plan", "code", "patch", "apply", "test", "review", "deploy"];
+
+function StageChip({ name, stage }) {
+  const ok   = stage?.ok;
+  const col  = ok === true ? "#52d68a" : ok === false ? "#f55b5b" : "#8994b0";
+  const icon = ok === true ? "✓" : ok === false ? "✗" : "◌";
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, minWidth: 60 }}>
+      <span style={{ fontSize: 16, color: col }}>{icon}</span>
+      <span style={{ fontSize: 9, color: col, textTransform: "uppercase", letterSpacing: "0.05em" }}>{name}</span>
+      {stage?.error && <span style={{ fontSize: 8, color: "#f55b5b", maxWidth: 80, textAlign: "center", wordBreak: "break-word" }}>{stage.error.slice(0, 60)}</span>}
+    </div>
+  );
+}
+
+function TabPipeline({ addToast }) {
+  const [input,    setInput]    = useState("");
+  const [running,  setRunning]  = useState(false);
+  const [result,   setResult]   = useState(null);
+  const [autoApply, setAutoApply] = useState(false);
+  const [testCmd,  setTestCmd]  = useState("");
+
+  async function handleRun() {
+    if (!input.trim() || running) return;
+    setRunning(true);
+    setResult(null);
+    try {
+      const r = await runPipeline(input.trim(), {
+        autoApply,
+        autoRollback: true,
+        autoDeploy: false,
+        testCommand: testCmd.trim() || undefined,
+      });
+      setResult(r);
+      if (r.ok) addToast("Pipeline completed successfully", "success");
+      else      addToast(`Pipeline stopped: ${r.summary || r.error || "see stages"}`, "error");
+      track("pipeline_run", { ok: r.ok });
+    } catch (e) {
+      addToast(`Pipeline error: ${e.message}`, "error");
+    } finally {
+      setRunning(false);
+    }
+  }
+
+  return (
+    <div style={{ padding: "16px 0", maxWidth: 680 }}>
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ fontSize: 11, color: "var(--dcv2-text2)", marginBottom: 6, fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase" }}>
+          Engineering Request
+        </div>
+        <textarea
+          rows={3}
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder='Describe the change you want — e.g. "Fix the authentication bug in backend/routes/crm.js"'
+          disabled={running}
+          style={{
+            width: "100%", boxSizing: "border-box", padding: "10px 12px",
+            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.12)",
+            borderRadius: 6, color: "var(--dcv2-text)", fontSize: 13, resize: "vertical",
+            fontFamily: "inherit", lineHeight: 1.5,
+          }}
+        />
+      </div>
+
+      <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 14, flexWrap: "wrap" }}>
+        <label style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "var(--dcv2-text2)", cursor: "pointer" }}>
+          <input type="checkbox" checked={autoApply} onChange={e => setAutoApply(e.target.checked)} />
+          Auto-apply patch
+        </label>
+        <input
+          type="text"
+          value={testCmd}
+          onChange={e => setTestCmd(e.target.value)}
+          placeholder="Custom test command (optional)"
+          style={{
+            flex: 1, minWidth: 160, padding: "4px 8px", fontSize: 11,
+            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: 4, color: "var(--dcv2-text)", fontFamily: "monospace",
+          }}
+        />
+        <button
+          onClick={handleRun}
+          disabled={!input.trim() || running}
+          className="dcv2-sem-btn"
+          style={{ padding: "6px 20px", fontSize: 12, fontWeight: 600, opacity: running ? 0.6 : 1 }}
+        >
+          {running ? "Running…" : "Run Pipeline"}
+        </button>
+      </div>
+
+      {running && (
+        <div style={{ display: "flex", gap: 6, alignItems: "center", padding: "10px 0", color: "var(--dcv2-accent)", fontSize: 12 }}>
+          <span style={{ animation: "spin 1s linear infinite", display: "inline-block" }}>◌</span>
+          Pipeline executing — this may take 30–90 seconds…
+        </div>
+      )}
+
+      {result && (
+        <div style={{ marginTop: 8 }}>
+          <div style={{
+            display: "flex", justifyContent: "space-between", alignItems: "center",
+            padding: "8px 12px",
+            background: result.ok ? "rgba(82,214,138,0.06)" : "rgba(245,91,91,0.06)",
+            border: `1px solid ${result.ok ? "rgba(82,214,138,0.2)" : "rgba(245,91,91,0.2)"}`,
+            borderRadius: "6px 6px 0 0",
+          }}>
+            <span style={{ fontWeight: 600, fontSize: 12, color: result.ok ? "#52d68a" : "#f55b5b" }}>
+              {result.ok ? "Pipeline complete" : "Pipeline stopped"}
+            </span>
+            <span style={{ fontSize: 11, color: "var(--dcv2-text2)" }}>{result.summary}</span>
+          </div>
+
+          <div style={{
+            display: "flex", gap: 0, padding: "16px 12px",
+            background: "rgba(255,255,255,0.02)",
+            border: "1px solid rgba(255,255,255,0.08)", borderTop: "none",
+            borderRadius: "0 0 6px 6px", justifyContent: "space-between",
+          }}>
+            {PIPELINE_STAGES.map((s, i) => (
+              <React.Fragment key={s}>
+                <StageChip name={s} stage={result.stages?.[s]} />
+                {i < PIPELINE_STAGES.length - 1 && (
+                  <span style={{ alignSelf: "flex-start", paddingTop: 6, color: "var(--dcv2-text2)", opacity: 0.4 }}>→</span>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+
+          {result.patchId && (
+            <div style={{ marginTop: 8, padding: "6px 12px", background: "rgba(68,162,255,0.06)", border: "1px solid rgba(68,162,255,0.2)", borderRadius: 4, fontSize: 11 }}>
+              Patch ID: <code style={{ fontFamily: "monospace" }}>{result.patchId}</code>
+              {result.rolledBack && <span style={{ marginLeft: 10, color: "#f0b429" }}>rolled back</span>}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div style={{ marginTop: 20, padding: "10px 12px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 6, fontSize: 11, color: "var(--dcv2-text2)", lineHeight: 1.6 }}>
+        <strong style={{ color: "var(--dcv2-text)" }}>7-stage pipeline:</strong> Plan → Code → Patch → Apply → Test → Review → Deploy.
+        Auto-apply sends the patch directly without approval. Leave unchecked to review in WorkflowPanel first.
+        Use <em>Copilot Chat</em> for quick questions; use <em>Pipeline</em> when you want JARVIS to modify real files.
+      </div>
+    </div>
+  );
+}
+
+// ── Tab: Blueprint ─────────────────────────────────────────────────────
+
+function TabBlueprint({ addToast }) {
+  const [idea,      setIdea]      = useState("");
+  const [generating, setGenerating] = useState(false);
+  const [blueprint, setBlueprint] = useState(null);
+  const [building,  setBuilding]  = useState(false);
+  const [buildResult, setBuildResult] = useState(null);
+
+  async function handleGenerate() {
+    if (!idea.trim() || generating) return;
+    setGenerating(true);
+    setBlueprint(null);
+    setBuildResult(null);
+    try {
+      const r = await generateBlueprint(idea.trim());
+      if (r.success && r.blueprint) {
+        setBlueprint(r.blueprint);
+        addToast("Blueprint generated", "success");
+      } else {
+        addToast(`Blueprint failed: ${r.error || "unknown"}`, "error");
+      }
+      track("blueprint_generate");
+    } catch (e) {
+      addToast(`Error: ${e.message}`, "error");
+    } finally {
+      setGenerating(false);
+    }
+  }
+
+  async function handleBuild() {
+    if (!blueprint || building) return;
+    setBuilding(true);
+    setBuildResult(null);
+    try {
+      const goal = blueprint.name
+        ? `Build: ${blueprint.name}. ${blueprint.description || ""}`
+        : JSON.stringify(blueprint).slice(0, 200);
+      const r = await runProject(goal);
+      setBuildResult(r);
+      addToast(r.success ? "Project run started" : `Build failed: ${r.error}`, r.success ? "success" : "error");
+      track("blueprint_build");
+    } catch (e) {
+      addToast(`Build error: ${e.message}`, "error");
+    } finally {
+      setBuilding(false);
+    }
+  }
+
+  const features = blueprint?.features || blueprint?.tasks || [];
+
+  return (
+    <div style={{ padding: "16px 0", maxWidth: 680 }}>
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ fontSize: 11, color: "var(--dcv2-text2)", marginBottom: 6, fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase" }}>
+          Describe your idea
+        </div>
+        <textarea
+          rows={3}
+          value={idea}
+          onChange={e => setIdea(e.target.value)}
+          placeholder='Describe what you want to build — e.g. "A REST API for user authentication with JWT and refresh tokens"'
+          disabled={generating || building}
+          style={{
+            width: "100%", boxSizing: "border-box", padding: "10px 12px",
+            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.12)",
+            borderRadius: 6, color: "var(--dcv2-text)", fontSize: 13, resize: "vertical",
+            fontFamily: "inherit", lineHeight: 1.5,
+          }}
+        />
+      </div>
+
+      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+        <button
+          onClick={handleGenerate}
+          disabled={!idea.trim() || generating || building}
+          className="dcv2-sem-btn"
+          style={{ padding: "6px 20px", fontSize: 12, fontWeight: 600, opacity: generating ? 0.6 : 1 }}
+        >
+          {generating ? "Generating…" : "Generate Blueprint"}
+        </button>
+        {blueprint && (
+          <button
+            onClick={handleBuild}
+            disabled={building}
+            className="dcv2-sem-btn"
+            style={{
+              padding: "6px 20px", fontSize: 12, fontWeight: 600,
+              background: "rgba(82,214,138,0.15)", borderColor: "rgba(82,214,138,0.4)",
+              color: "#52d68a", opacity: building ? 0.6 : 1,
+            }}
+          >
+            {building ? "Building…" : "Build It"}
+          </button>
+        )}
+      </div>
+
+      {blueprint && (
+        <div style={{
+          background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: 6, overflow: "hidden", marginBottom: 12,
+        }}>
+          <div style={{ padding: "10px 14px", background: "rgba(68,162,255,0.08)", borderBottom: "1px solid rgba(68,162,255,0.15)" }}>
+            <div style={{ fontWeight: 600, fontSize: 13, color: "var(--dcv2-text)" }}>
+              {blueprint.name || "Blueprint"}
+            </div>
+            {blueprint.description && (
+              <div style={{ fontSize: 11, color: "var(--dcv2-text2)", marginTop: 3 }}>{blueprint.description}</div>
+            )}
+          </div>
+
+          {features.length > 0 && (
+            <div style={{ padding: "10px 14px" }}>
+              <div style={{ fontSize: 10, color: "var(--dcv2-text2)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>
+                {features.length} feature{features.length !== 1 ? "s" : ""}
+              </div>
+              {features.map((f, i) => (
+                <div key={i} style={{
+                  display: "flex", alignItems: "flex-start", gap: 8,
+                  padding: "5px 0", borderTop: i > 0 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                }}>
+                  <span style={{ fontSize: 10, color: "var(--dcv2-accent)", marginTop: 2, flexShrink: 0 }}>◈</span>
+                  <div>
+                    <div style={{ fontSize: 12, color: "var(--dcv2-text)", fontWeight: 500 }}>{f.name || f.title || f}</div>
+                    {f.description && <div style={{ fontSize: 11, color: "var(--dcv2-text2)", marginTop: 2 }}>{f.description}</div>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div style={{ padding: "6px 14px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+            <details>
+              <summary style={{ fontSize: 10, color: "var(--dcv2-text2)", cursor: "pointer" }}>Raw JSON</summary>
+              <pre style={{ fontSize: 9, color: "var(--dcv2-text2)", whiteSpace: "pre-wrap", wordBreak: "break-all", marginTop: 6, maxHeight: 200, overflow: "auto" }}>
+                {JSON.stringify(blueprint, null, 2)}
+              </pre>
+            </details>
+          </div>
+        </div>
+      )}
+
+      {buildResult && (
+        <div style={{
+          padding: "10px 14px",
+          background: buildResult.success ? "rgba(82,214,138,0.06)" : "rgba(245,91,91,0.06)",
+          border: `1px solid ${buildResult.success ? "rgba(82,214,138,0.2)" : "rgba(245,91,91,0.2)"}`,
+          borderRadius: 6, fontSize: 11,
+        }}>
+          <div style={{ fontWeight: 600, marginBottom: 4, color: buildResult.success ? "#52d68a" : "#f55b5b" }}>
+            {buildResult.success ? "Project runner started" : "Build failed"}
+          </div>
+          {buildResult.error && <div style={{ color: "#f55b5b" }}>{buildResult.error}</div>}
+          {buildResult.summary && <div style={{ color: "var(--dcv2-text2)" }}>{buildResult.summary}</div>}
+        </div>
+      )}
+
+      {!blueprint && !generating && (
+        <div style={{ padding: "10px 12px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 6, fontSize: 11, color: "var(--dcv2-text2)", lineHeight: 1.6 }}>
+          <strong style={{ color: "var(--dcv2-text)" }}>Blueprint flow:</strong> Describe an idea → JARVIS generates a structured blueprint with features → click Build It to run projectRunner which decomposes tasks into specialist waves (frontend / backend / database / devops).
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Tab: Repository Intelligence ──────────────────────────────────────
 
 const LANG_COLORS = { "Node.js": "#68a063", React: "#61dafb", Capacitor: "#119eff", CJS: "#f7df1e", Terraform: "#7b42bc", Dart: "#00b4ab", Python: "#3572a5", Go: "#00add8" };
 
 function TabRepos({ addToast }) {
-  const [repos,    setRepos]    = useState(SEED_REPOS);
-  const [search,   setSearch]   = useState("");
-  const [loading,  setLoading]  = useState(true);
-  const [analyzing, setAnalyzing] = useState(null);
-  const [searchQ,  setSearchQ]  = useState("");
-  const [searchResults, setSearchResults] = useState(null);
-  const [searching, setSearching] = useState(false);
+  const [repos,        setRepos]        = useState(SEED_REPOS);
+  const [search,       setSearch]       = useState("");
+  const [loading,      setLoading]      = useState(true);
+  const [analyzing,    setAnalyzing]    = useState(null);
+  const [searchQ,      setSearchQ]      = useState("");
+  const [searchResults,setSearchResults]= useState(null);
+  const [searching,    setSearching]    = useState(false);
+  const [symQ,         setSymQ]         = useState("");
+  const [symResults,   setSymResults]   = useState(null);
+  const [symSearching, setSymSearching] = useState(false);
+  const [searchMode,   setSearchMode]   = useState("semantic"); // "semantic" | "symbol"
 
   useEffect(() => {
     listIndexedRepos().then(r => {
@@ -269,7 +590,7 @@ function TabRepos({ addToast }) {
     if (analyzing) return;
     setAnalyzing(repo.id);
     try {
-      const r = await sendMessage(`analyze repo ${repo.name}`, "code");
+      await sendMessage(`analyze repo ${repo.name}`, "code");
       addToast(`Analysis started for ${repo.name}`, "success");
       track("repo_analyze", { name: repo.name });
     } catch (e) {
@@ -279,19 +600,36 @@ function TabRepos({ addToast }) {
     }
   }
 
-  async function handleSearch() {
+  async function handleSemanticSearch() {
     if (!searchQ.trim() || searching) return;
     setSearching(true);
+    setSearchResults(null);
     try {
       const firstRepo = repos[0];
       const r = await semanticSearch(firstRepo?.id || "ooplix-backend", searchQ.trim());
       const hits = Array.isArray(r) ? r : (r?.results || r?.matches || []);
-      setSearchResults({ query: searchQ, hits });
-      track("repo_search", { q: searchQ });
+      setSearchResults({ query: searchQ, hits, mode: "semantic" });
+      track("repo_search", { q: searchQ, mode: "semantic" });
     } catch {
-      setSearchResults({ query: searchQ, hits: [] });
+      setSearchResults({ query: searchQ, hits: [], mode: "semantic" });
     } finally {
       setSearching(false);
+    }
+  }
+
+  async function handleSymbolSearch() {
+    if (!symQ.trim() || symSearching) return;
+    setSymSearching(true);
+    setSymResults(null);
+    try {
+      const r = await symbolSearch(symQ.trim());
+      const hits = r?.results || r?.matches || (Array.isArray(r) ? r : []);
+      setSymResults({ query: symQ, hits });
+      track("repo_search", { q: symQ, mode: "symbol" });
+    } catch (e) {
+      setSymResults({ query: symQ, hits: [], error: e.message });
+    } finally {
+      setSymSearching(false);
     }
   }
 
@@ -310,33 +648,92 @@ function TabRepos({ addToast }) {
       </div>
 
       <div className="dcv2-semantic-search">
-        <div className="dcv2-sem-row">
-          <input
-            className="dcv2-sem-input"
-            placeholder="Semantic code search across all repos… (e.g. 'where is auth handled?')"
-            value={searchQ}
-            onChange={e => setSearchQ(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && handleSearch()}
-            disabled={searching}
-          />
-          <button className="dcv2-sem-btn" onClick={handleSearch} disabled={!searchQ.trim() || searching}>
-            {searching ? "⟳" : "Search"}
-          </button>
+        {/* Search mode toggle */}
+        <div style={{ display: "flex", gap: 6, marginBottom: 8 }}>
+          {["semantic", "symbol"].map(m => (
+            <button
+              key={m}
+              onClick={() => { setSearchMode(m); setSearchResults(null); setSymResults(null); }}
+              style={{
+                padding: "3px 10px", fontSize: 10, borderRadius: 3, cursor: "pointer", fontFamily: "inherit",
+                background: searchMode === m ? "rgba(68,162,255,0.15)" : "rgba(255,255,255,0.04)",
+                border: searchMode === m ? "1px solid rgba(68,162,255,0.4)" : "1px solid rgba(255,255,255,0.1)",
+                color: searchMode === m ? "var(--dcv2-accent)" : "var(--dcv2-text2)",
+                fontWeight: searchMode === m ? 600 : 400,
+              }}
+            >
+              {m === "semantic" ? "Semantic Search" : "Symbol Search"}
+            </button>
+          ))}
         </div>
-        {searchResults && (
-          <div className="dcv2-sem-results">
-            <p className="dcv2-sem-count">{searchResults.hits.length} result{searchResults.hits.length !== 1 ? "s" : ""} for "{searchResults.query}"</p>
-            {searchResults.hits.length === 0 ? (
-              <p className="dcv2-sem-empty">No matches found. Try different keywords.</p>
-            ) : (
-              searchResults.hits.map((h, i) => (
-                <div key={i} className="dcv2-sem-hit">
-                  <span className="dcv2-sem-file">{h.file || h.path || "unknown"}</span>
-                  <p className="dcv2-sem-snippet">{h.snippet || h.content || h.text || JSON.stringify(h)}</p>
-                </div>
-              ))
+
+        {searchMode === "semantic" && (
+          <>
+            <div className="dcv2-sem-row">
+              <input
+                className="dcv2-sem-input"
+                placeholder="Semantic code search… (e.g. 'where is auth handled?')"
+                value={searchQ}
+                onChange={e => setSearchQ(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && handleSemanticSearch()}
+                disabled={searching}
+              />
+              <button className="dcv2-sem-btn" onClick={handleSemanticSearch} disabled={!searchQ.trim() || searching}>
+                {searching ? "⟳" : "Search"}
+              </button>
+            </div>
+            {searchResults && (
+              <div className="dcv2-sem-results">
+                <p className="dcv2-sem-count">{searchResults.hits.length} result{searchResults.hits.length !== 1 ? "s" : ""} for "{searchResults.query}"</p>
+                {searchResults.hits.length === 0 ? (
+                  <p className="dcv2-sem-empty">No matches found. Try different keywords.</p>
+                ) : (
+                  searchResults.hits.map((h, i) => (
+                    <div key={i} className="dcv2-sem-hit">
+                      <span className="dcv2-sem-file">{h.file || h.path || "unknown"}</span>
+                      <p className="dcv2-sem-snippet">{h.snippet || h.content || h.text || JSON.stringify(h)}</p>
+                    </div>
+                  ))
+                )}
+              </div>
             )}
-          </div>
+          </>
+        )}
+
+        {searchMode === "symbol" && (
+          <>
+            <div className="dcv2-sem-row">
+              <input
+                className="dcv2-sem-input"
+                placeholder="Symbol name to find — e.g. createLead, handleDispatch, patchAssist…"
+                value={symQ}
+                onChange={e => setSymQ(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && handleSymbolSearch()}
+                disabled={symSearching}
+              />
+              <button className="dcv2-sem-btn" onClick={handleSymbolSearch} disabled={!symQ.trim() || symSearching}>
+                {symSearching ? "⟳" : "Find"}
+              </button>
+            </div>
+            {symResults && (
+              <div className="dcv2-sem-results">
+                <p className="dcv2-sem-count">
+                  {symResults.hits.length} match{symResults.hits.length !== 1 ? "es" : ""} for "{symResults.query}"
+                  {symResults.error && <span style={{ color: "#f0b429", marginLeft: 8 }}>{symResults.error}</span>}
+                </p>
+                {symResults.hits.length === 0 ? (
+                  <p className="dcv2-sem-empty">Symbol not found in codebase.</p>
+                ) : (
+                  symResults.hits.map((h, i) => (
+                    <div key={i} className="dcv2-sem-hit" style={{ fontFamily: "monospace" }}>
+                      <span className="dcv2-sem-file">{h.file || h.path}:{h.line || h.lineNumber || ""}</span>
+                      <p className="dcv2-sem-snippet" style={{ whiteSpace: "pre-wrap" }}>{h.match || h.snippet || h.text || JSON.stringify(h)}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -1119,6 +1516,8 @@ export default function DeveloperCopilotV2({ onNavigate }) {
 
       <div className="dcv2-tab-content">
         {tab === "copilot"      && <TabCopilot      addToast={addToast} />}
+        {tab === "pipeline"     && <TabPipeline     addToast={addToast} />}
+        {tab === "blueprint"    && <TabBlueprint    addToast={addToast} />}
         {tab === "repos"        && <TabRepos         addToast={addToast} />}
         {tab === "review"       && <TabReview        addToast={addToast} />}
         {tab === "architecture" && <TabArchitecture  addToast={addToast} />}
