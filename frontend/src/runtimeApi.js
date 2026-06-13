@@ -494,3 +494,35 @@ export async function getExecReadinessDashboard() {
   try { return await _fetch("/runtime/exec/readiness-dashboard"); }
   catch (err) { return { success: false, error: err.message }; }
 }
+
+// ── B10 Production Reliability APIs ──────────────────────────────────
+
+export async function getExecSuccessDashboard() {
+  try { return await _fetch("/runtime/reliability/exec-success"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getAccuracyDashboard() {
+  try { return await _fetch("/runtime/reliability/accuracy"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getAutonomousScorecard() {
+  try { return await _fetch("/runtime/reliability/scorecard"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getReliabilityTrends() {
+  try { return await _fetch("/runtime/reliability/trends"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getOperatorTrustScore() {
+  try { return await _fetch("/runtime/reliability/trust-score"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getSystemHealthReport() {
+  try { return await _fetch("/runtime/reliability/health-report"); }
+  catch (err) { return { success: false, error: err.message }; }
+}

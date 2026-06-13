@@ -7391,6 +7391,458 @@ router.get("/runtime/exec/readiness-dashboard", rateLimiter(10, 60_000), (req, r
     } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
 });
 
+// ── B10 Production Reliability ────────────────────────────────────────
+// Sources: patch-history, healing-history, agent-runs, autonomous-cycles,
+//          operational-trust, trust-evolution, deployments, telemetry,
+//          eng-decision-log, eng-execution-log (all local, no new modules).
+
+const _B10_PATCH_HISTORY_PATH  = path.join(__dirname, "../../data/patch-history.json");
+const _B10_AGENT_RUNS_PATH     = path.join(__dirname, "../../data/agent-runs.json");
+const _B10_CYCLES_PATH         = path.join(__dirname, "../../data/autonomous-cycles.json");
+const _B10_TRUST_PATH          = path.join(__dirname, "../../data/operational-trust.json");
+const _B10_TRUST_EVO_PATH      = path.join(__dirname, "../../data/trust-evolution.json");
+const _B10_DEPLOYMENTS_PATH    = path.join(__dirname, "../../data/deployments.json");
+const _B10_TELEMETRY_PATH      = path.join(__dirname, "../../data/telemetry.json");
+
+function _b10ReadJson(p, fallback) {
+    try { return JSON.parse(fs.readFileSync(p, "utf8")); }
+    catch { return fallback; }
+}
+
+function _b10Patches() {
+    const raw = _b10ReadJson(_B10_PATCH_HISTORY_PATH, {});
+    return Array.isArray(raw) ? raw : (raw.patches || []);
+}
+
+function _b10HealStats() {
+    const h  = _b6HealStats();          // uses existing helper (2000 entries)
+    const all = _b6HealStats._raw || (() => {
+        try { return JSON.parse(fs.readFileSync(path.join(__dirname, "../../data/healing-history.json"), "utf8")); }
+        catch { return []; }
+    })();
+    // day buckets
+    const byDay = {};
+    all.forEach(e => {
+        const d = (e.ts || "").slice(0, 10);
+        if (!d) return;
+        if (!byDay[d]) byDay[d] = { total: 0, success: 0, fail: 0, strategies: {} };
+        byDay[d].total++;
+        if (e.success) byDay[d].success++; else byDay[d].fail++;
+        byDay[d].strategies[e.strategy] = (byDay[d].strategies[e.strategy] || 0) + 1;
+    });
+    const days = Object.keys(byDay).sort();
+    // MTTR proxy: restart_workflow heals are instant; escalations = ~manual. Use attempt count as proxy.
+    const avgAttempts = all.length ? (all.reduce((s, e) => s + (e.attempt || 1), 0) / all.length) : 1;
+    // incident frequency: fail events per day
+    const incidentDays = days.map(d => byDay[d].fail);
+    const avgIncidentsPerDay = incidentDays.length ? Math.round(incidentDays.reduce((a, b) => a + b, 0) / incidentDays.length) : 0;
+    return { ...h, byDay, days, avgAttempts: +avgAttempts.toFixed(2), avgIncidentsPerDay };
+}
+
+function _b10PatchMetrics() {
+    const patches = _b10Patches();
+    const total   = patches.length;
+    if (!total) return { total: 0, applied: 0, rolled: 0, pending: 0, applyRate: 0, rollbackRate: 0, successRate: 0 };
+    const applied  = patches.filter(p => p.status === "applied").length;
+    const rolled   = patches.filter(p => p.status === "rolled-back" || p.status === "rolled_back").length;
+    const pending  = patches.filter(p => p.status === "pending").length;
+    // deploy count via deployments + telemetry
+    const dep    = _b10ReadJson(_B10_DEPLOYMENTS_PATH, {});
+    const tel    = _b10ReadJson(_B10_TELEMETRY_PATH, []);
+    const telArr = Array.isArray(tel) ? tel : Object.values(tel);
+    const deployCount = (dep.history?.length || 0) + telArr.filter(t => t.type === "deploy" && t.ok).length;
+    // auto-fix attempts from healing
+    const hs     = _b6HealStats();
+    const autoFixed = hs.success;
+    return {
+        total, applied, rolled, pending, deployCount, autoFixed,
+        applyRate:    total ? Math.round(applied / total * 100)  : 0,
+        rollbackRate: total ? Math.round(rolled  / total * 100)  : 0,
+        pendingRate:  total ? Math.round(pending / total * 100)  : 0,
+        successRate:  (applied + rolled) > 0 ? Math.round(applied / (applied + rolled) * 100) : null,
+    };
+}
+
+function _b10AgentMetrics() {
+    const runs   = _b10ReadJson(_B10_AGENT_RUNS_PATH, []);
+    const cycles = _b10ReadJson(_B10_CYCLES_PATH,    []);
+    const runsArr   = Array.isArray(runs)   ? runs   : Object.values(runs);
+    const cyclesArr = Array.isArray(cycles) ? cycles : Object.values(cycles);
+    const total     = runsArr.length;
+    const success   = runsArr.filter(r => r.success === true || r.status === "success").length;
+    const failed    = runsArr.filter(r => r.success === false || r.status === "failed").length;
+    const avgDur    = total ? Math.round(runsArr.reduce((s, r) => s + (r.durationMs || 0), 0) / total) : 0;
+    const byAgent   = {};
+    runsArr.forEach(r => {
+        const a = r.agentId || "unknown";
+        if (!byAgent[a]) byAgent[a] = { total: 0, success: 0, failed: 0 };
+        byAgent[a].total++;
+        if (r.success === true || r.status === "success") byAgent[a].success++;
+        else byAgent[a].failed++;
+    });
+    const cycleFail = cyclesArr.filter(c => c.status === "failed").length;
+    const cycleOk   = cyclesArr.filter(c => c.status === "success" || c.status === "completed").length;
+    return { total, success, failed, avgDurMs: avgDur,
+        successRate: total ? Math.round(success / total * 100) : 0,
+        cycleTotal: cyclesArr.length, cycleOk, cycleFail,
+        cycleSuccessRate: cyclesArr.length ? Math.round(cycleOk / cyclesArr.length * 100) : 0,
+        byAgent };
+}
+
+function _b10TrustMetrics() {
+    const trust = _b10ReadJson(_B10_TRUST_PATH,    { events: [] });
+    const evo   = _b10ReadJson(_B10_TRUST_EVO_PATH, { events: [], snapshots: [] });
+    const events   = trust.events || [];
+    const evoEvts  = evo.events   || [];
+    const approved    = events.filter(e => e.type === "patch-applied").length;
+    const rejected    = events.filter(e => e.type === "patch-rejected").length;
+    const deployOk    = events.filter(e => e.type === "deploy-success").length;
+    const recoveries  = events.filter(e => e.type === "recovery-success").length;
+    const totalWeight = events.reduce((s, e) => s + (e.weight || 1), 0);
+    // bad approvals = rolled-back patches that were first applied
+    const patches   = _b10Patches();
+    const badApproval = patches.filter(p => p.status === "rolled-back" || p.status === "rolled_back").length;
+    // trust score: weighted sum normalised to 100
+    const maxPossible = events.length * 2;
+    const trustScore  = maxPossible > 0 ? Math.min(100, Math.round(totalWeight / maxPossible * 100)) : 50;
+    // chain outcomes
+    const chainOk   = evoEvts.filter(e => e.type === "chain-completed").length;
+    const chainFail  = evoEvts.filter(e => e.type === "chain-interrupted" || e.type === "chain-failed").length;
+    return { approved, rejected, deployOk, recoveries, badApproval, trustScore,
+        totalEvents: events.length, totalWeight, chainOk, chainFail };
+}
+
+function _b10AccuracyMetrics() {
+    const decisions = _readDecisionLog();
+    const execLog   = _readExecLog();
+    const ps        = _b10PatchMetrics();
+    const hs        = _b6HealStats();
+    // prediction accuracy: from decision log tier matches
+    let tierMatch = 0, tierTotal = 0;
+    decisions.forEach(d => {
+        if (d.predictedTier && d.actualOutcome) {
+            tierTotal++;
+            const goodTiers = ["auto", "review"];
+            const okOutcomes = ["applied", "verified", "deployed"];
+            const predictedGood = goodTiers.includes(d.predictedTier);
+            const actualGood    = okOutcomes.includes(d.actualOutcome);
+            if (predictedGood === actualGood) tierMatch++;
+        }
+    });
+    const predictionAccuracy = tierTotal > 0 ? Math.round(tierMatch / tierTotal * 100) : null;
+    // recommendation accuracy: how many approved recommendations produced good outcomes
+    const recommended = decisions.filter(d => d.decision === "approve");
+    const recGood     = recommended.filter(d => ["applied", "verified", "deployed"].includes(d.actualOutcome || ""));
+    const recAccuracy = recommended.length > 0 ? Math.round(recGood.length / recommended.length * 100) : null;
+    // guardrail hit rate: patches blocked (rolled-back) vs total
+    const guardrailHits   = ps.rolled;
+    const guardrailTotal  = ps.total;
+    const guardrailRate   = guardrailTotal > 0 ? Math.round(guardrailHits / guardrailTotal * 100) : null;
+    // healing success as accuracy proxy
+    const healAccuracy = Math.round(hs.successRate);
+    return { predictionAccuracy, recAccuracy, guardrailRate, healAccuracy,
+        tierSamples: tierTotal, recSamples: recommended.length, guardSamples: guardrailTotal };
+}
+
+// B10 scorecard builder (daily / weekly / lifetime)
+function _b10Scorecard() {
+    const now     = Date.now();
+    const DAY_MS  = 86_400_000;
+    const WEEK_MS = 7 * DAY_MS;
+    const heal = (() => {
+        try { return JSON.parse(fs.readFileSync(path.join(__dirname, "../../data/healing-history.json"), "utf8")); }
+        catch { return []; }
+    })();
+    const patches = _b10Patches();
+    const trust   = _b10ReadJson(_B10_TRUST_PATH, { events: [] });
+    const trustEvts = trust.events || [];
+
+    function scoreWindow(windowMs) {
+        const cutoff = new Date(now - windowMs).toISOString();
+        const hW = heal.filter(h => h.ts >= cutoff);
+        const pW = patches.filter(p => (p.proposedAt ? new Date(p.proposedAt).toISOString() : "") >= cutoff);
+        const tW = trustEvts.filter(e => {
+            const ts = e.ts ? (typeof e.ts === "number" ? new Date(e.ts).toISOString() : e.ts) : "";
+            return ts >= cutoff;
+        });
+        const healSuccess  = hW.filter(h => h.success).length;
+        const patchApplied = pW.filter(p => p.status === "applied").length;
+        const patchRolled  = pW.filter(p => p.status === "rolled-back" || p.status === "rolled_back").length;
+        const deployOk     = tW.filter(e => e.type === "deploy-success").length;
+        const recoveries   = tW.filter(e => e.type === "recovery-success").length;
+        const healRate     = hW.length > 0 ? Math.round(healSuccess / hW.length * 100) : null;
+        const patchRate    = (patchApplied + patchRolled) > 0 ? Math.round(patchApplied / (patchApplied + patchRolled) * 100) : null;
+        // autonomy score: weighted average of signals (0-100)
+        const signals = [
+            { name: "Healing success",   v: healRate,   w: 0.35 },
+            { name: "Patch success",     v: patchRate,  w: 0.30 },
+            { name: "Deploy success",    v: deployOk > 0 ? 85 : (hW.length > 0 ? 50 : null), w: 0.20 },
+            { name: "Recovery coverage", v: recoveries > 0 ? Math.min(100, recoveries * 10) : null, w: 0.15 },
+        ].filter(s => s.v != null);
+        const totalW = signals.reduce((s, x) => s + x.w, 0);
+        const autonomyScore = totalW > 0
+            ? Math.round(signals.reduce((s, x) => s + x.v * x.w, 0) / totalW)
+            : null;
+        return { heals: hW.length, healSuccess, healRate, patches: pW.length, patchApplied, patchRolled, patchRate,
+            deploys: deployOk, recoveries, autonomyScore };
+    }
+
+    return {
+        daily:    scoreWindow(DAY_MS),
+        weekly:   scoreWindow(WEEK_MS),
+        lifetime: scoreWindow(1000 * DAY_MS),   // effectively all-time
+    };
+}
+
+// B10.1 Execution Success Dashboard
+router.get("/runtime/reliability/exec-success", rateLimiter(60, 60_000), (req, res) => {
+    try {
+        const pm   = _b10PatchMetrics();
+        const hs   = _b6HealStats();
+        const am   = _b10AgentMetrics();
+        const exec = _readExecLog();
+        const dec  = _readDecisionLog();
+        // B9 execution log outcomes
+        const execByOutcome = {};
+        exec.forEach(e => { execByOutcome[e.outcome || "unknown"] = (execByOutcome[e.outcome || "unknown"] || 0) + 1; });
+        const execTotal   = exec.length;
+        const execSuccess = exec.filter(e => ["applied","verified","deployed"].includes(e.outcome)).length;
+        const execRolled  = exec.filter(e => e.outcome === "rolled_back" || e.outcome === "rolled-back").length;
+        const execFailed  = exec.filter(e => e.outcome === "failed" || e.outcome === "error").length;
+        return res.json({
+            success: true,
+            // patch layer
+            patches:    { ...pm },
+            // heal layer
+            healing:    { total: hs.total, success: hs.success, fail: hs.fail, rate: hs.successRate, byStrategy: hs.byStrategy },
+            // agent/cycle layer
+            agents:     { total: am.total, success: am.success, failed: am.failed, rate: am.successRate,
+                          cycleTotal: am.cycleTotal, cycleOk: am.cycleOk, cycleFail: am.cycleFail, cycleRate: am.cycleSuccessRate },
+            // B9 exec log layer
+            execLog:    { total: execTotal, success: execSuccess, rolled: execRolled, failed: execFailed, byOutcome: execByOutcome,
+                          successRate: execTotal ? Math.round(execSuccess / execTotal * 100) : null },
+            // decisions
+            decisions:  { total: dec.length, approved: dec.filter(d=>d.decision==="approve").length,
+                          rejected: dec.filter(d=>d.decision==="reject").length },
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B10.2 Accuracy Dashboard
+router.get("/runtime/reliability/accuracy", rateLimiter(60, 60_000), (req, res) => {
+    try {
+        const acc = _b10AccuracyMetrics();
+        const am  = _b10AgentMetrics();
+        // failure pattern detection accuracy from failIntelEngine
+        let patternCount = 0;
+        if (_failIntelEngine?.FAILURE_PATTERNS) patternCount = _failIntelEngine.FAILURE_PATTERNS.length;
+        // learning engine summary
+        let learnSummary = null;
+        if (_learningEngine) { try { learnSummary = _learningEngine.getSummary(); } catch {} }
+        return res.json({
+            success: true,
+            predictionAccuracy: acc.predictionAccuracy,
+            recommendationAccuracy: acc.recAccuracy,
+            guardrailHitRate: acc.guardrailRate,
+            healingAccuracy: acc.healAccuracy,
+            tierSamples: acc.tierSamples,
+            recSamples: acc.recSamples,
+            guardSamples: acc.guardSamples,
+            // extra context
+            patternCount,
+            agentSuccessRate: am.successRate,
+            learningEngine: learnSummary ? {
+                totalIngested: learnSummary.totalIngested,
+                uniquePatterns: learnSummary.uniquePatterns,
+            } : null,
+            note: acc.tierSamples === 0 ? "Prediction accuracy will populate as operator decisions are made through Execution Center" : null,
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B10.3 Autonomous Scorecard
+router.get("/runtime/reliability/scorecard", rateLimiter(60, 60_000), (req, res) => {
+    try {
+        const sc   = _b10Scorecard();
+        const tm   = _b10TrustMetrics();
+        // autonomy level
+        const ls = sc.lifetime.autonomyScore;
+        const level = ls == null ? "unknown"
+            : ls >= 80 ? "high_autonomy"
+            : ls >= 60 ? "growing_autonomy"
+            : ls >= 40 ? "supervised"
+            : "manual";
+        const levelLabel = { high_autonomy: "High Autonomy", growing_autonomy: "Growing Autonomy",
+            supervised: "Supervised", manual: "Manual", unknown: "Insufficient Data" }[level];
+        return res.json({
+            success: true, daily: sc.daily, weekly: sc.weekly, lifetime: sc.lifetime,
+            trustMetrics: tm, level, levelLabel,
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B10.4 Reliability Trends (MTTR, incident frequency, healing success)
+router.get("/runtime/reliability/trends", rateLimiter(60, 60_000), (req, res) => {
+    try {
+        const hs = _b10HealStats();
+        const am = _b10AgentMetrics();
+        const tel = _b10ReadJson(_B10_TELEMETRY_PATH, []);
+        const telArr = Array.isArray(tel) ? tel : Object.values(tel);
+        // build daily trend from healing-history
+        const trendByDay = hs.days.map(d => ({
+            date:           d,
+            heals:          hs.byDay[d].total,
+            success:        hs.byDay[d].success,
+            fail:           hs.byDay[d].fail,
+            successRate:    hs.byDay[d].total > 0 ? Math.round(hs.byDay[d].success / hs.byDay[d].total * 100) : 0,
+            strategies:     hs.byDay[d].strategies,
+        }));
+        // deploy events from telemetry (time-ordered)
+        const deployEvents = telArr
+            .filter(t => t.type === "deploy")
+            .sort((a, b) => new Date(a.ts) - new Date(b.ts))
+            .map(t => ({ ts: t.ts, ok: t.ok, phase: t.phase, elapsedMs: t.elapsedMs }));
+        // MTTR proxy: avg time between fail + heal in healing history (we have no timestamps per heal pair,
+        // so proxy = fail count × avg attempt count × estimated 30s per attempt)
+        const mttrProxyMs = Math.round(hs.avgAttempts * 30_000);
+        const mttrLabel   = mttrProxyMs < 60_000 ? `~${Math.round(mttrProxyMs/1000)}s`
+            : `~${Math.round(mttrProxyMs/60_000)}m`;
+        return res.json({
+            success: true,
+            trendByDay,
+            deployEvents,
+            summary: {
+                totalHeals:        hs.total,
+                healSuccessRate:   hs.successRate,
+                avgIncidentsPerDay: hs.avgIncidentsPerDay,
+                avgAttempts:       hs.avgAttempts,
+                mttrProxyLabel:    mttrLabel,
+                mttrProxyMs,
+                agentRunTotal:     am.total,
+                agentFailRate:     100 - am.successRate,
+            },
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B10.5 Operator Trust Score
+router.get("/runtime/reliability/trust-score", rateLimiter(60, 60_000), (req, res) => {
+    try {
+        const tm  = _b10TrustMetrics();
+        const pm  = _b10PatchMetrics();
+        const dec = _readDecisionLog();
+        // approved / rejected from operational-trust events (real data)
+        const approved   = tm.approved;      // patch-applied events
+        const rejected   = tm.rejected;      // patch-rejected events
+        const successApprovals = approved - tm.badApproval;
+        const badApprovals     = tm.badApproval;
+        const approvalQuality  = approved > 0 ? Math.round(successApprovals / approved * 100) : null;
+        // also from B9 decision log if populated
+        const decApproved = dec.filter(d => d.decision === "approve").length;
+        const decRejected = dec.filter(d => d.decision === "reject").length;
+        const decGood     = dec.filter(d => d.decision === "approve" && ["applied","verified","deployed"].includes(d.actualOutcome||"")).length;
+        const decBad      = dec.filter(d => d.decision === "approve" && ["failed","rolled_back","rolled-back","error"].includes(d.actualOutcome||"")).length;
+        // operator trust score 0-100
+        // weights: good approvals +3, bad approvals -5, rejections -1 (rejections may be correct),
+        //          deploys +2, recoveries +2
+        const rawScore = (successApprovals * 3) + (tm.deployOk * 2) + (tm.recoveries * 2)
+            - (badApprovals * 5) - (rejected * 1);
+        const maxScore = tm.totalEvents * 3;
+        const trustScore100 = maxScore > 0 ? Math.min(100, Math.max(0, Math.round((rawScore / maxScore) * 100))) : 50;
+        const trustLevel = trustScore100 >= 80 ? "high"
+            : trustScore100 >= 60 ? "medium"
+            : trustScore100 >= 40 ? "low"
+            : "critical";
+        return res.json({
+            success: true,
+            trustScore: trustScore100,
+            trustLevel,
+            // operational-trust events (real 103 events)
+            fromTrustLog: { approved, rejected, successApprovals, badApprovals, deployOk: tm.deployOk, recoveries: tm.recoveries, approvalQuality },
+            // B9 decision log (starts empty, grows with use)
+            fromDecisionLog: { approved: decApproved, rejected: decRejected, good: decGood, bad: decBad,
+                quality: decApproved > 0 ? Math.round(decGood / decApproved * 100) : null },
+            chainMetrics: { ok: tm.chainOk, fail: tm.chainFail },
+            totalTrustEvents: tm.totalEvents,
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B10.6 One-click System Health Report
+router.get("/runtime/reliability/health-report", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const pm  = _b10PatchMetrics();
+        const hs  = _b6HealStats();
+        const am  = _b10AgentMetrics();
+        const tm  = _b10TrustMetrics();
+        const acc = _b10AccuracyMetrics();
+        const sc  = _b10Scorecard();
+        const hst = _b10HealStats();
+        const dec = _readDecisionLog();
+        const exec = _readExecLog();
+        // compute overall system health 0-100
+        const signals = [
+            { name: "Healing success rate",  score: hs.successRate,                    weight: 0.25 },
+            { name: "Patch success rate",     score: pm.successRate ?? 50,              weight: 0.20 },
+            { name: "Operator trust",         score: tm.trustScore,                     weight: 0.20 },
+            { name: "Agent run success",      score: am.successRate,                    weight: 0.15 },
+            { name: "Recommendation quality", score: acc.recAccuracy ?? 70,             weight: 0.10 },
+            { name: "Guardrail effectiveness",score: acc.guardrailRate != null ? Math.min(100, acc.guardrailRate * 2) : 60, weight: 0.10 },
+        ];
+        const overallHealth = Math.round(signals.reduce((s, x) => s + x.score * x.weight, 0));
+        const healthLabel = overallHealth >= 80 ? "Healthy"
+            : overallHealth >= 65 ? "Good"
+            : overallHealth >= 50 ? "Fair"
+            : "Needs Attention";
+        // critical alerts
+        const alerts = [];
+        if (am.successRate < 10) alerts.push({ level: "critical", msg: `Agent run success rate critically low: ${am.successRate}% (${am.failed}/${am.total} failed)` });
+        if (pm.rollbackRate > 50) alerts.push({ level: "warn", msg: `High patch rollback rate: ${pm.rollbackRate}%` });
+        if (hs.successRate < 70) alerts.push({ level: "warn", msg: `Healing success below target: ${hs.successRate}%` });
+        if (pm.pending > 5) alerts.push({ level: "info", msg: `${pm.pending} patches pending operator review` });
+        if (dec.length === 0) alerts.push({ level: "info", msg: "No B9 operator decisions recorded yet — use Execution Center to start approving items" });
+        // strengths
+        const strengths = [];
+        if (hs.successRate >= 80) strengths.push(`Healing engine operating at ${hs.successRate}% success (${hs.success}/${hs.total} healed)`);
+        if (tm.recoveries > 0) strengths.push(`${tm.recoveries} autonomous recoveries logged`);
+        if (tm.deployOk > 0)  strengths.push(`${tm.deployOk} successful deployments`);
+        if (pm.applied > 0)   strengths.push(`${pm.applied} patches successfully applied`);
+        // autonomy trajectory
+        const lifetimeScore = sc.lifetime.autonomyScore;
+        const weeklyScore   = sc.weekly.autonomyScore;
+        const trajectory = (lifetimeScore != null && weeklyScore != null)
+            ? (weeklyScore >= lifetimeScore ? "improving" : "declining")
+            : "insufficient_data";
+        return res.json({
+            success: true,
+            overallHealth,
+            healthLabel,
+            trajectory,
+            autonomyScore: lifetimeScore,
+            signals,
+            alerts,
+            strengths,
+            sections: {
+                patches:   pm,
+                healing:   { total: hs.total, success: hs.success, fail: hs.fail, rate: hs.successRate },
+                agents:    { total: am.total, successRate: am.successRate, cycleTotal: am.cycleTotal, cycleRate: am.cycleSuccessRate },
+                trust:     { trustScore: tm.trustScore, approved: tm.approved, rejected: tm.rejected, badApproval: tm.badApproval },
+                accuracy:  acc,
+                scorecard: { daily: sc.daily, weekly: sc.weekly },
+                execLog:   { total: exec.length, decisions: dec.length },
+            },
+            mttr: hst.mttrLabel || `~${Math.round(hst.avgAttempts * 30)}s`,
+            incidentFrequency: `~${hst.avgIncidentsPerDay}/day`,
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
 // Phase 572 — Task Understanding
 router.post("/runtime/engineering/understand", rateLimiter(30, 60_000), (req, res) => {
     if (!taskUnderstand) return res.status(503).json({ success: false, error: "taskUnderstanding_unavailable" });
