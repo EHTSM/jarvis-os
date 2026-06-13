@@ -672,9 +672,11 @@ function TabLaunch({ addToast }) {
 
 // ── Root ──────────────────────────────────────────────────────────────
 
-export default function GrowthOSV2({ onNavigate }) {
-  const [tab,    setTab]    = useState("seo");
+export default function GrowthOSV2({ onNavigate, initialTab = "seo" }) {
+  const [tab,    setTab]    = useState(initialTab);
   const [toasts, setToasts] = useState([]);
+
+  useEffect(() => { setTab(initialTab); }, [initialTab]);
 
   const addToast = useCallback((msg, type = "info") => {
     const id = Date.now();
