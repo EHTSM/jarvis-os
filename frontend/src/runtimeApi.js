@@ -397,3 +397,64 @@ export async function preActionWarning(action = "apply", patchId = "", filePath 
     });
   } catch (err) { return { success: false, error: err.message }; }
 }
+
+// ── B8 Recommendation & Approval APIs ────────────────────────────────
+
+export async function getIncidentRecommendations(incidentId, limit = 3) {
+  try {
+    return await _fetch("/runtime/recommend/incident-fixes", {
+      method: "POST",
+      body: JSON.stringify({ incidentId, limit }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getAllIncidentRecommendations() {
+  try { return await _fetch("/runtime/recommend/all-incidents"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getApprovalQueue() {
+  try { return await _fetch("/runtime/approval-queue"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function decideApprovalItem(id, decision, queueType, recommendation = "", reason = "") {
+  try {
+    return await _fetch(`/runtime/approval-queue/${encodeURIComponent(id)}/decide`, {
+      method: "POST",
+      body: JSON.stringify({ decision, queueType, recommendation, reason }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getAutomationCandidates() {
+  try { return await _fetch("/runtime/recommend/automation-candidates"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getDecisionLog(opts = {}) {
+  try {
+    const qs = new URLSearchParams(opts).toString();
+    return await _fetch(`/runtime/decisions?${qs}`);
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function recordDecision(itemId, decision, queueType, recommendation = "", reason = "", outcome = "") {
+  try {
+    return await _fetch("/runtime/decisions", {
+      method: "POST",
+      body: JSON.stringify({ itemId, decision, queueType, recommendation, reason, outcome }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getRecommendedDeploys() {
+  try { return await _fetch("/runtime/recommend/deploys"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getAutonomousReadiness() {
+  try { return await _fetch("/runtime/recommend/autonomous-readiness"); }
+  catch (err) { return { success: false, error: err.message }; }
+}

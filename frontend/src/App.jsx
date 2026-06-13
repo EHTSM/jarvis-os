@@ -26,6 +26,7 @@ import EngineeringWorkspace    from "./components/EngineeringWorkspace.jsx";
 import IntelligencePanel       from "./components/IntelligencePanel.jsx";
 import PredictionPanel        from "./components/PredictionPanel.jsx";
 import GuardrailsDashboard    from "./components/GuardrailsDashboard.jsx";
+import RecommendationCenter   from "./components/RecommendationCenter.jsx";
 import DevOpsCenter            from "./components/DevOpsCenter.jsx";
 import SelfHealingCenter       from "./components/SelfHealingCenter.jsx";
 import AgentRegistryCenter     from "./components/AgentRegistryCenter.jsx";
@@ -141,6 +142,7 @@ const MORE_TABS = [
   { id: "intel",      label: "Intelligence"   },
   { id: "predict",    label: "Prediction"     },
   { id: "guardrails", label: "Guardrails"     },
+  { id: "recommend",  label: "Recommend"      },
   { id: "devops",     label: "DevOps"          },
   { id: "selfhealing",label: "Self-Healing"    },
   { id: "registry",   label: "Registry"        },
@@ -750,6 +752,7 @@ function AppInner() {
         {tab === "intel"         && <IntelligencePanel      onNavigate={setTab} />}
         {tab === "predict"       && <PredictionPanel        onNavigate={setTab} />}
         {tab === "guardrails"    && <GuardrailsDashboard    onNavigate={setTab} />}
+        {tab === "recommend"     && <RecommendationCenter   onNavigate={setTab} />}
         {tab === "devops"        && <DevOpsCenterV2         onNavigate={setTab} />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
         {tab === "registry"      && <AgentRegistryCenter   onNavigate={setTab} />}

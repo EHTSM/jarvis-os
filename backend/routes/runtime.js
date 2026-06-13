@@ -6148,6 +6148,646 @@ router.post("/runtime/guard/pre-action-warning", rateLimiter(20, 60_000), (req, 
     } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
 });
 
+// ── Phase B8 — Recommendation & Approval Layer ───────────────────────
+
+// ── B8 shared: decision log ───────────────────────────────────────────
+(function _initDecisionLog() {
+    try {
+        const fs   = require("fs");
+        const path = require("path");
+        const file = path.join(__dirname, "../../data/eng-decision-log.json");
+        if (!fs.existsSync(file)) fs.writeFileSync(file, "[]", "utf8");
+    } catch {}
+})();
+
+function _readDecisionLog() {
+    try {
+        const fs   = require("fs");
+        const path = require("path");
+        const file = path.join(__dirname, "../../data/eng-decision-log.json");
+        return JSON.parse(fs.readFileSync(file, "utf8"));
+    } catch { return []; }
+}
+
+function _writeDecisionLog(entries) {
+    try {
+        const fs   = require("fs");
+        const path = require("path");
+        const file = path.join(__dirname, "../../data/eng-decision-log.json");
+        // keep last 500
+        const trimmed = entries.slice(-500);
+        fs.writeFileSync(file, JSON.stringify(trimmed, null, 2), "utf8");
+        return true;
+    } catch { return false; }
+}
+
+function _appendDecision(entry) {
+    const log = _readDecisionLog();
+    log.push({ ...entry, id: `dec_${Date.now()}_${Math.random().toString(36).slice(2,6)}`, createdAt: new Date().toISOString() });
+    _writeDecisionLog(log);
+    return log[log.length - 1];
+}
+
+// ── B8 shared: confidence classifier ─────────────────────────────────
+// Returns { tier: "auto"|"review"|"block", label, reason }
+function _classifyConfidence(safetyScore, riskScore, confidenceScore) {
+    if (riskScore >= 70 || safetyScore < 40) {
+        return { tier: "block",  label: "Block", reason: `Risk ${riskScore}/100 or safety ${safetyScore}/100 exceeds threshold` };
+    }
+    if (safetyScore >= 80 && riskScore < 30 && confidenceScore >= 70) {
+        return { tier: "auto",   label: "Auto-apply", reason: `High safety (${safetyScore}), low risk (${riskScore}), high confidence (${confidenceScore}%)` };
+    }
+    return { tier: "review", label: "Manual review", reason: `Moderate safety/risk — operator approval recommended` };
+}
+
+// ── B8.1  POST /runtime/recommend/incident-fixes ──────────────────────
+// For a given incident: rank top 3 fixes with evidence scores
+router.post("/runtime/recommend/incident-fixes", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const { incidentId = "", limit = 3 } = req.body || {};
+
+        // Fetch the incident
+        let incident = null;
+        if (_incidentEngine && incidentId) {
+            try { incident = _incidentEngine.getIncident(incidentId); } catch {}
+        }
+        const incCtx = incident
+            ? `${incident.type || ""} ${incident.context || ""} ${incident.description || ""}`
+            : incidentId;
+        const words = incCtx.toLowerCase().split(/\W+/).filter(w => w.length > 3);
+
+        const candidates = [];
+
+        // Source 1: Knowledge base
+        if (_knowledgeMem) {
+            try {
+                const kb = _knowledgeMem.query({ search: words.slice(0, 5).join(" "), limit: 10 });
+                for (const k of kb) {
+                    if (!k.fix) continue;
+                    candidates.push({
+                        source:      "knowledge_base",
+                        fix:         k.fix,
+                        description: k.description || k.key || "",
+                        kind:        k.kind || "unknown",
+                        evidenceScore: 80,
+                        confidence:    75,
+                    });
+                }
+            } catch {}
+        }
+
+        // Source 2: Engineering memory — chains for similar goals
+        if (_engMemory) {
+            try {
+                const chains = _engMemory.suggestChains(incCtx.slice(0, 80));
+                for (const c of (chains || []).slice(0, 5)) {
+                    candidates.push({
+                        source:       "eng_memory",
+                        fix:          c.name || c.chainName || "Recovery chain",
+                        description:  c.description || c.goal || "",
+                        kind:         "chain",
+                        evidenceScore: Math.min(95, 50 + Math.round((c.confidence || 0) * 0.4)),
+                        confidence:    c.confidence || 60,
+                        steps:         c.steps?.length || 0,
+                    });
+                }
+            } catch {}
+        }
+
+        // Source 3: Applied patches on similar files/context
+        if (patchAssist) {
+            try {
+                const patches = patchAssist.listPatches({});
+                const applied = patches.filter(p => p.status === "applied");
+                for (const p of applied) {
+                    const pStr = `${p.reason || ""} ${p.filePath || ""}`.toLowerCase();
+                    const hits = words.filter(w => pStr.includes(w)).length;
+                    if (hits >= 2) {
+                        const safetyScore = _b7PatchSafetyScore(p).safetyScore;
+                        candidates.push({
+                            source:       "patch_history",
+                            fix:          `Reapply patch on ${p.filePath?.split("/").pop()}`,
+                            description:  p.reason || "",
+                            kind:         "patch",
+                            patchId:      p.id,
+                            filePath:     p.filePath,
+                            evidenceScore: Math.min(90, 40 + hits * 15 + Math.round(safetyScore * 0.2)),
+                            confidence:    safetyScore,
+                        });
+                    }
+                }
+            } catch {}
+        }
+
+        // Source 4: autoFixPlanner
+        if (_autoFixPlanner && incidentId) {
+            try {
+                const plan = _autoFixPlanner.getPlan(incidentId).catch?.() || _autoFixPlanner.getPlan(incidentId);
+                if (plan && plan.steps?.length > 0) {
+                    candidates.push({
+                        source:       "autofix_planner",
+                        fix:          plan.steps[0]?.action || "Execute auto-fix plan",
+                        description:  plan.description || `${plan.steps.length} steps`,
+                        kind:         "autofix_plan",
+                        planId:       plan.planId || plan.id,
+                        evidenceScore: 70,
+                        confidence:    65,
+                    });
+                }
+            } catch {}
+        }
+
+        // Deduplicate by fix text, sort by evidenceScore desc
+        const seen = new Set();
+        const ranked = candidates
+            .filter(c => { const key = c.fix?.slice(0, 40); if (seen.has(key)) return false; seen.add(key); return true; })
+            .sort((a, b) => b.evidenceScore - a.evidenceScore)
+            .slice(0, limit);
+
+        // Determine safest patch path
+        const safestPath = ranked.find(r => r.source === "eng_memory" || r.source === "knowledge_base");
+
+        return res.json({
+            success: true,
+            incidentId,
+            incident: incident ? { type: incident.type, severity: incident.severity, status: incident.status, context: incident.context?.slice(0, 120) } : null,
+            ranked,
+            safestPath: safestPath || ranked[0] || null,
+            totalCandidates: candidates.length,
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B8.1  GET /runtime/recommend/all-incidents
+// Rank fixes for ALL open incidents in one call
+router.get("/runtime/recommend/all-incidents", rateLimiter(10, 60_000), (req, res) => {
+    try {
+        if (!_incidentEngine) return res.json({ success: true, incidents: [], generatedAt: new Date().toISOString() });
+        const open = _incidentEngine.listIncidents({ status: "open", limit: 20 });
+        const results = [];
+        for (const inc of open) {
+            const words = `${inc.type || ""} ${inc.context || ""}`.toLowerCase().split(/\W+/).filter(w => w.length > 3);
+            const fixes = [];
+            if (_knowledgeMem) {
+                try {
+                    const kb = _knowledgeMem.query({ search: words.slice(0, 4).join(" "), limit: 3 });
+                    for (const k of kb) if (k.fix) fixes.push({ fix: k.fix, source: "knowledge_base", evidenceScore: 80, confidence: 75 });
+                } catch {}
+            }
+            if (_engMemory) {
+                try {
+                    const chains = _engMemory.suggestChains(`${inc.type} ${inc.context}`.slice(0, 60));
+                    for (const c of (chains || []).slice(0, 2)) {
+                        fixes.push({ fix: c.name || "Recovery chain", source: "eng_memory", evidenceScore: 65, confidence: c.confidence || 60 });
+                    }
+                } catch {}
+            }
+            fixes.sort((a, b) => b.evidenceScore - a.evidenceScore);
+            // Confidence tier
+            const top = fixes[0];
+            const tier = top ? _classifyConfidence(top.confidence || 60, 0, top.confidence || 60) : _classifyConfidence(50, 50, 50);
+            results.push({
+                incidentId: inc.id,
+                type:       inc.type,
+                severity:   inc.severity,
+                status:     inc.status,
+                context:    inc.context?.slice(0, 100),
+                fixes:      fixes.slice(0, 3),
+                topFix:     fixes[0] || null,
+                tier:       tier.tier,
+                tierLabel:  tier.label,
+                tierReason: tier.reason,
+            });
+        }
+        return res.json({ success: true, incidents: results, total: results.length, generatedAt: new Date().toISOString() });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B8.2  GET /runtime/approval-queue
+// Central queue: pending patches + pending auto-fixes + deploy risk
+router.get("/runtime/approval-queue", rateLimiter(15, 60_000), (req, res) => {
+    try {
+        const ps = _b6PatchStats();
+
+        // Pending patches with safety scores
+        const pendingPatches = ps.patches
+            .filter(p => p.status === "pending")
+            .map(p => {
+                const safety = _b7PatchSafetyScore(p);
+                const tier   = _classifyConfidence(safety.safetyScore, 100 - safety.safetyScore, safety.confidenceScore);
+                return {
+                    id:             p.id,
+                    filePath:       p.filePath,
+                    reason:         (p.reason || "").slice(0, 120),
+                    proposedAt:     p.proposedAt,
+                    safetyScore:    safety.safetyScore,
+                    confidenceScore: safety.confidenceScore,
+                    riskLevel:      safety.riskLevel,
+                    explanation:    safety.explanation,
+                    tier:           tier.tier,
+                    tierLabel:      tier.label,
+                    tierReason:     tier.reason,
+                    type:           "patch",
+                };
+            })
+            .sort((a, b) => b.safetyScore - a.safetyScore);
+
+        // Open incidents needing auto-fix approval
+        const pendingFixes = [];
+        if (_incidentEngine) {
+            try {
+                const openInc = _incidentEngine.listIncidents({ status: "open", limit: 20 });
+                for (const inc of openInc) {
+                    const tier = _classifyConfidence(50, 50, 50); // unknown until fix is ranked
+                    pendingFixes.push({
+                        id:          inc.id,
+                        type:        inc.type,
+                        severity:    inc.severity,
+                        context:     (inc.context || "").slice(0, 100),
+                        detectedAt:  inc.detectedAt,
+                        tier:        tier.tier,
+                        tierLabel:   tier.label,
+                        queueType:   "incident_fix",
+                    });
+                }
+            } catch {}
+        }
+
+        // Pending deploys: patches that are applied but not yet "deployed" (status applied)
+        const pendingDeploys = ps.patches
+            .filter(p => p.status === "applied")
+            .slice(0, 10)
+            .map(p => {
+                const safety = _b7PatchSafetyScore(p);
+                const risk   = Math.max(0, 100 - safety.safetyScore);
+                const tier   = _classifyConfidence(safety.safetyScore, risk, safety.confidenceScore);
+                return {
+                    id:          p.id,
+                    filePath:    p.filePath,
+                    appliedAt:   p.appliedAt,
+                    safetyScore: safety.safetyScore,
+                    riskLevel:   safety.riskLevel,
+                    tier:        tier.tier,
+                    tierLabel:   tier.label,
+                    queueType:   "deploy",
+                };
+            });
+
+        // Totals
+        const autoApplyCandidates = pendingPatches.filter(p => p.tier === "auto").length;
+        const reviewNeeded        = pendingPatches.filter(p => p.tier === "review").length;
+        const blocked             = pendingPatches.filter(p => p.tier === "block").length;
+
+        return res.json({
+            success: true,
+            pendingPatches,
+            pendingFixes,
+            pendingDeploys,
+            summary: {
+                totalPending:      pendingPatches.length + pendingFixes.length,
+                patchCount:        pendingPatches.length,
+                fixCount:          pendingFixes.length,
+                deployCount:       pendingDeploys.length,
+                autoApplyCandidates,
+                reviewNeeded,
+                blocked,
+            },
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B8.2 + B8.3  POST /runtime/approval-queue/:id/decide
+// Approve / Reject / Defer a queued item + log the decision
+router.post("/runtime/approval-queue/:id/decide", rateLimiter(20, 60_000), async (req, res) => {
+    try {
+        const { id } = req.params;
+        const {
+            decision      = "approve",   // "approve" | "reject" | "defer"
+            queueType     = "patch",      // "patch" | "incident_fix" | "deploy"
+            operatorId    = "operator",
+            reason        = "",
+            recommendation = "",
+        } = req.body || {};
+
+        let actionResult = null;
+        let outcome      = "pending";
+
+        if (decision === "approve") {
+            if (queueType === "patch" && patchAssist) {
+                try {
+                    actionResult = patchAssist.applyPatch(id, { approved: true });
+                    outcome = actionResult?.success ? "applied" : "failed";
+                } catch (e) { actionResult = { success: false, error: e.message }; outcome = "failed"; }
+            } else if (queueType === "incident_fix" && _autoFixPlanner) {
+                try {
+                    // Create a fix plan for the incident
+                    const plan = await Promise.resolve(_autoFixPlanner.plan(id, { operatorId }));
+                    actionResult = { success: true, planId: plan?.id || plan?.planId };
+                    outcome = "planned";
+                } catch (e) { actionResult = { success: false, error: e.message }; outcome = "failed"; }
+            } else {
+                actionResult = { success: true, note: "approved" };
+                outcome = "approved";
+            }
+        } else if (decision === "reject" && queueType === "patch" && patchAssist) {
+            try {
+                actionResult = patchAssist.rollbackPatch(id);
+                outcome = "rejected";
+            } catch (e) { actionResult = { success: false, error: e.message }; outcome = "failed"; }
+        } else {
+            actionResult = { success: true, note: decision };
+            outcome = decision;
+        }
+
+        // B8.4 — log the decision
+        const logEntry = _appendDecision({
+            itemId:         id,
+            queueType,
+            decision,
+            recommendation,
+            operatorId,
+            reason: reason.slice(0, 200),
+            outcome,
+            actionSuccess:  actionResult?.success ?? true,
+        });
+
+        // Feed outcome back into learning engine
+        if (_learningEngine && outcome !== "pending" && outcome !== "deferred") {
+            try {
+                _learningEngine.ingest({
+                    type:    `approval_${outcome}`,
+                    context: `${queueType} ${id} — ${decision} by ${operatorId}`,
+                    outcome: decision === "approve" ? "success" : "skipped",
+                });
+            } catch {}
+        }
+
+        // Also record in engineering memory for future reference
+        if (_engMemory && outcome !== "pending") {
+            try {
+                _engMemory.recordSessionOutcome({
+                    goal:    `${decision} ${queueType} ${id}`,
+                    outcome: decision === "approve" ? "success" : "skipped",
+                    steps:   [{ action: decision, detail: reason || recommendation }],
+                });
+            } catch {}
+        }
+
+        return res.json({
+            success: true,
+            itemId:  id,
+            decision,
+            outcome,
+            logId:   logEntry.id,
+            actionResult,
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B8.3  GET /runtime/recommend/automation-candidates
+// Items that qualify for auto-apply based on confidence + risk
+router.get("/runtime/recommend/automation-candidates", rateLimiter(15, 60_000), (req, res) => {
+    try {
+        const ps  = _b6PatchStats();
+        const hs  = _b6HealStats();
+
+        const candidates = [];
+
+        // Pending patches that score "auto" tier
+        for (const p of ps.patches.filter(p => p.status === "pending")) {
+            const safety = _b7PatchSafetyScore(p);
+            const risk   = Math.max(0, 100 - safety.safetyScore);
+            const tier   = _classifyConfidence(safety.safetyScore, risk, safety.confidenceScore);
+            if (tier.tier === "auto") {
+                candidates.push({
+                    type:           "patch",
+                    id:             p.id,
+                    filePath:       p.filePath,
+                    reason:         (p.reason || "").slice(0, 100),
+                    safetyScore:    safety.safetyScore,
+                    confidenceScore: safety.confidenceScore,
+                    riskLevel:      safety.riskLevel,
+                    tierLabel:      tier.label,
+                    tierReason:     tier.reason,
+                    proposedAt:     p.proposedAt,
+                });
+            }
+        }
+
+        // Applied patches with high heal rate for context
+        const autoDeployable = ps.patches
+            .filter(p => p.status === "applied")
+            .map(p => {
+                const safety = _b7PatchSafetyScore(p);
+                const tier   = _classifyConfidence(safety.safetyScore, 100 - safety.safetyScore, safety.confidenceScore);
+                return { ...p, safety, tier };
+            })
+            .filter(p => p.tier.tier === "auto")
+            .slice(0, 5)
+            .map(p => ({
+                type:           "deploy",
+                id:             p.id,
+                filePath:       p.filePath,
+                safetyScore:    p.safety.safetyScore,
+                confidenceScore: p.safety.confidenceScore,
+                tierLabel:      p.tier.label,
+                tierReason:     p.tier.reason,
+                appliedAt:      p.appliedAt,
+            }));
+
+        candidates.push(...autoDeployable);
+
+        // Platform context
+        const platformScore = hs.healRate != null ? Math.round(hs.healRate * 100) : 70;
+        const platformReady = platformScore >= 70 && ps.rolled / Math.max(ps.total, 1) < 0.3;
+
+        return res.json({
+            success: true,
+            candidates,
+            total: candidates.length,
+            platformReady,
+            platformScore,
+            rollbackRate: ps.total > 0 ? Math.round((ps.rolled / ps.total) * 100) : 0,
+            healRate:     hs.healRate != null ? Math.round(hs.healRate * 100) : null,
+            generatedAt:  new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B8.4  GET /runtime/decisions
+// Engineering decision log with optional filter
+router.get("/runtime/decisions", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const { queueType, decision, limit = 50 } = req.query;
+        let log = _readDecisionLog();
+        if (queueType) log = log.filter(e => e.queueType === queueType);
+        if (decision)  log = log.filter(e => e.decision === decision);
+        const sorted = log.slice().reverse().slice(0, parseInt(limit) || 50);
+
+        // Stats
+        const total    = log.length;
+        const approved = log.filter(e => e.decision === "approve").length;
+        const rejected = log.filter(e => e.decision === "reject").length;
+        const deferred = log.filter(e => e.decision === "defer").length;
+        const successRate = approved > 0
+            ? Math.round((log.filter(e => e.decision === "approve" && e.outcome === "applied").length / approved) * 100)
+            : null;
+
+        return res.json({
+            success: true,
+            entries: sorted,
+            stats: { total, approved, rejected, deferred, successRate },
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B8.4  POST /runtime/decisions
+// Manually record a decision (for UI-driven approvals not going through the queue endpoint)
+router.post("/runtime/decisions", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const { itemId, queueType, decision, recommendation, operatorId, reason, outcome } = req.body || {};
+        if (!itemId || !decision) return res.status(400).json({ success: false, error: "itemId and decision required" });
+
+        const entry = _appendDecision({ itemId, queueType, decision, recommendation, operatorId: operatorId || "operator", reason: (reason || "").slice(0, 200), outcome: outcome || decision });
+
+        // Feed back into learning
+        if (_learningEngine) {
+            try {
+                _learningEngine.ingest({ type: `decision_${decision}`, context: `${queueType} ${itemId}`, outcome: decision === "approve" ? "success" : "skipped" });
+            } catch {}
+        }
+
+        return res.json({ success: true, entry, generatedAt: new Date().toISOString() });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B8.5  GET /runtime/recommend/deploys
+// Recommended deploys: applied patches ranked by safety + confidence
+router.get("/runtime/recommend/deploys", rateLimiter(15, 60_000), (req, res) => {
+    try {
+        const ps = _b6PatchStats();
+        const deploys = ps.patches
+            .filter(p => p.status === "applied")
+            .map(p => {
+                const safety = _b7PatchSafetyScore(p);
+                const risk   = Math.max(0, 100 - safety.safetyScore);
+                const tier   = _classifyConfidence(safety.safetyScore, risk, safety.confidenceScore);
+                return {
+                    id:             p.id,
+                    filePath:       p.filePath,
+                    reason:         (p.reason || "").slice(0, 120),
+                    appliedAt:      p.appliedAt,
+                    safetyScore:    safety.safetyScore,
+                    confidenceScore: safety.confidenceScore,
+                    riskLevel:      safety.riskLevel,
+                    tier:           tier.tier,
+                    tierLabel:      tier.label,
+                    tierReason:     tier.reason,
+                };
+            })
+            .sort((a, b) => b.safetyScore - a.safetyScore);
+
+        return res.json({ success: true, deploys, total: deploys.length, generatedAt: new Date().toISOString() });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B8.6  GET /runtime/recommend/autonomous-readiness
+// Single composite score across 5 signals: prediction quality, prevention quality,
+// approval success rate, rollback rate, incident recurrence
+router.get("/runtime/recommend/autonomous-readiness", rateLimiter(10, 60_000), (req, res) => {
+    try {
+        const ps = _b6PatchStats();
+        const hs = _b6HealStats();
+
+        // Signal 1: Prediction quality — proxy: decisions with known outcomes
+        const log = _readDecisionLog();
+        const decisionTotal    = log.length;
+        const decisionApproved = log.filter(e => e.decision === "approve").length;
+        const decisionApplied  = log.filter(e => e.outcome === "applied").length;
+        const predictionScore  = decisionTotal > 0
+            ? Math.min(100, Math.round((decisionApplied / Math.max(decisionApproved, 1)) * 100))
+            : 60; // baseline when no decisions yet
+
+        // Signal 2: Prevention quality — guardrails caught risky ops
+        // Proxy: patches that went through guard and succeeded vs total
+        const guardedSuccess = log.filter(e => e.queueType === "patch" && e.outcome === "applied").length;
+        const guardedTotal   = log.filter(e => e.queueType === "patch").length;
+        const preventionScore = guardedTotal > 0
+            ? Math.min(100, Math.round((guardedSuccess / guardedTotal) * 100))
+            : 70; // baseline
+
+        // Signal 3: Approval success rate
+        const approvedSuccess = log.filter(e => e.decision === "approve" && (e.outcome === "applied" || e.outcome === "approved" || e.outcome === "planned")).length;
+        const approvalScore   = decisionApproved > 0
+            ? Math.min(100, Math.round((approvedSuccess / decisionApproved) * 100))
+            : 65;
+
+        // Signal 4: Rollback rate (lower is better → invert)
+        const rollbackRate  = ps.total > 0 ? ps.rolled / ps.total : 0;
+        const rollbackScore = Math.round((1 - rollbackRate) * 100);
+
+        // Signal 5: Incident recurrence (fewer repeated incidents = better)
+        let recurrenceScore = 80; // baseline
+        if (_incidentEngine && _learningEngine) {
+            try {
+                const repeated = _learningEngine.detectRepeated ? _learningEngine.detectRepeated() : [];
+                const openInc  = _incidentEngine.listIncidents({ status: "open", limit: 50 });
+                // If repeated patterns = 0 and open incidents < 3, score high
+                if (repeated.length === 0 && openInc.length < 3) recurrenceScore = 95;
+                else if (repeated.length < 3 && openInc.length < 5) recurrenceScore = 80;
+                else if (repeated.length < 6 || openInc.length < 10) recurrenceScore = 60;
+                else recurrenceScore = 40;
+            } catch {}
+        }
+
+        // Weighted composite: prediction 20, prevention 20, approval 20, rollback 25, recurrence 15
+        const WEIGHTS = [
+            { name: "Prediction Quality",   score: predictionScore,  weight: 0.20, rawValue: `${decisionApplied}/${decisionApproved} decisions applied`,  detail: "Based on decision log outcomes" },
+            { name: "Prevention Quality",   score: preventionScore,  weight: 0.20, rawValue: `${guardedSuccess}/${guardedTotal} guarded ops succeeded`,    detail: "Guardrail enforcement success" },
+            { name: "Approval Success Rate", score: approvalScore,   weight: 0.20, rawValue: `${approvedSuccess}/${decisionApproved} approvals succeeded`, detail: "Operator approval outcomes" },
+            { name: "Rollback Rate",         score: rollbackScore,   weight: 0.25, rawValue: `${ps.rolled}/${ps.total} patches rolled back (${Math.round(rollbackRate*100)}%)`, detail: "Lower rollback = higher score" },
+            { name: "Incident Recurrence",   score: recurrenceScore, weight: 0.15, rawValue: `Score: ${recurrenceScore}`,                                  detail: "Repeated pattern detection" },
+        ];
+
+        const compositeScore = Math.round(WEIGHTS.reduce((acc, s) => acc + s.score * s.weight, 0));
+        const level = compositeScore >= 85 ? "fully_autonomous"
+            : compositeScore >= 70 ? "mostly_autonomous"
+            : compositeScore >= 55 ? "supervised"
+            : "manual";
+
+        const badge = level === "fully_autonomous" ? "🤖 Fully Autonomous"
+            : level === "mostly_autonomous"        ? "⚙ Mostly Autonomous"
+            : level === "supervised"               ? "👁 Supervised"
+            : "✋ Manual";
+
+        const strengths = WEIGHTS.filter(s => s.score >= 80).map(s => s.name);
+        const blockers  = WEIGHTS
+            .filter(s => s.score < 60)
+            .map(s => ({ signal: s.name, score: s.score, recommendation: s.score < 40 ? `Critical: improve ${s.name}` : `Address ${s.name} to increase autonomy` }));
+
+        return res.json({
+            success: true,
+            compositeScore,
+            level,
+            badge,
+            signals: WEIGHTS,
+            strengths,
+            blockers,
+            meta: {
+                patchTotal:     ps.total,
+                rolledBack:     ps.rolled,
+                decisionTotal,
+                healTotal:      hs.total,
+            },
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
 // Phase 572 — Task Understanding
 router.post("/runtime/engineering/understand", rateLimiter(30, 60_000), (req, res) => {
     if (!taskUnderstand) return res.status(503).json({ success: false, error: "taskUnderstanding_unavailable" });
