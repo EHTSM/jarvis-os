@@ -340,3 +340,60 @@ export async function getReadinessScore() {
   try { return await _fetch("/runtime/predict/readiness-score"); }
   catch (err) { return { success: false, error: err.message }; }
 }
+
+// ── B7 Guardrail APIs ─────────────────────────────────────────────────
+
+export async function preDeployGuard(pipelineName = "standard-deploy", filePaths = [], request = "", threshold = 70, operatorOverride = false) {
+  try {
+    return await _fetch("/runtime/guard/pre-deploy", {
+      method: "POST",
+      body: JSON.stringify({ pipelineName, filePaths, request, threshold, operatorOverride }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getPatchSafetyScore(patchId) {
+  try { return await _fetch(`/runtime/guard/patch-safety/${encodeURIComponent(patchId)}`); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getPatchSafetyBatch(patchIds = []) {
+  try {
+    return await _fetch("/runtime/guard/patch-safety-batch", {
+      method: "POST",
+      body: JSON.stringify({ patchIds }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function checkIncidentPrevention(task = "", filePath = "") {
+  try {
+    return await _fetch("/runtime/guard/incident-check", {
+      method: "POST",
+      body: JSON.stringify({ task, filePath }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function checkRegression(filePath = "", description = "", patchId = "") {
+  try {
+    return await _fetch("/runtime/guard/regression-check", {
+      method: "POST",
+      body: JSON.stringify({ filePath, description, patchId }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getGuardrailsDashboard() {
+  try { return await _fetch("/runtime/guard/dashboard"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function preActionWarning(action = "apply", patchId = "", filePath = "", task = "", pipelineName = "standard-deploy") {
+  try {
+    return await _fetch("/runtime/guard/pre-action-warning", {
+      method: "POST",
+      body: JSON.stringify({ action, patchId, filePath, task, pipelineName }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}

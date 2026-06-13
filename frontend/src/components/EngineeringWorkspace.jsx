@@ -7,6 +7,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { track } from "../analytics";
 import { BASE_URL } from "../_client";
 import { getRuntimeStatus, getDLQ, listPatches, getRuntimeHistory } from "../runtimeApi";
+import { PreActionWarning, PreDeployGuard, IncidentPreventionBanner, RegressionBanner } from "./GuardrailsDashboard";
 
 // ── fetch helpers ─────────────────────────────────────────────────────
 
@@ -210,6 +211,10 @@ export default function EngineeringWorkspace() {
 
   const promptRef = useRef(null);
 
+  // B7 — guardrail state
+  const [preActionWarning, setPreActionWarning] = useState(null); // { action, patchId, filePath, task, resolve, reject }
+  const [preDeployGuard,   setPreDeployGuard]   = useState(null); // { pipelineName, filePaths, request, resolve, reject }
+
   // helper to update a single stage
   const setStage = useCallback((name, patch) => {
     setStages(prev => ({ ...prev, [name]: { ...prev[name], ...patch } }));
@@ -247,6 +252,27 @@ export default function EngineeringWorkspace() {
     const t = setInterval(refreshObs, 20000);
     return () => clearInterval(t);
   }, [refreshObs, refreshPatches, refreshLearn]);
+
+  // ── B7 Guardrail helpers ──────────────────────────────────────────────
+
+  // Returns a promise that resolves true (proceed) or false (cancelled)
+  function _showPreActionWarning(action, patchId, filePath, task) {
+    return new Promise(resolve => {
+      setPreActionWarning({ action, patchId, filePath, task,
+        onProceed: () => { setPreActionWarning(null); resolve(true);  },
+        onCancel:  () => { setPreActionWarning(null); resolve(false); },
+      });
+    });
+  }
+
+  function _showPreDeployGuard(pipelineName, filePaths, request) {
+    return new Promise(resolve => {
+      setPreDeployGuard({ pipelineName, filePaths, request,
+        onAllow: () => { setPreDeployGuard(null); resolve(true);  },
+        onBlock: () => { setPreDeployGuard(null); resolve(false); },
+      });
+    });
+  }
 
   // ── MAIN LOOP: Prompt → Plan → Patch → Test → Apply → Deploy → Observe → Heal → Learn ──
 
@@ -301,6 +327,13 @@ export default function EngineeringWorkspace() {
         setPatchList(prev => [targetPatch, ...prev.filter(p => p.id !== targetPatch.id)]);
         setStage("patch", { status: "done", patchId: targetPatch.id, filePath: targetPatch.filePath, diff });
 
+        // ── B7: Pre-apply warning ──
+        const applyOk = await _showPreActionWarning("apply", targetPatch.id, targetPatch.filePath, prompt);
+        if (!applyOk) {
+          setStage("apply", { status: "skipped", note: "Blocked by guardrail" });
+          setRunning(false); return;
+        }
+
         // ── Stage 3+4+5: Test → Apply → Deploy (auto-pipeline) ──
         setStage("test",  { status: "running" });
         const auto = await _post(`/runtime/patches/${targetPatch.id}/auto-pipeline`, {
@@ -342,15 +375,22 @@ export default function EngineeringWorkspace() {
       }
 
       // ── Stage 5: Deploy ──
-      setStage("deploy", { status: "running" });
-      try {
-        const deploy = await _post("/runtime/pipeline/run", {
-          request: prompt, sessionId: sid, autoDeploy: true, skipCodeGen: true
-        });
-        const deployed = deploy?.stages?.some(s => s.stage === "deploy" && s.status === "success");
-        setStage("deploy", { status: deployed ? "done" : "skipped", note: deployed ? "Deployed" : "No deploy stage in pipeline" });
-      } catch {
-        setStage("deploy", { status: "skipped" });
+      // B7.1 Pre-deploy guard
+      const deployFilePaths = activePatch?.filePath ? [activePatch.filePath] : [];
+      const deployAllowed = await _showPreDeployGuard("standard-deploy", deployFilePaths, prompt);
+      if (!deployAllowed) {
+        setStage("deploy", { status: "skipped", note: "Blocked by pre-deploy guard" });
+      } else {
+        setStage("deploy", { status: "running" });
+        try {
+          const deploy = await _post("/runtime/pipeline/run", {
+            request: prompt, sessionId: sid, autoDeploy: true, skipCodeGen: true
+          });
+          const deployed = deploy?.stages?.some(s => s.stage === "deploy" && s.status === "success");
+          setStage("deploy", { status: deployed ? "done" : "skipped", note: deployed ? "Deployed" : "No deploy stage in pipeline" });
+        } catch {
+          setStage("deploy", { status: "skipped" });
+        }
       }
 
       // ── Stage 6: Observe ──
@@ -393,6 +433,9 @@ export default function EngineeringWorkspace() {
 
   // ── Incident → Fix handler (from Heal panel) ──
   async function handleIncidentFix(incidentId) {
+    // B7.6 pre-action warning for auto-fix
+    const ok = await _showPreActionWarning("auto-fix", "", "", `Auto-fix incident ${incidentId}`);
+    if (!ok) return;
     setStage("heal", { status: "running" });
     const r = await _post(`/runtime/incidents/${incidentId}/auto-fix`, { operatorId: "workspace", queueApproval: true }).catch(() => null);
     if (r?.success) {
@@ -407,6 +450,10 @@ export default function EngineeringWorkspace() {
 
   // ── Manual patch auto-pipeline ──
   async function handleManualAutoPipeline(patchId) {
+    // B7.6 pre-action warning for manual apply
+    const p = patchList.find(x => x.id === patchId);
+    const ok = await _showPreActionWarning("apply", patchId, p?.filePath || "", "Manual patch apply");
+    if (!ok) return;
     setStage("test",  { status: "running" });
     setStage("apply", { status: "running" });
     const r = await _post(`/runtime/patches/${patchId}/auto-pipeline`, { autoRollback: true, operatorId: "workspace" }).catch(() => null);
@@ -442,6 +489,28 @@ export default function EngineeringWorkspace() {
         @keyframes ws-pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
       `}</style>
 
+      {/* B7 Guardrail overlays */}
+      {preActionWarning && (
+        <PreActionWarning
+          action={preActionWarning.action}
+          patchId={preActionWarning.patchId}
+          filePath={preActionWarning.filePath}
+          task={preActionWarning.task}
+          onProceed={preActionWarning.onProceed}
+          onCancel={preActionWarning.onCancel}
+        />
+      )}
+      {preDeployGuard && (
+        <PreDeployGuard
+          pipelineName={preDeployGuard.pipelineName}
+          filePaths={preDeployGuard.filePaths}
+          request={preDeployGuard.request}
+          threshold={70}
+          onAllow={preDeployGuard.onAllow}
+          onBlock={preDeployGuard.onBlock}
+        />
+      )}
+
       {/* Header */}
       <div style={{ marginBottom: 20 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
@@ -468,6 +537,13 @@ export default function EngineeringWorkspace() {
           rows={3}
           style={{ width: "100%", boxSizing: "border-box", padding: "10px 12px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, color: "#e6edf3", fontSize: 13, fontFamily: "inherit", resize: "vertical", lineHeight: 1.5 }}
         />
+        {/* B7 — incident prevention + regression banners */}
+        {prompt.trim().length > 10 && !running && (
+          <>
+            <IncidentPreventionBanner task={prompt} filePath={activePatch?.filePath || ""} />
+            <RegressionBanner filePath={activePatch?.filePath || ""} description={prompt} patchId={activePatch?.patchId || ""} />
+          </>
+        )}
         <div style={{ display: "flex", gap: 8, marginTop: 8, alignItems: "center" }}>
           <Pill variant="primary" onClick={runLoop} disabled={!prompt.trim() || running}>
             {running ? "Running loop…" : "⟳  Run Full Loop  ⌘↵"}

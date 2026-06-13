@@ -5422,6 +5422,732 @@ router.get("/runtime/predict/readiness-score", rateLimiter(10, 60_000), (req, re
     } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
 });
 
+// ── Phase B7 — Preventive Engineering ────────────────────────────────
+
+// ── shared helpers (B7) ───────────────────────────────────────────────
+
+// Returns per-file risk map: { [filePath]: { rollbackRate, total, rolledBack, applied, pending } }
+function _b7FileRiskMap() {
+    const { byFile } = _b6PatchStats();
+    const map = {};
+    for (const [file, stats] of Object.entries(byFile)) {
+        map[file] = {
+            ...stats,
+            rollbackRate: stats.total > 0 ? Math.round((stats.rolledBack / stats.total) * 100) : 0,
+        };
+    }
+    return map;
+}
+
+// Score a single patch for safety using real data. Returns { safetyScore, confidenceScore, riskLevel, explanation }
+function _b7PatchSafetyScore(patch) {
+    const { byFile } = _b6PatchStats();
+    const filePath = patch?.filePath || "";
+    const fileStats = byFile[filePath] || null;
+
+    let safetyScore   = 100; // start safe
+    let confidenceScore = 75;
+    const reasons = [];
+
+    // Deduct for file rollback history
+    if (fileStats) {
+        const rr = fileStats.total > 0 ? fileStats.rolledBack / fileStats.total : 0;
+        if (rr > 0.5) {
+            safetyScore  -= 35;
+            confidenceScore = 90;
+            reasons.push(`${Math.round(rr * 100)}% rollback rate on ${filePath.split("/").pop()} (${fileStats.rolledBack}/${fileStats.total})`);
+        } else if (rr > 0.25) {
+            safetyScore  -= 18;
+            confidenceScore = 80;
+            reasons.push(`${Math.round(rr * 100)}% rollback rate on ${filePath.split("/").pop()}`);
+        } else if (fileStats.applied >= 3) {
+            // file has been patched cleanly many times — boost
+            safetyScore  = Math.min(100, safetyScore + 5);
+            reasons.push(`${fileStats.applied} prior clean patches on this file`);
+        }
+    } else if (filePath) {
+        reasons.push("First patch on this file — no history");
+        confidenceScore = 55;
+    }
+
+    // Deduct for platform-level rollback rate
+    const ps = _b6PatchStats();
+    if (ps.total > 5) {
+        const platformRr = ps.rolled / ps.total;
+        if (platformRr > 0.4) {
+            safetyScore  -= 20;
+            reasons.push(`Platform rollback rate is high (${Math.round(platformRr * 100)}%)`);
+        } else if (platformRr > 0.2) {
+            safetyScore  -= 8;
+            reasons.push(`Platform rollback rate is elevated (${Math.round(platformRr * 100)}%)`);
+        }
+    }
+
+    // Deduct for recent open incidents touching the same file
+    let incidentHits = 0;
+    if (_incidentEngine) {
+        try {
+            const incs = _incidentEngine.listIncidents({ status: "open", limit: 20 });
+            incidentHits = incs.filter(i => filePath && (i.context || "").includes(filePath.split("/").pop())).length;
+            if (incidentHits > 0) {
+                safetyScore  -= incidentHits * 8;
+                reasons.push(`${incidentHits} open incident(s) related to this file`);
+            }
+        } catch {}
+    }
+
+    // Deduct for execution errors
+    if (_execHistory) {
+        try {
+            const recent = _execHistory.recent(30);
+            const errors = recent.filter(e => e.status === "error" || e.status === "failed");
+            if (errors.length > 5) {
+                safetyScore  -= 10;
+                reasons.push(`${errors.length} execution errors in recent history`);
+            }
+        } catch {}
+    }
+
+    safetyScore = Math.max(0, Math.min(100, safetyScore));
+    const riskLevel = safetyScore >= 80 ? "low" : safetyScore >= 60 ? "moderate" : safetyScore >= 40 ? "high" : "critical";
+
+    return { safetyScore, confidenceScore, riskLevel, explanation: reasons };
+}
+
+// B7.1 + B7.6 — Pre-deploy guard: check risk before allowing a deploy
+// POST /runtime/guard/pre-deploy
+// Body: { pipelineName, filePaths[], request, threshold, operatorOverride }
+router.post("/runtime/guard/pre-deploy", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const {
+            pipelineName  = "standard-deploy",
+            filePaths     = [],
+            request       = "",
+            threshold     = 70,     // block if riskScore >= threshold
+            operatorOverride = false,
+        } = req.body || {};
+
+        const ps = _b6PatchStats();
+
+        // Composite risk from patch history for these files
+        const fileRiskMap = _b7FileRiskMap();
+        const fileRisks = filePaths.map(fp => ({
+            filePath: fp,
+            ...(fileRiskMap[fp] || { rollbackRate: 0, total: 0, rolledBack: 0, applied: 0, pending: 0 }),
+        }));
+
+        let riskScore    = 0;
+        const factors    = [];
+        const warnings   = [];
+
+        // Factor: files with high rollback rate
+        const highRiskFiles = fileRisks.filter(f => f.rollbackRate > 40);
+        if (highRiskFiles.length > 0) {
+            riskScore += Math.min(40, highRiskFiles.length * 15);
+            factors.push({ factor: "high_risk_files", weight: Math.min(40, highRiskFiles.length * 15),
+                detail: `${highRiskFiles.length} file(s) with >40% rollback rate`,
+                files: highRiskFiles.map(f => f.filePath) });
+        }
+
+        // Factor: platform rollback rate
+        if (ps.total > 3) {
+            const rr = ps.rolled / ps.total;
+            if (rr > 0.4) {
+                riskScore += 25;
+                factors.push({ factor: "platform_rollback_rate", weight: 25, detail: `${Math.round(rr * 100)}% platform rollback rate` });
+            } else if (rr > 0.2) {
+                riskScore += 10;
+                factors.push({ factor: "elevated_platform_rollback", weight: 10, detail: `${Math.round(rr * 100)}% platform rollback rate` });
+            }
+        }
+
+        // Factor: open incidents
+        if (_incidentEngine) {
+            try {
+                const openInc = _incidentEngine.listIncidents({ status: "open", limit: 10 });
+                if (openInc.length > 0) {
+                    riskScore += Math.min(20, openInc.length * 5);
+                    factors.push({ factor: "open_incidents", weight: Math.min(20, openInc.length * 5),
+                        detail: `${openInc.length} open incident(s) on platform` });
+                }
+            } catch {}
+        }
+
+        // Factor: failure intelligence preflight
+        if (_failIntelEngine && pipelineName) {
+            try {
+                const est = _failIntelEngine.estimateDeploymentRisk(pipelineName);
+                if (est && est.riskScore > 30) {
+                    const w = Math.round(est.riskScore * 0.3);
+                    riskScore += w;
+                    factors.push({ factor: "pipeline_preflight", weight: w,
+                        detail: `Failure intelligence: ${est.riskScore}% risk for pipeline "${pipelineName}"` });
+                }
+            } catch {}
+        }
+
+        // Recent similar failed patches
+        const similarFailed = ps.patches.filter(p =>
+            (p.status === "rolled-back" || p.status === "rolled_back") &&
+            filePaths.some(fp => p.filePath === fp)
+        );
+        if (similarFailed.length > 0) {
+            riskScore += Math.min(20, similarFailed.length * 7);
+            factors.push({ factor: "similar_failed_patches", weight: Math.min(20, similarFailed.length * 7),
+                detail: `${similarFailed.length} similar patch(es) previously rolled back` });
+            warnings.push(...similarFailed.slice(0, 3).map(p => `Rollback: ${p.filePath?.split("/").pop()} (${p.patchId?.slice(0, 8)})`));
+        }
+
+        riskScore = Math.min(100, riskScore);
+        const riskLevel = riskScore < 30 ? "low" : riskScore < 60 ? "moderate" : riskScore < 80 ? "high" : "critical";
+        const blocked   = riskScore >= threshold && !operatorOverride;
+
+        // Safer alternatives from knowledge base
+        const alternatives = [];
+        if (_knowledgeMem && filePaths.length > 0) {
+            try {
+                const kb = _knowledgeMem.query({ search: filePaths[0].split("/").pop(), limit: 3 });
+                for (const k of kb) {
+                    if (k.fix) alternatives.push(k.fix);
+                }
+            } catch {}
+        }
+
+        return res.json({
+            success: true,
+            blocked,
+            riskScore,
+            riskLevel,
+            threshold,
+            operatorOverride,
+            factors,
+            warnings,
+            alternatives: alternatives.slice(0, 2),
+            fileRisks,
+            meta: { totalPatches: ps.total, rolled: ps.rolled, pipelineName, filesChecked: filePaths.length },
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B7.2 — Patch safety score
+// GET /runtime/guard/patch-safety/:id
+router.get("/runtime/guard/patch-safety/:id", rateLimiter(30, 60_000), (req, res) => {
+    if (!patchAssist) return res.status(503).json({ success: false, error: "patchAssistant_unavailable" });
+    try {
+        const patch = patchAssist.getPatch(req.params.id);
+        if (!patch) return res.status(404).json({ success: false, error: "patch_not_found" });
+        const score = _b7PatchSafetyScore(patch);
+
+        // Also fetch similar failed patches for context
+        const ps = _b6PatchStats();
+        const similarFailed = ps.patches.filter(p =>
+            (p.status === "rolled-back" || p.status === "rolled_back") &&
+            patch.filePath && p.filePath === patch.filePath && p.patchId !== patch.patchId
+        ).slice(0, 3);
+
+        // KB matches
+        let kbMatches = [];
+        if (_knowledgeMem && patch.filePath) {
+            try {
+                kbMatches = _knowledgeMem.query({ search: patch.filePath.split("/").pop(), limit: 3 });
+            } catch {}
+        }
+
+        return res.json({
+            success: true,
+            patchId:        patch.patchId,
+            filePath:       patch.filePath,
+            safetyScore:    score.safetyScore,
+            confidenceScore: score.confidenceScore,
+            riskLevel:      score.riskLevel,
+            explanation:    score.explanation,
+            similarFailed,
+            kbMatches,
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B7.2 — Batch safety scores for patch list
+// POST /runtime/guard/patch-safety-batch
+// Body: { patchIds[] }
+router.post("/runtime/guard/patch-safety-batch", rateLimiter(20, 60_000), (req, res) => {
+    if (!patchAssist) return res.status(503).json({ success: false, error: "patchAssistant_unavailable" });
+    try {
+        const { patchIds = [] } = req.body || {};
+        const scores = [];
+        for (const id of patchIds.slice(0, 20)) {
+            try {
+                const patch = patchAssist.getPatch(id);
+                if (!patch) continue;
+                const score = _b7PatchSafetyScore(patch);
+                scores.push({ patchId: id, filePath: patch.filePath, ...score });
+            } catch {}
+        }
+        return res.json({ success: true, scores, generatedAt: new Date().toISOString() });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B7.3 — Incident prevention: match current task against prior incident patterns
+// POST /runtime/guard/incident-check
+// Body: { task, filePath }
+router.post("/runtime/guard/incident-check", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const { task = "", filePath = "" } = req.body || {};
+        const query = `${task} ${filePath}`.toLowerCase();
+        const words = query.split(/\W+/).filter(w => w.length > 3);
+
+        const matches   = [];
+        const warnings  = [];
+
+        // Match against open + resolved incidents
+        if (_incidentEngine) {
+            try {
+                const allInc = [
+                    ..._incidentEngine.listIncidents({ status: "open",     limit: 20 }),
+                    ..._incidentEngine.listIncidents({ status: "resolved", limit: 20 }),
+                ];
+                for (const inc of allInc) {
+                    const ctx = `${inc.type || ""} ${inc.context || ""} ${inc.description || ""}`.toLowerCase();
+                    const hits = words.filter(w => ctx.includes(w)).length;
+                    if (hits >= 2 || (words.length <= 2 && hits >= 1)) {
+                        matches.push({
+                            incidentId: inc.id,
+                            type:       inc.type,
+                            severity:   inc.severity,
+                            status:     inc.status,
+                            context:    inc.context?.slice(0, 120),
+                            matchScore: Math.round((hits / Math.max(words.length, 1)) * 100),
+                        });
+                    }
+                }
+            } catch {}
+        }
+
+        // Match against repeated failure patterns from learningEngine
+        if (_learningEngine) {
+            try {
+                const repeated = _learningEngine.detectRepeated ? _learningEngine.detectRepeated() : [];
+                for (const pat of (repeated || [])) {
+                    const patStr = `${pat.type || ""} ${pat.context || ""} ${pat.description || ""}`.toLowerCase();
+                    const hits   = words.filter(w => patStr.includes(w)).length;
+                    if (hits >= 1) {
+                        warnings.push({
+                            type:        "repeated_failure_pattern",
+                            description: pat.description || pat.type || "Repeated failure",
+                            count:       pat.count || 1,
+                            matchScore:  Math.round((hits / Math.max(words.length, 1)) * 100),
+                        });
+                    }
+                }
+            } catch {}
+        }
+
+        // Match against known failure patterns from failureIntelligenceEngine
+        if (_failIntelEngine && _failIntelEngine.FAILURE_PATTERNS) {
+            try {
+                for (const fp of _failIntelEngine.FAILURE_PATTERNS) {
+                    const patStr = `${fp.type || ""} ${fp.pattern || ""}`.toLowerCase();
+                    const hits   = words.filter(w => patStr.includes(w)).length;
+                    if (hits >= 1) {
+                        warnings.push({
+                            type:        "known_failure_pattern",
+                            description: fp.pattern || fp.type,
+                            matchScore:  Math.round((hits / Math.max(words.length, 1)) * 100),
+                        });
+                    }
+                }
+            } catch {}
+        }
+
+        // Execution history — recent errors matching query
+        const execMatches = [];
+        if (_execHistory) {
+            try {
+                const recent = _execHistory.recent(50);
+                for (const e of recent) {
+                    if (e.status !== "error" && e.status !== "failed") continue;
+                    const eStr = `${e.input || ""} ${e.error || ""}`.toLowerCase();
+                    const hits = words.filter(w => eStr.includes(w)).length;
+                    if (hits >= 2) {
+                        execMatches.push({
+                            executionId: e.id,
+                            input:       (e.input || "").slice(0, 80),
+                            error:       (e.error || "").slice(0, 80),
+                            ts:          e.ts,
+                            matchScore:  Math.round((hits / Math.max(words.length, 1)) * 100),
+                        });
+                    }
+                }
+            } catch {}
+        }
+
+        const totalMatches = matches.length + warnings.length + execMatches.length;
+        const shouldWarn   = totalMatches > 0;
+        const severity     = matches.some(m => m.severity === "critical") ? "critical"
+            : matches.length > 2 ? "high"
+            : totalMatches > 1  ? "moderate"
+            : totalMatches > 0  ? "low" : "none";
+
+        return res.json({
+            success: true,
+            shouldWarn,
+            severity,
+            incidentMatches: matches.slice(0, 5),
+            failurePatterns: warnings.slice(0, 5),
+            execHistory:     execMatches.slice(0, 5),
+            summary: shouldWarn
+                ? `${totalMatches} prior incident/pattern match(es) found for this task`
+                : "No prior incident patterns detected — safe to proceed",
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B7.4 — Regression prevention: compare proposed patch against rollback/failed history
+// POST /runtime/guard/regression-check
+// Body: { filePath, description, patchId }
+router.post("/runtime/guard/regression-check", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const { filePath = "", description = "", patchId = "" } = req.body || {};
+        const query = `${description} ${filePath}`.toLowerCase();
+        const words = query.split(/\W+/).filter(w => w.length > 3);
+
+        const regressionWarnings = [];
+        const rolledBackPatches  = [];
+        const failedPatches      = [];
+
+        // Collect all rolled-back patches for this file
+        if (patchAssist) {
+            try {
+                const all = patchAssist.listPatches({});
+                for (const p of all) {
+                    if (filePath && p.filePath !== filePath) continue;
+                    const isRolled = p.status === "rolled-back" || p.status === "rolled_back";
+                    if (isRolled && p.patchId !== patchId) {
+                        rolledBackPatches.push({
+                            patchId:     p.patchId,
+                            filePath:    p.filePath,
+                            description: (p.description || "").slice(0, 100),
+                            proposedAt:  p.proposedAt,
+                            rollbackReason: (p.rollbackReason || "").slice(0, 100),
+                        });
+                        // Check if description is similar to a prior rollback
+                        if (words.length > 0) {
+                            const pStr = `${p.description || ""} ${p.rollbackReason || ""}`.toLowerCase();
+                            const hits = words.filter(w => pStr.includes(w)).length;
+                            if (hits >= 2) {
+                                regressionWarnings.push({
+                                    type:        "similar_to_prior_rollback",
+                                    patchId:     p.patchId,
+                                    filePath:    p.filePath,
+                                    description: (p.description || "").slice(0, 100),
+                                    matchScore:  Math.round((hits / words.length) * 100),
+                                    recommendation: `This patch resembles a previously rolled-back patch on ${p.filePath?.split("/").pop()}`,
+                                });
+                            }
+                        }
+                    }
+                }
+            } catch {}
+        }
+
+        // Execution history failures involving this file
+        if (_execHistory) {
+            try {
+                const recent = _execHistory.recent(100);
+                for (const e of recent) {
+                    if (e.status !== "error" && e.status !== "failed") continue;
+                    const eStr = `${e.input || ""} ${e.error || ""}`.toLowerCase();
+                    const fileMatch = filePath && eStr.includes(filePath.split("/").pop().toLowerCase());
+                    const descMatch = words.length > 0 && words.filter(w => eStr.includes(w)).length >= 2;
+                    if (fileMatch || descMatch) {
+                        failedPatches.push({
+                            executionId: e.id,
+                            input:       (e.input || "").slice(0, 80),
+                            error:       (e.error || "").slice(0, 80),
+                            ts:          e.ts,
+                        });
+                        if (descMatch) {
+                            regressionWarnings.push({
+                                type:        "similar_execution_failure",
+                                executionId: e.id,
+                                matchScore:  Math.round((words.filter(w => eStr.includes(w)).length / words.length) * 100),
+                                recommendation: "Prior execution with similar context failed",
+                            });
+                        }
+                    }
+                }
+            } catch {}
+        }
+
+        // Engineering memory — prior failed chains
+        if (_engMemory) {
+            try {
+                const memResults = _engMemory.query(description || filePath, "failure");
+                for (const m of (memResults || []).slice(0, 3)) {
+                    regressionWarnings.push({
+                        type:           "prior_failure_in_memory",
+                        description:    (m.goal || m.outcome || "").slice(0, 100),
+                        matchScore:     70,
+                        recommendation: "Engineering memory contains a similar failure pattern",
+                    });
+                }
+            } catch {}
+        }
+
+        const blocked = regressionWarnings.some(w => w.matchScore >= 80);
+        const severity = blocked ? "high"
+            : regressionWarnings.length > 2 ? "moderate"
+            : regressionWarnings.length > 0 ? "low" : "none";
+
+        return res.json({
+            success: true,
+            hasRegressions: regressionWarnings.length > 0,
+            blocked,
+            severity,
+            regressionWarnings: regressionWarnings.slice(0, 8),
+            rolledBackHistory:  rolledBackPatches.slice(0, 5),
+            failedExecHistory:  failedPatches.slice(0, 5),
+            summary: regressionWarnings.length > 0
+                ? `${regressionWarnings.length} regression risk(s) detected`
+                : "No regression risks detected",
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B7.5 — Guardrails dashboard: high-risk files, rollback hotspots, incident hotspots, recovery map
+// GET /runtime/guard/dashboard
+router.get("/runtime/guard/dashboard", rateLimiter(10, 60_000), (req, res) => {
+    try {
+        const fileRiskMap = _b7FileRiskMap();
+
+        // High-risk files: rollback rate > 25% AND at least 2 patches
+        const highRiskFiles = Object.entries(fileRiskMap)
+            .filter(([, s]) => s.rollbackRate > 25 && s.total >= 2)
+            .map(([file, s]) => ({ file, ...s }))
+            .sort((a, b) => b.rollbackRate - a.rollbackRate)
+            .slice(0, 10);
+
+        // Frequent rollback files: most absolute rollbacks
+        const frequentRollbacks = Object.entries(fileRiskMap)
+            .filter(([, s]) => s.rolledBack > 0)
+            .map(([file, s]) => ({ file, ...s }))
+            .sort((a, b) => b.rolledBack - a.rolledBack)
+            .slice(0, 10);
+
+        // Incident hotspots
+        const incidentHotspots = [];
+        if (_incidentEngine) {
+            try {
+                const allInc = _incidentEngine.listIncidents({ limit: 50 });
+                const byType = {};
+                for (const inc of allInc) {
+                    const key = inc.type || "unknown";
+                    if (!byType[key]) byType[key] = { type: key, count: 0, open: 0, severity: [] };
+                    byType[key].count++;
+                    if (inc.status === "open") byType[key].open++;
+                    if (inc.severity) byType[key].severity.push(inc.severity);
+                }
+                for (const v of Object.values(byType)) {
+                    const critical = v.severity.filter(s => s === "critical").length;
+                    incidentHotspots.push({ ...v, criticalCount: critical, topSeverity: critical > 0 ? "critical" : "high" });
+                }
+                incidentHotspots.sort((a, b) => b.count - a.count);
+            } catch {}
+        }
+
+        // Recovery dependency map: which files need the most healing
+        const hs = _b6HealStats();
+        const recoveryMap = [];
+        if (_engMemory) {
+            try {
+                const chains = _engMemory.suggestChains ? _engMemory.suggestChains("recovery") : [];
+                for (const c of (chains || []).slice(0, 6)) {
+                    recoveryMap.push({
+                        chainName:  c.name || c.chainName || "unnamed",
+                        confidence: c.confidence || 0,
+                        steps:      c.steps?.length || 0,
+                        description: (c.description || c.goal || "").slice(0, 100),
+                    });
+                }
+            } catch {}
+        }
+
+        // Learning patterns from learningEngine
+        const patterns = [];
+        if (_learningEngine) {
+            try {
+                const raw = _learningEngine.getPatterns ? _learningEngine.getPatterns() : [];
+                for (const p of (raw || []).slice(0, 5)) {
+                    patterns.push({
+                        type:       p.type || "unknown",
+                        count:      p.count || 1,
+                        impact:     p.impact || "unknown",
+                        description: (p.description || p.context || "").slice(0, 100),
+                    });
+                }
+            } catch {}
+        }
+
+        // Platform summary
+        const ps = _b6PatchStats();
+        const platformSummary = {
+            totalPatches:    ps.total,
+            appliedPatches:  ps.applied,
+            rolledBackPatches: ps.rolled,
+            pendingPatches:  ps.pending,
+            rollbackRate:    ps.total > 0 ? Math.round((ps.rolled / ps.total) * 100) : 0,
+            healTotal:       hs.total,
+            healRate:        hs.healRate != null ? Math.round(hs.healRate * 100) : null,
+            totalIncidents:  incidentHotspots.reduce((a, b) => a + b.count, 0),
+        };
+
+        return res.json({
+            success: true,
+            highRiskFiles,
+            frequentRollbacks,
+            incidentHotspots: incidentHotspots.slice(0, 8),
+            recoveryMap,
+            patterns,
+            platformSummary,
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
+// B7.6 — Auto-warning: pre-action risk check (before apply / deploy / auto-fix)
+// POST /runtime/guard/pre-action-warning
+// Body: { action: "apply"|"deploy"|"auto-fix", patchId, filePath, task, pipelineName }
+router.post("/runtime/guard/pre-action-warning", rateLimiter(20, 60_000), (req, res) => {
+    try {
+        const {
+            action       = "apply",
+            patchId      = "",
+            filePath     = "",
+            task         = "",
+            pipelineName = "standard-deploy",
+        } = req.body || {};
+
+        const warnings    = [];
+        const evidence    = [];
+        let   riskLevel   = "low";
+        let   riskScore   = 0;
+
+        // Patch safety score (if patchId provided)
+        let patchSafety = null;
+        if (patchId && patchAssist) {
+            try {
+                const patch = patchAssist.getPatch(patchId);
+                if (patch) {
+                    patchSafety = _b7PatchSafetyScore(patch);
+                    if (patchSafety.safetyScore < 60) {
+                        riskScore = Math.max(riskScore, 100 - patchSafety.safetyScore);
+                        warnings.push(`Patch safety score is ${patchSafety.safetyScore}/100 (${patchSafety.riskLevel})`);
+                        for (const r of patchSafety.explanation) {
+                            evidence.push({ type: "patch_safety", detail: r, weight: "high" });
+                        }
+                    }
+                }
+            } catch {}
+        }
+
+        // File rollback rate
+        if (filePath) {
+            const { byFile } = _b6PatchStats();
+            const fs = byFile[filePath];
+            if (fs && fs.total >= 2 && fs.rolledBack / fs.total > 0.3) {
+                const rr = Math.round((fs.rolledBack / fs.total) * 100);
+                riskScore = Math.max(riskScore, rr);
+                warnings.push(`${rr}% rollback rate on ${filePath.split("/").pop()} (${fs.rolledBack}/${fs.total} patches)`);
+                evidence.push({ type: "file_rollback_rate", detail: `${filePath}: ${rr}% rollback rate`, weight: "high" });
+            }
+        }
+
+        // Incident match
+        if (task || filePath) {
+            if (_incidentEngine) {
+                try {
+                    const openInc = _incidentEngine.listIncidents({ status: "open", limit: 10 });
+                    const fileName = filePath.split("/").pop().toLowerCase();
+                    const related = openInc.filter(i => {
+                        const ctx = `${i.type || ""} ${i.context || ""}`.toLowerCase();
+                        return fileName && ctx.includes(fileName);
+                    });
+                    if (related.length > 0) {
+                        riskScore = Math.max(riskScore, 50 + related.length * 10);
+                        warnings.push(`${related.length} open incident(s) related to this file`);
+                        evidence.push({ type: "open_incidents", detail: `${related.length} open incidents referencing ${filePath.split("/").pop()}`, weight: "high" });
+                    }
+                } catch {}
+            }
+        }
+
+        // Similar failures from execution history
+        if (_execHistory && (task || filePath)) {
+            try {
+                const recent = _execHistory.recent(40);
+                const words  = `${task} ${filePath}`.toLowerCase().split(/\W+/).filter(w => w.length > 3);
+                const errors = recent.filter(e => {
+                    if (e.status !== "error" && e.status !== "failed") return false;
+                    const eStr = `${e.input || ""} ${e.error || ""}`.toLowerCase();
+                    return words.filter(w => eStr.includes(w)).length >= 2;
+                });
+                if (errors.length > 0) {
+                    riskScore = Math.max(riskScore, 40 + errors.length * 5);
+                    warnings.push(`${errors.length} similar execution failure(s) in recent history`);
+                    evidence.push({ type: "exec_history", detail: `${errors.length} prior failures matching task context`, weight: "medium" });
+                }
+            } catch {}
+        }
+
+        // Similar failures from learning engine
+        if (_learningEngine) {
+            try {
+                const repeated = _learningEngine.detectRepeated ? _learningEngine.detectRepeated() : [];
+                if (repeated.length > 0) {
+                    riskScore = Math.max(riskScore, riskScore + 10);
+                    evidence.push({ type: "repeated_patterns", detail: `${repeated.length} repeated failure pattern(s) on platform`, weight: "medium" });
+                }
+            } catch {}
+        }
+
+        // Suggested safer alternative
+        const alternatives = [];
+        if (_knowledgeMem) {
+            try {
+                const q = filePath.split("/").pop() || task.split(" ").slice(0, 3).join(" ");
+                const kb = _knowledgeMem.query({ search: q, limit: 3 });
+                for (const k of kb) {
+                    if (k.fix) alternatives.push(k.fix);
+                }
+            } catch {}
+        }
+
+        riskScore  = Math.min(100, riskScore);
+        riskLevel  = riskScore < 30 ? "low" : riskScore < 60 ? "moderate" : riskScore < 80 ? "high" : "critical";
+        const shouldWarn = riskScore >= 30;
+
+        return res.json({
+            success: true,
+            action,
+            shouldWarn,
+            riskScore,
+            riskLevel,
+            warnings,
+            evidence,
+            alternatives: alternatives.slice(0, 2),
+            patchSafety,
+            summary: shouldWarn
+                ? `⚠ ${riskLevel.toUpperCase()} risk before ${action} — ${warnings.length} warning(s) detected`
+                : `${action} appears safe — no significant risk factors detected`,
+            generatedAt: new Date().toISOString(),
+        });
+    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+});
+
 // Phase 572 — Task Understanding
 router.post("/runtime/engineering/understand", rateLimiter(30, 60_000), (req, res) => {
     if (!taskUnderstand) return res.status(503).json({ success: false, error: "taskUnderstanding_unavailable" });

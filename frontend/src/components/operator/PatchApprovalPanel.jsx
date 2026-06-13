@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { BASE_URL } from "../../_client";
+import { PatchSafetyStrip } from "../GuardrailsDashboard";
 
 async function _patchFetch(path, opts = {}) {
   const r = await fetch(`${BASE_URL}${path}`, {
@@ -179,6 +180,11 @@ export default function PatchApprovalPanel({ patchId, targetFile, onDone, addNot
             </pre>
           )}
         </div>
+      )}
+
+      {/* Safety score strip */}
+      {status === "pending" && (
+        <PatchSafetyStrip patchId={patchId} filePath={targetFile || patch?.filePath} />
       )}
 
       {/* Action bar */}
