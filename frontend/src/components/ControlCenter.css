@@ -180,7 +180,7 @@
 /* ── Service Health Tiles ──────────────────────────────────────── */
 .cc2-tiles {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
   padding: 20px 20px 0;
 }
@@ -772,6 +772,91 @@
 
 .cc2-trial-text { font-size: 12px; color: var(--text-dim, #8994b0); }
 
+/* ── First-run guide ───────────────────────────────────────────── */
+.cc2-firstrun {
+  margin: 0 20px;
+  padding: 20px;
+  background: rgba(124,111,255,0.06);
+  border: 1px solid rgba(124,111,255,0.18);
+  border-radius: var(--radius, 14px);
+}
+
+.cc2-firstrun-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cc2-firstrun-icon { font-size: 24px; line-height: 1; flex-shrink: 0; }
+
+.cc2-firstrun-title {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text, #dde2ec);
+}
+
+.cc2-firstrun-sub {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-dim, #8994b0);
+}
+
+.cc2-firstrun-steps { display: flex; flex-direction: column; gap: 8px; }
+
+.cc2-firstrun-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, border-color 0.15s;
+  width: 100%;
+}
+
+.cc2-firstrun-step:hover {
+  background: rgba(124,111,255,0.08);
+  border-color: rgba(124,111,255,0.25);
+}
+
+.cc2-firstrun-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(124,111,255,0.2);
+  color: var(--accent, #7c6fff);
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cc2-firstrun-step-body { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+
+.cc2-firstrun-step-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text, #dde2ec);
+}
+
+.cc2-firstrun-step-desc {
+  font-size: 11px;
+  color: var(--text-dim, #8994b0);
+}
+
+.cc2-firstrun-step-arrow {
+  font-size: 18px;
+  color: var(--text-faint, #4a5470);
+  flex-shrink: 0;
+}
+
 .cc2-trial-upgrade {
   background: none; border: none;
   color: var(--accent, #7c6fff);
@@ -825,7 +910,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
-  .cc2-tiles { grid-template-columns: repeat(3, 1fr); }
+  .cc2-tiles { grid-template-columns: repeat(2, 1fr); }
   .cc2-kpi-row { grid-template-columns: repeat(2, 1fr); }
 }
 

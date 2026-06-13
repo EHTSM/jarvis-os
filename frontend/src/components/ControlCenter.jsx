@@ -96,35 +96,44 @@ function ServiceTiles({ opsData, stats, online, onNavigate }) {
 
   const tiles = [
     {
-      id:    "ai",
-      icon:  "⚡",
-      label: "AI Engine",
-      ok:    !!(services.ai || services.groq),
-      value: (services.ai || services.groq) ? "Online" : "Not configured",
-      sub1:  "Groq / Mixtral",
-      sub2:  (services.ai || services.groq) ? "Ready for tasks" : "Add GROQ_API_KEY",
-      nav:   "devops",
+      id:    "contacts",
+      icon:  "◈",
+      label: "Contacts",
+      ok:    true,
+      value: stats?.total > 0 ? `${stats.total} leads` : "No leads yet",
+      sub1:  stats?.hot > 0 ? `${stats.hot} hot` : "Add your first",
+      sub2:  stats?.paid > 0 ? `${stats.paid} closed` : "Start adding leads",
+      nav:   "clients",
     },
     {
-      id:    "queue",
-      icon:  "◎",
-      label: "Queue",
-      ok:    qFailed === 0 && online,
-      value: qRun > 0 ? `${qRun} running` : qQueued > 0 ? `${qQueued} queued` : "Idle",
-      sub1:  `${qQueued} queued`,
-      sub2:  qFailed > 0 ? `${qFailed} failed` : "No failures",
-      sub2Warn: qFailed > 0,
-      nav:   "activity",
+      id:    "payments",
+      icon:  "₹",
+      label: "Payments",
+      ok:    !!services.payments,
+      value: services.payments ? "Razorpay live" : "Not configured",
+      sub1:  stats?.revenue > 0 ? _fmtINR(stats.revenue) + " collected" : "₹0 collected",
+      sub2:  services.payments ? "Ready to charge" : "Add Razorpay keys",
+      nav:   "payments",
     },
     {
       id:    "comms",
       icon:  "✉",
-      label: "Communications",
+      label: "WhatsApp",
       ok:    !!services.whatsapp,
-      value: services.whatsapp ? "WhatsApp active" : "Not connected",
+      value: services.whatsapp ? "Connected" : "Not connected",
       sub1:  msgs != null ? `${msgs} messages today` : "—",
       sub2:  services.whatsapp ? "Sending follow-ups" : "Setup required",
       nav:   "clients",
+    },
+    {
+      id:    "ai",
+      icon:  "⚡",
+      label: "AI Engine",
+      ok:    !!(services.ai || services.groq),
+      value: (services.ai || services.groq) ? "Online" : "Offline",
+      sub1:  "Groq / Mixtral",
+      sub2:  (services.ai || services.groq) ? "Ready for tasks" : "Add GROQ_API_KEY",
+      nav:   "chat",
     },
   ];
 
@@ -341,9 +350,9 @@ function QuickActions({ online, onNavigate, onEmergencyStop, emergencyActive }) 
 
   const actions = [
     { icon: "◈", label: "Add Contact",           onClick: () => onNavigate?.("clients") },
-    { icon: "⚡", label: "Launch Workflow",        onClick: () => onNavigate?.("workflows") },
-    { icon: "◎", label: "Create Agent",           onClick: () => onNavigate?.("agents") },
-    { icon: "₹", label: "Generate Payment Link",  onClick: () => onNavigate?.("clients") },
+    { icon: "₹", label: "Generate Payment Link",  onClick: () => onNavigate?.("payments") },
+    { icon: "⚡", label: "Send Follow-up",         onClick: () => onNavigate?.("clients") },
+    { icon: "◎", label: "View Pipeline",          onClick: () => onNavigate?.("insights") },
   ];
 
   return (
@@ -591,8 +600,47 @@ export default function ControlCenter({ stats, opsData, online, onNavigate, bill
         </div>
       </div>
 
+      {/* First-run guide: shown when no leads yet */}
+      {!loading && (stats?.total === 0 || stats?.total == null) && (
+        <section className="cc2-firstrun">
+          <div className="cc2-firstrun-header">
+            <span className="cc2-firstrun-icon">🚀</span>
+            <div>
+              <h3 className="cc2-firstrun-title">Start your first deal in 60 seconds</h3>
+              <p className="cc2-firstrun-sub">Follow these 3 steps to get Ooplix working for you.</p>
+            </div>
+          </div>
+          <div className="cc2-firstrun-steps">
+            <button className="cc2-firstrun-step" onClick={() => onNavigate?.("clients")}>
+              <span className="cc2-firstrun-num">1</span>
+              <div className="cc2-firstrun-step-body">
+                <span className="cc2-firstrun-step-label">Add a contact</span>
+                <span className="cc2-firstrun-step-desc">Name + WhatsApp number — follow-up queues automatically</span>
+              </div>
+              <span className="cc2-firstrun-step-arrow">›</span>
+            </button>
+            <button className="cc2-firstrun-step" onClick={() => onNavigate?.("payments")}>
+              <span className="cc2-firstrun-num">2</span>
+              <div className="cc2-firstrun-step-body">
+                <span className="cc2-firstrun-step-label">Send a payment link</span>
+                <span className="cc2-firstrun-step-desc">Generate a Razorpay link and share it on WhatsApp</span>
+              </div>
+              <span className="cc2-firstrun-step-arrow">›</span>
+            </button>
+            <button className="cc2-firstrun-step" onClick={() => onNavigate?.("billing")}>
+              <span className="cc2-firstrun-num">3</span>
+              <div className="cc2-firstrun-step-body">
+                <span className="cc2-firstrun-step-label">Upgrade when ready</span>
+                <span className="cc2-firstrun-step-desc">7-day trial — no credit card needed to start</span>
+              </div>
+              <span className="cc2-firstrun-step-arrow">›</span>
+            </button>
+          </div>
+        </section>
+      )}
+
       {/* Trial usage nudge */}
-      {billing && (billing.status === "trialing" || billing.status === "expired") && stats && (
+      {billing && (billing.status === "trialing" || billing.status === "expired") && stats?.total > 0 && (
         <section className="cc2-trial-nudge">
           <div className="cc2-trial-inner">
             <span className="cc2-trial-icon">⚡</span>
