@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { getLeads, createLead, generatePaymentLink, sendFollowUp } from "../api";
+import { getLeads, createLead, updateLead, sendFollowUp } from "../crmApi";
+import { generatePaymentLink } from "../paymentApi";
 import "./ContactsV2.css";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -259,11 +260,16 @@ function PaymentLinkModal({ prefill, onClose }) {
 
 const STATUS_OPTIONS = ["new", "hot", "qualified", "won", "paid", "lost"];
 
-function ContactDrawer({ contact, onClose, onPayLink, onStatusUpdate }) {
-  const [sending,   setSending]   = useState(false);
-  const [waMsg,     setWaMsg]     = useState("");
-  const [waResult,  setWaResult]  = useState(null);
-  const [waTemplate, setWaTemplate] = useState("");
+function ContactDrawer({ contact, onClose, onPayLink, onStatusUpdate, onFieldUpdate }) {
+  const [sending,        setSending]        = useState(false);
+  const [waMsg,          setWaMsg]          = useState("");
+  const [waResult,       setWaResult]       = useState(null);
+  const [waTemplate,     setWaTemplate]     = useState("");
+  const [updatingStatus, setUpdatingStatus] = useState(null);
+  const [editMode,       setEditMode]       = useState(false);
+  const [editFields,     setEditFields]     = useState({ service: contact.service || "", dealValue: contact.dealValue || "", notes: contact.notes || "" });
+  const [editSaving,     setEditSaving]     = useState(false);
+  const [editErr,        setEditErr]        = useState("");
 
   const color = _avatarColor(contact.name);
   const chip  = STATUS_META[contact.status] || STATUS_META.new;
@@ -284,6 +290,25 @@ function ContactDrawer({ contact, onClose, onPayLink, onStatusUpdate }) {
       setWaResult(res?.success ? "success" : "error");
     } catch { setWaResult("error"); }
     finally { setSending(false); }
+  };
+
+  const handleStatusClick = async (s) => {
+    if (updatingStatus || contact.status === s) return;
+    setUpdatingStatus(s);
+    await onStatusUpdate?.(contact, s);
+    setUpdatingStatus(null);
+  };
+
+  const handleEditSave = async () => {
+    setEditSaving(true); setEditErr("");
+    const res = await updateLead(contact.phone, editFields);
+    if (res?.success === false) {
+      setEditErr(res.error || "Save failed. Try again.");
+    } else {
+      onFieldUpdate?.(contact.phone, editFields);
+      setEditMode(false);
+    }
+    setEditSaving(false);
   };
 
   return (
@@ -308,13 +333,42 @@ function ContactDrawer({ contact, onClose, onPayLink, onStatusUpdate }) {
 
         {/* Details */}
         <section className="cv2-drawer-section">
-          <h3 className="cv2-drawer-section-title">Details</h3>
-          <div className="cv2-drawer-detail-grid">
-            {contact.service    && <><span className="cv2-detail-key">Service</span>   <span className="cv2-detail-val">{contact.service}</span></>}
-            {contact.dealValue  && <><span className="cv2-detail-key">Deal value</span><span className="cv2-detail-val">{_fmtINR(contact.dealValue)}</span></>}
-            {contact.createdAt  && <><span className="cv2-detail-key">Added</span>     <span className="cv2-detail-val">{_timeAgo(contact.createdAt)}</span></>}
-            {contact.notes      && <><span className="cv2-detail-key">Notes</span>     <span className="cv2-detail-val cv2-detail-val--notes">{contact.notes}</span></>}
+          <div className="cv2-drawer-section-header">
+            <h3 className="cv2-drawer-section-title">Details</h3>
+            <button className="cv2-link-btn" onClick={() => { setEditMode(e => !e); setEditErr(""); }}>
+              {editMode ? "Cancel" : "Edit"}
+            </button>
           </div>
+          {editMode ? (
+            <div className="cv2-edit-form">
+              <label className="cv2-label">Service / Product</label>
+              <input className="cv2-input" value={editFields.service}
+                onChange={e => setEditFields(f => ({ ...f, service: e.target.value }))}
+                placeholder="e.g. Website redesign" />
+              <label className="cv2-label">Deal Value (₹)</label>
+              <input className="cv2-input" value={editFields.dealValue}
+                onChange={e => setEditFields(f => ({ ...f, dealValue: e.target.value }))}
+                inputMode="numeric" placeholder="15000" />
+              <label className="cv2-label">Notes</label>
+              <textarea className="cv2-input cv2-textarea" rows={3} value={editFields.notes}
+                onChange={e => setEditFields(f => ({ ...f, notes: e.target.value }))}
+                placeholder="Any context…" />
+              {editErr && <p className="cv2-err">{editErr}</p>}
+              <button className="cv2-btn cv2-btn--primary cv2-btn--sm" onClick={handleEditSave} disabled={editSaving}>
+                {editSaving ? "Saving…" : "Save Changes"}
+              </button>
+            </div>
+          ) : (
+            <div className="cv2-drawer-detail-grid">
+              {contact.service    && <><span className="cv2-detail-key">Service</span>   <span className="cv2-detail-val">{contact.service}</span></>}
+              {contact.dealValue  && <><span className="cv2-detail-key">Deal value</span><span className="cv2-detail-val">{_fmtINR(contact.dealValue)}</span></>}
+              {contact.createdAt  && <><span className="cv2-detail-key">Added</span>     <span className="cv2-detail-val">{_timeAgo(contact.createdAt)}</span></>}
+              {contact.notes      && <><span className="cv2-detail-key">Notes</span>     <span className="cv2-detail-val cv2-detail-val--notes">{contact.notes}</span></>}
+              {!contact.service && !contact.dealValue && !contact.notes && (
+                <span className="cv2-detail-empty">No details yet — click Edit to add.</span>
+              )}
+            </div>
+          )}
         </section>
 
         {/* Status update */}
@@ -323,13 +377,16 @@ function ContactDrawer({ contact, onClose, onPayLink, onStatusUpdate }) {
           <div className="cv2-status-options">
             {STATUS_OPTIONS.map(s => {
               const m = STATUS_META[s] || STATUS_META.new;
+              const isActive = contact.status === s;
+              const isUpdating = updatingStatus === s;
               return (
                 <button
                   key={s}
-                  className={`cv2-status-opt ${m.cls}${contact.status === s ? " cv2-status-opt--active" : ""}`}
-                  onClick={() => onStatusUpdate?.(contact, s)}
+                  className={`cv2-status-opt ${m.cls}${isActive ? " cv2-status-opt--active" : ""}${isUpdating ? " cv2-status-opt--loading" : ""}`}
+                  onClick={() => handleStatusClick(s)}
+                  disabled={!!updatingStatus}
                 >
-                  {m.label}
+                  {isUpdating ? "…" : m.label}
                 </button>
               );
             })}
@@ -473,12 +530,28 @@ export default function ContactsV2({ onNavigate }) {
   };
 
   const handleStatusUpdate = async (contact, newStatus) => {
+    if (contact.status === newStatus) return;
+    const prevStatus = contact.status;
     setLeads(prev => prev?.map(l =>
       l.phone === contact.phone ? { ...l, status: newStatus } : l
     ));
     if (drawer?.phone === contact.phone) setDrawer(d => ({ ...d, status: newStatus }));
-    toast("success", `Status updated to "${STATUS_META[newStatus]?.label || newStatus}"`);
+    const res = await updateLead(contact.phone, { status: newStatus });
+    if (res?.success === false) {
+      setLeads(prev => prev?.map(l =>
+        l.phone === contact.phone ? { ...l, status: prevStatus } : l
+      ));
+      if (drawer?.phone === contact.phone) setDrawer(d => ({ ...d, status: prevStatus }));
+      toast("error", res.error || "Failed to update status. Try again.");
+    } else {
+      toast("success", `Status updated to "${STATUS_META[newStatus]?.label || newStatus}"`);
+    }
   };
+
+  const handleFieldUpdate = useCallback((phone, fields) => {
+    setLeads(prev => prev?.map(l => l.phone === phone ? { ...l, ...fields } : l));
+    if (drawer?.phone === phone) setDrawer(d => ({ ...d, ...fields }));
+  }, [drawer]);
 
   const statusCounts = useMemo(() => {
     if (!leads) return {};
@@ -603,6 +676,7 @@ export default function ContactsV2({ onNavigate }) {
           onClose={() => setDrawer(null)}
           onPayLink={(c) => { setDrawer(null); setPayTarget(c); }}
           onStatusUpdate={handleStatusUpdate}
+          onFieldUpdate={handleFieldUpdate}
         />
       )}
     </div>

@@ -15,9 +15,10 @@ router.post("/crm/lead", requireAuth, operatorOnly, operatorAudit, (req, res) =>
         return res.status(400).json({ error: "Invalid phone number — include country code (e.g. 919876543210)" });
     const existing = crm.getLead(cleanPhone);
     if (existing)
-        return res.json({ success: true, duplicate: true, message: "Client already exists" });
-    crm.saveLead({ phone: cleanPhone, name, ...rest });
-    res.json({ success: true, duplicate: false });
+        return res.json({ success: true, duplicate: true, lead: existing, message: "Client already exists" });
+    const lead = { phone: cleanPhone, name, ...rest, status: "new", createdAt: new Date().toISOString() };
+    crm.saveLead(lead);
+    res.json({ success: true, duplicate: false, lead });
 });
 
 router.patch("/crm/lead/:phone", requireAuth, operatorOnly, operatorAudit, (req, res) => {
