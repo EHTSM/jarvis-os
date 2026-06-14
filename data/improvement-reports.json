@@ -1,0 +1,71 @@
+[
+  {
+    "reportId": "rpt_151f68d4-df4a-4deb-bc4d-33cba8e88d50",
+    "period": {
+      "start": "2026-06-07T23:23:40.008Z",
+      "end": "2026-06-14T23:23:40.008Z"
+    },
+    "metrics": {
+      "current": {
+        "predictionAccuracy": 0,
+        "reasoningQuality": 32,
+        "deploymentSuccessRate": 77,
+        "rollbackFrequency": 23,
+        "operatorOverrideRate": 0,
+        "recommendationAcceptanceRate": 0,
+        "missionCompletionRate": 98,
+        "agentSuccessRate": 0,
+        "errorRate": 0.4,
+        "selfImprovementScore": 54,
+        "collectedAt": "2026-06-14T23:23:40.008Z",
+        "dataQuality": "high",
+        "_raw": {
+          "reasonedRecsTotal": 7,
+          "healingEventsTotal": 1667,
+          "cyclesTotal": 500,
+          "recsTotal": 7,
+          "tasksTotal": 51,
+          "agentRunsTotal": 2000,
+          "overrideEventsRecorded": 0,
+          "outcomeEventsRecorded": 0
+        }
+      },
+      "previous": null,
+      "delta": {}
+    },
+    "improvements": [
+      {
+        "area": "Prediction Accuracy",
+        "currentScore": 0,
+        "targetScore": 80,
+        "recommendation": "Review reasoning engine confidence thresholds — increase minimum confidence before acting.",
+        "priority": 1
+      },
+      {
+        "area": "Agent Success Rate",
+        "currentScore": 0,
+        "targetScore": 95,
+        "recommendation": "Agent execution reliability is below threshold — review tool execution layer for failures.",
+        "priority": 1
+      },
+      {
+        "area": "Deployment Success Rate",
+        "currentScore": 77,
+        "targetScore": 90,
+        "recommendation": "Increase pre-deployment validation coverage and add automated smoke tests.",
+        "priority": 3
+      },
+      {
+        "area": "Rollback Frequency",
+        "currentScore": 23,
+        "targetScore": 10,
+        "recommendation": "Implement canary deployment gates before full rollout.",
+        "priority": 3
+      }
+    ],
+    "wins": [],
+    "concerns": [],
+    "generatedAt": "2026-06-14T23:23:40.008Z",
+    "dataQuality": "high"
+  }
+]

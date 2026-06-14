@@ -1,0 +1,33 @@
+{
+  "snapshots": [
+    {
+      "snapshotAt": "2026-06-14T23:23:40.008Z",
+      "metrics": {
+        "predictionAccuracy": 0,
+        "reasoningQuality": 32,
+        "deploymentSuccessRate": 77,
+        "rollbackFrequency": 23,
+        "operatorOverrideRate": 0,
+        "recommendationAcceptanceRate": 0,
+        "missionCompletionRate": 98,
+        "agentSuccessRate": 0,
+        "errorRate": 0.4,
+        "selfImprovementScore": 54,
+        "collectedAt": "2026-06-14T23:23:40.008Z",
+        "dataQuality": "high",
+        "_raw": {
+          "reasonedRecsTotal": 7,
+          "healingEventsTotal": 1667,
+          "cyclesTotal": 500,
+          "recsTotal": 7,
+          "tasksTotal": 51,
+          "agentRunsTotal": 2000,
+          "overrideEventsRecorded": 0,
+          "outcomeEventsRecorded": 0
+        }
+      }
+    }
+  ],
+  "overrideEvents": [],
+  "outcomeEvents": []
+}
