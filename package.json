@@ -103,7 +103,18 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true
     },
-    "publish": null
+    "publish": {
+      "provider": "github",
+      "owner": "EHTSM",
+      "repo": "jarvis-os",
+      "releaseType": "release"
+    },
+    "protocols": [
+      {
+        "name": "Ooplix",
+        "schemes": ["ooplix"]
+      }
+    ]
   },
   "dependencies": {
     "axios": "^1.16.0",
@@ -111,6 +122,8 @@
     "cheerio": "^1.2.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.1",
+    "electron-store": "^11.0.2",
+    "electron-updater": "^6.8.9",
     "express": "^5.2.1",
     "groq-sdk": "^1.1.2",
     "https-proxy-agent": "^9.0.0",
