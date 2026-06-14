@@ -106,6 +106,7 @@ const DeveloperOS              = lazy(() => import("./components/DeveloperOS.jsx
 const EnterpriseOS             = lazy(() => import("./components/EnterpriseOS.jsx"));
 const CapabilitiesOverview     = lazy(() => import("./components/CapabilitiesOverview.jsx"));
 const MissionControlV1         = lazy(() => import("./components/MissionControlV1.jsx"));
+const ExecutiveDashboard       = lazy(() => import("./components/ExecutiveDashboard.jsx"));
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts.js";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import { useElectronEvent } from "./hooks/useElectron.js";
@@ -183,8 +184,9 @@ const MORE_TABS = [
   { id: "agentfactory", label:"Agent Factory"  },
   { id: "memoryintel",  label:"Memory Intel"   },
   { id: "selfimprove",  label:"Self-Improve"   },
-  { id: "jarvisbrain",  label:"Jarvis Brain"   },
-  { id: "execconnector",label:"Exec Connectors"},
+  { id: "jarvisbrain",    label:"Jarvis Brain"     },
+  { id: "executivedash",  label:"Executive Dash"   },
+  { id: "execconnector",  label:"Exec Connectors"  },
   { id: "autonomouswf", label:"Auto Workflows" },
   { id: "agentactions", label:"Agent Actions"  },
   { id: "autonomyscore",label:"Autonomy Score" },
@@ -838,6 +840,7 @@ function AppInner() {
         {tab === "memoryintel"       && <MemoryIntelligenceCenter   onNavigate={setTab} />}
         {tab === "selfimprove"       && <SelfImprovementCenter      onNavigate={setTab} />}
         {tab === "jarvisbrain"       && <JarvisBrainCenter          onNavigate={setTab} />}
+        {tab === "executivedash"     && <ExecutiveDashboard         onNavigate={setTab} />}
         {tab === "execconnector"     && <ExecutionConnectorCenter   onNavigate={setTab} />}
         {tab === "autonomouswf"      && <WorkflowOSV2               onNavigate={setTab} />}
         {tab === "agentactions"      && <AgentActionCenter          onNavigate={setTab} />}
