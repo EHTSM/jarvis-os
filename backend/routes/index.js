@@ -12,6 +12,7 @@ router.use(require("./auth"));         // POST /auth/login, POST /auth/logout, G
 router.use(require("./accounts"));    // POST /accounts/register, GET /accounts/me, GET /accounts
 router.use(require("./settings"));    // GET /settings/status, POST /settings/whatsapp, POST /settings/razorpay
 router.use(require("./billing"));     // GET /billing/status, POST /billing/upgrade, POST /billing/cancel
+router.use(require("./metrics"));      // /metrics/dashboard, /metrics/health, /metrics/errors
 router.use(requireActiveAccount);      // billing gate — all routes below require active trial or paid plan
 router.use(require("./jarvis"));       // POST /jarvis
 router.use(require("./whatsapp"));     // /whatsapp/*
