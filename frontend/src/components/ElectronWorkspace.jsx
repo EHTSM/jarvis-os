@@ -317,38 +317,40 @@ export default function ElectronWorkspace({ children }) {
       <div className="ew-main">
         {/* Left sidebar — all modes always mounted after first visit */}
         {showSidebar && (
-          <div className="ew-sidebar" style={{ width: sidebarW }}
-            <div className="ew-sidebar__header">
-              <span className="ew-sidebar__title">{SIDEBAR_MODES[sidebarMode]?.title}</span>
-              <button className="ew-sidebar__close" onClick={() => setShowSidebar(false)}>✕</button>
+          <>
+            <div className="ew-sidebar" style={{ width: sidebarW }}>
+              <div className="ew-sidebar__header">
+                <span className="ew-sidebar__title">{SIDEBAR_MODES[sidebarMode]?.title}</span>
+                <button className="ew-sidebar__close" onClick={() => setShowSidebar(false)}>✕</button>
+              </div>
+              <div className="ew-sidebar__body">
+                <LazyPane active={sidebarMode === 'explorer'}>
+                  <ErrorBoundary label="File Explorer">
+                    <FileExplorer cwd={cwd} onFileOpen={() => {}} />
+                  </ErrorBoundary>
+                </LazyPane>
+                <LazyPane active={sidebarMode === 'git'}>
+                  <ErrorBoundary label="Visual Git">
+                    <VisualGit cwd={cwd} />
+                  </ErrorBoundary>
+                </LazyPane>
+                <LazyPane active={sidebarMode === 'clipboard'}>
+                  <ErrorBoundary label="Clipboard">
+                    <ClipboardHistoryPanel onClose={() => setShowSidebar(false)} />
+                  </ErrorBoundary>
+                </LazyPane>
+                <LazyPane active={sidebarMode === 'productivity'}>
+                  <ErrorBoundary label="Workspace">
+                    <WorkspaceProductivity
+                      onProjectSwitch={p => { setCwd(p.path); setSidebar('explorer'); }}
+                    />
+                  </ErrorBoundary>
+                </LazyPane>
+              </div>
             </div>
-            <div className="ew-sidebar__body">
-              <LazyPane active={sidebarMode === 'explorer'}>
-                <ErrorBoundary label="File Explorer">
-                  <FileExplorer cwd={cwd} onFileOpen={() => {}} />
-                </ErrorBoundary>
-              </LazyPane>
-              <LazyPane active={sidebarMode === 'git'}>
-                <ErrorBoundary label="Visual Git">
-                  <VisualGit cwd={cwd} />
-                </ErrorBoundary>
-              </LazyPane>
-              <LazyPane active={sidebarMode === 'clipboard'}>
-                <ErrorBoundary label="Clipboard">
-                  <ClipboardHistoryPanel onClose={() => setShowSidebar(false)} />
-                </ErrorBoundary>
-              </LazyPane>
-              <LazyPane active={sidebarMode === 'productivity'}>
-                <ErrorBoundary label="Workspace">
-                  <WorkspaceProductivity
-                    onProjectSwitch={p => { setCwd(p.path); setSidebar('explorer'); }}
-                  />
-                </ErrorBoundary>
-              </LazyPane>
-            </div>
-          </div>
-          {/* Sidebar resize handle */}
-          <div className="ew-sidebar-resizer" onMouseDown={onSidebarResize} />
+            {/* Sidebar resize handle */}
+            <div className="ew-sidebar-resizer" onMouseDown={onSidebarResize} />
+          </>
         )}
 
         {/* Center column */}
