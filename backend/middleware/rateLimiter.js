@@ -1,20 +1,24 @@
 "use strict";
 /**
- * Per-IP in-memory rate limiter middleware factory.
- * Extracted from jarvisController — now reusable across any route.
+ * Per-IP, per-route in-memory rate limiter middleware factory.
  *
  * Usage:
  *   const rateLimiter = require("./middleware/rateLimiter");
- *   router.post("/jarvis", rateLimiter(60, 60_000), handler);
+ *   router.post("/jarvis",      rateLimiter(60, 60_000));            // 60 req/min
+ *   router.post("/auth/login",  rateLimiter(10, 60_000, "login"));   // 10 req/min, isolated bucket
+ *
+ * Key: `${ip}:${routeId}:${windowMs}` — each route+IP pair gets its own bucket
+ * so bursting on /auth/login cannot consume /runtime/dispatch quota.
+ *
+ * Response headers:
+ *   X-RateLimit-Limit     — max requests allowed in the window
+ *   X-RateLimit-Remaining — requests left in current window
+ *   X-RateLimit-Reset     — Unix timestamp (seconds) when window resets
+ *   Retry-After           — seconds until reset (only on 429)
  */
 
-// Key: `${ip}:${windowMs}` — separate counters per route window so a 5-min
-// login window and a 1-min jarvis window don't share state or purge each other.
 const _rateMap = new Map();
 
-// Purge entries whose window has fully expired. Runs every 5 minutes.
-// Uses windowMs stored on each entry so long-window limiters (login at 5 min)
-// are not evicted prematurely by a hardcoded short cutoff.
 setInterval(() => {
     const now = Date.now();
     for (const [key, entry] of _rateMap) {
@@ -25,18 +29,35 @@ setInterval(() => {
 /**
  * @param {number} limit    — max requests per window (default 60)
  * @param {number} windowMs — window size in ms (default 60 000)
+ * @param {string} routeId  — optional explicit bucket ID; defaults to req.path
  */
-module.exports = function rateLimiter(limit = 60, windowMs = 60_000) {
+module.exports = function rateLimiter(limit = 60, windowMs = 60_000, routeId) {
     return (req, res, next) => {
-        const ip    = req.ip || "unknown";
-        const key   = `${ip}:${windowMs}`;
-        const now   = Date.now();
-        const entry = _rateMap.get(key) || { count: 0, start: now, windowMs };
+        const ip     = req.ip || "unknown";
+        const bucket = routeId || req.path || "default";
+        const key    = `${ip}:${bucket}:${windowMs}`;
+        const now    = Date.now();
+
+        const entry  = _rateMap.get(key) || { count: 0, start: now, windowMs };
         if (now - entry.start > windowMs) { entry.count = 0; entry.start = now; }
         entry.count++;
         _rateMap.set(key, entry);
+
+        const remaining = Math.max(0, limit - entry.count);
+        const resetAt   = Math.ceil((entry.start + windowMs) / 1000);
+
+        res.setHeader("X-RateLimit-Limit",     limit);
+        res.setHeader("X-RateLimit-Remaining", remaining);
+        res.setHeader("X-RateLimit-Reset",     resetAt);
+
         if (entry.count > limit) {
-            return res.status(429).json({ success: false, reply: "Too many requests. Slow down." });
+            const retryAfter = Math.ceil((entry.start + windowMs - now) / 1000);
+            res.setHeader("Retry-After", Math.max(1, retryAfter));
+            return res.status(429).json({
+                success: false,
+                error:   "Too many requests. Slow down.",
+                retryAfterSeconds: Math.max(1, retryAfter),
+            });
         }
         next();
     };
