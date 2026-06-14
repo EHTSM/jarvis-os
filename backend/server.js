@@ -700,6 +700,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[Startup:Reconcile] failed (non-fatal):", recErr.message);
     }
 
+    // ── Track D: Background Runtime Observer (proactive recommendations) ─
+    try {
+        const bgr = require("./services/backgroundRuntime.cjs");
+        bgr.start();
+        logger.info("[BackgroundRuntime] proactive observers started (repo/pm2/logs/webhooks/deployments/incidents)");
+    } catch (bgrErr) {
+        logger.warn("[BackgroundRuntime] failed to start (non-fatal):", bgrErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;

@@ -34,5 +34,6 @@ router.use(require("./phase22"));      // /p22/secrets, /p22/security, /p22/depl
 router.use(require("./phase23"));      // /p23/github, /p23/review, /p23/release, /p23/autopilot
 router.use(require("./phase24"));      // /p24/vscode, /p24/repo, /p24/refactor, /p24/multirepo
 router.use(require("./phase25"));      // /p25/deploy, /p25/secrets, /p25/obs, /p25/search
+router.use(require("./phase26"));      // /p26/graph, /p26/memory, /p26/reason, /p26/observer, /p26/plugins, /p26/capabilities, /p26/manifest, /p26/templates
 
 module.exports = router;
