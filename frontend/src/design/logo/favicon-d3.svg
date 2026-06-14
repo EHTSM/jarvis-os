@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#7c6fff"/>
+      <stop offset="100%" stop-color="#4ecdc4"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="32" height="32" rx="8" fill="#07090f"/>
+
+  <!-- Heavy O ring -->
+  <circle cx="16" cy="16" r="9"
+    stroke="url(#g)"
+    stroke-width="3"
+    fill="none"
+    filter="url(#glow)"/>
+
+  <!-- Center operator dot -->
+  <circle cx="16" cy="16" r="2.8"
+    fill="url(#g)"
+    filter="url(#glow)"/>
+
+  <!-- Subtle crosshair ticks -->
+  <line x1="16" y1="5"  x2="16" y2="8"  stroke="url(#g)" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+  <line x1="16" y1="24" x2="16" y2="27" stroke="url(#g)" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+  <line x1="5"  y1="16" x2="8"  y2="16" stroke="url(#g)" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+  <line x1="24" y1="16" x2="27" y2="16" stroke="url(#g)" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+</svg>

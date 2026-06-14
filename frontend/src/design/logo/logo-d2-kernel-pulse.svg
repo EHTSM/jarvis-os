@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 40" fill="none">
+  <defs>
+    <linearGradient id="grad-d2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#7c6fff"/>
+      <stop offset="100%" stop-color="#4ecdc4"/>
+    </linearGradient>
+    <filter id="glow-d2" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="1.2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- ── Mark: Kernel Pulse ── -->
+  <!--
+    Flat-top hexagon: center (20,20), circumradius 13
+    Vertices (flat-top, 0° = top-right):
+      (20+13·cos30, 20+13·sin30) × 6 rotating by 60°
+    Simplified flat-top: top edge horizontal
+    V1: (20+13·cos90,  20-13·sin90)  = (20, 7)
+    V2: (20+13·cos30,  20-13·sin30)  = (20+11.26, 20-6.5) = (31.26, 13.5)
+    V3: (20+13·cos330, 20-13·sin330) = (31.26, 26.5)
+    V4: (20, 33)
+    V5: (8.74, 26.5)
+    V6: (8.74, 13.5)
+    Using circumradius 11 for tighter fit:
+    V1: (20, 9), V2: (29.53, 14.5), V3: (29.53, 25.5), V4: (20,31), V5: (10.47,25.5), V6: (10.47,14.5)
+  -->
+  <polygon
+    points="20,9 29.53,14.5 29.53,25.5 20,31 10.47,25.5 10.47,14.5"
+    stroke="url(#grad-d2)"
+    stroke-width="1.8"
+    fill="none"
+    filter="url(#glow-d2)"/>
+
+  <!-- Waveform pulse: flat → rise → peak → fall → flat -->
+  <!-- Spanning x: 12→28, centered on 20, peak at center y=12 -->
+  <polyline
+    points="12,20 15,20 17,20 18.5,12 20,12 21.5,12 23,20 25,20 28,20"
+    stroke="url(#grad-d2)"
+    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+    filter="url(#glow-d2)"/>
+
+  <!-- Peak dot: the kernel point -->
+  <circle cx="20" cy="12" r="2.2"
+    fill="#4ecdc4"
+    filter="url(#glow-d2)"
+    opacity="0.95"/>
+
+  <!-- ── Wordmark: Ooplix ── -->
+  <text
+    x="44" y="25"
+    font-family="'SF Pro Display', 'Segoe UI', system-ui, sans-serif"
+    font-size="18"
+    font-weight="700"
+    letter-spacing="-0.5"
+    fill="#dde2ec">
+    Ooplix
+  </text>
+</svg>

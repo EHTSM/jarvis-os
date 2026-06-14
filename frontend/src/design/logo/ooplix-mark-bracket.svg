@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <!--
+    Ooplix Mark — The Bracket
+    > · < : input, runtime, output.
+    Asymmetric: left bracket slightly heavier (stroke 3px vs 2.4px).
+    Dot at center: the OS execution point.
+
+    Construction:
+      Left bracket  > : apex at (14, 20), opening at (9, 12) and (9, 28)
+      Right bracket < : apex at (26, 20), opening at (31, 12) and (31, 28)
+      Center dot    · : (20, 20), r=3
+  -->
+  <defs>
+    <linearGradient id="bg-l" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c6fff"/>
+      <stop offset="100%" stop-color="#9b8fff"/>
+    </linearGradient>
+    <linearGradient id="bg-r" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#63d9d1"/>
+      <stop offset="100%" stop-color="#4ecdc4"/>
+    </linearGradient>
+    <linearGradient id="dot-g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#7c6fff"/>
+      <stop offset="100%" stop-color="#4ecdc4"/>
+    </linearGradient>
+    <filter id="bdot-glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Left bracket > : heavier, violet -->
+  <polyline
+    points="10,11 15,20 10,29"
+    stroke="url(#bg-l)"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"/>
+
+  <!-- Right bracket < : lighter, teal -->
+  <polyline
+    points="30,11 25,20 30,29"
+    stroke="url(#bg-r)"
+    stroke-width="2.4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"/>
+
+  <!-- Center runtime dot -->
+  <circle cx="20" cy="20" r="3.5"
+    fill="url(#dot-g)"
+    filter="url(#bdot-glow)"/>
+</svg>

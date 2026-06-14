@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <!--
+    Ooplix Mark v2 — The Arc Return
+    A 300° arc with angled termini. The 60° gap at top-right is the operator's
+    entry point: where human intent meets autonomous execution.
+
+    Construction:
+      Center: (20, 20)
+      Radius: 14px
+      Arc: from 30° to 330° clockwise (300° sweep) — gap at top-right (330°→390°/30°)
+      Stroke: 3.5px, round caps
+      Termini: 5px lines angled 45° inward from each arc endpoint
+
+    Arc endpoint math (r=14):
+      Start (30°):  x=20+14·cos30° = 20+12.12 = 32.12, y=20+14·sin30°  = 20+7   = 27
+        → wait, SVG 0° = 3 o'clock, angles go clockwise
+        → gap at "top-right" visually = 45°–105° in SVG space (12 o'clock = 270° in math, 270° in SVG)
+
+    Let's place the gap at top (11 o'clock to 1 o'clock in visual = -60° to +60° from top):
+      SVG 0° = right (3 o'clock). Top = 270° in SVG convention.
+      Gap: 240°–300° in SVG degrees (visually upper-right area).
+      Arc goes from 300° to 240° (300° sweep going clockwise in SVG).
+
+    SVG arc: draw from angle 300° to 240° (clockwise = large-arc-flag=1, sweep=1)
+      P_start (300°): x=20+14·cos(300°)=20+14·0.5=27, y=20+14·sin(300°)=20-14·0.866=20-12.12=7.88 ≈ (27, 7.9)
+      P_end   (240°): x=20+14·cos(240°)=20-7=13,       y=20+14·sin(240°)=20-12.12=7.88 ≈ (13, 7.9)
+
+    The gap is symmetric at the top. The arc sweeps 300° clockwise from P_start to P_end.
+
+    Termini: short lines that angle 45° inward (toward center of gap = top center = (20, 6)):
+      From P_start (27, 7.9): angle toward (20,6) ≈ -105° → short line ~5px
+      From P_end   (13, 7.9): angle toward (20,6) ≈ -75°  → short line ~5px
+  -->
+  <defs>
+    <linearGradient id="arc-grad" gradientUnits="userSpaceOnUse"
+      x1="27" y1="7.9" x2="13" y2="7.9">
+      <!-- Gradient runs from arc start (violet) to arc end (teal) -->
+      <!-- For a sweeping clockwise visual, violet is at start (right side of gap) -->
+      <stop offset="0%"   stop-color="#7c6fff"/>
+      <stop offset="50%"  stop-color="#9b8fff"/>
+      <stop offset="100%" stop-color="#4ecdc4"/>
+    </linearGradient>
+    <filter id="arc-glow">
+      <feGaussianBlur stdDeviation="1.4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!--
+    300° arc from (27, 7.9) to (13, 7.9) clockwise.
+    M = moveto start
+    A rx ry x-rotation large-arc-flag sweep-flag x y
+    large-arc-flag = 1 (arc > 180°), sweep-flag = 1 (clockwise)
+  -->
+  <path
+    d="M 27,7.9 A 14,14 0 1,1 13,7.9"
+    stroke="url(#arc-grad)"
+    stroke-width="3.5"
+    stroke-linecap="round"
+    fill="none"
+    filter="url(#arc-glow)"/>
+
+  <!--
+    Terminus marks — angled inward toward (20, 6).
+    From P_start (27, 7.9): direction vector toward (20,6): (-7, -1.9), length≈7.25
+    Normalized: (-0.965, -0.262). Scale 5px: end at (27-4.83, 7.9-1.31) = (22.17, 6.59)
+    From P_end (13, 7.9): direction toward (20,6): (7,-1.9), norm (0.965,-0.262). End: (13+4.83, 6.59) = (17.83, 6.59)
+  -->
+  <line x1="27" y1="7.9" x2="22.2" y2="6.6"
+    stroke="url(#arc-grad)"
+    stroke-width="2.2"
+    stroke-linecap="round"/>
+
+  <line x1="13" y1="7.9" x2="17.8" y2="6.6"
+    stroke="#4ecdc4"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    opacity="0.9"/>
+</svg>

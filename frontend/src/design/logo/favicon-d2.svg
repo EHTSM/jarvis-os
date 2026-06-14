@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c6fff"/>
+      <stop offset="100%" stop-color="#4ecdc4"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="0.9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="32" height="32" rx="8" fill="#07090f"/>
+
+  <!-- Hexagon: center (16,16), circumradius 10, flat-top -->
+  <!-- V: (16,6),(24.66,11),(24.66,21),(16,26),(7.34,21),(7.34,11) -->
+  <polygon
+    points="16,6 24.66,11 24.66,21 16,26 7.34,21 7.34,11"
+    stroke="url(#g)"
+    stroke-width="1.6"
+    fill="none"
+    filter="url(#glow)"/>
+
+  <!-- Waveform: x 9→23, peak y=12 at x=16 -->
+  <polyline
+    points="9,17 12,17 14,17 15,11 16,11 17,11 18,17 20,17 23,17"
+    stroke="url(#g)"
+    stroke-width="1.4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+    filter="url(#glow)"/>
+
+  <!-- Peak kernel dot -->
+  <circle cx="16" cy="11" r="2" fill="#4ecdc4" filter="url(#glow)"/>
+</svg>

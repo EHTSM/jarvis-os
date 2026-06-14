@@ -956,6 +956,249 @@ ipcMain.handle("broadcast", (_e, { channel, data }) => {
 });
 
 // ═══════════════════════════════════════════════════════════════════
+// PTY Terminal session manager
+// Sessions keyed by sessionId (uuid string from renderer).
+// Each session is a node-pty IPty instance.
+// Data flows: pty → ipcMain.emit("pty-data:${id}") → BrowserWindow.send
+// Input flows: renderer → ipcMain.handle("pty-input") → pty.write
+// ═══════════════════════════════════════════════════════════════════
+
+let pty = null;
+try { pty = require("node-pty"); } catch (e) { console.warn("[PTY] node-pty not available:", e.message); }
+
+const ptySessions = new Map(); // id → { proc, cwd, shell }
+
+function _shell() {
+    if (process.platform === "win32") return process.env.COMSPEC || "cmd.exe";
+    return process.env.SHELL || "/bin/bash";
+}
+
+ipcMain.handle("pty-create", (event, { id, cwd, cols = 120, rows = 30 }) => {
+    if (!pty) return { ok: false, error: "node-pty not available" };
+    if (ptySessions.has(id)) return { ok: true, reused: true };
+
+    const safeCwd = cwd && fs.existsSync(cwd) ? cwd : os.homedir();
+    const shell   = _shell();
+
+    let proc;
+    try {
+        proc = pty.spawn(shell, [], {
+            name: "xterm-256color",
+            cols, rows,
+            cwd:  safeCwd,
+            env:  { ...process.env, TERM: "xterm-256color", COLORTERM: "truecolor" },
+        });
+    } catch (e) {
+        return { ok: false, error: e.message };
+    }
+
+    const sender = event.sender;
+
+    proc.onData((data) => {
+        if (!sender.isDestroyed()) sender.send(`pty-data:${id}`, data);
+    });
+
+    proc.onExit(({ exitCode }) => {
+        ptySessions.delete(id);
+        if (!sender.isDestroyed()) sender.send(`pty-exit:${id}`, { exitCode });
+    });
+
+    ptySessions.set(id, { proc, cwd: safeCwd, shell });
+    return { ok: true, shell, cwd: safeCwd };
+});
+
+ipcMain.handle("pty-input", (_e, { id, data }) => {
+    const s = ptySessions.get(id);
+    if (!s) return { ok: false };
+    s.proc.write(data);
+    return { ok: true };
+});
+
+ipcMain.handle("pty-resize", (_e, { id, cols, rows }) => {
+    const s = ptySessions.get(id);
+    if (!s) return { ok: false };
+    try { s.proc.resize(cols, rows); } catch {}
+    return { ok: true };
+});
+
+ipcMain.handle("pty-kill", (_e, { id }) => {
+    const s = ptySessions.get(id);
+    if (!s) return { ok: false };
+    try { s.proc.kill(); } catch {}
+    ptySessions.delete(id);
+    return { ok: true };
+});
+
+ipcMain.handle("pty-list", () => {
+    return { sessions: [...ptySessions.entries()].map(([id, s]) => ({ id, cwd: s.cwd, shell: s.shell })) };
+});
+
+ipcMain.handle("pty-cwd", (_e, { id }) => {
+    const s = ptySessions.get(id);
+    if (!s) return { cwd: os.homedir() };
+    // On macOS/Linux try to read the cwd of the child process via /proc or lsof
+    try {
+        if (process.platform === "darwin") {
+            const { execSync } = require("child_process");
+            const out = execSync(`lsof -a -p ${s.proc.pid} -d cwd -Fn 2>/dev/null | grep ^n`).toString().trim();
+            const cwd = out.replace(/^n/, "");
+            if (cwd) return { cwd };
+        }
+    } catch {}
+    return { cwd: s.cwd };
+});
+
+// Clean up all PTY sessions on quit
+app.on("before-quit", () => {
+    for (const [, s] of ptySessions) {
+        try { s.proc.kill(); } catch {}
+    }
+    ptySessions.clear();
+});
+
+// ── Git operations (native shell, no extra deps) ──────────────────
+ipcMain.handle("git-status", async (_e, { cwd }) => {
+    return new Promise((resolve) => {
+        exec("git status --porcelain=v1 -b 2>&1", { cwd: path.resolve(cwd), timeout: 8_000 }, (err, stdout) => {
+            if (err && !stdout) return resolve({ ok: false, error: err.message });
+            const lines  = stdout.split("\n").filter(Boolean);
+            const branch = (lines[0] || "").replace(/^## /, "");
+            const files  = lines.slice(1).map(l => ({ code: l.slice(0, 2).trim(), file: l.slice(3) }));
+            resolve({ ok: true, branch, files });
+        });
+    });
+});
+
+ipcMain.handle("git-diff", async (_e, { cwd, file }) => {
+    return new Promise((resolve) => {
+        const cmd = file ? `git diff -- "${file}"` : "git diff";
+        exec(cmd, { cwd: path.resolve(cwd), timeout: 10_000, maxBuffer: 512 * 1024 }, (err, stdout, stderr) => {
+            resolve({ ok: !err, diff: stdout.slice(0, 200_000), error: stderr });
+        });
+    });
+});
+
+ipcMain.handle("git-log", async (_e, { cwd, limit = 50 }) => {
+    return new Promise((resolve) => {
+        const fmt = "--pretty=format:%H%x1f%h%x1f%an%x1f%ae%x1f%ar%x1f%s";
+        exec(`git log ${fmt} -${limit} 2>&1`, { cwd: path.resolve(cwd), timeout: 8_000 }, (err, stdout) => {
+            if (err && !stdout) return resolve({ ok: false, commits: [] });
+            const commits = stdout.trim().split("\n").filter(Boolean).map(line => {
+                const [hash, short, author, email, date, ...msgParts] = line.split("\x1f");
+                return { hash, short, author, email, date, message: msgParts.join("\x1f") };
+            });
+            resolve({ ok: true, commits });
+        });
+    });
+});
+
+ipcMain.handle("git-branches", async (_e, { cwd }) => {
+    return new Promise((resolve) => {
+        exec("git branch -a --format=%(refname:short) 2>&1", { cwd: path.resolve(cwd), timeout: 5_000 }, (err, stdout) => {
+            exec("git branch --show-current 2>&1", { cwd: path.resolve(cwd), timeout: 3_000 }, (_e2, cur) => {
+                const branches = stdout.trim().split("\n").filter(Boolean);
+                resolve({ ok: !err, branches, current: cur.trim() });
+            });
+        });
+    });
+});
+
+ipcMain.handle("git-checkout", async (_e, { cwd, branch }) => {
+    return new Promise((resolve) => {
+        exec(`git checkout "${branch}" 2>&1`, { cwd: path.resolve(cwd), timeout: 15_000 }, (err, stdout, stderr) => {
+            resolve({ ok: !err, output: stdout + stderr });
+        });
+    });
+});
+
+ipcMain.handle("git-commit", async (_e, { cwd, message }) => {
+    return new Promise((resolve) => {
+        exec(`git commit -m ${JSON.stringify(message)} 2>&1`, { cwd: path.resolve(cwd), timeout: 15_000 }, (err, stdout, stderr) => {
+            resolve({ ok: !err, output: stdout + stderr });
+        });
+    });
+});
+
+// ── File tree (for explorer) ──────────────────────────────────────
+ipcMain.handle("fs-read-tree", async (_e, { dir, depth = 3 }) => {
+    function readDir(p, d) {
+        if (d <= 0) return [];
+        let entries;
+        try { entries = fs.readdirSync(p, { withFileTypes: true }); } catch { return []; }
+        return entries
+            .filter(e => !e.name.startsWith(".") && e.name !== "node_modules")
+            .map(e => {
+                const fullPath = path.join(p, e.name);
+                const isDir    = e.isDirectory();
+                return {
+                    name:     e.name,
+                    path:     fullPath,
+                    isDir,
+                    children: isDir ? readDir(fullPath, d - 1) : undefined,
+                    ext:      !isDir ? path.extname(e.name).slice(1) : undefined,
+                };
+            })
+            .sort((a, b) => (b.isDir - a.isDir) || a.name.localeCompare(b.name));
+    }
+    try {
+        const safe = path.resolve(dir);
+        return { ok: true, tree: readDir(safe, depth), root: safe };
+    } catch (e) {
+        return { ok: false, error: e.message };
+    }
+});
+
+ipcMain.handle("fs-search", async (_e, { dir, query, maxResults = 50 }) => {
+    return new Promise((resolve) => {
+        if (!query || query.length < 2) return resolve({ ok: true, results: [] });
+        const cmd = process.platform === "win32"
+            ? `dir /s /b "${path.resolve(dir)}" | findstr /i "${query}"`
+            : `find "${path.resolve(dir)}" -not \\( -name "node_modules" -prune \\) -not \\( -name ".git" -prune \\) -iname "*${query}*" 2>/dev/null | head -${maxResults}`;
+        exec(cmd, { timeout: 8_000, maxBuffer: 256 * 1024 }, (_err, stdout) => {
+            const results = stdout.trim().split("\n").filter(Boolean).slice(0, maxResults);
+            resolve({ ok: true, results });
+        });
+    });
+});
+
+ipcMain.handle("fs-grep", async (_e, { dir, pattern, maxResults = 100 }) => {
+    return new Promise((resolve) => {
+        if (!pattern) return resolve({ ok: true, results: [] });
+        const cmd = `grep -rn --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" --include="*.json" --include="*.md" -l "${pattern}" "${path.resolve(dir)}" 2>/dev/null | head -${maxResults}`;
+        exec(cmd, { timeout: 10_000, maxBuffer: 256 * 1024 }, (_err, stdout) => {
+            const results = stdout.trim().split("\n").filter(Boolean).slice(0, maxResults);
+            resolve({ ok: true, results });
+        });
+    });
+});
+
+// ── Screenshot ────────────────────────────────────────────────────
+ipcMain.handle("screenshot-window", async () => {
+    try {
+        const img = await windows.main?.webContents.capturePage();
+        if (!img) return { ok: false };
+        const png  = img.toPNG();
+        const dest = path.join(app.getPath("pictures"), `ooplix-${Date.now()}.png`);
+        fs.writeFileSync(dest, png);
+        return { ok: true, path: dest };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
+
+// ── Clipboard history ─────────────────────────────────────────────
+const _clipHistory = [];
+const MAX_CLIP_HISTORY = 50;
+
+ipcMain.handle("clipboard-push-history", (_e, text) => {
+    if (!text || _clipHistory[0] === text) return { ok: true };
+    _clipHistory.unshift(text);
+    if (_clipHistory.length > MAX_CLIP_HISTORY) _clipHistory.length = MAX_CLIP_HISTORY;
+    return { ok: true };
+});
+
+ipcMain.handle("clipboard-get-history", () => ({ history: [..._clipHistory] }));
+ipcMain.handle("clipboard-clear-history", () => { _clipHistory.length = 0; return { ok: true }; });
+
+// ═══════════════════════════════════════════════════════════════════
 // App lifecycle
 // ═══════════════════════════════════════════════════════════════════
 

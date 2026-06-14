@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" fill="none">
+  <defs>
+    <!-- Primary gradient: violet → teal -->
+    <linearGradient id="grad-d1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#7c6fff"/>
+      <stop offset="100%" stop-color="#4ecdc4"/>
+    </linearGradient>
+    <!-- Glow filter for the mark -->
+    <filter id="glow-d1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Clip paths for the two circles -->
+    <clipPath id="clip-left-d1">
+      <circle cx="15" cy="20" r="10"/>
+    </clipPath>
+    <clipPath id="clip-right-d1">
+      <circle cx="23" cy="20" r="10"/>
+    </clipPath>
+  </defs>
+
+  <!-- ── Mark: Runtime Loop ── -->
+  <!-- Left circle: violet, stroke only -->
+  <circle cx="15" cy="20" r="9"
+    stroke="#7c6fff"
+    stroke-width="2"
+    fill="none"
+    filter="url(#glow-d1)"
+    opacity="0.9"/>
+
+  <!-- Right circle: teal, stroke only -->
+  <circle cx="23" cy="20" r="9"
+    stroke="#4ecdc4"
+    stroke-width="2"
+    fill="none"
+    filter="url(#glow-d1)"
+    opacity="0.9"/>
+
+  <!-- Overlap fill: gradient blend in intersection -->
+  <g clip-path="url(#clip-left-d1)">
+    <circle cx="23" cy="20" r="9"
+      fill="url(#grad-d1)"
+      opacity="0.22"/>
+  </g>
+
+  <!-- Center axis dot: marks the midpoint / the OS kernel -->
+  <circle cx="19" cy="20" r="2"
+    fill="url(#grad-d1)"
+    opacity="0.8"/>
+
+  <!-- ── Wordmark: Ooplix ── -->
+  <text
+    x="42" y="25"
+    font-family="'SF Pro Display', 'Segoe UI', system-ui, sans-serif"
+    font-size="18"
+    font-weight="700"
+    letter-spacing="-0.5"
+    fill="#dde2ec">
+    Ooplix
+  </text>
+</svg>

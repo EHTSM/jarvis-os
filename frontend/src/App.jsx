@@ -103,6 +103,9 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import { useElectronEvent } from "./hooks/useElectron.js";
 import ElectronUpdateBanner from "./components/ElectronUpdateBanner.jsx";
 import ElectronOfflineBar   from "./components/ElectronOfflineBar.jsx";
+import { OoplixWordmark } from "./design/OoplixWordmark.jsx";
+import CommandCenter from "./components/CommandCenter.jsx";
+import LandingPage from "./components/LandingPage.jsx";
 import "./App.css";
 
 // Web: 5 primary tabs — secondary modules in "More" overflow
@@ -475,7 +478,7 @@ function AppInner() {
 
   // ── Screen routing ────────────────────────────────────────────────
   if (screen === "pricing")    return <PricingPage onBack={() => setScreen("landing")} onStart={handleStart} />;
-  if (screen === "landing")    return <Landing onStart={handleStart} onLogin={handleLogin} onLegal={openLegal} onPricing={() => setScreen("pricing")} />;
+  if (screen === "landing")    return <LandingPage onStart={handleStart} onLogin={handleLogin} onLegal={openLegal} onPricing={() => setScreen("pricing")} />;
   if (screen === "onboarding") return <Onboarding onComplete={handleOnboardingComplete} />;
 
   // ── Signup screen (reached after Onboarding, or from Login "Create account") ──
@@ -725,13 +728,11 @@ function AppInner() {
         <div key={tab} className="app-tab-pane">
         {tab === "mission"  && <MissionControlV1 onNavigate={setTab} />}
         {tab === "home"     && (
-          <ControlCenter
+          <CommandCenter
             stats={stats}
             opsData={opsData}
             online={online}
             onNavigate={setTab}
-            billing={billing}
-            onUpgrade={() => setUpgradeOpen(true)}
           />
         )}
         {tab === "chat" && (
