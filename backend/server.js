@@ -66,6 +66,7 @@ if (process.env.NODE_ENV === "production") {
 const express    = require("express");
 const cors       = require("cors");
 const path       = require("path");
+const crypto     = require("crypto");
 const TelegramBot = require("node-telegram-bot-api");
 
 const logger      = require("./utils/logger");
@@ -114,9 +115,20 @@ app.use((req, res, next) => {
     // recaptchaenterprise.googleapis.com (Enterprise init attempted before v2 fallback)
     const CSP_CONNECT = "https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://recaptchaenterprise.googleapis.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://www.clarity.ms";
     const CSP_FRAME   = "https://ooplix-jarvis.firebaseapp.com https://www.google.com https://www.recaptcha.net https://www.googletagmanager.com";
-    const csp = process.env.NODE_ENV === "production"
-        ? `default-src 'self'; script-src 'self' 'unsafe-inline' ${CSP_SCRIPT}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://www.gstatic.com; connect-src 'self' https: ${CSP_CONNECT}; frame-src ${CSP_FRAME}; frame-ancestors 'none';`
-        : "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https:; frame-ancestors 'none';";
+    let csp;
+    if (process.env.NODE_ENV === "production") {
+        // Generate a per-request nonce. CRA injects inline scripts that historically
+        // required 'unsafe-inline', but 'strict-dynamic' + nonce lets modern browsers
+        // trust only nonce-annotated scripts (and scripts they load), which eliminates
+        // the blanket XSS window. Older browsers fall back gracefully via 'unsafe-inline'
+        // being overridden by 'strict-dynamic' in supporting browsers.
+        const nonce = crypto.randomBytes(16).toString("base64");
+        res.locals.cspNonce = nonce;
+        csp = `default-src 'self'; script-src 'self' 'nonce-${nonce}' 'strict-dynamic' ${CSP_SCRIPT}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://www.gstatic.com; connect-src 'self' https: ${CSP_CONNECT}; frame-src ${CSP_FRAME}; frame-ancestors 'none';`;
+    } else {
+        // Development: keep unsafe-inline + unsafe-eval for HMR / CRA dev server
+        csp = "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https:; frame-ancestors 'none';";
+    }
     res.setHeader("Content-Security-Policy", csp);
     if (process.env.NODE_ENV === "production") {
         res.setHeader("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
@@ -146,6 +158,9 @@ app.use(cors({
     credentials: true,
     methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
 }));
+
+// ── Response compression (gzip for JSON >= 1 KB) ─────────────────
+app.use(require("./middleware/compress"));
 
 // ── Structured request logging ────────────────────────────────────
 app.use(require("./middleware/requestLogger"));

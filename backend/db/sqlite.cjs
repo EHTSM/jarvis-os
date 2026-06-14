@@ -61,6 +61,10 @@ function getDB() {
             name TEXT NOT NULL,
             applied_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
+
+        CREATE INDEX IF NOT EXISTS idx_tasks_status    ON tasks(status);
+        CREATE INDEX IF NOT EXISTS idx_tasks_scheduled ON tasks(scheduled_for);
+        CREATE INDEX IF NOT EXISTS idx_tasks_created   ON tasks(created_at);
     `);
 
     return _db;
@@ -74,4 +78,15 @@ function closeDB() {
     }
 }
 
-module.exports = { getDB, closeDB, DB_PATH };
+/** Return aggregate task statistics from the database. */
+function getStats() {
+    const db = getDB();
+    const total = db.prepare("SELECT COUNT(*) as n FROM tasks").get().n;
+    const byStatus = {};
+    for (const r of db.prepare("SELECT status, COUNT(*) as n FROM tasks GROUP BY status").all()) {
+        byStatus[r.status] = r.n;
+    }
+    return { total, byStatus };
+}
+
+module.exports = { getDB, closeDB, DB_PATH, getStats };

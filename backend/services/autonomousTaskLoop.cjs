@@ -26,8 +26,13 @@ const logger = require("../utils/logger");
 const memory = require("./memoryPersistenceLayer.cjs");
 const agentEngine = require("./agentExecutionEngine.cjs");
 
-const CYCLE_FILE    = path.join(__dirname, "../../data/autonomous-cycles.json");
-const LEARNING_FILE = path.join(__dirname, "../../data/learning-patterns.json");
+const CYCLE_FILE         = path.join(__dirname, "../../data/autonomous-cycles.json");
+const LEARNING_FILE      = path.join(__dirname, "../../data/learning-patterns.json");
+const CYCLE_QUEUE_FILE   = path.join(__dirname, "../../data/cycle-queue.json");
+
+// ── Concurrency cap ───────────────────────────────────────────────────────────
+const MAX_CONCURRENT = parseInt(process.env.MAX_CONCURRENT_CYCLES || "5");
+const _activeCycles  = new Set();
 
 // ── Persistence ──────────────────────────────────────────────────────────
 function _readJson(file, fb) {
@@ -50,6 +55,34 @@ function _cycleId() { return `cyc_${Date.now()}_${(++_seq).toString(36)}`; }
 
 function _saveCycles()   { try { _writeJson(CYCLE_FILE,    _cycles.slice(-500));   } catch { /* non-fatal */ } }
 function _saveLearning() { try { _writeJson(LEARNING_FILE, _learning.slice(-1000)); } catch { /* non-fatal */ } }
+
+function _readQueue()  { return _readJson(CYCLE_QUEUE_FILE, []); }
+function _writeQueue(q) {
+    const dir = path.dirname(CYCLE_QUEUE_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    const tmp = CYCLE_QUEUE_FILE + ".tmp";
+    fs.writeFileSync(tmp, JSON.stringify(q, null, 2));
+    fs.renameSync(tmp, CYCLE_QUEUE_FILE);
+}
+
+function _onCycleEnd(cycleId) {
+    _activeCycles.delete(cycleId);
+    const q = _readQueue();
+    if (q.length > 0) {
+        const next = q.shift();
+        _writeQueue(q);
+        startCycle(next.goal, next.opts || {});
+    }
+}
+
+/** Return current concurrency status (active + queued counts). */
+function getConcurrencyStatus() {
+    return {
+        active: _activeCycles.size,
+        max:    MAX_CONCURRENT,
+        queued: _readQueue().length,
+    };
+}
 
 // ── Goal → Task decomposition ────────────────────────────────────────────
 const TASK_TEMPLATES = {
@@ -204,6 +237,7 @@ async function _runCycle(cycle) {
 
     _saveCycles();
     logger.info(`[AutonomousTaskLoop] Cycle ${cycle.cycleId} → ${cycle.status} (${cycle.successRate ?? 0}%)`);
+    _onCycleEnd(cycle.cycleId);
 }
 
 function _recordLearning(event, cycle, task, result) {
@@ -223,8 +257,24 @@ function _recordLearning(event, cycle, task, result) {
 
 // ── Public API ───────────────────────────────────────────────────────────
 
-/** Start a new autonomous cycle. Non-blocking — execution runs in background. */
+/** Start a new autonomous cycle. Non-blocking — execution runs in background.
+ *  If MAX_CONCURRENT active cycles are already running, the goal is pushed to
+ *  the persistent cycle-queue and will auto-start when a slot opens.
+ */
 function startCycle(goal, opts = {}) {
+    // ── Concurrency cap ──────────────────────────────────────────────────────
+    if (_activeCycles.size >= MAX_CONCURRENT) {
+        const queue = _readQueue();
+        queue.push({ goal, opts, queuedAt: new Date().toISOString() });
+        _writeQueue(queue);
+        return {
+            cycleId:    null,
+            status:     "queued",
+            reason:     "concurrency_cap",
+            queueDepth: queue.length,
+        };
+    }
+
     const cycleId  = _cycleId();
     const goalType = opts.goalType || "general";
     const tasks    = _decompose(goal, goalType);
@@ -247,12 +297,16 @@ function startCycle(goal, opts = {}) {
     _cycles.push(cycle);
     _saveCycles();
 
+    // Track active slot before dispatching
+    _activeCycles.add(cycleId);
+
     // Run without awaiting — responds immediately, cycle runs in background
     _runCycle(cycle).catch(err => {
         cycle.status = "failed";
         cycle.error  = err.message;
         _saveCycles();
         logger.error(`[AutonomousTaskLoop] Unhandled cycle error: ${err.message}`);
+        _onCycleEnd(cycleId);
     });
 
     return { cycleId, status: "running", tasks: tasks.length };
@@ -313,4 +367,4 @@ function getStats() {
     };
 }
 
-module.exports = { startCycle, getCycle, listCycles, cancelCycle, getLearningLog, getStats };
+module.exports = { startCycle, getCycle, listCycles, cancelCycle, getLearningLog, getStats, getConcurrencyStatus };
