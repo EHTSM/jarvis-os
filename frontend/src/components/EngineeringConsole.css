@@ -234,19 +234,46 @@
 .ec-badge--red   { background: #450a0a40; color: #f87171; border: 1px solid #7f1d1d; }
 .ec-badge--gray  { background: #1f293740; color: #6b7280; border: 1px solid #374151; }
 
-/* Agent monitor */
+/* Agent monitor — virtualized rows */
 .ec-agents { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-.ec-agents__count { padding: 6px 12px; font-size: 11px; color: #4b5563; flex-shrink: 0; }
 
-/* Pagination */
-.ec-pagination {
+.ec-agents__toolbar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 8px;
-  border-top: 1px solid #1f2937;
-  color: #4b5563;
-  font-size: 12px;
+  gap: 8px;
+  padding: 5px 10px;
+  background: #0d1117;
+  border-bottom: 1px solid #1f2937;
   flex-shrink: 0;
 }
+.ec-agents__count { font-size: 11px; color: #4b5563; white-space: nowrap; }
+
+.ec-filter-input--sm { flex: 1; max-width: 180px; }
+
+/* Virtual row — flex-based grid replacing table for virtualization */
+.ec-vrow {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 0;
+  border-bottom: 1px solid #0f1923;
+  font-size: 12px;
+  color: #9ca3af;
+}
+.ec-vrow:hover { background: #0f1923; }
+.ec-vrow--header {
+  background: #0d1117;
+  color: #4b5563;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid #1f2937;
+  position: sticky;
+  top: 0;
+  flex-shrink: 0;
+}
+
+.ec-vrow__id   { width: 90px;  flex-shrink: 0; font-family: monospace; font-size: 11px; }
+.ec-vrow__type { flex: 1;      min-width: 0;   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ec-vrow__time { width: 80px;  flex-shrink: 0; font-size: 11px; color: #4b5563; text-align: right; }

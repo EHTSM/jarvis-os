@@ -1,5 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, memo, useMemo } from 'react';
+import { useVirtualList, VirtualRow } from '../hooks/useVirtualList';
+import { useThrottledCallback } from '../hooks/useStableCallback';
+import { useLowMemoryGuard } from '../hooks/useResourceManager';
 import './EngineeringConsole.css';
+
+const LOG_ITEM_HEIGHT = 18; // px per log line
 
 const BACKEND = 'http://localhost:5050';
 const isElectron = () => !!window.electronAPI?.isElectron;
@@ -16,57 +21,62 @@ function useInterval(fn, delay) {
 }
 
 // ── Log viewer ────────────────────────────────────────────────────────
-function LogLine({ line }) {
+const LogLine = memo(function LogLine({ line }) {
   const isErr  = /error|ERR|FAIL/i.test(line);
   const isWarn = /warn|WARN/i.test(line);
   const isInfo = /info|INFO/i.test(line);
   const cls = isErr ? 'log-line--error' : isWarn ? 'log-line--warn' : isInfo ? 'log-line--info' : '';
   return <div className={`log-line ${cls}`}>{line}</div>;
-}
+});
 
 function RuntimeLogs() {
-  const [lines, setLines] = useState([]);
+  const [lines,  setLines]  = useState([]);
   const [follow, setFollow] = useState(true);
   const [filter, setFilter] = useState('');
-  const bodyRef = useRef(null);
-  const esRef   = useRef(null);
+  const esRef = useRef(null);
+
+  // Trim buffer to 200 lines on memory pressure to free heap
+  useLowMemoryGuard(() => setLines(l => l.slice(-200)));
 
   useEffect(() => {
-    const token = document.cookie.match(/jarvis_auth=([^;]+)/)?.[1] || '';
-    const url = `${BACKEND}/runtime/stream`;
-    const es = new EventSource(url, { withCredentials: true });
+    const es = new EventSource(`${BACKEND}/runtime/stream`, { withCredentials: true });
     esRef.current = es;
-
     es.onmessage = (e) => {
       try {
         const data = JSON.parse(e.data);
         const text = typeof data === 'string' ? data : (data.message || data.log || JSON.stringify(data));
-        setLines(l => [...l.slice(-1000), text]);
+        setLines(l => [...l.slice(-2000), text]);
       } catch {
-        setLines(l => [...l.slice(-1000), e.data]);
+        setLines(l => [...l.slice(-2000), e.data]);
       }
     };
-    es.onerror = () => {
-      setLines(l => [...l, '[SSE disconnected]']);
-    };
+    es.onerror = () => setLines(l => [...l, '[SSE disconnected]']);
     return () => es.close();
   }, []);
 
-  // Auto-scroll
-  useEffect(() => {
-    if (follow && bodyRef.current) {
-      bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
-    }
-  }, [lines, follow]);
+  const visible = filter
+    ? lines.filter(l => l.toLowerCase().includes(filter.toLowerCase()))
+    : lines;
 
-  const visible = filter ? lines.filter(l => l.toLowerCase().includes(filter.toLowerCase())) : lines;
+  const { containerRef, outerStyle, innerStyle, virtualItems } = useVirtualList({
+    itemCount: visible.length,
+    itemHeight: LOG_ITEM_HEIGHT,
+    overscan: 10,
+  });
+
+  // Auto-scroll to bottom when following
+  useEffect(() => {
+    if (!follow) return;
+    const el = containerRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [visible.length, follow]); // eslint-disable-line
 
   return (
     <div className="ec-logs">
       <div className="ec-logs__toolbar">
         <input
           className="ec-filter-input"
-          placeholder="Filter…"
+          placeholder={`Filter… (${visible.length} lines)`}
           value={filter}
           onChange={e => setFilter(e.target.value)}
         />
@@ -76,12 +86,19 @@ function RuntimeLogs() {
         </label>
         <button className="ec-btn" onClick={() => setLines([])}>Clear</button>
       </div>
-      <div className="ec-logs__body" ref={bodyRef}>
+      {/* Virtualized log body */}
+      <div ref={containerRef} style={{ ...outerStyle, flex: 1 }}>
         {visible.length === 0 ? (
           <div className="ec-empty">No log output yet. Connecting to /runtime/stream…</div>
-        ) : visible.map((line, i) => (
-          <LogLine key={i} line={line} />
-        ))}
+        ) : (
+          <div style={innerStyle}>
+            {virtualItems.map(item => (
+              <VirtualRow key={item.index} top={item.top} height={LOG_ITEM_HEIGHT}>
+                <LogLine line={visible[item.index]} />
+              </VirtualRow>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -203,12 +220,27 @@ function QueueMonitor() {
   );
 }
 
-// ── Agent monitor ─────────────────────────────────────────────────────
+// ── Agent row (memoized so only changed rows re-render) ───────────────
+const AGENT_ROW_H = 26;
+
+const AgentRow = memo(function AgentRow({ agent }) {
+  const cls = agent.status === 'running' ? 'green' : agent.status === 'error' ? 'red' : 'gray';
+  return (
+    <div className="ec-vrow" style={{ height: AGENT_ROW_H }}>
+      <span className="ec-vrow__id"    title={agent.id}>{(agent.id || '').slice(0, 10)}{agent.id?.length > 10 ? '…' : ''}</span>
+      <span className="ec-vrow__type">{agent.type || agent.kind || '—'}</span>
+      <span className={`ec-badge ec-badge--${cls}`}>{agent.status || '—'}</span>
+      <span className="ec-vrow__time">{agent.startedAt  ? new Date(agent.startedAt).toLocaleTimeString()  : '—'}</span>
+      <span className="ec-vrow__time">{agent.lastActive ? new Date(agent.lastActive).toLocaleTimeString() : '—'}</span>
+    </div>
+  );
+});
+
+// ── Agent monitor — virtualized, handles 1000+ agents without pagination ──
 function AgentMonitor() {
-  const [agents, setAgents] = useState([]);
-  const [err, setErr]       = useState(null);
-  const [page, setPage]     = useState(0);
-  const PAGE_SIZE = 15;
+  const [agents,  setAgents] = useState([]);
+  const [filter,  setFilter] = useState('');
+  const [err,     setErr]    = useState(null);
 
   const fetch_ = useCallback(async () => {
     try {
@@ -225,42 +257,56 @@ function AgentMonitor() {
   useEffect(() => { fetch_(); }, [fetch_]);
   useInterval(fetch_, 6000);
 
-  const page_ = agents.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const visible = useMemo(() => {
+    if (!filter) return agents;
+    const q = filter.toLowerCase();
+    return agents.filter(a =>
+      (a.id || '').toLowerCase().includes(q) ||
+      (a.type || a.kind || '').toLowerCase().includes(q) ||
+      (a.status || '').toLowerCase().includes(q)
+    );
+  }, [agents, filter]);
+
+  const { containerRef, outerStyle, innerStyle, virtualItems } = useVirtualList({
+    itemCount: visible.length,
+    itemHeight: AGENT_ROW_H,
+    overscan: 8,
+  });
 
   if (err) return <div className="ec-error">Agent monitor unavailable: {err}</div>;
-  if (!agents.length) return <div className="ec-empty">No agents running.</div>;
 
   return (
-    <div className="ec-agents">
-      <div className="ec-agents__count">{agents.length} agents</div>
-      <div className="ec-table-wrap">
-        <table className="ec-table">
-          <thead>
-            <tr><th>ID</th><th>Type</th><th>Status</th><th>Started</th><th>Last Active</th></tr>
-          </thead>
-          <tbody>
-            {page_.map(a => (
-              <tr key={a.id}>
-                <td className="ec-table__id" title={a.id}>{a.id?.slice(0, 10)}…</td>
-                <td>{a.type || a.kind || '—'}</td>
-                <td>
-                  <span className={`ec-badge ec-badge--${a.status === 'running' ? 'green' : a.status === 'error' ? 'red' : 'gray'}`}>
-                    {a.status}
-                  </span>
-                </td>
-                <td className="ec-table__time">{a.startedAt ? new Date(a.startedAt).toLocaleTimeString() : '—'}</td>
-                <td className="ec-table__time">{a.lastActive ? new Date(a.lastActive).toLocaleTimeString() : '—'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="ec-agents" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <div className="ec-agents__toolbar">
+        <span className="ec-agents__count">{agents.length} agents{filter ? ` (${visible.length} shown)` : ''}</span>
+        <input
+          className="ec-filter-input ec-filter-input--sm"
+          placeholder="Filter agents…"
+          value={filter}
+          onChange={e => setFilter(e.target.value)}
+        />
       </div>
-      {agents.length > PAGE_SIZE && (
-        <div className="ec-pagination">
-          <button className="ec-btn ec-btn--sm" disabled={page === 0} onClick={() => setPage(p => p - 1)}>←</button>
-          <span>{page + 1} / {Math.ceil(agents.length / PAGE_SIZE)}</span>
-          <button className="ec-btn ec-btn--sm" disabled={(page + 1) * PAGE_SIZE >= agents.length} onClick={() => setPage(p => p + 1)}>→</button>
-        </div>
+      {visible.length === 0 ? (
+        <div className="ec-empty">{filter ? 'No agents match filter.' : 'No agents running.'}</div>
+      ) : (
+        <>
+          <div className="ec-vrow ec-vrow--header">
+            <span className="ec-vrow__id">ID</span>
+            <span className="ec-vrow__type">Type</span>
+            <span>Status</span>
+            <span className="ec-vrow__time">Started</span>
+            <span className="ec-vrow__time">Last Active</span>
+          </div>
+          <div ref={containerRef} style={{ ...outerStyle, flex: 1 }}>
+            <div style={innerStyle}>
+              {virtualItems.map(item => (
+                <VirtualRow key={item.index} top={item.top} height={AGENT_ROW_H}>
+                  <AgentRow agent={visible[item.index]} />
+                </VirtualRow>
+              ))}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
@@ -295,6 +341,17 @@ function MetricsStrip() {
   );
 }
 
+// ── Mounted-tab panel: keeps component alive after first visit ────────
+function MountedTab({ active, children }) {
+  const [everMounted, setEverMounted] = useState(false);
+  useEffect(() => { if (active) setEverMounted(true); }, [active]);
+  return (
+    <div style={{ display: active ? 'flex' : 'none', flexDirection: 'column', height: '100%', minHeight: 0 }}>
+      {everMounted && children}
+    </div>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────
 const TABS = [
   { id: 'logs',   label: 'Runtime Logs' },
@@ -324,10 +381,10 @@ export default function EngineeringConsole({ className = '' }) {
         ))}
       </div>
       <div className="ec-body">
-        {tab === 'logs'   && <RuntimeLogs />}
-        {tab === 'pm2'    && <PM2Monitor />}
-        {tab === 'queue'  && <QueueMonitor />}
-        {tab === 'agents' && <AgentMonitor />}
+        <MountedTab active={tab === 'logs'}>   <RuntimeLogs />   </MountedTab>
+        <MountedTab active={tab === 'pm2'}>    <PM2Monitor />    </MountedTab>
+        <MountedTab active={tab === 'queue'}>  <QueueMonitor />  </MountedTab>
+        <MountedTab active={tab === 'agents'}> <AgentMonitor />  </MountedTab>
       </div>
     </div>
   );
