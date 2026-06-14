@@ -10,16 +10,17 @@ import MissionControl from './operator-os/MissionControl';
 import './ElectronWorkspace.css';
 
 // ── Lazy imports — none of these load until first activated ───────────
-const TerminalPanel        = lazy(() => import('./TerminalPanel'));
-const FileExplorer         = lazy(() => import('./FileExplorer'));
-const EngineeringConsole   = lazy(() => import('./EngineeringConsole'));
-const AIOverlay            = lazy(() => import('./AIOverlay'));
-const VisualGit            = lazy(() => import('./VisualGit'));
-const AIPairProgramming    = lazy(() => import('./AIPairProgramming'));
-const RuntimeDebugger      = lazy(() => import('./RuntimeDebugger'));
-const VisualArchitecture   = lazy(() => import('./VisualArchitecture'));
-const WorkspaceProductivity = lazy(() => import('./WorkspaceProductivity'));
-const AutonomousOps        = lazy(() => import('./AutonomousOps'));
+const TerminalPanel           = lazy(() => import('./TerminalPanel'));
+const FileExplorer            = lazy(() => import('./FileExplorer'));
+const EngineeringConsole      = lazy(() => import('./EngineeringConsole'));
+const AIOverlay               = lazy(() => import('./AIOverlay'));
+const VisualGit               = lazy(() => import('./VisualGit'));
+const AIPairProgramming       = lazy(() => import('./AIPairProgramming'));
+const RuntimeDebugger         = lazy(() => import('./RuntimeDebugger'));
+const VisualArchitecture      = lazy(() => import('./VisualArchitecture'));
+const WorkspaceProductivity   = lazy(() => import('./WorkspaceProductivity'));
+const AutonomousOps           = lazy(() => import('./AutonomousOps'));
+const LiveAgentCollaboration  = lazy(() => import('./operator-os/LiveAgentCollaboration'));
 
 // ── Generic resize hook ───────────────────────────────────────────────
 function useResize(initial, min, max, axis = 'y') {
@@ -77,6 +78,7 @@ const BOTTOM_TABS = {
   ops:      { label: 'Auto-Ops',  icon: '🤖' },
   arch:     { label: 'Arch',      icon: '🗺' },
   pair:     { label: 'AI Pair',   icon: '💡' },
+  agents:   { label: 'Agents',    icon: '⬡' },
 };
 
 const api        = () => window.electronAPI;
@@ -444,6 +446,11 @@ export default function ElectronWorkspace({ children }) {
                   <LazyPane active={bottomTab === 'pair'}>
                     <ErrorBoundary label="AI Pair">
                       <AIPairProgramming />
+                    </ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'agents'}>
+                    <ErrorBoundary label="Live Agents">
+                      <LiveAgentCollaboration />
                     </ErrorBoundary>
                   </LazyPane>
                 </div>
