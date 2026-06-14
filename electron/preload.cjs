@@ -88,6 +88,38 @@ contextBridge.exposeInMainWorld("electronAPI", {
     // ── Inter-window broadcast ───────────────────────────────────
     broadcast: (channel, data)       => ipcRenderer.invoke("broadcast", { channel, data }),
 
+    // ── PTY Terminal sessions ────────────────────────────────────
+    ptyCreate:  (opts)               => ipcRenderer.invoke("pty-create",  opts),
+    ptyInput:   (id, data)           => ipcRenderer.invoke("pty-input",   { id, data }),
+    ptyResize:  (id, cols, rows)     => ipcRenderer.invoke("pty-resize",  { id, cols, rows }),
+    ptyKill:    (id)                 => ipcRenderer.invoke("pty-kill",    { id }),
+    ptyList:    ()                   => ipcRenderer.invoke("pty-list"),
+    ptyCwd:     (id)                 => ipcRenderer.invoke("pty-cwd",     { id }),
+    // PTY data: renderer subscribes per session id
+    onPtyData:  (id, cb)            => _on(`pty-data:${id}`,  cb),
+    onPtyExit:  (id, cb)            => _on(`pty-exit:${id}`,  cb),
+
+    // ── Git ──────────────────────────────────────────────────────
+    gitStatus:    (cwd)              => ipcRenderer.invoke("git-status",   { cwd }),
+    gitDiff:      (cwd, file)        => ipcRenderer.invoke("git-diff",     { cwd, file }),
+    gitLog:       (cwd, limit)       => ipcRenderer.invoke("git-log",      { cwd, limit }),
+    gitBranches:  (cwd)              => ipcRenderer.invoke("git-branches", { cwd }),
+    gitCheckout:  (cwd, branch)      => ipcRenderer.invoke("git-checkout", { cwd, branch }),
+    gitCommit:    (cwd, message)     => ipcRenderer.invoke("git-commit",   { cwd, message }),
+
+    // ── File tree + search ───────────────────────────────────────
+    fsReadTree:   (dir, depth)       => ipcRenderer.invoke("fs-read-tree", { dir, depth }),
+    fsSearch:     (dir, query)       => ipcRenderer.invoke("fs-search",    { dir, query }),
+    fsGrep:       (dir, pattern)     => ipcRenderer.invoke("fs-grep",      { dir, pattern }),
+
+    // ── Screenshot ───────────────────────────────────────────────
+    screenshotWindow: ()             => ipcRenderer.invoke("screenshot-window"),
+
+    // ── Clipboard history ────────────────────────────────────────
+    clipboardPushHistory:  (text)    => ipcRenderer.invoke("clipboard-push-history",  text),
+    clipboardGetHistory:   ()        => ipcRenderer.invoke("clipboard-get-history"),
+    clipboardClearHistory: ()        => ipcRenderer.invoke("clipboard-clear-history"),
+
     // ── Event subscriptions (return unsubscribe fn) ───────────────
     // Backend connectivity
     onBackendOnline:        (cb)     => _on("backend-online",          cb),

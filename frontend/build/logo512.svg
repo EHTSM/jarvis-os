@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!--
+    Ooplix Mark — OVERRIDE geometry @ 512×512
+    40px padding each side. Background rx:64.
+    Thick bar: y=190 h=72 x=40 w=432
+    Thin bar: y=308 h=36 x=163 w=309
+    Gap: 308 - (190+72) = 46 → ratio to thick h = 46/72 = 0.64 (scaled for canvas)
+  -->
+  <rect width="512" height="512" rx="64" fill="#03050a"/>
+  <!-- Thick bar -->
+  <rect x="40" y="190" width="432" height="72" rx="3" fill="#ffffff"/>
+  <!-- Thin bar: right edge = 163+309=472 = 40+432=472 ✓ right-aligned -->
+  <rect x="163" y="308" width="309" height="36" rx="3" fill="#ffffff"/>
+</svg>

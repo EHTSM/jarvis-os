@@ -103,6 +103,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import { useElectronEvent } from "./hooks/useElectron.js";
 import ElectronUpdateBanner from "./components/ElectronUpdateBanner.jsx";
 import ElectronOfflineBar   from "./components/ElectronOfflineBar.jsx";
+import ElectronWorkspace    from "./components/ElectronWorkspace.jsx";
 import { OoplixWordmark } from "./design/OoplixWordmark.jsx";
 import CommandCenter from "./components/CommandCenter.jsx";
 import LandingPage from "./components/LandingPage.jsx";
@@ -571,6 +572,7 @@ function AppInner() {
 
   // ── Main app ──────────────────────────────────────────────────────
   return (
+    <ElectronWorkspace>
     <div className={`app app--${_PRODUCT}${opsData?.status === "critical" ? " app--emergency" : ""}`}>
       <ElectronUpdateBanner />
       <ElectronOfflineBar />
@@ -833,6 +835,7 @@ function AppInner() {
       </main>
       {!_IS_DESKTOP && <CompanyFooter onNavigate={openLegal} />}
     </div>
+    </ElectronWorkspace>
   );
 }
 
