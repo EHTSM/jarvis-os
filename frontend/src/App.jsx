@@ -97,7 +97,12 @@ import PricingPage           from "./components/PricingPage.jsx";
 import ControlCenter         from "./components/ControlCenter.jsx";
 import MissionControlV1      from "./components/MissionControlV1.jsx";
 import CommandPalette        from "./components/CommandPalette.jsx";
+import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts.js";
+import ShortcutsOverlay      from "./components/ShortcutsOverlay.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
+import { useElectronEvent } from "./hooks/useElectron.js";
+import ElectronUpdateBanner from "./components/ElectronUpdateBanner.jsx";
+import ElectronOfflineBar   from "./components/ElectronOfflineBar.jsx";
 import "./App.css";
 
 // Web: 5 primary tabs — secondary modules in "More" overflow
@@ -260,6 +265,7 @@ function AppInner() {
   const [tab,      setTab]      = useState("home");
   const [moreOpen,    setMoreOpen]    = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [stats,     setStats]     = useState(null);
   const [opsData,   setOpsData]   = useState(null);
   const [toasts,    setToasts]    = useState([]);
@@ -335,17 +341,46 @@ function AppInner() {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // ── Global Cmd+K / Ctrl+K shortcut ───────────────────────────────
+  // ── Keyboard shortcuts ────────────────────────────────────────────
+  useKeyboardShortcuts({
+    'palette':          () => { setPaletteOpen(o => !o); track.commandPaletteOpened('keyboard'); },
+    'nav-home':         () => { setTab('home');         setScreen('app'); },
+    'nav-intelligence': () => { setTab('chat');         setScreen('app'); },
+    'nav-engineering':  () => { setTab('engineering');  setScreen('app'); },
+    'nav-contacts':     () => { setTab('clients');      setScreen('app'); },
+    'nav-payments':     () => { setTab('payments');     setScreen('app'); },
+    'nav-reports':      () => { setTab('reports');      setScreen('app'); },
+    'nav-chat':         () => { setTab('chat');         setScreen('app'); },
+    'help':             () => setShortcutsOpen(o => !o),
+    'search':           () => setPaletteOpen(true),
+    'escape':           () => {
+      if (shortcutsOpen) { setShortcutsOpen(false); return; }
+      if (paletteOpen)   { setPaletteOpen(false);   return; }
+      if (moreOpen)      { setMoreOpen(false);       return; }
+    },
+  });
+
+  // ── Electron native menu + IPC integration ───────────────────────
+  // Legacy event names (from older main process)
+  useElectronEvent('onNavigate',       (tab) => { setTab(tab); setScreen('app'); }, []);
+  useElectronEvent('onOpenPalette',    ()    => setPaletteOpen(true),               []);
+  useElectronEvent('onOpenSettings',   ()    => setTab('settings'),                 []);
+  useElectronEvent('onEmergencyStop',  ()    => { /* trigger stop */ },             []);
+  useElectronEvent('onEmergencyResume',()    => { /* trigger resume */ },           []);
+  useElectronEvent('onNewTask',        ()    => { setTab('home'); setScreen('app'); setPaletteOpen(true); }, []);
+  // Current event names (from production main.cjs)
+  useElectronEvent('onNav',              (tab)  => { setTab(tab); setScreen('app'); },          []);
+  useElectronEvent('onMenuAction',       (act)  => { if (act === 'new-contact') setTab('clients'); }, []);
+  useElectronEvent('onOpenCommandPalette',()    => setPaletteOpen(true),                        []);
+  useElectronEvent('onDeepLink',         (data) => { if (data?.route) { setTab(data.route); setScreen('app'); } }, []);
+  useElectronEvent('onImportContacts',   ()     => setTab('clients'),                           []);
+
+  // ── Sync tray status with runtime state ──────────────────────────
   useEffect(() => {
-    const handler = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
-        setPaletteOpen(o => { if (!o) track.commandPaletteOpened("keyboard"); return !o; });
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
+    if (!window.electronAPI) return;
+    const qRun = opsData?.queue?.counts?.running ?? 0;
+    window.electronAPI.updateTray?.({ agentCount: qRun, online });
+  }, [opsData, online]);
 
   // ── Send ──────────────────────────────────────────────────────────
   const handleSend = useCallback(async (override) => {
@@ -534,19 +569,78 @@ function AppInner() {
   // ── Main app ──────────────────────────────────────────────────────
   return (
     <div className={`app app--${_PRODUCT}${opsData?.status === "critical" ? " app--emergency" : ""}`}>
+      <ElectronUpdateBanner />
+      <ElectronOfflineBar />
+      <a href="#main-content" className="skip-link">Skip to content</a>
       <ProgressBar visible={loading} />
       <ToastContainer toasts={toasts} onRemove={removeToast} />
-      <header className="app-header">
-        <div className="brand">
-          <span className="logo">J</span>
-          <span className="brand-name">Ooplix</span>
+      {/* Global overlays */}
+      <CommandPalette
+        open={paletteOpen}
+        onClose={() => setPaletteOpen(false)}
+        onNavigate={(tabId) => { setTab(tabId); setMoreOpen(false); }}
+        onAsk={(text) => {
+          setTab("chat");
+          if (text) setTimeout(() => handleSend(text), 150);
+        }}
+      />
+      <ShortcutsOverlay open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
+
+      {/* OS Topbar — unified header: logo + tabs + actions */}
+      <header className="topbar" role="banner">
+        {_IS_DESKTOP && <div className="topbar-traffic-safe" />}
+        <div className="topbar-logo">
+          <OoplixWordmark size={24} />
         </div>
-        <div className="header-right">
-          {/* Emergency controls on Control Center and Execution tabs */}
+
+        <nav className="tabs" aria-label="Primary navigation" onClick={() => setMoreOpen(false)}>
+          {(_IS_DESKTOP ? DESKTOP_TABS : TABS).map(t => {
+            if (t.id === "more") {
+              const secondaryActive = MORE_TABS.some(m => m.id === tab);
+              return (
+                <div key="more" className="tab-more-wrap" onClick={e => e.stopPropagation()}>
+                  <button
+                    className={`tab tab--more${secondaryActive ? " active" : ""}${moreOpen ? " tab--more-open" : ""}`}
+                    onClick={() => setMoreOpen(o => !o)}
+                    aria-haspopup="true"
+                    aria-expanded={moreOpen}
+                  >
+                    {secondaryActive ? (MORE_TABS.find(m => m.id === tab)?.label ?? "More") + " ▾" : "More ▾"}
+                  </button>
+                  {moreOpen && (
+                    <div className="tab-more-menu" role="menu">
+                      {MORE_TABS.map(m => (
+                        <button
+                          key={m.id}
+                          className={`tab-more-item${tab === m.id ? " active" : ""}`}
+                          role="menuitem"
+                          onClick={() => { setTab(m.id); setMoreOpen(false); }}
+                        >
+                          {m.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+            return (
+              <button
+                key={t.id}
+                className={`tab${tab === t.id ? " active" : ""}${t.featured ? " tab--featured" : ""}`}
+                onClick={() => { setTab(t.id); track.tabChanged(t.id); }}
+              >
+                {t.label}
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="topbar-actions">
           {(tab === "home" || tab === "runtime") && (
             opsData?.status === "critical" ? (
               <button
-                className="btn-sm btn-success"
+                className="btn btn--success btn--sm"
                 title="Resume all executions"
                 onClick={async () => {
                   const r = await emergencyResume();
@@ -556,7 +650,7 @@ function AppInner() {
               >Resume</button>
             ) : (
               <button
-                className="btn-sm btn-danger"
+                className="btn btn--danger btn--sm"
                 title="Emergency stop — halt all task execution"
                 onClick={async () => {
                   const r = await emergencyStop();
@@ -567,77 +661,21 @@ function AppInner() {
             )
           )}
           <button
-            className="cmd-palette-trigger"
+            className="palette-trigger"
             onClick={() => setPaletteOpen(true)}
-            title="Command Palette (⌘K)"
-            aria-label="Open command palette"
+            title="Command Palette"
+            aria-label="Open command palette (⌘K)"
           >
-            <span className="cmd-palette-trigger-icon">⌕</span>
-            <span className="cmd-palette-trigger-label">Search…</span>
-            <kbd className="cmd-palette-trigger-kbd">⌘K</kbd>
+            <span style={{ fontSize: 13, lineHeight: 1 }}>⌕</span>
+            <span>Search…</span>
+            <kbd>⌘K</kbd>
           </button>
-          <div className={`status-dot ${online ? "online" : "offline"}`}
-               title={online ? "Connected" : "Offline"} />
-          {!online && (
-            <span className="status-reconnect">Reconnecting…</span>
-          )}
+          <div className="topbar-status" title={online ? "Runtime connected" : "Runtime offline"}>
+            <span className={`online-dot${online ? "" : " online-dot--offline"}`} />
+            <span>{online ? "Live" : "Offline"}</span>
+          </div>
         </div>
       </header>
-
-      <CommandPalette
-        open={paletteOpen}
-        onClose={() => setPaletteOpen(false)}
-        onNavigate={(tabId) => { setTab(tabId); setMoreOpen(false); }}
-        onAsk={(text) => {
-          setTab("chat");
-          // Push the query into the chat input via the existing handleSend
-          if (text) setTimeout(() => handleSend(text), 150);
-        }}
-      />
-
-      <nav className="tabs" onClick={() => setMoreOpen(false)}>
-        {(_IS_DESKTOP ? DESKTOP_TABS : TABS).map(t => {
-          // "More" tab — renders a dropdown of secondary tabs
-          if (t.id === "more") {
-            const secondaryActive = MORE_TABS.some(m => m.id === tab);
-            return (
-              <div key="more" className="tab-more-wrap" onClick={e => e.stopPropagation()}>
-                <button
-                  className={`tab tab--more${secondaryActive ? " active" : ""}${moreOpen ? " tab--more-open" : ""}`}
-                  onClick={() => setMoreOpen(o => !o)}
-                  aria-haspopup="true"
-                  aria-expanded={moreOpen}
-                >
-                  {secondaryActive ? (MORE_TABS.find(m => m.id === tab)?.label ?? "More") + " ▾" : "More ▾"}
-                </button>
-                {moreOpen && (
-                  <div className="tab-more-menu" role="menu">
-                    {MORE_TABS.map(m => (
-                      <button
-                        key={m.id}
-                        className={`tab-more-item${tab === m.id ? " active" : ""}`}
-                        role="menuitem"
-                        onClick={() => { setTab(m.id); setMoreOpen(false); }}
-                      >
-                        {m.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          }
-          return (
-            <button
-              key={t.id}
-              className={`tab${tab === t.id ? " active" : ""}${t.featured ? " tab--featured" : ""}`}
-              onClick={() => { setTab(t.id); track.tabChanged(t.id); }}
-            >
-              {t.label}
-            </button>
-          );
-        })}
-      </nav>
 
       {/* Trial conversion banner — shown to trialing/expired users */}
       {!_IS_DESKTOP && billing?.status !== "active" && (
@@ -682,7 +720,7 @@ function AppInner() {
         }}
       />
 
-      <main className="app-main">
+      <main className="app-main" id="main-content" role="main">
         {/* key forces remount on tab change — triggers page-enter CSS animation */}
         <div key={tab} className="app-tab-pane">
         {tab === "mission"  && <MissionControlV1 onNavigate={setTab} />}

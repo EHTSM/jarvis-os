@@ -22,15 +22,13 @@ export function useElectron() {
  * @param {Array}    deps    - dependency array for handler memoisation
  */
 export function useElectronEvent(event, handler, deps = []) {
-  const stable = useCallback(handler, deps); // eslint-disable-line react-hooks/exhaustive-deps
-
+  const stable = useCallback(handler, deps);
   useEffect(() => {
     const api = _api();
     if (!api || typeof api[event] !== 'function') return;
     const unsub = api[event](stable);
     return () => { if (typeof unsub === 'function') unsub(); };
-  }, [stable]); // eslint-disable-line react-hooks/exhaustive-deps
-}
+  }, [stable]);}
 
 /**
  * Backend connectivity state.
@@ -111,8 +109,7 @@ export function useElectronStore(key, defaultValue = undefined) {
       setValue(v !== undefined ? v : defaultValue);
       setLoading(false);
     });
-  }, [key]); // eslint-disable-line react-hooks/exhaustive-deps
-
+  }, [key]);
   const set = useCallback((v) => {
     setValue(v);
     api?.storeSet(key, v);
