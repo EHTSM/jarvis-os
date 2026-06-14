@@ -1199,6 +1199,179 @@ ipcMain.handle("clipboard-get-history", () => ({ history: [..._clipHistory] }));
 ipcMain.handle("clipboard-clear-history", () => { _clipHistory.length = 0; return { ok: true }; });
 
 // ═══════════════════════════════════════════════════════════════════
+// Phase 4 — Native Desktop Enhancements
+// ═══════════════════════════════════════════════════════════════════
+
+// ── Dock / taskbar progress ───────────────────────────────────────
+ipcMain.handle("dock-set-progress", (_e, { value }) => {
+    // value: 0.0 – 1.0, or -1 to hide
+    if (process.platform === "darwin") {
+        if (value < 0) {
+            app.dock?.hide();
+            app.dock?.show();
+        } else {
+            // macOS: progress via BrowserWindow
+            windows.main?.setProgressBar(value);
+        }
+    } else {
+        windows.main?.setProgressBar(value < 0 ? -1 : value);
+    }
+    return { ok: true };
+});
+
+ipcMain.handle("dock-bounce", (_e, { type = "informational" } = {}) => {
+    if (process.platform === "darwin") {
+        return { id: app.dock?.bounce(type) };
+    }
+    return { id: null };
+});
+
+ipcMain.handle("dock-cancel-bounce", (_e, { id }) => {
+    if (process.platform === "darwin" && id != null) app.dock?.cancelBounce(id);
+    return { ok: true };
+});
+
+ipcMain.handle("taskbar-badge", (_e, { count }) => {
+    // macOS: badge on dock icon; Windows: overlay icon
+    if (process.platform === "darwin") {
+        app.dock?.setBadge(count > 0 ? String(count) : "");
+    } else if (process.platform === "win32" && windows.main) {
+        if (count > 0) {
+            const img = nativeImage.createFromDataURL(
+                `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==`
+            );
+            windows.main.setOverlayIcon(img, `${count} notifications`);
+        } else {
+            windows.main.setOverlayIcon(null, "");
+        }
+    }
+    return { ok: true };
+});
+
+// ── Native context menu ───────────────────────────────────────────
+ipcMain.handle("show-context-menu", (event, { items = [] }) => {
+    const menuItems = items.map(item => {
+        if (item.type === "separator") return { type: "separator" };
+        return {
+            label:   item.label,
+            enabled: item.enabled !== false,
+            click:   () => {
+                event.sender.send("context-menu-action", item.id);
+            },
+        };
+    });
+    const menu = Menu.buildFromTemplate(menuItems);
+    const win  = BrowserWindow.fromWebContents(event.sender);
+    if (win) menu.popup({ window: win });
+    return { ok: true };
+});
+
+// ── Recent projects (native "Recents" on macOS/Windows) ───────────
+const _recentProjects = [];
+ipcMain.handle("add-recent-project", (_e, { path: p, name }) => {
+    if (p) {
+        app.addRecentDocument(p);
+        const exists = _recentProjects.findIndex(r => r.path === p);
+        if (exists >= 0) _recentProjects.splice(exists, 1);
+        _recentProjects.unshift({ path: p, name: name || p.split("/").pop(), ts: Date.now() });
+        if (_recentProjects.length > 20) _recentProjects.length = 20;
+    }
+    return { ok: true };
+});
+ipcMain.handle("get-recent-projects", () => ({ projects: [..._recentProjects] }));
+ipcMain.handle("clear-recent-projects", () => {
+    _recentProjects.length = 0;
+    app.clearRecentDocuments();
+    return { ok: true };
+});
+
+// ── Native drag: allow dragging files out of the app ─────────────
+ipcMain.on("ondragstart", (event, filePath) => {
+    if (!filePath || !fs.existsSync(filePath)) return;
+    event.sender.startDrag({
+        file: filePath,
+        icon: nativeImage.createFromPath(TRAY_ICON_PATH),
+    });
+});
+
+// ── Multi-monitor: get all display info ───────────────────────────
+ipcMain.handle("get-displays", () => {
+    const displays = screen.getAllDisplays();
+    return { displays: displays.map(d => ({
+        id:          d.id,
+        bounds:      d.bounds,
+        scaleFactor: d.scaleFactor,
+        primary:     d.id === screen.getPrimaryDisplay().id,
+    })) };
+});
+
+ipcMain.handle("move-to-display", (_e, { displayId }) => {
+    const win = windows.main;
+    if (!win) return { ok: false };
+    const display = screen.getAllDisplays().find(d => d.id === displayId);
+    if (!display) return { ok: false, error: "Display not found" };
+    const { x, y, width, height } = display.bounds;
+    win.setPosition(x + Math.floor(width / 2) - 700, y + Math.floor(height / 2) - 450);
+    return { ok: true };
+});
+
+// ── File associations (open files passed by OS at launch) ─────────
+const _pendingOpenFiles = [];
+app.on("open-file", (event, path) => {
+    event.preventDefault();
+    _pendingOpenFiles.push(path);
+    if (windows.main?.webContents) {
+        windows.main.webContents.send("open-file", path);
+    }
+});
+ipcMain.handle("get-pending-open-files", () => {
+    const files = [..._pendingOpenFiles];
+    _pendingOpenFiles.length = 0;
+    return { files };
+});
+
+// ── Performance: startup timing ───────────────────────────────────
+ipcMain.handle("get-startup-timing", () => ({
+    startTs:  _appStartTs,
+    elapsed:  Date.now() - _appStartTs,
+    platform: process.platform,
+    arch:     process.arch,
+    version:  app.getVersion(),
+    electron: process.versions.electron,
+    node:     process.versions.node,
+}));
+
+// ── Resource usage ────────────────────────────────────────────────
+ipcMain.handle("get-process-metrics", async () => {
+    const metrics = app.getAppMetrics();
+    const mem     = process.memoryUsage();
+    return {
+        processes: metrics.map(m => ({
+            pid:    m.pid,
+            type:   m.type,
+            cpu:    m.cpu,
+            memory: m.memory,
+        })),
+        mainProcess: {
+            rss:       mem.rss,
+            heapUsed:  mem.heapUsed,
+            heapTotal: mem.heapTotal,
+            external:  mem.external,
+        },
+        uptime: process.uptime(),
+    };
+});
+
+// ── Force GC (V8) — safe to call from renderer ────────────────────
+ipcMain.handle("request-gc", () => {
+    if (global.gc) {
+        global.gc();
+        return { ok: true, triggered: true };
+    }
+    return { ok: true, triggered: false };
+});
+
+// ═══════════════════════════════════════════════════════════════════
 // App lifecycle
 // ═══════════════════════════════════════════════════════════════════
 

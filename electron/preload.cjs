@@ -7,6 +7,30 @@
 
 const { contextBridge, ipcRenderer } = require("electron");
 
+// ── IPC input validation guards ───────────────────────────────────
+function _str(v, maxLen = 2048) {
+    if (typeof v !== "string") throw new TypeError("Expected string");
+    if (v.length > maxLen) throw new RangeError(`String too long (max ${maxLen})`);
+    return v;
+}
+function _strOpt(v, maxLen = 2048) {
+    return v == null ? v : _str(v, maxLen);
+}
+function _posNum(v) {
+    const n = Number(v);
+    if (!Number.isFinite(n) || n < 0) throw new RangeError("Expected non-negative number");
+    return n;
+}
+function _int(v, min = 0, max = Number.MAX_SAFE_INTEGER) {
+    const n = Math.round(Number(v));
+    if (!Number.isFinite(n) || n < min || n > max) throw new RangeError(`Integer out of range [${min}, ${max}]`);
+    return n;
+}
+function _obj(v) {
+    if (typeof v !== "object" || v === null) throw new TypeError("Expected object");
+    return v;
+}
+
 // ── Safe event listener helper ────────────────────────────────────
 // Returns a cleanup function so React components can unsubscribe on unmount.
 function _on(channel, cb) {
@@ -56,18 +80,23 @@ contextBridge.exposeInMainWorld("electronAPI", {
     fsGetHomePath:    ()             => ipcRenderer.invoke("fs-get-home-path"),
 
     // ── Terminal / Shell ─────────────────────────────────────────
-    shellExec:        (opts)         => ipcRenderer.invoke("shell-exec",           opts),
-    shellOpenTerminal: ()            => ipcRenderer.invoke("shell-open-terminal"),
+    shellExec: (opts) => {
+        _obj(opts);
+        _str(opts.command, 2048);
+        if (opts.cwd != null) _str(opts.cwd, 1024);
+        return ipcRenderer.invoke("shell-exec", opts);
+    },
+    shellOpenTerminal: () => ipcRenderer.invoke("shell-open-terminal"),
 
     // ── Persistent store ─────────────────────────────────────────
-    storeGet:    (key)               => ipcRenderer.invoke("store-get",     key),
-    storeSet:    (key, value)        => ipcRenderer.invoke("store-set",     { key, value }),
-    storeDelete: (key)               => ipcRenderer.invoke("store-delete",  key),
+    storeGet:    (key)               => ipcRenderer.invoke("store-get",     _str(key, 128)),
+    storeSet:    (key, value)        => ipcRenderer.invoke("store-set",     { key: _str(key, 128), value }),
+    storeDelete: (key)               => ipcRenderer.invoke("store-delete",  _str(key, 128)),
     storeGetAll: ()                  => ipcRenderer.invoke("store-get-all"),
 
     // ── Offline cache ────────────────────────────────────────────
-    cacheSet:   (key, data)          => ipcRenderer.invoke("cache-set",     { key, data }),
-    cacheGet:   (key)                => ipcRenderer.invoke("cache-get",     key),
+    cacheSet:   (key, data)          => ipcRenderer.invoke("cache-set",     { key: _str(key, 256), data }),
+    cacheGet:   (key)                => ipcRenderer.invoke("cache-get",     _str(key, 256)),
     cacheClear: ()                   => ipcRenderer.invoke("cache-clear"),
 
     // ── App info ─────────────────────────────────────────────────
@@ -83,34 +112,38 @@ contextBridge.exposeInMainWorld("electronAPI", {
     getRendererCrashes: ()           => ipcRenderer.invoke("get-renderer-crashes"),
 
     // ── External URLs ────────────────────────────────────────────
-    openExternal: (url)              => ipcRenderer.invoke("open-external", url),
+    openExternal: (url) => {
+        // Only allow https:// URLs — same check as main process, defence-in-depth
+        if (typeof url !== "string" || !url.startsWith("https://")) return Promise.resolve({ ok: false });
+        return ipcRenderer.invoke("open-external", url);
+    },
 
     // ── Inter-window broadcast ───────────────────────────────────
-    broadcast: (channel, data)       => ipcRenderer.invoke("broadcast", { channel, data }),
+    broadcast: (channel, data) => ipcRenderer.invoke("broadcast", { channel: _str(channel, 64), data }),
 
     // ── PTY Terminal sessions ────────────────────────────────────
     ptyCreate:  (opts)               => ipcRenderer.invoke("pty-create",  opts),
-    ptyInput:   (id, data)           => ipcRenderer.invoke("pty-input",   { id, data }),
-    ptyResize:  (id, cols, rows)     => ipcRenderer.invoke("pty-resize",  { id, cols, rows }),
-    ptyKill:    (id)                 => ipcRenderer.invoke("pty-kill",    { id }),
+    ptyInput:   (id, data)           => ipcRenderer.invoke("pty-input",   { id: _str(id, 64), data }),
+    ptyResize:  (id, cols, rows)     => ipcRenderer.invoke("pty-resize",  { id: _str(id, 64), cols: _int(cols, 1, 512), rows: _int(rows, 1, 300) }),
+    ptyKill:    (id)                 => ipcRenderer.invoke("pty-kill",    { id: _str(id, 64) }),
     ptyList:    ()                   => ipcRenderer.invoke("pty-list"),
-    ptyCwd:     (id)                 => ipcRenderer.invoke("pty-cwd",     { id }),
+    ptyCwd:     (id)                 => ipcRenderer.invoke("pty-cwd",     { id: _str(id, 64) }),
     // PTY data: renderer subscribes per session id
     onPtyData:  (id, cb)            => _on(`pty-data:${id}`,  cb),
     onPtyExit:  (id, cb)            => _on(`pty-exit:${id}`,  cb),
 
     // ── Git ──────────────────────────────────────────────────────
-    gitStatus:    (cwd)              => ipcRenderer.invoke("git-status",   { cwd }),
-    gitDiff:      (cwd, file)        => ipcRenderer.invoke("git-diff",     { cwd, file }),
-    gitLog:       (cwd, limit)       => ipcRenderer.invoke("git-log",      { cwd, limit }),
-    gitBranches:  (cwd)              => ipcRenderer.invoke("git-branches", { cwd }),
-    gitCheckout:  (cwd, branch)      => ipcRenderer.invoke("git-checkout", { cwd, branch }),
-    gitCommit:    (cwd, message)     => ipcRenderer.invoke("git-commit",   { cwd, message }),
+    gitStatus:    (cwd)              => ipcRenderer.invoke("git-status",   { cwd: _str(cwd, 1024) }),
+    gitDiff:      (cwd, file)        => ipcRenderer.invoke("git-diff",     { cwd: _str(cwd, 1024), file: _strOpt(file, 1024) }),
+    gitLog:       (cwd, limit)       => ipcRenderer.invoke("git-log",      { cwd: _str(cwd, 1024), limit: _int(limit ?? 50, 1, 500) }),
+    gitBranches:  (cwd)              => ipcRenderer.invoke("git-branches", { cwd: _str(cwd, 1024) }),
+    gitCheckout:  (cwd, branch)      => ipcRenderer.invoke("git-checkout", { cwd: _str(cwd, 1024), branch: _str(branch, 256) }),
+    gitCommit:    (cwd, message)     => ipcRenderer.invoke("git-commit",   { cwd: _str(cwd, 1024), message: _str(message, 4096) }),
 
     // ── File tree + search ───────────────────────────────────────
-    fsReadTree:   (dir, depth)       => ipcRenderer.invoke("fs-read-tree", { dir, depth }),
-    fsSearch:     (dir, query)       => ipcRenderer.invoke("fs-search",    { dir, query }),
-    fsGrep:       (dir, pattern)     => ipcRenderer.invoke("fs-grep",      { dir, pattern }),
+    fsReadTree:   (dir, depth)       => ipcRenderer.invoke("fs-read-tree", { dir: _str(dir, 1024), depth: _int(depth ?? 3, 1, 6) }),
+    fsSearch:     (dir, query)       => ipcRenderer.invoke("fs-search",    { dir: _str(dir, 1024), query: _str(query, 256) }),
+    fsGrep:       (dir, pattern)     => ipcRenderer.invoke("fs-grep",      { dir: _str(dir, 1024), pattern: _str(pattern, 256) }),
 
     // ── Screenshot ───────────────────────────────────────────────
     screenshotWindow: ()             => ipcRenderer.invoke("screenshot-window"),
@@ -119,6 +152,26 @@ contextBridge.exposeInMainWorld("electronAPI", {
     clipboardPushHistory:  (text)    => ipcRenderer.invoke("clipboard-push-history",  text),
     clipboardGetHistory:   ()        => ipcRenderer.invoke("clipboard-get-history"),
     clipboardClearHistory: ()        => ipcRenderer.invoke("clipboard-clear-history"),
+
+    // ── Phase 4 — Native Desktop ─────────────────────────────────────
+    dockSetProgress:     (value)       => ipcRenderer.invoke("dock-set-progress",       { value }),
+    dockBounce:          (type)        => ipcRenderer.invoke("dock-bounce",             { type }),
+    dockCancelBounce:    (id)          => ipcRenderer.invoke("dock-cancel-bounce",      { id }),
+    taskbarBadge:        (count)       => ipcRenderer.invoke("taskbar-badge",           { count }),
+    showContextMenu:     (items)       => ipcRenderer.invoke("show-context-menu",       { items }),
+    addRecentProject:    (path, name)  => ipcRenderer.invoke("add-recent-project",      { path, name }),
+    getRecentProjects:   ()            => ipcRenderer.invoke("get-recent-projects"),
+    clearRecentProjects: ()            => ipcRenderer.invoke("clear-recent-projects"),
+    ondragstart:         (filePath)    => ipcRenderer.send  ("ondragstart",             filePath),
+    getDisplays:         ()            => ipcRenderer.invoke("get-displays"),
+    moveToDisplay:       (displayId)   => ipcRenderer.invoke("move-to-display",         { displayId }),
+    getPendingOpenFiles: ()            => ipcRenderer.invoke("get-pending-open-files"),
+    getStartupTiming:    ()            => ipcRenderer.invoke("get-startup-timing"),
+    getProcessMetrics:   ()            => ipcRenderer.invoke("get-process-metrics"),
+    requestGC:           ()            => ipcRenderer.invoke("request-gc"),
+    // File open from OS
+    onOpenFile:          (cb)          => _on("open-file",               cb),
+    onContextMenuAction: (cb)          => _on("context-menu-action",     cb),
 
     // ── Event subscriptions (return unsubscribe fn) ───────────────
     // Backend connectivity
