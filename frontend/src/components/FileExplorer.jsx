@@ -1,8 +1,53 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useIpcCleanup } from '../hooks/useResourceManager';
 import './FileExplorer.css';
 
 const api = () => window.electronAPI;
 const isElectron = () => !!window.electronAPI?.isElectron;
+
+// ── Native context menu for file/directory nodes ──────────────────────
+function useFileContextMenu(onOpen, onRefresh) {
+  const targetRef = useRef(null);
+
+  const showMenu = useCallback((e, node) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isElectron()) return;
+    targetRef.current = node;
+    const items = node.isDir
+      ? [
+          { id: 'refresh',   label: 'Refresh' },
+          { type: 'separator' },
+          { id: 'copy-path', label: 'Copy Path' },
+          { id: 'reveal',    label: 'Reveal in Finder' },
+        ]
+      : [
+          { id: 'open',      label: 'Open File' },
+          { type: 'separator' },
+          { id: 'copy-path', label: 'Copy Path' },
+          { id: 'reveal',    label: 'Reveal in Finder' },
+          { type: 'separator' },
+          { id: 'drag',      label: 'Drag Out…' },
+        ];
+    api()?.showContextMenu(items);
+  }, []);
+
+  useIpcCleanup('onContextMenuAction', useCallback((id) => {
+    const node = targetRef.current;
+    if (!node) return;
+    switch (id) {
+      case 'open':      onOpen?.(node.path); break;
+      case 'refresh':   onRefresh?.(node.path); break;
+      case 'copy-path': api()?.clipboardWrite(node.path); break;
+      case 'reveal':    api()?.fsOpenPath(node.path); break;
+      case 'drag':      api()?.ondragstart(node.path); break;
+      default: break;
+    }
+    targetRef.current = null;
+  }, [onOpen, onRefresh]));
+
+  return showMenu;
+}
 
 // File extension → icon
 const EXT_ICONS = {
@@ -20,16 +65,27 @@ function fileIcon(name, isDir) {
   return EXT_ICONS[ext] || '📄';
 }
 
-function TreeNode({ node, depth, selected, onSelect, onOpen }) {
+function TreeNode({ node, depth, selected, onSelect, onOpen, onContextMenu }) {
   const [expanded, setExpanded] = useState(depth < 1);
   const hasChildren = node.children && node.children.length > 0;
 
   const toggle = useCallback((e) => {
     e.stopPropagation();
-    if (node.type === 'dir') setExpanded(x => !x);
+    if (node.isDir) setExpanded(x => !x);
     onSelect(node.path);
-    if (node.type !== 'dir') onOpen(node.path);
+    if (!node.isDir) onOpen(node.path);
   }, [node, onSelect, onOpen]);
+
+  const handleContextMenu = useCallback((e) => {
+    onContextMenu?.(e, node);
+  }, [node, onContextMenu]);
+
+  // Native drag-out for files
+  const handleDragStart = useCallback((e) => {
+    if (node.isDir) return;
+    e.preventDefault();
+    api()?.ondragstart(node.path);
+  }, [node]);
 
   const indent = depth * 14;
 
@@ -39,16 +95,19 @@ function TreeNode({ node, depth, selected, onSelect, onOpen }) {
         className={`file-tree-row${selected === node.path ? ' file-tree-row--selected' : ''}`}
         style={{ paddingLeft: indent + 8 }}
         onClick={toggle}
+        onContextMenu={handleContextMenu}
+        draggable={!node.isDir}
+        onDragStart={handleDragStart}
         title={node.path}
       >
-        {node.type === 'dir' && (
+        {node.isDir && (
           <span className="file-tree-arrow">{expanded ? '▾' : '▸'}</span>
         )}
-        {node.type !== 'dir' && <span className="file-tree-arrow" />}
-        <span className="file-tree-icon">{fileIcon(node.name, node.type === 'dir')}</span>
+        {!node.isDir && <span className="file-tree-arrow" />}
+        <span className="file-tree-icon">{fileIcon(node.name, node.isDir)}</span>
         <span className="file-tree-name">{node.name}</span>
       </div>
-      {node.type === 'dir' && expanded && hasChildren && (
+      {node.isDir && expanded && hasChildren && (
         <div className="file-tree-children">
           {node.children.map(child => (
             <TreeNode
@@ -58,6 +117,7 @@ function TreeNode({ node, depth, selected, onSelect, onOpen }) {
               selected={selected}
               onSelect={onSelect}
               onOpen={onOpen}
+              onContextMenu={onContextMenu}
             />
           ))}
         </div>
@@ -66,7 +126,7 @@ function TreeNode({ node, depth, selected, onSelect, onOpen }) {
   );
 }
 
-export default function FileExplorer({ rootDir, onFileOpen, className = '' }) {
+export default function FileExplorer({ rootDir, cwd, onFileOpen, className = '' }) {
   const [tree, setTree]             = useState(null);
   const [loading, setLoading]       = useState(false);
   const [error, setError]           = useState(null);
@@ -84,8 +144,8 @@ export default function FileExplorer({ rootDir, onFileOpen, className = '' }) {
   const searchTimer = useRef(null);
   const searchInput = useRef(null);
 
-  // Resolve root
-  const root = rootDir || (isElectron() ? null : '/');
+  // Resolve root — accept both rootDir prop and cwd prop
+  const root = rootDir || cwd || (isElectron() ? null : '/');
 
   const loadTree = useCallback(async (dir) => {
     if (!dir || !isElectron()) return;
@@ -108,10 +168,10 @@ export default function FileExplorer({ rootDir, onFileOpen, className = '' }) {
 
   // Resolve home dir if no rootDir provided
   useEffect(() => {
-    if (!rootDir && isElectron() && !root) {
-      api().fsGetHomePath?.().then(home => home && loadTree(home));
+    if (!root && isElectron()) {
+      api().fsGetHomePath?.().then(r => r?.path && loadTree(r.path));
     }
-  }, [rootDir, root, loadTree]);
+  }, [root, loadTree]);
 
   // Debounced search
   useEffect(() => {
@@ -151,6 +211,8 @@ export default function FileExplorer({ rootDir, onFileOpen, className = '' }) {
       return next;
     });
   }, [onFileOpen]);
+
+  const showContextMenu = useFileContextMenu(handleOpen, loadTree);
 
   const toggleFavorite = useCallback((path) => {
     setFavorites(f => {
@@ -224,7 +286,7 @@ export default function FileExplorer({ rootDir, onFileOpen, className = '' }) {
           : !tree  ? <div className="file-explorer__status">No directory loaded.</div>
           : (
             <div className="file-tree">
-              {tree.children?.map(node => (
+              {tree.tree?.map(node => (
                 <TreeNode
                   key={node.path}
                   node={node}
@@ -232,6 +294,7 @@ export default function FileExplorer({ rootDir, onFileOpen, className = '' }) {
                   selected={selected}
                   onSelect={setSelected}
                   onOpen={handleOpen}
+                  onContextMenu={showContextMenu}
                 />
               ))}
             </div>

@@ -1,3 +1,61 @@
+/* ── Loading skeleton ─────────────────────────────────────────────── */
+.ew-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 12px;
+}
+.ew-skeleton__label {
+  font-size: 10px;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+.ew-skeleton__line {
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+  background-size: 200% 100%;
+  animation: ew-shimmer 1.4s ease infinite;
+}
+@keyframes ew-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Empty state ──────────────────────────────────────────────────── */
+.ew-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 8px;
+  color: #374151;
+  font-size: 12px;
+  text-align: center;
+  padding: 24px;
+  animation: ew-fadein 0.25s ease;
+}
+.ew-empty__icon { font-size: 28px; opacity: 0.5; }
+.ew-empty__label { color: #4b5563; font-size: 12px; }
+
+/* ── Smooth panel entry animations ───────────────────────────────── */
+@keyframes ew-fadein {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ew-slidein-left {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.ew-sidebar { animation: ew-slidein-left 0.18s ease; }
+
+/* Smooth sidebar/bottom reveal — prevents jank when panels open */
+.ew-bottom { transition: height 0s; }   /* instant height change but no animation flash */
+
 .ew-shell {
   display: flex;
   flex-direction: row;
@@ -39,6 +97,10 @@
 }
 .ew-activity-btn:hover { background: #1f2937; color: #9ca3af; }
 .ew-activity-btn--active { background: #10b98120; color: #10b981; border: 1px solid #10b98130; }
+.ew-activity-btn:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 1px;
+}
 
 /* Main area */
 .ew-main {
@@ -51,7 +113,8 @@
 
 /* Left sidebar */
 .ew-sidebar {
-  width: 260px;
+  min-width: 160px;
+  max-width: 520px;
   flex-shrink: 0;
   border-right: 1px solid #1f2937;
   overflow: hidden;
@@ -172,6 +235,18 @@
   overflow: hidden;
   min-height: 0;
 }
+
+/* Sidebar resize handle */
+.ew-sidebar-resizer {
+  width: 4px;
+  flex-shrink: 0;
+  background: transparent;
+  cursor: col-resize;
+  transition: background 0.15s;
+  z-index: 10;
+}
+.ew-sidebar-resizer:hover,
+.ew-sidebar-resizer:active { background: #10b981; }
 
 /* AI sidebar */
 .ew-ai-sidebar {
