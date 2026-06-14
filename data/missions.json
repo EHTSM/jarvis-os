@@ -1,0 +1,143 @@
+{
+  "missions": [
+    {
+      "id": "msn_ca17ba4f7aa24d3fa9df6c9270ef519a",
+      "objective": "Test mission F2",
+      "status": "planned",
+      "priority": "high",
+      "createdAt": "2026-06-14T23:23:27.455Z",
+      "updatedAt": "2026-06-14T23:23:27.456Z",
+      "completedAt": null,
+      "subtasks": [
+        {
+          "id": "sub_3934f7e311da4f56b84139beb4722fff",
+          "description": "subtask 1",
+          "status": "pending",
+          "assignedAgent": "devops",
+          "startedAt": null,
+          "completedAt": null,
+          "output": null
+        }
+      ],
+      "decisions": [],
+      "artifacts": [],
+      "failures": [
+        {
+          "id": "fail_8030cc0f5275451f80fece0265a0833a",
+          "timestamp": "2026-06-14T23:23:27.456Z",
+          "phase": "deploy",
+          "description": "timeout",
+          "rootCause": null,
+          "resolved": false
+        }
+      ],
+      "deployments": [],
+      "approvals": [],
+      "learnings": [],
+      "timeline": [
+        {
+          "timestamp": "2026-06-14T23:23:27.455Z",
+          "event": "mission_created",
+          "details": {
+            "objective": "Test mission F2",
+            "priority": "high"
+          }
+        },
+        {
+          "timestamp": "2026-06-14T23:23:27.455Z",
+          "event": "subtask_added",
+          "details": {
+            "subtaskId": "sub_3934f7e311da4f56b84139beb4722fff",
+            "description": "subtask 1"
+          }
+        },
+        {
+          "timestamp": "2026-06-14T23:23:27.456Z",
+          "event": "failure_recorded",
+          "details": {
+            "failureId": "fail_8030cc0f5275451f80fece0265a0833a",
+            "phase": "deploy",
+            "description": "timeout",
+            "resolved": false
+          }
+        }
+      ],
+      "metrics": {
+        "totalSubtasks": 1,
+        "completedSubtasks": 0,
+        "failureCount": 1,
+        "deploymentCount": 0
+      }
+    },
+    {
+      "id": "msn_9b7a053bcc98416d8aea67f57bbc0b92",
+      "objective": "Test mission F2",
+      "status": "planned",
+      "priority": "high",
+      "createdAt": "2026-06-14T23:23:39.961Z",
+      "updatedAt": "2026-06-14T23:23:39.962Z",
+      "completedAt": null,
+      "subtasks": [
+        {
+          "id": "sub_167c77ba041b44c18d4673a2873aa92b",
+          "description": "subtask 1",
+          "status": "pending",
+          "assignedAgent": "devops",
+          "startedAt": null,
+          "completedAt": null,
+          "output": null
+        }
+      ],
+      "decisions": [],
+      "artifacts": [],
+      "failures": [
+        {
+          "id": "fail_6e71b6d57b00499892717fcc8fbbcb6f",
+          "timestamp": "2026-06-14T23:23:39.962Z",
+          "phase": "deploy",
+          "description": "timeout",
+          "rootCause": null,
+          "resolved": false
+        }
+      ],
+      "deployments": [],
+      "approvals": [],
+      "learnings": [],
+      "timeline": [
+        {
+          "timestamp": "2026-06-14T23:23:39.961Z",
+          "event": "mission_created",
+          "details": {
+            "objective": "Test mission F2",
+            "priority": "high"
+          }
+        },
+        {
+          "timestamp": "2026-06-14T23:23:39.962Z",
+          "event": "subtask_added",
+          "details": {
+            "subtaskId": "sub_167c77ba041b44c18d4673a2873aa92b",
+            "description": "subtask 1"
+          }
+        },
+        {
+          "timestamp": "2026-06-14T23:23:39.962Z",
+          "event": "failure_recorded",
+          "details": {
+            "failureId": "fail_6e71b6d57b00499892717fcc8fbbcb6f",
+            "phase": "deploy",
+            "description": "timeout",
+            "resolved": false
+          }
+        }
+      ],
+      "metrics": {
+        "totalSubtasks": 1,
+        "completedSubtasks": 0,
+        "failureCount": 1,
+        "deploymentCount": 0
+      }
+    }
+  ],
+  "lastUpdated": "2026-06-14T23:23:39.962Z"
+}
