@@ -381,6 +381,16 @@ function AppInner() {
   useElectronEvent('onDeepLink',         (data) => { if (data?.route) { setTab(data.route); setScreen('app'); } }, []);
   useElectronEvent('onImportContacts',   ()     => setTab('clients'),                           []);
 
+  // Mission Control OS nav — fired by ElectronWorkspace when operator clicks a section
+  useEffect(() => {
+    const handler = (e) => {
+      const view = e.detail;
+      if (view && view !== 'os') { setTab(view); setScreen('app'); }
+    };
+    window.addEventListener('jarvis-os-nav', handler);
+    return () => window.removeEventListener('jarvis-os-nav', handler);
+  }, []);
+
   // ── Sync tray status with runtime state ──────────────────────────
   useEffect(() => {
     if (!window.electronAPI) return;

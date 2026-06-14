@@ -6,6 +6,7 @@ import { useLazyPanel } from '../hooks/useLazyPanel';
 import { useStableCallback } from '../hooks/useStableCallback';
 import ErrorBoundary from './ErrorBoundary';
 import GlobalSearch, { ClipboardHistoryPanel } from './GlobalSearch';
+import MissionControl from './operator-os/MissionControl';
 import './ElectronWorkspace.css';
 
 // ── Lazy imports — none of these load until first activated ───────────
@@ -173,6 +174,8 @@ export default function ElectronWorkspace({ children }) {
   const [showAI,       setShowAI]       = useState(true);
   const [cwd,          setCwd]          = useState(null);
   const [sessionLoaded, setSessionLoaded] = useState(false);
+  // Operator OS home — 'os' = Mission Control; anything else = App tab name
+  const [osView,       setOsView]       = useState('os');
 
   const { height: bottomH,   onResizerMouseDown: onBottomResize }  = useBottomResize(340);
   const { width:  sidebarW,  onResizerMouseDown: onSidebarResize } = useSidebarResize(260);
@@ -188,6 +191,7 @@ export default function ElectronWorkspace({ children }) {
         if (s.bottomTab)  setBottomTab(s.bottomTab);
         if (s.showAI      !== undefined) setShowAI(s.showAI);
         if (s.aiCollapsed !== undefined) setAiCollapsed(s.aiCollapsed);
+        setOsView(s.osView || 'os');
       }
       setSessionLoaded(true);
     });
@@ -197,10 +201,10 @@ export default function ElectronWorkspace({ children }) {
   useEffect(() => {
     if (!sessionLoaded) return;
     const timer = setTimeout(() => {
-      saveSession({ sidebarMode, showSidebar, showBottom, bottomTab, showAI, aiCollapsed });
+      saveSession({ sidebarMode, showSidebar, showBottom, bottomTab, showAI, aiCollapsed, osView });
     }, 500);
     return () => clearTimeout(timer);
-  }, [sidebarMode, showSidebar, showBottom, bottomTab, showAI, aiCollapsed, sessionLoaded]);
+  }, [sidebarMode, showSidebar, showBottom, bottomTab, showAI, aiCollapsed, osView, sessionLoaded]);
 
   // Resolve CWD once at startup
   useEffect(() => {
@@ -250,11 +254,22 @@ export default function ElectronWorkspace({ children }) {
         case 'toggle-git':           setSidebar('git'); break;
         case 'toggle-debugger':      openBottomTab('debugger'); break;
         case 'toggle-pair':          openBottomTab('pair'); break;
+        case 'home':                 setOsView('os'); break;
         default: break;
       }
     });
     return () => { if (typeof unsub === 'function') unsub(); };
   }, [openBottomTab, setSidebar]);
+
+  // Navigate Operator OS center view.
+  // 'os' → show Mission Control; anything else → show children + dispatch
+  // a custom event so App.jsx can switch its internal tab to match.
+  const navigateOs = useStableCallback((view) => {
+    setOsView(view);
+    if (view !== 'os') {
+      window.dispatchEvent(new CustomEvent('jarvis-os-nav', { detail: view }));
+    }
+  });
 
   // Global search action handler
   const handleAction = useStableCallback((action, item) => {
@@ -270,6 +285,7 @@ export default function ElectronWorkspace({ children }) {
       case 'nav:ops':          openBottomTab('ops'); break;
       case 'nav:arch':         openBottomTab('arch'); break;
       case 'nav:productivity': setSidebar('productivity'); break;
+      case 'nav:home':         setOsView('os'); break;
       case 'screenshot':
         api()?.screenshotWindow?.().then(p => {
           if (p) api()?.showNotification?.({ title: 'Screenshot saved', body: p });
@@ -288,6 +304,15 @@ export default function ElectronWorkspace({ children }) {
     <div className="ew-shell">
       {/* Activity bar */}
       <div className="ew-activity">
+        {/* Mission Control home */}
+        <ActivityBtn
+          active={osView === 'os'}
+          onClick={() => setOsView('os')}
+          title="Mission Control (Operator OS Home)"
+        >
+          ⬡
+        </ActivityBtn>
+        <div className="ew-activity__separator" />
         {Object.entries(SIDEBAR_MODES).map(([mode, cfg]) => (
           <ActivityBtn
             key={mode}
@@ -355,7 +380,22 @@ export default function ElectronWorkspace({ children }) {
 
         {/* Center column */}
         <div className="ew-center">
-          <div className="ew-content">{children}</div>
+          {/* OS home button — shown when not on Mission Control */}
+          {osView !== 'os' && (
+            <button className="ew-os-home-btn" onClick={() => setOsView('os')} title="Back to Mission Control">
+              ⬡ Mission Control
+            </button>
+          )}
+          <div className="ew-content">
+            {osView === 'os'
+              ? (
+                <ErrorBoundary label="Mission Control">
+                  <MissionControl onNavigate={navigateOs} />
+                </ErrorBoundary>
+              )
+              : children
+            }
+          </div>
 
           {/* Bottom panel */}
           {showBottom && (
