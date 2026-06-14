@@ -21,6 +21,10 @@ const VisualArchitecture      = lazy(() => import('./VisualArchitecture'));
 const WorkspaceProductivity   = lazy(() => import('./WorkspaceProductivity'));
 const AutonomousOps           = lazy(() => import('./AutonomousOps'));
 const LiveAgentCollaboration  = lazy(() => import('./operator-os/LiveAgentCollaboration'));
+const MissionEngine           = lazy(() => import('./operator-os/MissionEngine'));
+const IntelligenceOverlay     = lazy(() => import('./operator-os/IntelligenceOverlay'));
+const OperatorCommandLayer    = lazy(() => import('./operator-os/OperatorCommandLayer'));
+const ExecutiveLoop           = lazy(() => import('./operator-os/ExecutiveLoop'));
 
 // ── Generic resize hook ───────────────────────────────────────────────
 function useResize(initial, min, max, axis = 'y') {
@@ -65,20 +69,24 @@ function useSidebarResize(initial = 260) {
 
 // ── Constants ──────────────────────────────────────────────────────────
 const SIDEBAR_MODES = {
-  explorer:     { label: 'Files',     icon: '📁', title: 'File Explorer' },
-  git:          { label: 'Git',       icon: '🌿', title: 'Visual Git' },
-  clipboard:    { label: 'Clipboard', icon: '📋', title: 'Clipboard History' },
-  productivity: { label: 'Workspace', icon: '🗂',  title: 'Workspace' },
+  explorer:     { label: 'Files',        icon: '📁', title: 'File Explorer' },
+  git:          { label: 'Git',          icon: '🌿', title: 'Visual Git' },
+  clipboard:    { label: 'Clipboard',    icon: '📋', title: 'Clipboard History' },
+  productivity: { label: 'Workspace',    icon: '🗂',  title: 'Workspace' },
+  intelligence: { label: 'Intelligence', icon: '◈',  title: 'Engineering Intelligence' },
 };
 
 const BOTTOM_TABS = {
-  terminal: { label: 'Terminal',  icon: '🖥' },
-  console:  { label: 'Console',   icon: '📊' },
-  debugger: { label: 'Debugger',  icon: '🔍' },
-  ops:      { label: 'Auto-Ops',  icon: '🤖' },
-  arch:     { label: 'Arch',      icon: '🗺' },
-  pair:     { label: 'AI Pair',   icon: '💡' },
-  agents:   { label: 'Agents',    icon: '⬡' },
+  terminal:  { label: 'Terminal',  icon: '🖥' },
+  console:   { label: 'Console',   icon: '📊' },
+  debugger:  { label: 'Debugger',  icon: '🔍' },
+  ops:       { label: 'Auto-Ops',  icon: '🤖' },
+  arch:      { label: 'Arch',      icon: '🗺' },
+  pair:      { label: 'AI Pair',   icon: '💡' },
+  agents:    { label: 'Agents',    icon: '⬡' },
+  missions:  { label: 'Missions',  icon: '◎' },
+  command:   { label: 'Command',   icon: '❯' },
+  execloop:  { label: 'Exec Loop', icon: '↻' },
 };
 
 const api        = () => window.electronAPI;
@@ -373,6 +381,11 @@ export default function ElectronWorkspace({ children }) {
                     />
                   </ErrorBoundary>
                 </LazyPane>
+                <LazyPane active={sidebarMode === 'intelligence'}>
+                  <ErrorBoundary label="Intelligence Overlay">
+                    <IntelligenceOverlay />
+                  </ErrorBoundary>
+                </LazyPane>
               </div>
             </div>
             {/* Sidebar resize handle */}
@@ -451,6 +464,21 @@ export default function ElectronWorkspace({ children }) {
                   <LazyPane active={bottomTab === 'agents'}>
                     <ErrorBoundary label="Live Agents">
                       <LiveAgentCollaboration />
+                    </ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'missions'}>
+                    <ErrorBoundary label="Mission Engine">
+                      <MissionEngine />
+                    </ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'command'}>
+                    <ErrorBoundary label="Operator Command">
+                      <OperatorCommandLayer />
+                    </ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'execloop'}>
+                    <ErrorBoundary label="Executive Loop">
+                      <ExecutiveLoop />
                     </ErrorBoundary>
                   </LazyPane>
                 </div>
