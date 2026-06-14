@@ -6,11 +6,13 @@
  */
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const { requireActiveAccount } = require("../services/billingService");
 
 router.use(require("./auth"));         // POST /auth/login, POST /auth/logout, GET /auth/me
 router.use(require("./accounts"));    // POST /accounts/register, GET /accounts/me, GET /accounts
 router.use(require("./settings"));    // GET /settings/status, POST /settings/whatsapp, POST /settings/razorpay
 router.use(require("./billing"));     // GET /billing/status, POST /billing/upgrade, POST /billing/cancel
+router.use(requireActiveAccount);      // billing gate — all routes below require active trial or paid plan
 router.use(require("./jarvis"));       // POST /jarvis
 router.use(require("./whatsapp"));     // /whatsapp/*
 router.use(require("./telegram"));     // /telegram/send, /telegram/status

@@ -8,7 +8,8 @@ const { requireAuth } = require("../middleware/authMiddleware");
 router.post("/payment/link", requireAuth, async (req, res) => {
     try {
         const { amount = 999, name = "Customer", phone, description = "JARVIS Access" } = req.body;
-        const result = await payment.createPaymentLink({ amount, name, phone, description });
+        const accountId = req.user.sub || req.user.id || null;
+        const result = await payment.createPaymentLink({ amount, name, phone, description, accountId });
         if (!result.success) return res.status(500).json({ error: result.error });
         if (phone) await wa.sendMessage(phone, `Your payment link:\n${result.link}\n\nAmount: ₹${amount}`);
         res.json(result);

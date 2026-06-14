@@ -77,8 +77,12 @@ router.post("/billing/upgrade", requireAuth, async (req, res) => {
 });
 
 // ── POST /billing/activate ────────────────────────────────────────
-// Internal: called from Razorpay webhook on subscription.activated
+// Internal: operator-only manual activation. Webhook activation goes directly
+// through billingService — it does not call this route.
 router.post("/billing/activate", requireAuth, (req, res) => {
+  if (req.user.role !== "operator") {
+    return res.status(403).json({ error: "Forbidden — operator access required" });
+  }
   const { accountId, plan, razorpaySubId } = req.body || {};
   if (!accountId || !plan) {
     return res.status(400).json({ error: "accountId and plan required" });

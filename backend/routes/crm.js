@@ -17,8 +17,13 @@ router.post("/crm/lead", requireAuth, operatorAudit, (req, res) => {
     if (!cleanPhone || cleanPhone.length < 7)
         return res.status(400).json({ error: "Invalid phone number — include country code (e.g. 919876543210)" });
     const existing = crm.getLead(cleanPhone);
-    if (existing)
-        return res.json({ success: true, duplicate: true, lead: existing, message: "Client already exists" });
+    if (existing) {
+        const userId = req.user.sub || req.user.id || null;
+        if (req.user.role === "operator" || existing.userId === userId) {
+            return res.json({ success: true, duplicate: true, lead: existing, message: "Client already exists" });
+        }
+        return res.json({ success: true, duplicate: true, message: "Client already exists" });
+    }
     const userId = req.user.sub || req.user.id || null;
     const lead = { phone: cleanPhone, name, ...rest, userId, status: "new", createdAt: new Date().toISOString() };
     crm.saveLead(lead);
@@ -26,7 +31,15 @@ router.post("/crm/lead", requireAuth, operatorAudit, (req, res) => {
 });
 
 router.patch("/crm/lead/:phone", requireAuth, operatorAudit, (req, res) => {
-    crm.updateLead(decodeURIComponent(req.params.phone), req.body);
+    const phone = decodeURIComponent(req.params.phone);
+    if (req.user.role !== "operator") {
+        const lead = crm.getLead(phone);
+        const userId = req.user.sub || req.user.id;
+        if (!lead || lead.userId !== userId) {
+            return res.status(403).json({ error: "Forbidden — not your lead" });
+        }
+    }
+    crm.updateLead(phone, req.body);
     res.json({ success: true });
 });
 
@@ -37,7 +50,7 @@ router.get("/crm/leads", requireAuth, (req, res) => {
     // Operator gets all leads; regular users get their own
     const all = crm.getLeads();
     if (req.user.role === "operator") return res.json(all);
-    const mine = all.filter(l => !l.userId || l.userId === userId);
+    const mine = all.filter(l => l.userId === userId);
     res.json(mine);
 });
 
