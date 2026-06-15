@@ -74,7 +74,7 @@ function EmailLoginForm({ onSuccess, onSignup, onForgot, busy, setBusy }) {
           id="li-email" type="email" className="auth-input"
           placeholder="you@company.com"
           value={email} onChange={e => setEmail(e.target.value)}
-          disabled={busy} autoComplete="email" inputMode="email" autoFocus
+          disabled={busy} autoComplete="email" inputMode="email" autoFocus required
         />
       </div>
 

@@ -364,6 +364,20 @@ function AppInner() {
     localStorage.setItem("jarvis_last_visit_ts", String(Date.now()));
   }, [screen]);
 
+  // ── Document title for SEO + browser tab clarity ──────────────────
+  useEffect(() => {
+    const titles = {
+      landing:    "Ooplix — AI Operating System for Your Business",
+      pricing:    "Pricing — Ooplix",
+      onboarding: "Get Started — Ooplix",
+      signup:     "Create Account — Ooplix",
+      login:      "Sign In — Ooplix",
+      forgot:     "Reset Password — Ooplix",
+      app:        "Ooplix",
+    };
+    document.title = titles[screen] ?? "Ooplix";
+  }, [screen]);
+
   // ── Billing status polling ────────────────────────────────────────
   useEffect(() => {
     if (screen !== "app" || !user) return;
@@ -582,6 +596,7 @@ function AppInner() {
         <SignupPage
           onSuccess={handleSignupComplete}
           onLogin={() => setScreen("login")}
+          onLegal={openLegal}
         />
       </div>
     );

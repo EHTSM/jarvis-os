@@ -609,15 +609,15 @@ function CTASection({ onAccess }) {
 // Footer
 // ─────────────────────────────────────────────────────────────────────────────
 
-function Footer() {
+function Footer({ onLegal }) {
   return (
     <footer className="lp-footer">
       <OoplixWordmark size={22} style={{ opacity: 0.52 }} />
 
       <nav className="lp-footer-nav" aria-label="Footer navigation">
-        <button className="lp-footer-link" aria-disabled="true" style={{ opacity: 0.5, cursor: "default" }}>Privacy</button>
-        <button className="lp-footer-link" aria-disabled="true" style={{ opacity: 0.5, cursor: "default" }}>Terms</button>
-        <button className="lp-footer-link" onClick={() => { if (typeof window !== "undefined") window.open("mailto:altamashjauhar@gmail.com", "_blank"); }}>Contact</button>
+        <button className="lp-footer-link" onClick={() => onLegal?.("privacy")}>Privacy</button>
+        <button className="lp-footer-link" onClick={() => onLegal?.("terms")}>Terms</button>
+        <button className="lp-footer-link" onClick={() => onLegal?.("contact")}>Contact</button>
       </nav>
 
       <span className="lp-footer-copy">© 2026 Ooplix</span>
@@ -629,12 +629,12 @@ function Footer() {
 // Root
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function LandingPage({ onLogin, onStart }) {
+export default function LandingPage({ onLogin, onStart, onLegal, onPricing }) {
   const handleAccess = () => (onStart ?? onLogin)?.();
 
   return (
     <div className="lp">
-      <Nav onAccess={handleAccess} />
+      <Nav onAccess={handleAccess} onPricing={onPricing} />
       <Hero onAccess={handleAccess} />
       <TrustStrip />
       <HowItWorks />
@@ -642,7 +642,7 @@ export default function LandingPage({ onLogin, onStart }) {
       <TerminalDemo />
       <Comparison />
       <CTASection onAccess={handleAccess} />
-      <Footer />
+      <Footer onLegal={onLegal} />
     </div>
   );
 }

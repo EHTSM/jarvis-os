@@ -52,6 +52,7 @@ function ChipGrid({ options, selected, onSelect, multi = false }) {
           type="button"
           className={`ob2-chip${isSelected(opt.id) ? " ob2-chip--selected" : ""}`}
           onClick={() => handleClick(opt.id)}
+          aria-pressed={isSelected(opt.id)}
         >
           <span className="ob2-chip-icon">{opt.icon}</span>
           <span className="ob2-chip-label">{opt.label}</span>
@@ -131,7 +132,15 @@ export default function Onboarding({ onComplete }) {
 
         {/* Progress bar */}
         <div className="ob-progress-track">
-          <div className="ob-progress-fill" style={{ width: `${progress}%` }} />
+          <div
+            className="ob-progress-fill"
+            style={{ width: `${progress}%` }}
+            role="progressbar"
+            aria-valuenow={Math.round(progress)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`Step ${step + 1} of 3`}
+          />
         </div>
 
         {/* Step 0: Business type ───────────────────────────────────── */}

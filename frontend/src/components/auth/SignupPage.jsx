@@ -130,7 +130,7 @@ function EmailSignupForm({ onSuccess, onLogin, busy, setBusy }) {
           id="su-name" type="text" className="auth-input"
           placeholder="Aarav Shah"
           value={name} onChange={e => setName(e.target.value)}
-          disabled={busy} autoComplete="name" autoCapitalize="words" autoFocus
+          disabled={busy} autoComplete="name" autoCapitalize="words" autoFocus required
         />
       </div>
 
@@ -140,7 +140,7 @@ function EmailSignupForm({ onSuccess, onLogin, busy, setBusy }) {
           id="su-email" type="email" className="auth-input"
           placeholder="you@company.com"
           value={email} onChange={e => setEmail(e.target.value)}
-          disabled={busy} autoComplete="email" inputMode="email"
+          disabled={busy} autoComplete="email" inputMode="email" required
         />
       </div>
 
@@ -151,7 +151,7 @@ function EmailSignupForm({ onSuccess, onLogin, busy, setBusy }) {
             id="su-pw" type={showPw ? "text" : "password"} className="auth-input"
             placeholder="Min. 8 characters"
             value={password} onChange={e => setPassword(e.target.value)}
-            disabled={busy} autoComplete="new-password"
+            disabled={busy} autoComplete="new-password" required
           />
           <button type="button" className="auth-pw-toggle"
             onClick={() => setShowPw(v => !v)} tabIndex={-1}
@@ -405,7 +405,7 @@ function PhoneSignupForm({ onSuccess, busy, setBusy }) {
 }
 
 // ── Root SignupPage ────────────────────────────────────────────────────────────
-export default function SignupPage({ onSuccess, onLogin }) {
+export default function SignupPage({ onSuccess, onLogin, onLegal }) {
   const inElectron = isElectronShell();
   // In Electron: lock to email — Google/Phone OAuth cannot complete inside BrowserWindow
   const [method, setMethod] = useState("email"); // email | google | phone
@@ -456,7 +456,7 @@ export default function SignupPage({ onSuccess, onLogin }) {
         </div>
 
         {/* Method panel */}
-        {method === "email"  && <EmailSignupForm  onSuccess={onSuccess} onLogin={onLogin} busy={busy} setBusy={setBusy} />}
+        {method === "email"  && <EmailSignupForm  onSuccess={onSuccess} onLogin={onLogin} busy={busy} setBusy={setBusy} onLegal={onLegal} />}
         {method === "google" && !inElectron && <GoogleSignupButton onSuccess={onSuccess} onLogin={onLogin} busy={busy} setBusy={setBusy} />}
         {method === "phone"  && !inElectron && <PhoneSignupForm  onSuccess={onSuccess} busy={busy} setBusy={setBusy} />}
 
@@ -487,9 +487,9 @@ export default function SignupPage({ onSuccess, onLogin }) {
           </p>
           <p className="auth-footer-text" style={{ fontSize: 11 }}>
             By signing up you agree to our{" "}
-            <a href="#terms" className="auth-link" style={{ fontSize: 11 }}>Terms</a>
+            <button type="button" className="auth-link" style={{ fontSize: 11 }} onClick={() => onLegal?.("terms")}>Terms</button>
             {" "}and{" "}
-            <a href="#privacy" className="auth-link" style={{ fontSize: 11 }}>Privacy Policy</a>.
+            <button type="button" className="auth-link" style={{ fontSize: 11 }} onClick={() => onLegal?.("privacy")}>Privacy Policy</button>.
           </p>
           <p className="auth-footer-company">ALWALIY TECHNOLOGIES PRIVATE LIMITED</p>
         </div>
