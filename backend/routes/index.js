@@ -44,5 +44,6 @@ router.use(require("./intelligence"));   // /intelligence/correlations, /intelli
 router.use(require("./collaboration"));  // /collaboration/session/*, /collaboration/history/*, /collaboration/message, /collaboration/action, /collaboration/replan, /collaboration/approve, /collaboration/reject
 router.use(require("./workspace"));      // /workspace, /workspace/:id, /workspace/invite, /workspace/switch, /workspace/activity
 router.use(require("./security"));      // /security/sessions, /security/devices, /security/audit, /security/policies, /security/tokens, /security/score
+router.use(require("./admin"));         // /admin/team, /admin/member/*, /admin/departments, /admin/profile, /admin/statistics, /admin/quotas
 
 module.exports = router;

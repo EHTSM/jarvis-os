@@ -363,3 +363,118 @@
 
 /* Policies panel */
 .k2-policies-panel { display: flex; flex-direction: column; gap: 4px; }
+
+/* ── K3 Enterprise Administration Panels ───────────────────────── */
+
+/* Team Directory */
+.k3-team-panel  { display: flex; flex-direction: column; gap: 12px; }
+.k3-team-toolbar {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+}
+.k3-search {
+  flex: 1; min-width: 160px; background: var(--surface-high); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 7px 12px; color: var(--text); font-size: 13px; font-family: inherit;
+}
+.k3-search::placeholder { color: var(--text-faint); }
+.k3-filter {
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 7px 10px; color: var(--text); font-size: 12px; font-family: inherit;
+}
+.k3-bulk-toggle {
+  padding: 6px 14px; background: none; border: 1px solid var(--border);
+  border-radius: var(--radius-pill); color: var(--text-dim); font-size: 12px; font-weight: 700;
+  cursor: pointer; font-family: inherit; transition: all var(--dur-fast);
+}
+.k3-bulk-toggle--on { color: var(--accent); border-color: rgba(124,111,255,0.35); background: rgba(124,111,255,0.08); }
+.k3-bulk-bar {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  padding: 10px 14px; background: rgba(124,111,255,0.06); border: 1px solid rgba(124,111,255,0.2);
+  border-radius: var(--radius-sm);
+}
+.k3-bulk-count { font-size: 12px; font-weight: 700; color: var(--accent); }
+
+.k3-team-list { display: flex; flex-direction: column; gap: 4px; }
+.k3-member-row {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  transition: border-color var(--dur-fast);
+}
+.k3-member-row--selected { border-color: rgba(124,111,255,0.4); background: rgba(124,111,255,0.05); }
+.k3-check { accent-color: var(--accent); width: 14px; height: 14px; cursor: pointer; }
+.k3-member-avatar {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--surface-glass);
+  color: var(--text); font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.k3-member-info { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.k3-member-name  { font-size: 13px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.k3-member-email { font-size: 11px; color: var(--text-faint); }
+.k3-member-title { font-size: 11px; color: var(--text-dim); font-style: italic; }
+.k3-role-chip {
+  font-size: 10px; font-weight: 700; padding: 2px 7px; background: rgba(124,111,255,0.10);
+  border: 1px solid rgba(124,111,255,0.2); border-radius: var(--radius-pill); color: var(--accent); white-space: nowrap;
+}
+.k3-dept-chip {
+  font-size: 10px; font-weight: 600; padding: 2px 7px; background: var(--surface-glass);
+  border: 1px solid var(--border); border-radius: var(--radius-pill); color: var(--text-dim); white-space: nowrap;
+}
+.k3-status-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.k3-edit-btn {
+  padding: 4px 12px; background: none; border: 1px solid var(--border);
+  border-radius: var(--radius-pill); color: var(--text-dim); font-size: 11px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: all var(--dur-fast); white-space: nowrap;
+}
+.k3-edit-btn:hover { color: var(--accent); border-color: rgba(124,111,255,0.35); }
+
+/* Edit member modal */
+.ws-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 150;
+  display: flex; align-items: center; justify-content: center;
+}
+.ws-modal { background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; min-width: 320px; max-width: 440px; width: 90%; }
+.k3-edit-modal { display: flex; flex-direction: column; gap: 16px; }
+.k3-modal-title  { font-size: 15px; font-weight: 800; color: var(--text); margin: 0; }
+.k3-modal-fields { display: flex; flex-direction: column; gap: 12px; }
+.k3-modal-label  { display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: var(--text-dim); }
+.k3-modal-input, .k3-modal-select {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 7px 10px; color: var(--text); font-size: 13px; font-family: inherit; margin-top: 2px;
+}
+.k3-modal-input::placeholder { color: var(--text-faint); }
+.k3-modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+/* Departments */
+.k3-dept-panel  { display: flex; flex-direction: column; gap: 12px; }
+.k3-dept-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-dim); }
+.k3-dept-form   { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.k3-dept-list   { display: flex; flex-direction: column; gap: 6px; }
+.k3-dept-row    { display: flex; align-items: center; gap: 12px; padding: 11px 14px; background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.k3-dept-icon   { font-size: 14px; color: var(--accent); flex-shrink: 0; }
+.k3-dept-info   { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.k3-dept-name   { font-size: 13px; font-weight: 700; color: var(--text); }
+.k3-dept-desc   { font-size: 11px; color: var(--text-dim); }
+.k3-dept-count  { font-size: 11px; color: var(--text-faint); }
+
+/* Org Profile */
+.k3-profile-panel { display: flex; flex-direction: column; gap: 4px; }
+.k3-textarea { resize: vertical; min-height: 70px; }
+
+/* Statistics */
+.k3-stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px;
+}
+.k3-stat-card {
+  display: flex; flex-direction: column; gap: 4px; padding: 14px 16px;
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.k3-stat-value { font-size: 26px; font-weight: 900; line-height: 1; }
+.k3-stat-label { font-size: 11px; font-weight: 600; color: var(--text-faint); }
+
+/* Quotas */
+.k3-quotas-panel  { display: flex; flex-direction: column; gap: 14px; }
+.k3-quotas-note   { font-size: 12px; color: var(--text-dim); margin: 0 0 4px; }
+.k3-quota-row     { display: flex; flex-direction: column; gap: 5px; }
+.k3-quota-meta    { display: flex; justify-content: space-between; align-items: center; }
+.k3-quota-label   { font-size: 12px; font-weight: 600; color: var(--text-dim); }
+.k3-quota-count   { font-size: 12px; font-weight: 700; }
+.k3-quota-track   { height: 4px; background: var(--surface-glass); border-radius: 2px; overflow: hidden; }
+.k3-quota-fill    { height: 100%; border-radius: 2px; transition: width 0.4s var(--ease-out); }
