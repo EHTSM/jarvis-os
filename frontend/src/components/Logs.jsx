@@ -252,7 +252,7 @@ export default function Logs({ opsData: opsDataProp, stats: statsProp, onNavigat
 
   useEffect(() => {
     if (!liveMode) return;
-    const id = setInterval(refresh, 10_000);
+    const id = setInterval(() => { if (!document.hidden) refresh(); }, 10_000);
     return () => clearInterval(id);
   }, [liveMode, refresh]);
 

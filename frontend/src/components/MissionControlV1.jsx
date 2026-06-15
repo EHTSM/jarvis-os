@@ -100,7 +100,7 @@ export default function MissionControlV1({ onNavigate }) {
 
   useEffect(() => {
     load();
-    const t = setInterval(load, REFRESH_INTERVAL);
+    const t = setInterval(() => { if (!document.hidden) load(); }, REFRESH_INTERVAL);
     return () => clearInterval(t);
   }, [load]);
 

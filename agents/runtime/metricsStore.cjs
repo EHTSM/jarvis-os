@@ -37,17 +37,19 @@ function _prune() {
   } catch {}
 }
 
+let _flushing = false;
 function _flush() {
-  if (_pending.length === 0) return;
-  try {
-    fs.mkdirSync(METRICS_DIR, { recursive: true });
-    const file   = _todayFile();
-    const lines  = _pending.map(s => JSON.stringify(s)).join("\n") + "\n";
-    _pending = [];
-    fs.appendFileSync(file, lines, "utf8");
-    // Prune old files once per flush
+  if (_pending.length === 0 || _flushing) return;
+  _flushing = true;
+  try { fs.mkdirSync(METRICS_DIR, { recursive: true }); } catch {}
+  const file  = _todayFile();
+  const lines = _pending.map(s => JSON.stringify(s)).join("\n") + "\n";
+  _pending = [];
+  fs.appendFile(file, lines, "utf8", (err) => {
+    _flushing = false;
+    if (err) return; // non-fatal — next flush will retry
     _prune();
-  } catch { _pending = []; }
+  });
 }
 
 function _snapshot() {

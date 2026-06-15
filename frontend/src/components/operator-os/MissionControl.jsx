@@ -32,7 +32,7 @@ const SectionHead = memo(({ label, count, action, onAction }) => (
 function LiveClock() {
   const [t, setT] = useState(() => new Date());
   useEffect(() => {
-    const id = setInterval(() => setT(new Date()), 1000);
+    const id = setInterval(() => { if (!document.hidden) setT(new Date()); }, 1000);
     return () => clearInterval(id);
   }, []);
   return (

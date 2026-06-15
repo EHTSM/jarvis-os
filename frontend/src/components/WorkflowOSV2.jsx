@@ -474,6 +474,7 @@ function TabRunning({ addToast }) {
   useEffect(() => {
     loadHistory();
     timerRef.current = setInterval(() => {
+      if (document.hidden) return;
       setElapsed(prev => {
         const next = { ...prev };
         Object.keys(next).forEach(k => { next[k] = (next[k] || 0) + 1; });
@@ -714,7 +715,7 @@ function TabRouter({ addToast }) {
   const [dispatching,setDispatching]= useState(false);
 
   useEffect(() => {
-    const load = () => getOpsData().then(r => { if (r && !r.error) setOpsData(r); }).catch(() => {});
+    const load = () => { if (!document.hidden) getOpsData().then(r => { if (r && !r.error) setOpsData(r); }).catch(() => {}); };
     load();
     const t = setInterval(load, 10000);
     return () => clearInterval(t);

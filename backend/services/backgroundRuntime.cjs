@@ -25,7 +25,7 @@
 
 const fs          = require("fs");
 const path        = require("path");
-const { execSync } = require("child_process");
+const { execSync, exec } = require("child_process");
 
 const logger = require("../utils/logger");
 
@@ -71,19 +71,44 @@ function _exec(cmd, opts = {}) {
 }
 
 // ── Recommendation store ──────────────────────────────────────────────────
+// In-memory cache populated lazily on first access. Avoids readFileSync on
+// every recommendation emit (was: one readFileSync + writeFileSync per emit,
+// firing up to 6 times per observer cycle, all on the main event-loop thread).
+let _recsCache   = null;  // null = not yet loaded
+let _recsDirty   = false; // true = pending async write
+let _recsWriting = false; // true = async write in flight
 let _seq = 0;
 
 function _rid() { return `bgrec_${Date.now()}_${(++_seq).toString(36)}`; }
 
-function _loadRecs() { return _rj(RECS_FILE, []); }
+function _loadRecs() {
+    if (_recsCache !== null) return _recsCache;
+    _recsCache = _rj(RECS_FILE, []);
+    return _recsCache;
+}
 
 function _saveRecs(recs) {
     // Enforce max 500 — evict oldest when over limit
     const capped = recs.length > MAX_RECOMMENDATIONS
         ? recs.slice(recs.length - MAX_RECOMMENDATIONS)
         : recs;
-    try { _wj(RECS_FILE, capped); } catch (e) {
-        logger.warn(`[BackgroundRuntime] failed to save recommendations: ${e.message}`);
+    _recsCache = capped;
+    _recsDirty = true;
+    // Debounced async write — never blocks the event loop
+    if (!_recsWriting) {
+        _recsWriting = true;
+        setImmediate(() => {
+            const data = JSON.stringify(_recsCache, null, 2);
+            const tmp  = RECS_FILE + ".tmp";
+            fs.writeFile(tmp, data, "utf8", (err) => {
+                _recsWriting = false;
+                if (!err) {
+                    fs.rename(tmp, RECS_FILE, () => { _recsDirty = false; });
+                } else {
+                    logger.warn(`[BackgroundRuntime] async save failed: ${err.message}`);
+                }
+            });
+        });
     }
 }
 
@@ -241,7 +266,12 @@ async function _repoObserver() {
 async function _pm2Observer() {
     let procs;
     try {
-        const raw = _exec("pm2 jlist");
+        // Use async exec to avoid blocking the event loop (pm2 jlist can take 200-800ms)
+        const raw = await new Promise((resolve, reject) => {
+            exec("pm2 jlist", { timeout: 5000, encoding: "utf8" }, (err, stdout) => {
+                if (err) reject(err); else resolve(stdout);
+            });
+        });
         procs = JSON.parse(raw);
     } catch {
         // PM2 not installed or not running — silently skip

@@ -86,7 +86,7 @@ export default function JarvisBrainCenter({ onNavigate }) {
 
   useEffect(() => {
     refresh();
-    const t = setInterval(refresh, 15000);
+    const t = setInterval(() => { if (!document.hidden) refresh(); }, 15000);
     return () => clearInterval(t);
   }, [refresh]);
 

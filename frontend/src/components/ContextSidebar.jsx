@@ -74,7 +74,7 @@ export default function ContextSidebar({ context = 'default', onNavigate }) {
 
   useEffect(() => {
     refresh();
-    const t = setInterval(refresh, 20000);
+    const t = setInterval(() => { if (!document.hidden) refresh(); }, 20000);
     return () => clearInterval(t);
   }, [refresh]);
 

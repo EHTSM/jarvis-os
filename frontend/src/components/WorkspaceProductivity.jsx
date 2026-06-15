@@ -276,7 +276,7 @@ function IndexingStatus() {
       } catch {}
     };
     run();
-    const id = setInterval(run, 10000);
+    const id = setInterval(() => { if (!document.hidden) run(); }, 10000);
     return () => clearInterval(id);
   }, []);
 
