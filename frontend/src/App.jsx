@@ -91,6 +91,7 @@ const AutonomousWorkflowCenter = lazy(() => import("./components/AutonomousWorkf
 const AgentActionCenter        = lazy(() => import("./components/AgentActionCenter.jsx"));
 const AutonomyScoreCenter      = lazy(() => import("./components/AutonomyScoreCenter.jsx"));
 const GlobalActivityFeed       = lazy(() => import("./components/GlobalActivityFeed.jsx"));
+const SystemHealthDashboard    = lazy(() => import("./components/SystemHealthDashboard.jsx"));
 const Logs                     = lazy(() => import("./components/Logs.jsx"));
 const ContactsV2               = lazy(() => import("./components/ContactsV2.jsx"));
 const PaymentsV2               = lazy(() => import("./components/PaymentsV2.jsx"));
@@ -851,6 +852,11 @@ function AppInner() {
         {tab === "globalactivity"    && (
           <div style={{ height: "100%", overflow: "hidden" }}>
             <GlobalActivityFeed onNavigate={setTab} />
+          </div>
+        )}
+        {tab === "systemhealth"      && (
+          <div style={{ height: "100%", overflow: "hidden" }}>
+            <SystemHealthDashboard onNavigate={setTab} />
           </div>
         )}
         {tab === "runtime"           && <RuntimeTab product={_PRODUCT} />}
