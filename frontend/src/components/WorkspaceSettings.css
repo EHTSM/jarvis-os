@@ -860,3 +860,29 @@
   border: 1px solid rgba(124,111,255,0.18); border-radius: var(--radius-pill);
   display: inline-block;
 }
+
+/* ── L3 Extension Runtime ───────────────────────────────────────── */
+
+.l3-panel { display: flex; flex-direction: column; gap: 8px; }
+
+/* Extension list rows */
+.l3-ext-list  { display: flex; flex-direction: column; gap: 5px; }
+.l3-ext-row   {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  background: var(--surface-high); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); flex-wrap: wrap;
+  transition: border-color var(--dur-fast);
+}
+.l3-ext-row:hover { border-color: var(--accent); }
+.l3-ext-dot   { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.l3-ext-meta  { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 140px; }
+.l3-ext-name  { font-size: 13px; font-weight: 700; color: var(--text); }
+.l3-ext-info  { font-size: 11px; color: var(--text-faint); }
+.l3-ext-state { font-size: 11px; font-weight: 700; white-space: nowrap; }
+.l3-ext-actions { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+
+/* Quota blocks */
+.l3-quota-block {
+  padding: 12px 14px; background: var(--surface-high); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); margin-bottom: 6px;
+}
