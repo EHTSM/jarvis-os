@@ -176,14 +176,14 @@ router.get("/ops", (req, res) => {
         } catch { /* non-critical */ }
     }
 
-// POST /runtime/reboot — safely restart the process (PM2 will bring it back)
-router.post("/runtime/reboot", (req, res) => {
-    logger.warn(`[Runtime] Operator initiated SAFE REBOOT`);
-    res.json({ success: true, message: "Reboot initiated. System will be back in ~10s." });
-    setTimeout(() => process.exit(0), 1000); // Exit code 0 tells PM2 to restart if configured
+    res.json(payload);
 });
 
-    res.json(payload);
+// POST /runtime/reboot — safely restart the process (PM2 will bring it back)
+router.post("/runtime/reboot", requireAuth, operatorAudit("runtime-reboot"), (req, res) => {
+    console.warn(`[Runtime] Operator ${req.user?.sub} initiated SAFE REBOOT`);
+    res.json({ success: true, message: "Reboot initiated. System will be back in ~10s." });
+    setTimeout(() => process.exit(0), 1000);
 });
 
 // ── Workflow health status ────────────────────────────────────────

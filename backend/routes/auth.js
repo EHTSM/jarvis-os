@@ -136,6 +136,11 @@ router.post("/auth/forgot-password", rateLimiter(5, 15 * 60_000), (req, res) => 
   res.json({ success: true, message: "If an account exists, a reset link will be sent." });
 });
 
+// Lazy-load firebase-admin — only required if Firebase auth is configured.
+function _firebaseAdmin() {
+  try { return require("firebase-admin"); } catch { return null; }
+}
+
 // POST /auth/firebase-session — exchange a Firebase ID token for a backend session cookie
 // Called after Google/Phone OAuth completes on the client. Creates the backend account
 // on first login (auto-register) then issues a session cookie.
@@ -143,6 +148,29 @@ router.post("/auth/firebase-session", rateLimiter(20, 5 * 60_000), async (req, r
   const { idToken, email, name, provider } = req.body || {};
   if (!idToken || !email) {
     return res.status(400).json({ error: "idToken and email are required" });
+  }
+
+  // Verify the Firebase ID token before trusting the email claim.
+  const admin = _firebaseAdmin();
+  if (admin && admin.apps?.length) {
+    try {
+      const decoded = await admin.auth().verifyIdToken(idToken);
+      // Reject if the verified email doesn't match the claimed email
+      const verifiedEmail = (decoded.email || "").trim().toLowerCase();
+      const claimedEmail  = email.trim().toLowerCase();
+      if (verifiedEmail && verifiedEmail !== claimedEmail) {
+        return res.status(401).json({ error: "Token email mismatch" });
+      }
+    } catch (e) {
+      return res.status(401).json({ error: "Invalid Firebase ID token" });
+    }
+  } else {
+    // firebase-admin not initialised — reject in production to prevent bypass
+    if (process.env.NODE_ENV === "production") {
+      return res.status(503).json({ error: "Firebase auth not configured" });
+    }
+    // Dev-only: allow through with warning
+    console.warn("[Auth] firebase-admin not initialised — skipping token verification (dev only)");
   }
 
   const cleanEmail = email.trim().toLowerCase();

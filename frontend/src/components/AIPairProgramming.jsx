@@ -103,7 +103,7 @@ function MultiFileRefactor() {
     if (!result?.patches) return;
     for (const patch of result.patches) {
       if (window.electronAPI?.fsWriteFile) {
-        await window.electronAPI.fsWriteFile({ path: patch.file, content: patch.content });
+        await window.electronAPI.fsWriteFile({ filePath: patch.file, data: patch.content });
       }
     }
     setResult(r => ({ ...r, applied: true }));

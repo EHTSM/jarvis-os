@@ -456,9 +456,9 @@ function createMenu() {
         {
             label: "View",
             submenu: [
-                { label: "Contacts",        accelerator: "CmdOrCtrl+1", click: () => windows.main?.webContents.send("nav", "contacts") },
+                { label: "Contacts",        accelerator: "CmdOrCtrl+1", click: () => windows.main?.webContents.send("nav", "clients") },
                 { label: "Payments",        accelerator: "CmdOrCtrl+2", click: () => windows.main?.webContents.send("nav", "payments") },
-                { label: "Dashboard",       accelerator: "CmdOrCtrl+3", click: () => windows.main?.webContents.send("nav", "dashboard") },
+                { label: "Dashboard",       accelerator: "CmdOrCtrl+3", click: () => windows.main?.webContents.send("nav", "home") },
                 { type: "separator" },
                 { label: "Floating Widget", accelerator: "CmdOrCtrl+Shift+F", click: () => createFloatingWindow() },
                 { type: "separator" },

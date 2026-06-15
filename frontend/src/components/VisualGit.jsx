@@ -198,7 +198,7 @@ function StashManager({ cwd }) {
     if (!isElectron()) return;
     setLoading(true);
     try {
-      const result = await api().shellExec({ cmd: 'git stash list --format="%gd|%s|%ci"', cwd });
+      const result = await api().shellExec({ command:'git stash list --format="%gd|%s|%ci"', cwd });
       const lines  = (result?.stdout || '').split('\n').filter(Boolean);
       setStashes(lines.map(l => { const [ref, subject, date] = l.split('|'); return { ref, subject, date }; }));
     } catch {}
@@ -208,7 +208,7 @@ function StashManager({ cwd }) {
   useEffect(() => { load(); }, [load]);
 
   const stashCmd = useCallback(async (cmd) => {
-    const result = await api().shellExec({ cmd: `git ${cmd}`, cwd });
+    const result = await api().shellExec({ command:`git ${cmd}`, cwd });
     setMsg(result?.stdout?.trim() || result?.stderr?.trim() || 'Done');
     load();
   }, [cwd, load]);
@@ -249,7 +249,7 @@ function ConflictResolution({ cwd }) {
     if (!isElectron()) return;
     setLoading(true);
     try {
-      const result = await api().shellExec({ cmd: 'git diff --name-only --diff-filter=U', cwd });
+      const result = await api().shellExec({ command:'git diff --name-only --diff-filter=U', cwd });
       const files  = (result?.stdout || '').split('\n').filter(Boolean);
       setConflicts(files);
     } catch {}
@@ -260,7 +260,7 @@ function ConflictResolution({ cwd }) {
 
   const viewConflict = useCallback(async (file) => {
     setSelected(file);
-    const result = await api().fsReadFile({ path: `${cwd}/${file}` });
+    const result = await api().fsReadFile({ filePath: `${cwd}/${file}` });
     setContent(result?.content || '');
   }, [cwd]);
 
@@ -325,7 +325,7 @@ function CommitDialog({ cwd, onCommit }) {
     if (!message.trim()) return;
     setLoading(true);
     try {
-      await api().shellExec({ cmd: 'git add -A', cwd });
+      await api().shellExec({ command:'git add -A', cwd });
       const result = await api().gitCommit(cwd, message.trim());
       if (result?.error) throw new Error(result.error);
       setMessage('');

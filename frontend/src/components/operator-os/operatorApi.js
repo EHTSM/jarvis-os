@@ -46,7 +46,7 @@ export const getGraphStats      = ()     => get("/p26/graph/stats");
 export const getGraphDetail     = (id)   => get(`/p26/graph/${id}`);
 export const createGraph        = (body) => post("/p26/graph", body);
 export const executeGraph       = (id)   => post(`/p26/graph/${id}/execute`);
-export const deleteGraph        = (id)   => fetch(`${BASE}/p26/graph/${id}`, { method: "DELETE", ...creds }).then(r => r.json());
+export const deleteGraph        = (id)   => _fetch(`/p26/graph/${id}`, { method: "DELETE" });
 
 // ── Memory & Intelligence ─────────────────────────────────────────────
 export const getMemoryStats     = ()     => get("/p18/memory/stats");
