@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo, Suspense, lazy } from "react";
-import { track, pageView } from "./analytics";
+import { track } from "./analytics";
 import { getBillingStatus } from "./billingApi";
+import { checkHealth, getStats, getOpsData } from "./telemetryApi";
+import { sendMessage } from "./api";
+import { emergencyStop, emergencyResume } from "./runtimeApi";
 // ── Eagerly-loaded: critical path + shell UI ────────────────────────────────
 import TrialBanner        from "./components/TrialBanner.jsx";
 import UpgradeModal       from "./components/UpgradeModal.jsx";
@@ -11,13 +14,11 @@ import OperatorConsole    from "./components/operator/OperatorConsole.jsx";
 import LoginPage          from "./components/auth/LoginPage.jsx";
 import SignupPage         from "./components/auth/SignupPage.jsx";
 import ForgotPassword     from "./components/auth/ForgotPassword.jsx";
-import Landing            from "./components/Landing.jsx";
 import LandingPage        from "./components/LandingPage.jsx";
 import Onboarding         from "./components/Onboarding.jsx";
 import Chat               from "./components/Chat.jsx";
 import Dashboard          from "./components/Dashboard.jsx";
 import CommandCenter      from "./components/CommandCenter.jsx";
-import ControlCenter      from "./components/ControlCenter.jsx";
 import PricingPage        from "./components/PricingPage.jsx";
 import CompanyFooter      from "./components/legal/CompanyFooter.jsx";
 import CompanyPage        from "./components/legal/CompanyPage.jsx";
@@ -31,27 +32,19 @@ import ShortcutsOverlay   from "./components/ShortcutsOverlay.jsx";
 import ElectronUpdateBanner from "./components/ElectronUpdateBanner.jsx";
 import ElectronOfflineBar   from "./components/ElectronOfflineBar.jsx";
 import ElectronWorkspace    from "./components/ElectronWorkspace.jsx";
+import ErrorBoundary        from "./components/ErrorBoundary.jsx";
 import { OoplixWordmark }   from "./design/OoplixWordmark.jsx";
 
 // ── Lazy-loaded: secondary/overflow tab components ───────────────────────────
 const BillingDashboard         = lazy(() => import("./components/BillingDashboard.jsx"));
 const SuccessCenter            = lazy(() => import("./components/SuccessCenter.jsx"));
 const HelpHub                  = lazy(() => import("./components/HelpHub.jsx"));
-const SeoCommandCenter         = lazy(() => import("./components/SeoCommandCenter.jsx"));
-const ContentEngine            = lazy(() => import("./components/ContentEngine.jsx"));
-const SocialHub                = lazy(() => import("./components/SocialHub.jsx"));
-const EmailMarketingOS         = lazy(() => import("./components/EmailMarketingOS.jsx"));
-const ReferralEngine           = lazy(() => import("./components/ReferralEngine.jsx"));
 const PartnerProgram           = lazy(() => import("./components/PartnerProgram.jsx"));
-const LaunchCommandCenter      = lazy(() => import("./components/LaunchCommandCenter.jsx"));
 const TeamWorkspace            = lazy(() => import("./components/TeamWorkspace.jsx"));
 const EnterpriseCRM            = lazy(() => import("./components/EnterpriseCRM.jsx"));
 const WorkspaceSettings        = lazy(() => import("./components/WorkspaceSettings.jsx"));
 const KnowledgeCenter          = lazy(() => import("./components/KnowledgeCenter.jsx"));
-const MemoryCenter             = lazy(() => import("./components/MemoryCenter.jsx"));
 const IntegrationCenter        = lazy(() => import("./components/IntegrationCenter.jsx"));
-const AgentCenter              = lazy(() => import("./components/AgentCenter.jsx"));
-const DeveloperCopilotCenter   = lazy(() => import("./components/DeveloperCopilotCenter.jsx"));
 const EngineeringCenter        = lazy(() => import("./components/EngineeringCenter.jsx"));
 const EngineeringWorkspace     = lazy(() => import("./components/EngineeringWorkspace.jsx"));
 const IntelligencePanel        = lazy(() => import("./components/IntelligencePanel.jsx"));
@@ -60,7 +53,7 @@ const GuardrailsDashboard      = lazy(() => import("./components/GuardrailsDashb
 const RecommendationCenter     = lazy(() => import("./components/RecommendationCenter.jsx"));
 const ExecutionCenter          = lazy(() => import("./components/ExecutionCenter.jsx"));
 const ReliabilityCenter        = lazy(() => import("./components/ReliabilityCenter.jsx"));
-const DevOpsCenter             = lazy(() => import("./components/DevOpsCenter.jsx"));
+const DevOpsCenterV2           = lazy(() => import("./components/DevOpsCenterV2.jsx"));
 const SelfHealingCenter        = lazy(() => import("./components/SelfHealingCenter.jsx"));
 const AgentRegistryCenter      = lazy(() => import("./components/AgentRegistryCenter.jsx"));
 const TaskRouterCenter         = lazy(() => import("./components/TaskRouterCenter.jsx"));
@@ -100,7 +93,6 @@ const AgentOSV2                = lazy(() => import("./components/AgentOSV2.jsx")
 const MemoryOSV2               = lazy(() => import("./components/MemoryOSV2.jsx"));
 const WorkflowOSV2             = lazy(() => import("./components/WorkflowOSV2.jsx"));
 const DeveloperCopilotV2       = lazy(() => import("./components/DeveloperCopilotV2.jsx"));
-const DevOpsCenterV2           = lazy(() => import("./components/DevOpsCenterV2.jsx"));
 const GrowthOSV2               = lazy(() => import("./components/GrowthOSV2.jsx"));
 const PersonalOS               = lazy(() => import("./components/PersonalOS.jsx"));
 const BusinessOS               = lazy(() => import("./components/BusinessOS.jsx"));
@@ -134,7 +126,7 @@ const MORE_TABS = [
   { id: "reports",    label: "Reports"         },
   { id: "settings",   label: "Settings"        },
   { id: "mission",    label: "Mission Control" },
-  { id: "runtime",    label: "Execution"       },
+  { id: "runtime",    label: "Runtime Console"  },
   { id: "agents",     label: "Agents"          },
   { id: "seo",        label: "SEO"             },
   { id: "content",    label: "Content"         },
@@ -840,6 +832,8 @@ function AppInner() {
       <main className="app-main" id="main-content" role="main">
         {/* key forces remount on tab change — triggers page-enter CSS animation */}
         <div key={tab} className="app-tab-pane">
+        <ErrorBoundary label={tab}>
+        <Suspense fallback={<div className="tab-suspense-loading"><div className="sk-row sk-row--w75" style={{margin:"24px auto"}} /></div>}>
         {tab === "mission"  && <MissionControlV1 onNavigate={setTab} />}
         {tab === "home"     && (
           <CommandCenter
@@ -954,6 +948,8 @@ function AppInner() {
           </div>
         )}
         {tab === "runtime"           && <RuntimeTab product={_PRODUCT} />}
+        </Suspense>
+        </ErrorBoundary>
         </div>
       </main>
       {!_IS_DESKTOP && <CompanyFooter onNavigate={openLegal} />}

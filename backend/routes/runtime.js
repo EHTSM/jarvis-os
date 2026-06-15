@@ -7396,6 +7396,9 @@ router.get("/runtime/exec/readiness-dashboard", rateLimiter(10, 60_000), (req, r
 //          operational-trust, trust-evolution, deployments, telemetry,
 //          eng-decision-log, eng-execution-log (all local, no new modules).
 
+const path = require("path");
+const fs   = require("fs");
+
 const _B10_PATCH_HISTORY_PATH  = path.join(__dirname, "../../data/patch-history.json");
 const _B10_AGENT_RUNS_PATH     = path.join(__dirname, "../../data/agent-runs.json");
 const _B10_CYCLES_PATH         = path.join(__dirname, "../../data/autonomous-cycles.json");
