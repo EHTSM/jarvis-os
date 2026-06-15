@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { track } from "../analytics";
 import { getRuntimeHistory, getRuntimeStatus, listPatches, getDLQ, recoverDLQ } from "../runtimeApi";
 import { BASE_URL } from "../_client";
+import WorkflowStagePanel from "./WorkflowStagePanel";
 
 // ── Shared fetch ──────────────────────────────────────────────────────
 
@@ -839,13 +840,14 @@ const TABS = [
   { id: "healing",       label: "Self-Healing"  },
 ];
 
-export default function EngineeringCenter() {
+export default function EngineeringCenter({ onNavigate }) {
   const [tab, setTab] = useState("observability");
 
   useEffect(() => { track("engineering_center_viewed"); }, []);
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+      <WorkflowStagePanel currentTab="engineering" onNavigate={onNavigate} compact />
       <style>{`
         @keyframes ec-pulse {
           0%, 100% { opacity: 0.4; }

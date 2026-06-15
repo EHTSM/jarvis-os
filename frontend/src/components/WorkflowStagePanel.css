@@ -1,0 +1,312 @@
+/* ── WorkflowStagePanel ─────────────────────────────────────────────────── */
+.wsp-root {
+  background: #08090e;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+  font-family: system-ui, sans-serif;
+}
+
+/* Header */
+.wsp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.wsp-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wsp-header-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #8994b0;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.wsp-header-meta {
+  font-size: 10px;
+  color: #374151;
+}
+
+.wsp-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wsp-overall-bar {
+  width: 100px;
+  height: 3px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.wsp-overall-fill {
+  height: 100%;
+  background: var(--accent, #7c6fff);
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+
+.wsp-overall-pct {
+  font-size: 10px;
+  color: var(--accent, #7c6fff);
+  font-weight: 700;
+  min-width: 30px;
+}
+
+.wsp-refresh-btn {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 5px;
+  color: #4a5470;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 6px;
+  transition: color 0.12s;
+  font-family: inherit;
+}
+.wsp-refresh-btn:hover { color: var(--accent, #7c6fff); border-color: rgba(124,111,255,0.3); }
+
+/* Stage grid */
+.wsp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 4px;
+  padding: 6px 8px;
+}
+
+/* Stage card */
+.wsp-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 7px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+  min-width: 0;
+}
+.wsp-card:hover { border-color: rgba(255,255,255,0.10); background: rgba(255,255,255,0.03); }
+.wsp-card--active  { border-color: rgba(124,111,255,0.3); background: rgba(124,111,255,0.05); }
+.wsp-card--selected { border-color: rgba(124,111,255,0.45); background: rgba(124,111,255,0.08); }
+
+.wsp-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.wsp-card-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; line-height: 1; }
+
+.wsp-card-meta { flex: 1; min-width: 0; }
+
+.wsp-card-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #cbd5e1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wsp-card-desc {
+  font-size: 9px;
+  color: #374151;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wsp-card-status {
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 1px 5px;
+  border-radius: 999px;
+  border: 1px solid;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Expanded detail */
+.wsp-card-detail {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.wsp-card-summary {
+  font-size: 10px;
+  color: #8994b0;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.wsp-card-items {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+
+.wsp-card-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+}
+
+.wsp-card-item-label {
+  flex: 1;
+  color: #94a3b8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wsp-card-item-meta {
+  font-size: 9px;
+  color: #374151;
+  flex-shrink: 0;
+}
+
+.wsp-card-rollback {
+  font-size: 10px;
+  color: #ef4444;
+  background: rgba(239,68,68,0.07);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 5px;
+  padding: 4px 7px;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.wsp-card-actions {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.wsp-action-btn {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.1s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.wsp-action-btn:hover { color: #94a3b8; background: rgba(255,255,255,0.07); }
+.wsp-action-btn--primary {
+  border-color: rgba(124,111,255,0.3);
+  background: rgba(124,111,255,0.09);
+  color: var(--accent, #7c6fff);
+}
+.wsp-action-btn--primary:hover { background: rgba(124,111,255,0.16); }
+
+/* Footer */
+.wsp-footer {
+  padding: 4px 16px 6px;
+  font-size: 9px;
+  color: #1e2333;
+  text-align: right;
+}
+
+/* ── Compact variant ──────────────────────────────────────────────────────── */
+.wsp-compact {
+  background: rgba(8,9,14,0.98);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  flex-shrink: 0;
+  font-family: system-ui, sans-serif;
+}
+
+.wsp-compact-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px 3px;
+}
+
+.wsp-compact-title {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #374151;
+}
+
+.wsp-compact-pct {
+  font-size: 9px;
+  color: var(--accent, #7c6fff);
+  font-weight: 700;
+}
+
+.wsp-compact-warn {
+  font-size: 9px;
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.wsp-compact-refresh {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #374151;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0 2px;
+  transition: color 0.12s;
+}
+.wsp-compact-refresh:hover { color: var(--accent, #7c6fff); }
+
+.wsp-compact-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 3px 14px 5px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.wsp-compact-track::-webkit-scrollbar { display: none; }
+
+.wsp-compact-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  padding: 2px 5px;
+  border-radius: 5px;
+  font-size: 9px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.wsp-compact-step:hover { background: rgba(255,255,255,0.04); }
+.wsp-compact-step--active { background: rgba(124,111,255,0.1) !important; border-radius: 5px; }
+
+.wsp-compact-step-icon { font-size: 11px; }
+.wsp-compact-step-label { font-weight: 600; }
+
+.wsp-compact-arrow {
+  font-size: 10px;
+  flex-shrink: 0;
+  padding: 0 1px;
+  user-select: none;
+}

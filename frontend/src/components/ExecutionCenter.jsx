@@ -8,6 +8,7 @@ import { BASE_URL } from "../_client";
 import PageHeader from "./PageHeader";
 import WorkflowNav from "./WorkflowNav";
 import ContextSidebar from "./ContextSidebar";
+import WorkflowStagePanel from "./WorkflowStagePanel";
 
 async function _get(path) {
   const r = await fetch(`${BASE_URL}${path}`, { credentials: "include" });
@@ -757,6 +758,7 @@ function TabReadiness() {
 const TABS = [
   { id: "queue",       label: "Unified Queue"      },
   { id: "execute",     label: "Execute"            },
+  { id: "pipeline",    label: "⬡ Pipeline"         },
   { id: "analytics",   label: "Analytics"          },
   { id: "calibration", label: "Calibration"        },
   { id: "ranked",      label: "Ranked Candidates"  },
@@ -814,6 +816,7 @@ export default function ExecutionCenter({ onNavigate }) {
         {tab === "calibration" && <TabCalibration />}
         {tab === "ranked"      && <TabRankedCandidates  onSelectForExec={handleSelectForExec} />}
         {tab === "readiness"   && <TabReadiness />}
+        {tab === "pipeline"    && <WorkflowStagePanel currentTab="execution" onNavigate={onNavigate} />}
       </div>
       </div>
       <ContextSidebar onNavigate={onNavigate} context="execution" />
