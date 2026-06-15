@@ -3,6 +3,7 @@ import { track } from "../analytics";
 import { cycleStats } from "../phase18Api";
 import { getAutonomyStatus } from "../phase20Api";
 import { getMissions, getMissionStats, getPlanningHorizons, getAiProviders } from "../phase27Api";
+import { _fetch } from "../_client";
 import PageHeader from "./PageHeader";
 import WorkflowNav from "./WorkflowNav";
 import ContextSidebar from "./ContextSidebar";
@@ -22,7 +23,7 @@ const FLOW_NODES = [
 
 const STATUS_COLORS = { active: "#22c55e", running: "#22c55e", planning: "#3b82f6", queued: "#64748b", complete: "#94a3b8", failed: "#ef4444" };
 
-const TABS = ["missions", "planning", "providers", "reasoning"];
+const TABS = ["missions", "planning", "providers", "reasoning", "intelligence"];
 
 export default function JarvisBrainCenter({ onNavigate }) {
   const [activeNode,  setActiveNode]  = useState("execution");
@@ -37,6 +38,13 @@ export default function JarvisBrainCenter({ onNavigate }) {
   const [providers,   setProviders]   = useState([]);
   const [loading,     setLoading]     = useState(true);
   const [error,       setError]       = useState(null);
+
+  // Intelligence tab data
+  const [intelCorr,   setIntelCorr]   = useState(null);
+  const [intelInsights, setIntelInsights] = useState(null);
+  const [intelPatterns, setIntelPatterns] = useState(null);
+  const [intelRecConf, setIntelRecConf]   = useState(null);
+  const [intelLoading, setIntelLoading]   = useState(false);
 
   // Brain flow animation
   useEffect(() => {
@@ -89,6 +97,29 @@ export default function JarvisBrainCenter({ onNavigate }) {
     const t = setInterval(() => { if (!document.hidden) refresh(); }, 15000);
     return () => clearInterval(t);
   }, [refresh]);
+
+  const refreshIntel = useCallback(() => {
+    setIntelLoading(true);
+    Promise.allSettled([
+      _fetch("/intelligence/correlations"),
+      _fetch("/intelligence/insights"),
+      _fetch("/intelligence/patterns"),
+      _fetch("/intelligence/recommendation-confidence"),
+    ]).then(([corrRes, insRes, patRes, rcRes]) => {
+      if (corrRes.status === "fulfilled") setIntelCorr(corrRes.value?.correlations ?? null);
+      if (insRes.status  === "fulfilled") setIntelInsights(insRes.value?.insights   ?? null);
+      if (patRes.status  === "fulfilled") setIntelPatterns(patRes.value?.patterns   ?? null);
+      if (rcRes.status   === "fulfilled") setIntelRecConf(rcRes.value?.recommendations ?? null);
+      setIntelLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (tab !== "intelligence") return;
+    refreshIntel();
+    const t = setInterval(() => { if (!document.hidden) refreshIntel(); }, 30000);
+    return () => clearInterval(t);
+  }, [tab, refreshIntel]);
 
   const totalRuns   = liveStats?.totalCycles ?? liveStats?.totalRuns ?? 0;
   const activeMissions = missions.filter(m => m.status === "active" || m.status === "running").length;
@@ -308,6 +339,115 @@ export default function JarvisBrainCenter({ onNavigate }) {
               <div style={{ fontSize: 11, color: "#374151", fontStyle: "italic", textAlign: "center", padding: 20 }}>
                 No reasoning chains attached to active missions yet.
               </div>
+            )}
+          </div>
+        )}
+
+        {/* INTELLIGENCE tab — J4 Cross-Domain Intelligence */}
+        {tab === "intelligence" && (
+          <div>
+            {intelLoading && !intelCorr && (
+              <div className="jbc-empty">Computing cross-domain correlations…</div>
+            )}
+
+            {/* Correlation Matrix */}
+            {intelCorr && (
+              <div className="jbc-panel" style={{ marginBottom: 10 }}>
+                <div className="jbc-panel-title">Correlation Matrix</div>
+                {Object.entries(intelCorr).map(([key, corr]) => {
+                  const strength = corr?.strength ?? 0;
+                  const color = strength >= 70 ? "#f87171" : strength >= 40 ? "#fbbf24" : "#22c55e";
+                  const label = key.replace(/_/g, " → ");
+                  return (
+                    <div key={key} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                      <div style={{ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0 }} />
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 11, color: "#e2e8f0", textTransform: "capitalize", marginBottom: 2 }}>{label}</div>
+                        <div style={{ fontSize: 10, color: "#64748b" }}>{corr?.insight || corr?.label || ""}</div>
+                      </div>
+                      <div style={{ textAlign: "right", flexShrink: 0 }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, color }}>{strength}%</div>
+                        <div style={{ fontSize: 9, color: "#64748b", textTransform: "uppercase" }}>{corr?.label || ""}</div>
+                      </div>
+                      <div style={{ width: 60, height: 4, background: "rgba(255,255,255,0.07)", borderRadius: 2, flexShrink: 0 }}>
+                        <div style={{ width: `${strength}%`, height: "100%", background: color, borderRadius: 2, transition: "width 0.5s" }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Pattern Timeline */}
+            {intelPatterns && intelPatterns.length > 0 && (
+              <div className="jbc-panel" style={{ marginBottom: 10 }}>
+                <div className="jbc-panel-title">Pattern Timeline</div>
+                {intelPatterns.slice(0, 8).map((p, i) => {
+                  const typeColor = p.type === "failure" ? "#f87171" : p.type === "success" ? "#22c55e" : "#60a5fa";
+                  return (
+                    <div key={p.id ?? i} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                      <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 8, background: typeColor + "22", color: typeColor, flexShrink: 0, marginTop: 1 }}>
+                        {p.type}
+                      </span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 11, color: "#e2e8f0" }}>{p.label}</div>
+                        {p.rootCause && <div style={{ fontSize: 10, color: "#64748b" }}>Root: {p.rootCause}</div>}
+                      </div>
+                      <span style={{ fontSize: 11, color: "#64748b", flexShrink: 0 }}>×{p.count || 1}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Success Heatmap (recommendation confidence) */}
+            {intelRecConf && intelRecConf.length > 0 && (
+              <div className="jbc-panel" style={{ marginBottom: 10 }}>
+                <div className="jbc-panel-title">Recommendation Confidence</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                  {intelRecConf.slice(0, 8).map((r, i) => {
+                    const conf = r.confidence ?? 0;
+                    const color = conf >= 80 ? "#22c55e" : conf >= 60 ? "#fbbf24" : "#f87171";
+                    return (
+                      <div key={r.id ?? i} style={{ background: "rgba(255,255,255,0.03)", borderRadius: 4, padding: "6px 8px", border: "1px solid rgba(255,255,255,0.06)" }}>
+                        <div style={{ fontSize: 10, color: "#e2e8f0", marginBottom: 4, lineHeight: 1.3 }}>{r.title}</div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          <div style={{ flex: 1, height: 3, background: "rgba(255,255,255,0.07)", borderRadius: 2 }}>
+                            <div style={{ width: `${conf}%`, height: "100%", background: color, borderRadius: 2 }} />
+                          </div>
+                          <span style={{ fontSize: 10, fontWeight: 700, color }}>{conf}%</span>
+                        </div>
+                        <div style={{ fontSize: 9, color: "#64748b", marginTop: 2 }}>{r.source} · {r.priority}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Insights summary */}
+            {intelInsights && intelInsights.length > 0 && (
+              <div className="jbc-panel">
+                <div className="jbc-panel-title">Cross-Domain Insights</div>
+                {intelInsights.slice(0, 6).map((ins, i) => {
+                  const sevColor = ins.severity === "high" ? "#f87171" : ins.severity === "medium" ? "#fbbf24" : "#22c55e";
+                  return (
+                    <div key={ins.domain ?? i} style={{ padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", gap: 8 }}>
+                      <div style={{ width: 3, background: sevColor, borderRadius: 2, flexShrink: 0, alignSelf: "stretch" }} />
+                      <div>
+                        <div style={{ fontSize: 10, color: "#64748b", marginBottom: 2, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                          {(ins.domain || "").replace(/_/g, " → ")}
+                        </div>
+                        <div style={{ fontSize: 11, color: "#e2e8f0" }}>{ins.insight}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {!intelLoading && !intelCorr && !intelInsights && (
+              <div className="jbc-empty">Intelligence data unavailable. Ensure backend services are running.</div>
             )}
           </div>
         )}

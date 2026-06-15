@@ -59,6 +59,67 @@ const LC_STAGE_COLOR = {
   heal: '#94a3b8', learn: '#94a3b8',
 };
 
+function RecommendationConfidence() {
+  const [recs, setRecs] = useState([]);
+  const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const load = useCallback(async () => {
+    try {
+      const r = await _fetch('/intelligence/recommendation-confidence');
+      setRecs(r.recommendations || []);
+      setSummary(r.summary || null);
+    } catch {} finally { setLoading(false); }
+  }, []);
+
+  useEffect(() => {
+    load();
+    const t = setInterval(() => { if (!document.hidden) load(); }, 60000);
+    return () => clearInterval(t);
+  }, [load]);
+
+  if (loading && recs.length === 0) return null;
+  if (!recs.length) return null;
+
+  return (
+    <section className="mc-section">
+      <div className="mc-section-head">
+        <h2>Recommendation Confidence</h2>
+        {summary && (
+          <span className="mc-badge" style={{ fontSize: 10, color: '#64748b' }}>
+            avg {summary.avgConfidence}% · {summary.total} recs
+          </span>
+        )}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 6 }}>
+        {recs.slice(0, 6).map((r, i) => {
+          const conf = r.confidence ?? 0;
+          const color = conf >= 80 ? '#22c55e' : conf >= 60 ? '#eab308' : '#ef4444';
+          return (
+            <div key={r.id ?? i} style={{
+              background: '#0c0e14', border: '1px solid rgba(255,255,255,0.07)',
+              borderRadius: 5, padding: '9px 10px',
+            }}>
+              <div style={{ fontSize: 11, color: '#e2e8f0', marginBottom: 6, lineHeight: 1.3 }}>
+                {r.title}
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+                <div style={{ flex: 1, height: 3, background: 'rgba(255,255,255,0.07)', borderRadius: 2 }}>
+                  <div style={{ width: `${conf}%`, height: '100%', background: color, borderRadius: 2, transition: 'width 0.5s' }} />
+                </div>
+                <span style={{ fontSize: 11, fontWeight: 700, color, minWidth: 30, textAlign: 'right' }}>{conf}%</span>
+              </div>
+              <div style={{ fontSize: 9, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                {r.source} · {r.priority} · risk: {r.risk}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 function LifecyclePanel() {
   const [missionId, setMissionId] = useState('');
   const [inputId,   setInputId]   = useState('');
@@ -501,6 +562,9 @@ export default function MissionControlV1({ onNavigate }) {
 
       {/* Lifecycle Runtime */}
       <LifecyclePanel />
+
+      {/* Recommendation Confidence */}
+      <RecommendationConfidence />
 
       {/* Recent Activity */}
       <section className="mc-section">

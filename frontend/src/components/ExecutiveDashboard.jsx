@@ -187,6 +187,58 @@ function LifecycleIntelligence({ missions }) {
   );
 }
 
+// ── Intelligence Insights widget ─────────────────────────────────────
+function IntelligenceInsights() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    _fetch("/intelligence/insights")
+      .then(r => { if (mounted) setData(r); })
+      .catch(() => {});
+    return () => { mounted = false; };
+  }, []);
+
+  if (!data?.insights?.length) return null;
+
+  const top = data.insights.slice(0, 3);
+  return (
+    <motion.div className="ed-section" {...fadeUp(0.18)}>
+      <div className="ed-section__title">Cross-Domain Intelligence</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {top.map((ins, i) => {
+          const sevColor = ins.severity === "high" ? "#ef4444" : ins.severity === "medium" ? "#eab308" : "#22c55e";
+          return (
+            <div key={ins.domain ?? i} style={{
+              display: "flex", gap: 10, alignItems: "flex-start",
+              background: "#0f1117", border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: 5, padding: "10px 12px",
+            }}>
+              <div style={{ width: 3, alignSelf: "stretch", background: sevColor, borderRadius: 2, flexShrink: 0 }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 9, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 3 }}>
+                  {(ins.domain || "").replace(/_/g, " → ")}
+                </div>
+                <div style={{ fontSize: 12, color: "#e2e8f0" }}>{ins.insight}</div>
+              </div>
+              <div style={{
+                fontSize: 10, fontWeight: 700, padding: "2px 7px", borderRadius: 8,
+                background: sevColor + "18", color: sevColor, border: `1px solid ${sevColor}44`, flexShrink: 0,
+              }}>{ins.strength}%</div>
+            </div>
+          );
+        })}
+      </div>
+      {data.summary?.avgCorrelationStrength != null && (
+        <div style={{ fontSize: 10, color: "#64748b", marginTop: 6 }}>
+          {data.summary.totalDomains} domains · avg correlation {data.summary.avgCorrelationStrength}%
+          {data.summary.highPriorityCount > 0 && ` · ${data.summary.highPriorityCount} high priority`}
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
 // ── Main component ───────────────────────────────────────────────────
 
 export default function ExecutiveDashboard({ onNavigate }) {
@@ -462,6 +514,9 @@ export default function ExecutiveDashboard({ onNavigate }) {
 
       {/* ── Lifecycle Runtime Intelligence ── */}
       <LifecycleIntelligence missions={missions} />
+
+      {/* ── Cross-Domain Intelligence ── */}
+      <IntelligenceInsights />
 
       {/* ── Row 4: Active Missions ── */}
       <motion.div className="ed-section" {...fadeUp(0.2)}>
