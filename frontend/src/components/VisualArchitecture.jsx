@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { _fetch } from '../_client';
 import './VisualArchitecture.css';
 
-const BACKEND = 'http://localhost:5050';
-
 async function apiFetch(path) {
-  const res = await fetch(`${BACKEND}${path}`, { credentials: 'include' });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
+  return _fetch(path);
 }
 
 function useGraph(path, interval = 10000) {

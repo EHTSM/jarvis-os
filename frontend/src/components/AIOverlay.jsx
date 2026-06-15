@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { _fetch } from '../_client';
 import './AIOverlay.css';
 
-const BACKEND = 'http://localhost:5050';
-
 async function apiFetch(path, opts = {}) {
-  const res = await fetch(`${BACKEND}${path}`, { credentials: 'include', ...opts });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
+  return _fetch(path, opts);
 }
 
 // ── Diff renderer ─────────────────────────────────────────────────────

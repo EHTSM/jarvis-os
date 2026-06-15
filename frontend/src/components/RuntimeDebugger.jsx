@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { _fetch } from '../_client';
 import './RuntimeDebugger.css';
 
-const BACKEND = 'http://localhost:5050';
-
 async function apiFetch(path) {
-  const res = await fetch(`${BACKEND}${path}`, { credentials: 'include' });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
+  return _fetch(path);
 }
 
 function usePolled(path, interval = 4000) {
@@ -48,7 +45,8 @@ function APIMonitor() {
   pausedRef.current = paused;
 
   useEffect(() => {
-    const es = new EventSource(`${BACKEND}/runtime/stream`, { withCredentials: true });
+    const streamUrl = (process.env.REACT_APP_API_URL || '') + '/runtime/stream';
+    const es = new EventSource(streamUrl, { withCredentials: true });
     es.onmessage = (e) => {
       if (pausedRef.current) return;
       try {
@@ -370,9 +368,8 @@ function EventReplay() {
   const replay = useCallback(async (event) => {
     setReplaying(event.id || event.ts);
     try {
-      await fetch(`${BACKEND}/runtime/events/replay`, {
-        method: 'POST', credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+      await _fetch('/runtime/events/replay', {
+        method: 'POST',
         body: JSON.stringify({ eventId: event.id, eventType: event.type, payload: event.payload }),
       });
     } catch {}

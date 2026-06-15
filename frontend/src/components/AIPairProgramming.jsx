@@ -1,17 +1,9 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { _fetch } from '../_client';
 import './AIPairProgramming.css';
 
-const BACKEND = 'http://localhost:5050';
-
 async function jarvisPost(path, body) {
-  const res = await fetch(`${BACKEND}${path}`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
+  return _fetch(path, { method: 'POST', body: JSON.stringify(body) });
 }
 
 // ── Diff display ───────────────────────────────────────────────────────
