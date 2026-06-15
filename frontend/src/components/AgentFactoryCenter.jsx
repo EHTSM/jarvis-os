@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
 import { listManagedAgents, createManagedAgent, getAgentFactoryStats } from "../phase20Api";
 import { getPlugins, getCapabilities, getCapabilityMap, getTemplates, getManifest } from "../phase26Api";
+import EmptyState from "./EmptyState";
 import "./AgentFactoryCenter.css";
 
 const KEY = "ooplix_agent_factory_v1";
@@ -218,7 +219,8 @@ export default function AgentFactoryCenter({ onNavigate }) {
       {p26Tab === "plugins" && (
         <div className="afc-agents">
           {p26Loading ? <div style={{ color: "var(--text-faint)", fontSize: 12, padding: 8 }}>Loading plugins…</div>
-          : plugins.length === 0 ? <div style={{ color: "var(--text-faint)", fontSize: 12, padding: 8, fontStyle: "italic" }}>No plugins registered.</div>
+          : plugins.length === 0 ? <EmptyState variant="plugins" />
+
           : plugins.map((p, i) => (
             <div key={p.id ?? i} className="afc-agent-row">
               <div className="afc-agent-icon" style={{ background: "rgba(124,111,255,0.12)" }}>⬡</div>
@@ -237,7 +239,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
       {p26Tab === "capabilities" && (
         <div className="afc-agents">
           {p26Loading ? <div style={{ color: "var(--text-faint)", fontSize: 12, padding: 8 }}>Loading capabilities…</div>
-          : capabilities.length === 0 ? <div style={{ color: "var(--text-faint)", fontSize: 12, padding: 8, fontStyle: "italic" }}>No capabilities registered.</div>
+          : capabilities.length === 0 ? <EmptyState variant="agents" />
           : capabilities.map((c, i) => (
             <div key={c.id ?? i} className="afc-agent-row">
               <div className="afc-agent-icon" style={{ background: "rgba(0,198,255,0.1)" }}>◈</div>
@@ -254,7 +256,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
       {p26Tab === "templates" && (
         <div className="afc-agents">
           {p26Loading ? <div style={{ color: "var(--text-faint)", fontSize: 12, padding: 8 }}>Loading templates…</div>
-          : p26Templates.length === 0 ? <div style={{ color: "var(--text-faint)", fontSize: 12, padding: 8, fontStyle: "italic" }}>No p26 templates registered.</div>
+          : p26Templates.length === 0 ? <EmptyState variant="missions" />
           : p26Templates.map((t, i) => (
             <div key={t.id ?? i} className="afc-agent-row">
               <div className="afc-agent-icon" style={{ background: "rgba(0,220,130,0.1)" }}>◇</div>

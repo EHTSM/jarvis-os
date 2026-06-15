@@ -3,6 +3,7 @@ import { track } from "../analytics";
 import { getLessons, getRecommendations, getLearningStats, runFullAnalysis } from "../phase19Api";
 import { getImprovementReports, getImprovementMetrics, getAiProviders } from "../phase27Api";
 import PageHeader from "./PageHeader";
+import EmptyState from "./EmptyState";
 import "./SelfImprovementCenter.css";
 
 const LESSONS = [
@@ -246,9 +247,7 @@ export default function SelfImprovementCenter({ onNavigate }) {
         <div className="sic-panel sic-panel-full">
           <div className="sic-panel-title">Improvement Reports</div>
           {reports.length === 0 ? (
-            <div style={{ padding: "20px", textAlign: "center", color: "#374151", fontSize: 11, fontStyle: "italic" }}>
-              No improvement reports yet. Run "↺ Re-analyze" or wait for automated analysis.
-            </div>
+            <EmptyState variant="intelligence" />
           ) : (
             reports.map((r, i) => {
               const score = r.score ?? r.overallScore ?? r.successRate;
