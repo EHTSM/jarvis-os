@@ -103,6 +103,7 @@ const EnterpriseOS             = lazy(() => import("./components/EnterpriseOS.js
 const CapabilitiesOverview     = lazy(() => import("./components/CapabilitiesOverview.jsx"));
 const MissionControlV1         = lazy(() => import("./components/MissionControlV1.jsx"));
 const ExecutiveDashboard       = lazy(() => import("./components/ExecutiveDashboard.jsx"));
+import WorkspaceSwitcher        from "./components/WorkspaceSwitcher.jsx";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts.js";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import { useElectronEvent } from "./hooks/useElectron.js";
@@ -798,6 +799,7 @@ function AppInner() {
               >Stop</button>
             )
           )}
+          <WorkspaceSwitcher onNavigate={setTab} />
           <button
             className="palette-trigger"
             onClick={() => setPaletteOpen(true)}

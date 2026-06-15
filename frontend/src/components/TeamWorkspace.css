@@ -250,3 +250,110 @@
 @media (prefers-reduced-motion: reduce) {
   .tw-content, .tw-modal, .tw-toast { animation: none; }
 }
+
+/* ── K1 Workspaces Panel ───────────────────────────────────────── */
+.tw-ws-panel { display: flex; flex-direction: column; gap: 16px; }
+.tw-ws-loading { color: var(--text-dim); font-size: 13px; padding: 24px; }
+.tw-ws-empty { color: var(--text-faint); font-size: 13px; padding: 16px 0; }
+
+.tw-ws-subtabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+.tw-ws-subtab {
+  padding: 6px 14px; background: none; border: 1px solid transparent;
+  border-radius: var(--radius-sm); color: var(--text-dim); font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: all var(--dur-fast);
+}
+.tw-ws-subtab:hover { color: var(--text); border-color: var(--border); }
+.tw-ws-subtab--active { color: var(--accent); border-color: rgba(124,111,255,0.3); background: rgba(124,111,255,0.08); }
+
+.tw-ws-list { display: flex; flex-direction: column; gap: 10px; }
+.tw-ws-list-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-dim); }
+.tw-ws-create-btn {
+  padding: 4px 12px; background: rgba(124,111,255,0.10); border: 1px solid rgba(124,111,255,0.22);
+  border-radius: var(--radius-pill); color: var(--accent); font-size: 12px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+}
+.tw-ws-create-form { display: flex; gap: 8px; align-items: center; }
+.tw-ws-create-input {
+  flex: 1; background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 7px 12px; color: var(--text); font-size: 13px; font-family: inherit;
+}
+.tw-ws-create-input::placeholder { color: var(--text-faint); }
+.tw-ws-create-confirm {
+  padding: 7px 16px; background: var(--accent); border: none; border-radius: var(--radius-sm);
+  color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
+}
+.tw-ws-create-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.tw-ws-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; background: var(--surface-high); border: 1px solid var(--border);
+  border-radius: var(--radius-md); transition: border-color var(--dur-fast);
+}
+.tw-ws-card--active { border-color: rgba(124,111,255,0.4); background: rgba(124,111,255,0.05); }
+.tw-ws-card-avatar {
+  width: 36px; height: 36px; border-radius: var(--radius-sm); background: rgba(124,111,255,0.18);
+  color: var(--accent); font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center;
+}
+.tw-ws-card-meta { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.tw-ws-card-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.tw-ws-card-info { font-size: 11px; color: var(--text-faint); }
+.tw-ws-active-badge {
+  padding: 3px 10px; background: rgba(82,214,138,0.12); border: 1px solid rgba(82,214,138,0.3);
+  border-radius: var(--radius-pill); color: #52d68a; font-size: 11px; font-weight: 700;
+}
+.tw-ws-switch-btn {
+  padding: 5px 12px; background: none; border: 1px solid var(--border);
+  border-radius: var(--radius-pill); color: var(--text-dim); font-size: 11px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: all var(--dur-fast);
+}
+.tw-ws-switch-btn:hover { color: var(--accent); border-color: rgba(124,111,255,0.4); }
+.tw-ws-active-info {
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  background: var(--surface); border-radius: var(--radius-sm); font-size: 12px;
+}
+.tw-ws-active-label { color: var(--text-faint); }
+.tw-ws-active-name { color: var(--text); font-weight: 700; }
+
+.tw-ws-members { display: flex; flex-direction: column; gap: 12px; }
+.tw-ws-invite-row { display: flex; gap: 8px; align-items: center; }
+.tw-ws-invite-email {
+  flex: 1; background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 7px 12px; color: var(--text); font-size: 13px; font-family: inherit;
+}
+.tw-ws-invite-email::placeholder { color: var(--text-faint); }
+.tw-ws-invite-role {
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 7px 10px; color: var(--text); font-size: 12px; font-family: inherit;
+}
+.tw-ws-invite-btn {
+  padding: 7px 16px; background: var(--accent); border: none; border-radius: var(--radius-sm);
+  color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
+}
+.tw-ws-invite-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.tw-ws-members-list { display: flex; flex-direction: column; gap: 6px; }
+.tw-ws-member-row {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.tw-ws-member-avatar {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--surface-glass);
+  color: var(--text); font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.tw-ws-member-info { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.tw-ws-member-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.tw-ws-member-email { font-size: 11px; color: var(--text-faint); }
+.tw-ws-member-role { font-size: 11px; font-weight: 700; }
+.tw-ws-section-title { font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; padding-top: 8px; }
+.tw-ws-inv-row {
+  display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+  background: var(--surface); border: 1px solid rgba(255,200,0,0.15); border-radius: var(--radius-sm);
+}
+.tw-ws-inv-email { flex: 1; font-size: 13px; color: var(--text); }
+.tw-ws-inv-role { font-size: 11px; font-weight: 700; }
+.tw-ws-inv-expires { font-size: 11px; color: var(--text-faint); }
+
+.tw-ws-activity { display: flex; flex-direction: column; gap: 6px; }
+.tw-ws-activity-row { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+.tw-ws-act-ts { color: var(--text-faint); min-width: 130px; }
+.tw-ws-act-action { color: var(--text); font-weight: 600; }
+.tw-ws-act-detail { color: var(--text-dim); }
