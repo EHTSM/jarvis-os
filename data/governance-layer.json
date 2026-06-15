@@ -1,0 +1,88 @@
+{
+  "test-k4": {
+    "policies": [
+      {
+        "id": "pol_371d680b833e",
+        "name": "Change Approval",
+        "type": "change",
+        "enforcement": "advisory",
+        "rules": [],
+        "description": "Require two approvals",
+        "status": "active",
+        "createdBy": "acc_test",
+        "createdAt": 1781550240836,
+        "updatedAt": 1781550240839,
+        "evaluationCount": 0,
+        "violationCount": 0,
+        "lastEvaluatedAt": null
+      }
+    ],
+    "templates": [
+      {
+        "id": "tpl_22d17a6b6ea1",
+        "name": "My Template",
+        "description": "",
+        "category": "operational",
+        "policies": [],
+        "createdBy": "acc_test",
+        "createdAt": 1781550240839,
+        "custom": true
+      }
+    ],
+    "compliance": {
+      "frameworks": [
+        "SOC 2",
+        "GDPR"
+      ],
+      "dataClassification": "internal",
+      "retentionDays": 730,
+      "riskTolerance": "low",
+      "reviewCycleDays": 90,
+      "lastReviewAt": 1781550240840,
+      "nextReviewAt": 1789326240840,
+      "notes": ""
+    },
+    "riskMatrix": [
+      {
+        "category": "access",
+        "likelihood": "likely",
+        "impact": "critical",
+        "score": 20,
+        "mitigation": "MFA + device trust",
+        "updatedAt": 1781550240840
+      },
+      {
+        "category": "data",
+        "likelihood": "unlikely",
+        "impact": "moderate",
+        "score": 2,
+        "mitigation": "",
+        "updatedAt": null
+      },
+      {
+        "category": "deployment",
+        "likelihood": "unlikely",
+        "impact": "moderate",
+        "score": 2,
+        "mitigation": "",
+        "updatedAt": null
+      },
+      {
+        "category": "compliance",
+        "likelihood": "unlikely",
+        "impact": "moderate",
+        "score": 2,
+        "mitigation": "",
+        "updatedAt": null
+      },
+      {
+        "category": "operational",
+        "likelihood": "unlikely",
+        "impact": "moderate",
+        "score": 2,
+        "mitigation": "",
+        "updatedAt": null
+      }
+    ]
+  }
+}
