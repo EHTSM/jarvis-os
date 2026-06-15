@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, memo, useMemo } from 'react';
+import { _fetch } from '../_client';
 import { useVirtualList, VirtualRow } from '../hooks/useVirtualList';
 import { useThrottledCallback } from '../hooks/useStableCallback';
 import { useLowMemoryGuard } from '../hooks/useResourceManager';
@@ -6,7 +7,6 @@ import './EngineeringConsole.css';
 
 const LOG_ITEM_HEIGHT = 18; // px per log line
 
-const BACKEND = 'http://localhost:5050';
 const isElectron = () => !!window.electronAPI?.isElectron;
 
 // ── Utility ──────────────────────────────────────────────────────────
@@ -39,7 +39,8 @@ function RuntimeLogs() {
   useLowMemoryGuard(() => setLines(l => l.slice(-200)));
 
   useEffect(() => {
-    const es = new EventSource(`${BACKEND}/runtime/stream`, { withCredentials: true });
+    const streamUrl = (process.env.REACT_APP_API_URL || '') + '/runtime/stream';
+    const es = new EventSource(streamUrl, { withCredentials: true });
     esRef.current = es;
     es.onmessage = (e) => {
       try {
@@ -112,9 +113,7 @@ function PM2Monitor() {
 
   const fetchProcs = useCallback(async () => {
     try {
-      const res = await fetch(`${BACKEND}/runtime/pm2/list`, { credentials: 'include' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
+      const data = await _fetch('/runtime/pm2/list');
       setProcs(Array.isArray(data) ? data : (data.processes || []));
       setErr(null);
     } catch (e) {
@@ -129,10 +128,8 @@ function PM2Monitor() {
 
   const action = useCallback(async (name, cmd) => {
     try {
-      await fetch(`${BACKEND}/runtime/pm2/${cmd}`, {
+      await _fetch(`/runtime/pm2/${cmd}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name }),
       });
       setTimeout(fetchProcs, 800);
@@ -182,9 +179,7 @@ function QueueMonitor() {
 
   const fetch_ = useCallback(async () => {
     try {
-      const res = await fetch(`${BACKEND}/runtime/queue/status`, { credentials: 'include' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
+      const data = await _fetch('/runtime/queue/status');
       setQueues(Array.isArray(data) ? data : (data.queues || []));
       setErr(null);
     } catch (e) {
@@ -244,9 +239,7 @@ function AgentMonitor() {
 
   const fetch_ = useCallback(async () => {
     try {
-      const res = await fetch(`${BACKEND}/runtime/agents/status`, { credentials: 'include' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
+      const data = await _fetch('/runtime/agents/status');
       setAgents(Array.isArray(data) ? data : (data.agents || []));
       setErr(null);
     } catch (e) {
@@ -318,9 +311,7 @@ function MetricsStrip() {
 
   const fetch_ = useCallback(async () => {
     try {
-      const res = await fetch(`${BACKEND}/runtime/metrics`, { credentials: 'include' });
-      if (!res.ok) return;
-      setMetrics(await res.json());
+      setMetrics(await _fetch('/runtime/metrics'));
     } catch {}
   }, []);
 

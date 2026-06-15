@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { _fetch } from '../_client';
 import './WorkspaceProductivity.css';
 
 const STORE_KEY_SESSIONS   = 'wp-sessions';
 const STORE_KEY_PROJECTS   = 'wp-projects';
 const STORE_KEY_SNAPSHOTS  = 'wp-snapshots';
-const BACKEND = 'http://localhost:5050';
 
 const api = () => window.electronAPI;
 const isElectron = () => !!window.electronAPI?.isElectron;
@@ -272,8 +272,7 @@ function IndexingStatus() {
   useEffect(() => {
     const run = async () => {
       try {
-        const res = await fetch(`${BACKEND}/runtime/index/status`, { credentials: 'include' });
-        if (res.ok) setStatus(await res.json());
+        setStatus(await _fetch('/runtime/index/status'));
       } catch {}
     };
     run();
