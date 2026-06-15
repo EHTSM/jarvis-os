@@ -240,3 +240,126 @@
   .ws-pane, .ws-toast { animation: none; }
   .ws-toggle-thumb, .ws-toggle { transition: none; }
 }
+
+/* ── K2 Enterprise Security Panels ─────────────────────────────── */
+.k2-loading { color: var(--text-dim); font-size: 13px; padding: 24px 0; }
+.k2-empty   { color: var(--text-faint); font-size: 13px; padding: 16px 0; }
+
+/* Security Score */
+.k2-score-card {
+  display: flex; align-items: center; gap: 24px;
+  padding: 16px 20px; background: var(--surface-high); border: 1px solid var(--border);
+  border-radius: var(--radius-md); margin-bottom: 4px;
+}
+.k2-score-ring {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  width: 64px; height: 64px; border: 3px solid var(--score-color, var(--accent));
+  border-radius: 50%; justify-content: center; flex-shrink: 0;
+}
+.k2-score-num  { font-size: 22px; font-weight: 900; line-height: 1; }
+.k2-score-grade { font-size: 11px; font-weight: 700; opacity: 0.7; }
+.k2-score-factors { display: flex; flex-wrap: wrap; gap: 6px; }
+.k2-factor {
+  display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
+  color: var(--text-faint); padding: 3px 8px; border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+}
+.k2-factor--ok { color: #52d68a; border-color: rgba(82,214,138,0.3); background: rgba(82,214,138,0.08); }
+
+/* Generic list rows */
+.k2-list { display: flex; flex-direction: column; gap: 6px; }
+.k2-row {
+  display: flex; align-items: center; gap: 12px; padding: 11px 14px;
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  transition: border-color var(--dur-fast);
+}
+.k2-row--current { border-color: rgba(82,214,138,0.35); background: rgba(82,214,138,0.05); }
+.k2-row-icon { font-size: 14px; color: var(--text-faint); flex-shrink: 0; }
+.k2-row-meta { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.k2-row-title { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px; }
+.k2-row-sub   { font-size: 11px; color: var(--text-faint); }
+.k2-row-actions { display: flex; gap: 6px; }
+.k2-revoke-btn {
+  padding: 4px 12px; background: none; border: 1px solid rgba(255,80,80,0.3);
+  border-radius: var(--radius-pill); color: var(--error); font-size: 11px; font-weight: 700;
+  cursor: pointer; font-family: inherit; white-space: nowrap;
+  transition: background var(--dur-fast);
+}
+.k2-revoke-btn:hover { background: rgba(255,80,80,0.08); }
+.k2-trust-btn {
+  padding: 4px 12px; background: none; border: 1px solid rgba(82,214,138,0.3);
+  border-radius: var(--radius-pill); color: #52d68a; font-size: 11px; font-weight: 700;
+  cursor: pointer; font-family: inherit; white-space: nowrap;
+}
+
+/* Badges */
+.k2-badge {
+  display: inline-flex; align-items: center; padding: 1px 7px;
+  border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; border: 1px solid transparent;
+}
+.k2-badge--green { color: #52d68a; background: rgba(82,214,138,0.10); border-color: rgba(82,214,138,0.25); }
+.k2-badge--red   { color: var(--error); background: rgba(255,80,80,0.10); border-color: rgba(255,80,80,0.25); }
+.k2-badge--dim   { color: var(--text-faint); background: var(--surface-glass); border-color: var(--border); }
+
+/* Audit log */
+.k2-audit-list { display: flex; flex-direction: column; gap: 4px; }
+.k2-audit-row  {
+  display: flex; align-items: center; gap: 10px; padding: 7px 12px; font-size: 12px;
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.k2-audit-dot  { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.k2-audit-ts   { color: var(--text-faint); min-width: 70px; flex-shrink: 0; }
+.k2-audit-action { font-weight: 600; flex-shrink: 0; }
+.k2-audit-detail { color: var(--text-dim); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Tokens panel */
+.k2-tokens-panel { display: flex; flex-direction: column; gap: 12px; }
+.k2-tokens-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-dim); }
+.k2-create-btn {
+  padding: 5px 14px; background: rgba(124,111,255,0.10); border: 1px solid rgba(124,111,255,0.25);
+  border-radius: var(--radius-pill); color: var(--accent); font-size: 12px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+}
+.k2-token-form {
+  display: flex; flex-direction: column; gap: 8px; padding: 14px;
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.k2-form-input, .k2-form-select {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 7px 12px; color: var(--text); font-size: 13px; font-family: inherit;
+}
+.k2-form-input::placeholder { color: var(--text-faint); }
+.k2-scopes-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.k2-scope-chip {
+  display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600;
+  color: var(--text-dim); padding: 3px 8px; border: 1px solid var(--border);
+  border-radius: var(--radius-pill); cursor: pointer;
+}
+.k2-scope-chip input { accent-color: var(--accent); }
+.k2-form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.k2-cancel-btn {
+  padding: 6px 14px; background: none; border: 1px solid var(--border);
+  border-radius: var(--radius-pill); color: var(--text-dim); font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+}
+.k2-create-confirm {
+  padding: 6px 14px; background: var(--accent); border: none;
+  border-radius: var(--radius-pill); color: #fff; font-size: 12px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+}
+.k2-create-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Secret reveal */
+.k2-secret-reveal {
+  display: flex; flex-direction: column; gap: 8px; padding: 14px 16px;
+  background: rgba(82,214,138,0.07); border: 1px solid rgba(82,214,138,0.3); border-radius: var(--radius-sm);
+}
+.k2-secret-header { display: flex; align-items: center; gap: 10px; }
+.k2-secret-note  { font-size: 12px; color: var(--text-dim); }
+.k2-secret-val {
+  font-size: 12px; font-family: monospace; color: #52d68a; word-break: break-all;
+  background: var(--surface); padding: 8px 12px; border-radius: var(--radius-sm);
+}
+
+/* Policies panel */
+.k2-policies-panel { display: flex; flex-direction: column; gap: 4px; }
