@@ -18,6 +18,16 @@ const { execSync, spawnSync } = require("child_process");
 
 const INDEX_PATH = path.join(__dirname, "../../data/repo-index.json");
 
+// In-memory cache for the repo index — avoids re-parsing 124MB on every search call.
+const _IDX_TTL = 5 * 60_000;
+let _idxCache = null, _idxCacheTime = 0;
+function _loadIdx() {
+    const now = Date.now();
+    if (_idxCache && (now - _idxCacheTime) < _IDX_TTL) return _idxCache;
+    try { _idxCache = JSON.parse(fs.readFileSync(INDEX_PATH, "utf8")); _idxCacheTime = now; return _idxCache; }
+    catch { return { repos: {} }; }
+}
+
 // ── Shared helpers ────────────────────────────────────────────────────────────
 
 const SKIP_DIRS = ["node_modules", ".git", "_archive", "dist", "build", "coverage", "out", ".next", "vendor"];
@@ -189,7 +199,7 @@ function findRelated(filePath, repoPath, opts = {}) {
     // load index for import graph proximity
     let importNeighbors = [];
     try {
-        const idx  = JSON.parse(fs.readFileSync(INDEX_PATH, "utf8"));
+        const idx  = _loadIdx();
         const repo = idx.repos[absPath] || Object.values(idx.repos)[0];
         if (repo?.depGraph) {
             const directImports  = repo.depGraph[relFile] || [];
@@ -256,7 +266,7 @@ function extractContext(filePath, lineNum, windowLines = 5) {
 function repoStats(repoPath) {
     const absPath = path.resolve(repoPath || ".");
     try {
-        const idx  = JSON.parse(fs.readFileSync(INDEX_PATH, "utf8"));
+        const idx  = _loadIdx();
         const repo = idx.repos[absPath] || Object.values(idx.repos)[0];
         if (repo) return { indexed: true, ...repo, files: undefined }; // omit full file map
     } catch { /* no index */ }

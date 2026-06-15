@@ -90,6 +90,26 @@ module.exports = {
             // Enable in development with: watch: ["backend", "agents"]
             watch:           false,
             ignore_watch:    ["node_modules", "logs", "data", "_archive"],
+        },
+        {
+            // Daily backup job — runs safe-backup.cjs every day at 02:00 server time.
+            // Creates a tar.gz snapshot in backups/ and prunes to 7 most recent.
+            // Set BACKUP_OFFSITE_DIR in .env to rsync the archive to a remote path.
+            name:        "ooplix-backup",
+            script:      "scripts/safe-backup.cjs",
+            cwd:         __dirname,
+            cron_restart: "0 2 * * *",
+            autorestart:  false,
+            watch:        false,
+            env: {
+                NODE_ENV: "production",
+            },
+            env_production: {
+                NODE_ENV: "production",
+            },
+            out_file:    "logs/backup-out.log",
+            error_file:  "logs/backup-err.log",
+            log_date_format: "YYYY-MM-DD HH:mm:ss",
         }
     ]
 };

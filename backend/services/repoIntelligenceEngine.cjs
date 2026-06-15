@@ -20,9 +20,24 @@ const INDEX_PATH = path.join(__dirname, "../../data/repo-index.json");
 
 // ── Index store ───────────────────────────────────────────────────────────────
 
+// In-memory cache — avoids parsing the 124MB repo-index.json on every HTTP request.
+const INDEX_CACHE_TTL = 5 * 60_000; // 5 minutes
+let _indexCache     = null;
+let _indexCacheTime = 0;
+
 function _loadIndex() {
-    try { return JSON.parse(fs.readFileSync(INDEX_PATH, "utf8")); }
-    catch { return { repos: {}, lastIndexed: null }; }
+    const now = Date.now();
+    if (_indexCache && (now - _indexCacheTime) < INDEX_CACHE_TTL) return _indexCache;
+    try {
+        _indexCache     = JSON.parse(fs.readFileSync(INDEX_PATH, "utf8"));
+        _indexCacheTime = now;
+        return _indexCache;
+    } catch { return { repos: {}, lastIndexed: null }; }
+}
+
+function _invalidateCache() {
+    _indexCache     = null;
+    _indexCacheTime = 0;
 }
 
 const MAX_REPOS_IN_INDEX = 20;  // cap to prevent unbounded file growth
@@ -61,6 +76,7 @@ function _saveIndex(idx) {
         }
         fs.writeFileSync(INDEX_PATH, JSON.stringify(meta, null, 2));
     }
+    _invalidateCache();
 }
 
 // ── File discovery ────────────────────────────────────────────────────────────
