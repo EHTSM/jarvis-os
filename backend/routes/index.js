@@ -37,5 +37,6 @@ router.use(require("./phase24"));      // /p24/vscode, /p24/repo, /p24/refactor,
 router.use(require("./phase25"));      // /p25/deploy, /p25/secrets, /p25/obs, /p25/search
 router.use(require("./phase26"));      // /p26/graph, /p26/memory, /p26/reason, /p26/observer, /p26/plugins, /p26/capabilities, /p26/manifest, /p26/templates
 router.use(require("./phase27"));      // /p27/executive, /p27/missions, /p27/planning, /p27/ai, /p27/improvement
+router.use(require("./mission"));      // /mission/runtime/*, /mission/timeline/*, /mission/graph/*, /mission/replay/*, /mission/state/*
 
 module.exports = router;
