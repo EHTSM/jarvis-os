@@ -40,7 +40,7 @@ export default function JarvisBrainCenter({ onNavigate }) {
 
   // Brain flow animation
   useEffect(() => {
-    const t = setInterval(() => setTick(x => x + 1), 2800);
+    const t = setInterval(() => { if (!document.hidden) setTick(x => x + 1); }, 2800);
     return () => clearInterval(t);
   }, []);
   useEffect(() => {

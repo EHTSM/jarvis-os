@@ -7,7 +7,7 @@
 import { useCallback, useState } from "react";
 import { recordValidationOutcome } from "../../hooks/useExecutionGraph";
 
-const VERIFY_ENDPOINT = "/api/runtime/verify";
+const VERIFY_ENDPOINT = "/runtime/verify";
 
 /**
  * useExecutionValidation
@@ -21,9 +21,10 @@ export function useExecutionValidation({ addNotification } = {}) {
     if (!cmd || !result) return null;
     try {
       const resp = await fetch(VERIFY_ENDPOINT, {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ cmd, result }),
+        method:      "POST",
+        credentials: "include",
+        headers:     { "Content-Type": "application/json" },
+        body:        JSON.stringify({ cmd, result }),
       });
       if (!resp.ok) return null;
       const validation = await resp.json();

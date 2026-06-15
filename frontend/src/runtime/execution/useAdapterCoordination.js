@@ -7,8 +7,8 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 
-const TOOLS_STATE_ENDPOINT  = "/api/runtime/tools/state";
-const HEARTBEAT_ENDPOINT    = "/api/runtime/tools/heartbeat";
+const TOOLS_STATE_ENDPOINT  = "/runtime/tools/state";
+const HEARTBEAT_ENDPOINT    = "/runtime/tools/heartbeat";
 const POLL_INTERVAL_MS      = 30_000;
 const HEARTBEAT_INTERVAL_MS = 20_000;
 
@@ -22,7 +22,7 @@ export function useAdapterCoordination({ enabled = true } = {}) {
   const fetchState = useCallback(async () => {
     if (!mountedRef.current) return;
     try {
-      const resp = await fetch(TOOLS_STATE_ENDPOINT);
+      const resp = await fetch(TOOLS_STATE_ENDPOINT, { credentials: "include" });
       if (!resp.ok || !mountedRef.current) return;
       const data = await resp.json();
       if (data.success) {
@@ -36,9 +36,10 @@ export function useAdapterCoordination({ enabled = true } = {}) {
     if (!mountedRef.current) return;
     try {
       await fetch(HEARTBEAT_ENDPOINT, {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ toolName: "browser", state: "connected" }),
+        method:      "POST",
+        credentials: "include",
+        headers:     { "Content-Type": "application/json" },
+        body:        JSON.stringify({ toolName: "browser", state: "connected" }),
       });
     } catch { /* non-critical */ }
   }, []);

@@ -262,6 +262,7 @@ function MoreMenu({ currentTab, onSelect }) {
             key={m.id}
             className={`tab-more-item${currentTab === m.id ? " active" : ""}`}
             role="menuitem"
+            aria-current={currentTab === m.id ? "page" : undefined}
             onClick={() => onSelect(m.id)}
           >
             {m.label}
@@ -398,7 +399,7 @@ function AppInner() {
     };
 
     poll();
-    const id = setInterval(poll, 8000);
+    const id = setInterval(() => { if (!document.hidden) poll(); }, 8000);
     return () => clearInterval(id);
   }, [screen, push]);
 
@@ -452,7 +453,10 @@ function AppInner() {
   useElectronEvent('onNewTask',        ()    => { setTab('home'); setScreen('app'); setPaletteOpen(true); }, []);
   // Current event names (from production main.cjs)
   useElectronEvent('onNav',              (tab)  => { setTab(tab); setScreen('app'); },          []);
-  useElectronEvent('onMenuAction',       (act)  => { if (act === 'new-contact') setTab('clients'); }, []);
+  useElectronEvent('onMenuAction', (act) => {
+    if (act === 'new-contact')      setTab('clients');
+    if (act === 'export-contacts')  setTab('clients');  // opens Contacts tab where export lives
+  }, []);
   useElectronEvent('onOpenCommandPalette',()    => setPaletteOpen(true),                        []);
   useElectronEvent('onDeepLink',         (data) => { if (data?.route) { setTab(data.route); setScreen('app'); } }, []);
   useElectronEvent('onImportContacts',   ()     => setTab('clients'),                           []);
@@ -566,9 +570,10 @@ function AppInner() {
   const closeLegal = useCallback(() => setLegalPage(null),     []);
 
   // ── Screen routing ────────────────────────────────────────────────
-  if (screen === "pricing")    return <Suspense fallback={null}><PricingPage onBack={() => setScreen("landing")} onStart={handleStart} /></Suspense>;
-  if (screen === "landing")    return <Suspense fallback={null}><LandingPage onStart={handleStart} onLogin={handleLogin} onLegal={openLegal} onPricing={() => setScreen("pricing")} /></Suspense>;
-  if (screen === "onboarding") return <Suspense fallback={null}><Onboarding onComplete={handleOnboardingComplete} /></Suspense>;
+  const _screenFallback = <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh",background:"#0a0a0a"}}><div className="sk-row sk-row--w75" style={{width:180,margin:"0 auto"}} /></div>;
+  if (screen === "pricing")    return <Suspense fallback={_screenFallback}><PricingPage onBack={() => setScreen("landing")} onStart={handleStart} /></Suspense>;
+  if (screen === "landing")    return <Suspense fallback={_screenFallback}><LandingPage onStart={handleStart} onLogin={handleLogin} onLegal={openLegal} onPricing={() => setScreen("pricing")} /></Suspense>;
+  if (screen === "onboarding") return <Suspense fallback={_screenFallback}><Onboarding onComplete={handleOnboardingComplete} /></Suspense>;
 
   // ── Signup screen (reached after Onboarding, or from Login "Create account") ──
   if (screen === "signup") {
@@ -718,6 +723,8 @@ function AppInner() {
                 key={t.id}
                 className={`tab${tab === t.id ? " active" : ""}${t.featured ? " tab--featured" : ""}`}
                 onClick={() => { setTab(t.id); track.tabChanged(t.id); }}
+                aria-current={tab === t.id ? "page" : undefined}
+                aria-label={t.id === "chat" ? "AI Chat" : t.id === "more" ? "More tabs" : undefined}
               >
                 {t.label}
               </button>

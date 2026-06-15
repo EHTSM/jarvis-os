@@ -72,6 +72,7 @@ export default class ErrorBoundary extends React.Component {
               window.electronAPI?.clipboardWrite?.(detail);
             }}
             title="Copy error to clipboard"
+            aria-label="Copy error details to clipboard"
           >
             Copy
           </button>

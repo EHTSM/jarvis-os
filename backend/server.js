@@ -92,9 +92,7 @@ app.use(require("./middleware/requestId"));   // x-request-id on every request
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.set("trust proxy", 1);
-app.disable("x-powered-by");   // don't advertise Express
-// Honour explicit flag for automated security audits
-if (process.env.DISABLE_X_POWERED_BY === "1") app.disable("x-powered-by");
+app.disable("x-powered-by");
 
 // ── helmet-equivalent security headers (manual — no extra dep) ─────
 // helmet() middleware behaviour replicated: X-Content-Type-Options,

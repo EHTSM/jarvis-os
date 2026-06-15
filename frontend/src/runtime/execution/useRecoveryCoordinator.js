@@ -6,7 +6,7 @@
 
 import { useCallback, useState } from "react";
 
-const RECOVER_ENDPOINT = "/api/runtime/recover";
+const RECOVER_ENDPOINT = "/runtime/recover";
 
 export function useRecoveryCoordinator({ addNotification } = {}) {
   const [recoveryState, setRecoveryState] = useState("idle"); // "idle" | "recovering" | "recovered" | "failed"
@@ -20,9 +20,10 @@ export function useRecoveryCoordinator({ addNotification } = {}) {
 
     try {
       const resp = await fetch(RECOVER_ENDPOINT, {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ input: cmd, originalError: originalError || "" }),
+        method:      "POST",
+        credentials: "include",
+        headers:     { "Content-Type": "application/json" },
+        body:        JSON.stringify({ input: cmd, originalError: originalError || "" }),
       });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const data = await resp.json();

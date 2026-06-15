@@ -83,7 +83,7 @@ export function captureRendererCrash({ source, message, stack, connectionState, 
   }
 
   // Best-effort POST to backend
-  fetch("/api/runtime/feedback", {
+  fetch("/runtime/feedback", {
     method:  "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",

@@ -141,7 +141,7 @@ function _buildDiagSummary(connectionState, runtimeDegraded) {
 // Phase 113 + 169: export diagnostics — tries backend first, falls back to local bundle
 async function _exportDiagnostics(connectionState, runtimeDegraded) {
   try {
-    const r = await fetch("/api/runtime/diagnostics/bundle", { credentials: "include" });
+    const r = await fetch("/runtime/diagnostics/bundle", { credentials: "include" });
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const serverData = await r.json();
     const bundle = { ...serverData, clientBundle: _buildLocalBundle(connectionState, runtimeDegraded) };
@@ -242,7 +242,7 @@ export const FeedbackPanel = React.memo(({ onClose, connectionState, runtimeDegr
     };
     _saveFeedback(entry);
     // POST to backend — best-effort, no block on failure
-    fetch("/api/runtime/feedback", {
+    fetch("/runtime/feedback", {
       method:  "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

@@ -191,7 +191,7 @@ export default function GlobalActivityFeed({ onNavigate, maxItems = 50 }) {
 
   useEffect(() => {
     refresh();
-    const t = setInterval(refresh, 25000);
+    const t = setInterval(() => { if (!document.hidden) refresh(); }, 25000);
     return () => clearInterval(t);
   }, [refresh]);
 

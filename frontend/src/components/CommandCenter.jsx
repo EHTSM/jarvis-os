@@ -286,7 +286,7 @@ function MissionFeed({ opsData, online }) {
 
   useEffect(() => {
     load();
-    const id = setInterval(load, 5000);
+    const id = setInterval(() => { if (!document.hidden) load(); }, 5000);
     return () => clearInterval(id);
   }, [load]);
 
@@ -421,7 +421,7 @@ function ActiveAgents({ opsData }) {
 
   useEffect(() => {
     load();
-    const id = setInterval(load, 5000);
+    const id = setInterval(() => { if (!document.hidden) load(); }, 5000);
     return () => clearInterval(id);
   }, [load]);
 
@@ -486,7 +486,7 @@ function EngineeringTimeline({ opsData }) {
       setEvents(Array.isArray(items) ? items.slice(0, 40) : []);
     };
     fetchEvents();
-    const id = setInterval(fetchEvents, 15000);
+    const id = setInterval(() => { if (!document.hidden) fetchEvents(); }, 15000);
     return () => clearInterval(id);
   }, []);
 
@@ -691,7 +691,7 @@ function ApprovalQueue({ onNavigate }) {
 
   useEffect(() => {
     load();
-    const id = setInterval(load, 12000);
+    const id = setInterval(() => { if (!document.hidden) load(); }, 12000);
     return () => clearInterval(id);
   }, [load]);
 

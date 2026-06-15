@@ -81,11 +81,16 @@ router.post("/auth/login", rateLimiter(10, 5 * 60_000), (req, res) => {
     return res.status(401).json({ error: "Invalid password" });
   }
 
-  const token = signJWT({
-    role: "operator", sub: "operator",
-    iat: Math.floor(Date.now() / 1000),
-    exp: Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
-  });
+  let token;
+  try {
+    token = signJWT({
+      role: "operator", sub: "operator",
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
+    });
+  } catch {
+    return res.status(500).json({ error: "JWT signing failed" });
+  }
   res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
   auditLog.recordAuth({ action: "login", operator: "operator", method: "password" });
   res.json({ success: true, role: "operator" });

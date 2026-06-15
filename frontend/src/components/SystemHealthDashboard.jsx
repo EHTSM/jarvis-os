@@ -367,7 +367,7 @@ export default function SystemHealthDashboard({ onNavigate }) {
 
   useEffect(() => {
     refresh();
-    const t = setInterval(refresh, 30000);
+    const t = setInterval(() => { if (!document.hidden) refresh(); }, 30000);
     return () => clearInterval(t);
   }, [refresh]);
 
