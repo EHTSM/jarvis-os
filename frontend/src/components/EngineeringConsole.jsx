@@ -343,12 +343,325 @@ function MountedTab({ active, children }) {
   );
 }
 
+// ── Agent Collaboration — Conversation + Delegation + Status Matrix ───────────
+const COLLAB_SUB_TABS = [
+  { id: 'pipeline', label: 'Agent Pipeline' },
+  { id: 'convo',    label: 'Conversation' },
+  { id: 'timeline', label: 'Delegation Timeline' },
+];
+
+const PIPELINE_STATUS_COLOR = {
+  completed: '#22c55e',
+  running:   '#3b82f6',
+  failed:    '#ef4444',
+  escalated: '#f59e0b',
+  skipped:   '#6b7280',
+  pending:   '#374151',
+  idle:      '#1f2937',
+};
+
+function AgentStatusMatrix({ missionId }) {
+  const [data, setData]   = useState(null);
+  const [err, setErr]     = useState(null);
+
+  const load = useCallback(async () => {
+    try {
+      const r = await _fetch(`/agents/status/${missionId}`);
+      setData(r.status || null);
+      setErr(null);
+    } catch (e) { setErr(e.message); }
+  }, [missionId]);
+
+  useEffect(() => { load(); }, [load]);
+  useInterval(load, 4000);
+
+  if (err)  return <div className="ec-error">Status unavailable: {err}</div>;
+  if (!data) return <div className="ec-empty">Loading agent pipeline…</div>;
+
+  return (
+    <div className="ec-collab-matrix">
+      {data.matrix.map((agent, i) => (
+        <div key={agent.id} className="ec-collab-agent">
+          <div className="ec-collab-agent__pos">{i + 1}</div>
+          <div className="ec-collab-agent__body">
+            <div className="ec-collab-agent__name">{agent.name}</div>
+            <div className="ec-collab-agent__caps">{agent.capabilities.slice(0, 3).join(' · ')}</div>
+          </div>
+          <div
+            className="ec-collab-agent__status"
+            style={{ color: PIPELINE_STATUS_COLOR[agent.nodeStatus] || '#6b7280' }}
+          >
+            {agent.nodeStatus}
+            {agent.durationMs ? ` ${(agent.durationMs / 1000).toFixed(1)}s` : ''}
+          </div>
+          {agent.delegatedTo && (
+            <div className="ec-collab-agent__badge ec-collab-agent__badge--delegated">
+              → {agent.delegatedTo}
+            </div>
+          )}
+          {agent.claimedTasks.length > 0 && (
+            <div className="ec-collab-agent__badge ec-collab-agent__badge--claimed">
+              {agent.claimedTasks.length} claimed
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function AgentConversation({ missionId }) {
+  const [data,    setData]    = useState(null);
+  const [msgBody, setMsgBody] = useState('');
+  const [from,    setFrom]    = useState('operator');
+  const [to,      setTo]      = useState('planner');
+  const [err,     setErr]     = useState(null);
+  const [sending, setSending] = useState(false);
+  const bottomRef = useRef(null);
+
+  const load = useCallback(async () => {
+    try {
+      const r = await _fetch(`/agents/conversation/${missionId}`);
+      setData(r.conversation || null);
+      setErr(null);
+    } catch (e) { setErr(e.message); }
+  }, [missionId]);
+
+  useEffect(() => { load(); }, [load]);
+  useInterval(load, 3000);
+
+  useEffect(() => {
+    if (bottomRef.current) bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [data?.thread?.length]);
+
+  const send = useCallback(async () => {
+    if (!msgBody.trim() || sending) return;
+    setSending(true);
+    try {
+      await _fetch('/agents/message', {
+        method: 'POST',
+        body: JSON.stringify({ missionId, from, to, body: msgBody.trim() }),
+      });
+      setMsgBody('');
+      await load();
+    } catch (e) { setErr(e.message); }
+    finally { setSending(false); }
+  }, [msgBody, from, to, missionId, load, sending]);
+
+  const handleKey = useCallback((e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  }, [send]);
+
+  if (err)  return <div className="ec-error">Conversation unavailable: {err}</div>;
+  if (!data) return <div className="ec-empty">Loading conversation…</div>;
+
+  const TYPE_COLOR = {
+    message:    '#60a5fa',
+    delegation: '#f59e0b',
+    feedback:   '#a78bfa',
+    approval:   '#22c55e',
+    override:   '#ef4444',
+    claim:      '#34d399',
+  };
+
+  return (
+    <div className="ec-collab-convo">
+      <div className="ec-collab-convo__thread">
+        {data.thread.length === 0 && (
+          <div className="ec-empty">No messages yet. Start the conversation.</div>
+        )}
+        {data.thread.map(msg => (
+          <div key={msg.id} className={`ec-collab-msg ec-collab-msg--${msg.type}`}>
+            <div className="ec-collab-msg__meta">
+              <span className="ec-collab-msg__from">{msg.from}</span>
+              <span className="ec-collab-msg__arrow">→</span>
+              <span className="ec-collab-msg__to">{msg.to}</span>
+              <span
+                className="ec-collab-msg__type"
+                style={{ color: TYPE_COLOR[msg.type] || '#6b7280' }}
+              >
+                {msg.type}
+              </span>
+              <span className="ec-collab-msg__ts">{new Date(msg.ts).toLocaleTimeString()}</span>
+            </div>
+            <div className="ec-collab-msg__body">{msg.body}</div>
+          </div>
+        ))}
+        <div ref={bottomRef} />
+      </div>
+      <div className="ec-collab-convo__compose">
+        <select
+          className="ec-collab-select"
+          value={from}
+          onChange={e => setFrom(e.target.value)}
+        >
+          {['operator','planner','developer','reviewer','tester','security','devops'].map(a => (
+            <option key={a} value={a}>{a}</option>
+          ))}
+        </select>
+        <span className="ec-collab-arrow">→</span>
+        <select
+          className="ec-collab-select"
+          value={to}
+          onChange={e => setTo(e.target.value)}
+        >
+          {['planner','developer','reviewer','tester','security','devops','operator','all'].map(a => (
+            <option key={a} value={a}>{a}</option>
+          ))}
+        </select>
+        <input
+          className="ec-collab-input"
+          placeholder="Message…"
+          value={msgBody}
+          onChange={e => setMsgBody(e.target.value)}
+          onKeyDown={handleKey}
+          maxLength={2000}
+        />
+        <button
+          className="ec-collab-btn"
+          onClick={send}
+          disabled={sending || !msgBody.trim()}
+        >
+          {sending ? '…' : 'Send'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function DelegationTimeline({ missionId }) {
+  const [data, setData] = useState(null);
+  const [err,  setErr]  = useState(null);
+
+  const load = useCallback(async () => {
+    try {
+      const r = await _fetch(`/agents/delegation/${missionId}`);
+      setData(r.delegation || null);
+      setErr(null);
+    } catch (e) { setErr(e.message); }
+  }, [missionId]);
+
+  useEffect(() => { load(); }, [load]);
+  useInterval(load, 5000);
+
+  if (err)  return <div className="ec-error">Delegation log unavailable: {err}</div>;
+  if (!data) return <div className="ec-empty">Loading delegation timeline…</div>;
+
+  const TYPE_ICON = { delegation: '⇢', override: '!', claim: '✓' };
+
+  return (
+    <div className="ec-collab-timeline">
+      <div className="ec-collab-timeline__header">
+        <span>{data.total} delegation events</span>
+      </div>
+      {data.delegations.length === 0 ? (
+        <div className="ec-empty">No delegation events yet.</div>
+      ) : (
+        <div className="ec-collab-timeline__events">
+          {[...data.delegations].reverse().map(d => (
+            <div key={d.id} className={`ec-collab-event ec-collab-event--${d.type}`}>
+              <div className="ec-collab-event__icon">{TYPE_ICON[d.type] || '·'}</div>
+              <div className="ec-collab-event__body">
+                <div className="ec-collab-event__actors">
+                  <span className="ec-collab-event__from">{d.from}</span>
+                  {d.to && <><span> → </span><span className="ec-collab-event__to">{d.to}</span></>}
+                  {d.taskId && <span className="ec-collab-event__task"> [{d.taskId.slice(0, 12)}]</span>}
+                </div>
+                {d.reason && <div className="ec-collab-event__reason">{d.reason}</div>}
+                <div className="ec-collab-event__ts">{new Date(d.ts).toLocaleString()}</div>
+              </div>
+              {d.status && (
+                <div className={`ec-collab-event__status ec-collab-event__status--${d.status}`}>
+                  {d.status}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AgentCollaborationPanel() {
+  const [subTab, setSubTab] = useState('pipeline');
+  const [missionId, setMissionId] = useState('');
+  const [inputId, setInputId]     = useState('');
+  const [starting, setStarting]   = useState(false);
+  const [startErr, setStartErr]   = useState(null);
+
+  const startCollab = useCallback(async () => {
+    if (!inputId.trim()) return;
+    setStarting(true);
+    setStartErr(null);
+    try {
+      await _fetch(`/agents/collaborate/${inputId.trim()}`, { method: 'POST', body: '{}' });
+      setMissionId(inputId.trim());
+    } catch (e) { setStartErr(e.message); }
+    finally { setStarting(false); }
+  }, [inputId]);
+
+  return (
+    <div className="ec-collab" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      {/* Mission selector */}
+      <div className="ec-collab-toolbar">
+        <span className="ec-collab-toolbar__label">Mission ID</span>
+        <input
+          className="ec-filter-input"
+          placeholder="msn_…"
+          value={inputId}
+          onChange={e => setInputId(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter') startCollab(); }}
+          style={{ maxWidth: 260 }}
+        />
+        <button className="ec-collab-btn" onClick={startCollab} disabled={starting || !inputId.trim()}>
+          {starting ? 'Starting…' : 'Load / Start'}
+        </button>
+        {startErr && <span className="ec-collab-err">{startErr}</span>}
+      </div>
+
+      {!missionId ? (
+        <div className="ec-empty">Enter a mission ID above to view agent collaboration.</div>
+      ) : (
+        <>
+          {/* Sub-tabs */}
+          <div className="ec-tabs ec-tabs--sm" role="tablist" aria-label="Agent Collaboration sub-tabs">
+            {COLLAB_SUB_TABS.map(t => (
+              <button
+                key={t.id}
+                role="tab"
+                aria-selected={subTab === t.id}
+                className={`ec-tab${subTab === t.id ? ' ec-tab--active' : ''}`}
+                onClick={() => setSubTab(t.id)}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+          <div className="ec-body" style={{ flex: 1, minHeight: 0 }}>
+            <MountedTab active={subTab === 'pipeline'}>
+              <AgentStatusMatrix missionId={missionId} />
+            </MountedTab>
+            <MountedTab active={subTab === 'convo'}>
+              <AgentConversation missionId={missionId} />
+            </MountedTab>
+            <MountedTab active={subTab === 'timeline'}>
+              <DelegationTimeline missionId={missionId} />
+            </MountedTab>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────
 const TABS = [
   { id: 'logs',   label: 'Runtime Logs' },
   { id: 'pm2',    label: 'PM2' },
   { id: 'queue',  label: 'Queue' },
   { id: 'agents', label: 'Agents' },
+  { id: 'collab', label: 'Agent Collaboration' },
 ];
 
 export default function EngineeringConsole({ className = '' }) {
@@ -374,10 +687,11 @@ export default function EngineeringConsole({ className = '' }) {
         ))}
       </div>
       <div className="ec-body">
-        <MountedTab active={tab === 'logs'}>   <RuntimeLogs />   </MountedTab>
-        <MountedTab active={tab === 'pm2'}>    <PM2Monitor />    </MountedTab>
-        <MountedTab active={tab === 'queue'}>  <QueueMonitor />  </MountedTab>
-        <MountedTab active={tab === 'agents'}> <AgentMonitor />  </MountedTab>
+        <MountedTab active={tab === 'logs'}>   <RuntimeLogs />        </MountedTab>
+        <MountedTab active={tab === 'pm2'}>    <PM2Monitor />         </MountedTab>
+        <MountedTab active={tab === 'queue'}>  <QueueMonitor />       </MountedTab>
+        <MountedTab active={tab === 'agents'}> <AgentMonitor />       </MountedTab>
+        <MountedTab active={tab === 'collab'}> <AgentCollaborationPanel /> </MountedTab>
       </div>
     </div>
   );
