@@ -66,7 +66,7 @@ function requireAuth(req, res, next) {
   }
 
   const cookies = _parseCookies(req);
-  const token   = cookies[COOKIE_NAME] || req.headers["x-auth-token"];
+  const token   = cookies[COOKIE_NAME];
   if (!token) return res.status(401).json({ error: "Unauthorized" });
 
   const user = verifyJWT(token);
