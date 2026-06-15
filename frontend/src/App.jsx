@@ -14,21 +14,22 @@ import OperatorConsole    from "./components/operator/OperatorConsole.jsx";
 import LoginPage          from "./components/auth/LoginPage.jsx";
 import SignupPage         from "./components/auth/SignupPage.jsx";
 import ForgotPassword     from "./components/auth/ForgotPassword.jsx";
-import LandingPage        from "./components/LandingPage.jsx";
-import Onboarding         from "./components/Onboarding.jsx";
 import Chat               from "./components/Chat.jsx";
 import Dashboard          from "./components/Dashboard.jsx";
 import CommandCenter      from "./components/CommandCenter.jsx";
-import PricingPage        from "./components/PricingPage.jsx";
 import CompanyFooter      from "./components/legal/CompanyFooter.jsx";
-import CompanyPage        from "./components/legal/CompanyPage.jsx";
-import PrivacyPolicy      from "./components/legal/PrivacyPolicy.jsx";
-import TermsOfService     from "./components/legal/TermsOfService.jsx";
-import RefundPolicy       from "./components/legal/RefundPolicy.jsx";
-import ContactPage        from "./components/legal/ContactPage.jsx";
-import TrustCompliance    from "./components/legal/TrustCompliance.jsx";
-import CommandPalette     from "./components/CommandPalette.jsx";
-import ShortcutsOverlay   from "./components/ShortcutsOverlay.jsx";
+// Non-critical paths — lazy-split from main bundle
+const LandingPage        = lazy(() => import("./components/LandingPage.jsx"));
+const Onboarding         = lazy(() => import("./components/Onboarding.jsx"));
+const PricingPage        = lazy(() => import("./components/PricingPage.jsx"));
+const CompanyPage        = lazy(() => import("./components/legal/CompanyPage.jsx"));
+const PrivacyPolicy      = lazy(() => import("./components/legal/PrivacyPolicy.jsx"));
+const TermsOfService     = lazy(() => import("./components/legal/TermsOfService.jsx"));
+const RefundPolicy       = lazy(() => import("./components/legal/RefundPolicy.jsx"));
+const ContactPage        = lazy(() => import("./components/legal/ContactPage.jsx"));
+const TrustCompliance    = lazy(() => import("./components/legal/TrustCompliance.jsx"));
+const CommandPalette     = lazy(() => import("./components/CommandPalette.jsx"));
+const ShortcutsOverlay   = lazy(() => import("./components/ShortcutsOverlay.jsx"));
 import ElectronUpdateBanner from "./components/ElectronUpdateBanner.jsx";
 import ElectronOfflineBar   from "./components/ElectronOfflineBar.jsx";
 import ElectronWorkspace    from "./components/ElectronWorkspace.jsx";
@@ -565,9 +566,9 @@ function AppInner() {
   const closeLegal = useCallback(() => setLegalPage(null),     []);
 
   // ── Screen routing ────────────────────────────────────────────────
-  if (screen === "pricing")    return <PricingPage onBack={() => setScreen("landing")} onStart={handleStart} />;
-  if (screen === "landing")    return <LandingPage onStart={handleStart} onLogin={handleLogin} onLegal={openLegal} onPricing={() => setScreen("pricing")} />;
-  if (screen === "onboarding") return <Onboarding onComplete={handleOnboardingComplete} />;
+  if (screen === "pricing")    return <Suspense fallback={null}><PricingPage onBack={() => setScreen("landing")} onStart={handleStart} /></Suspense>;
+  if (screen === "landing")    return <Suspense fallback={null}><LandingPage onStart={handleStart} onLogin={handleLogin} onLegal={openLegal} onPricing={() => setScreen("pricing")} /></Suspense>;
+  if (screen === "onboarding") return <Suspense fallback={null}><Onboarding onComplete={handleOnboardingComplete} /></Suspense>;
 
   // ── Signup screen (reached after Onboarding, or from Login "Create account") ──
   if (screen === "signup") {
@@ -647,11 +648,13 @@ function AppInner() {
       refund:  <RefundPolicy  onBack={closeLegal} />,
       contact: <ContactPage   onBack={closeLegal} />,
       trust:   <TrustCompliance onBack={closeLegal} />,
-      pricing: <PricingPage onBack={closeLegal} onStart={() => { closeLegal(); handleStart(); }} onUpgrade={(planId) => { closeLegal(); setUpgradeOpen(true); }} />,
+      pricing: <PricingPage onBack={closeLegal} onStart={() => { closeLegal(); handleStart(); }} onUpgrade={() => { closeLegal(); setUpgradeOpen(true); }} />,
     };
     return (
       <div className={`app app--${_PRODUCT}`}>
-        {LEGAL_PAGES[legalPage] || <CompanyPage onBack={closeLegal} />}
+        <Suspense fallback={null}>
+          {LEGAL_PAGES[legalPage] || <CompanyPage onBack={closeLegal} />}
+        </Suspense>
         <CompanyFooter onNavigate={openLegal} />
       </div>
     );
@@ -667,16 +670,18 @@ function AppInner() {
       <ProgressBar visible={loading} />
       <ToastContainer toasts={toasts} onRemove={removeToast} />
       {/* Global overlays */}
-      <CommandPalette
-        open={paletteOpen}
-        onClose={() => setPaletteOpen(false)}
-        onNavigate={(tabId) => { setTab(tabId); setMoreOpen(false); }}
-        onAsk={(text) => {
-          setTab("chat");
-          if (text) setTimeout(() => handleSend(text), 150);
-        }}
-      />
-      <ShortcutsOverlay open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
+      <Suspense fallback={null}>
+        <CommandPalette
+          open={paletteOpen}
+          onClose={() => setPaletteOpen(false)}
+          onNavigate={(tabId) => { setTab(tabId); setMoreOpen(false); }}
+          onAsk={(text) => {
+            setTab("chat");
+            if (text) setTimeout(() => handleSend(text), 150);
+          }}
+        />
+        <ShortcutsOverlay open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
+      </Suspense>
 
       {/* OS Topbar — unified header: logo + tabs + actions */}
       <header className="topbar" role="banner">
