@@ -90,6 +90,7 @@ const ExecutionConnectorCenter = lazy(() => import("./components/ExecutionConnec
 const AutonomousWorkflowCenter = lazy(() => import("./components/AutonomousWorkflowCenter.jsx"));
 const AgentActionCenter        = lazy(() => import("./components/AgentActionCenter.jsx"));
 const AutonomyScoreCenter      = lazy(() => import("./components/AutonomyScoreCenter.jsx"));
+const GlobalActivityFeed       = lazy(() => import("./components/GlobalActivityFeed.jsx"));
 const Logs                     = lazy(() => import("./components/Logs.jsx"));
 const ContactsV2               = lazy(() => import("./components/ContactsV2.jsx"));
 const PaymentsV2               = lazy(() => import("./components/PaymentsV2.jsx"));
@@ -189,8 +190,10 @@ const MORE_TABS = [
   { id: "execconnector",  label:"Exec Connectors"  },
   { id: "autonomouswf", label:"Auto Workflows" },
   { id: "agentactions", label:"Agent Actions"  },
-  { id: "autonomyscore",label:"Autonomy Score" },
-  { id: "overview",   label: "Overview"        },
+  { id: "autonomyscore",   label:"Autonomy Score"     },
+  { id: "globalactivity", label:"Global Activity"    },
+  { id: "systemhealth",   label:"System Health"      },
+  { id: "overview",       label: "Overview"          },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -845,6 +848,11 @@ function AppInner() {
         {tab === "autonomouswf"      && <WorkflowOSV2               onNavigate={setTab} />}
         {tab === "agentactions"      && <AgentActionCenter          onNavigate={setTab} />}
         {tab === "autonomyscore"     && <AutonomyScoreCenter        onNavigate={setTab} />}
+        {tab === "globalactivity"    && (
+          <div style={{ height: "100%", overflow: "hidden" }}>
+            <GlobalActivityFeed onNavigate={setTab} />
+          </div>
+        )}
         {tab === "runtime"           && <RuntimeTab product={_PRODUCT} />}
         </div>
       </main>

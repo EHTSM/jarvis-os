@@ -1,0 +1,235 @@
+/* ── GlobalActivityFeed ───────────────────────────────────────────────────── */
+.gaf-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #08090e;
+  font-family: system-ui, sans-serif;
+  min-height: 0;
+}
+
+/* Toolbar */
+.gaf-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.gaf-search {
+  flex-shrink: 0;
+  width: 160px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 6px;
+  color: #e2e8f0;
+  font-size: 11px;
+  padding: 4px 8px;
+  font-family: inherit;
+  transition: border-color 0.12s;
+}
+.gaf-search:focus { border-color: rgba(124,111,255,0.4); outline: none; }
+.gaf-search::placeholder { color: #374151; }
+
+.gaf-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: transparent;
+  color: #4a5470;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.1s;
+  white-space: nowrap;
+}
+.gaf-filter-btn:hover { color: #8994b0; border-color: rgba(255,255,255,0.12); }
+.gaf-filter-btn--active {
+  color: #e2e8f0;
+  border-color: rgba(124,111,255,0.35);
+  background: rgba(124,111,255,0.09);
+}
+
+.gaf-filter-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.gaf-count {
+  font-size: 9px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  padding: 1px 5px;
+  margin-left: 2px;
+}
+
+.gaf-refresh {
+  margin-left: auto;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 5px;
+  color: #4a5470;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 3px 7px;
+  transition: color 0.12s, border-color 0.12s;
+  font-family: inherit;
+}
+.gaf-refresh:hover { color: var(--accent, #7c6fff); border-color: rgba(124,111,255,0.3); }
+
+/* Feed scroll area */
+.gaf-feed {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #1e2333 transparent;
+  padding: 4px 0;
+}
+.gaf-feed::-webkit-scrollbar { width: 3px; }
+.gaf-feed::-webkit-scrollbar-thumb { background: #1e2333; border-radius: 2px; }
+
+/* Event row */
+.gaf-row {
+  display: flex;
+  gap: 0;
+  padding: 0 12px;
+  transition: background 0.1s;
+}
+.gaf-row:hover { background: rgba(255,255,255,0.025); }
+
+.gaf-spine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 28px;
+  flex-shrink: 0;
+  padding-top: 10px;
+}
+
+.gaf-icon {
+  font-size: 13px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.gaf-line {
+  flex: 1;
+  width: 1px;
+  background: rgba(255,255,255,0.05);
+  margin-top: 4px;
+  min-height: 8px;
+}
+
+.gaf-row:last-child .gaf-line { display: none; }
+
+.gaf-body {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 0 8px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.035);
+}
+.gaf-row:last-child .gaf-body { border-bottom: none; }
+
+.gaf-row-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.gaf-domain-badge {
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 1px 5px;
+  border-radius: 999px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+
+.gaf-title {
+  font-size: 11px;
+  color: #cbd5e1;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gaf-ts {
+  font-size: 9px;
+  color: #374151;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.gaf-meta {
+  font-size: 10px;
+  color: #4a5470;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Loading skeletons */
+.gaf-loading {
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gaf-skeleton-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Empty state */
+.gaf-empty {
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.gaf-empty-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+  opacity: 0.3;
+}
+
+.gaf-empty-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.gaf-empty-sub {
+  font-size: 11px;
+  color: #1e2333;
+  line-height: 1.5;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* Footer */
+.gaf-footer {
+  padding: 5px 12px;
+  font-size: 9px;
+  color: #1e2333;
+  text-align: right;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  flex-shrink: 0;
+}
