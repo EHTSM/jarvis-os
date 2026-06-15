@@ -11527,5 +11527,43 @@ router.get("/runtime/real-eng-found/modules", rateLimiter(20, 60_000), (req, res
     return res.json({ success: true, ...realEngFound.moduleHealth765() });
 });
 
+// ── I1: Continuous Runtime Observer ────────────────────────────────────────
+const _observer = (() => { try { return require("../services/continuousRuntimeObserver.cjs"); } catch { return null; } })();
+
+// GET /runtime/observer/status
+router.get("/runtime/observer/status", rateLimiter(30, 60_000), (req, res) => {
+    if (!_observer) return res.status(503).json({ success: false, error: "observer_unavailable" });
+    return res.json({ success: true, ...(_observer.getStatus()) });
+});
+
+// GET /runtime/observer/events
+router.get("/runtime/observer/events", rateLimiter(60, 60_000), (req, res) => {
+    if (!_observer) return res.status(503).json({ success: false, error: "observer_unavailable" });
+    const limit    = Math.min(parseInt(req.query.limit)  || 100, 500);
+    const category = req.query.category || null;
+    const severity = req.query.severity || null;
+    const source   = req.query.source   || null;
+    const since    = req.query.since    || null;
+    return res.json({ success: true, ..._observer.getEvents({ limit, category, severity, source, since }) });
+});
+
+// GET /runtime/observer/health
+router.get("/runtime/observer/health", rateLimiter(30, 60_000), (req, res) => {
+    if (!_observer) return res.status(503).json({ success: false, error: "observer_unavailable" });
+    return res.json({ success: true, ..._observer.getHealth() });
+});
+
+// GET /runtime/observer/sources
+router.get("/runtime/observer/sources", rateLimiter(30, 60_000), (req, res) => {
+    if (!_observer) return res.status(503).json({ success: false, error: "observer_unavailable" });
+    return res.json({ success: true, sources: _observer.getSources() });
+});
+
+// GET /runtime/observer/statistics
+router.get("/runtime/observer/statistics", rateLimiter(30, 60_000), (req, res) => {
+    if (!_observer) return res.status(503).json({ success: false, error: "observer_unavailable" });
+    return res.json({ success: true, ..._observer.getStatistics() });
+});
+
 module.exports = router;
 

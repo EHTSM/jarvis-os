@@ -724,6 +724,18 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[BackgroundRuntime] failed to start (non-fatal):", bgrErr.message);
     }
 
+    // ── Phase I1: Continuous Runtime Observer ─────────────────────────────
+    try {
+        const observer = require("./services/continuousRuntimeObserver.cjs");
+        observer.start().then(result => {
+            logger.info(`[ContinuousRuntimeObserver] I1 started — ${result.sourceCount} sources active`);
+        }).catch(err => {
+            logger.warn("[ContinuousRuntimeObserver] start error (non-fatal):", err.message);
+        });
+    } catch (obsErr) {
+        logger.warn("[ContinuousRuntimeObserver] failed to load (non-fatal):", obsErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;
