@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { generatePaymentLink, getLeads, testWhatsAppSend } from "../api";
+import JourneyBanner from "./JourneyBanner";
 import "./PaymentsV2.css";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -384,6 +385,7 @@ export default function PaymentsV2({ onNavigate }) {
 
   return (
     <div className="pv2-root page-enter">
+      <JourneyBanner currentTab="payments" onNavigate={onNavigate} />
       <Toast toasts={toasts} />
 
       {/* Header */}

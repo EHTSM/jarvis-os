@@ -6,6 +6,7 @@ import { getMissions, getMissionStats, getPlanningHorizons, getAiProviders } fro
 import PageHeader from "./PageHeader";
 import WorkflowNav from "./WorkflowNav";
 import ContextSidebar from "./ContextSidebar";
+import JourneyBanner from "./JourneyBanner";
 import "./JarvisBrainCenter.css";
 
 const FLOW_NODES = [
@@ -96,6 +97,7 @@ export default function JarvisBrainCenter({ onNavigate }) {
   return (
     <div style={{ display: "flex", height: "100%" }}>
     <div className="jbc" style={{ flex: 1, minWidth: 0 }}>
+      <JourneyBanner currentTab="jarvisbrain" onNavigate={onNavigate} />
       <PageHeader
         icon="🧠"
         title="Jarvis Brain Center"

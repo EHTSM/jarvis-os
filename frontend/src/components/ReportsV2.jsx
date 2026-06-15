@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { getStats, getOpsData, getMetrics } from "../telemetryApi";
 import { getLeads } from "../api";
+import JourneyBanner from "./JourneyBanner";
 import "./ReportsV2.css";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -318,6 +319,7 @@ export default function ReportsV2({ online = false, onNavigate }) {
 
   return (
     <div className="rv2-root page-enter">
+      <JourneyBanner currentTab="reports" onNavigate={onNavigate} />
 
       {/* Header */}
       <div className="rv2-header">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { getLeads, createLead, updateLead, sendFollowUp } from "../crmApi";
 import { generatePaymentLink } from "../paymentApi";
+import JourneyBanner from "./JourneyBanner";
 import "./ContactsV2.css";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -560,6 +561,7 @@ export default function ContactsV2({ onNavigate }) {
 
   return (
     <div className="cv2-root page-enter">
+      <JourneyBanner currentTab="clients" onNavigate={onNavigate} />
       <Toast toasts={toasts} />
 
       {/* Header */}

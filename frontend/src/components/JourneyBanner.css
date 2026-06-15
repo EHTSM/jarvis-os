@@ -1,0 +1,269 @@
+/* ── JourneyBanner ─────────────────────────────────────────────────────────── */
+.jb-root {
+  background: rgba(8, 12, 22, 0.98);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  flex-shrink: 0;
+  font-family: system-ui, sans-serif;
+}
+
+/* Journey type selector */
+.jb-selector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 16px 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.jb-journey-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: transparent;
+  color: #4a5470;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.jb-journey-pill:hover { color: #8994b0; border-color: rgba(255,255,255,0.12); }
+.jb-journey-pill--active {
+  color: var(--accent, #7c6fff);
+  border-color: rgba(124,111,255,0.35);
+  background: rgba(124,111,255,0.09);
+}
+
+.jb-dismiss {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #374151;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 4px;
+  transition: color 0.12s;
+  font-family: inherit;
+}
+.jb-dismiss:hover { color: #8994b0; }
+
+/* Step track */
+.jb-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 6px 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.jb-track::-webkit-scrollbar { display: none; }
+
+.jb-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.1s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.jb-step:disabled { cursor: default; }
+
+.jb-step--done  { color: #4a5470; }
+.jb-step--done:hover { color: #64748b; background: rgba(255,255,255,0.03); }
+.jb-step--active {
+  color: var(--accent, #7c6fff);
+  background: rgba(124,111,255,0.10);
+  border-color: rgba(124,111,255,0.25);
+}
+.jb-step--future { color: #2a3050; }
+.jb-step--future:not(:disabled):hover { color: #4a5470; background: rgba(255,255,255,0.02); }
+
+.jb-step-icon { font-size: 11px; }
+.jb-step-label { font-size: 10px; }
+
+.jb-connector {
+  display: block;
+  width: 16px;
+  height: 1px;
+  background: rgba(255,255,255,0.07);
+  flex-shrink: 0;
+  margin: 0 1px;
+}
+.jb-connector--done { background: rgba(124,111,255,0.25); }
+
+/* Status bar */
+.jb-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 16px 7px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+.jb-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.jb-progress-bar {
+  width: 80px;
+  height: 3px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.jb-progress-fill {
+  height: 100%;
+  background: var(--accent, #7c6fff);
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+
+.jb-pct {
+  font-size: 9px;
+  color: var(--accent, #7c6fff);
+  font-weight: 700;
+  min-width: 26px;
+}
+
+.jb-current {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.jb-current-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #374151;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.jb-current-val {
+  font-size: 10px;
+  font-weight: 700;
+  color: #cbd5e1;
+  flex-shrink: 0;
+}
+
+.jb-current-desc {
+  font-size: 10px;
+  color: #4a5470;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jb-next-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(124,111,255,0.3);
+  background: rgba(124,111,255,0.08);
+  color: var(--accent, #7c6fff);
+  font-size: 10px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.jb-next-btn:hover {
+  background: rgba(124,111,255,0.16);
+  border-color: rgba(124,111,255,0.5);
+}
+
+.jb-complete-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #22c55e;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(34,197,94,0.09);
+  border: 1px solid rgba(34,197,94,0.25);
+  flex-shrink: 0;
+}
+
+/* ── JourneyBreadcrumb (compact inline variant) ─────────────────────────── */
+.jb-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: #4a5470;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.jb-breadcrumb-journey {
+  font-size: 10px;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+  margin-right: 2px;
+}
+
+.jb-bc-sep {
+  color: #2a3050;
+  flex-shrink: 0;
+}
+
+.jb-bc-step {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 1px 4px;
+  border-radius: 4px;
+  transition: color 0.12s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.jb-bc-step--done   { color: #374151; }
+.jb-bc-step--done:hover { color: #64748b; }
+.jb-bc-step--active { color: var(--accent, #7c6fff); cursor: default; }
+.jb-bc-step--future { color: #2a3050; }
+.jb-bc-step--future:not(:disabled):hover { color: #4a5470; }
+
+.jb-bc-next {
+  background: none;
+  border: 1px solid rgba(124,111,255,0.25);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--accent, #7c6fff);
+  padding: 1px 7px;
+  border-radius: 999px;
+  transition: all 0.12s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.jb-bc-next:hover { background: rgba(124,111,255,0.10); }
