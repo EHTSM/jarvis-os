@@ -1,0 +1,325 @@
+/* ── G2-6 Polish System ────────────────────────────────────────────────────
+   Global polish layer: loading skeletons, panel consistency, status chips,
+   button/hover states, motion, focus rings, and spacing cadence.
+   Import once in index.js after index.css.
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* ── Loading skeleton rows ────────────────────────────────────────────────
+   Usage: <div className="sk-row" /> or wrap with .sk-wrap for multi-line
+   ───────────────────────────────────────────────────────────────────────── */
+.sk-row {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.04) 25%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(255,255,255,0.04) 75%
+  );
+  background-size: 800px 100%;
+  animation: sk-sweep 1.5s ease-in-out infinite;
+  margin-bottom: 6px;
+}
+.sk-row--sm    { height: 10px; }
+.sk-row--lg    { height: 22px; }
+.sk-row--w75   { width: 75%; }
+.sk-row--w50   { width: 50%; }
+.sk-row--w33   { width: 33%; }
+
+.sk-card {
+  height: 72px;
+  border-radius: 10px;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.03) 25%,
+    rgba(255,255,255,0.07) 50%,
+    rgba(255,255,255,0.03) 75%
+  );
+  background-size: 800px 100%;
+  animation: sk-sweep 1.5s ease-in-out infinite;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+@keyframes sk-sweep {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+/* ── Panel base ───────────────────────────────────────────────────────────
+   Consistent panel pattern: background + border + radius
+   ───────────────────────────────────────────────────────────────────────── */
+.panel {
+  background: rgba(10, 14, 24, 0.97);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.panel--sm { padding: 8px 10px; border-radius: 7px; }
+.panel--lg { padding: 16px 18px; border-radius: 12px; }
+
+.panel__title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-faint);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Status chips ─────────────────────────────────────────────────────────
+   Usage: <span className="chip chip--ok">active</span>
+   ───────────────────────────────────────────────────────────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.chip--ok      { color: #22c55e; background: rgba(34,197,94,0.1);   border-color: rgba(34,197,94,0.25);   }
+.chip--warn    { color: #eab308; background: rgba(234,179,8,0.1);   border-color: rgba(234,179,8,0.25);   }
+.chip--crit    { color: #ef4444; background: rgba(239,68,68,0.1);   border-color: rgba(239,68,68,0.25);   }
+.chip--info    { color: #3b82f6; background: rgba(59,130,246,0.1);  border-color: rgba(59,130,246,0.25);  }
+.chip--accent  { color: var(--accent); background: rgba(124,111,255,0.1); border-color: rgba(124,111,255,0.25); }
+.chip--neutral { color: #64748b; background: rgba(100,116,139,0.08); border-color: rgba(100,116,139,0.2); }
+
+/* ── Progress bar ─────────────────────────────────────────────────────────
+   Usage: <div className="progress"><div className="progress__fill" style={{width:'60%'}}/></div>
+   ───────────────────────────────────────────────────────────────────────── */
+.progress {
+  height: 4px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress__fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.progress--sm { height: 3px; }
+.progress--lg { height: 6px; }
+.progress--success  .progress__fill { background: #22c55e; }
+.progress--warning  .progress__fill { background: #eab308; }
+.progress--danger   .progress__fill { background: #ef4444; }
+
+/* ── Data row ─────────────────────────────────────────────────────────────
+   Usage: <div className="data-row"><span>Label</span><span>Value</span></div>
+   ───────────────────────────────────────────────────────────────────────── */
+.data-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  gap: 8px;
+}
+.data-row:last-child { border-bottom: none; }
+.data-row__label { font-size: 11px; color: var(--text-faint); }
+.data-row__value { font-size: 11px; color: var(--text); font-weight: 600; text-align: right; }
+
+/* ── Metric card ──────────────────────────────────────────────────────────
+   Usage: <div className="metric-card"><div class="metric-card__val">42</div><div class="metric-card__label">Active</div></div>
+   ───────────────────────────────────────────────────────────────────────── */
+.metric-card {
+  flex: 1;
+  min-width: 60px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 8px 10px;
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s;
+}
+.metric-card:hover { border-color: rgba(124,111,255,0.2); background: rgba(124,111,255,0.04); }
+.metric-card__val   { font-size: 20px; font-weight: 800; color: var(--accent); line-height: 1.1; }
+.metric-card__label { font-size: 9px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 3px; }
+
+/* ── Tab bar ──────────────────────────────────────────────────────────────
+   Usage: <div className="tab-bar"><button className="tab-bar__tab tab-bar__tab--active">Tab</button></div>
+   ───────────────────────────────────────────────────────────────────────── */
+.tab-bar {
+  display: flex;
+  gap: 2px;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+
+.tab-bar__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--text-faint);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s;
+  white-space: nowrap;
+  margin-bottom: -1px;
+}
+.tab-bar__tab:hover { color: var(--text-dim); }
+.tab-bar__tab--active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ── Live indicator ───────────────────────────────────────────────────────
+   Usage: <span className="live-badge">LIVE</span>
+   ───────────────────────────────────────────────────────────────────────── */
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: #22c55e;
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.25);
+}
+.live-badge::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: live-pulse 2s ease-in-out infinite;
+}
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+/* ── Empty state utility ─────────────────────────────────────────────────
+   Compact inline empty — for use inside panels/tabs
+   ───────────────────────────────────────────────────────────────────────── */
+.inline-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-faint);
+  font-size: 11px;
+  font-style: italic;
+}
+.inline-empty__icon {
+  font-size: 22px;
+  margin-bottom: 6px;
+  opacity: 0.5;
+}
+
+/* ── List item hover ──────────────────────────────────────────────────────
+   Universal .list-item hover/focus treatment
+   ───────────────────────────────────────────────────────────────────────── */
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.list-item:hover { background: rgba(255,255,255,0.035); }
+.list-item:focus-visible {
+  outline: 2px solid rgba(124,111,255,0.55);
+  outline-offset: 2px;
+}
+
+/* ── Divider ──────────────────────────────────────────────────────────────
+   Usage: <hr className="divider" /> or <div className="divider" />
+   ───────────────────────────────────────────────────────────────────────── */
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin: 10px 0;
+}
+
+/* ── Danger text ─────────────────────────────────────────────────────────
+   Usage: <span className="text-danger">error</span>
+   ───────────────────────────────────────────────────────────────────────── */
+.text-ok     { color: var(--success); }
+.text-warn   { color: var(--warning); }
+.text-danger { color: var(--danger);  }
+.text-info   { color: var(--info);    }
+.text-accent { color: var(--accent);  }
+.text-dim    { color: var(--text-dim); }
+.text-faint  { color: var(--text-faint); }
+
+/* ── Flex layout helpers ─────────────────────────────────────────────────
+   Tiny layout utilities to reduce inline style noise
+   ───────────────────────────────────────────────────────────────────────── */
+.flex       { display: flex; }
+.flex-col   { display: flex; flex-direction: column; }
+.flex-wrap  { flex-wrap: wrap; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-1 { gap: 4px; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+.flex-1 { flex: 1; min-width: 0; }
+
+/* ── Subtle hover-lift for all interactive rows ──────────────────────────
+   Any element with role="button" or tabIndex that isn't already styled
+   ───────────────────────────────────────────────────────────────────────── */
+[role="button"]:focus-visible,
+button:focus-visible {
+  outline: 2px solid rgba(124,111,255,0.55);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Global transition smoothing ─────────────────────────────────────────
+   Applied to all interactive elements that don't already set transition
+   ───────────────────────────────────────────────────────────────────────── */
+button, [role="button"], a {
+  transition: color var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              opacity var(--dur-fast) var(--ease-out);
+}
+
+/* ── Toast / notification base ───────────────────────────────────────────
+   Usage: <div className="toast toast--ok">Saved</div>
+   ───────────────────────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9000;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface-float);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-lg);
+  animation: fade-up 200ms var(--ease-spring) both;
+}
+.toast--ok   { border-color: rgba(34,197,94,0.3);  color: #22c55e; }
+.toast--warn { border-color: rgba(234,179,8,0.3);  color: #eab308; }
+.toast--err  { border-color: rgba(239,68,68,0.3);  color: #ef4444; }
