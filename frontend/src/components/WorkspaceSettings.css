@@ -671,3 +671,53 @@
 
 /* mono input variant */
 .k2-form-input--mono { font-family: monospace; font-size: 12px; }
+
+/* ── K6 Enterprise Analytics ────────────────────────────────────── */
+
+.k6-panel { display: flex; flex-direction: column; gap: 10px; }
+
+.k6-section-label {
+  font-size: 10px; font-weight: 800; color: var(--text-faint);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px;
+}
+
+/* Stat grid */
+.k6-stat-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px;
+}
+.k6-stat-grid--sm {
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+}
+.k6-stat-card {
+  display: flex; flex-direction: column; gap: 2px; padding: 10px 12px;
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.k6-stat-val   { font-size: 20px; font-weight: 800; color: var(--text); line-height: 1.1; }
+.k6-stat-label { font-size: 11px; color: var(--text-faint); }
+.k6-stat-sub   { font-size: 10px; color: var(--text-dim); margin-top: 1px; }
+
+/* List rows */
+.k6-list { display: flex; flex-direction: column; gap: 4px; }
+.k6-row  {
+  display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.k6-row-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.k6-row-meta { font-size: 11px; color: var(--text-faint); white-space: nowrap; }
+.k6-row-val  { font-size: 12px; font-weight: 700; white-space: nowrap; }
+
+/* Badge */
+.k6-badge {
+  font-size: 10px; font-weight: 700; padding: 2px 8px;
+  border-radius: var(--radius-pill); white-space: nowrap; border: 1px solid transparent;
+}
+
+/* Report block */
+.k6-report-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; background: var(--surface-high);
+  border: 1px solid var(--border); border-radius: var(--radius-sm); flex-wrap: wrap; gap: 6px;
+}
+.k6-report-title { font-size: 14px; font-weight: 800; color: var(--text); }
+.k6-report-ts    { font-size: 11px; color: var(--text-faint); }
+.k6-report-block { display: flex; flex-direction: column; gap: 6px; }
