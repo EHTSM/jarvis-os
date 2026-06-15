@@ -5,6 +5,7 @@ import { getAutonomyStatus } from "../phase20Api";
 import { getMissions, getMissionStats, getPlanningHorizons, getAiProviders } from "../phase27Api";
 import PageHeader from "./PageHeader";
 import WorkflowNav from "./WorkflowNav";
+import ContextSidebar from "./ContextSidebar";
 import "./JarvisBrainCenter.css";
 
 const FLOW_NODES = [
@@ -93,7 +94,8 @@ export default function JarvisBrainCenter({ onNavigate }) {
   const loopCycles  = liveStats?.totalCycles ?? (missionStats?.total ?? 0);
 
   return (
-    <div className="jbc">
+    <div style={{ display: "flex", height: "100%" }}>
+    <div className="jbc" style={{ flex: 1, minWidth: 0 }}>
       <PageHeader
         icon="🧠"
         title="Jarvis Brain Center"
@@ -308,6 +310,8 @@ export default function JarvisBrainCenter({ onNavigate }) {
           </div>
         )}
       </div>
+    </div>
+    <ContextSidebar onNavigate={onNavigate} context="jarvisbrain" />
     </div>
   );
 }

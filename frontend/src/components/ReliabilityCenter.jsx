@@ -6,6 +6,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { BASE_URL } from "../_client";
 import PageHeader from "./PageHeader";
 import WorkflowNav from "./WorkflowNav";
+import ContextSidebar from "./ContextSidebar";
 
 async function _get(path) {
   const r = await fetch(`${BASE_URL}${path}`, { credentials: "include" });
@@ -666,8 +667,9 @@ export default function ReliabilityCenter({ onNavigate }) {
   const [tab, setTab] = useState("report");
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <style>{`@keyframes rc-pulse { 0%,100%{opacity:.4} 50%{opacity:.8} }`}</style>
+      <div style={{ flex: 1, minWidth: 0 }}>
       <PageHeader
         icon="◈"
         title="Production Reliability"
@@ -706,6 +708,8 @@ export default function ReliabilityCenter({ onNavigate }) {
         {tab === "trust"     && <TabTrustScore />}
         {tab === "report"    && <TabHealthReport />}
       </div>
+      </div>
+      <ContextSidebar onNavigate={onNavigate} context="reliability" />
     </div>
   );
 }

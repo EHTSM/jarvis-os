@@ -7,6 +7,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { BASE_URL } from "../_client";
 import PageHeader from "./PageHeader";
 import WorkflowNav from "./WorkflowNav";
+import ContextSidebar from "./ContextSidebar";
 
 async function _get(path) {
   const r = await fetch(`${BASE_URL}${path}`, { credentials: "include" });
@@ -772,8 +773,9 @@ export default function ExecutionCenter({ onNavigate }) {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <style>{`@keyframes ec-pulse { 0%,100%{opacity:.4} 50%{opacity:.8} }`}</style>
+      <div style={{ flex: 1, minWidth: 0, overflow: "auto" }}>
       <PageHeader
         icon="⚡"
         title="Execution Center"
@@ -813,6 +815,8 @@ export default function ExecutionCenter({ onNavigate }) {
         {tab === "ranked"      && <TabRankedCandidates  onSelectForExec={handleSelectForExec} />}
         {tab === "readiness"   && <TabReadiness />}
       </div>
+      </div>
+      <ContextSidebar onNavigate={onNavigate} context="execution" />
     </div>
   );
 }
