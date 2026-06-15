@@ -49,8 +49,13 @@ function _appendRun(run) {
     _saveRuns(_runs);
 }
 
-// ── Agent capability registry (lightweight — for meta only) ──────────────
-const BUILTIN_AGENTS = [
+// Lazy-load the live registry — single source of truth for agent metadata
+function _getRegistry() {
+    try { return require("../../agents/runtime/agentRegistry.cjs"); } catch { return null; }
+}
+
+// Fallback seed list: used only when agentRegistry is empty (cold-start before bootstrapRuntime registers agents)
+const _AGENT_SEED = [
     { id: "sales",     name: "Sales Agent",      capabilities: ["lead_qualify","email_send","crm_write"] },
     { id: "marketing", name: "Marketing Agent",  capabilities: ["email_draft","social_post","campaign_schedule"] },
     { id: "seo",       name: "SEO Agent",        capabilities: ["keyword_research","meta_generate","rank_track"] },
@@ -202,7 +207,14 @@ function getFailures(agentId, { limit = 50 } = {}) {
 
 /** List registered agents with live stats from run history. */
 function listAgents() {
-    return BUILTIN_AGENTS.map(a => {
+    // Prefer live registry; fall back to seed list if registry is empty (cold-start)
+    const registry = _getRegistry();
+    const liveAgents = registry ? registry.listAll() : [];
+    const base = liveAgents.length > 0
+        ? liveAgents.map(a => ({ id: a.id, name: a.name || a.id, capabilities: a.capabilities || [] }))
+        : _AGENT_SEED;
+
+    return base.map(a => {
         const runs      = _runs.filter(r => r.agentId === a.id);
         const success   = runs.filter(r => r.success === true).length;
         const failed    = runs.filter(r => r.success === false).length;
@@ -221,7 +233,11 @@ function listAgents() {
 
 /** Get one agent's full profile. */
 function getAgent(agentId) {
-    const def = BUILTIN_AGENTS.find(a => a.id === agentId);
+    const registry = _getRegistry();
+    const live = registry ? registry.get(agentId) : null;
+    const def  = live
+        ? { id: live.id, name: live.name || live.id, capabilities: Array.from(live.capabilities || []) }
+        : _AGENT_SEED.find(a => a.id === agentId);
     if (!def) return null;
     const { runs, total, stats } = getHistory(agentId, { limit: 200 });
     return { ...def, history: runs, totalRuns: total, stats };
