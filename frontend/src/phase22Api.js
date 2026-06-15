@@ -13,7 +13,7 @@ export async function listManagedSecrets(params = {}) {
   return _fetch(`/p22/secrets${q ? "?" + q : ""}`);
 }
 export async function getSecretHealth() {
-  return _fetch("/p22/secrets/health");
+  return _fetch("/p22/secrets/validate");
 }
 export async function auditSecrets() {
   return _fetch("/p22/secrets/audit", { method: "POST" });
@@ -21,17 +21,17 @@ export async function auditSecrets() {
 
 // ── Security Hardening ────────────────────────────────────────────────
 export async function getSecurityStatus() {
-  return _fetch("/p22/security/status");
+  return _fetch("/p22/security/report");
 }
 export async function runSecurityScan() {
-  return _fetch("/p22/security/scan", { method: "POST" });
+  return _fetch("/p22/security/check", { method: "POST" });
 }
 export async function getSecurityFindings(params = {}) {
   const q = new URLSearchParams(params).toString();
-  return _fetch(`/p22/security/findings${q ? "?" + q : ""}`);
+  return _fetch(`/p22/security/report${q ? "?" + q : ""}`);
 }
 export async function getSecurityScore() {
-  return _fetch("/p22/security/score");
+  return _fetch("/p22/security/report");
 }
 
 // ── Deployment Validator ──────────────────────────────────────────────

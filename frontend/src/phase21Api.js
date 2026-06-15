@@ -33,7 +33,7 @@ export async function getObsTimeline(params = {}) {
 
 // ── Live mode ────────────────────────────────────────────────────────
 export async function getLiveStatus() {
-  return _fetch("/p21/live/status");
+  return _fetch("/p21/live/state");
 }
 export async function setLiveMode(enabled, reason = "") {
   return _fetch("/p21/live/mode", {

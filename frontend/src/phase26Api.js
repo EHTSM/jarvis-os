@@ -13,7 +13,7 @@ export async function searchMemory(payload)      { return _fetch("/p26/memory/se
 export async function storeMemory(payload)       { return _fetch("/p26/memory/typed", { method: "POST", body: JSON.stringify(payload) }); }
 export async function getMemoryFailures()        { return _fetch("/p26/memory/failures"); }
 export async function getMemorySuccesses()       { return _fetch("/p26/memory/successes"); }
-export async function getMemoryDecisions()       { return _fetch("/p26/memory/decisions"); }
+export async function getMemoryDecisions(q = "*") { return _fetch(`/p26/memory/decisions?q=${encodeURIComponent(q)}`); }
 export async function getKnowledgeGraph()        { return _fetch("/p26/memory/knowledge-graph"); }
 
 // ── Reason ────────────────────────────────────────────────────────────
