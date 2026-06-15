@@ -712,7 +712,7 @@ function _startHealthPoll(fast) {
 }
 
 // ── Low-memory watchdog ───────────────────────────────────────────
-setInterval(() => {
+const _lowMemInterval = setInterval(() => {
     const heapMb = process.memoryUsage().heapUsed / 1_048_576;
     if (heapMb > 400) {
         windows.main?.webContents.send("low-memory", { heapMb: Math.round(heapMb) });
@@ -740,9 +740,23 @@ try {
 // IPC handlers
 // ═══════════════════════════════════════════════════════════════════
 
+// ── IPC argument guards ───────────────────────────────────────────
+const ALLOWED_METHODS = new Set(["GET", "POST", "PUT", "PATCH", "DELETE"]);
+function _ipcStr(v, max = 2048) {
+    if (typeof v !== "string") throw new TypeError("Expected string");
+    if (v.length > max) throw new RangeError("Argument too long");
+    return v;
+}
+function _ipcNum(v, min, max) {
+    const n = Number(v);
+    if (!Number.isFinite(n) || n < min || n > max) throw new RangeError("Number out of range");
+    return n;
+}
+
 // ── Backend proxy ─────────────────────────────────────────────────
 ipcMain.handle("send-command", async (_e, command) => {
     try {
+        if (typeof command !== "string" || command.length > 4096) return { success: false, error: "Invalid command" };
         const r = await axios.post(`${API_URL}/jarvis`, { input: command, mode: "smart" }, { timeout: 30_000 });
         return { success: true, data: r.data };
     } catch (err) {
@@ -750,9 +764,17 @@ ipcMain.handle("send-command", async (_e, command) => {
     }
 });
 
-ipcMain.handle("api-request", async (_e, { method = "GET", path: p, body, timeout = 15_000 }) => {
+ipcMain.handle("api-request", async (_e, opts) => {
     try {
-        const r = await axios({ method, url: `${API_URL}${p}`, data: body, timeout, withCredentials: false });
+        if (!opts || typeof opts !== "object") return { success: false, error: "Invalid request" };
+        const method  = opts.method ?? "GET";
+        const p       = opts.path;
+        const body    = opts.body;
+        const timeout = opts.timeout ?? 15_000;
+        if (typeof p !== "string" || !p.startsWith("/") || p.length > 1024) return { success: false, error: "Invalid path" };
+        if (!ALLOWED_METHODS.has(String(method).toUpperCase())) return { success: false, error: "Invalid method" };
+        if (typeof timeout !== "number" || timeout < 0 || timeout > 120_000) return { success: false, error: "Invalid timeout" };
+        const r = await axios({ method: String(method).toUpperCase(), url: `${API_URL}${p}`, data: body, timeout, withCredentials: false });
         return { success: true, status: r.status, data: r.data };
     } catch (err) {
         return { success: false, status: err.response?.status, error: err.message, data: err.response?.data };
@@ -766,7 +788,13 @@ ipcMain.handle("get-server-health", async () => {
 
 ipcMain.handle("get-evolution-score",  async () => { try { return { success: true, data: (await axios.get(`${API_URL}/evolution/score`,       { timeout: 5_000 })).data }; } catch (e) { return { success: false, error: e.message }; } });
 ipcMain.handle("get-suggestions",      async () => { try { return { success: true, data: (await axios.get(`${API_URL}/evolution/suggestions`,  { timeout: 5_000 })).data }; } catch (e) { return { success: false, error: e.message }; } });
-ipcMain.handle("approve-suggestion",   async (_e, id) => { try { return { success: true, data: (await axios.post(`${API_URL}/evolution/approve/${id}`, {}, { timeout: 5_000 })).data }; } catch (e) { return { success: false, error: e.message }; } });
+ipcMain.handle("approve-suggestion",   async (_e, id) => {
+    try {
+        if (typeof id !== "string" && typeof id !== "number") return { success: false, error: "Invalid id" };
+        const safeId = encodeURIComponent(String(id).slice(0, 128));
+        return { success: true, data: (await axios.post(`${API_URL}/evolution/approve/${safeId}`, {}, { timeout: 5_000 })).data };
+    } catch (e) { return { success: false, error: e.message }; }
+});
 
 // ── Window management ─────────────────────────────────────────────
 ipcMain.handle("create-floating-window", () => { createFloatingWindow(); return { ok: true }; });
@@ -794,17 +822,28 @@ ipcMain.handle("clipboard-read",  () => ({ text: clipboard.readText() }));
 ipcMain.handle("clipboard-write", (_e, text) => { clipboard.writeText(String(text)); return { ok: true }; });
 
 // ── File system ───────────────────────────────────────────────────
+// Restrict file access to paths the user owns — no absolute traversal to /etc, /System etc.
+const _FS_ALLOW_ROOTS = [os.homedir(), app.getPath("userData"), app.getPath("downloads"), app.getPath("temp")];
+function _isSafePath(p) {
+    const resolved = path.resolve(p);
+    return _FS_ALLOW_ROOTS.some(root => resolved.startsWith(root + path.sep) || resolved === root);
+}
+
 ipcMain.handle("fs-read-file", async (_e, { filePath, encoding = "utf8" }) => {
     try {
+        if (typeof filePath !== "string") return { ok: false, error: "Invalid path" };
         const safe = path.resolve(filePath);
-        const data = fs.readFileSync(safe, encoding);
+        if (!_isSafePath(safe)) return { ok: false, error: "Access denied" };
+        const data = fs.readFileSync(safe, encoding === "binary" ? "binary" : "utf8");
         return { ok: true, data };
     } catch (e) { return { ok: false, error: e.message }; }
 });
 
 ipcMain.handle("fs-write-file", async (_e, { filePath, data }) => {
     try {
+        if (typeof filePath !== "string") return { ok: false, error: "Invalid path" };
         const safe = path.resolve(filePath);
+        if (!_isSafePath(safe)) return { ok: false, error: "Access denied" };
         fs.mkdirSync(path.dirname(safe), { recursive: true });
         fs.writeFileSync(safe, data);
         return { ok: true };
@@ -1010,6 +1049,7 @@ ipcMain.handle("pty-create", (event, { id, cwd, cols = 120, rows = 30 }) => {
 ipcMain.handle("pty-input", (_e, { id, data }) => {
     const s = ptySessions.get(id);
     if (!s) return { ok: false };
+    if (typeof data !== "string" || data.length > 65_536) return { ok: false, error: "Invalid input" };
     s.proc.write(data);
     return { ok: true };
 });
@@ -1071,9 +1111,18 @@ ipcMain.handle("git-status", async (_e, { cwd }) => {
 
 ipcMain.handle("git-diff", async (_e, { cwd, file }) => {
     return new Promise((resolve) => {
-        const cmd = file ? `git diff -- "${file}"` : "git diff";
-        exec(cmd, { cwd: path.resolve(cwd), timeout: 10_000, maxBuffer: 512 * 1024 }, (err, stdout, stderr) => {
-            resolve({ ok: !err, diff: stdout.slice(0, 200_000), error: stderr });
+        // Pass file as a separate argv element to avoid shell injection
+        const args = file
+            ? ["diff", "--", file]
+            : ["diff"];
+        const proc = spawn("git", args, { cwd: path.resolve(cwd) });
+        let stdout = "", stderr = "";
+        proc.stdout.on("data", d => { stdout += d; });
+        proc.stderr.on("data", d => { stderr += d; });
+        const timer = setTimeout(() => { try { proc.kill(); } catch {} }, 10_000);
+        proc.on("close", (code) => {
+            clearTimeout(timer);
+            resolve({ ok: code === 0, diff: stdout.slice(0, 200_000), error: stderr });
         });
     });
 });
@@ -1105,8 +1154,15 @@ ipcMain.handle("git-branches", async (_e, { cwd }) => {
 
 ipcMain.handle("git-checkout", async (_e, { cwd, branch }) => {
     return new Promise((resolve) => {
-        exec(`git checkout "${branch}" 2>&1`, { cwd: path.resolve(cwd), timeout: 15_000 }, (err, stdout, stderr) => {
-            resolve({ ok: !err, output: stdout + stderr });
+        // spawn with argv array: no shell, no injection risk
+        const proc = spawn("git", ["checkout", branch], { cwd: path.resolve(cwd) });
+        let out = "";
+        proc.stdout.on("data", d => { out += d; });
+        proc.stderr.on("data", d => { out += d; });
+        const timer = setTimeout(() => { try { proc.kill(); } catch {} }, 15_000);
+        proc.on("close", (code) => {
+            clearTimeout(timer);
+            resolve({ ok: code === 0, output: out });
         });
     });
 });
@@ -1204,18 +1260,8 @@ ipcMain.handle("clipboard-clear-history", () => { _clipHistory.length = 0; retur
 
 // ── Dock / taskbar progress ───────────────────────────────────────
 ipcMain.handle("dock-set-progress", (_e, { value }) => {
-    // value: 0.0 – 1.0, or -1 to hide
-    if (process.platform === "darwin") {
-        if (value < 0) {
-            app.dock?.hide();
-            app.dock?.show();
-        } else {
-            // macOS: progress via BrowserWindow
-            windows.main?.setProgressBar(value);
-        }
-    } else {
-        windows.main?.setProgressBar(value < 0 ? -1 : value);
-    }
+    // value: 0.0–1.0, or -1 to hide. Use setProgressBar on all platforms.
+    windows.main?.setProgressBar(typeof value === "number" && value >= 0 ? value : -1);
     return { ok: true };
 });
 
@@ -1421,4 +1467,5 @@ app.on("before-quit", () => { isQuitting = true; });
 app.on("will-quit", () => {
     globalShortcut.unregisterAll();
     if (_healthInterval) clearInterval(_healthInterval);
+    clearInterval(_lowMemInterval);
 });

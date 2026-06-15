@@ -46,8 +46,12 @@ contextBridge.exposeInMainWorld("electronAPI", {
     platform:   process.platform,
 
     // ── Backend proxy ────────────────────────────────────────────
-    sendCommand:       (cmd)         => ipcRenderer.invoke("send-command",       cmd),
-    apiRequest:        (opts)        => ipcRenderer.invoke("api-request",        opts),
+    sendCommand:       (cmd)         => ipcRenderer.invoke("send-command",       _str(cmd, 4096)),
+    apiRequest: (opts) => {
+        _obj(opts);
+        if (typeof opts.path === "string") _str(opts.path, 1024);
+        return ipcRenderer.invoke("api-request", opts);
+    },
     getServerHealth:   ()            => ipcRenderer.invoke("get-server-health"),
     getEvolutionScore: ()            => ipcRenderer.invoke("get-evolution-score"),
     getSuggestions:    ()            => ipcRenderer.invoke("get-suggestions"),
@@ -123,7 +127,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
     // ── PTY Terminal sessions ────────────────────────────────────
     ptyCreate:  (opts)               => ipcRenderer.invoke("pty-create",  opts),
-    ptyInput:   (id, data)           => ipcRenderer.invoke("pty-input",   { id: _str(id, 64), data }),
+    ptyInput:   (id, data)           => ipcRenderer.invoke("pty-input",   { id: _str(id, 64), data: _str(data, 65536) }),
     ptyResize:  (id, cols, rows)     => ipcRenderer.invoke("pty-resize",  { id: _str(id, 64), cols: _int(cols, 1, 512), rows: _int(rows, 1, 300) }),
     ptyKill:    (id)                 => ipcRenderer.invoke("pty-kill",    { id: _str(id, 64) }),
     ptyList:    ()                   => ipcRenderer.invoke("pty-list"),

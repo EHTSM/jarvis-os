@@ -147,6 +147,8 @@ const ActivityBtn = memo(function ActivityBtn({ active, onClick, title, children
 const BottomTabBtn = memo(function BottomTabBtn({ active, onClick, icon, label }) {
   return (
     <button
+      role="tab"
+      aria-selected={active}
       className={`ew-bottom-tab${active ? ' ew-bottom-tab--active' : ''}`}
       onClick={onClick}
     >
@@ -424,7 +426,7 @@ export default function ElectronWorkspace({ children }) {
             <>
               <div className="ew-bottom-resizer" onMouseDown={onBottomResize} />
               <div className="ew-bottom" style={{ height: bottomH, flexShrink: 0 }}>
-                <div className="ew-bottom__tabs">
+                <div className="ew-bottom__tabs" role="tablist" aria-label="Bottom panel tabs">
                   {Object.entries(BOTTOM_TABS).map(([id, cfg]) => (
                     <BottomTabBtn
                       key={id}
