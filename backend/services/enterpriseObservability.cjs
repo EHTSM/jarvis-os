@@ -18,6 +18,11 @@ const os   = require("os");
 
 const STORE_PATH = path.join(__dirname, "../../data/observability.json");
 
+// Fan-out: also write to observabilityEngine so analytics layer sees enterprise metrics
+function _obsEngine() {
+    try { return require("./observabilityEngine.cjs"); } catch { return null; }
+}
+
 // ── Persistence ───────────────────────────────────────────────────────────────
 
 function _load() {
@@ -35,6 +40,9 @@ function _id(prefix, store) { store.seq = (store.seq || 0) + 1; return `${prefix
 // ── Metrics aggregation ───────────────────────────────────────────────────────
 
 function recordMetric(service, name, value, type = "gauge", labels = {}) {
+    // Fan-out to observabilityEngine so the in-memory ring buffer (read by analyticsService) stays current
+    try { _obsEngine()?.recordMetric(`${service}.${name}`, value, labels); } catch { /* non-fatal */ }
+
     const store = _load();
     if (!store.metrics[service]) store.metrics[service] = {};
     const key   = name + (Object.keys(labels).length ? ":" + JSON.stringify(labels) : "");
