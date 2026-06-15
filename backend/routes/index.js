@@ -49,5 +49,6 @@ router.use(require("./governance"));    // /governance/policies, /governance/tem
 router.use(require("./automation"));    // /automation/rules, /automation/templates, /automation/history, /automation/statistics, /automation/dry-run
 router.use(require("./analytics"));    // /analytics/executive, /workspace, /productivity, /automation, /security, /governance, /ai, /runtime, /missions, /reports
 router.use(require("./plugins"));      // /plugins, /plugins/:id, /plugins/install, /plugins/uninstall, /plugins/enable, /plugins/disable, /plugins/health, /plugins/diagnostics
+router.use(require("./marketplace"));  // /marketplace/catalog, /plugin/:id, /categories, /featured, /search, /recommendations, /versions/:id, /changelog/:id
 
 module.exports = router;
