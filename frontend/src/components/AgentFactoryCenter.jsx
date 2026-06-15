@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
 import { listManagedAgents, createManagedAgent, getAgentFactoryStats } from "../phase20Api";
+import { getPlugins, getCapabilities, getCapabilityMap, getTemplates, getManifest } from "../phase26Api";
 import "./AgentFactoryCenter.css";
 
 const KEY = "ooplix_agent_factory_v1";
@@ -34,6 +35,14 @@ export default function AgentFactoryCenter({ onNavigate }) {
   const [form, setForm]       = useState({ name: "", template: "sales", model: "claude-sonnet-4-6", description: "" });
   const [apiError, setApiError] = useState(null);
 
+  // p26 live data
+  const [p26Tab,       setP26Tab]       = useState("plugins");
+  const [plugins,      setPlugins]      = useState([]);
+  const [capabilities, setCapabilities] = useState([]);
+  const [p26Templates, setP26Templates] = useState([]);
+  const [manifest,     setManifest]     = useState(null);
+  const [p26Loading,   setP26Loading]   = useState(true);
+
   useEffect(() => {
     let cancelled = false;
     listManagedAgents().then(res => {
@@ -49,6 +58,30 @@ export default function AgentFactoryCenter({ onNavigate }) {
         setAgents(mapped); _save(KEY, mapped);
       }
     }).catch(err => { if (!cancelled) setApiError(err.message); });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Load p26 live data (plugins, capabilities, templates, manifest)
+  useEffect(() => {
+    let cancelled = false;
+    Promise.allSettled([getPlugins(), getCapabilities(), getTemplates(), getManifest()])
+      .then(([plRes, capRes, tmplRes, mfRes]) => {
+        if (cancelled) return;
+        if (plRes.status === "fulfilled") {
+          const raw = plRes.value;
+          setPlugins(Array.isArray(raw) ? raw : (raw?.plugins ?? []));
+        }
+        if (capRes.status === "fulfilled") {
+          const raw = capRes.value;
+          setCapabilities(Array.isArray(raw) ? raw : (raw?.capabilities ?? []));
+        }
+        if (tmplRes.status === "fulfilled") {
+          const raw = tmplRes.value;
+          setP26Templates(Array.isArray(raw) ? raw : (raw?.templates ?? []));
+        }
+        if (mfRes.status === "fulfilled") setManifest(mfRes.value);
+        setP26Loading(false);
+      });
     return () => { cancelled = true; };
   }, []);
 
@@ -166,6 +199,85 @@ export default function AgentFactoryCenter({ onNavigate }) {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ── p26 Intelligence Layer ── */}
+      <div className="afc-section-title" style={{ marginTop: 20 }}>Intelligence Layer</div>
+      <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+        {["plugins","capabilities","templates","manifest"].map(t => (
+          <button key={t} onClick={() => setP26Tab(t)} style={{
+            padding: "5px 12px", border: "1px solid var(--border)", borderRadius: "var(--radius-pill)",
+            background: p26Tab === t ? "var(--accent)" : "var(--surface-raised)",
+            color: p26Tab === t ? "#06080e" : "var(--text-dim)", fontSize: 11,
+            fontWeight: 700, cursor: "pointer", fontFamily: "inherit", textTransform: "capitalize",
+          }}>{t}</button>
+        ))}
+      </div>
+
+      {p26Tab === "plugins" && (
+        <div className="afc-agents">
+          {p26Loading ? <div style={{ color: "var(--text-faint)", fontSize: 12, padding: 8 }}>Loading plugins…</div>
+          : plugins.length === 0 ? <div style={{ color: "var(--text-faint)", fontSize: 12, padding: 8, fontStyle: "italic" }}>No plugins registered.</div>
+          : plugins.map((p, i) => (
+            <div key={p.id ?? i} className="afc-agent-row">
+              <div className="afc-agent-icon" style={{ background: "rgba(124,111,255,0.12)" }}>⬡</div>
+              <div className="afc-agent-info">
+                <div className="afc-agent-name">{p.name ?? p.id}</div>
+                <div className="afc-agent-meta">{p.type ?? "plugin"}{p.version ? ` · v${p.version}` : ""}{p.description ? ` · ${p.description}` : ""}</div>
+              </div>
+              <span className="afc-agent-status" style={{ color: p.enabled === false ? "var(--text-faint)" : "#22c55e" }}>
+                {p.enabled === false ? "disabled" : "enabled"}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {p26Tab === "capabilities" && (
+        <div className="afc-agents">
+          {p26Loading ? <div style={{ color: "var(--text-faint)", fontSize: 12, padding: 8 }}>Loading capabilities…</div>
+          : capabilities.length === 0 ? <div style={{ color: "var(--text-faint)", fontSize: 12, padding: 8, fontStyle: "italic" }}>No capabilities registered.</div>
+          : capabilities.map((c, i) => (
+            <div key={c.id ?? i} className="afc-agent-row">
+              <div className="afc-agent-icon" style={{ background: "rgba(0,198,255,0.1)" }}>◈</div>
+              <div className="afc-agent-info">
+                <div className="afc-agent-name">{c.name ?? c.id}</div>
+                <div className="afc-agent-meta">{c.category ?? c.type ?? "capability"}{c.description ? ` · ${c.description}` : ""}</div>
+              </div>
+              {c.agentCount != null && <span style={{ fontSize: 11, color: "var(--text-dim)", marginRight: 8 }}>{c.agentCount} agents</span>}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {p26Tab === "templates" && (
+        <div className="afc-agents">
+          {p26Loading ? <div style={{ color: "var(--text-faint)", fontSize: 12, padding: 8 }}>Loading templates…</div>
+          : p26Templates.length === 0 ? <div style={{ color: "var(--text-faint)", fontSize: 12, padding: 8, fontStyle: "italic" }}>No p26 templates registered.</div>
+          : p26Templates.map((t, i) => (
+            <div key={t.id ?? i} className="afc-agent-row">
+              <div className="afc-agent-icon" style={{ background: "rgba(0,220,130,0.1)" }}>◇</div>
+              <div className="afc-agent-info">
+                <div className="afc-agent-name">{t.name ?? t.id}</div>
+                <div className="afc-agent-meta">{t.type ?? "template"}{t.description ? ` · ${t.description}` : ""}</div>
+              </div>
+              <button className="afc-agent-btn" onClick={() => track("p26_template_use", { id: t.id })}>Use</button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {p26Tab === "manifest" && (
+        <div style={{ background: "var(--surface-raised)", border: "1px solid var(--border)", borderRadius: "var(--radius)", padding: "12px 14px" }}>
+          {p26Loading ? <div style={{ color: "var(--text-faint)", fontSize: 12 }}>Loading manifest…</div>
+          : !manifest ? <div style={{ color: "var(--text-faint)", fontSize: 12, fontStyle: "italic" }}>No manifest available.</div>
+          : Object.entries(manifest).slice(0, 20).map(([k, v]) => (
+            <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 11, padding: "3px 0", borderBottom: "1px solid rgba(255,255,255,0.04)", color: "var(--text-dim)" }}>
+              <span style={{ color: "var(--text-faint)", marginRight: 12 }}>{k}</span>
+              <span style={{ color: "var(--text)", fontWeight: 600 }}>{typeof v === "object" ? JSON.stringify(v).slice(0, 60) : String(v)}</span>
+            </div>
+          ))}
         </div>
       )}
 
