@@ -565,3 +565,109 @@
 .k4-report-cell     { padding: 10px 12px; background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 3px; }
 .k4-report-cell-val { font-size: 20px; font-weight: 900; color: var(--text); line-height: 1; }
 .k4-report-cell-key { font-size: 10px; color: var(--text-faint); font-weight: 600; }
+
+/* ── K5 Automation Panels ───────────────────────────────────────── */
+
+/* Overview */
+.k5-overview-panel { display: flex; flex-direction: column; gap: 10px; }
+.k5-top-rules  { display: flex; flex-direction: column; gap: 4px; }
+.k5-top-rule-row {
+  display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.k5-rule-name  { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
+.k5-rule-runs  { font-size: 11px; color: var(--text-faint); white-space: nowrap; }
+.k5-rule-outcome { font-size: 11px; font-weight: 700; white-space: nowrap; }
+.k5-rule-ts    { font-size: 11px; color: var(--text-faint); white-space: nowrap; }
+
+/* Rule builder */
+.k5-rules-panel  { display: flex; flex-direction: column; gap: 10px; }
+.k5-rule-form    {
+  display: flex; flex-direction: column; gap: 8px; padding: 14px;
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.k5-form-section-label {
+  font-size: 10px; font-weight: 800; color: var(--text-faint); text-transform: uppercase;
+  letter-spacing: 0.1em; margin-top: 4px;
+}
+.k5-enabled-toggle {
+  display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
+  color: var(--text-dim); cursor: pointer;
+}
+.k5-enabled-toggle input { accent-color: var(--accent); }
+.k5-dry-result {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  flex-wrap: wrap;
+}
+.k5-dry-label   { font-size: 11px; font-weight: 700; color: var(--text-faint); }
+.k5-dry-outcome { font-size: 12px; font-weight: 800; white-space: nowrap; }
+.k5-dry-detail  { font-size: 12px; color: var(--text-dim); flex: 1; }
+
+/* Rule list rows */
+.k5-rule-row {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  transition: border-color var(--dur-fast); flex-wrap: wrap;
+}
+.k5-rule-row--disabled { opacity: 0.55; }
+.k5-rule-meta  { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 140px; }
+.k5-rule-name-sm { font-size: 13px; font-weight: 700; color: var(--text); }
+.k5-rule-trigger { font-size: 10px; font-weight: 700; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; }
+.k5-rule-desc    { font-size: 11px; color: var(--text-dim); }
+.k5-rule-badges  { display: flex; gap: 5px; flex-wrap: wrap; }
+.k5-action-badge {
+  font-size: 10px; font-weight: 600; padding: 2px 7px;
+  background: rgba(124,111,255,0.10); border: 1px solid rgba(124,111,255,0.2);
+  border-radius: var(--radius-pill); color: var(--accent); white-space: nowrap;
+}
+.k5-gate-badge {
+  font-size: 10px; font-weight: 700; padding: 2px 7px;
+  background: rgba(255,170,0,0.10); border: 1px solid rgba(255,170,0,0.25);
+  border-radius: var(--radius-pill); color: var(--warning); white-space: nowrap;
+}
+.k5-last-outcome { font-size: 11px; font-weight: 700; white-space: nowrap; }
+.k5-toggle-btn {
+  padding: 4px 12px; background: none; border: 1px solid var(--border);
+  border-radius: var(--radius-pill); color: var(--text-dim); font-size: 11px; font-weight: 600;
+  cursor: pointer; font-family: inherit; white-space: nowrap; transition: all var(--dur-fast);
+}
+.k5-toggle-btn--on { color: #52d68a; border-color: rgba(82,214,138,0.35); }
+
+/* Templates */
+.k5-templates-panel { display: flex; flex-direction: column; gap: 16px; }
+.k5-tpl-category    { display: flex; flex-direction: column; gap: 8px; }
+.k5-tpl-card        {
+  padding: 12px 14px; background: var(--surface-high); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 6px;
+}
+.k5-tpl-card-top { display: flex; align-items: center; gap: 8px; }
+.k5-tpl-name     { font-size: 13px; font-weight: 700; color: var(--text); flex: 1; }
+.k5-tpl-desc     { font-size: 12px; color: var(--text-dim); }
+.k5-tpl-details  { display: flex; flex-wrap: wrap; gap: 5px; }
+.k5-tpl-chip     {
+  font-size: 11px; color: var(--text-dim); padding: 2px 8px;
+  background: var(--surface-glass); border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+}
+.k5-tpl-chip--gate { color: var(--warning); border-color: rgba(255,170,0,0.25); background: rgba(255,170,0,0.08); }
+
+/* History */
+.k5-history-panel { display: flex; flex-direction: column; gap: 10px; }
+.k5-history-list  { display: flex; flex-direction: column; gap: 4px; }
+.k5-history-row   {
+  display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+  background: var(--surface-high); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  flex-wrap: wrap;
+}
+.k5-hist-dot     { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.k5-hist-ts      { font-size: 11px; color: var(--text-faint); min-width: 60px; white-space: nowrap; }
+.k5-hist-rule    { font-size: 12px; font-weight: 600; color: var(--text); flex: 1; min-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.k5-hist-outcome { font-size: 11px; font-weight: 700; white-space: nowrap; }
+.k5-hist-detail  { font-size: 11px; color: var(--text-dim); flex: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Stats */
+.k5-stats-panel  { display: flex; flex-direction: column; gap: 14px; }
+
+/* mono input variant */
+.k2-form-input--mono { font-family: monospace; font-size: 12px; }

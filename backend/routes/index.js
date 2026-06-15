@@ -46,5 +46,6 @@ router.use(require("./workspace"));      // /workspace, /workspace/:id, /workspa
 router.use(require("./security"));      // /security/sessions, /security/devices, /security/audit, /security/policies, /security/tokens, /security/score
 router.use(require("./admin"));         // /admin/team, /admin/member/*, /admin/departments, /admin/profile, /admin/statistics, /admin/quotas
 router.use(require("./governance"));    // /governance/policies, /governance/templates, /governance/compliance, /governance/reports, /governance/risk
+router.use(require("./automation"));    // /automation/rules, /automation/templates, /automation/history, /automation/statistics, /automation/dry-run
 
 module.exports = router;
