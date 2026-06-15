@@ -59,6 +59,171 @@ const LC_STAGE_COLOR = {
   heal: '#94a3b8', learn: '#94a3b8',
 };
 
+// ── J5: Collaboration Timeline in Mission Control ────────────────────────────
+const MC_COLLAB_ACTION_COLORS = {
+  ask_ai: '#60a5fa', ask_agent: '#a78bfa', explain_decision: '#34d399',
+  explain_risk: '#f87171', explain_confidence: '#fbbf24',
+  compare_alternatives: '#fb923c', accept_recommendation: '#22c55e',
+  reject_recommendation: '#ef4444', request_replan: '#f59e0b', escalate_operator: '#e11d48',
+};
+
+function MissionCollaborationPanel() {
+  const [missionId, setMissionId] = useState('');
+  const [inputId,   setInputId]   = useState('');
+  const [history,   setHistory]   = useState(null);
+  const [msg,       setMsg]       = useState('');
+  const [sending,   setSending]   = useState(false);
+  const [aiReply,   setAiReply]   = useState(null);
+  const [err,       setErr]       = useState(null);
+  const bottomRef = useRef(null);
+
+  const load = useCallback(async (id) => {
+    try {
+      const r = await _fetch(`/collaboration/history/${id}`);
+      setHistory(r.history || null);
+    } catch (e) { setErr(e.message); }
+  }, []);
+
+  useEffect(() => {
+    if (!missionId) return;
+    load(missionId);
+    const t = setInterval(() => { if (!document.hidden) load(missionId); }, 5000);
+    return () => clearInterval(t);
+  }, [missionId, load]);
+
+  useEffect(() => {
+    if (bottomRef.current) bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [history?.timeline?.length]);
+
+  const attach = () => {
+    if (!inputId.trim()) return;
+    setMissionId(inputId.trim());
+  };
+
+  const sendMsg = useCallback(async () => {
+    if (!missionId || !msg.trim()) return;
+    setSending(true); setErr(null); setAiReply(null);
+    try {
+      const r = await _fetch('/collaboration/message', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ missionId, from: 'operator', body: msg }),
+      });
+      setAiReply(r.result?.reply || null);
+      setMsg('');
+      load(missionId);
+    } catch (e) { setErr(e.message); }
+    finally { setSending(false); }
+  }, [missionId, msg, load]);
+
+  const quickAction = useCallback(async (action, payload = {}) => {
+    if (!missionId) return;
+    try {
+      const r = await _fetch('/collaboration/action', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ missionId, action, payload }),
+      });
+      const res = r.result?.result || r.result || {};
+      setAiReply(res.explanation || res.summary || res.reply || JSON.stringify(res).slice(0, 200));
+      load(missionId);
+    } catch (e) { setErr(e.message); }
+  }, [missionId, load]);
+
+  const timeline = history?.timeline || [];
+
+  return (
+    <section className="mc-section">
+      <div className="mc-section-head">
+        <h2>AI Collaboration</h2>
+      </div>
+
+      {/* Mission selector */}
+      <div style={{ display: 'flex', gap: 6, marginBottom: 10 }}>
+        <input
+          className="mc-lc-input"
+          placeholder="Mission ID (msn_…)"
+          value={inputId}
+          onChange={e => setInputId(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter') attach(); }}
+        />
+        <button className="mc-btn mc-btn--sm" onClick={attach} disabled={!inputId.trim()}>Attach</button>
+      </div>
+
+      {missionId && (
+        <>
+          {/* Quick actions */}
+          <div style={{ display: 'flex', gap: 4, marginBottom: 8, flexWrap: 'wrap' }}>
+            {[
+              ['explain_risk',       'Explain Risk'],
+              ['explain_confidence', 'Confidence'],
+              ['explain_decision',   'Last Decision'],
+              ['request_replan',     'Re-plan'],
+              ['escalate_operator',  'Escalate'],
+            ].map(([act, lbl]) => (
+              <button
+                key={act}
+                onClick={() => quickAction(act, act === 'request_replan' ? { reason: 'Operator triggered' } : act === 'escalate_operator' ? { message: 'Manual escalation', priority: 'HIGH' } : {})}
+                style={{
+                  fontSize: 10, fontWeight: 700, padding: '3px 9px', borderRadius: 12,
+                  border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.04)',
+                  color: MC_COLLAB_ACTION_COLORS[act] || '#94a3b8', cursor: 'pointer', fontFamily: 'inherit',
+                }}
+              >
+                {lbl}
+              </button>
+            ))}
+          </div>
+
+          {/* Timeline */}
+          <div style={{ maxHeight: 180, overflowY: 'auto', background: '#0c0e14', borderRadius: 5, border: '1px solid rgba(255,255,255,0.07)', padding: '6px 8px', marginBottom: 8 }}>
+            {timeline.length === 0 && <div style={{ fontSize: 11, color: '#475569', textAlign: 'center', padding: 12 }}>No collaboration history.</div>}
+            {timeline.slice(-20).map((item, i) => {
+              const color = item._kind === 'message' ? '#60a5fa' : (MC_COLLAB_ACTION_COLORS[item.action] || '#64748b');
+              return (
+                <div key={item.id || i} style={{ padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: 11 }}>
+                  <span style={{ fontSize: 9, color: '#475569', marginRight: 6 }}>{new Date(item.ts || item.timestamp).toLocaleTimeString()}</span>
+                  <span style={{ fontWeight: 700, color, marginRight: 6 }}>
+                    {item._kind === 'message' ? `${item.from}→${item.to}` : item.action}
+                  </span>
+                  <span style={{ color: '#94a3b8' }}>
+                    {item._kind === 'message' ? item.body?.slice(0, 60) : (item.result?.type || '')}
+                  </span>
+                  {item._kind === 'message' && item.reply && (
+                    <div style={{ color: '#64748b', paddingLeft: 12, fontSize: 10, marginTop: 1 }}>↳ {item.reply.slice(0, 100)}</div>
+                  )}
+                </div>
+              );
+            })}
+            <div ref={bottomRef} />
+          </div>
+
+          {/* AI reply */}
+          {aiReply && (
+            <div style={{ background: 'rgba(96,165,250,0.07)', border: '1px solid rgba(96,165,250,0.2)', borderRadius: 4, padding: '8px 10px', fontSize: 11, color: '#e2e8f0', marginBottom: 8, whiteSpace: 'pre-wrap', wordBreak: 'break-word', maxHeight: 100, overflowY: 'auto' }}>
+              <span style={{ fontSize: 9, color: '#60a5fa', fontWeight: 700, marginRight: 6 }}>AI</span>{aiReply}
+            </div>
+          )}
+          {err && <div style={{ fontSize: 10, color: '#ef4444', marginBottom: 6 }}>{err}</div>}
+
+          {/* Input */}
+          <div style={{ display: 'flex', gap: 6 }}>
+            <input
+              className="mc-lc-input"
+              style={{ flex: 1 }}
+              placeholder="Ask AI about this mission…"
+              value={msg}
+              onChange={e => setMsg(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') sendMsg(); }}
+            />
+            <button className="mc-btn mc-btn--sm" onClick={sendMsg} disabled={sending || !msg.trim()}>
+              {sending ? '…' : 'Ask'}
+            </button>
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
 function RecommendationConfidence() {
   const [recs, setRecs] = useState([]);
   const [summary, setSummary] = useState(null);
@@ -565,6 +730,9 @@ export default function MissionControlV1({ onNavigate }) {
 
       {/* Recommendation Confidence */}
       <RecommendationConfidence />
+
+      {/* AI Collaboration */}
+      <MissionCollaborationPanel />
 
       {/* Recent Activity */}
       <section className="mc-section">

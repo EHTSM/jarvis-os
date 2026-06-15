@@ -40,6 +40,7 @@ router.use(require("./phase27"));      // /p27/executive, /p27/missions, /p27/pl
 router.use(require("./mission"));      // /mission/runtime/*, /mission/timeline/*, /mission/graph/*, /mission/replay/*, /mission/state/*
 router.use(require("./agents"));       // /agents/conversation/*, /agents/status/*, /agents/delegation/*, /agents/message, /agents/override, /agents/task/*
 router.use(require("./lifecycle"));    // /runtime/lifecycle/*, /runtime/stage/*, /runtime/events/*, /runtime/pause/*, /runtime/resume/*, /runtime/retry/*
-router.use(require("./intelligence")); // /intelligence/correlations, /intelligence/insights, /intelligence/patterns, /intelligence/trends, /intelligence/recommendation-confidence
+router.use(require("./intelligence"));   // /intelligence/correlations, /intelligence/insights, /intelligence/patterns, /intelligence/trends, /intelligence/recommendation-confidence
+router.use(require("./collaboration"));  // /collaboration/session/*, /collaboration/history/*, /collaboration/message, /collaboration/action, /collaboration/replan, /collaboration/approve, /collaboration/reject
 
 module.exports = router;

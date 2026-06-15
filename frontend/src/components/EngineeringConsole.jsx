@@ -345,10 +345,11 @@ function MountedTab({ active, children }) {
 
 // ── Agent Collaboration — Conversation + Delegation + Status Matrix ───────────
 const COLLAB_SUB_TABS = [
-  { id: 'pipeline',  label: 'Agent Pipeline' },
-  { id: 'convo',     label: 'Conversation' },
-  { id: 'timeline',  label: 'Delegation Timeline' },
-  { id: 'lifecycle', label: 'Lifecycle Events' },
+  { id: 'pipeline',      label: 'Agent Pipeline' },
+  { id: 'convo',         label: 'Conversation' },
+  { id: 'timeline',      label: 'Delegation Timeline' },
+  { id: 'lifecycle',     label: 'Lifecycle Events' },
+  { id: 'collaboration', label: 'AI Collaboration' },
 ];
 
 const PIPELINE_STATUS_COLOR = {
@@ -683,6 +684,208 @@ function LifecycleEventStream({ missionId }) {
   );
 }
 
+// ── J5: Collaboration Timeline + AI Explanation Panel + Approval Cards ────────
+
+const COLLAB_ACTION_COLORS = {
+  ask_ai:                 '#60a5fa',
+  ask_agent:              '#a78bfa',
+  explain_decision:       '#34d399',
+  explain_risk:           '#f87171',
+  explain_confidence:     '#fbbf24',
+  compare_alternatives:   '#fb923c',
+  accept_recommendation:  '#22c55e',
+  reject_recommendation:  '#ef4444',
+  request_replan:         '#f59e0b',
+  escalate_operator:      '#e11d48',
+};
+
+function CollaborationPanel({ missionId }) {
+  const [history,  setHistory]  = useState(null);
+  const [sending,  setSending]  = useState(false);
+  const [msgInput, setMsgInput] = useState('');
+  const [agentId,  setAgentId]  = useState('');
+  const [action,   setAction]   = useState('ask_ai');
+  const [result,   setResult]   = useState(null);
+  const [err,      setErr]      = useState(null);
+  const bottomRef = useRef(null);
+
+  const loadHistory = useCallback(async () => {
+    if (!missionId) return;
+    try {
+      const r = await _fetch(`/collaboration/history/${missionId}`);
+      setHistory(r.history || null);
+    } catch (e) { setErr(e.message); }
+  }, [missionId]);
+
+  useInterval(() => { if (!document.hidden) loadHistory(); }, missionId ? 5000 : null);
+  useEffect(() => { loadHistory(); }, [loadHistory]);
+  useEffect(() => {
+    if (bottomRef.current) bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [history?.timeline?.length]);
+
+  const send = useCallback(async () => {
+    if (!missionId || !msgInput.trim()) return;
+    setSending(true);
+    setErr(null);
+    setResult(null);
+    try {
+      let r;
+      if (action === 'ask_ai' || action === 'ask_agent') {
+        r = await _fetch('/collaboration/message', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ missionId, from: 'operator', body: msgInput, agentId: agentId || undefined }),
+        });
+        setResult(r.result?.reply || r.result?.result?.reply || null);
+      } else {
+        r = await _fetch('/collaboration/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ missionId, action, payload: { body: msgInput, agentId: agentId || undefined } }),
+        });
+        setResult(JSON.stringify(r.result?.result || r.result, null, 2));
+      }
+      setMsgInput('');
+      loadHistory();
+    } catch (e) { setErr(e.message); }
+    finally { setSending(false); }
+  }, [missionId, msgInput, action, agentId, loadHistory]);
+
+  const quickAction = useCallback(async (act, payload = {}) => {
+    if (!missionId) return;
+    setErr(null);
+    setResult(null);
+    try {
+      const r = await _fetch('/collaboration/action', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ missionId, action: act, payload }),
+      });
+      setResult(JSON.stringify(r.result?.result || r.result, null, 2));
+      loadHistory();
+    } catch (e) { setErr(e.message); }
+  }, [missionId, loadHistory]);
+
+  if (!missionId) return (
+    <div className="ec-empty">Load a mission first to use AI Collaboration.</div>
+  );
+
+  const timeline = history?.timeline || [];
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 0 }}>
+
+      {/* Quick action bar */}
+      <div style={{ display: 'flex', gap: 4, padding: '6px 8px', borderBottom: '1px solid rgba(255,255,255,0.07)', flexWrap: 'wrap' }}>
+        {[
+          { id: 'explain_risk',       label: 'Risk' },
+          { id: 'explain_confidence', label: 'Confidence' },
+          { id: 'explain_decision',   label: 'Last Decision' },
+          { id: 'request_replan',     label: 'Re-plan' },
+          { id: 'escalate_operator',  label: 'Escalate' },
+        ].map(btn => (
+          <button
+            key={btn.id}
+            onClick={() => quickAction(btn.id, btn.id === 'request_replan' ? { reason: 'Operator triggered' } : btn.id === 'escalate_operator' ? { message: 'Manual escalation', priority: 'HIGH' } : {})}
+            style={{
+              padding: '3px 8px', fontSize: 10, fontWeight: 700, border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: 12, background: 'rgba(255,255,255,0.05)', color: COLLAB_ACTION_COLORS[btn.id] || '#94a3b8',
+              cursor: 'pointer', fontFamily: 'inherit',
+            }}
+          >
+            {btn.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Collaboration timeline */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '6px 8px', minHeight: 0 }}>
+        {timeline.length === 0 && (
+          <div className="ec-empty" style={{ fontSize: 11 }}>No collaboration history yet. Ask AI or take an action below.</div>
+        )}
+        {timeline.map((item, i) => {
+          const color = item._kind === 'message'
+            ? (item.to === 'jarvis-ai' ? '#60a5fa' : '#a78bfa')
+            : (COLLAB_ACTION_COLORS[item.action] || '#64748b');
+          return (
+            <div key={item.id || i} style={{ padding: '5px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
+                <span style={{ fontSize: 9, color: '#475569' }}>{new Date(item.ts || item.timestamp).toLocaleTimeString()}</span>
+                <span style={{ fontSize: 9, fontWeight: 700, color, padding: '1px 5px', borderRadius: 8, background: color + '18' }}>
+                  {item._kind === 'message' ? `${item.from} → ${item.to}` : item.action}
+                </span>
+              </div>
+              {item._kind === 'message' && (
+                <>
+                  <div style={{ fontSize: 11, color: '#e2e8f0', paddingLeft: 8 }}>{item.body}</div>
+                  {item.reply && (
+                    <div style={{ fontSize: 11, color: '#94a3b8', paddingLeft: 8, marginTop: 2, fontStyle: 'italic' }}>
+                      ↳ {item.reply.slice(0, 200)}{item.reply.length > 200 ? '…' : ''}
+                    </div>
+                  )}
+                </>
+              )}
+              {item._kind === 'action' && item.result && (
+                <div style={{ fontSize: 10, color: '#94a3b8', paddingLeft: 8 }}>
+                  {typeof item.result === 'string' ? item.result.slice(0, 120) : (item.result?.summary || item.result?.explanation || item.result?.type || 'Action recorded')}
+                </div>
+              )}
+            </div>
+          );
+        })}
+        <div ref={bottomRef} />
+      </div>
+
+      {/* AI response panel */}
+      {result && (
+        <div style={{ margin: '0 8px 6px', padding: '8px 10px', background: 'rgba(96,165,250,0.07)', border: '1px solid rgba(96,165,250,0.2)', borderRadius: 5, fontSize: 11, color: '#e2e8f0', maxHeight: 120, overflowY: 'auto', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+          <div style={{ fontSize: 9, color: '#60a5fa', fontWeight: 700, marginBottom: 4 }}>AI Response</div>
+          {result}
+        </div>
+      )}
+      {err && <div style={{ fontSize: 10, color: '#ef4444', padding: '4px 8px' }}>{err}</div>}
+
+      {/* Input bar */}
+      <div style={{ display: 'flex', gap: 4, padding: '6px 8px', borderTop: '1px solid rgba(255,255,255,0.07)', flexShrink: 0 }}>
+        <select
+          value={action}
+          onChange={e => setAction(e.target.value)}
+          style={{ fontSize: 10, background: '#0c0e14', color: '#94a3b8', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 4, padding: '2px 4px', fontFamily: 'inherit' }}
+        >
+          <option value="ask_ai">Ask AI</option>
+          <option value="ask_agent">Ask Agent</option>
+          <option value="explain_decision">Explain Decision</option>
+          <option value="explain_risk">Explain Risk</option>
+          <option value="explain_confidence">Explain Confidence</option>
+          <option value="compare_alternatives">Compare Alternatives</option>
+        </select>
+        {action === 'ask_agent' && (
+          <input
+            style={{ fontSize: 10, background: '#0c0e14', color: '#94a3b8', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 4, padding: '2px 6px', width: 80, fontFamily: 'inherit' }}
+            placeholder="agent id"
+            value={agentId}
+            onChange={e => setAgentId(e.target.value)}
+          />
+        )}
+        <input
+          style={{ flex: 1, fontSize: 11, background: '#0c0e14', color: '#e2e8f0', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 4, padding: '4px 8px', fontFamily: 'inherit' }}
+          placeholder="Type a message or question…"
+          value={msgInput}
+          onChange={e => setMsgInput(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
+        />
+        <button
+          onClick={send}
+          disabled={sending || !msgInput.trim()}
+          style={{ padding: '4px 10px', fontSize: 11, fontWeight: 700, background: '#2563eb', color: '#fff', border: 'none', borderRadius: 4, cursor: sending ? 'wait' : 'pointer', fontFamily: 'inherit' }}
+        >
+          {sending ? '…' : 'Send'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function AgentCollaborationPanel() {
   const [subTab, setSubTab] = useState('pipeline');
   const [missionId, setMissionId] = useState('');
@@ -750,6 +953,9 @@ function AgentCollaborationPanel() {
             </MountedTab>
             <MountedTab active={subTab === 'lifecycle'}>
               <LifecycleEventStream missionId={missionId} />
+            </MountedTab>
+            <MountedTab active={subTab === 'collaboration'}>
+              <CollaborationPanel missionId={missionId} />
             </MountedTab>
           </div>
         </>

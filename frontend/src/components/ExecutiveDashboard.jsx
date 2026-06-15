@@ -239,6 +239,94 @@ function IntelligenceInsights() {
   );
 }
 
+// ── J5: Recommendation Approval Cards ────────────────────────────────
+function RecommendationApprovalCards({ missions }) {
+  const [items,    setItems]    = useState([]);
+  const [acting,   setActing]   = useState({});
+  const [aiReply,  setAiReply]  = useState(null);
+
+  useEffect(() => {
+    if (!missions.length) return;
+    // Collect the first active mission with a history
+    const active = missions.find(m => m.status === 'active' || m.status === 'running' || m.status === 'planned');
+    if (!active) return;
+    let mounted = true;
+    _fetch(`/collaboration/history/${active.id}`)
+      .then(r => {
+        if (!mounted) return;
+        const pending = r.history?.pending || [];
+        setItems(pending.slice(0, 4));
+      })
+      .catch(() => {});
+    return () => { mounted = false; };
+  }, [missions]);
+
+  const doAction = useCallback(async (act, missionId, itemId, reason) => {
+    const key = `${missionId}_${itemId}_${act}`;
+    setActing(a => ({ ...a, [key]: true }));
+    try {
+      const endpoint = act === 'approve' ? '/collaboration/approve' : '/collaboration/reject';
+      await _fetch(endpoint, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ missionId, itemId, reason }),
+      });
+      setItems(prev => prev.filter(p => p.id !== itemId));
+      setAiReply(act === 'approve' ? 'Recommendation accepted and recorded to mission timeline.' : 'Recommendation rejected and recorded to mission timeline.');
+    } catch (e) {
+      setAiReply(`Error: ${e.message}`);
+    } finally {
+      setActing(a => { const next = { ...a }; delete next[key]; return next; });
+    }
+  }, []);
+
+  if (!items.length && !aiReply) return null;
+
+  return (
+    <motion.div className="ed-section" {...fadeUp(0.22)}>
+      <div className="ed-section__title">Pending Approvals</div>
+      {aiReply && (
+        <div style={{ fontSize: 11, color: '#94a3b8', marginBottom: 8, padding: '6px 10px', background: 'rgba(96,165,250,0.07)', borderRadius: 4 }}>
+          {aiReply}
+        </div>
+      )}
+      {items.length === 0 && <div className="ed-empty">No pending recommendations requiring approval.</div>}
+      {items.map((item, i) => {
+        const mId = item.missionId || missions[0]?.id;
+        const approveKey = `${mId}_${item.id}_approve`;
+        const rejectKey  = `${mId}_${item.id}_reject`;
+        return (
+          <div key={item.id || i} style={{
+            background: '#0f1117', border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: 5, padding: '10px 12px', marginBottom: 8,
+          }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: '#e2e8f0', marginBottom: 4 }}>
+              {item.title || item.description || `Recommendation ${i + 1}`}
+            </div>
+            {item.rationale && <div style={{ fontSize: 11, color: '#64748b', marginBottom: 8 }}>{item.rationale}</div>}
+            <div style={{ display: 'flex', gap: 6 }}>
+              <button
+                onClick={() => doAction('approve', mId, item.id, 'Approved from executive dashboard')}
+                disabled={!!acting[approveKey]}
+                style={{ padding: '4px 12px', fontSize: 11, fontWeight: 700, background: '#16a34a', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontFamily: 'inherit' }}
+              >
+                {acting[approveKey] ? '…' : '✓ Accept'}
+              </button>
+              <button
+                onClick={() => doAction('reject', mId, item.id, 'Rejected from executive dashboard')}
+                disabled={!!acting[rejectKey]}
+                style={{ padding: '4px 12px', fontSize: 11, fontWeight: 700, background: '#dc2626', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontFamily: 'inherit' }}
+              >
+                {acting[rejectKey] ? '…' : '✕ Reject'}
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </motion.div>
+  );
+}
+
 // ── Main component ───────────────────────────────────────────────────
 
 export default function ExecutiveDashboard({ onNavigate }) {
@@ -517,6 +605,9 @@ export default function ExecutiveDashboard({ onNavigate }) {
 
       {/* ── Cross-Domain Intelligence ── */}
       <IntelligenceInsights />
+
+      {/* ── Recommendation Approvals (J5) ── */}
+      <RecommendationApprovalCards missions={missions} />
 
       {/* ── Row 4: Active Missions ── */}
       <motion.div className="ed-section" {...fadeUp(0.2)}>

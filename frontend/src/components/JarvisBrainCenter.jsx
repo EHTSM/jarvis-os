@@ -98,6 +98,54 @@ export default function JarvisBrainCenter({ onNavigate }) {
     return () => clearInterval(t);
   }, [refresh]);
 
+  // Collaboration state (inside intelligence tab)
+  const [collabMission, setCollabMission] = useState('');
+  const [collabInput,   setCollabInput]   = useState('');
+  const [collabMsg,     setCollabMsg]     = useState('');
+  const [collabSending, setCollabSending] = useState(false);
+  const [collabReply,   setCollabReply]   = useState(null);
+  const [collabHistory, setCollabHistory] = useState(null);
+  const [collabAction,  setCollabAction]  = useState('ask_ai');
+  const [collabErr,     setCollabErr]     = useState(null);
+
+  const loadCollabHistory = useCallback(async (id) => {
+    if (!id) return;
+    try {
+      const r = await _fetch(`/collaboration/history/${id}`);
+      setCollabHistory(r.history || null);
+    } catch {}
+  }, []);
+
+  const attachCollab = useCallback(async () => {
+    if (!collabInput.trim()) return;
+    setCollabMission(collabInput.trim());
+    await loadCollabHistory(collabInput.trim());
+  }, [collabInput, loadCollabHistory]);
+
+  const sendCollabMsg = useCallback(async () => {
+    if (!collabMission || !collabMsg.trim()) return;
+    setCollabSending(true); setCollabErr(null); setCollabReply(null);
+    try {
+      if (collabAction === 'ask_ai' || collabAction === 'ask_agent') {
+        const r = await _fetch('/collaboration/message', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ missionId: collabMission, from: 'operator', body: collabMsg }),
+        });
+        setCollabReply(r.result?.reply || null);
+      } else {
+        const r = await _fetch('/collaboration/action', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ missionId: collabMission, action: collabAction, payload: { body: collabMsg } }),
+        });
+        const res = r.result?.result || r.result || {};
+        setCollabReply(res.explanation || res.summary || res.reply || JSON.stringify(res).slice(0, 300));
+      }
+      setCollabMsg('');
+      await loadCollabHistory(collabMission);
+    } catch (e) { setCollabErr(e.message); }
+    finally { setCollabSending(false); }
+  }, [collabMission, collabMsg, collabAction, loadCollabHistory]);
+
   const refreshIntel = useCallback(() => {
     setIntelLoading(true);
     Promise.allSettled([
@@ -445,6 +493,120 @@ export default function JarvisBrainCenter({ onNavigate }) {
                 })}
               </div>
             )}
+
+            {/* AI Collaboration Panel */}
+            <div className="jbc-panel" style={{ marginTop: 10 }}>
+              <div className="jbc-panel-title">AI Collaboration</div>
+
+              {/* Mission attach */}
+              {!collabMission ? (
+                <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
+                  <input
+                    style={{ flex: 1, fontSize: 11, background: '#0c0e14', color: '#e2e8f0', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 4, padding: '4px 8px', fontFamily: 'inherit' }}
+                    placeholder="Mission ID to collaborate…"
+                    value={collabInput}
+                    onChange={e => setCollabInput(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter') attachCollab(); }}
+                  />
+                  <button
+                    onClick={attachCollab}
+                    disabled={!collabInput.trim()}
+                    style={{ padding: '4px 10px', fontSize: 11, background: 'var(--accent)', color: '#06080e', border: 'none', borderRadius: 4, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700 }}
+                  >
+                    Attach
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div style={{ fontSize: 10, color: '#64748b', marginBottom: 8 }}>
+                    Mission: <span style={{ color: 'var(--accent)' }}>{collabMission}</span>
+                    <button onClick={() => { setCollabMission(''); setCollabHistory(null); setCollabReply(null); }}
+                      style={{ marginLeft: 8, fontSize: 9, color: '#475569', background: 'none', border: 'none', cursor: 'pointer' }}>✕ detach</button>
+                  </div>
+
+                  {/* Quick actions */}
+                  <div style={{ display: 'flex', gap: 4, marginBottom: 8, flexWrap: 'wrap' }}>
+                    {[
+                      ['explain_risk',       'Risk'],
+                      ['explain_confidence', 'Confidence'],
+                      ['explain_decision',   'Decision'],
+                      ['request_replan',     'Re-plan'],
+                      ['compare_alternatives', 'Compare'],
+                    ].map(([act, lbl]) => (
+                      <button key={act} onClick={async () => {
+                        setCollabAction(act);
+                        const r = await _fetch('/collaboration/action', {
+                          method: 'POST', headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ missionId: collabMission, action: act, payload: act === 'request_replan' ? { reason: 'Operator triggered' } : {} }),
+                        }).catch(() => null);
+                        if (r) {
+                          const res = r.result?.result || r.result || {};
+                          setCollabReply(res.explanation || res.summary || res.reply || JSON.stringify(res).slice(0, 200));
+                          loadCollabHistory(collabMission);
+                        }
+                      }} style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.04)', color: '#94a3b8', cursor: 'pointer', fontFamily: 'inherit' }}>
+                        {lbl}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Collaboration timeline */}
+                  {collabHistory?.timeline?.length > 0 && (
+                    <div style={{ maxHeight: 120, overflowY: 'auto', marginBottom: 8 }}>
+                      {collabHistory.timeline.slice(-8).map((item, i) => (
+                        <div key={item.id || i} style={{ padding: '3px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: 10 }}>
+                          <span style={{ color: '#475569', marginRight: 6 }}>{new Date(item.ts || item.timestamp).toLocaleTimeString()}</span>
+                          <span style={{ color: '#60a5fa', fontWeight: 700, marginRight: 6 }}>
+                            {item._kind === 'message' ? `${item.from}→${item.to}` : item.action}
+                          </span>
+                          <span style={{ color: '#94a3b8' }}>
+                            {item._kind === 'message' ? item.body?.slice(0, 50) : (item.result?.type || '')}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* AI reply */}
+                  {collabReply && (
+                    <div style={{ background: 'rgba(96,165,250,0.06)', border: '1px solid rgba(96,165,250,0.15)', borderRadius: 4, padding: '7px 10px', fontSize: 11, color: '#e2e8f0', marginBottom: 8, whiteSpace: 'pre-wrap', wordBreak: 'break-word', maxHeight: 100, overflowY: 'auto' }}>
+                      <span style={{ fontSize: 9, color: '#60a5fa', fontWeight: 700, marginRight: 6 }}>AI</span>
+                      {collabReply}
+                    </div>
+                  )}
+                  {collabErr && <div style={{ fontSize: 10, color: '#ef4444', marginBottom: 4 }}>{collabErr}</div>}
+
+                  {/* Input */}
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <select
+                      value={collabAction}
+                      onChange={e => setCollabAction(e.target.value)}
+                      style={{ fontSize: 10, background: '#0c0e14', color: '#94a3b8', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 4, padding: '2px 4px', fontFamily: 'inherit' }}
+                    >
+                      <option value="ask_ai">Ask AI</option>
+                      <option value="explain_decision">Explain Decision</option>
+                      <option value="explain_risk">Explain Risk</option>
+                      <option value="explain_confidence">Confidence</option>
+                      <option value="compare_alternatives">Compare</option>
+                    </select>
+                    <input
+                      style={{ flex: 1, fontSize: 11, background: '#0c0e14', color: '#e2e8f0', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 4, padding: '4px 8px', fontFamily: 'inherit' }}
+                      placeholder="Ask about this mission…"
+                      value={collabMsg}
+                      onChange={e => setCollabMsg(e.target.value)}
+                      onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendCollabMsg(); } }}
+                    />
+                    <button
+                      onClick={sendCollabMsg}
+                      disabled={collabSending || !collabMsg.trim()}
+                      style={{ padding: '4px 10px', fontSize: 11, fontWeight: 700, background: 'var(--accent)', color: '#06080e', border: 'none', borderRadius: 4, cursor: 'pointer', fontFamily: 'inherit' }}
+                    >
+                      {collabSending ? '…' : 'Ask'}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
 
             {!intelLoading && !intelCorr && !intelInsights && (
               <div className="jbc-empty">Intelligence data unavailable. Ensure backend services are running.</div>
