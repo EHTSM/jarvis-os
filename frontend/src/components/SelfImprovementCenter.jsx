@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
 import { getLessons, getRecommendations, getLearningStats, runFullAnalysis } from "../phase19Api";
 import { getImprovementReports, getImprovementMetrics, getAiProviders } from "../phase27Api";
+import PageHeader from "./PageHeader";
 import "./SelfImprovementCenter.css";
 
 const LESSONS = [
@@ -117,6 +118,19 @@ export default function SelfImprovementCenter({ onNavigate }) {
 
   return (
     <div className="sic">
+      <PageHeader
+        icon="⬡"
+        title="Self-Improvement Engine"
+        subtitle="Lessons learned · Failure patterns · Optimization opportunities · AI provider status · Improvement reports"
+        actions={[{ label: analyzing ? "Analyzing…" : "↺ Re-analyze", onClick: handleAnalyze, disabled: analyzing, primary: true }]}
+        related={[
+          { label: "Intelligence", tab: "intel", icon: "◈" },
+          { label: "Memory", tab: "memory", icon: "◎" },
+          { label: "Jarvis Brain", tab: "jarvisbrain", icon: "🧠" },
+          { label: "Autonomy Score", tab: "autonomyscore", icon: "◉" },
+        ]}
+        onNavigate={onNavigate}
+      />
       <div className="sic-header">
         <div>
           <h1 className="sic-title">Self-Improvement Engine</h1>

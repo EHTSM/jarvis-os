@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { track } from "../analytics";
 import { BASE_URL } from "../_client";
+import PageHeader from "./PageHeader";
 
 // ── fetch ─────────────────────────────────────────────────────────────
 
@@ -768,7 +769,7 @@ const TABS = [
   { id: "advisor",   label: "Advisor"        },
 ];
 
-export default function PredictionPanel() {
+export default function PredictionPanel({ onNavigate }) {
   const [tab, setTab] = useState("readiness");
 
   useEffect(() => { track("prediction_panel_viewed"); }, []);
@@ -778,12 +779,20 @@ export default function PredictionPanel() {
       <style>{`
         @keyframes pp-pulse { 0%,100%{opacity:0.4} 50%{opacity:0.8} }
       `}</style>
-
-      <div style={{ padding: "24px 24px 0" }}>
-        <h1 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 4px", color: "#e6edf3" }}>Prediction Engine</h1>
-        <p style={{ fontSize: 12, color: "#8994b0", margin: "0 0 20px" }}>
-          Learning → Prediction — failure risk, deploy risk, cross-project knowledge, pre-patch advice, evidence-backed advisor
-        </p>
+      <PageHeader
+        icon="◇"
+        title="Prediction Engine"
+        subtitle="Failure risk · Deploy risk · Cross-project knowledge · Pre-patch advice · Evidence-backed advisor"
+        related={[
+          { label: "Intelligence", tab: "intel", icon: "◈" },
+          { label: "Guardrails", tab: "guardrails", icon: "◻" },
+          { label: "Reliability", tab: "reliability", icon: "◈" },
+          { label: "Recommendation", tab: "recommend", icon: "✦" },
+          { label: "Self-Healing", tab: "selfhealing", icon: "✦" },
+        ]}
+        onNavigate={onNavigate}
+      />
+      <div style={{ padding: "16px 24px 0" }}>
 
         <div style={{ display: "flex", gap: 2, borderBottom: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" }}>
           {TABS.map(t => (

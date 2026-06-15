@@ -5,6 +5,7 @@
  */
 import React, { useState, useEffect, useCallback } from "react";
 import { BASE_URL } from "../_client";
+import PageHeader from "./PageHeader";
 
 async function _get(path) {
   const r = await fetch(`${BASE_URL}${path}`, { credentials: "include" });
@@ -703,18 +704,26 @@ const TABS = [
   { id: "readiness",  label: "Autonomous Readiness" },
 ];
 
-export default function RecommendationCenter() {
+export default function RecommendationCenter({ onNavigate }) {
   const [tab, setTab] = useState("approvals");
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <style>{`@keyframes rc-pulse { 0%,100%{opacity:.4} 50%{opacity:.8} }`}</style>
-
-      <div style={{ padding: "24px 24px 0" }}>
-        <h1 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 4px", color: "#e6edf3" }}>Recommendation Center</h1>
-        <p style={{ fontSize: 12, color: "#8994b0", margin: "0 0 20px" }}>
-          Ranked fixes · Deploy recommendations · Approval queue · Decision log · Automation candidates · Autonomous readiness
-        </p>
+      <PageHeader
+        icon="✦"
+        title="Recommendation Center"
+        subtitle="Ranked fixes · Deploy recommendations · Approval queue · Decision log · Automation candidates"
+        related={[
+          { label: "Prediction", tab: "predict", icon: "◇" },
+          { label: "Guardrails", tab: "guardrails", icon: "◻" },
+          { label: "Execution", tab: "execution", icon: "⚡" },
+          { label: "Executive", tab: "executivedash", icon: "◉" },
+          { label: "Intelligence", tab: "intel", icon: "◈" },
+        ]}
+        onNavigate={onNavigate}
+      />
+      <div style={{ padding: "16px 24px 0" }}>
         <div style={{ display: "flex", gap: 2, borderBottom: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" }}>
           {TABS.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}

@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { track } from "../analytics";
 import { BASE_URL } from "../_client";
+import PageHeader from "./PageHeader";
 
 // ── fetch ─────────────────────────────────────────────────────────────
 
@@ -782,7 +783,7 @@ const TABS = [
   { id: "correlate",label: "Correlate"      },
 ];
 
-export default function IntelligencePanel() {
+export default function IntelligencePanel({ onNavigate }) {
   const [tab, setTab] = useState("summary");
 
   useEffect(() => { track("intelligence_panel_viewed"); }, []);
@@ -792,12 +793,20 @@ export default function IntelligencePanel() {
       <style>{`
         @keyframes ip-pulse { 0%,100%{opacity:0.4} 50%{opacity:0.8} }
       `}</style>
-
-      <div style={{ padding: "24px 24px 0" }}>
-        <h1 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 4px", color: C.head }}>Engineering Intelligence</h1>
-        <p style={{ fontSize: 12, color: C.muted, margin: "0 0 20px" }}>
-          Learning → Recommendation — similar fixes, pattern ranking, patch recommendations, incident KB, unified search, execution correlation
-        </p>
+      <PageHeader
+        icon="◈"
+        title="Engineering Intelligence"
+        subtitle="Learning → Recommendation — similar fixes, pattern ranking, incident KB, unified search, correlation"
+        related={[
+          { label: "Prediction", tab: "predict", icon: "◇" },
+          { label: "Memory", tab: "memory", icon: "◎" },
+          { label: "Recommendation", tab: "recommend", icon: "✦" },
+          { label: "Guardrails", tab: "guardrails", icon: "◻" },
+          { label: "Self-Improve", tab: "selfimprove", icon: "⬡" },
+        ]}
+        onNavigate={onNavigate}
+      />
+      <div style={{ padding: "16px 24px 0" }}>
 
         <div style={{ display: "flex", gap: 2, borderBottom: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" }}>
           {TABS.map(t => (

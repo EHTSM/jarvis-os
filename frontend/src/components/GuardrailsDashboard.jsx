@@ -4,6 +4,7 @@
  */
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { BASE_URL } from "../_client";
+import PageHeader from "./PageHeader";
 
 async function _get(path) {
   const r = await fetch(`${BASE_URL}${path}`, { credentials: "include" });
@@ -420,7 +421,7 @@ const TABS = [
   { id: "autocheck",   label: "Auto-Check"     },
 ];
 
-export default function GuardrailsDashboard() {
+export default function GuardrailsDashboard({ onNavigate }) {
   const [tab,     setTab]     = useState("overview");
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
@@ -462,17 +463,21 @@ export default function GuardrailsDashboard() {
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <style>{`@keyframes gd-pulse { 0%,100%{opacity:.4} 50%{opacity:.8} }`}</style>
-
-      <div style={{ padding: "24px 24px 0" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4 }}>
-          <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0, color: "#e6edf3" }}>Engineering Guardrails</h1>
-          <button onClick={load} disabled={loading} style={{ fontSize: 9, padding: "2px 8px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 3, cursor: "pointer", color: "#8994b0" }}>
-            {loading ? "…" : "⟳"}
-          </button>
-        </div>
-        <p style={{ fontSize: 12, color: "#8994b0", margin: "0 0 20px" }}>
-          High-risk files · Rollback hotspots · Incident hotspots · Recovery map · Pre-action safety checks
-        </p>
+      <PageHeader
+        icon="◻"
+        title="Engineering Guardrails"
+        subtitle="High-risk files · Rollback hotspots · Incident hotspots · Recovery map · Pre-action safety checks"
+        actions={[{ label: "⟳ Refresh", onClick: load, disabled: loading }]}
+        related={[
+          { label: "Prediction", tab: "predict", icon: "◇" },
+          { label: "Reliability", tab: "reliability", icon: "◈" },
+          { label: "Recommendation", tab: "recommend", icon: "✦" },
+          { label: "Self-Healing", tab: "selfhealing", icon: "✦" },
+          { label: "Engineering", tab: "engineering", icon: "⬡" },
+        ]}
+        onNavigate={onNavigate}
+      />
+      <div style={{ padding: "16px 24px 0" }}>
 
         <div style={{ display: "flex", gap: 2, borderBottom: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" }}>
           {TABS.map(t => (

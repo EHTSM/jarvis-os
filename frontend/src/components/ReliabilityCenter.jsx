@@ -4,6 +4,7 @@
  */
 import React, { useState, useEffect, useCallback } from "react";
 import { BASE_URL } from "../_client";
+import PageHeader from "./PageHeader";
 
 async function _get(path) {
   const r = await fetch(`${BASE_URL}${path}`, { credentials: "include" });
@@ -660,18 +661,26 @@ const TABS = [
   { id: "report",    label: "Health Report"      },
 ];
 
-export default function ReliabilityCenter() {
+export default function ReliabilityCenter({ onNavigate }) {
   const [tab, setTab] = useState("report");
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <style>{`@keyframes rc-pulse { 0%,100%{opacity:.4} 50%{opacity:.8} }`}</style>
-
-      <div style={{ padding: "24px 24px 0" }}>
-        <h1 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 4px", color: "#e6edf3" }}>Production Reliability</h1>
-        <p style={{ fontSize: 12, color: "#8994b0", margin: "0 0 20px" }}>
-          Execution success · Accuracy · Autonomous scorecard · Trends · Operator trust · System health report
-        </p>
+      <PageHeader
+        icon="◈"
+        title="Production Reliability"
+        subtitle="Execution success · Accuracy · Autonomous scorecard · Trends · Operator trust · System health"
+        related={[
+          { label: "Execution", tab: "execution", icon: "⚡" },
+          { label: "Self-Healing", tab: "selfhealing", icon: "✦" },
+          { label: "Prediction", tab: "predict", icon: "◇" },
+          { label: "Guardrails", tab: "guardrails", icon: "◻" },
+          { label: "Operations", tab: "operations", icon: "◉" },
+        ]}
+        onNavigate={onNavigate}
+      />
+      <div style={{ padding: "16px 24px 0" }}>
         <div style={{ display: "flex", gap: 2, borderBottom: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" }}>
           {TABS.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}

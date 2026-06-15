@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import "./ExecutiveDashboard.css";
+import PageHeader from "./PageHeader";
 
 // ── Animation presets ────────────────────────────────────────────────
 const FADE_UP = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 } };
@@ -259,6 +260,19 @@ export default function ExecutiveDashboard({ onNavigate }) {
 
   return (
     <div className="ed-root">
+      <PageHeader
+        icon="◉"
+        title="Executive Dashboard"
+        subtitle="CEO-level view of missions, engineering throughput, runtime health and strategic intelligence"
+        related={[
+          { label: "Missions", tab: "jarvisbrain", icon: "🎯" },
+          { label: "Recommendation", tab: "recommend", icon: "✦" },
+          { label: "Reliability", tab: "reliability", icon: "◈" },
+          { label: "Memory", tab: "memory", icon: "◎" },
+          { label: "Self-Improve", tab: "selfimprove", icon: "⬡" },
+        ]}
+        onNavigate={onNavigate}
+      />
 
       {/* ── Header ── */}
       <motion.div className="ed-header" {...fadeUp(0)}>

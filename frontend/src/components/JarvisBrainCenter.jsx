@@ -3,6 +3,7 @@ import { track } from "../analytics";
 import { cycleStats } from "../phase18Api";
 import { getAutonomyStatus } from "../phase20Api";
 import { getMissions, getMissionStats, getPlanningHorizons, getAiProviders } from "../phase27Api";
+import PageHeader from "./PageHeader";
 import "./JarvisBrainCenter.css";
 
 const FLOW_NODES = [
@@ -92,6 +93,19 @@ export default function JarvisBrainCenter({ onNavigate }) {
 
   return (
     <div className="jbc">
+      <PageHeader
+        icon="🧠"
+        title="Jarvis Brain Center"
+        subtitle="Live missions, planning horizons, AI provider routing, and execution loops"
+        related={[
+          { label: "Execution", tab: "execution", icon: "⚡" },
+          { label: "Memory", tab: "memory", icon: "◎" },
+          { label: "Intelligence", tab: "intel", icon: "◈" },
+          { label: "Prediction", tab: "predict", icon: "◇" },
+          { label: "Executive", tab: "executivedash", icon: "◉" },
+        ]}
+        onNavigate={onNavigate}
+      />
       <div className="jbc-header">
         <div>
           <h1 className="jbc-title">Jarvis Brain Center</h1>

@@ -5,6 +5,7 @@
  */
 import React, { useState, useEffect, useCallback } from "react";
 import { BASE_URL } from "../_client";
+import PageHeader from "./PageHeader";
 
 async function _get(path) {
   const r = await fetch(`${BASE_URL}${path}`, { credentials: "include" });
@@ -760,7 +761,7 @@ const TABS = [
   { id: "readiness",   label: "Exec Readiness"     },
 ];
 
-export default function ExecutionCenter() {
+export default function ExecutionCenter({ onNavigate }) {
   const [tab,          setTab]          = useState("queue");
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -772,12 +773,22 @@ export default function ExecutionCenter() {
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <style>{`@keyframes ec-pulse { 0%,100%{opacity:.4} 50%{opacity:.8} }`}</style>
-
-      <div style={{ padding: "24px 24px 0" }}>
-        <h1 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 4px", color: "#e6edf3" }}>Execution Center</h1>
-        <p style={{ fontSize: 12, color: "#8994b0", margin: "0 0 20px" }}>
-          Unified queue · One-click execute · Approval analytics · Confidence calibration · Ranked candidates · Execution readiness
-        </p>
+      <PageHeader
+        icon="⚡"
+        title="Execution Center"
+        subtitle="Unified queue · One-click execute · Approval analytics · Confidence calibration · Ranked candidates"
+        actions={[{ label: "Reliability →", onClick: () => onNavigate?.("reliability") }, { label: "Guardrails →", onClick: () => onNavigate?.("guardrails"), primary: true }]}
+        related={[
+          { label: "Planning", tab: "jarvisbrain", icon: "🗺️" },
+          { label: "Recommendation", tab: "recommend", icon: "✦" },
+          { label: "Reliability", tab: "reliability", icon: "◈" },
+          { label: "Prediction", tab: "predict", icon: "◇" },
+          { label: "Guardrails", tab: "guardrails", icon: "◻" },
+          { label: "Executive", tab: "executivedash", icon: "◉" },
+        ]}
+        onNavigate={onNavigate}
+      />
+      <div style={{ padding: "16px 24px 0" }}>
         <div style={{ display: "flex", gap: 2, borderBottom: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" }}>
           {TABS.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
