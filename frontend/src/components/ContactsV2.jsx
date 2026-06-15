@@ -506,7 +506,10 @@ export default function ContactsV2({ onNavigate }) {
     try {
       const data = await getLeads();
       setLeads(Array.isArray(data) ? data.slice().reverse() : []);
-    } catch { setLeads([]); }
+    } catch (err) {
+      setLeads([]);
+      toast("error", `Failed to load contacts: ${err?.message || "network error"}`);
+    }
     finally { setLoading(false); }
   }, []);
 

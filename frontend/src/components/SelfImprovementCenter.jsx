@@ -153,8 +153,8 @@ export default function SelfImprovementCenter({ onNavigate }) {
       <div className="sic-stats">
         <div className="sic-stat"><span className="sic-stat-val" style={{color:"#00dc82"}}>{stats?.successRate != null ? `${stats.successRate}%` : "91%"}</span><span className="sic-stat-lbl">Success Rate</span></div>
         <div className="sic-stat"><span className="sic-stat-val" style={{color:"var(--accent)"}}>{lessons.length}</span><span className="sic-stat-lbl">Lessons Learned</span></div>
-        <div className="sic-stat"><span className="sic-stat-val" style={{color:"#ff6464"}}>{FAILURES.length}</span><span className="sic-stat-lbl">Failure Patterns</span></div>
-        <div className="sic-stat"><span className="sic-stat-val" style={{color:"var(--warning)"}}>{OPPS.length}</span><span className="sic-stat-lbl">Opportunities</span></div>
+        <div className="sic-stat"><span className="sic-stat-val" style={{color:"#ff6464"}}>{metrics?.failurePatterns ?? FAILURES.length}</span><span className="sic-stat-lbl">Failure Patterns</span></div>
+        <div className="sic-stat"><span className="sic-stat-val" style={{color:"var(--warning)"}}>{metrics?.opportunities ?? OPPS.length}</span><span className="sic-stat-lbl">Opportunities</span></div>
         <div className="sic-stat"><span className="sic-stat-val" style={{color:"var(--accent2)"}}>{recs.length}</span><span className="sic-stat-lbl">Recommendations</span></div>
       </div>
 

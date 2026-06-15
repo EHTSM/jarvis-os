@@ -183,7 +183,7 @@ export default function WorkspaceSettings({ onNavigate }) {
 
   return (
     <div className="workspace-settings page-enter">
-      {toast && <div className="ws-toast">{toast}</div>}
+      {toast && <div className="ws-toast" role="alert" aria-live="polite">{toast}</div>}
 
       <div className="ws-header">
         <div>
@@ -208,6 +208,7 @@ export default function WorkspaceSettings({ onNavigate }) {
               key={s.id}
               className={`ws-nav-item${section === s.id ? " ws-nav-item--active" : ""}`}
               onClick={() => setSection(s.id)}
+              aria-current={section === s.id ? "page" : undefined}
             >
               <span className="ws-nav-icon">{s.icon}</span>
               <span className="ws-nav-label">{s.label}</span>
@@ -277,7 +278,7 @@ export default function WorkspaceSettings({ onNavigate }) {
                   <span className="ws-badge">Starter — up to 3 seats</span>
                 </FieldRow>
                 <FieldRow label="Default role" hint="Role assigned to new invited members">
-                  <select className="ws-select">
+                  <select className="ws-select" aria-label="Default role for new members" onChange={e => showToast(`Default role set to ${e.target.value}`)}>
                     <option value="operator">Operator</option>
                     <option value="viewer">Viewer</option>
                     <option value="manager">Manager</option>
@@ -313,7 +314,7 @@ export default function WorkspaceSettings({ onNavigate }) {
                 <button className="ws-bill-cta" onClick={() => onNavigate && onNavigate("billing")}>
                   Manage billing →
                 </button>
-                <button className="ws-bill-secondary">Download invoices</button>
+                <button className="ws-bill-secondary" onClick={() => showToast("Invoice download: connect billing via Manage billing → to enable")}>Download invoices</button>
               </div>
               <div className="ws-billing-plans">
                 <p className="ws-section-label">Upgrade options</p>
@@ -369,7 +370,7 @@ export default function WorkspaceSettings({ onNavigate }) {
                 <FieldRow label="API key" hint="Use to integrate Ooplix with external tools">
                   <div className="ws-api-key-row">
                     <span className="ws-api-key-val ws-input--mono">
-                      {apiKeyShown ? "sk_ooplix_demo_••••••••••••••••••••••••••" : "••••••••••••••••••••••••••••••••••"}
+                      {apiKeyShown ? "API key generation not configured — contact support" : "••••••••••••••••••••••••••••••••••"}
                     </span>
                     <button className="ws-api-toggle" onClick={() => setApiKeyShown(v => !v)}>
                       {apiKeyShown ? "Hide" : "Show"}

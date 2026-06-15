@@ -139,7 +139,7 @@ export default function PricingPage({ onBack, onStart, onUpgrade }) {
               <button
                 className={`pricing-cta${plan.featured ? " pricing-cta--featured" : ""}`}
                 onClick={() => {
-                  if (plan.id === "scale") { window.location.href = "mailto:sales@ooplix.com"; return; }
+                  if (plan.id === "scale") { window.open("mailto:sales@ooplix.com", "_blank"); return; }
                   if (isAuthenticated) onUpgrade(plan.id);
                   else onStart?.();
                 }}
@@ -195,9 +195,9 @@ export default function PricingPage({ onBack, onStart, onUpgrade }) {
           &copy; {new Date().getFullYear()} ALWALIY TECHNOLOGIES PRIVATE LIMITED.
           Prices in INR. GST applicable as per Indian tax law.
           By subscribing you agree to our{" "}
-          <a href="#terms" className="pricing-footer-link">Terms of Service</a>
+          <span className="pricing-footer-link" style={{ opacity: 0.6, cursor: "default" }} aria-disabled="true">Terms of Service</span>
           {" "}and{" "}
-          <a href="#refund" className="pricing-footer-link">Refund Policy</a>.
+          <span className="pricing-footer-link" style={{ opacity: 0.6, cursor: "default" }} aria-disabled="true">Refund Policy</span>.
         </div>
 
       </div>

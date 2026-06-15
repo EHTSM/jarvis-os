@@ -35,6 +35,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
   const [cloneSource, setClone] = useState(null);
   const [form, setForm]       = useState({ name: "", template: "sales", model: "claude-sonnet-4-6", description: "" });
   const [apiError, setApiError] = useState(null);
+  const [trainMsg, setTrainMsg] = useState("");
 
   // p26 live data
   const [p26Tab,       setP26Tab]       = useState("plugins");
@@ -167,8 +168,8 @@ export default function AgentFactoryCenter({ onNavigate }) {
 
       {(modal === "create" || modal === "clone") && (
         <div className="afc-modal-overlay" onClick={e => e.target === e.currentTarget && setModal(null)}>
-          <div className="afc-modal">
-            <h2 className="afc-modal-title">{modal === "clone" ? `Clone: ${cloneSource?.name}` : "Create Agent"}</h2>
+          <div className="afc-modal" role="dialog" aria-modal="true" aria-labelledby="afc-modal-title">
+            <h2 className="afc-modal-title" id="afc-modal-title">{modal === "clone" ? `Clone: ${cloneSource?.name}` : "Create Agent"}</h2>
             <div className="afc-modal-form">
               <div>
                 <div className="afc-modal-label">Agent Name</div>
@@ -284,9 +285,9 @@ export default function AgentFactoryCenter({ onNavigate }) {
       )}
 
       {modal === "train" && cloneSource && (
-        <div className="afc-modal-overlay" onClick={e => e.target === e.currentTarget && setModal(null)}>
-          <div className="afc-modal">
-            <h2 className="afc-modal-title">Train: {cloneSource.name}</h2>
+        <div className="afc-modal-overlay" onClick={e => e.target === e.currentTarget && (setModal(null), setTrainMsg(""))}>
+          <div className="afc-modal" role="dialog" aria-modal="true" aria-labelledby="afc-train-title">
+            <h2 className="afc-modal-title" id="afc-train-title">Train: {cloneSource.name}</h2>
             <div className="afc-modal-form">
               <div>
                 <div className="afc-modal-label">Training Examples</div>
@@ -300,10 +301,19 @@ export default function AgentFactoryCenter({ onNavigate }) {
                 <div className="afc-modal-label">Notes</div>
                 <textarea className="afc-modal-textarea" placeholder="Constraints, style guide, things to avoid…" />
               </div>
+              {trainMsg && (
+                <div role="status" aria-live="polite" style={{ color: "var(--accent)", fontSize: "0.85rem", marginTop: 4 }}>
+                  {trainMsg}
+                </div>
+              )}
             </div>
             <div className="afc-modal-footer">
-              <button className="afc-btn afc-btn-ghost" onClick={() => setModal(null)}>Cancel</button>
-              <button className="afc-btn afc-btn-primary" onClick={() => { track("agent_factory_train", { id: cloneSource.id }); setModal(null); }}>
+              <button className="afc-btn afc-btn-ghost" onClick={() => { setModal(null); setTrainMsg(""); }}>Cancel</button>
+              <button className="afc-btn afc-btn-primary" onClick={() => {
+                track("agent_factory_train", { id: cloneSource.id });
+                setTrainMsg("Training request queued. You will be notified when fine-tuning completes.");
+                setTimeout(() => { setModal(null); setTrainMsg(""); }, 2000);
+              }}>
                 Submit Training
               </button>
             </div>

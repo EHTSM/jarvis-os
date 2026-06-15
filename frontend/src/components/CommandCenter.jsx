@@ -8,8 +8,8 @@ import {
   decideApprovalItem,
   getUnifiedQueue,
   getSystemHealthReport,
+  dispatchTask,
 } from "../runtimeApi";
-import { dispatchTask } from "../runtimeApi";
 import {
   FadeUp,
   StaggerList,
@@ -185,8 +185,8 @@ function HealthPulseBar({ opsData, online, emergencyActive, onResume, onStop }) 
       </motion.div>
       <div className="cmd-pulse-actions">
         {online && (
-          <button className="cmd-pulse-stop" onClick={onStop} title="Emergency stop">
-            ⏹
+          <button className="cmd-pulse-stop" onClick={onStop} title="Emergency stop" aria-label="Emergency stop">
+            <span aria-hidden="true">⏹</span>
           </button>
         )}
       </div>
@@ -805,6 +805,7 @@ function CommandDispatch({ online }) {
             !online ? "Backend offline" :
             "Run a task, workflow, or command…"
           }
+          aria-label="Task or command input"
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); run(); } }}

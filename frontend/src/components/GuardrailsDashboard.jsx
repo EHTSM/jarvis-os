@@ -141,11 +141,16 @@ export function PreActionWarning({ action, patchId, filePath, task, pipelineName
     );
   }
 
-  // If no risk — auto-proceed (caller should still gate on this)
-  if (!data.shouldWarn) {
-    onProceed?.();
-    return null;
-  }
+  // If no risk — auto-proceed via effect to avoid calling during render
+  const didProceedRef = React.useRef(false);
+  React.useEffect(() => {
+    if (!data.shouldWarn && !didProceedRef.current) {
+      didProceedRef.current = true;
+      onProceed?.();
+    }
+  }, [data.shouldWarn, onProceed]);
+
+  if (!data.shouldWarn) return null;
 
   const col = rc(data.riskLevel);
 

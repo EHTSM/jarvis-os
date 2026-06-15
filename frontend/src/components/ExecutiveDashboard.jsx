@@ -121,9 +121,11 @@ function timeStr() {
 
 export default function ExecutiveDashboard({ onNavigate }) {
   const [lastRefresh, setLastRefresh]   = useState(timeStr());
+  const [dataError,   setDataError]     = useState(false);
 
   // Mission status
   const [missions,    setMissions]      = useState(SEED_MISSIONS);
+  const [missionsLive, setMissionsLive] = useState(false);
 
   // Engineering throughput
   const [cycleStats,  setCycleStats]    = useState(null);
@@ -133,6 +135,7 @@ export default function ExecutiveDashboard({ onNavigate }) {
 
   // Recommendations
   const [recs,        setRecs]          = useState(SEED_RECOMMENDATIONS);
+  const [recsLive,    setRecsLive]      = useState(false);
 
   // Improvement metrics
   const [impMetrics,  setImpMetrics]    = useState(null);
@@ -140,19 +143,23 @@ export default function ExecutiveDashboard({ onNavigate }) {
   // ── Fetch helpers ──────────────────────────────────────────────────
 
   const fetchAll = useCallback(async () => {
+    let anyError = false;
     const safe = async (url, setter, transform) => {
       try {
         const data = await _fetch(url);
         setter(transform ? transform(data) : data);
+        return true;
       } catch (_) {
-        // leave existing / seed state intact
+        anyError = true;
+        return false;
       }
     };
 
     // Mission status
-    safe("/metrics/dashboard", data => {
+    const mOk = await safe("/metrics/dashboard", data => {
       if (data?.missions && Array.isArray(data.missions)) {
         setMissions(data.missions.slice(0, 5));
+        setMissionsLive(true);
       }
     });
 
@@ -219,6 +226,7 @@ export default function ExecutiveDashboard({ onNavigate }) {
       });
     });
 
+    setDataError(anyError);
     setLastRefresh(timeStr());
   }, []);
 
@@ -266,6 +274,12 @@ export default function ExecutiveDashboard({ onNavigate }) {
         onNavigate={onNavigate}
       />
       <WorkflowNav currentTab="executivedash" onNavigate={onNavigate} />
+
+      {dataError && !missionsLive && (
+        <div className="ac-api-banner ac-api-banner--error" role="alert">
+          ⚠ Live data unavailable — showing example data. Check backend connectivity.
+        </div>
+      )}
 
       {/* ── Header ── */}
       <motion.div className="ed-header" {...fadeUp(0)}>

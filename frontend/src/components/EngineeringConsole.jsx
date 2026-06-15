@@ -360,10 +360,12 @@ export default function EngineeringConsole({ className = '' }) {
         <span className="ec-header__title">Engineering Console</span>
         <MetricsStrip />
       </div>
-      <div className="ec-tabs">
+      <div className="ec-tabs" role="tablist" aria-label="Engineering Console tabs">
         {TABS.map(t => (
           <button
             key={t.id}
+            role="tab"
+            aria-selected={tab === t.id}
             className={`ec-tab${tab === t.id ? ' ec-tab--active' : ''}`}
             onClick={() => setTab(t.id)}
           >

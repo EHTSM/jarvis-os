@@ -687,9 +687,9 @@ export default function ReliabilityCenter({ onNavigate }) {
       <WorkflowNav currentTab="reliability" onNavigate={onNavigate} />
       <WorkflowStagePanel currentTab="reliability" onNavigate={onNavigate} compact />
       <div style={{ padding: "16px 24px 0" }}>
-        <div style={{ display: "flex", gap: 2, borderBottom: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" }}>
+        <div role="tablist" aria-label="Reliability tabs" style={{ display: "flex", gap: 2, borderBottom: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" }}>
           {TABS.map(t => (
-            <button key={t.id} onClick={() => setTab(t.id)}
+            <button key={t.id} role="tab" aria-selected={tab === t.id} onClick={() => setTab(t.id)}
               style={{ padding: "8px 14px", fontSize: 11, fontWeight: 600, cursor: "pointer",
                 background: "none", border: "none",
                 borderBottom: tab === t.id ? "2px solid #44a2ff" : "2px solid transparent",

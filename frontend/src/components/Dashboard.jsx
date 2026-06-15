@@ -74,7 +74,7 @@ function LeadsChart({ stats, loading }) {
       { key: "hot",       count: stats.hot       ?? 0 },
       { key: "qualified", count: stats.qualified  ?? 0 },
       { key: "paid",      count: stats.paid       ?? 0 },
-      { key: "cold",      count: (stats.total ?? 0) - (stats.hot ?? 0) - (stats.paid ?? 0) - (stats.hot ?? 0) },
+      { key: "cold",      count: (stats.total ?? 0) - (stats.hot ?? 0) - (stats.paid ?? 0) - (stats.qualified ?? 0) },
       { key: "lost",      count: stats.lost       ?? 0 },
     ]
       .filter(b => b.count > 0)
@@ -401,7 +401,7 @@ export default function Dashboard({ stats, opsData, onNavigate, online = false }
             <div className="dv2-quicknav">
               {[
                 { label: "Add Contact",        nav: "clients",   icon: "◈" },
-                { label: "Payment Links",      nav: "clients",   icon: "₹" },
+                { label: "Payment Links",      nav: "payments",  icon: "₹" },
                 { label: "Automation Logs",    nav: "activity",  icon: "⚡" },
                 { label: "Control Center",     nav: "home",      icon: "◎" },
               ].map(a => (

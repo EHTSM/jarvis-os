@@ -8,7 +8,15 @@ import "./LandingPage.css";
 // Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-const NAV_LINKS = ["Features", "How it works", "Compare"];
+const NAV_LINKS = [
+  { label: "Features",     id: "features" },
+  { label: "How it works", id: "how-it-works" },
+  { label: "Compare",      id: "compare" },
+];
+
+function _scrollTo(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
 const TRUST_ITEMS = [
   "Engineering teams",
@@ -143,8 +151,8 @@ function Nav({ onAccess }) {
 
       <ul className="lp-nav-links" role="list">
         {NAV_LINKS.map((l) => (
-          <li key={l}>
-            <button className="lp-nav-link">{l}</button>
+          <li key={l.id}>
+            <button className="lp-nav-link" onClick={() => _scrollTo(l.id)}>{l.label}</button>
           </li>
         ))}
       </ul>
@@ -312,6 +320,7 @@ function Hero({ onAccess }) {
           </motion.button>
           <motion.button
             className="lp-btn-ghost"
+            onClick={() => _scrollTo("how-it-works")}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             transition={spring.snappy}
@@ -350,7 +359,7 @@ function TrustStrip() {
 
 function HowItWorks() {
   return (
-    <section className="lp-how">
+    <section id="how-it-works" className="lp-how">
       <div className="lp-section-inner">
         <InView className="lp-section-header">
           <div className="lp-label">How it works</div>
@@ -385,7 +394,7 @@ function HowItWorks() {
 
 function CapabilityGrid() {
   return (
-    <section className="lp-caps">
+    <section id="features" className="lp-caps">
       <div className="lp-section-inner">
         <InView className="lp-section-header">
           <div className="lp-label">Capabilities</div>
@@ -517,7 +526,7 @@ function TerminalDemo() {
 
 function Comparison() {
   return (
-    <section className="lp-compare">
+    <section id="compare" className="lp-compare">
       <div className="lp-section-inner">
         <InView className="lp-section-header">
           <div className="lp-label">The difference</div>
@@ -606,9 +615,9 @@ function Footer() {
       <OoplixWordmark size={22} style={{ opacity: 0.52 }} />
 
       <nav className="lp-footer-nav" aria-label="Footer navigation">
-        {["Privacy", "Terms", "Contact"].map((l) => (
-          <button key={l} className="lp-footer-link">{l}</button>
-        ))}
+        <button className="lp-footer-link" aria-disabled="true" style={{ opacity: 0.5, cursor: "default" }}>Privacy</button>
+        <button className="lp-footer-link" aria-disabled="true" style={{ opacity: 0.5, cursor: "default" }}>Terms</button>
+        <button className="lp-footer-link" onClick={() => { if (typeof window !== "undefined") window.open("mailto:altamashjauhar@gmail.com", "_blank"); }}>Contact</button>
       </nav>
 
       <span className="lp-footer-copy">© 2026 Ooplix</span>

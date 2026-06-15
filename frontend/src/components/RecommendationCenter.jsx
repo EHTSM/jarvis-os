@@ -151,15 +151,17 @@ function _ago(ts) {
 function ApprovalButtons({ id, queueType, recommendation, onDecide, compact = false }) {
   const [deciding, setDeciding] = useState(false);
   const [done,     setDone]     = useState(null);
+  const [decideErr, setDecideErr] = useState(null);
 
   async function decide(decision) {
     setDeciding(true);
+    setDecideErr(null);
     try {
       await _post(`/runtime/approval-queue/${encodeURIComponent(id)}/decide`, { decision, queueType, recommendation });
       setDone(decision);
       onDecide?.(id, decision);
     } catch (e) {
-      alert(`Decision failed: ${e.message}`);
+      setDecideErr(`Decision failed: ${e.message}`);
     } finally {
       setDeciding(false);
     }
@@ -177,10 +179,13 @@ function ApprovalButtons({ id, queueType, recommendation, onDecide, compact = fa
   });
 
   return (
-    <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
-      <button onClick={() => decide("approve")} disabled={deciding} style={btnStyle("#52d68a")}>Approve</button>
-      <button onClick={() => decide("defer")}   disabled={deciding} style={btnStyle("#f0b429")}>Defer</button>
-      <button onClick={() => decide("reject")}  disabled={deciding} style={btnStyle("#f55b5b")}>Reject</button>
+    <div>
+      <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
+        <button onClick={() => decide("approve")} disabled={deciding} style={btnStyle("#52d68a")}>Approve</button>
+        <button onClick={() => decide("defer")}   disabled={deciding} style={btnStyle("#f0b429")}>Defer</button>
+        <button onClick={() => decide("reject")}  disabled={deciding} style={btnStyle("#f55b5b")}>Reject</button>
+      </div>
+      {decideErr && <div role="alert" style={{ color: "#f55b5b", fontSize: 10, marginTop: 4 }}>{decideErr}</div>}
     </div>
   );
 }
@@ -726,9 +731,9 @@ export default function RecommendationCenter({ onNavigate }) {
       />
       <WorkflowNav currentTab="recommend" onNavigate={onNavigate} />
       <div style={{ padding: "16px 24px 0" }}>
-        <div style={{ display: "flex", gap: 2, borderBottom: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" }}>
+        <div role="tablist" aria-label="Recommendation tabs" style={{ display: "flex", gap: 2, borderBottom: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" }}>
           {TABS.map(t => (
-            <button key={t.id} onClick={() => setTab(t.id)}
+            <button key={t.id} role="tab" aria-selected={tab === t.id} onClick={() => setTab(t.id)}
               style={{ padding: "8px 14px", fontSize: 11, fontWeight: 600, cursor: "pointer",
                 background: "none", border: "none",
                 borderBottom: tab === t.id ? "2px solid #44a2ff" : "2px solid transparent",
