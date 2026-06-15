@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
+import { _fetch } from "../_client";
 import "./ExecutiveDashboard.css";
 import PageHeader from "./PageHeader";
 import WorkflowNav from "./WorkflowNav";
@@ -141,9 +142,7 @@ export default function ExecutiveDashboard({ onNavigate }) {
   const fetchAll = useCallback(async () => {
     const safe = async (url, setter, transform) => {
       try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(res.status);
-        const data = await res.json();
+        const data = await _fetch(url);
         setter(transform ? transform(data) : data);
       } catch (_) {
         // leave existing / seed state intact
@@ -185,33 +184,25 @@ export default function ExecutiveDashboard({ onNavigate }) {
 
     // Recommendations (p27 primary, p20 fallback)
     try {
-      const r27 = await fetch("/p27/planning/recommend");
-      if (r27.ok) {
-        const d27 = await r27.json();
-        if (Array.isArray(d27?.recommendations) && d27.recommendations.length > 0) {
-          setRecs(d27.recommendations.slice(0, 3).map(r => ({
-            objective:  r.nextObjective ?? r.objective ?? "—",
-            rationale:  r.rationale     ?? r.reasoning ?? "",
-            confidence: r.confidence    ?? r.score     ?? 0,
-          })));
-        } else {
-          throw new Error("empty");
-        }
+      const d27 = await _fetch("/p27/planning/recommend");
+      if (Array.isArray(d27?.recommendations) && d27.recommendations.length > 0) {
+        setRecs(d27.recommendations.slice(0, 3).map(r => ({
+          objective:  r.nextObjective ?? r.objective ?? "—",
+          rationale:  r.rationale     ?? r.reasoning ?? "",
+          confidence: r.confidence    ?? r.score     ?? 0,
+        })));
       } else {
-        throw new Error("not ok");
+        throw new Error("empty");
       }
     } catch (_) {
       try {
-        const r20 = await fetch("/p20/improve/recommendations");
-        if (r20.ok) {
-          const d20 = await r20.json();
-          if (Array.isArray(d20) && d20.length > 0) {
-            setRecs(d20.slice(0, 3).map(r => ({
-              objective:  r.title       ?? r.objective ?? "—",
-              rationale:  r.description ?? r.rationale ?? "",
-              confidence: r.score       ?? r.confidence ?? 0,
-            })));
-          }
+        const d20 = await _fetch("/p20/improve/recommendations");
+        if (Array.isArray(d20) && d20.length > 0) {
+          setRecs(d20.slice(0, 3).map(r => ({
+            objective:  r.title       ?? r.objective ?? "—",
+            rationale:  r.description ?? r.rationale ?? "",
+            confidence: r.score       ?? r.confidence ?? 0,
+          })));
         }
       } catch (_) {
         // keep seed recs

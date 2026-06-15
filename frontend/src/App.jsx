@@ -85,6 +85,7 @@ const AgentActionCenter        = lazy(() => import("./components/AgentActionCent
 const AutonomyScoreCenter      = lazy(() => import("./components/AutonomyScoreCenter.jsx"));
 const GlobalActivityFeed       = lazy(() => import("./components/GlobalActivityFeed.jsx"));
 const SystemHealthDashboard    = lazy(() => import("./components/SystemHealthDashboard.jsx"));
+const BetaChecklist            = lazy(() => import("./components/BetaChecklist.jsx"));
 const Logs                     = lazy(() => import("./components/Logs.jsx"));
 const ContactsV2               = lazy(() => import("./components/ContactsV2.jsx"));
 const PaymentsV2               = lazy(() => import("./components/PaymentsV2.jsx"));
@@ -186,6 +187,7 @@ const MORE_TABS = [
   { id: "autonomyscore",   label:"Autonomy Score"     },
   { id: "globalactivity", label:"Global Activity"    },
   { id: "systemhealth",   label:"System Health"      },
+  { id: "betachecklist",  label:"Beta Checklist"     },
   { id: "overview",       label: "Overview"          },
 ];
 
@@ -945,6 +947,11 @@ function AppInner() {
         {tab === "systemhealth"      && (
           <div style={{ height: "100%", overflow: "hidden" }}>
             <SystemHealthDashboard onNavigate={setTab} />
+          </div>
+        )}
+        {tab === "betachecklist"     && (
+          <div style={{ height: "100%", overflow: "hidden" }}>
+            <BetaChecklist onNavigate={setTab} />
           </div>
         )}
         {tab === "runtime"           && <RuntimeTab product={_PRODUCT} />}
