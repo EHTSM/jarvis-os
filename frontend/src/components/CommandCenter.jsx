@@ -858,6 +858,266 @@ function CommandDispatch({ online }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// J6: LiveActivityStream — SSE-driven real-time event feed.
+// Reuses the same /runtime/stream EventSource already consumed by EngineeringConsole.
+// Separate connection: CommandCenter needs its own SSE client (browser-level).
+// ─────────────────────────────────────────────────────────────────────────────
+
+const EVT_TYPE_COLOR = {
+  'execution':          '#34d399',
+  'agent:message':      '#60a5fa',
+  'agent:override':     '#f87171',
+  'collaboration:action': '#a78bfa',
+  'collaboration:message': '#60a5fa',
+  'lifecycle:stage:start': '#fbbf24',
+  'lifecycle:stage:complete': '#22c55e',
+  'lifecycle:stage:failed':  '#ef4444',
+  'mission:started':    '#22c55e',
+  'mission:completed':  '#22c55e',
+  'mission:failed':     '#ef4444',
+  'telemetry':          '#374151',
+  'heartbeat':          '#1f2937',
+};
+
+function LiveActivityStream() {
+  const [events, setEvents] = useState([]);
+  const listRef = useRef(null);
+
+  useEffect(() => {
+    const streamUrl = (process.env.REACT_APP_API_URL || '') + '/runtime/stream';
+    const es = new EventSource(streamUrl, { withCredentials: true });
+    es.onmessage = (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        const type = data.type || data.event || 'event';
+        if (type === 'heartbeat') return;
+        const text = data.message || data.log ||
+          (data.missionId ? `[${data.missionId}] ` : '') +
+          (data.agentId   ? `${data.agentId} — ` : '') +
+          (data.stage || data.action || type);
+        setEvents(prev => {
+          const next = [{ type, text: String(text).slice(0, 100), ts: Date.now() }, ...prev].slice(0, 60);
+          return next;
+        });
+      } catch {}
+    };
+    es.onerror = () => {};
+    return () => es.close();
+  }, []);
+
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div
+        ref={listRef}
+        style={{ flex: 1, overflowY: 'auto', fontSize: 10, fontFamily: 'monospace' }}
+      >
+        {events.length === 0 && (
+          <div style={{ color: 'var(--text-dim)', padding: '12px 0', textAlign: 'center', fontSize: 11 }}>
+            Waiting for runtime events…
+          </div>
+        )}
+        {events.map((evt, i) => {
+          const color = EVT_TYPE_COLOR[evt.type] || '#64748b';
+          return (
+            <div key={i} style={{ display: 'flex', gap: 6, padding: '2px 0', borderBottom: '1px solid rgba(255,255,255,0.03)', alignItems: 'flex-start' }}>
+              <span style={{ color: '#374151', flexShrink: 0 }}>
+                {new Date(evt.ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+              </span>
+              <span style={{ fontSize: 9, fontWeight: 700, color, padding: '1px 4px', borderRadius: 4, background: color + '18', flexShrink: 0, whiteSpace: 'nowrap' }}>
+                {evt.type}
+              </span>
+              <span style={{ color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {evt.text}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// J6: MissionTimelineStrip — active missions with current lifecycle stage.
+// Fetches from /p27/missions (already fetched by JarvisBrainCenter;
+// here in CommandCenter it shares a separate fetch — no shared store to reuse).
+// ─────────────────────────────────────────────────────────────────────────────
+
+const LC_STAGE_COLORS = {
+  observe:'#60a5fa', detect:'#60a5fa', reason:'#a78bfa', recommend:'#a78bfa',
+  plan:'#fbbf24', delegate:'#fbbf24', execute:'#34d399', review:'#34d399',
+  test:'#34d399', secure:'#f87171', deploy:'#fb923c', verify:'#fb923c',
+  heal:'#94a3b8', learn:'#94a3b8',
+};
+
+function MissionTimelineStrip() {
+  const [missions, setMissions] = useState([]);
+  const [stages,   setStages]   = useState({});
+
+  const load = useCallback(async () => {
+    try {
+      const res = await (await fetch((process.env.REACT_APP_API_URL || '') + '/p27/missions', { credentials: 'include' })).json();
+      const list = res.missions || res.data || (Array.isArray(res) ? res : []);
+      const active = list.filter(m => m.status === 'running' || m.status === 'active' || m.status === 'planned').slice(0, 6);
+      setMissions(active);
+
+      // Fetch lifecycle stage for each active mission
+      const stageMap = {};
+      await Promise.allSettled(
+        active.map(m =>
+          fetch((process.env.REACT_APP_API_URL || '') + `/runtime/stage/${m.id}`, { credentials: 'include' })
+            .then(r => r.json())
+            .then(r => { if (r.stage) stageMap[m.id] = r.stage; })
+            .catch(() => {})
+        )
+      );
+      setStages(stageMap);
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    load();
+    const t = setInterval(() => { if (!document.hidden) load(); }, 10000);
+    return () => clearInterval(t);
+  }, [load]);
+
+  if (!missions.length) return (
+    <div style={{ color: 'var(--text-dim)', fontSize: 11, padding: '10px 0', textAlign: 'center' }}>No active missions</div>
+  );
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+      {missions.map(m => {
+        const stage = stages[m.id];
+        const color = stage ? (LC_STAGE_COLORS[stage.stage] || '#6b7280') : '#374151';
+        const pct   = stage?.progressPct ?? (m.metrics?.progress ?? 0);
+        return (
+          <div key={m.id} style={{ padding: '6px 8px', background: 'rgba(255,255,255,0.03)', borderRadius: 5, border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+              <div style={{ width: 7, height: 7, borderRadius: '50%', background: color, flexShrink: 0 }} />
+              <span style={{ fontSize: 11, color: 'var(--text)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {m.title || m.goal || m.id}
+              </span>
+              {stage && (
+                <span style={{ fontSize: 9, fontWeight: 700, color, padding: '1px 5px', borderRadius: 8, background: color + '18', flexShrink: 0 }}>
+                  {stage.stageLabel || stage.stage}
+                </span>
+              )}
+            </div>
+            <div style={{ height: 3, background: 'rgba(255,255,255,0.07)', borderRadius: 2 }}>
+              <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 2, transition: 'width 0.5s' }} />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// J6: QueueOverview — queue counts from /ops (opsData prop, no new fetch).
+// ─────────────────────────────────────────────────────────────────────────────
+
+function QueueOverview({ opsData }) {
+  const queue = opsData?.queue || {};
+  const counts = queue.counts || {};
+  const items = [
+    { label: 'Pending',   value: counts.pending  ?? '—', color: '#f59e0b' },
+    { label: 'Running',   value: counts.running  ?? '—', color: '#22c55e' },
+    { label: 'Done',      value: counts.done     ?? '—', color: '#6b7280' },
+    { label: 'Failed',    value: counts.failed   ?? '—', color: '#ef4444' },
+  ];
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+      {items.map(item => (
+        <div key={item.label} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '7px 10px', border: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
+          <div style={{ fontSize: 18, fontWeight: 800, color: item.color, fontFamily: 'monospace' }}>{item.value}</div>
+          <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{item.label}</div>
+        </div>
+      ))}
+      {queue.oldestPendingMins > 0 && (
+        <div style={{ gridColumn: '1 / -1', fontSize: 10, color: queue.oldestPendingMins > 30 ? '#ef4444' : '#f59e0b', textAlign: 'center', marginTop: 2 }}>
+          Oldest pending: {queue.oldestPendingMins}m
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// J6: ProviderHealth — AI provider status from /p27/ai/providers.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ProviderHealth() {
+  const [providers, setProviders] = useState([]);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const r = await (await fetch((process.env.REACT_APP_API_URL || '') + '/p27/ai/providers', { credentials: 'include' })).json();
+        const list = r.providers || (Array.isArray(r) ? r : []);
+        setProviders(list.slice(0, 6));
+      } catch {}
+    };
+    load();
+    const t = setInterval(() => { if (!document.hidden) load(); }, 30000);
+    return () => clearInterval(t);
+  }, []);
+
+  if (!providers.length) return (
+    <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '8px 0' }}>No provider data</div>
+  );
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+      {providers.map((p, i) => {
+        const ok    = p.status === 'active' || p.status === 'healthy' || p.available === true;
+        const color = ok ? '#22c55e' : p.status === 'degraded' ? '#eab308' : '#ef4444';
+        return (
+          <div key={p.id || p.name || i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: color, flexShrink: 0 }} />
+            <span style={{ flex: 1, fontSize: 11, color: 'var(--text)' }}>{p.name || p.provider || p.id}</span>
+            {p.model && <span style={{ fontSize: 10, color: 'var(--text-dim)' }}>{p.model}</span>}
+            <span style={{ fontSize: 9, fontWeight: 700, color, padding: '1px 5px', borderRadius: 6, background: color + '18' }}>
+              {p.status ?? (ok ? 'active' : 'offline')}
+            </span>
+            {p.latency != null && <span style={{ fontSize: 9, color: '#374151' }}>{p.latency}ms</span>}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// J6: RuntimeAlerts — warnings from opsData (no new fetch; opsData passed in).
+// ─────────────────────────────────────────────────────────────────────────────
+
+function RuntimeAlerts({ opsData }) {
+  const warnings = opsData?.warnings || [];
+  if (!warnings.length) return (
+    <div style={{ fontSize: 11, color: '#22c55e', textAlign: 'center', padding: '6px 0' }}>All systems operational</div>
+  );
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      {warnings.slice(0, 5).map((w, i) => {
+        const color = w.level === 'critical' ? '#ef4444' : w.level === 'warn' ? '#f59e0b' : '#6b7280';
+        return (
+          <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', padding: '5px 8px', background: color + '0d', border: `1px solid ${color}33`, borderRadius: 4 }}>
+            <span style={{ fontSize: 9, fontWeight: 800, color, flexShrink: 0, marginTop: 1 }}>{w.level?.toUpperCase()}</span>
+            <div>
+              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--text)', marginRight: 6 }}>{w.code}</span>
+              <span style={{ fontSize: 10, color: 'var(--text-dim)' }}>{w.detail}</span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // SystemHealth
 // Compact health rows with stagger-in + memory bar + score number.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1119,6 +1379,79 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
             <span className="section-label">Dispatch</span>
           </div>
           <CommandDispatch online={online} />
+        </motion.section>
+
+        {/* ── J6 Row 3: Live Operations — 4-col strip ──── */}
+        <motion.section
+          className="cmd-panel cmd-col-timeline"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...transition.enter, delay: 0.34 }}
+          style={{ gridColumn: '1 / -1' }}
+        >
+          <div className="cmd-panel-header">
+            <span className="section-label">Mission Timeline</span>
+            <span className="cmd-panel-live">
+              <PulseDot status="ok" size={6} />
+              <span className="mono-sm" style={{ color: "var(--success)", fontWeight: 700, letterSpacing: "0.06em" }}>LIVE</span>
+            </span>
+          </div>
+          <MissionTimelineStrip />
+        </motion.section>
+
+        <motion.section
+          className="cmd-panel"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...transition.enter, delay: 0.36 }}
+          style={{ gridColumn: '1 / -1' }}
+        >
+          <div className="cmd-panel-header" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            <span className="section-label">Live Activity Stream</span>
+            <span className="cmd-panel-live">
+              <PulseDot status="ok" size={6} />
+              <span className="mono-sm" style={{ color: "var(--success)", fontWeight: 700, letterSpacing: "0.06em" }}>SSE</span>
+            </span>
+          </div>
+          <div style={{ height: 140, overflow: 'hidden' }}>
+            <LiveActivityStream />
+          </div>
+        </motion.section>
+
+        <motion.section
+          className="cmd-panel"
+          initial={{ opacity: 0, x: -8 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ ...transition.enter, delay: 0.38 }}
+        >
+          <div className="cmd-panel-header">
+            <span className="section-label">Queue Status</span>
+          </div>
+          <QueueOverview opsData={opsData} />
+        </motion.section>
+
+        <motion.section
+          className="cmd-panel"
+          initial={{ opacity: 0, x: 8 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ ...transition.enter, delay: 0.40 }}
+        >
+          <div className="cmd-panel-header">
+            <span className="section-label">Runtime Alerts</span>
+          </div>
+          <RuntimeAlerts opsData={opsData} />
+        </motion.section>
+
+        <motion.section
+          className="cmd-panel"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...transition.enter, delay: 0.42 }}
+        >
+          <div className="cmd-panel-header">
+            <span className="section-label">AI Providers</span>
+          </div>
+          <ProviderHealth />
         </motion.section>
 
       </div>

@@ -59,6 +59,84 @@ const LC_STAGE_COLOR = {
   heal: '#94a3b8', learn: '#94a3b8',
 };
 
+// ── J6: Mission Timeline Strip ───────────────────────────────────────────────
+const MC_LC_STAGE_COLORS = {
+  observe:'#60a5fa', detect:'#60a5fa', reason:'#a78bfa', recommend:'#a78bfa',
+  plan:'#fbbf24', delegate:'#fbbf24', execute:'#34d399', review:'#34d399',
+  test:'#34d399', secure:'#f87171', deploy:'#fb923c', verify:'#fb923c',
+  heal:'#94a3b8', learn:'#94a3b8',
+};
+
+function MissionTimelineStrip() {
+  const [missions, setMissions] = useState([]);
+  const [stages,   setStages]   = useState({});
+
+  const load = useCallback(async () => {
+    try {
+      const r = await _fetch('/p27/missions');
+      const list = r.missions || r.data || (Array.isArray(r) ? r : []);
+      const active = list.filter(m =>
+        m.status === 'running' || m.status === 'active' || m.status === 'planned'
+      ).slice(0, 6);
+      setMissions(active);
+
+      const stageMap = {};
+      await Promise.allSettled(
+        active.map(m =>
+          _fetch(`/runtime/stage/${m.id}`)
+            .then(r => { if (r.stage) stageMap[m.id] = r.stage; })
+            .catch(() => {})
+        )
+      );
+      setStages(stageMap);
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    load();
+    const t = setInterval(() => { if (!document.hidden) load(); }, 10000);
+    return () => clearInterval(t);
+  }, [load]);
+
+  if (!missions.length) return null;
+
+  return (
+    <section className="mc-section">
+      <div className="mc-section-head">
+        <h2>Mission Timeline</h2>
+        <span style={{ fontSize: 10, color: '#22c55e', fontWeight: 700 }}>● LIVE</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {missions.map(m => {
+          const stage = stages[m.id];
+          const color = stage ? (MC_LC_STAGE_COLORS[stage.stage] || '#6b7280') : '#374151';
+          const pct   = stage?.progressPct ?? (m.metrics?.progress ?? 0);
+          return (
+            <div key={m.id} style={{ background: '#0c0e14', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 5, padding: '8px 10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
+                <div style={{ width: 7, height: 7, borderRadius: '50%', background: color, flexShrink: 0 }} />
+                <span style={{ flex: 1, fontSize: 12, color: '#e2e8f0', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {m.title || m.goal || m.id}
+                </span>
+                {stage && (
+                  <span style={{ fontSize: 9, fontWeight: 700, color, padding: '1px 6px', borderRadius: 8, background: color + '18', flexShrink: 0 }}>
+                    {stage.stageLabel || stage.stage}
+                  </span>
+                )}
+                <span style={{ fontSize: 9, color: '#475569', flexShrink: 0 }}>{m.status}</span>
+              </div>
+              <div style={{ height: 4, background: 'rgba(255,255,255,0.07)', borderRadius: 2 }}>
+                <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 2, transition: 'width 0.5s' }} />
+              </div>
+              <div style={{ fontSize: 10, color: '#475569', marginTop: 3 }}>{pct}% complete</div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 // ── J5: Collaboration Timeline in Mission Control ────────────────────────────
 const MC_COLLAB_ACTION_COLORS = {
   ask_ai: '#60a5fa', ask_agent: '#a78bfa', explain_decision: '#34d399',
@@ -724,6 +802,9 @@ export default function MissionControlV1({ onNavigate }) {
         />
 
       </div>
+
+      {/* J6: Mission Timeline Strip */}
+      <MissionTimelineStrip />
 
       {/* Lifecycle Runtime */}
       <LifecyclePanel />

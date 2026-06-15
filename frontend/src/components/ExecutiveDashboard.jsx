@@ -239,6 +239,105 @@ function IntelligenceInsights() {
   );
 }
 
+// ── J6: Deployment Feed ──────────────────────────────────────────────
+function DeploymentFeed() {
+  const [deploys, setDeploys] = useState([]);
+
+  useEffect(() => {
+    let mounted = true;
+    _fetch("/p22/deploy/history")
+      .then(r => { if (mounted) setDeploys((r.history || r.checks || (Array.isArray(r) ? r : [])).slice(0, 8)); })
+      .catch(() => {});
+    return () => { mounted = false; };
+  }, []);
+
+  if (!deploys.length) return null;
+
+  return (
+    <motion.div className="ed-section" {...fadeUp(0.19)}>
+      <div className="ed-section__title">Deployment Feed</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+        {deploys.map((d, i) => {
+          const ok    = d.status === 'passed' || d.status === 'ok' || d.passed === true || d.overallStatus === 'passed';
+          const ts    = d.timestamp || d.checkedAt || d.createdAt;
+          const color = ok ? '#22c55e' : '#ef4444';
+          return (
+            <div key={d.id || i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 10px', background: '#0f1117', border: `1px solid ${color}22`, borderRadius: 5 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: color, flexShrink: 0 }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 11, color: '#e2e8f0' }}>{d.pipeline || d.environment || d.name || `Deployment ${i + 1}`}</div>
+                {d.summary && <div style={{ fontSize: 10, color: '#64748b', marginTop: 1 }}>{String(d.summary).slice(0, 60)}</div>}
+              </div>
+              <span style={{ fontSize: 9, fontWeight: 700, color, padding: '1px 6px', borderRadius: 8, background: color + '18' }}>
+                {ok ? 'PASSED' : 'FAILED'}
+              </span>
+              {ts && <span style={{ fontSize: 9, color: '#475569', flexShrink: 0 }}>{new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
+            </div>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+}
+
+// ── J6: Observer Status ───────────────────────────────────────────────
+function ObserverStatus() {
+  const [snapshot, setSnapshot] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    _fetch("/p21/obs/snapshot")
+      .then(r => { if (mounted) setSnapshot(r); })
+      .catch(() => {});
+    const t = setInterval(() => {
+      if (!document.hidden) {
+        _fetch("/p21/obs/snapshot").then(r => { if (mounted) setSnapshot(r); }).catch(() => {});
+      }
+    }, 30000);
+    return () => { mounted = false; clearInterval(t); };
+  }, []);
+
+  if (!snapshot) return null;
+
+  const alerts    = snapshot.alerts || [];
+  const activeAl  = alerts.filter(a => a.firing || a.active);
+  const metrics   = snapshot.metrics || {};
+  const metricKeys = Object.keys(metrics).slice(0, 6);
+
+  if (!activeAl.length && !metricKeys.length) return null;
+
+  return (
+    <motion.div className="ed-section" {...fadeUp(0.21)}>
+      <div className="ed-section__title">Observer Status</div>
+      {activeAl.length > 0 && (
+        <div style={{ marginBottom: 8 }}>
+          {activeAl.slice(0, 4).map((a, i) => (
+            <div key={a.name || i} style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: 11 }}>
+              <span style={{ fontSize: 9, fontWeight: 700, color: '#ef4444', background: '#ef444418', padding: '1px 5px', borderRadius: 6 }}>ALERT</span>
+              <span style={{ color: '#e2e8f0' }}>{a.name || a.metric}</span>
+              {a.value != null && <span style={{ color: '#64748b', marginLeft: 'auto' }}>{a.value}</span>}
+            </div>
+          ))}
+        </div>
+      )}
+      {metricKeys.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+          {metricKeys.map(key => {
+            const m = metrics[key];
+            const last = Array.isArray(m?.values) ? m.values[m.values.length - 1]?.value : m?.last ?? null;
+            return (
+              <div key={key} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 4, padding: '5px 7px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <div style={{ fontSize: 9, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>{key}</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: '#e2e8f0', fontFamily: 'monospace' }}>{last ?? '—'}</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
 // ── J5: Recommendation Approval Cards ────────────────────────────────
 function RecommendationApprovalCards({ missions }) {
   const [items,    setItems]    = useState([]);
@@ -605,6 +704,12 @@ export default function ExecutiveDashboard({ onNavigate }) {
 
       {/* ── Cross-Domain Intelligence ── */}
       <IntelligenceInsights />
+
+      {/* ── J6: Deployment Feed ── */}
+      <DeploymentFeed />
+
+      {/* ── J6: Observer Status ── */}
+      <ObserverStatus />
 
       {/* ── Recommendation Approvals (J5) ── */}
       <RecommendationApprovalCards missions={missions} />

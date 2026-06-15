@@ -964,6 +964,106 @@ function AgentCollaborationPanel() {
   );
 }
 
+// ── J6: ActiveAgentMatrix — full agent registry status ────────────────
+function ActiveAgentMatrix() {
+  const [agents,  setAgents]  = useState([]);
+  const [obs,     setObs]     = useState(null);
+  const [alerts,  setAlerts]  = useState([]);
+
+  const load = useCallback(async () => {
+    const [agRes, snapRes] = await Promise.allSettled([
+      _fetch('/p18/agents').catch(() => null),
+      _fetch('/p21/obs/snapshot').catch(() => null),
+    ]);
+    if (agRes.status === 'fulfilled' && agRes.value) {
+      const raw = agRes.value?.agents || agRes.value?.data || agRes.value || [];
+      setAgents(Array.isArray(raw) ? raw.slice(0, 20) : []);
+    }
+    if (snapRes.status === 'fulfilled' && snapRes.value) {
+      setObs(snapRes.value);
+      const al = (snapRes.value.alerts || []).filter(a => a.firing || a.active);
+      setAlerts(al);
+    }
+  }, []);
+
+  useInterval(() => { if (!document.hidden) load(); }, 8000);
+  useEffect(() => { load(); }, [load]);
+
+  return (
+    <div style={{ padding: '8px', overflow: 'auto', height: '100%' }}>
+
+      {/* Active alerts */}
+      {alerts.length > 0 && (
+        <div style={{ marginBottom: 10 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: '#ef4444', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            Active Alerts ({alerts.length})
+          </div>
+          {alerts.slice(0, 4).map((a, i) => (
+            <div key={a.name || i} style={{ fontSize: 10, color: '#fca5a5', background: '#ef444411', border: '1px solid #ef444433', borderRadius: 4, padding: '3px 8px', marginBottom: 3 }}>
+              {a.name || a.metric}: {a.message || a.condition || 'firing'}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Agent matrix */}
+      <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--accent)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        Agent Registry ({agents.length})
+      </div>
+      {agents.length === 0 ? (
+        <div className="ec-empty">No agent data. Ensure /p18/agents is reachable.</div>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 6 }}>
+          {agents.map((a, i) => {
+            const status = a.status || a.state || 'idle';
+            const ok     = status === 'active' || status === 'running';
+            const warn   = status === 'idle' || status === 'waiting';
+            const color  = ok ? '#22c55e' : warn ? '#f59e0b' : '#ef4444';
+            return (
+              <div key={a.id || a.name || i} style={{
+                background: 'rgba(255,255,255,0.03)', border: `1px solid ${color}22`,
+                borderRadius: 5, padding: '6px 8px',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 3 }}>
+                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: color, flexShrink: 0 }} />
+                  <span style={{ fontSize: 10, fontWeight: 700, color: '#e2e8f0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {a.name || a.id}
+                  </span>
+                </div>
+                <div style={{ fontSize: 9, color, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{status}</div>
+                {a.type && <div style={{ fontSize: 9, color: '#475569', marginTop: 1 }}>{a.type}</div>}
+                {a.stats?.totalRuns != null && (
+                  <div style={{ fontSize: 9, color: '#374151', marginTop: 1 }}>{a.stats.totalRuns} runs · {a.stats.successRate ?? 0}% ok</div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Observer metrics */}
+      {obs?.metrics && Object.keys(obs.metrics).length > 0 && (
+        <div style={{ marginTop: 12 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--accent)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            Observer Metrics
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 5 }}>
+            {Object.entries(obs.metrics).slice(0, 12).map(([key, m]) => {
+              const last = Array.isArray(m?.values) ? m.values[m.values.length - 1]?.value : m?.last ?? null;
+              return (
+                <div key={key} style={{ background: 'rgba(255,255,255,0.02)', borderRadius: 4, padding: '4px 6px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div style={{ fontSize: 9, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 1 }}>{key}</div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', fontFamily: 'monospace' }}>{last ?? '—'}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────
 const TABS = [
   { id: 'logs',   label: 'Runtime Logs' },
@@ -971,6 +1071,7 @@ const TABS = [
   { id: 'queue',  label: 'Queue' },
   { id: 'agents', label: 'Agents' },
   { id: 'collab', label: 'Agent Collaboration' },
+  { id: 'ops',    label: 'Live Ops' },
 ];
 
 export default function EngineeringConsole({ className = '' }) {
@@ -1001,6 +1102,7 @@ export default function EngineeringConsole({ className = '' }) {
         <MountedTab active={tab === 'queue'}>  <QueueMonitor />       </MountedTab>
         <MountedTab active={tab === 'agents'}> <AgentMonitor />       </MountedTab>
         <MountedTab active={tab === 'collab'}> <AgentCollaborationPanel /> </MountedTab>
+        <MountedTab active={tab === 'ops'}>    <ActiveAgentMatrix />  </MountedTab>
       </div>
     </div>
   );
