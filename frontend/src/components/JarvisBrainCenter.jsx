@@ -4,6 +4,7 @@ import { cycleStats } from "../phase18Api";
 import { getAutonomyStatus } from "../phase20Api";
 import { getMissions, getMissionStats, getPlanningHorizons, getAiProviders } from "../phase27Api";
 import PageHeader from "./PageHeader";
+import WorkflowNav from "./WorkflowNav";
 import "./JarvisBrainCenter.css";
 
 const FLOW_NODES = [
@@ -106,6 +107,7 @@ export default function JarvisBrainCenter({ onNavigate }) {
         ]}
         onNavigate={onNavigate}
       />
+      <WorkflowNav currentTab="jarvisbrain" onNavigate={onNavigate} />
       <div className="jbc-header">
         <div>
           <h1 className="jbc-title">Jarvis Brain Center</h1>

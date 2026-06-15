@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import "./ExecutiveDashboard.css";
 import PageHeader from "./PageHeader";
+import WorkflowNav from "./WorkflowNav";
 
 // ── Animation presets ────────────────────────────────────────────────
 const FADE_UP = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 } };
@@ -273,6 +274,7 @@ export default function ExecutiveDashboard({ onNavigate }) {
         ]}
         onNavigate={onNavigate}
       />
+      <WorkflowNav currentTab="executivedash" onNavigate={onNavigate} />
 
       {/* ── Header ── */}
       <motion.div className="ed-header" {...fadeUp(0)}>

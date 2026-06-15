@@ -1,0 +1,92 @@
+/* ── WorkflowNav ────────────────────────────────────────────────── */
+.wfn-root {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 20px;
+  background: rgba(8, 12, 22, 0.9);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+
+.wfn-root::-webkit-scrollbar { display: none; }
+
+.wfn-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.wfn-steps {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.wfn-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-faint);
+  font-size: 10px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.wfn-step:hover:not(:disabled) {
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.wfn-step--done {
+  color: var(--text-faint);
+}
+
+.wfn-step--done .wfn-step-icon {
+  opacity: 0.5;
+}
+
+.wfn-step--active {
+  color: var(--accent);
+  background: rgba(124, 111, 255, 0.1);
+  border-color: rgba(124, 111, 255, 0.25);
+  cursor: default;
+}
+
+.wfn-step-icon {
+  font-size: 11px;
+  line-height: 1;
+}
+
+.wfn-step-label {
+  line-height: 1;
+}
+
+.wfn-arrow {
+  font-size: 12px;
+  color: var(--text-faint);
+  opacity: 0.4;
+  flex-shrink: 0;
+  line-height: 1;
+  padding: 0 1px;
+  user-select: none;
+}
+
+.wfn-arrow--done {
+  opacity: 0.7;
+  color: var(--accent);
+}

@@ -5,6 +5,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { BASE_URL } from "../_client";
 import PageHeader from "./PageHeader";
+import WorkflowNav from "./WorkflowNav";
 
 async function _get(path) {
   const r = await fetch(`${BASE_URL}${path}`, { credentials: "include" });
@@ -680,6 +681,7 @@ export default function ReliabilityCenter({ onNavigate }) {
         ]}
         onNavigate={onNavigate}
       />
+      <WorkflowNav currentTab="reliability" onNavigate={onNavigate} />
       <div style={{ padding: "16px 24px 0" }}>
         <div style={{ display: "flex", gap: 2, borderBottom: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" }}>
           {TABS.map(t => (
