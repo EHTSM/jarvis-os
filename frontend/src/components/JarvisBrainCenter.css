@@ -63,3 +63,6 @@
 .jbc-activity-item { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; color: var(--text-dim); }
 .jbc-activity-ts { color: var(--text-faint); flex-shrink: 0; min-width: 50px; }
 .jbc-activity-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+
+.jbc-empty { padding: 30px 16px; text-align: center; color: #374151; font-size: 11px; font-style: italic; }
+

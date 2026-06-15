@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
 import { getLessons, getRecommendations, getLearningStats, runFullAnalysis } from "../phase19Api";
+import { getImprovementReports, getImprovementMetrics, getAiProviders } from "../phase27Api";
 import "./SelfImprovementCenter.css";
 
 const LESSONS = [
@@ -48,14 +49,25 @@ export default function SelfImprovementCenter({ onNavigate }) {
   const [stats,     setStats]     = useState(null);
   const [apiError,  setApiError]  = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
-  const TABS = ["lessons","failures","opportunities","performance","recommendations"];
+  const [reports,   setReports]   = useState([]);
+  const [metrics,   setMetrics]   = useState(null);
+  const [providers, setProviders] = useState([]);
+  const TABS = ["lessons","failures","opportunities","performance","recommendations","reports","providers"];
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([getLessons({ limit: 20 }), getRecommendations({ limit: 10 }), getLearningStats()])
-      .then(([lessRes, recRes, statsRes]) => {
-        if (cancelled) return;
-        const liveLessons = lessRes?.lessons;
+    Promise.allSettled([
+      getLessons({ limit: 20 }),
+      getRecommendations({ limit: 10 }),
+      getLearningStats(),
+      getImprovementReports(),
+      getImprovementMetrics(),
+      getAiProviders(),
+    ]).then(([lessRes, recRes, statsRes, reportsRes, metricsRes, providersRes]) => {
+      if (cancelled) return;
+
+      if (lessRes.status === "fulfilled") {
+        const liveLessons = lessRes.value?.lessons;
         if (Array.isArray(liveLessons) && liveLessons.length > 0) {
           setLessons(liveLessons.map(l => ({
             icon: "💡",
@@ -63,7 +75,9 @@ export default function SelfImprovementCenter({ onNavigate }) {
             meta: `${l.source || "System"} · ${l.createdAt ? new Date(l.createdAt).toLocaleDateString() : "recent"}`,
           })));
         }
-        const liveRecs = recRes?.recommendations;
+      }
+      if (recRes.status === "fulfilled") {
+        const liveRecs = recRes.value?.recommendations;
         if (Array.isArray(liveRecs) && liveRecs.length > 0) {
           setRecs(liveRecs.map((r, i) => ({
             priority: r.priority || i + 1,
@@ -71,9 +85,22 @@ export default function SelfImprovementCenter({ onNavigate }) {
             desc:     r.description || r.detail || "",
           })));
         }
-        if (statsRes) setStats(statsRes);
-      })
-      .catch(err => { if (!cancelled) setApiError(err.message); });
+      }
+      if (statsRes.status === "fulfilled" && statsRes.value) setStats(statsRes.value);
+
+      if (reportsRes.status === "fulfilled") {
+        const raw = reportsRes.value;
+        setReports(Array.isArray(raw) ? raw : (raw?.reports ?? []));
+      }
+      if (metricsRes.status === "fulfilled" && metricsRes.value) setMetrics(metricsRes.value);
+      if (providersRes.status === "fulfilled") {
+        const raw = providersRes.value;
+        setProviders(Array.isArray(raw) ? raw : (raw?.providers ?? []));
+      }
+
+      const anyFailed = [lessRes, recRes, statsRes].some(r => r.status === "rejected");
+      if (anyFailed) setApiError("Some live data unavailable");
+    });
     return () => { cancelled = true; };
   }, []);
 
@@ -198,6 +225,101 @@ export default function SelfImprovementCenter({ onNavigate }) {
               <button className="sic-apply-btn" onClick={() => track("sic_apply", {title: r.title})}>Apply</button>
             </div>
           ))}
+        </div>
+      )}
+
+      {tab === "reports" && (
+        <div className="sic-panel sic-panel-full">
+          <div className="sic-panel-title">Improvement Reports</div>
+          {reports.length === 0 ? (
+            <div style={{ padding: "20px", textAlign: "center", color: "#374151", fontSize: 11, fontStyle: "italic" }}>
+              No improvement reports yet. Run "↺ Re-analyze" or wait for automated analysis.
+            </div>
+          ) : (
+            reports.map((r, i) => {
+              const score = r.score ?? r.overallScore ?? r.successRate;
+              return (
+                <div key={r.id ?? i} style={{
+                  background: "#0f1117", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 5,
+                  padding: "10px 12px", marginBottom: 8,
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                    <span style={{ fontWeight: 700, fontSize: 12, color: "#e2e8f0" }}>
+                      {r.title ?? r.type ?? `Report #${i + 1}`}
+                    </span>
+                    <span style={{ fontSize: 10, color: "#64748b" }}>
+                      {r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ""}
+                    </span>
+                  </div>
+                  {score != null && (
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                      <div style={{ flex: 1, height: 3, background: "#1e2130", borderRadius: 2, overflow: "hidden" }}>
+                        <div style={{ width: score + "%", height: "100%", background: score >= 80 ? "#22c55e" : score >= 60 ? "#eab308" : "#ef4444", borderRadius: 2 }} />
+                      </div>
+                      <span style={{ fontSize: 10, color: score >= 80 ? "#22c55e" : score >= 60 ? "#eab308" : "#ef4444", fontWeight: 700 }}>{score}%</span>
+                    </div>
+                  )}
+                  {r.summary && <div style={{ fontSize: 11, color: "#94a3b8", lineHeight: 1.5 }}>{r.summary}</div>}
+                  {Array.isArray(r.recommendations) && r.recommendations.length > 0 && (
+                    <div style={{ marginTop: 6 }}>
+                      {r.recommendations.slice(0, 3).map((rec, j) => (
+                        <div key={j} style={{ fontSize: 10, color: "#64748b", padding: "2px 0" }}>• {rec.title ?? rec.action ?? rec}</div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          )}
+          {metrics && (
+            <div style={{ background: "#0f1117", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 5, padding: "10px 12px", marginTop: 8 }}>
+              <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", color: "#64748b", marginBottom: 8 }}>Live Metrics</div>
+              {Object.entries(metrics).slice(0, 6).map(([k, v]) => (
+                <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 11, padding: "2px 0", color: "#94a3b8" }}>
+                  <span>{k.replace(/_/g, " ")}</span>
+                  <span style={{ color: "#e2e8f0", fontWeight: 600 }}>{typeof v === "number" ? (v > 1 ? v : `${Math.round(v * 100)}%`) : String(v)}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {tab === "providers" && (
+        <div className="sic-panel sic-panel-full">
+          <div className="sic-panel-title">AI Provider Status</div>
+          {providers.length === 0 ? (
+            <div style={{ padding: "20px", textAlign: "center", color: "#374151", fontSize: 11, fontStyle: "italic" }}>
+              No AI providers configured.
+            </div>
+          ) : (
+            providers.map((p, i) => {
+              const isOk = p.status === "active" || p.status === "healthy" || p.available === true;
+              const statusColor = isOk ? "#22c55e" : p.status === "degraded" ? "#eab308" : "#ef4444";
+              return (
+                <div key={p.id ?? p.name ?? i} style={{
+                  background: "#0f1117", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 5,
+                  padding: "10px 12px", marginBottom: 8, display: "flex", alignItems: "center", gap: 12,
+                }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 700, fontSize: 13, color: "#e2e8f0", marginBottom: 2 }}>
+                      {p.name ?? p.provider ?? p.id}
+                    </div>
+                    {p.model && <div style={{ fontSize: 10, color: "#64748b" }}>Model: {p.model}</div>}
+                    {p.description && <div style={{ fontSize: 10, color: "#64748b", marginTop: 2 }}>{p.description}</div>}
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 10,
+                      background: statusColor + "18", color: statusColor, border: `1px solid ${statusColor}44`,
+                    }}>{p.status ?? (p.available ? "active" : "unknown")}</span>
+                    {p.latency != null && <span style={{ fontSize: 10, color: "#64748b" }}>{p.latency}ms</span>}
+                    {p.cost != null && <span style={{ fontSize: 10, color: "#64748b" }}>${p.cost}/1k</span>}
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
       )}
     </div>
