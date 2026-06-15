@@ -8,29 +8,33 @@ import { useEffect, useRef } from 'react';
 
 const SHORTCUTS = [
   // Navigation — Cmd+1 through Cmd+9
-  { id: 'nav-home',        keys: ['Meta+1', 'Ctrl+1'],     description: 'Command Center'    },
-  { id: 'nav-intelligence',keys: ['Meta+2', 'Ctrl+2'],     description: 'Intelligence'      },
-  { id: 'nav-engineering', keys: ['Meta+3', 'Ctrl+3'],     description: 'Engineering'       },
-  { id: 'nav-contacts',    keys: ['Meta+4', 'Ctrl+4'],     description: 'Contacts'          },
-  { id: 'nav-payments',    keys: ['Meta+5', 'Ctrl+5'],     description: 'Payments'          },
-  { id: 'nav-reports',     keys: ['Meta+6', 'Ctrl+6'],     description: 'Reports'           },
-  { id: 'nav-chat',        keys: ['Meta+7', 'Ctrl+7'],     description: 'AI Assistant'      },
+  { id: 'nav-home',          keys: ['Meta+1', 'Ctrl+1'],           description: 'Command Center'    },
+  { id: 'nav-intelligence',  keys: ['Meta+2', 'Ctrl+2'],           description: 'Intelligence'      },
+  { id: 'nav-engineering',   keys: ['Meta+3', 'Ctrl+3'],           description: 'Engineering'       },
+  { id: 'nav-contacts',      keys: ['Meta+4', 'Ctrl+4'],           description: 'Contacts'          },
+  { id: 'nav-payments',      keys: ['Meta+5', 'Ctrl+5'],           description: 'Payments'          },
+  { id: 'nav-reports',       keys: ['Meta+6', 'Ctrl+6'],           description: 'Reports'           },
+  { id: 'nav-chat',          keys: ['Meta+7', 'Ctrl+7'],           description: 'AI Assistant'      },
+  { id: 'nav-systemhealth',  keys: ['Meta+8', 'Ctrl+8'],           description: 'System Health'     },
+  { id: 'nav-globalactivity',keys: ['Meta+9', 'Ctrl+9'],           description: 'Global Activity'   },
 
   // Actions
-  { id: 'palette',         keys: ['Meta+k', 'Ctrl+k'],     description: 'Command Palette'   },
-  { id: 'new-task',        keys: ['Meta+n', 'Ctrl+n'],     description: 'New Task'          },
-  { id: 'search',          keys: ['/'],                     description: 'Quick Search',     noInput: true },
-  { id: 'help',            keys: ['?'],                     description: 'Keyboard Shortcuts', noInput: true },
-  { id: 'escape',          keys: ['Escape'],                description: 'Close / Cancel'   },
+  { id: 'palette',           keys: ['Meta+k', 'Ctrl+k'],           description: 'Command Palette'   },
+  { id: 'new-task',          keys: ['Meta+n', 'Ctrl+n'],           description: 'New Task'          },
+  { id: 'nav-back',          keys: ['Meta+[', 'Alt+ArrowLeft'],    description: 'Go Back'           },
+  { id: 'nav-forward',       keys: ['Meta+]', 'Alt+ArrowRight'],   description: 'Go Forward'        },
+  { id: 'search',            keys: ['/'],                           description: 'Quick Search',     noInput: true },
+  { id: 'help',              keys: ['?'],                           description: 'Keyboard Shortcuts', noInput: true },
+  { id: 'escape',            keys: ['Escape'],                      description: 'Close / Cancel'   },
 
   // Runtime
-  { id: 'emergency-stop',  keys: ['Meta+Shift+.', 'Ctrl+Shift+.'], description: 'Emergency Stop' },
-  { id: 'emergency-resume',keys: ['Meta+Shift+/', 'Ctrl+Shift+/'], description: 'Resume'         },
+  { id: 'emergency-stop',    keys: ['Meta+Shift+.', 'Ctrl+Shift+.'], description: 'Emergency Stop' },
+  { id: 'emergency-resume',  keys: ['Meta+Shift+/', 'Ctrl+Shift+/'], description: 'Resume'         },
 
   // View
-  { id: 'zoom-in',         keys: ['Meta+=', 'Ctrl+='],     description: 'Zoom In'           },
-  { id: 'zoom-out',        keys: ['Meta+-', 'Ctrl+-'],     description: 'Zoom Out'          },
-  { id: 'fullscreen',      keys: ['F11'],                   description: 'Fullscreen'        },
+  { id: 'zoom-in',           keys: ['Meta+=', 'Ctrl+='],           description: 'Zoom In'           },
+  { id: 'zoom-out',          keys: ['Meta+-', 'Ctrl+-'],           description: 'Zoom Out'          },
+  { id: 'fullscreen',        keys: ['F11'],                         description: 'Fullscreen'        },
 ];
 
 export { SHORTCUTS };

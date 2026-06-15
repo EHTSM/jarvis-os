@@ -128,6 +128,27 @@
 .topbar-status { display: flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(255,255,255,0.30); letter-spacing: 0.02em; padding: 0 4px; }
 .topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
+/* Back / forward navigation arrows */
+.topbar-nav-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: transparent;
+  color: rgba(255,255,255,0.35);
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.1s, border-color 0.1s, background 0.1s;
+  font-family: var(--font-sans);
+  flex-shrink: 0;
+}
+.topbar-nav-arrow:hover:not(:disabled) { color: rgba(255,255,255,0.70); border-color: rgba(255,255,255,0.14); background: rgba(255,255,255,0.05); }
+.topbar-nav-arrow:disabled { opacity: 0.22; cursor: default; }
+
 /* Palette trigger alias */
 .palette-trigger { display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.40); font-size: 12px; cursor: pointer; transition: border-color 0.12s, color 0.12s, background 0.12s; font-family: var(--font-sans); }
 .palette-trigger:hover { border-color: rgba(255,255,255,0.16); color: rgba(255,255,255,0.70); background: rgba(255,255,255,0.07); }
@@ -302,6 +323,42 @@
   z-index: 200;
   box-shadow: 0 16px 48px rgba(0,0,0,0.70);
   backdrop-filter: blur(20px);
+}
+
+.tab-more-search-wrap {
+  padding: 4px 4px 2px;
+}
+
+.tab-more-search {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 7px;
+  color: #e2e8f0;
+  font-size: 12px;
+  padding: 5px 9px;
+  font-family: var(--font-sans);
+  transition: border-color 0.12s;
+  outline: none;
+}
+.tab-more-search:focus { border-color: rgba(124,111,255,0.35); }
+.tab-more-search::placeholder { color: rgba(255,255,255,0.2); }
+
+.tab-more-list {
+  max-height: 340px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #1e2333 transparent;
+}
+.tab-more-list::-webkit-scrollbar { width: 3px; }
+.tab-more-list::-webkit-scrollbar-thumb { background: #1e2333; border-radius: 2px; }
+
+.tab-more-empty {
+  padding: 10px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  text-align: center;
 }
 
 .tab-more-item {

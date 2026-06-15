@@ -232,6 +232,54 @@ function _loadProfile() {
   catch { return null; }
 }
 
+// ── More ▾ dropdown with live search ─────────────────────────────────────────
+function MoreMenu({ currentTab, onSelect }) {
+  const [query, setQuery] = React.useState('');
+  const inputRef = React.useRef(null);
+
+  React.useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  const filtered = query.trim()
+    ? MORE_TABS.filter(m => m.label.toLowerCase().includes(query.toLowerCase()))
+    : MORE_TABS;
+
+  return (
+    <div className="tab-more-menu" role="menu">
+      <div className="tab-more-search-wrap">
+        <input
+          ref={inputRef}
+          className="tab-more-search"
+          placeholder="Search tabs…"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === 'Escape') { e.stopPropagation(); onSelect(currentTab); }
+            if (e.key === 'Enter' && filtered.length > 0) { e.preventDefault(); onSelect(filtered[0].id); }
+          }}
+          aria-label="Search tabs"
+        />
+      </div>
+      <div className="tab-more-list">
+        {filtered.map(m => (
+          <button
+            key={m.id}
+            className={`tab-more-item${currentTab === m.id ? " active" : ""}`}
+            role="menuitem"
+            onClick={() => onSelect(m.id)}
+          >
+            {m.label}
+          </button>
+        ))}
+        {filtered.length === 0 && (
+          <div className="tab-more-empty">No tabs match "{query}"</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function _welcomeMessage(profile) {
   if (!profile) {
     return "Hi! I'm Ooplix — your AI Operating System.\n\nI manage your entire business in the background: follow up with leads automatically, run code and shell commands, execute workflows, track your pipeline, and take action while you're away.\n\nOpen the Control Room tab to execute tasks directly, or just tell me what you need.";
@@ -274,7 +322,18 @@ function AppInner() {
   const [loading, setLoading] = useState(false);
   const [online,  setOnline]  = useState(false);
   // Default: Control Center (home) — overview + dispatch + live status
-  const [tab,      setTab]      = useState("home");
+  const [tab,      _setTab]     = useState("home");
+  const tabHistory  = useRef(["home"]);
+  const tabFuture   = useRef([]);
+  const setTab = useCallback((next) => {
+    _setTab(prev => {
+      if (prev === next) return prev;
+      tabHistory.current.push(next);
+      if (tabHistory.current.length > 40) tabHistory.current.shift();
+      tabFuture.current = [];
+      return next;
+    });
+  }, []);
   const [moreOpen,    setMoreOpen]    = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
@@ -355,17 +414,33 @@ function AppInner() {
 
   // ── Keyboard shortcuts ────────────────────────────────────────────
   useKeyboardShortcuts({
-    'palette':          () => { setPaletteOpen(o => !o); track.commandPaletteOpened('keyboard'); },
-    'nav-home':         () => { setTab('home');         setScreen('app'); },
-    'nav-intelligence': () => { setTab('chat');         setScreen('app'); },
-    'nav-engineering':  () => { setTab('engineering');  setScreen('app'); },
-    'nav-contacts':     () => { setTab('clients');      setScreen('app'); },
-    'nav-payments':     () => { setTab('payments');     setScreen('app'); },
-    'nav-reports':      () => { setTab('reports');      setScreen('app'); },
-    'nav-chat':         () => { setTab('chat');         setScreen('app'); },
-    'help':             () => setShortcutsOpen(o => !o),
-    'search':           () => setPaletteOpen(true),
-    'escape':           () => {
+    'palette':             () => { setPaletteOpen(o => !o); track.commandPaletteOpened('keyboard'); },
+    'nav-home':            () => { setTab('home');           setScreen('app'); },
+    'nav-intelligence':    () => { setTab('chat');           setScreen('app'); },
+    'nav-engineering':     () => { setTab('engineering');    setScreen('app'); },
+    'nav-contacts':        () => { setTab('clients');        setScreen('app'); },
+    'nav-payments':        () => { setTab('payments');       setScreen('app'); },
+    'nav-reports':         () => { setTab('reports');        setScreen('app'); },
+    'nav-chat':            () => { setTab('chat');           setScreen('app'); },
+    'nav-systemhealth':    () => { setTab('systemhealth');   setScreen('app'); },
+    'nav-globalactivity':  () => { setTab('globalactivity'); setScreen('app'); },
+    'nav-back': () => {
+      const hist = tabHistory.current;
+      if (hist.length < 2) return;
+      hist.pop();
+      const prev = hist[hist.length - 1];
+      tabFuture.current.unshift(tab);
+      _setTab(prev);
+    },
+    'nav-forward': () => {
+      const next = tabFuture.current.shift();
+      if (!next) return;
+      tabHistory.current.push(next);
+      _setTab(next);
+    },
+    'help':                () => setShortcutsOpen(o => !o),
+    'search':              () => setPaletteOpen(true),
+    'escape':              () => {
       if (shortcutsOpen) { setShortcutsOpen(false); return; }
       if (paletteOpen)   { setPaletteOpen(false);   return; }
       if (moreOpen)      { setMoreOpen(false);       return; }
@@ -631,18 +706,10 @@ function AppInner() {
                     {secondaryActive ? (MORE_TABS.find(m => m.id === tab)?.label ?? "More") + " ▾" : "More ▾"}
                   </button>
                   {moreOpen && (
-                    <div className="tab-more-menu" role="menu">
-                      {MORE_TABS.map(m => (
-                        <button
-                          key={m.id}
-                          className={`tab-more-item${tab === m.id ? " active" : ""}`}
-                          role="menuitem"
-                          onClick={() => { setTab(m.id); setMoreOpen(false); }}
-                        >
-                          {m.label}
-                        </button>
-                      ))}
-                    </div>
+                    <MoreMenu
+                      currentTab={tab}
+                      onSelect={(id) => { setTab(id); setMoreOpen(false); }}
+                    />
                   )}
                 </div>
               );
@@ -660,6 +727,33 @@ function AppInner() {
         </nav>
 
         <div className="topbar-actions">
+          {/* Back / Forward nav arrows */}
+          <button
+            className="topbar-nav-arrow"
+            disabled={tabHistory.current.length < 2}
+            title="Go back (⌘[)"
+            onClick={() => {
+              const hist = tabHistory.current;
+              if (hist.length < 2) return;
+              const leaving = hist.pop();
+              const prev = hist[hist.length - 1];
+              tabFuture.current.unshift(leaving);
+              _setTab(prev);
+            }}
+            aria-label="Go back"
+          >‹</button>
+          <button
+            className="topbar-nav-arrow"
+            disabled={tabFuture.current.length === 0}
+            title="Go forward (⌘])"
+            onClick={() => {
+              const next = tabFuture.current.shift();
+              if (!next) return;
+              tabHistory.current.push(next);
+              _setTab(next);
+            }}
+            aria-label="Go forward"
+          >›</button>
           {(tab === "home" || tab === "runtime") && (
             opsData?.status === "critical" ? (
               <button
