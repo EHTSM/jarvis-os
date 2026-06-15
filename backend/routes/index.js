@@ -48,5 +48,6 @@ router.use(require("./admin"));         // /admin/team, /admin/member/*, /admin/
 router.use(require("./governance"));    // /governance/policies, /governance/templates, /governance/compliance, /governance/reports, /governance/risk
 router.use(require("./automation"));    // /automation/rules, /automation/templates, /automation/history, /automation/statistics, /automation/dry-run
 router.use(require("./analytics"));    // /analytics/executive, /workspace, /productivity, /automation, /security, /governance, /ai, /runtime, /missions, /reports
+router.use(require("./plugins"));      // /plugins, /plugins/:id, /plugins/install, /plugins/uninstall, /plugins/enable, /plugins/disable, /plugins/health, /plugins/diagnostics
 
 module.exports = router;
