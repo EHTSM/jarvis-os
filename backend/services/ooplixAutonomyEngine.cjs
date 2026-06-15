@@ -161,7 +161,7 @@ function createTask(type, spec = {}) {
     return { ...task };
 }
 
-/** Dispatch all pending tasks (up to limit) via autonomousTaskLoop. */
+/** Dispatch all pending tasks (up to limit) via the canonical autonomousLoop. */
 async function dispatchPending({ limit = 10, type } = {}) {
     let pending = _tasks.filter(t => t.status === "pending");
     if (type) pending = pending.filter(t => t.type === type);
@@ -171,38 +171,26 @@ async function dispatchPending({ limit = 10, type } = {}) {
     const dispatched = [];
     const errors     = [];
 
-    // Lazy-load ATL and AEE
-    let atl = null, aee = null;
-    try { atl = require("./autonomousTaskLoop.cjs"); } catch { /* optional */ }
-    try { aee = require("./agentExecutionEngine.cjs"); } catch { /* optional */ }
+    let loop = null;
+    try { loop = require("../../agents/autonomousLoop.cjs"); } catch { /* optional */ }
 
     for (const task of pending) {
         const idx = _tasks.findIndex(t => t.taskId === task.taskId);
         try {
-            let cycleId = null, runId = null;
+            let loopTaskId = null;
 
-            if (atl) {
-                // Preferred: run full Goal→Task→Memory cycle
-                const cycle = atl.startCycle(task.goal, { goalType: task.type, source: "ooplix_auto" });
-                cycleId = cycle.cycleId;
-            } else if (aee) {
-                // Fallback: direct agent dispatch
-                const result = await aee.executeTask(task.agent, task.goal, { type: `ooplix_${task.type}` });
-                runId = result.runId;
-                if (result.success) {
-                    _tasks[idx].output = (result.output || "").slice(0, 500);
-                } else {
-                    _tasks[idx].error  = result.error;
-                }
+            if (loop) {
+                // Route through the canonical task loop — one execution path
+                const queued = loop.addTask({ input: `[ooplix:${task.type}] ${task.goal}`, type: `ooplix_${task.type}` });
+                loopTaskId = queued.id;
             }
 
             _tasks[idx].status       = "dispatched";
             _tasks[idx].dispatchedAt = new Date().toISOString();
-            _tasks[idx].cycleId      = cycleId;
-            _tasks[idx].runId        = runId;
+            _tasks[idx].runId        = loopTaskId;
 
-            dispatched.push({ taskId: task.taskId, cycleId, runId });
-            auditLog.append({ type: "ooplix_task_dispatch", taskId: task.taskId, cycleId, runId });
+            dispatched.push({ taskId: task.taskId, loopTaskId });
+            auditLog.append({ type: "ooplix_task_dispatch", taskId: task.taskId, loopTaskId });
         } catch (e) {
             _tasks[idx].status = "failed";
             _tasks[idx].error  = e.message;
@@ -216,36 +204,36 @@ async function dispatchPending({ limit = 10, type } = {}) {
     return { dispatched, errors, total: pending.length };
 }
 
-/** Schedule recurring autonomous task generation for a type. */
+/** Schedule recurring autonomous task generation for a type via the canonical autonomousLoop. */
 function scheduleRecurring(type, cronSpec) {
     const scheduleId = _sid();
-    const schedule = { scheduleId, type, cronSpec, active: true, createdAt: new Date().toISOString(), lastRunAt: null, runCount: 0 };
-    _schedules.push(schedule);
-    _saveSchedules();
 
-    // Register with node-cron if available
+    // Validate cron before storing
     try {
         const cron = require("node-cron");
         if (!cron.validate(cronSpec)) throw new Error(`Invalid cron: ${cronSpec}`);
-        cron.schedule(cronSpec, async () => {
-            const sc = _schedules.find(s => s.scheduleId === scheduleId);
-            if (!sc || !sc.active) return;
-            sc.lastRunAt = new Date().toISOString();
-            sc.runCount++;
-            _saveSchedules();
-            // Auto-generate one task of this type from templates
-            const templates = TASK_SPECS[type];
-            if (templates && templates.length) {
-                const spec = templates[Math.floor(Math.random() * templates.length)];
-                createTask(type, { ...spec, source: "scheduled" });
-                await dispatchPending({ limit: 5, type });
-            }
-        });
-        logger.info(`[OoplixAuto] Scheduled ${type} — cron: ${cronSpec}`);
     } catch (e) {
-        logger.warn(`[OoplixAuto] Could not register cron for ${scheduleId}: ${e.message}`);
+        throw new Error(`scheduleRecurring: ${e.message}`);
     }
 
+    const schedule = { scheduleId, type, cronSpec, active: true, createdAt: new Date().toISOString(), lastRunAt: null, runCount: 0, loopTaskId: null };
+
+    // Register with the canonical autonomousLoop (one scheduler for the whole system)
+    try {
+        const loop = require("../../agents/autonomousLoop.cjs");
+        const queued = loop.addTask({
+            input:        `[ooplix:${type}] Autonomous scheduled cycle for type=${type}`,
+            type:         `ooplix_${type}_scheduled`,
+            recurringCron: cronSpec,
+        });
+        schedule.loopTaskId = queued.id;
+        logger.info(`[OoplixAuto] Scheduled ${type} via autonomousLoop task ${queued.id} — cron: ${cronSpec}`);
+    } catch (e) {
+        logger.warn(`[OoplixAuto] Could not register cron via autonomousLoop for ${scheduleId}: ${e.message}`);
+    }
+
+    _schedules.push(schedule);
+    _saveSchedules();
     auditLog.append({ type: "ooplix_schedule_create", scheduleId, taskType: type, cronSpec });
     return { scheduleId, type, cronSpec };
 }
