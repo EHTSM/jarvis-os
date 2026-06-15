@@ -296,6 +296,13 @@ export default function ElectronWorkspace({ children }) {
       case 'nav:arch':         openBottomTab('arch'); break;
       case 'nav:productivity': setSidebar('productivity'); break;
       case 'nav:home':         setOsView('os'); break;
+      case 'nav:tab':
+        if (item?.tab) {
+          setOsView('os');
+          window.dispatchEvent(new CustomEvent('jarvis-os-nav', { detail: item.tab }));
+        }
+        break;
+      case 'open-search': setSearchOpen?.(true); break;
       case 'screenshot':
         api()?.screenshotWindow?.().then(p => {
           if (p) api()?.showNotification?.({ title: 'Screenshot saved', body: p });

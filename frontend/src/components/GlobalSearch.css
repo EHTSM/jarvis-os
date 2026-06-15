@@ -130,6 +130,23 @@
 }
 .gs-result--active .gs-result__type { color: #065f46; }
 
+/* Category groups */
+.gs-group {
+  margin-bottom: 2px;
+}
+
+.gs-group__label {
+  padding: 6px 10px 3px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 /* Footer hints */
 .gs-footer {
   display: flex;
