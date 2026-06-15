@@ -4,27 +4,20 @@
  * No new backend routes. All endpoints already exist.
  */
 
-const BASE = "http://localhost:5050";
-const creds = { credentials: "include" };
+import { _fetch } from "../../_client";
 
 async function get(path, params = {}) {
   const qs = Object.keys(params).length
     ? "?" + new URLSearchParams(params).toString()
     : "";
-  const r = await fetch(`${BASE}${path}${qs}`, creds);
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return r.json();
+  return _fetch(`${path}${qs}`);
 }
 
 async function post(path, body = {}) {
-  const r = await fetch(`${BASE}${path}`, {
+  return _fetch(path, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-    ...creds,
   });
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return r.json();
 }
 
 // ── Runtime ──────────────────────────────────────────────────────────
