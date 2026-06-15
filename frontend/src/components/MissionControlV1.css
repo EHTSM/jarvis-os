@@ -415,3 +415,107 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ── Lifecycle Runtime panel ──────────────────────────────────────── */
+.mc-lifecycle { }
+.mc-lc-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.mc-lc-input {
+  flex: 1;
+  min-width: 200px;
+  max-width: 320px;
+  padding: 5px 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  color: var(--text, #e2e8f0);
+  font-size: 12px;
+  outline: none;
+}
+.mc-lc-input:focus { border-color: var(--accent, #7c3aed); }
+.mc-lc-err { font-size: 11px; color: #f87171; }
+
+.mc-lc-stage-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 8px;
+}
+.mc-lc-stage-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.mc-lc-stage-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mc-lc-stage-name {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+.mc-lc-stage-desc {
+  font-size: 11px;
+  color: var(--text-muted, #94a3b8);
+}
+.mc-lc-stage-meta {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.mc-lc-badge {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.06);
+  color: var(--text-muted, #94a3b8);
+  white-space: nowrap;
+}
+.mc-lc-badge--conf   { background: rgba(167,139,250,0.15); color: #a78bfa; }
+.mc-lc-badge--status { background: rgba(52,211,153,0.1);  color: #34d399; }
+
+.mc-lc-progress { margin: 4px 0 2px; }
+.mc-lc-progress-label {
+  font-size: 10px;
+  color: var(--text-muted, #94a3b8);
+  margin-bottom: 8px;
+}
+
+.mc-lc-controls {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.mc-lc-events {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 140px;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.2);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+.mc-lc-event {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+.mc-lc-event-ts    { color: #4b5563; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.mc-lc-event-type  { color: #60a5fa; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mc-lc-event-stage { color: #fbbf24; font-size: 10px; background: rgba(251,191,36,0.1); padding: 1px 5px; border-radius: 3px; }

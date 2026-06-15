@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "../api";
 import { getRuntimeStatus, getRuntimeHistory } from "../runtimeApi";
 import { listAgents, memoryStats, cycleStats } from "../phase18Api";
 import { getAutonomyScore } from "../phase20Api";
 import { getBillingStatus } from "../billingApi";
+import { _fetch } from "../_client";
 import "./MissionControlV1.css";
 
 const REFRESH_INTERVAL = 30_000;
@@ -48,6 +49,170 @@ function ServiceRow({ label, ok }) {
       <StatusDot ok={ok} />
       <span>{label}</span>
     </div>
+  );
+}
+
+const LC_STAGE_COLOR = {
+  observe: '#60a5fa', detect: '#60a5fa', reason: '#a78bfa', recommend: '#a78bfa',
+  plan: '#fbbf24', delegate: '#fbbf24', execute: '#34d399', review: '#34d399',
+  test: '#34d399', secure: '#f87171', deploy: '#fb923c', verify: '#fb923c',
+  heal: '#94a3b8', learn: '#94a3b8',
+};
+
+function LifecyclePanel() {
+  const [missionId, setMissionId] = useState('');
+  const [inputId,   setInputId]   = useState('');
+  const [stage,     setStage]     = useState(null);
+  const [events,    setEvents]    = useState([]);
+  const [err,       setErr]       = useState(null);
+  const [pausing,   setPausing]   = useState(false);
+  const [resuming,  setResuming]  = useState(false);
+  const [retrying,  setRetrying]  = useState(false);
+  const eventsRef = useRef(null);
+
+  const loadStage = useCallback(async (id) => {
+    try {
+      const r = await _fetch(`/runtime/stage/${id}`);
+      setStage(r.stage || null);
+      setErr(null);
+    } catch (e) { setErr(e.message); }
+  }, []);
+
+  const loadEvents = useCallback(async (id) => {
+    try {
+      const r = await _fetch(`/runtime/events/${id}?limit=20`);
+      setEvents(r.events || []);
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    if (!missionId) return;
+    loadStage(missionId);
+    loadEvents(missionId);
+    const t = setInterval(() => {
+      if (!document.hidden) { loadStage(missionId); loadEvents(missionId); }
+    }, 4000);
+    return () => clearInterval(t);
+  }, [missionId, loadStage, loadEvents]);
+
+  useEffect(() => {
+    if (eventsRef.current) eventsRef.current.scrollTop = eventsRef.current.scrollHeight;
+  }, [events.length]);
+
+  const start = useCallback(async () => {
+    if (!inputId.trim()) return;
+    try {
+      await _fetch(`/runtime/lifecycle/start/${inputId.trim()}`, { method: 'POST', body: '{}' });
+      setMissionId(inputId.trim());
+    } catch (e) { setErr(e.message); }
+  }, [inputId]);
+
+  const pause = useCallback(async () => {
+    if (!missionId || pausing) return;
+    setPausing(true);
+    try { await _fetch(`/runtime/pause/${missionId}`, { method: 'POST' }); await loadStage(missionId); }
+    catch (e) { setErr(e.message); }
+    finally { setPausing(false); }
+  }, [missionId, pausing, loadStage]);
+
+  const resume = useCallback(async () => {
+    if (!missionId || resuming) return;
+    setResuming(true);
+    try { await _fetch(`/runtime/resume/${missionId}`, { method: 'POST' }); await loadStage(missionId); }
+    catch (e) { setErr(e.message); }
+    finally { setResuming(false); }
+  }, [missionId, resuming, loadStage]);
+
+  const retry = useCallback(async () => {
+    if (!missionId || retrying) return;
+    setRetrying(true);
+    try { await _fetch(`/runtime/retry/${missionId}`, { method: 'POST' }); await loadStage(missionId); }
+    catch (e) { setErr(e.message); }
+    finally { setRetrying(false); }
+  }, [missionId, retrying, loadStage]);
+
+  const stageColor = stage ? (LC_STAGE_COLOR[stage.stage] || '#6b7280') : '#374151';
+
+  return (
+    <section className="mc-section mc-lifecycle">
+      <div className="mc-section-head">
+        <h2>Lifecycle Runtime</h2>
+      </div>
+
+      {/* Mission selector */}
+      <div className="mc-lc-toolbar">
+        <input
+          className="mc-lc-input"
+          placeholder="Mission ID (msn_…)"
+          value={inputId}
+          onChange={e => setInputId(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter') start(); }}
+        />
+        <button className="mc-btn mc-btn--sm" onClick={start} disabled={!inputId.trim()}>
+          Attach
+        </button>
+        {err && <span className="mc-lc-err">{err}</span>}
+      </div>
+
+      {missionId && stage && (
+        <>
+          {/* Current stage */}
+          <div className="mc-lc-stage-row">
+            <div className="mc-lc-stage-dot" style={{ background: stageColor }} />
+            <div className="mc-lc-stage-info">
+              <span className="mc-lc-stage-name" style={{ color: stageColor }}>
+                {stage.stageLabel || stage.stage || '—'}
+              </span>
+              <span className="mc-lc-stage-desc">{stage.description}</span>
+            </div>
+            <div className="mc-lc-stage-meta">
+              {stage.agent && <span className="mc-lc-badge">{stage.agent}</span>}
+              {stage.confidence != null && (
+                <span className="mc-lc-badge mc-lc-badge--conf">{stage.confidence}% conf</span>
+              )}
+              <span className="mc-lc-badge mc-lc-badge--status">{stage.status}</span>
+            </div>
+          </div>
+
+          {/* Progress bar */}
+          <div className="mc-progress-bar mc-lc-progress">
+            <div
+              className="mc-progress-fill"
+              style={{ width: `${stage.progressPct || 0}%`, background: stageColor }}
+            />
+          </div>
+          <div className="mc-lc-progress-label">
+            Stage {(stage.stageIndex || 0) + 1} of {stage.totalStages} — {stage.progressPct || 0}%
+          </div>
+
+          {/* Controls */}
+          <div className="mc-lc-controls">
+            <button className="mc-btn mc-btn--sm mc-btn--ghost" onClick={pause}  disabled={pausing || stage.status === 'paused'}>
+              {pausing ? '…' : '⏸ Pause'}
+            </button>
+            <button className="mc-btn mc-btn--sm mc-btn--ghost" onClick={resume} disabled={resuming || stage.status === 'running'}>
+              {resuming ? '…' : '▶ Resume'}
+            </button>
+            <button className="mc-btn mc-btn--sm mc-btn--ghost" onClick={retry}  disabled={retrying}>
+              {retrying ? '…' : '↺ Retry'}
+            </button>
+          </div>
+
+          {/* Live event stream */}
+          {events.length > 0 && (
+            <div className="mc-lc-events" ref={eventsRef}>
+              {events.slice(-10).map((evt, i) => (
+                <div key={i} className="mc-lc-event">
+                  <span className="mc-lc-event-ts">{new Date(evt.ts).toLocaleTimeString()}</span>
+                  <span className="mc-lc-event-type">{evt.type}</span>
+                  {evt.stage && <span className="mc-lc-event-stage">{evt.stage}</span>}
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </section>
   );
 }
 
@@ -333,6 +498,9 @@ export default function MissionControlV1({ onNavigate }) {
         />
 
       </div>
+
+      {/* Lifecycle Runtime */}
+      <LifecyclePanel />
 
       {/* Recent Activity */}
       <section className="mc-section">

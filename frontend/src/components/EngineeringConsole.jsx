@@ -345,9 +345,10 @@ function MountedTab({ active, children }) {
 
 // ── Agent Collaboration — Conversation + Delegation + Status Matrix ───────────
 const COLLAB_SUB_TABS = [
-  { id: 'pipeline', label: 'Agent Pipeline' },
-  { id: 'convo',    label: 'Conversation' },
-  { id: 'timeline', label: 'Delegation Timeline' },
+  { id: 'pipeline',  label: 'Agent Pipeline' },
+  { id: 'convo',     label: 'Conversation' },
+  { id: 'timeline',  label: 'Delegation Timeline' },
+  { id: 'lifecycle', label: 'Lifecycle Events' },
 ];
 
 const PIPELINE_STATUS_COLOR = {
@@ -583,6 +584,105 @@ function DelegationTimeline({ missionId }) {
   );
 }
 
+const LC_EVT_COLOR = {
+  'lifecycle:started':        '#34d399',
+  'lifecycle:completed':      '#22c55e',
+  'lifecycle:paused':         '#f59e0b',
+  'lifecycle:resumed':        '#60a5fa',
+  'lifecycle:retry':          '#fb923c',
+  'lifecycle:stage:start':    '#60a5fa',
+  'lifecycle:stage:complete': '#34d399',
+  'lifecycle:stage:failed':   '#ef4444',
+  'lifecycle:stage:next':     '#a78bfa',
+  'stage:start':              '#60a5fa',
+  'stage:complete':           '#34d399',
+  'stage:failed':             '#ef4444',
+  'stage:next':               '#a78bfa',
+};
+
+function LifecycleEventStream({ missionId }) {
+  const [data,  setData]  = useState(null);
+  const [stage, setStage] = useState(null);
+  const [err,   setErr]   = useState(null);
+  const streamRef = useRef(null);
+
+  const load = useCallback(async () => {
+    try {
+      const [evts, stg] = await Promise.all([
+        _fetch(`/runtime/events/${missionId}?limit=50`),
+        _fetch(`/runtime/stage/${missionId}`).catch(() => null),
+      ]);
+      setData(evts);
+      if (stg) setStage(stg.stage || null);
+      setErr(null);
+    } catch (e) { setErr(e.message); }
+  }, [missionId]);
+
+  useEffect(() => { load(); }, [load]);
+  useInterval(load, 3000);
+
+  useEffect(() => {
+    if (streamRef.current) streamRef.current.scrollTop = streamRef.current.scrollHeight;
+  }, [data?.events?.length]);
+
+  if (err)  return <div className="ec-error">Lifecycle events unavailable: {err}</div>;
+  if (!data) return <div className="ec-empty">Loading lifecycle events…</div>;
+
+  const s = stage;
+  return (
+    <div className="ec-collab-lc" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      {/* Current stage summary */}
+      {s && (
+        <div className="ec-collab-lc__stage">
+          <span className="ec-collab-lc__label">Current Stage</span>
+          <span
+            className="ec-collab-lc__stagename"
+            style={{ color: LC_EVT_COLOR[`stage:start`] || '#60a5fa' }}
+          >
+            {s.stageLabel || s.stage || '—'}
+          </span>
+          {s.agent && <span className="ec-collab-lc__agent">{s.agent}</span>}
+          {s.confidence != null && (
+            <span className="ec-collab-lc__conf">{s.confidence}% conf</span>
+          )}
+          {s.progressPct != null && (
+            <span className="ec-collab-lc__pct">{s.progressPct}%</span>
+          )}
+          <span className="ec-collab-lc__status">{s.status}</span>
+        </div>
+      )}
+
+      {/* Retry history */}
+      <div className="ec-collab-lc__total">{data.total} lifecycle events</div>
+
+      {/* Event stream */}
+      <div className="ec-collab-lc__stream" ref={streamRef}>
+        {data.events.length === 0 ? (
+          <div className="ec-empty">No lifecycle events yet. Attach the lifecycle to see events.</div>
+        ) : (
+          data.events.map((evt, i) => (
+            <div key={i} className="ec-collab-lc__evt">
+              <span className="ec-collab-lc__evt-ts">{new Date(evt.ts).toLocaleTimeString()}</span>
+              <span
+                className="ec-collab-lc__evt-type"
+                style={{ color: LC_EVT_COLOR[evt.type] || '#6b7280' }}
+              >
+                {evt.type}
+              </span>
+              {evt.stage && (
+                <span className="ec-collab-lc__evt-stage">{evt.stage}</span>
+              )}
+              {evt.confidence != null && (
+                <span className="ec-collab-lc__evt-conf">{evt.confidence}%</span>
+              )}
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
 function AgentCollaborationPanel() {
   const [subTab, setSubTab] = useState('pipeline');
   const [missionId, setMissionId] = useState('');
@@ -647,6 +747,9 @@ function AgentCollaborationPanel() {
             </MountedTab>
             <MountedTab active={subTab === 'timeline'}>
               <DelegationTimeline missionId={missionId} />
+            </MountedTab>
+            <MountedTab active={subTab === 'lifecycle'}>
+              <LifecycleEventStream missionId={missionId} />
             </MountedTab>
           </div>
         </>

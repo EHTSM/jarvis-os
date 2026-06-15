@@ -117,6 +117,76 @@ function timeStr() {
   return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 }
 
+// ── Lifecycle Intelligence widget ─────────────────────────────────────
+const LC_COLORS = {
+  observe:'#60a5fa', detect:'#60a5fa', reason:'#a78bfa', recommend:'#a78bfa',
+  plan:'#fbbf24', delegate:'#fbbf24', execute:'#34d399', review:'#34d399',
+  test:'#34d399', secure:'#f87171', deploy:'#fb923c', verify:'#fb923c',
+  heal:'#94a3b8', learn:'#94a3b8',
+};
+
+function LifecycleIntelligence({ missions }) {
+  const [stages, setStages] = useState([]);
+
+  useEffect(() => {
+    const running = missions.filter(m =>
+      m.status === 'active' || m.status === 'running'
+    ).slice(0, 3);
+    if (running.length === 0) return;
+
+    let mounted = true;
+    Promise.allSettled(
+      running.map(m => _fetch(`/runtime/stage/${m.id}`).catch(() => null))
+    ).then(results => {
+      if (!mounted) return;
+      const rows = results
+        .map((r, i) => {
+          if (r.status !== 'fulfilled' || !r.value?.stage) return null;
+          return { mission: running[i], stageData: r.value.stage };
+        })
+        .filter(Boolean);
+      setStages(rows);
+    });
+    return () => { mounted = false; };
+  }, [missions]);
+
+  if (stages.length === 0) return null;
+
+  return (
+    <motion.div className="ed-section" {...fadeUp(0.175)}>
+      <div className="ed-section__title">Lifecycle Runtime</div>
+      <div className="ed-lc-grid">
+        {stages.map(({ mission, stageData: s }) => {
+          const color = LC_COLORS[s.stage] || '#6b7280';
+          return (
+            <div key={mission.id} className="ed-lc-card">
+              <div className="ed-lc-card__obj" title={mission.objective}>
+                {(mission.objective || '').slice(0, 48)}{mission.objective?.length > 48 ? '…' : ''}
+              </div>
+              <div className="ed-lc-card__stage" style={{ color }}>
+                {s.stageLabel || s.stage}
+              </div>
+              <div className="ed-lc-card__meta">
+                {s.agent && <span className="ed-lc-badge">{s.agent}</span>}
+                {s.confidence != null && (
+                  <span className="ed-lc-badge ed-lc-badge--conf">{s.confidence}% conf</span>
+                )}
+              </div>
+              <div className="ed-lc-card__bar">
+                <div
+                  className="ed-lc-card__fill"
+                  style={{ width: `${s.progressPct || 0}%`, background: color }}
+                />
+              </div>
+              <div className="ed-lc-card__pct">{s.progressPct || 0}% through lifecycle</div>
+            </div>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+}
+
 // ── Main component ───────────────────────────────────────────────────
 
 export default function ExecutiveDashboard({ onNavigate }) {
@@ -389,6 +459,9 @@ export default function ExecutiveDashboard({ onNavigate }) {
           />
         </div>
       </motion.div>
+
+      {/* ── Lifecycle Runtime Intelligence ── */}
+      <LifecycleIntelligence missions={missions} />
 
       {/* ── Row 4: Active Missions ── */}
       <motion.div className="ed-section" {...fadeUp(0.2)}>
