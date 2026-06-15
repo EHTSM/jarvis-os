@@ -8,6 +8,20 @@ const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const { requireActiveAccount } = require("../services/billingService");
 
+// Deprecation notice middleware — logs a warning and adds HTTP headers for any
+// /pNN/* prefixes that have been superseded by canonical named routes.
+// Routes remain functional; this is a warning layer only, not a removal.
+function _deprecate(prefix, replacement) {
+    return (req, res, next) => {
+        if (!req.path.startsWith(prefix)) return next();
+        const logger = require("../utils/logger");
+        logger.warn(`[Deprecated] ${req.method} ${req.path} — migrate to ${replacement}`);
+        res.setHeader("Deprecation", "true");
+        res.setHeader("Link", `<${replacement}>; rel="successor-version"`);
+        next();
+    };
+}
+
 router.use(require("./auth"));         // POST /auth/login, POST /auth/logout, GET /auth/me
 router.use(require("./accounts"));    // POST /accounts/register, GET /accounts/me, GET /accounts
 router.use(require("./settings"));    // GET /settings/status, POST /settings/whatsapp, POST /settings/razorpay
@@ -27,13 +41,21 @@ router.use(require("./runtime"));      // /runtime/dispatch, /runtime/queue, /ru
 router.use(require("../../agents/runtime/runtimeStream.cjs")); // GET /runtime/stream, /runtime/stream/status
 router.use(require("./tasks"));        // /tasks, /scheduler/status, /queue/status
 router.use(require("./browser"));      // /browser/run, /browser/action, /browser/navigate, /browser/sessions, /browser/status
+router.use(_deprecate("/p18/", "/runtime/* or /agents/*"));
 router.use(require("./phase18"));      // /p18/actions, /p18/agents, /p18/memory, /p18/cycles
+router.use(_deprecate("/p19/", "/runtime/* or /agents/*"));
 router.use(require("./phase19"));      // /p19/tools, /p19/coord, /p19/heal, /p19/learn
+router.use(_deprecate("/p20/", "/agents/* or /ooplix (via phase20)"));
 router.use(require("./phase20"));      // /p20/agents, /p20/memory, /p20/improve, /p20/ooplix
+router.use(_deprecate("/p21/obs", "/analytics/*"));
 router.use(require("./phase21"));      // /oauth/*, /p21/obs, /p21/live, /p21/readiness
+router.use(_deprecate("/p22/", "/security/* or admin-specific endpoints"));
 router.use(require("./phase22"));      // /p22/secrets, /p22/security, /p22/deploy, /p22/alerts
+router.use(_deprecate("/p23/", "/agents/* or integration-specific endpoints"));
 router.use(require("./phase23"));      // /p23/github, /p23/review, /p23/release, /p23/autopilot
+router.use(_deprecate("/p24/", "/agents/* or IDE-specific endpoints"));
 router.use(require("./phase24"));      // /p24/vscode, /p24/repo, /p24/refactor, /p24/multirepo
+router.use(_deprecate("/p25/obs", "/analytics/*"));
 router.use(require("./phase25"));      // /p25/deploy, /p25/secrets, /p25/obs, /p25/search
 router.use(require("./phase26"));      // /p26/graph, /p26/memory, /p26/reason, /p26/observer, /p26/plugins, /p26/capabilities, /p26/manifest, /p26/templates
 router.use(require("./phase27"));      // /p27/executive, /p27/missions, /p27/planning, /p27/ai, /p27/improvement
