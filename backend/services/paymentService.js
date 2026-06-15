@@ -97,7 +97,10 @@ function verifyWebhookSignature(rawBody, signature) {
         .update(String(rawBody))
         .digest("hex");
 
-    return expected === String(signature);
+    const expBuf = Buffer.from(expected);
+    const sigBuf = Buffer.from(String(signature));
+    // Constant-time comparison prevents timing attacks on HMAC verification
+    return expBuf.length === sigBuf.length && crypto.timingSafeEqual(expBuf, sigBuf);
 }
 
 /**

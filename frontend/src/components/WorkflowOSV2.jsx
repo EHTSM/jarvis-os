@@ -717,7 +717,7 @@ function TabRouter({ addToast }) {
   useEffect(() => {
     const load = () => { if (!document.hidden) getOpsData().then(r => { if (r && !r.error) setOpsData(r); }).catch(() => {}); };
     load();
-    const t = setInterval(load, 10000);
+    const t = setInterval(() => { if (!document.hidden) load(); }, 10000);
     return () => clearInterval(t);
   }, []);
 

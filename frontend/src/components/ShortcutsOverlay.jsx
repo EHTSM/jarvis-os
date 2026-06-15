@@ -10,16 +10,14 @@ const GROUPS = [
   { label: 'View',       ids: ['zoom-in','zoom-out','fullscreen'] },
 ];
 
-function formatKey(keyStr) {
+function formatKeyParts(keyStr) {
   const isMac = navigator.platform.includes('Mac');
   return keyStr
     .replace('Meta',  isMac ? '⌘' : 'Ctrl')
     .replace('Ctrl',  isMac ? '⌃' : 'Ctrl')
     .replace('Shift', isMac ? '⇧' : 'Shift')
     .replace('Alt',   isMac ? '⌥' : 'Alt')
-    .split('+')
-    .map(k => `<kbd>${k}</kbd>`)
-    .join('');
+    .split('+');
 }
 
 export default function ShortcutsOverlay({ open, onClose }) {
@@ -65,10 +63,11 @@ export default function ShortcutsOverlay({ open, onClose }) {
                     {items.map(s => (
                       <div key={s.id} className="shortcuts-row">
                         <span className="shortcuts-desc">{s.description}</span>
-                        <span
-                          className="shortcuts-keys"
-                          dangerouslySetInnerHTML={{ __html: formatKey(s.keys[0]) }}
-                        />
+                        <span className="shortcuts-keys">
+                          {formatKeyParts(s.keys[0]).map((k, i) => (
+                            <kbd key={i}>{k}</kbd>
+                          ))}
+                        </span>
                       </div>
                     ))}
                   </div>

@@ -185,7 +185,9 @@ app.use((err, req, res, _next) => {
         return res.status(413).json({ success: false, error: "Payload too large" });
     }
     logger.error("Unhandled error:", err.message);
-    res.status(500).json({ success: false, error: "Internal server error", details: err.message });
+    const body = { success: false, error: "Internal server error" };
+    if (process.env.NODE_ENV !== "production") body.details = err.message;
+    res.status(500).json(body);
 });
 
 // ── Runtime alerting ──────────────────────────────────────────────
