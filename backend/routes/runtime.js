@@ -11527,6 +11527,55 @@ router.get("/runtime/real-eng-found/modules", rateLimiter(20, 60_000), (req, res
     return res.json({ success: true, ...realEngFound.moduleHealth765() });
 });
 
+// ── I2: Autonomous Decision Engine ─────────────────────────────────────────
+const _decision = (() => { try { return require("../services/autonomousDecisionEngine.cjs"); } catch { return null; } })();
+
+// GET /runtime/decisions
+router.get("/runtime/decisions", rateLimiter(60, 60_000), (req, res) => {
+    if (!_decision) return res.status(503).json({ success: false, error: "decision_engine_unavailable" });
+    const limit     = Math.min(parseInt(req.query.limit)  || 100, 500);
+    const action    = req.query.action    || null;
+    const priority  = req.query.priority  || null;
+    const status    = req.query.status    || null;
+    const subsystem = req.query.subsystem || null;
+    const since     = req.query.since     || null;
+    return res.json({ success: true, ..._decision.getDecisions({ limit, action, priority, status, subsystem, since }) });
+});
+
+// GET /runtime/decisions/statistics
+router.get("/runtime/decisions/statistics", rateLimiter(30, 60_000), (req, res) => {
+    if (!_decision) return res.status(503).json({ success: false, error: "decision_engine_unavailable" });
+    return res.json({ success: true, ..._decision.getStatistics() });
+});
+
+// GET /runtime/decisions/rules
+router.get("/runtime/decisions/rules", rateLimiter(30, 60_000), (req, res) => {
+    if (!_decision) return res.status(503).json({ success: false, error: "decision_engine_unavailable" });
+    return res.json({ success: true, rules: _decision.getRules() });
+});
+
+// POST /runtime/decisions/replay
+router.post("/runtime/decisions/replay", rateLimiter(10, 60_000), async (req, res) => {
+    if (!_decision) return res.status(503).json({ success: false, error: "decision_engine_unavailable" });
+    const { observerEventId } = req.body;
+    if (!observerEventId) return res.status(400).json({ success: false, error: "observerEventId required" });
+    try {
+        const result = await _decision.replayEvent(observerEventId);
+        if (!result) return res.status(404).json({ success: false, error: "event_not_found_or_no_rule_matched" });
+        return res.json({ success: true, decision: result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// GET /runtime/decisions/:id   — must come after /statistics and /rules
+router.get("/runtime/decisions/:id", rateLimiter(30, 60_000), (req, res) => {
+    if (!_decision) return res.status(503).json({ success: false, error: "decision_engine_unavailable" });
+    const d = _decision.getDecision(req.params.id);
+    if (!d) return res.status(404).json({ success: false, error: "not_found" });
+    return res.json({ success: true, decision: d });
+});
+
 // ── I1: Continuous Runtime Observer ────────────────────────────────────────
 const _observer = (() => { try { return require("../services/continuousRuntimeObserver.cjs"); } catch { return null; } })();
 

@@ -724,6 +724,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[BackgroundRuntime] failed to start (non-fatal):", bgrErr.message);
     }
 
+    // ── Phase I2: Autonomous Decision Engine ──────────────────────────────
+    try {
+        const decEngine = require("./services/autonomousDecisionEngine.cjs");
+        const decResult = decEngine.start();
+        logger.info(`[DecisionEngine] I2 started — ${decResult.rulesLoaded} rules loaded`);
+    } catch (decErr) {
+        logger.warn("[DecisionEngine] failed to start (non-fatal):", decErr.message);
+    }
+
     // ── Phase I1: Continuous Runtime Observer ─────────────────────────────
     try {
         const observer = require("./services/continuousRuntimeObserver.cjs");
