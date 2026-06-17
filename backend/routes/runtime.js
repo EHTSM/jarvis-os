@@ -3186,19 +3186,6 @@ router.get("/runtime/workflows/library/:id/export", rateLimiter(10, 60_000), (re
 
 // ── Phase 484: Operational Search (extensions) ───────────────────────────────
 
-router.get("/runtime/search", rateLimiter(30, 60_000), (req, res) => {
-    if (!opSearch) return res.status(503).json({ success: false, error: "search_unavailable" });
-    const q     = (req.query.q || "").slice(0, 200);
-    const limit = Math.min(20, parseInt(req.query.limit) || 10);
-    return res.json({ success: true, results: opSearch.searchEverything(q, { limit }) });
-});
-
-router.get("/runtime/search/workflows", rateLimiter(30, 60_000), (req, res) => {
-    if (!opSearch) return res.status(503).json({ success: false, error: "search_unavailable" });
-    const q = (req.query.q || "").slice(0, 200);
-    return res.json({ success: true, results: opSearch.searchWorkflows(q, { limit: 20 }) });
-});
-
 router.get("/runtime/search/replays", rateLimiter(30, 60_000), (req, res) => {
     if (!opSearch) return res.status(503).json({ success: false, error: "search_unavailable" });
     const q = (req.query.q || "").slice(0, 200);
@@ -7854,10 +7841,6 @@ router.post("/runtime/engineering/understand", rateLimiter(30, 60_000), (req, re
 });
 
 // Phase 573 — Terminal Workflows
-router.post("/runtime/terminal/classify", rateLimiter(30, 60_000), (req, res) => {
-    if (!terminalWF) return res.status(503).json({ success: false, error: "terminalWorkflows_unavailable" });
-    return res.json({ success: true, ...terminalWF.classifyCommand(req.body?.cmd || "") });
-});
 router.get("/runtime/terminal/sequences", rateLimiter(30, 60_000), (req, res) => {
     if (!terminalWF) return res.status(503).json({ success: false, error: "terminalWorkflows_unavailable" });
     return res.json({ success: true, sequences: terminalWF.listSequences() });
@@ -7871,10 +7854,6 @@ router.get("/runtime/terminal/sequences/:name", rateLimiter(30, 60_000), (req, r
 router.post("/runtime/browser/extraction-plan", rateLimiter(20, 60_000), (req, res) => {
     if (!browserWF) return res.status(503).json({ success: false, error: "browserWorkflows_unavailable" });
     return res.json({ success: true, ...browserWF.extractionPlan(req.body || {}) });
-});
-router.get("/runtime/browser/sessions", rateLimiter(20, 60_000), (req, res) => {
-    if (!browserWF) return res.status(503).json({ success: false, error: "browserWorkflows_unavailable" });
-    return res.json({ success: true, sessions: browserWF.listSessions() });
 });
 
 // Phase 575 — Execution Confidence
@@ -8564,10 +8543,6 @@ router.get("/runtime/replay/:id1/diff/:id2", rateLimiter(10, 60_000), (req, res)
     if (!replaySystem) return res.status(503).json({ success: false, error: "executionReplaySystem_unavailable" });
     return res.json({ success: true, ...replaySystem.replayDiff(req.params.id1, req.params.id2) });
 });
-router.get("/runtime/replay", rateLimiter(20, 60_000), (req, res) => {
-    if (!replaySystem) return res.status(503).json({ success: false, error: "executionReplaySystem_unavailable" });
-    return res.json({ success: true, replays: replaySystem.listReplays({ tag: req.query.tag, sessionId: req.query.sessionId, limit: Number(req.query.limit) || 20 }) });
-});
 
 // Phase 610 — Debug Session Continuity
 router.post("/runtime/session-continuity/save", rateLimiter(20, 60_000), (req, res) => {
@@ -8743,10 +8718,6 @@ router.get("/runtime/goal", rateLimiter(20, 60_000), (req, res) => {
 });
 
 // Phase 619 — Autonomous Terminal Orchestration
-router.post("/runtime/terminal/classify", rateLimiter(30, 60_000), (req, res) => {
-    if (!autoTerminal) return res.status(503).json({ success: false, error: "autonomousTerminalOrchestration_unavailable" });
-    return res.json({ success: true, ...autoTerminal.classifyCommand(req.body.command) });
-});
 router.post("/runtime/terminal/sequence", rateLimiter(10, 60_000), (req, res) => {
     if (!autoTerminal) return res.status(503).json({ success: false, error: "autonomousTerminalOrchestration_unavailable" });
     return res.json({ success: true, ...autoTerminal.planSequence(req.body) });
@@ -9103,10 +9074,6 @@ router.post("/runtime/browser-ops/:opId/recover", rateLimiter(5, 60_000), (req, 
 });
 
 // Phase 636 — Engineering Decision Intelligence
-router.post("/runtime/decision/recovery-path", rateLimiter(20, 60_000), (req, res) => {
-    if (!engDecisionIntel) return res.status(503).json({ success: false, error: "engineeringDecisionIntelligence_unavailable" });
-    return res.json({ success: true, ...engDecisionIntel.prioritizeRecovery(req.body.errorContext || "") });
-});
 router.post("/runtime/decision/rollback-recommend", rateLimiter(10, 60_000), (req, res) => {
     if (!engDecisionIntel) return res.status(503).json({ success: false, error: "engineeringDecisionIntelligence_unavailable" });
     return res.json({ success: true, ...engDecisionIntel.recommendRollback(req.body) });
@@ -9118,10 +9085,6 @@ router.post("/runtime/decision/unsafe-runtime", rateLimiter(10, 60_000), (req, r
 router.post("/runtime/decision/validation-order", rateLimiter(10, 60_000), (req, res) => {
     if (!engDecisionIntel) return res.status(503).json({ success: false, error: "engineeringDecisionIntelligence_unavailable" });
     return res.json({ success: true, ...engDecisionIntel.selectValidationOrder(req.body) });
-});
-router.get("/runtime/decision/history", rateLimiter(10, 60_000), (req, res) => {
-    if (!engDecisionIntel) return res.status(503).json({ success: false, error: "engineeringDecisionIntelligence_unavailable" });
-    return res.json({ success: true, history: engDecisionIntel.decisionHistory(req.query) });
 });
 
 // Phase 637 — Autonomous Workflow Memory
@@ -10072,10 +10035,6 @@ router.get("/runtime/eng-memory/deploy-patterns", rateLimiter(10, 60_000), (req,
     if (!engMemStrategy) return res.status(503).json({ success: false, error: "engineeringMemoryStrategy_unavailable" });
     return res.json({ success: true, ...engMemStrategy.analyzeDeploymentPatterns(req.query.deploymentId || "") });
 });
-router.get("/runtime/eng-memory/stats", rateLimiter(10, 60_000), (req, res) => {
-    if (!engMemStrategy) return res.status(503).json({ success: false, error: "engineeringMemoryStrategy_unavailable" });
-    return res.json({ success: true, ...engMemStrategy.memoryStrategyStats() });
-});
 
 // Phase 684 — Daily Engineering Strategy Flows
 router.post("/runtime/daily-strat/start", rateLimiter(10, 60_000), (req, res) => {
@@ -10613,10 +10572,6 @@ router.get("/runtime/prod-chain/catalog", rateLimiter(20, 60_000), (req, res) =>
 });
 
 // Phase 711 — Multi-Environment Productivity Intelligence
-router.get("/runtime/prod-intel/summary", rateLimiter(10, 60_000), (req, res) => {
-    if (!multiEnvProdIntel) return res.status(503).json({ success: false, error: "module_unavailable" });
-    return res.json({ success: true, ...multiEnvProdIntel.multiEnvProductivitySummary() });
-});
 router.get("/runtime/prod-intel/coordination", rateLimiter(10, 60_000), (req, res) => {
     if (!multiEnvProdIntel) return res.status(503).json({ success: false, error: "module_unavailable" });
     return res.json({ success: true, ...multiEnvProdIntel.crossToolCoordinationScore() });
@@ -11600,18 +11555,6 @@ router.get("/runtime/execution/:id", rateLimiter(30, 60_000), (req, res) => {
 
 // ── I2: Autonomous Decision Engine ─────────────────────────────────────────
 const _decision = (() => { try { return require("../services/autonomousDecisionEngine.cjs"); } catch { return null; } })();
-
-// GET /runtime/decisions
-router.get("/runtime/decisions", rateLimiter(60, 60_000), (req, res) => {
-    if (!_decision) return res.status(503).json({ success: false, error: "decision_engine_unavailable" });
-    const limit     = Math.min(parseInt(req.query.limit)  || 100, 500);
-    const action    = req.query.action    || null;
-    const priority  = req.query.priority  || null;
-    const status    = req.query.status    || null;
-    const subsystem = req.query.subsystem || null;
-    const since     = req.query.since     || null;
-    return res.json({ success: true, ..._decision.getDecisions({ limit, action, priority, status, subsystem, since }) });
-});
 
 // GET /runtime/decisions/statistics
 router.get("/runtime/decisions/statistics", rateLimiter(30, 60_000), (req, res) => {
