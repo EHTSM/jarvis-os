@@ -107,6 +107,7 @@ function _snapshot() {
 
 function start() {
   if (_ref) return;
+  _prune(); // prune stale shards on startup so old files don't linger between restarts
   _ref = setInterval(_snapshot, FLUSH_MS);
   _ref.unref();
   // Take first snapshot after 30s (let runtime settle)
