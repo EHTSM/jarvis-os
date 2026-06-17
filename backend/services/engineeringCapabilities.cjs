@@ -207,7 +207,8 @@ async function _fileRead(ctx) {
     const absPath = path.resolve(REPO_ROOT, rawPath);
     // Security: must stay within project root
     if (!absPath.startsWith(REPO_ROOT)) {
-        return { success: false, error: "path_outside_project_root", output: null };
+        // Path traversal attempt — deterministic, never valid on retry
+        return { success: false, error: "path_outside_project_root", output: null, nonRetriable: true };
     }
     try {
         const content = fs.readFileSync(absPath, "utf8");
@@ -216,7 +217,9 @@ async function _fileRead(ctx) {
             { tags: ["file_read", rawPath], importance: 30 });
         return { success: true, output, artifacts: [{ type: "file_content", path: rawPath, lines: content.split("\n").length }], logs: [] };
     } catch (err) {
-        return { success: false, error: err.message, output: null };
+        // ENOENT / EACCES are deterministic — file won't appear between retries
+        const nonRetriable = err.code === "ENOENT" || err.code === "EACCES";
+        return { success: false, error: err.message, output: null, nonRetriable };
     }
 }
 
@@ -246,7 +249,8 @@ async function _patchApply(ctx) {
     const diff = await _sh("git", ["diff", "--cached", "--stat"]);
     if (!diff.ok) return { success: false, error: diff.stderr.slice(0, 200), output: null };
     if (!diff.stdout.trim()) {
-        return { success: false, error: "nothing_staged — stage changes before applying patch", output: null };
+        // Nothing staged is a state condition — retrying won't stage files automatically
+        return { success: false, error: "nothing_staged — stage changes before applying patch", output: null, nonRetriable: true };
     }
     const output = JSON.stringify({ staged: _cap(diff.stdout, 1000), status: "patch_verified_staged" });
     remember("success", { pattern: "patch_apply", appliedTo: ctx.missionId || "unknown", outcome: "staged_verified" },
@@ -363,12 +367,14 @@ async function _gitCommit(ctx) {
         if (ctx.missionId) recordArtifact(ctx.missionId, { type: "commit_pending", message: message || "(no message)", requiresApproval: true });
         return { success: true, output: JSON.stringify({ status: "pending_approval", message, note: "Re-invoke with approved:true to commit" }), artifacts: [], logs: [] };
     }
-    if (!message) return { success: false, error: "commit message required (message:\"...\")", output: null };
+    // Missing message is a caller error — will never appear on retry
+    if (!message) return { success: false, error: "commit message required (message:\"...\")", output: null, nonRetriable: true };
 
     // Check there's something staged
     const staged = await _sh("git", ["diff", "--cached", "--stat"]);
     if (!staged.ok || !staged.stdout.trim()) {
-        return { success: false, error: "nothing staged for commit", output: null };
+        // Nothing staged is a state condition — retrying won't stage files automatically
+        return { success: false, error: "nothing staged for commit", output: null, nonRetriable: true };
     }
 
     const r = await _sh("git", ["commit", "-m", message]);

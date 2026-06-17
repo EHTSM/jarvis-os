@@ -206,6 +206,12 @@ async function executeStage(opts = {}) {
             } else {
                 lastError = result.error || "attempt failed";
                 rec.logs.push({ ts: new Date().toISOString(), msg: `Attempt ${attempt} failed: ${lastError}` });
+                // Non-retriable errors are deterministic — never improve on retry.
+                // Break immediately to avoid burning backoff time on guaranteed failures.
+                if (result.nonRetriable) {
+                    rec.logs.push({ ts: new Date().toISOString(), msg: `Non-retriable error — skipping remaining ${rec.maxAttempts - attempt} attempt(s)` });
+                    break;
+                }
             }
         } catch (err) {
             lastError = err.message;
@@ -311,12 +317,15 @@ async function _runAttempt(rec, policy, cancelledRef) {
 
     if (result.timedOut) return { success: false, timedOut: true, output: null };
 
+    const dispatchError = result.success ? null : (result.error || "dispatch failed");
     return {
-        success:   result.success,
-        output:    result.reply || result.result || null,
-        artifacts: [],
-        logs:      [{ ts: new Date().toISOString(), msg: `dispatch durationMs=${result.durationMs}` }],
-        error:     result.success ? null : (result.error || "dispatch failed"),
+        success:      result.success,
+        output:       result.reply || result.result || null,
+        artifacts:    [],
+        logs:         [{ ts: new Date().toISOString(), msg: `dispatch durationMs=${result.durationMs}` }],
+        error:        dispatchError,
+        // "dispatch failed" means no handler registered — will never succeed on retry
+        nonRetriable: !result.success && dispatchError === "dispatch failed",
     };
 }
 
