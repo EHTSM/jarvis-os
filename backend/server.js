@@ -724,6 +724,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[BackgroundRuntime] failed to start (non-fatal):", bgrErr.message);
     }
 
+    // ── Phase I4: Autonomous Execution Runtime ────────────────────────────
+    try {
+        const execRT = require("./services/autonomousExecutionRuntime.cjs");
+        const execResult = execRT.start();
+        logger.info(`[ExecRuntime] I4 started — ${execResult.capabilities?.length ?? 0} capabilities`);
+    } catch (execErr) {
+        logger.warn("[ExecRuntime] failed to start (non-fatal):", execErr.message);
+    }
+
     // ── Phase I3: Mission Orchestrator ────────────────────────────────────
     try {
         const orch = require("./services/missionOrchestrator.cjs");

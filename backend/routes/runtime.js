@@ -11527,6 +11527,77 @@ router.get("/runtime/real-eng-found/modules", rateLimiter(20, 60_000), (req, res
     return res.json({ success: true, ...realEngFound.moduleHealth765() });
 });
 
+// ── I4: Autonomous Execution Runtime ───────────────────────────────────────
+const _execRT = (() => { try { return require("../services/autonomousExecutionRuntime.cjs"); } catch { return null; } })();
+const _execErr = (res) => res.status(503).json({ success: false, error: "execution_runtime_unavailable" });
+
+// GET /runtime/execution
+router.get("/runtime/execution", rateLimiter(60, 60_000), (req, res) => {
+    if (!_execRT) return _execErr(res);
+    const limit      = Math.min(parseInt(req.query.limit) || 100, 500);
+    const status     = req.query.status     || null;
+    const missionId  = req.query.missionId  || null;
+    const capability = req.query.capability || null;
+    const since      = req.query.since      || null;
+    return res.json({ success: true, ..._execRT.listExecutions({ limit, status, missionId, capability, since }) });
+});
+
+// GET /runtime/execution/statistics
+router.get("/runtime/execution/statistics", rateLimiter(30, 60_000), (req, res) => {
+    if (!_execRT) return _execErr(res);
+    return res.json({ success: true, ..._execRT.getStatistics() });
+});
+
+// POST /runtime/execution/retry
+router.post("/runtime/execution/retry", rateLimiter(10, 60_000), async (req, res) => {
+    if (!_execRT) return _execErr(res);
+    const { executionId } = req.body;
+    if (!executionId) return res.status(400).json({ success: false, error: "executionId required" });
+    try {
+        const result = await _execRT.retryExecution(executionId);
+        return res.json({ success: true, execution: result });
+    } catch (err) {
+        const status = err.message.includes("not found") ? 404 : 409;
+        return res.status(status).json({ success: false, error: err.message });
+    }
+});
+
+// POST /runtime/execution/cancel
+router.post("/runtime/execution/cancel", rateLimiter(20, 60_000), (req, res) => {
+    if (!_execRT) return _execErr(res);
+    const { executionId } = req.body;
+    if (!executionId) return res.status(400).json({ success: false, error: "executionId required" });
+    try {
+        const result = _execRT.cancelExecution(executionId);
+        return res.json({ success: true, execution: result });
+    } catch (err) {
+        const status = err.message.includes("not found") ? 404 : 409;
+        return res.status(status).json({ success: false, error: err.message });
+    }
+});
+
+// POST /runtime/execution/rollback
+router.post("/runtime/execution/rollback", rateLimiter(10, 60_000), async (req, res) => {
+    if (!_execRT) return _execErr(res);
+    const { executionId } = req.body;
+    if (!executionId) return res.status(400).json({ success: false, error: "executionId required" });
+    try {
+        const result = await _execRT.rollbackExecution(executionId);
+        return res.json({ success: true, execution: result });
+    } catch (err) {
+        const status = err.message.includes("not found") ? 404 : 409;
+        return res.status(status).json({ success: false, error: err.message });
+    }
+});
+
+// GET /runtime/execution/:id  — must follow named routes
+router.get("/runtime/execution/:id", rateLimiter(30, 60_000), (req, res) => {
+    if (!_execRT) return _execErr(res);
+    const exec = _execRT.getExecution(req.params.id);
+    if (!exec) return res.status(404).json({ success: false, error: "not_found" });
+    return res.json({ success: true, execution: exec });
+});
+
 // ── I2: Autonomous Decision Engine ─────────────────────────────────────────
 const _decision = (() => { try { return require("../services/autonomousDecisionEngine.cjs"); } catch { return null; } })();
 

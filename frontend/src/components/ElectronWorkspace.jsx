@@ -28,6 +28,7 @@ const ExecutiveLoop           = lazy(() => import('./operator-os/ExecutiveLoop')
 const RuntimeObserverPanel    = lazy(() => import('./RuntimeObserverPanel'));
 const DecisionQueuePanel      = lazy(() => import('./DecisionQueuePanel'));
 const MissionOrchestratorPanel = lazy(() => import('./MissionOrchestratorPanel'));
+const ExecutionRuntimePanel    = lazy(() => import('./ExecutionRuntimePanel'));
 
 // ── Generic resize hook ───────────────────────────────────────────────
 function useResize(initial, min, max, axis = 'y') {
@@ -93,6 +94,7 @@ const BOTTOM_TABS = {
   observer:  { label: 'Observer',  icon: '◉' },
   decisions: { label: 'Decisions', icon: '◈' },
   orchestrator: { label: 'Orchestrator', icon: '◎' },
+  execution:    { label: 'Execution',    icon: '⚙' },
 };
 
 const api        = () => window.electronAPI;
@@ -509,6 +511,11 @@ export default function ElectronWorkspace({ children }) {
                   <LazyPane active={bottomTab === 'orchestrator'}>
                     <ErrorBoundary label="Mission Orchestrator">
                       <MissionOrchestratorPanel />
+                    </ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'execution'}>
+                    <ErrorBoundary label="Execution Runtime">
+                      <ExecutionRuntimePanel />
                     </ErrorBoundary>
                   </LazyPane>
                 </div>
