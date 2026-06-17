@@ -71,8 +71,9 @@
  *   }
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const logger = require("../../backend/utils/logger");
 
 const DATA_DIR      = path.join(__dirname, "../../data");
 const REPORTS_PATH  = path.join(DATA_DIR, "lifecycle-reports.json");
@@ -597,7 +598,7 @@ function _buildSummary(healthEval, incidentEval, improvements, preventive, matur
  */
 function evaluate({ blueprintId, productName, windowMins = 60, persist = true } = {}) {
     const now = new Date().toISOString();
-    console.log(`[Lifecycle] evaluate — blueprintId=${blueprintId || "global"} window=${windowMins}m`);
+    logger.info(`[Lifecycle] evaluate — blueprintId=${blueprintId || "global"} window=${windowMins}m`);
 
     // Load data from all engines
     const shpMod    = _shp();
@@ -652,7 +653,7 @@ function evaluate({ blueprintId, productName, windowMins = 60, persist = true } 
         _saveReports(all);
     }
 
-    console.log(`[Lifecycle] ${report.reportId} — health=${healthEval.overall} maturity=${maturity.total} improvements=${improvements.length} debt=${debtSummary.open}`);
+    logger.info(`[Lifecycle] ${report.reportId} — health=${healthEval.overall} maturity=${maturity.total} improvements=${improvements.length} debt=${debtSummary.open}`);
     return report;
 }
 
@@ -674,16 +675,16 @@ function scheduleEvaluation({ intervalMins = 60, blueprintId, windowMins = 60 } 
     const ms = intervalMins * 60_000;
     _schedulerHandle = setInterval(() => {
         try { evaluate({ blueprintId, windowMins }); }
-        catch (e) { console.log(`[Lifecycle] scheduled eval error: ${e.message}`); }
+        catch (e) { logger.info(`[Lifecycle] scheduled eval error: ${e.message}`); }
     }, ms);
-    console.log(`[Lifecycle] scheduler started — interval=${intervalMins}m`);
+    logger.info(`[Lifecycle] scheduler started — interval=${intervalMins}m`);
     return { ok: true, intervalMins };
 }
 
 /** Stop the recurring scheduler. */
 function stopScheduler() {
     if (_schedulerHandle) { clearInterval(_schedulerHandle); _schedulerHandle = null; }
-    console.log("[Lifecycle] scheduler stopped");
+    logger.info("[Lifecycle] scheduler stopped");
     return { ok: true };
 }
 

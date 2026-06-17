@@ -12,9 +12,10 @@
  * Persistence: data/observability.json  (rolling window, capped)
  */
 
-const fs   = require("fs");
-const path = require("path");
-const os   = require("os");
+const fs     = require("fs");
+const path   = require("path");
+const os     = require("os");
+const logger = require("../utils/logger");
 
 const STORE_PATH = path.join(__dirname, "../../data/observability.json");
 
@@ -258,7 +259,7 @@ function _fireAlert(store, data) {
     store.alerts.push({ alertId, ...data, firedAt: new Date().toISOString(), resolved: false });
     // In production, route to configured channels (Slack, PagerDuty, email etc.)
     // Here we log — channel integrations plug in via /p25/obs/channels
-    console.warn(`[Alert] ${data.severity.toUpperCase()} ${data.service}/${data.metric}=${data.value} (threshold=${data.threshold}) → ${data.channel}`);
+    logger.warn(`[Alert] ${data.severity.toUpperCase()} ${data.service}/${data.metric}=${data.value} (threshold=${data.threshold}) → ${data.channel}`);
 }
 
 function fireManualAlert(data) {

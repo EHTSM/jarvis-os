@@ -61,8 +61,9 @@
  * Storage: data/rca-reports.json  (max 200, newest-first, atomic write)
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const logger = require("../../backend/utils/logger");
 
 const DATA_DIR    = path.join(__dirname, "../../data");
 const RCA_PATH    = path.join(DATA_DIR, "rca-reports.json");
@@ -640,7 +641,7 @@ function analyzeInline(incident, { windowMins = 60 } = {}) {
     };
 
     _persistReport(report);
-    console.log(`[RCA] ${report.rcaId} — ${incident.incidentId} — cause=${cause.category} confidence=${confidence}`);
+    logger.info(`[RCA] ${report.rcaId} — ${incident.incidentId} — cause=${cause.category} confidence=${confidence}`);
     return report;
 }
 

@@ -74,8 +74,9 @@
  * Storage: data/fix-plans.json  (max 100, newest-first, atomic write)
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const logger = require("../../backend/utils/logger");
 
 const DATA_DIR   = path.join(__dirname, "../../data");
 const PLANS_PATH = path.join(DATA_DIR, "fix-plans.json");
@@ -660,7 +661,7 @@ function planInline(rcaReport, { registerPatches = false } = {}) {
     };
 
     _persistPlan(fixPlan);
-    console.log(`[AutoFixPlanner] ${fixPlan.planId} — rca=${rcaReport.rcaId} cause=${causeCategory} risk=${risk.level} confidence=${confidence} tasks=${tasks.length}`);
+    logger.info(`[AutoFixPlanner] ${fixPlan.planId} — rca=${rcaReport.rcaId} cause=${causeCategory} risk=${risk.level} confidence=${confidence} tasks=${tasks.length}`);
     return fixPlan;
 }
 

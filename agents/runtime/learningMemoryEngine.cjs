@@ -72,8 +72,9 @@
  * Storage: data/learning-memory.json  (single file, atomic write)
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const logger = require("../../backend/utils/logger");
 
 const DATA_DIR    = path.join(__dirname, "../../data");
 const MEMORY_PATH = path.join(DATA_DIR, "learning-memory.json");
@@ -331,7 +332,7 @@ function ingest(opts = {}) {
             };
             mem.repeatAlerts.unshift(repeatAlert);
             mem.repeatAlerts = mem.repeatAlerts.slice(0, MAX_REPEAT_ALERTS);
-            console.log(`[LearningMemory] REPEAT ALERT: ${fp} seen ${ip.count}x`);
+            logger.info(`[LearningMemory] REPEAT ALERT: ${fp} seen ${ip.count}x`);
         } else {
             existing.count        = ip.count;
             existing.lastSeenAt   = now;
@@ -359,7 +360,7 @@ function ingest(opts = {}) {
 
     _save(mem);
 
-    console.log(`[LearningMemory] ingested: ${fp} outcome=${outcome} approach=${approach} repeat=${isRepeat}`);
+    logger.info(`[LearningMemory] ingested: ${fp} outcome=${outcome} approach=${approach} repeat=${isRepeat}`);
     return {
         ok:           true,
         patternKey:   fp,

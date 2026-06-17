@@ -3,6 +3,8 @@
 // Tracks spawned processes for lifecycle management and cleanup.
 // Prevents orphaned processes by enforcing registration and TTL limits.
 
+const logger = require("../../../backend/utils/logger");
+
 const MAX_TRACKED    = 500;
 const DEFAULT_TTL_MS = 300000; // 5 minutes
 
@@ -167,7 +169,7 @@ setInterval(() => cleanupOrphans(), 5 * 60_000).unref();
 setInterval(() => {
   const killed = forceKillOverdue();
   if (killed.length > 0) {
-    console.warn(`[ProcessLifecycle] force-killed ${killed.length} overdue process(es):`,
+    logger.warn(`[ProcessLifecycle] force-killed ${killed.length} overdue process(es): ` +
       killed.map(k => `pid=${k.pid} exec=${k.executionId} over=${Math.round(k.overdueMs/1000)}s`).join(", "));
     try { require("../driftMonitor.cjs").recordOrphan(killed.length); } catch {}
   }

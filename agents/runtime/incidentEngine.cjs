@@ -45,8 +45,9 @@
  * Storage: data/incidents.json  (max 500, newest-first, atomic write)
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const logger = require("../../backend/utils/logger");
 
 function _tel() { return require("./telemetryEngine.cjs"); }
 
@@ -366,7 +367,7 @@ function detect({ windowMins = 60, blueprintId, productName } = {}) {
         let detections;
         try { detections = rule.evalFn(ctx); }
         catch (err) {
-            console.log(`[IncidentEngine] rule ${rule.id} error: ${err.message}`);
+            logger.info(`[IncidentEngine] rule ${rule.id} error: ${err.message}`);
             detections = [];
         }
 
@@ -401,7 +402,7 @@ function detect({ windowMins = 60, blueprintId, productName } = {}) {
                 const inc = _newIncident({ ...det, blueprintId, productName });
                 _persist(inc);
                 opened.push(inc);
-                console.log(`[IncidentEngine] OPEN [${inc.severity}] ${inc.title} (${inc.incidentId})`);
+                logger.info(`[IncidentEngine] OPEN [${inc.severity}] ${inc.title} (${inc.incidentId})`);
             }
         }
     }
@@ -420,7 +421,7 @@ function detect({ windowMins = 60, blueprintId, productName } = {}) {
             inc.notes.push({ ts: now.toISOString(), note: "Condition cleared — auto-resolved by detection run" });
             _persist(inc);
             autoResolved.push(inc);
-            console.log(`[IncidentEngine] AUTO-RESOLVED ${inc.incidentId} (${inc.title})`);
+            logger.info(`[IncidentEngine] AUTO-RESOLVED ${inc.incidentId} (${inc.title})`);
         }
     }
 
@@ -436,7 +437,7 @@ function detect({ windowMins = 60, blueprintId, productName } = {}) {
         autoResolvedList: autoResolved,
     };
 
-    console.log(`[IncidentEngine] detect: opened=${opened.length} updated=${updated.length} autoResolved=${autoResolved.length}`);
+    logger.info(`[IncidentEngine] detect: opened=${opened.length} updated=${updated.length} autoResolved=${autoResolved.length}`);
     return result;
 }
 
@@ -477,7 +478,7 @@ function resolve(incidentId, note = "") {
     inc.updatedAt  = new Date().toISOString();
     if (note) inc.notes.push({ ts: new Date().toISOString(), note });
     _save(all);
-    console.log(`[IncidentEngine] RESOLVED ${incidentId}`);
+    logger.info(`[IncidentEngine] RESOLVED ${incidentId}`);
     return { ok: true, incident: inc };
 }
 

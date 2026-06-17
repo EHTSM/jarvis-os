@@ -5,6 +5,8 @@
 // a real browser driver when one is wired up. This makes the module testable
 // and composable without a Puppeteer/Playwright dependency.
 
+const logger = require("../../../backend/utils/logger");
+
 const TASK_TYPES = new Set([
   "navigate", "click", "fill", "submit", "screenshot",
   "evaluate", "wait_for", "scroll", "hover", "select",
@@ -94,7 +96,7 @@ async function executeNext(options = {}) {
       _consecutiveDriverErrors++;
       // Stale driver: auto-disconnect after threshold so next task doesn't hang too
       if (_consecutiveDriverErrors >= DRIVER_ERROR_THRESHOLD) {
-        console.warn(`[BrowserAdapter] ${_consecutiveDriverErrors} consecutive driver errors — clearing stale driver for safe reconnect`);
+        logger.warn(`[BrowserAdapter] ${_consecutiveDriverErrors} consecutive driver errors — clearing stale driver for safe reconnect`);
         _driver = null;
         _consecutiveDriverErrors = 0;
       }

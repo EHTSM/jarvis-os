@@ -55,8 +55,9 @@
  * Storage: data/unified-memory-index.json (rebuilt on demand, max 10MB)
  */
 
-const fs = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const logger = require("../../backend/utils/logger");
 
 const DATA_DIR = path.join(__dirname, "../../data");
 const INDEX_PATH = path.join(DATA_DIR, "unified-memory-index.json");
@@ -418,7 +419,7 @@ function index({ force = false } = {}) {
         fs.renameSync(tmp, INDEX_PATH);
     } catch { /* non-fatal */ }
 
-    console.log(`[UnifiedMemory] index built: ${total} entities across ${Object.keys(idx.byNs).length} namespaces`);
+    logger.info(`[UnifiedMemory] index built: ${total} entities across ${Object.keys(idx.byNs).length} namespaces`);
     return { ok: true, indexed: total, byType: idx.byType, byNs: idx.byNs, builtAt: idx.builtAt };
 }
 

@@ -77,8 +77,9 @@
  * Storage: data/goals.json  (max 200, newest-first, atomic write)
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const logger = require("../../backend/utils/logger");
 
 const DATA_DIR   = path.join(__dirname, "../../data");
 const GOALS_PATH = path.join(DATA_DIR, "goals.json");
@@ -508,7 +509,7 @@ function createGoal({ title, description = "", type, targetDate, blueprintId, ta
     });
 
     const totalTasks = milestones.flatMap(m => m.tasks).length;
-    console.log(`[GoalEngine] created ${goal.goalId} type=${inferredType} milestones=${milestones.length} tasks=${totalTasks}`);
+    logger.info(`[GoalEngine] created ${goal.goalId} type=${inferredType} milestones=${milestones.length} tasks=${totalTasks}`);
     return goal;
 }
 
@@ -555,7 +556,7 @@ function advanceTask(goalId, taskId, result = {}) {
 
     _saveGoals(all);
 
-    console.log(`[GoalEngine] ${goalId} advance task=${taskId} status=${result.ok !== false ? "completed" : "failed"} pct=${goal.completionPct}%`);
+    logger.info(`[GoalEngine] ${goalId} advance task=${taskId} status=${result.ok !== false ? "completed" : "failed"} pct=${goal.completionPct}%`);
     return { ok: true, goal };
 }
 
@@ -690,7 +691,7 @@ function completeGoal(goalId, { note = "" } = {}) {
     // Update unified memory index
     setImmediate(() => { try { _ume()?.index({ force: true }); } catch { /* non-fatal */ } });
 
-    console.log(`[GoalEngine] ${goalId} completed — ${done}/${total} tasks in ${durationDays}d`);
+    logger.info(`[GoalEngine] ${goalId} completed — ${done}/${total} tasks in ${durationDays}d`);
     return { ok: true, goal, report };
 }
 
@@ -715,7 +716,7 @@ function abandonGoal(goalId, reason = "") {
     goal.abandonReason = reason;
 
     _saveGoals(all);
-    console.log(`[GoalEngine] ${goalId} abandoned: ${reason}`);
+    logger.info(`[GoalEngine] ${goalId} abandoned: ${reason}`);
     return { ok: true, goal };
 }
 

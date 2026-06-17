@@ -5,6 +5,7 @@
  * No persistence — rebuilt from live executions each process lifetime.
  */
 
+const logger    = require("../../backend/utils/logger");
 const RING_SIZE = 500;
 
 const _ring    = new Array(RING_SIZE);
@@ -132,10 +133,10 @@ function seedFromLog(n = RING_SIZE) {
         const entries = require("../../backend/utils/execLog.cjs").tail(n).reverse(); // oldest first
         for (const e of entries) record(e);
         if (entries.length > 0) {
-            console.log(`[ExecutionHistory] seeded ${entries.length} entries from persistent log`);
+            logger.info(`[ExecutionHistory] seeded ${entries.length} entries from persistent log`);
         }
     } catch (err) {
-        console.warn(`[ExecutionHistory] seed failed (non-fatal): ${err.message}`);
+        logger.warn(`[ExecutionHistory] seed failed (non-fatal): ${err.message}`);
     }
 }
 

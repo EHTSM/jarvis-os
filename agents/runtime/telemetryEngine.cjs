@@ -44,8 +44,9 @@
  *   }
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const logger = require("../../backend/utils/logger");
 
 const DATA_DIR       = path.join(__dirname, "../../data");
 const EVENTS_PATH    = path.join(DATA_DIR, "telemetry.json");
@@ -227,7 +228,7 @@ function recordDeploy(opts) {
         blueprintId: opts.blueprintId || null,
         productName: opts.productName || null,
     };
-    console.log(`[Telemetry] deploy ${event.phase} — ok=${event.ok} elapsed=${event.elapsedMs}ms`);
+    logger.info(`[Telemetry] deploy ${event.phase} — ok=${event.ok} elapsed=${event.elapsedMs}ms`);
     return _appendEvent(event);
 }
 
@@ -278,7 +279,7 @@ function recordApiError(opts) {
         message:     opts.message?.slice(0, 200) || null,
         blueprintId: opts.blueprintId || null,
     };
-    console.log(`[Telemetry] api_error ${event.method} ${event.path} → ${event.statusCode} (${event.errorCode || "unknown"})`);
+    logger.info(`[Telemetry] api_error ${event.method} ${event.path} → ${event.statusCode} (${event.errorCode || "unknown"})`);
     return _appendEvent(event);
 }
 
@@ -413,7 +414,7 @@ function pruneOldEvents(retentionDays = 30) {
     const pruned = events.length - kept.length;
     if (pruned > 0) {
         _saveEvents(kept);
-        console.log(`[Telemetry] pruned ${pruned} events older than ${retentionDays}d`);
+        logger.info(`[Telemetry] pruned ${pruned} events older than ${retentionDays}d`);
     }
     return pruned;
 }

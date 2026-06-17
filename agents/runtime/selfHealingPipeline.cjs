@@ -58,8 +58,9 @@
  *   }
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const logger = require("../../backend/utils/logger");
 
 const DATA_DIR      = path.join(__dirname, "../../data");
 const RUNS_PATH     = path.join(DATA_DIR, "healing-runs.json");
@@ -287,7 +288,7 @@ function _rollbackAppliedPatches(run) {
                 ? `Rolled back patch ${patchId}`
                 : `Rollback failed for ${patchId}: ${rb.error}`;
             run.rollbackLog.push(msg);
-            console.log(`[SelfHeal] ${msg}`);
+            logger.info(`[SelfHeal] ${msg}`);
         } catch (e) {
             run.rollbackLog.push(`Rollback exception for ${patchId}: ${e.message}`);
         }
@@ -371,7 +372,7 @@ function _executeplan(plan, opts = {}) {
     };
 
     _persistRun(_publicRun(run));
-    console.log(`[SelfHeal] ${run.runId} — plan=${plan.planId} mode=${mode} risk=${plan.risk?.level} tasks=${run.stages.length}`);
+    logger.info(`[SelfHeal] ${run.runId} — plan=${plan.planId} mode=${mode} risk=${plan.risk?.level} tasks=${run.stages.length}`);
 
     // ── recommend_only: propose patches, no execution ─────────────
     if (mode === "recommend_only") {
@@ -391,7 +392,7 @@ function _executeplan(plan, opts = {}) {
         run.completedAt = new Date().toISOString();
         _persistRun(_publicRun(run));
         _learnFromRun(run);
-        console.log(`[SelfHeal] ${run.runId} → recommend-only (${run.patchIds.length} patch proposals)`);
+        logger.info(`[SelfHeal] ${run.runId} → recommend-only (${run.patchIds.length} patch proposals)`);
         return _publicRun(run);
     }
 
@@ -420,7 +421,7 @@ function _executeplan(plan, opts = {}) {
             run.outcome  = "awaiting-approval";
             run.completedAt = new Date().toISOString();
             _persistRun(_publicRun(run));
-            console.log(`[SelfHeal] ${run.runId} → PAUSED at stage ${stage.seq} (${stage.title}) — awaiting approval`);
+            logger.info(`[SelfHeal] ${run.runId} → PAUSED at stage ${stage.seq} (${stage.title}) — awaiting approval`);
             return _publicRun(run);
         }
 
@@ -445,18 +446,18 @@ function _executeplan(plan, opts = {}) {
 
         if (!result.ok) {
             // Stage failed → rollback and abort
-            console.log(`[SelfHeal] Stage ${stage.seq} (${stage.title}) FAILED: ${result.error}`);
+            logger.info(`[SelfHeal] Stage ${stage.seq} (${stage.title}) FAILED: ${result.error}`);
             _rollbackAppliedPatches(run);
             run.status      = "failed";
             run.outcome     = "rolled-back";
             run.completedAt = new Date().toISOString();
             _persistRun(_publicRun(run));
             _learnFromRun(run);
-            console.log(`[SelfHeal] ${run.runId} → FAILED + rolled back (${run.rollbackLog.length} patches reversed)`);
+            logger.info(`[SelfHeal] ${run.runId} → FAILED + rolled back (${run.rollbackLog.length} patches reversed)`);
             return _publicRun(run);
         }
 
-        console.log(`[SelfHeal] Stage ${stage.seq} (${stage.type}: ${stage.title}) → passed`);
+        logger.info(`[SelfHeal] Stage ${stage.seq} (${stage.type}: ${stage.title}) → passed`);
     }
 
     // All stages passed → resolve incident if possible
@@ -478,7 +479,7 @@ function _executeplan(plan, opts = {}) {
     run.completedAt = new Date().toISOString();
     _persistRun(_publicRun(run));
     _learnFromRun(run);
-    console.log(`[SelfHeal] ${run.runId} → SUCCESS (${run.patchIds.length} patches, pipeline=${run.pipelineRunId || "none"})`);
+    logger.info(`[SelfHeal] ${run.runId} → SUCCESS (${run.patchIds.length} patches, pipeline=${run.pipelineRunId || "none"})`);
     return _publicRun(run);
 }
 

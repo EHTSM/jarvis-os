@@ -4,6 +4,7 @@
 // Uses child_process.spawn with shell:false to prevent injection.
 
 const { spawn } = require("child_process");
+const logger = require("../../../backend/utils/logger");
 const sandboxPolicy = require("./adapterSandboxPolicyEngine.cjs");
 const processTracker = require("./processLifecycleAdapter.cjs");
 
@@ -52,7 +53,7 @@ setInterval(() => {
         const startMs  = handle.startMs || now;
         const limitMs  = (handle.timeoutMs || DEFAULT_TIMEOUT_MS) * 2;
         if (now - startMs > limitMs) {
-            console.warn(`[TerminalAdapter] runaway watchdog — force-killing ${execId} (ran ${Math.round((now - startMs)/1000)}s)`);
+            logger.warn(`[TerminalAdapter] runaway watchdog — force-killing ${execId} (ran ${Math.round((now - startMs)/1000)}s)`);
             try { handle.forceKill?.(); } catch {}
         }
     }
