@@ -52,6 +52,7 @@ function _getReg()    { try { return require("../../agents/runtime/agentRegistry
 function _getHist()   { try { return require("../../agents/runtime/executionHistory.cjs");    } catch { return null; } }
 function _getObs()    { try { return require("./observabilityEngine.cjs");                    } catch { return null; } }
 function _getMissOrch(){ try { return require("./missionOrchestrator.cjs");                   } catch { return null; } }
+function _getRuleReg() { try { return require("./engineeringRuleRegistry.cjs");               } catch { return null; } }
 
 // ── Paths ──────────────────────────────────────────────────────────────────
 const DATA_DIR      = path.join(__dirname, "../../data");
@@ -208,7 +209,16 @@ async function executeStage(opts = {}) {
                 rec.logs.push({ ts: new Date().toISOString(), msg: `Attempt ${attempt} failed: ${lastError}` });
                 // Non-retriable errors are deterministic — never improve on retry.
                 // Break immediately to avoid burning backoff time on guaranteed failures.
-                if (result.nonRetriable) {
+                const isNonRetriable = result.nonRetriable || (() => {
+                    // Consult rule registry as fallback for capabilities not yet annotated
+                    try {
+                        const reg = _getRuleReg();
+                        if (!reg) return false;
+                        const { rule } = reg.classifyError(lastError);
+                        return rule?.autoApply && rule?.action === "fail_fast";
+                    } catch { return false; }
+                })();
+                if (isNonRetriable) {
                     rec.logs.push({ ts: new Date().toISOString(), msg: `Non-retriable error — skipping remaining ${rec.maxAttempts - attempt} attempt(s)` });
                     break;
                 }
