@@ -89,13 +89,37 @@ const STATIC_COMMANDS = [
 
 // ── Static: keyboard shortcuts ────────────────────────────────────────
 const STATIC_SHORTCUTS = [
-  { type: 'shortcut', id: 'sc:cmdK',  label: '⌘K — Global Search',           icon: '⌨', action: null },
-  { type: 'shortcut', id: 'sc:cmdP',  label: '⌘P — Command Palette',         icon: '⌨', action: null },
-  { type: 'shortcut', id: 'sc:cmdR',  label: '⌘R — Quick Run',               icon: '⌨', action: null },
-  { type: 'shortcut', id: 'sc:esc',   label: 'Esc — Close / Cancel',         icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:cmdK',    label: '⌘K — Global Search',              icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:cmdP',    label: '⌘P — Quick Switcher (missions, repos, panels)', icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:cmd1-5', label: '⌘1-5 — Switch sidebar panel',      icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:cmdBs',  label: '⌘\\ — Split editor layout',        icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:cmdShG', label: '⌘⇧G — Visual Git sidebar',         icon: '⌨', action: 'nav:git' },
+  { type: 'shortcut', id: 'sc:cmdShE', label: '⌘⇧E — File Explorer sidebar',      icon: '⌨', action: 'nav:explorer' },
+  { type: 'shortcut', id: 'sc:cmdShD', label: '⌘⇧D — Debugger panel',             icon: '⌨', action: 'nav:debugger' },
+  { type: 'shortcut', id: 'sc:cmdShP', label: '⌘⇧P — AI Pair panel',              icon: '⌨', action: 'nav:pair' },
+  { type: 'shortcut', id: 'sc:cmdTick','label': '⌘⇧` — Toggle bottom panel',      icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:esc',    label: 'Esc — Close / Cancel',             icon: '⌨', action: null },
 ];
 
 const ALL_STATIC = [...STATIC_COMMANDS, ...STATIC_ROUTES, ...STATIC_SHORTCUTS];
+
+// ── Recent items injected at runtime ─────────────────────────────────
+function buildRecentItems(recentMissions = [], recentRepos = []) {
+  return [
+    ...recentMissions.slice(0, 4).map(m => ({
+      type: 'mission', id: `mission:recent:${m.id}`,
+      label: m.title || `Mission ${m.id}`,
+      subtitle: `recent · ${m.ts ? new Date(m.ts).toLocaleString() : ''}`,
+      icon: '◎', tab: 'jarvisbrain', data: m,
+    })),
+    ...recentRepos.slice(0, 4).map(r => ({
+      type: 'nav', id: `nav:repo:${r.path}`,
+      label: r.name || r.path.split('/').pop(),
+      subtitle: `recent repo · ${r.path}`,
+      icon: '📁', _repoPath: r.path,
+    })),
+  ];
+}
 
 // ── Score for ranking ─────────────────────────────────────────────────
 function score(item, q) {
@@ -235,7 +259,7 @@ export function ClipboardHistoryPanel({ onClose, className = '' }) {
 }
 
 // ── Main spotlight overlay ────────────────────────────────────────────
-export default function GlobalSearch({ open, onClose, onAction }) {
+export default function GlobalSearch({ open, onClose, onAction, recentMissions = [], recentRepos = [] }) {
   const [query,   setQuery]   = useState('');
   const [results, setResults] = useState([]);
   const [cursor,  setCursor]  = useState(0);
@@ -246,11 +270,16 @@ export default function GlobalSearch({ open, onClose, onAction }) {
   useEffect(() => {
     if (open) {
       setQuery('');
-      setResults(filterAndRank(ALL_STATIC, ''));
+      // Show recents first when palette opens with no query
+      const recents = buildRecentItems(recentMissions, recentRepos);
+      const base = recents.length
+        ? [...recents, ...filterAndRank(ALL_STATIC, '').filter(i => !recents.find(r => r.id === i.id))]
+        : filterAndRank(ALL_STATIC, '');
+      setResults(base.slice(0, 20));
       setCursor(0);
       setTimeout(() => inputRef.current?.focus(), 60);
     }
-  }, [open]);
+  }, [open]); // eslint-disable-line
 
   useEffect(() => {
     const handler = (e) => {

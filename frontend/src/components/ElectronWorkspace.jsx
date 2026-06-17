@@ -60,7 +60,6 @@ function useResize(initial, min, max, axis = 'y') {
   return { size, onResizerMouseDown: onMouseDown };
 }
 
-// ── Aliases for bottom (y-axis) and sidebar (x-axis) ─────────────────
 function useBottomResize(initial = 340) {
   const { size: height, onResizerMouseDown } = useResize(initial, 140, 720, 'y');
   return { height, onResizerMouseDown };
@@ -71,13 +70,45 @@ function useSidebarResize(initial = 260) {
   return { width, onResizerMouseDown };
 }
 
+// Horizontal split resize — for center panel split layout
+function useCenterSplitResize(initial = 50) {
+  // Returns percentage for top pane (0-100)
+  const [pct, setPct] = useState(initial);
+  const containerRef = useRef(null);
+
+  const onMouseDown = useCallback((e) => {
+    e.preventDefault();
+    const startY = e.clientY;
+    const startPct = pct;
+
+    const onMove = (mv) => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const newPct = startPct + ((mv.clientY - startY) / rect.height) * 100;
+      setPct(Math.min(85, Math.max(15, newPct)));
+    };
+    const onUp = () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+    document.body.style.cursor = 'row-resize';
+    document.body.style.userSelect = 'none';
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+  }, [pct]);
+
+  return { pct, containerRef, onResizerMouseDown: onMouseDown };
+}
+
 // ── Constants ──────────────────────────────────────────────────────────
 const SIDEBAR_MODES = {
-  explorer:     { label: 'Files',        icon: '📁', title: 'File Explorer' },
-  git:          { label: 'Git',          icon: '🌿', title: 'Visual Git' },
-  clipboard:    { label: 'Clipboard',    icon: '📋', title: 'Clipboard History' },
-  productivity: { label: 'Workspace',    icon: '🗂',  title: 'Workspace' },
-  intelligence: { label: 'Intelligence', icon: '◈',  title: 'Engineering Intelligence' },
+  explorer:     { label: 'Files',        icon: '📁', title: 'File Explorer',             shortcut: '1' },
+  git:          { label: 'Git',          icon: '🌿', title: 'Visual Git',                shortcut: '2' },
+  clipboard:    { label: 'Clipboard',    icon: '📋', title: 'Clipboard History',          shortcut: '3' },
+  productivity: { label: 'Workspace',    icon: '🗂',  title: 'Workspace',                 shortcut: '4' },
+  intelligence: { label: 'Intelligence', icon: '◈',  title: 'Engineering Intelligence',  shortcut: '5' },
 };
 
 const BOTTOM_TABS = {
@@ -137,12 +168,12 @@ const LazyPane = memo(function LazyPane({ active, children, minHeight }) {
 });
 
 // ── Activity button ────────────────────────────────────────────────────
-const ActivityBtn = memo(function ActivityBtn({ active, onClick, title, children }) {
+const ActivityBtn = memo(function ActivityBtn({ active, onClick, title, children, shortcut }) {
   return (
     <button
       className={`ew-activity-btn${active ? ' ew-activity-btn--active' : ''}`}
       onClick={onClick}
-      title={title}
+      title={shortcut ? `${title} (⌘${shortcut})` : title}
       aria-label={title}
       aria-pressed={active}
     >
@@ -152,7 +183,7 @@ const ActivityBtn = memo(function ActivityBtn({ active, onClick, title, children
 });
 
 // ── Bottom tab button ──────────────────────────────────────────────────
-const BottomTabBtn = memo(function BottomTabBtn({ active, onClick, icon, label }) {
+const BottomTabBtn = memo(function BottomTabBtn({ active, onClick, icon, label, onDock }) {
   return (
     <button
       role="tab"
@@ -161,6 +192,13 @@ const BottomTabBtn = memo(function BottomTabBtn({ active, onClick, icon, label }
       onClick={onClick}
     >
       {icon} {label}
+      {active && onDock && (
+        <span
+          className="ew-dock-btn"
+          title="Dock to floating window"
+          onClick={(e) => { e.stopPropagation(); onDock(); }}
+        >⧉</span>
+      )}
     </button>
   );
 });
@@ -183,34 +221,182 @@ async function saveSession(state) {
   } catch {}
 }
 
+// ── Recent missions hook ───────────────────────────────────────────────
+const RECENT_MISSIONS_KEY = 'recent-missions';
+const RECENT_REPOS_KEY    = 'recent-repos';
+
+function useRecentMissions() {
+  const [recents, setRecents] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(RECENT_MISSIONS_KEY) || '[]'); } catch { return []; }
+  });
+
+  const push = useCallback((mission) => {
+    setRecents(prev => {
+      const filtered = prev.filter(m => m.id !== mission.id);
+      const next = [{ id: mission.id, title: mission.title || mission.name || mission.goal, ts: Date.now() }, ...filtered].slice(0, 8);
+      try { localStorage.setItem(RECENT_MISSIONS_KEY, JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, []);
+
+  return { recents, push };
+}
+
+function useRecentRepos() {
+  const [repos, setRepos] = useState([]);
+
+  // Load from electron store (persists across launches) + localStorage fallback
+  useEffect(() => {
+    if (isElectron()) {
+      api()?.getRecentProjects?.().then(r => {
+        if (r?.projects?.length) setRepos(r.projects);
+      }).catch(() => {});
+    }
+    try {
+      const local = JSON.parse(localStorage.getItem(RECENT_REPOS_KEY) || '[]');
+      if (local.length) setRepos(prev => {
+        const paths = new Set(prev.map(p => p.path));
+        return [...prev, ...local.filter(l => !paths.has(l.path))].slice(0, 10);
+      });
+    } catch {}
+  }, []);
+
+  const push = useCallback((repo) => {
+    setRepos(prev => {
+      const filtered = prev.filter(r => r.path !== repo.path);
+      const next = [{ path: repo.path, name: repo.name || repo.path.split('/').pop(), ts: Date.now() }, ...filtered].slice(0, 10);
+      try { localStorage.setItem(RECENT_REPOS_KEY, JSON.stringify(next)); } catch {}
+      if (isElectron()) api()?.addRecentProject?.(repo.path, repo.name).catch(() => {});
+      return next;
+    });
+  }, []);
+
+  return { repos, push };
+}
+
+// ── Quick Switcher (Cmd+P) ─────────────────────────────────────────────
+const QuickSwitcher = memo(function QuickSwitcher({ open, onClose, onSelect, recentMissions, recentRepos }) {
+  const [query, setQuery] = useState('');
+  const [cursor, setCursor] = useState(0);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (open) { setQuery(''); setCursor(0); setTimeout(() => inputRef.current?.focus(), 40); }
+  }, [open]);
+
+  const items = React.useMemo(() => {
+    const all = [
+      ...recentMissions.map(m => ({ type: 'mission', id: `m:${m.id}`, label: m.title || `Mission ${m.id}`, icon: '◎', data: m })),
+      ...recentRepos.map(r => ({ type: 'repo', id: `r:${r.path}`, label: r.name, sub: r.path, icon: '📁', data: r })),
+      ...Object.entries(BOTTOM_TABS).map(([id, cfg]) => ({ type: 'panel', id: `p:${id}`, label: cfg.label, icon: cfg.icon, panelId: id })),
+      ...Object.entries(SIDEBAR_MODES).map(([id, cfg]) => ({ type: 'sidebar', id: `s:${id}`, label: cfg.title, icon: cfg.icon, sidebarId: id })),
+    ];
+    if (!query.trim()) return all.slice(0, 12);
+    const q = query.toLowerCase();
+    return all.filter(i => i.label.toLowerCase().includes(q) || (i.sub || '').toLowerCase().includes(q)).slice(0, 12);
+  }, [query, recentMissions, recentRepos]);
+
+  const onKey = (e) => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); setCursor(c => Math.min(c + 1, items.length - 1)); }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); setCursor(c => Math.max(c - 1, 0)); }
+    if (e.key === 'Enter')     { e.preventDefault(); if (items[cursor]) { onSelect(items[cursor]); onClose(); } }
+    if (e.key === 'Escape')    { onClose(); }
+  };
+
+  if (!open) return null;
+
+  return (
+    <div className="ew-qs-backdrop" onClick={onClose}>
+      <div className="ew-qs-modal" onClick={e => e.stopPropagation()}>
+        <div className="ew-qs-header">
+          <span className="ew-qs-icon">⌘</span>
+          <input
+            ref={inputRef}
+            className="ew-qs-input"
+            placeholder="Go to mission, repo, panel… (⌘P)"
+            value={query}
+            onChange={e => { setQuery(e.target.value); setCursor(0); }}
+            onKeyDown={onKey}
+            autoComplete="off"
+            spellCheck={false}
+          />
+          <button className="ew-qs-close" onClick={onClose}>Esc</button>
+        </div>
+        <div className="ew-qs-list">
+          {items.length === 0 && <div className="ew-qs-empty">No matches</div>}
+          {items.map((item, i) => (
+            <div
+              key={item.id}
+              className={`ew-qs-item${i === cursor ? ' ew-qs-item--active' : ''}`}
+              onClick={() => { onSelect(item); onClose(); }}
+              onMouseEnter={() => setCursor(i)}
+            >
+              <span className="ew-qs-item__icon">{item.icon}</span>
+              <div className="ew-qs-item__text">
+                <span className="ew-qs-item__label">{item.label}</span>
+                {item.sub && <span className="ew-qs-item__sub">{item.sub}</span>}
+              </div>
+              <span className="ew-qs-item__type">{item.type}</span>
+            </div>
+          ))}
+        </div>
+        <div className="ew-qs-footer">
+          <span>↑↓ navigate</span>
+          <span>↵ open</span>
+          <span>Esc close</span>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+// ── Floating docked panel ──────────────────────────────────────────────
+// Opens a bottom-panel tab in a floating Electron window
+function dockTabToFloat(tabId) {
+  if (!isElectron()) return;
+  // Use broadcast + createFloatingWindow — the floating window renders in mode=floating
+  // which App.jsx routes to the appropriate panel via ?mode=floating&panel=<tabId>
+  api()?.createFloatingWindow?.();
+}
+
 // ── Main component ─────────────────────────────────────────────────────
 export default function ElectronWorkspace({ children }) {
-  const [searchOpen,   setSearchOpen]   = useState(false);
-  const [aiCollapsed,  setAiCollapsed]  = useState(false);
-  const [sidebarMode,  setSidebarMode]  = useState('explorer');
-  const [showSidebar,  setShowSidebar]  = useState(true);
-  const [showBottom,   setShowBottom]   = useState(false);
-  const [bottomTab,    setBottomTab]    = useState('terminal');
-  const [showAI,       setShowAI]       = useState(true);
-  const [cwd,          setCwd]          = useState(null);
+  const [searchOpen,    setSearchOpen]    = useState(false);
+  const [switcherOpen,  setSwitcherOpen]  = useState(false);
+  const [aiCollapsed,   setAiCollapsed]   = useState(false);
+  const [sidebarMode,   setSidebarMode]   = useState('explorer');
+  const [showSidebar,   setShowSidebar]   = useState(true);
+  const [showBottom,    setShowBottom]    = useState(false);
+  const [bottomTab,     setBottomTab]     = useState('terminal');
+  const [showAI,        setShowAI]        = useState(true);
+  const [cwd,           setCwd]           = useState(null);
   const [sessionLoaded, setSessionLoaded] = useState(false);
+  const [splitLayout,   setSplitLayout]   = useState(false); // center horizontal split
+  const [splitContent,  setSplitContent]  = useState('missions'); // what fills the split bottom pane
   // Operator OS home — 'os' = Mission Control; anything else = App tab name
-  const [osView,       setOsView]       = useState('os');
+  const [osView,        setOsView]        = useState('os');
 
   const { height: bottomH,   onResizerMouseDown: onBottomResize }  = useBottomResize(340);
   const { width:  sidebarW,  onResizerMouseDown: onSidebarResize } = useSidebarResize(260);
+  const { pct: splitPct, containerRef: splitRef, onResizerMouseDown: onSplitResize } = useCenterSplitResize(55);
+
+  const { recents: recentMissions, push: pushMission } = useRecentMissions();
+  const { repos: recentRepos, push: pushRepo }         = useRecentRepos();
 
   // ── Restore session on mount ─────────────────────────────────────
   useEffect(() => {
     if (!isElectron()) { setSessionLoaded(true); return; }
     loadSession().then(s => {
       if (s) {
-        if (s.sidebarMode) setSidebarMode(s.sidebarMode);
+        if (s.sidebarMode)  setSidebarMode(s.sidebarMode);
         if (s.showSidebar !== undefined) setShowSidebar(s.showSidebar);
         if (s.showBottom  !== undefined) setShowBottom(s.showBottom);
-        if (s.bottomTab)  setBottomTab(s.bottomTab);
+        if (s.bottomTab)    setBottomTab(s.bottomTab);
         if (s.showAI      !== undefined) setShowAI(s.showAI);
         if (s.aiCollapsed !== undefined) setAiCollapsed(s.aiCollapsed);
+        if (s.splitLayout !== undefined) setSplitLayout(s.splitLayout);
+        if (s.splitContent) setSplitContent(s.splitContent);
+        if (s.cwd)          setCwd(s.cwd);
         setOsView(s.osView || 'os');
       }
       setSessionLoaded(true);
@@ -221,16 +407,21 @@ export default function ElectronWorkspace({ children }) {
   useEffect(() => {
     if (!sessionLoaded) return;
     const timer = setTimeout(() => {
-      saveSession({ sidebarMode, showSidebar, showBottom, bottomTab, showAI, aiCollapsed, osView });
+      saveSession({ sidebarMode, showSidebar, showBottom, bottomTab, showAI, aiCollapsed, osView, splitLayout, splitContent, cwd });
     }, 500);
     return () => clearTimeout(timer);
-  }, [sidebarMode, showSidebar, showBottom, bottomTab, showAI, aiCollapsed, osView, sessionLoaded]);
+  }, [sidebarMode, showSidebar, showBottom, bottomTab, showAI, aiCollapsed, osView, splitLayout, splitContent, cwd, sessionLoaded]);
 
-  // Resolve CWD once at startup
+  // Resolve CWD on startup — restore from session first, fall back to home
   useEffect(() => {
-    if (!isElectron()) return;
+    if (!isElectron() || cwd) return;
     api()?.fsGetHomePath?.().then(r => r?.path && setCwd(r.path));
-  }, []);
+  }, []); // eslint-disable-line
+
+  // Track project changes → recent repos
+  useEffect(() => {
+    if (cwd) pushRepo({ path: cwd, name: cwd.split('/').pop() });
+  }, [cwd]); // eslint-disable-line
 
   // Sidebar toggle — stable, no re-renders on consumers
   const setSidebar = useStableCallback((mode) => {
@@ -246,17 +437,48 @@ export default function ElectronWorkspace({ children }) {
     setShowBottom(true);
   });
 
-  // Keyboard shortcuts
+  // ── Quick Switcher handler ────────────────────────────────────────
+  const handleQuickSwitch = useStableCallback((item) => {
+    if (item.type === 'panel')   { openBottomTab(item.panelId); return; }
+    if (item.type === 'sidebar') { setSidebar(item.sidebarId); return; }
+    if (item.type === 'repo')    { setCwd(item.data.path); setSidebar('explorer'); return; }
+    if (item.type === 'mission') {
+      setOsView('os');
+      window.dispatchEvent(new CustomEvent('jarvis-os-nav', { detail: { tab: 'jarvisbrain', mission: item.data } }));
+    }
+  });
+
+  // ── Keyboard shortcuts ────────────────────────────────────────────
   useEffect(() => {
     const handler = (e) => {
       const ctrl = e.metaKey || e.ctrlKey;
       if (!ctrl) return;
-      if (e.key === 'k')                     { e.preventDefault(); setSearchOpen(s => !s); }
-      if (e.shiftKey && e.key === 'E')       { e.preventDefault(); setSidebar('explorer'); }
-      if (e.shiftKey && e.key === 'G')       { e.preventDefault(); setSidebar('git'); }
-      if (e.shiftKey && e.key === '`')       { e.preventDefault(); setShowBottom(s => !s); }
-      if (e.shiftKey && e.key === 'D')       { e.preventDefault(); openBottomTab('debugger'); }
-      if (e.shiftKey && e.key === 'P')       { e.preventDefault(); openBottomTab('pair'); }
+
+      // Cmd+K — global search
+      if (e.key === 'k' && !e.shiftKey) { e.preventDefault(); setSearchOpen(s => !s); return; }
+
+      // Cmd+P — quick switcher
+      if (e.key === 'p' && !e.shiftKey) { e.preventDefault(); setSwitcherOpen(s => !s); return; }
+
+      // Cmd+\ — toggle split layout
+      if (e.key === '\\') { e.preventDefault(); setSplitLayout(s => !s); return; }
+
+      // Cmd+Shift+` — toggle bottom panel
+      if (e.shiftKey && e.key === '`') { e.preventDefault(); setShowBottom(s => !s); return; }
+
+      // Cmd+Shift+E/G/D/P — sidebar/panel shortcuts
+      if (e.shiftKey && e.key === 'E')  { e.preventDefault(); setSidebar('explorer'); return; }
+      if (e.shiftKey && e.key === 'G')  { e.preventDefault(); setSidebar('git'); return; }
+      if (e.shiftKey && e.key === 'D')  { e.preventDefault(); openBottomTab('debugger'); return; }
+      if (e.shiftKey && e.key === 'P')  { e.preventDefault(); openBottomTab('pair'); return; }
+
+      // Cmd+1..5 — sidebar mode by position
+      const sidebarKeys = Object.keys(SIDEBAR_MODES);
+      const num = parseInt(e.key, 10);
+      if (num >= 1 && num <= sidebarKeys.length && !e.shiftKey) {
+        e.preventDefault();
+        setSidebar(sidebarKeys[num - 1]);
+      }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
@@ -281,9 +503,7 @@ export default function ElectronWorkspace({ children }) {
     return () => { if (typeof unsub === 'function') unsub(); };
   }, [openBottomTab, setSidebar]);
 
-  // Navigate Operator OS center view.
-  // 'os' → show Mission Control; anything else → show children + dispatch
-  // a custom event so App.jsx can switch its internal tab to match.
+  // Navigate Operator OS center view
   const navigateOs = useStableCallback((view) => {
     setOsView(view);
     if (view !== 'os') {
@@ -310,6 +530,8 @@ export default function ElectronWorkspace({ children }) {
         if (item?.tab) {
           setOsView('os');
           window.dispatchEvent(new CustomEvent('jarvis-os-nav', { detail: item.tab }));
+          // Track recent missions
+          if (item.type === 'mission' && item.data) pushMission(item.data);
         }
         break;
       case 'open-search': setSearchOpen?.(true); break;
@@ -330,7 +552,7 @@ export default function ElectronWorkspace({ children }) {
   return (
     <div className="ew-shell">
       {/* Activity bar */}
-      <div className="ew-activity">
+      <div className="ew-activity" role="toolbar" aria-label="Activity bar">
         {/* Mission Control home */}
         <ActivityBtn
           active={osView === 'os'}
@@ -346,11 +568,22 @@ export default function ElectronWorkspace({ children }) {
             active={showSidebar && sidebarMode === mode}
             onClick={() => setSidebar(mode)}
             title={cfg.title}
+            shortcut={cfg.shortcut}
           >
             {cfg.icon}
           </ActivityBtn>
         ))}
         <div className="ew-activity__spacer" />
+
+        {/* Split layout toggle */}
+        <ActivityBtn
+          active={splitLayout}
+          onClick={() => setSplitLayout(s => !s)}
+          title="Split editor layout (⌘\)"
+        >
+          ⊟
+        </ActivityBtn>
+
         {Object.entries(BOTTOM_TABS).map(([id, cfg]) => (
           <ActivityBtn
             key={id}
@@ -362,7 +595,9 @@ export default function ElectronWorkspace({ children }) {
           </ActivityBtn>
         ))}
         <ActivityBtn active={showAI} onClick={() => setShowAI(s => !s)} title="AI Overlay">✨</ActivityBtn>
-        <ActivityBtn active={false} onClick={() => setSearchOpen(true)} title="Global Search (Cmd+K)">⌕</ActivityBtn>
+        {/* Quick switcher shortcut */}
+        <ActivityBtn active={switcherOpen} onClick={() => setSwitcherOpen(true)} title="Quick Switcher (⌘P)">⌘</ActivityBtn>
+        <ActivityBtn active={false} onClick={() => setSearchOpen(true)} title="Global Search (⌘K)">⌕</ActivityBtn>
       </div>
 
       {/* Main workspace */}
@@ -373,7 +608,7 @@ export default function ElectronWorkspace({ children }) {
             <div className="ew-sidebar" style={{ width: sidebarW }}>
               <div className="ew-sidebar__header">
                 <span className="ew-sidebar__title">{SIDEBAR_MODES[sidebarMode]?.title}</span>
-                <button className="ew-sidebar__close" onClick={() => setShowSidebar(false)}>✕</button>
+                <button className="ew-sidebar__close" onClick={() => setShowSidebar(false)} aria-label="Close sidebar">✕</button>
               </div>
               <div className="ew-sidebar__body">
                 <LazyPane active={sidebarMode === 'explorer'}>
@@ -393,9 +628,11 @@ export default function ElectronWorkspace({ children }) {
                 </LazyPane>
                 <LazyPane active={sidebarMode === 'productivity'}>
                   <ErrorBoundary label="Workspace">
-                    <WorkspaceProductivity
-                      onProjectSwitch={p => { setCwd(p.path); setSidebar('explorer'); }}
-                    />
+                    <Suspense fallback={<PanelSkeleton />}>
+                      <WorkspaceProductivity
+                        onProjectSwitch={p => { setCwd(p.path); pushRepo(p); setSidebar('explorer'); }}
+                      />
+                    </Suspense>
                   </ErrorBoundary>
                 </LazyPane>
                 <LazyPane active={sidebarMode === 'intelligence'}>
@@ -411,22 +648,63 @@ export default function ElectronWorkspace({ children }) {
         )}
 
         {/* Center column */}
-        <div className="ew-center">
+        <div className="ew-center" ref={splitRef}>
           {/* OS home button — shown when not on Mission Control */}
           {osView !== 'os' && (
             <button className="ew-os-home-btn" onClick={() => setOsView('os')} title="Back to Mission Control">
               ⬡ Mission Control
             </button>
           )}
-          <div className="ew-content">
-            {osView === 'os'
-              ? (
-                <ErrorBoundary label="Mission Control">
-                  <MissionControl onNavigate={navigateOs} />
-                </ErrorBoundary>
-              )
-              : children
-            }
+
+          {/* Split layout or normal content */}
+          <div className={`ew-content${splitLayout ? ' ew-content--split' : ''}`}
+               style={splitLayout ? { display: 'flex', flexDirection: 'column' } : {}}>
+            {splitLayout ? (
+              <>
+                {/* Top pane — primary content */}
+                <div style={{ flex: 'none', height: `${splitPct}%`, overflow: 'hidden', minHeight: 80 }}>
+                  {osView === 'os'
+                    ? <ErrorBoundary label="Mission Control"><MissionControl onNavigate={navigateOs} /></ErrorBoundary>
+                    : children
+                  }
+                </div>
+                {/* Split handle */}
+                <div className="ew-split-resizer" onMouseDown={onSplitResize} />
+                {/* Bottom pane — secondary content (missions by default) */}
+                <div style={{ flex: 1, overflow: 'hidden', minHeight: 60 }}>
+                  <div className="ew-split-tab-bar">
+                    {['missions', 'terminal', 'console', 'observer'].map(id => (
+                      <button
+                        key={id}
+                        className={`ew-split-tab${splitContent === id ? ' ew-split-tab--active' : ''}`}
+                        onClick={() => setSplitContent(id)}
+                      >
+                        {BOTTOM_TABS[id]?.icon} {BOTTOM_TABS[id]?.label || id}
+                      </button>
+                    ))}
+                    <button className="ew-split-close" onClick={() => setSplitLayout(false)}>✕ unsplit</button>
+                  </div>
+                  <div style={{ height: 'calc(100% - 28px)', overflow: 'hidden' }}>
+                    <LazyPane active={splitContent === 'missions'}>
+                      <ErrorBoundary label="Mission Engine"><MissionEngine /></ErrorBoundary>
+                    </LazyPane>
+                    <LazyPane active={splitContent === 'terminal'}>
+                      <ErrorBoundary label="Terminal"><TerminalPanel cwd={cwd} /></ErrorBoundary>
+                    </LazyPane>
+                    <LazyPane active={splitContent === 'console'}>
+                      <ErrorBoundary label="Console"><EngineeringConsole /></ErrorBoundary>
+                    </LazyPane>
+                    <LazyPane active={splitContent === 'observer'}>
+                      <ErrorBoundary label="Observer"><RuntimeObserverPanel /></ErrorBoundary>
+                    </LazyPane>
+                  </div>
+                </div>
+              </>
+            ) : (
+              osView === 'os'
+                ? <ErrorBoundary label="Mission Control"><MissionControl onNavigate={navigateOs} /></ErrorBoundary>
+                : children
+            )}
           </div>
 
           {/* Bottom panel */}
@@ -442,81 +720,54 @@ export default function ElectronWorkspace({ children }) {
                       onClick={() => setBottomTab(id)}
                       icon={cfg.icon}
                       label={cfg.label}
+                      onDock={bottomTab === id ? () => dockTabToFloat(id) : null}
                     />
                   ))}
                   <div style={{ flex: 1 }} />
-                  <button className="ew-bottom-close" onClick={() => setShowBottom(false)}>✕</button>
+                  <button className="ew-bottom-close" onClick={() => setShowBottom(false)} aria-label="Close panel">✕</button>
                 </div>
                 <div className="ew-bottom__body">
                   <LazyPane active={bottomTab === 'terminal'}>
-                    <ErrorBoundary label="Terminal">
-                      <TerminalPanel cwd={cwd} />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Terminal"><TerminalPanel cwd={cwd} /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'console'}>
-                    <ErrorBoundary label="Engineering Console">
-                      <EngineeringConsole />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Engineering Console"><EngineeringConsole /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'debugger'}>
-                    <ErrorBoundary label="Debugger">
-                      <RuntimeDebugger />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Debugger"><RuntimeDebugger /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'ops'}>
-                    <ErrorBoundary label="Auto-Ops">
-                      <AutonomousOps />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Auto-Ops"><AutonomousOps /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'arch'}>
-                    <ErrorBoundary label="Architecture">
-                      <VisualArchitecture />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Architecture"><VisualArchitecture /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'pair'}>
-                    <ErrorBoundary label="AI Pair">
-                      <AIPairProgramming />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="AI Pair"><AIPairProgramming /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'agents'}>
-                    <ErrorBoundary label="Live Agents">
-                      <LiveAgentCollaboration />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Live Agents"><LiveAgentCollaboration /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'missions'}>
-                    <ErrorBoundary label="Mission Engine">
-                      <MissionEngine />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Mission Engine"><MissionEngine /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'command'}>
-                    <ErrorBoundary label="Operator Command">
-                      <OperatorCommandLayer />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Operator Command"><OperatorCommandLayer /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'execloop'}>
-                    <ErrorBoundary label="Executive Loop">
-                      <ExecutiveLoop />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Executive Loop"><ExecutiveLoop /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'observer'}>
-                    <ErrorBoundary label="Runtime Observer">
-                      <RuntimeObserverPanel />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Runtime Observer"><RuntimeObserverPanel /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'decisions'}>
-                    <ErrorBoundary label="Decision Engine">
-                      <DecisionQueuePanel />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Decision Engine"><DecisionQueuePanel /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'orchestrator'}>
-                    <ErrorBoundary label="Mission Orchestrator">
-                      <MissionOrchestratorPanel />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Mission Orchestrator"><MissionOrchestratorPanel /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'execution'}>
-                    <ErrorBoundary label="Execution Runtime">
-                      <ExecutionRuntimePanel />
-                    </ErrorBoundary>
+                    <ErrorBoundary label="Execution Runtime"><ExecutionRuntimePanel /></ErrorBoundary>
                   </LazyPane>
                 </div>
               </div>
@@ -538,12 +789,23 @@ export default function ElectronWorkspace({ children }) {
         )}
       </div>
 
+      {/* Quick Switcher (Cmd+P) */}
+      <QuickSwitcher
+        open={switcherOpen}
+        onClose={() => setSwitcherOpen(false)}
+        onSelect={handleQuickSwitch}
+        recentMissions={recentMissions}
+        recentRepos={recentRepos}
+      />
+
       {/* Global search — separate Suspense so it doesn't block the shell */}
       <Suspense fallback={null}>
         <GlobalSearch
           open={searchOpen}
           onClose={() => setSearchOpen(false)}
           onAction={handleAction}
+          recentMissions={recentMissions}
+          recentRepos={recentRepos}
         />
       </Suspense>
     </div>
