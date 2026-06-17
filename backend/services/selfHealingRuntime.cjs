@@ -1,19 +1,34 @@
 "use strict";
 /**
- * SelfHealingRuntime — detect failures, retry actions, restart failed
- * workflows, and record every recovery action.
+ * SelfHealingRuntime — Strategy Engine for failure recovery.
+ *
+ * Sprint 4: transforms from a single-strategy retry loop into a
+ * multi-strategy engine that selects the best recovery action per failure
+ * using Engineering Rules, Root Cause Analysis, and execution history.
  *
  * Integrates with:
- *   taskQueue         — scan for stuck/failed tasks and reschedule
- *   runtimeOrchestrator — getHealLog() for native runtime heal events
- *   autonomousTaskLoop  — restart failed cycles
- *   execLog           — source of truth for recent execution failures
+ *   taskQueue              — scan for stuck/failed tasks and reschedule
+ *   runtimeOrchestrator    — getHealLog() for native runtime heal events
+ *   autonomousTaskLoop     — restart failed cycles
+ *   execLog                — source of truth for recent execution failures
+ *   engineeringRuleRegistry — classifyError() for strategy classification
+ *   rootCauseAnalysisEngine — getAnalysis() for known problem classes
  *
- * Healing strategies:
- *   retry_task       — re-queue a failed task with backoff
- *   restart_workflow — cancel + restart a full cycle
- *   circuit_break    — mark an agent/tool as temporarily unavailable
- *   escalate         — log a high-severity alert if healing keeps failing
+ * Recovery strategies (Sprint 4 — 8 strategies):
+ *   retry_with_backoff     — transient error; re-queue with exponential delay
+ *   fail_fast              — deterministic error; park immediately, no retry
+ *   park_task              — DLQ immediately; error is known-permanent
+ *   reroute_capability     — redirect to alternative agent/capability
+ *   delay_until_ready      — handler not registered yet; wait and retry once
+ *   circuit_reset_rec      — circuit breaker open; recommend reset to operator
+ *   operator_approval      — requires human decision; halt and notify
+ *   dead_letter            — all strategies exhausted; move to DLQ
+ *
+ * Every healing action records:
+ *   strategyReason         — why this strategy was selected
+ *   alternativesRejected   — why other strategies were not used
+ *   expectedRecoveryProb   — 0-100 estimated probability of success
+ *   ruleId / rcaClass      — source of the strategy decision
  *
  * Persists recovery history to data/healing-history.json.
  * Runs a background probe every PROBE_INTERVAL_MS (default 60s).
@@ -23,6 +38,7 @@
  *   healTask(taskId, opts)          → RecoveryRecord
  *   healCycle(cycleId, opts)        → RecoveryRecord
  *   circuitBreak(targetId, reason)  → RecoveryRecord
+ *   selectStrategy(error, context)  → StrategyDecision
  *   getHistory(opts)                → { records[], stats }
  *   getStatus()                     → { lastProbeAt, probeCount, healedTotal, failedTotal }
  */
@@ -64,9 +80,208 @@ function _record(rec) {
 }
 
 // ── Lazy-load dependents ─────────────────────────────────────────────────
-function _getTQ()  { try { return require("../../agents/taskQueue.cjs"); } catch { return null; } }
-function _getATL() { try { return require("./autonomousTaskLoop.cjs");   } catch { return null; } }
-function _getOrc() { try { return require("../../agents/runtime/runtimeOrchestrator.cjs"); } catch { return null; } }
+function _getTQ()   { try { return require("../../agents/taskQueue.cjs"); } catch { return null; } }
+function _getATL()  { try { return require("./autonomousTaskLoop.cjs");   } catch { return null; } }
+function _getOrc()  { try { return require("../../agents/runtime/runtimeOrchestrator.cjs"); } catch { return null; } }
+function _getRules(){ try { return require("./engineeringRuleRegistry.cjs");     } catch { return null; } }
+function _getRCA()  { try { return require("./rootCauseAnalysisEngine.cjs");     } catch { return null; } }
+function _getDLQ()  { try { return require("../../agents/runtime/deadLetterQueue.cjs"); } catch { return null; } }
+
+// ── Strategy selector (Sprint 4 core) ────────────────────────────────────
+//
+// Consults the Engineering Rule Registry and RCA Engine to decide which
+// of the 8 recovery strategies to apply. Returns a StrategyDecision that
+// explains WHY the chosen strategy was selected and WHY alternatives were
+// rejected.
+//
+// Strategy priority ladder (evaluated top-to-bottom, first match wins):
+//   1. fail_fast           — rule says deterministic + autoApply
+//   2. delay_until_ready   — error indicates handler not registered yet
+//   3. circuit_reset_rec   — error is a circuit-breaker trip
+//   4. park_task           — max retries exhausted AND deterministic
+//   5. operator_approval   — rule says require_operator_action
+//   6. reroute_capability  — error is dispatch failed (unknown cap name)
+//   7. retry_with_backoff  — rule says retry_with_backoff OR transient/unknown
+//   8. dead_letter         — max retries exhausted, nothing else worked
+
+const STRATEGY_DESCRIPTIONS = {
+    retry_with_backoff:  "Transient error — retrying with exponential backoff is likely to succeed",
+    fail_fast:           "Deterministic error — retrying will never succeed; parking immediately saves retry budget",
+    park_task:           "Max retries reached on a deterministic error — moving to DLQ",
+    reroute_capability:  "Capability not found — redirecting to a registered alternative",
+    delay_until_ready:   "Handler not yet registered — scheduling a delayed retry after registration window",
+    circuit_reset_rec:   "Circuit breaker is open — recommending reset to operator before further attempts",
+    operator_approval:   "Recovery requires human decision — halting and notifying operator",
+    dead_letter:         "All recovery strategies exhausted — archiving to dead-letter queue",
+};
+
+function selectStrategy(errorMsg, context = {}) {
+    const error = (errorMsg || "").toLowerCase();
+    const retries = context.retries || 0;
+    const maxRetries = context.maxRetries || MAX_AUTO_RETRIES;
+    const exhausted = retries >= maxRetries;
+
+    // Default decision if nothing matches
+    let chosen = "retry_with_backoff";
+    let ruleId = null;
+    let rcaClass = null;
+    let confidence = 50;
+    let strategyReason = "No rule matched; defaulting to retry_with_backoff for unknown errors";
+    const alternativesRejected = [];
+
+    // 1. Consult Engineering Rule Registry
+    let rule = null;
+    try {
+        const reg = _getRules();
+        if (reg) {
+            const result = reg.classifyError(errorMsg);
+            rule = result.rule;
+            confidence = Math.max(confidence, result.confidence || 0);
+        }
+    } catch { /* non-fatal */ }
+
+    // 2. Consult RCA Engine for known problem classes
+    let rcaMatch = null;
+    try {
+        const rca = _getRCA();
+        if (rca) {
+            // Match error against known RCA problem classes
+            const { analyses } = rca.listAnalyses({ limit: 20 });
+            for (const a of analyses) {
+                if (a.status === "active" && a.affectedCapabilities?.some(c => error.includes(c.toLowerCase()))) {
+                    rcaMatch = a;
+                    rcaClass = a.problemClass;
+                    break;
+                }
+                // Also match by error pattern in RCA error breakdown keys
+                const breakdownKeys = Object.keys(a.errorBreakdown || {});
+                if (breakdownKeys.some(k => error.includes(k.toLowerCase()))) {
+                    rcaMatch = a;
+                    rcaClass = a.problemClass;
+                    break;
+                }
+            }
+        }
+    } catch { /* non-fatal */ }
+
+    // ── Strategy ladder ──────────────────────────────────────────────
+
+    if (rule && rule.autoApply && rule.action === "fail_fast" && !exhausted) {
+        // Rule says deterministic: never improve on retry
+        chosen = "fail_fast";
+        ruleId = rule.ruleId;
+        confidence = Math.max(confidence, 90);
+        strategyReason = `Rule [${rule.ruleId}] classifies '${rule.problemClass}' as deterministic. ${rule.why?.slice(0, 100)}`;
+        alternativesRejected.push(
+            { strategy: "retry_with_backoff", reason: "Rule confirms error is deterministic — retrying wastes backoff budget" },
+            { strategy: "dead_letter", reason: "Not yet at max retries; fail_fast is sufficient" },
+        );
+    } else if (error.includes("not yet registered") || error.includes("handler not registered") ||
+               (error.includes("dispatch failed") && retries === 0 && context.targetType === "cycle")) {
+        // Handler registration race — the sales agent bootstrap pattern (RCA-2)
+        chosen = "delay_until_ready";
+        rcaClass = rcaClass || "sales_agent_bootstrap_race";
+        confidence = 78;
+        strategyReason = "Error pattern suggests handler not yet registered (bootstrap race). " +
+            "A short delay allows registration to complete before re-dispatch.";
+        alternativesRejected.push(
+            { strategy: "fail_fast", reason: "Error may be transient — handler registration is in progress" },
+            { strategy: "dead_letter", reason: "First occurrence; delay-until-ready should recover without operator" },
+        );
+    } else if (error.includes("cb trigger") || error.includes("circuit") || error.includes("circuit_break")) {
+        // Circuit breaker open — RCA-4
+        chosen = "circuit_reset_rec";
+        rcaClass = rcaClass || "circuit_breaker_open_media";
+        confidence = 91;
+        strategyReason = "Circuit breaker is open. Retrying will immediately re-trigger. " +
+            "Operator must diagnose the original failure and reset the breaker.";
+        alternativesRejected.push(
+            { strategy: "retry_with_backoff", reason: "Breaker will reject every attempt until reset — retrying wastes budget" },
+            { strategy: "fail_fast", reason: "Recovery IS possible after breaker reset; don't close the door permanently" },
+        );
+    } else if (exhausted && rule && rule.action === "fail_fast") {
+        // Deterministic AND exhausted — park it
+        chosen = "park_task";
+        ruleId = rule.ruleId;
+        confidence = 95;
+        strategyReason = `Max retries (${maxRetries}) reached on a deterministic error class '${rule.problemClass}'. ` +
+            "Moving to DLQ; further retries cannot succeed.";
+        alternativesRejected.push(
+            { strategy: "retry_with_backoff", reason: "Max retries exhausted" },
+            { strategy: "dead_letter", reason: "park_task preserves the item for operator review; dead_letter discards it" },
+        );
+    } else if (rule && rule.autoApply && rule.action === "require_operator_action") {
+        // Git state errors, missing approvals — need human
+        chosen = "operator_approval";
+        ruleId = rule.ruleId;
+        confidence = Math.max(confidence, 85);
+        strategyReason = `Rule [${rule.ruleId}] requires operator intervention for '${rule.problemClass}'. ` +
+            `${rule.solution?.slice(0, 100)}`;
+        alternativesRejected.push(
+            { strategy: "retry_with_backoff", reason: "Git/state errors cannot resolve without operator action" },
+            { strategy: "fail_fast", reason: "Recovery IS possible with operator intervention; don't discard" },
+        );
+    } else if (error.includes("dispatch failed") || error.includes("capability not found") ||
+               error.includes("no handler") || error.includes("unknown capability")) {
+        // Unknown capability — reroute
+        chosen = "reroute_capability";
+        confidence = 72;
+        strategyReason = "Capability dispatch failed — no handler registered for this capability name. " +
+            "Attempting reroute to closest registered alternative.";
+        alternativesRejected.push(
+            { strategy: "retry_with_backoff", reason: "Capability registration is static — retry cannot register a missing handler" },
+            { strategy: "fail_fast", reason: "Rerouting to an alternative may succeed" },
+        );
+    } else if (exhausted) {
+        // Nothing worked, all retries consumed
+        chosen = "dead_letter";
+        confidence = 95;
+        strategyReason = `Max retries (${maxRetries}) exhausted with no matching rule. ` +
+            "Archiving to dead-letter queue for operator review.";
+        alternativesRejected.push(
+            { strategy: "retry_with_backoff", reason: "Max retries reached" },
+            { strategy: "fail_fast", reason: "Error class is unknown; cannot confirm deterministic" },
+        );
+    } else if (rule && rule.action === "retry_with_backoff") {
+        // Explicit rule says retry
+        chosen = "retry_with_backoff";
+        ruleId = rule.ruleId;
+        confidence = Math.max(confidence, 80);
+        strategyReason = `Rule [${rule.ruleId}] classifies '${rule.problemClass}' as genuinely transient. ${rule.why?.slice(0, 80)}`;
+        alternativesRejected.push(
+            { strategy: "fail_fast", reason: "Rule confirms error is transient — retry may succeed" },
+        );
+    } else {
+        // Default: retry unknown errors (may be transient)
+        strategyReason = `Error '${(errorMsg || "unknown").slice(0, 60)}' has no matching rule. ` +
+            "Defaulting to retry_with_backoff; if it recurs 3×, RCA will classify it.";
+        alternativesRejected.push(
+            { strategy: "fail_fast", reason: "Cannot confirm deterministic without a matching rule" },
+        );
+    }
+
+    const expectedRecoveryProb = {
+        retry_with_backoff:  70,
+        fail_fast:            0,  // not a recovery — avoids waste
+        park_task:            0,  // explicit non-recovery
+        reroute_capability:  45,
+        delay_until_ready:   80,
+        circuit_reset_rec:    0,  // recommendation only
+        operator_approval:   90,  // humans usually fix things
+        dead_letter:          0,  // archived
+    }[chosen] ?? 50;
+
+    return {
+        strategy:             chosen,
+        ruleId,
+        rcaClass,
+        confidence,
+        strategyReason,
+        alternativesRejected,
+        expectedRecoveryProb,
+        description:          STRATEGY_DESCRIPTIONS[chosen],
+    };
+}
 
 // ── Failure detection ────────────────────────────────────────────────────
 function _detectFailedTasks() {
@@ -102,85 +317,208 @@ function _recentExecFailures() {
 
 // ── Healing actions ──────────────────────────────────────────────────────
 
-/** Re-queue a failed / stuck task with exponential backoff. */
+/** Re-queue a failed / stuck task — strategy-selected healing. */
 async function healTask(taskId, opts = {}) {
-    const recId   = _rid();
-    const count   = (_retryCount.get(taskId) || 0) + 1;
+    const recId = _rid();
+    const tq    = _getTQ();
 
-    if (count > MAX_AUTO_RETRIES) {
-        const rec = { recId, strategy: "escalate", targetType: "task", targetId: taskId, success: false, reason: `max retries (${MAX_AUTO_RETRIES}) exceeded`, count };
+    // Resolve task for context
+    let task = null;
+    try {
+        const all = tq ? tq.getAll() : [];
+        task = all.find(t => t.id === taskId) || null;
+    } catch { /* non-fatal */ }
+
+    if (!task && tq) {
+        const rec = { recId, strategy: "fail_fast", targetType: "task", targetId: taskId,
+            success: false, reason: "task not found",
+            strategyReason: "Cannot heal a task that no longer exists in the queue",
+            alternativesRejected: [], expectedRecoveryProb: 0 };
+        _record(rec); return rec;
+    }
+
+    const errorMsg  = task?.error || task?.lastError || "";
+    const retries   = task?.retries || (_retryCount.get(taskId) || 0);
+    const decision  = selectStrategy(errorMsg, { retries, maxRetries: task?.maxRetries || MAX_AUTO_RETRIES, targetType: "task" });
+    const count     = retries + 1;
+
+    logger.info(`[SelfHeal] Task ${taskId} → strategy=${decision.strategy} (conf=${decision.confidence}%) reason: ${decision.strategyReason.slice(0, 80)}`);
+
+    // ── Execute chosen strategy ──────────────────────────────────────
+
+    if (decision.strategy === "fail_fast" || decision.strategy === "park_task") {
+        // Deterministic error — stop immediately, push to DLQ if possible
+        try {
+            _getDLQ()?.push({ taskId, taskType: task?.type || "unknown", error: errorMsg, attempts: count, agentId: null, deadAt: new Date().toISOString() });
+        } catch { /* non-fatal */ }
+        const rec = { recId, strategy: decision.strategy, targetType: "task", targetId: taskId,
+            success: false, reason: `deterministic error: ${errorMsg.slice(0, 80)}`,
+            strategyReason: decision.strategyReason,
+            alternativesRejected: decision.alternativesRejected,
+            expectedRecoveryProb: 0,
+            ruleId: decision.ruleId, rcaClass: decision.rcaClass, count };
+        _record(rec); return rec;
+    }
+
+    if (decision.strategy === "dead_letter") {
+        try {
+            _getDLQ()?.push({ taskId, taskType: task?.type || "unknown", error: errorMsg || "dead_letter", attempts: count, agentId: null, deadAt: new Date().toISOString() });
+        } catch { /* non-fatal */ }
+        const rec = { recId, strategy: "dead_letter", targetType: "task", targetId: taskId,
+            success: false, reason: "all strategies exhausted",
+            strategyReason: decision.strategyReason,
+            alternativesRejected: decision.alternativesRejected,
+            expectedRecoveryProb: 0, count };
+        _record(rec); return rec;
+    }
+
+    if (decision.strategy === "operator_approval") {
+        // Record as pending operator action — do not retry
+        const rec = { recId, strategy: "operator_approval", targetType: "task", targetId: taskId,
+            success: false, reason: `operator intervention required: ${errorMsg.slice(0, 80)}`,
+            strategyReason: decision.strategyReason,
+            alternativesRejected: decision.alternativesRejected,
+            expectedRecoveryProb: decision.expectedRecoveryProb,
+            ruleId: decision.ruleId, rcaClass: decision.rcaClass };
         _record(rec);
+        logger.warn(`[SelfHeal] Task ${taskId} requires operator approval: ${errorMsg.slice(0, 60)}`);
         return rec;
+    }
+
+    if (decision.strategy === "circuit_reset_rec") {
+        const rec = { recId, strategy: "circuit_reset_rec", targetType: "task", targetId: taskId,
+            success: false, reason: "circuit breaker open — operator must reset",
+            strategyReason: decision.strategyReason,
+            alternativesRejected: decision.alternativesRejected,
+            expectedRecoveryProb: 0, rcaClass: decision.rcaClass };
+        _record(rec);
+        logger.warn(`[SelfHeal] Task ${taskId}: circuit breaker open — recommending reset`);
+        return rec;
+    }
+
+    // delay_until_ready, reroute_capability, retry_with_backoff → re-queue with backoff
+    if (!tq) {
+        const rec = { recId, strategy: decision.strategy, targetType: "task", targetId: taskId, success: false, reason: "taskQueue unavailable" };
+        _record(rec); return rec;
     }
 
     _retryCount.set(taskId, count);
 
-    const tq = _getTQ();
-    if (!tq) {
-        const rec = { recId, strategy: "retry_task", targetType: "task", targetId: taskId, success: false, reason: "taskQueue unavailable" };
-        _record(rec); return rec;
-    }
-
     try {
-        const all  = tq.getAll();
-        const task = all.find(t => t.id === taskId);
-        if (!task) {
-            const rec = { recId, strategy: "retry_task", targetType: "task", targetId: taskId, success: false, reason: "task not found" };
-            _record(rec); return rec;
-        }
-
-        // Reset task to pending for re-execution
-        const delayMs = Math.min(1000 * Math.pow(2, count - 1), 30_000);  // 1s, 2s, 4s... up to 30s
+        const baseDelay = decision.strategy === "delay_until_ready" ? 5_000 : 1_000;
+        const delayMs   = Math.min(baseDelay * Math.pow(2, count - 1), 30_000);
         const newScheduledFor = new Date(Date.now() + delayMs).toISOString();
         tq.update(taskId, { status: "pending", startedAt: null, scheduledFor: newScheduledFor, lastError: null });
 
-        const rec = { recId, strategy: "retry_task", targetType: "task", targetId: taskId, success: true, attempt: count, delayMs, newScheduledFor };
+        const rec = { recId, strategy: decision.strategy, targetType: "task", targetId: taskId,
+            success: true, attempt: count, delayMs, newScheduledFor,
+            strategyReason: decision.strategyReason,
+            alternativesRejected: decision.alternativesRejected,
+            expectedRecoveryProb: decision.expectedRecoveryProb,
+            ruleId: decision.ruleId, rcaClass: decision.rcaClass };
         _record(rec);
-        logger.info(`[SelfHeal] Task ${taskId} re-queued (attempt ${count}, delay ${delayMs}ms)`);
+        logger.info(`[SelfHeal] Task ${taskId} re-queued via ${decision.strategy} (attempt ${count}, delay ${delayMs}ms)`);
         return rec;
     } catch (e) {
-        const rec = { recId, strategy: "retry_task", targetType: "task", targetId: taskId, success: false, reason: e.message };
+        const rec = { recId, strategy: decision.strategy, targetType: "task", targetId: taskId, success: false, reason: e.message };
         _record(rec); return rec;
     }
 }
 
-/** Cancel and restart a failed cycle. */
+/** Cancel and restart a failed cycle — strategy-selected healing. */
 async function healCycle(cycleId, opts = {}) {
     const recId = _rid();
-    const count = (_retryCount.get(cycleId) || 0) + 1;
+    const atl   = _getATL();
 
-    if (count > MAX_AUTO_RETRIES) {
-        const rec = { recId, strategy: "escalate", targetType: "cycle", targetId: cycleId, success: false, reason: `max retries (${MAX_AUTO_RETRIES}) exceeded`, count };
+    // Resolve cycle for context
+    let cycle = null;
+    try { cycle = atl ? atl.getCycle(cycleId) : null; } catch { /* non-fatal */ }
+
+    // Derive error context from cycle task failures
+    const errorMsg  = (() => {
+        if (!cycle) return "";
+        const failedTask = (cycle.tasks || []).find(t => t.error || t.status === "failed");
+        return failedTask?.error || "";
+    })();
+    const retries   = _retryCount.get(cycleId) || 0;
+    const decision  = selectStrategy(errorMsg, { retries, maxRetries: MAX_AUTO_RETRIES, targetType: "cycle" });
+    const count     = retries + 1;
+
+    logger.info(`[SelfHeal] Cycle ${cycleId} → strategy=${decision.strategy} (conf=${decision.confidence}%) reason: ${decision.strategyReason.slice(0, 80)}`);
+
+    // fail_fast / park_task / dead_letter / operator_approval / circuit_reset_rec
+    // → do not restart; record outcome with explanation
+    if (["fail_fast", "park_task", "dead_letter", "operator_approval", "circuit_reset_rec"].includes(decision.strategy)) {
+        const rec = { recId, strategy: decision.strategy, targetType: "cycle", targetId: cycleId,
+            success: false,
+            reason: decision.strategy === "operator_approval"
+                ? `operator intervention required: ${errorMsg.slice(0, 80)}`
+                : decision.strategy === "circuit_reset_rec"
+                ? "circuit breaker open — operator must reset"
+                : `non-retriable: ${errorMsg.slice(0, 80)}`,
+            strategyReason: decision.strategyReason,
+            alternativesRejected: decision.alternativesRejected,
+            expectedRecoveryProb: decision.expectedRecoveryProb,
+            ruleId: decision.ruleId, rcaClass: decision.rcaClass, count };
+        _record(rec);
+        if (decision.strategy === "operator_approval") {
+            logger.warn(`[SelfHeal] Cycle ${cycleId} requires operator approval: ${errorMsg.slice(0, 60)}`);
+        }
+        return rec;
+    }
+
+    // delay_until_ready → wait before restart
+    if (decision.strategy === "delay_until_ready") {
+        const delayMs = 5_000;
+        _retryCount.set(cycleId, count);
+        // Schedule restart after delay (non-blocking: probe will pick it up next tick)
+        setTimeout(async () => {
+            try {
+                if (!atl || !cycle) return;
+                if (["running","pending"].includes(cycle.status)) { try { atl.cancelCycle(cycleId); } catch {} }
+                const newCycle = atl.startCycle(cycle.goal, { goalType: cycle.goalType, source: "self_heal_delayed" });
+                logger.info(`[SelfHeal] Cycle ${cycleId} delayed-restart → ${newCycle.cycleId}`);
+            } catch (e) { logger.warn(`[SelfHeal] delayed restart failed: ${e.message}`); }
+        }, delayMs).unref?.();
+
+        const rec = { recId, strategy: "delay_until_ready", targetType: "cycle", targetId: cycleId,
+            success: true, attempt: count, delayMs,
+            strategyReason: decision.strategyReason,
+            alternativesRejected: decision.alternativesRejected,
+            expectedRecoveryProb: decision.expectedRecoveryProb, rcaClass: decision.rcaClass };
+        _record(rec);
+        return rec;
+    }
+
+    // retry_with_backoff / reroute_capability → restart cycle immediately
+    if (!atl) {
+        const rec = { recId, strategy: decision.strategy, targetType: "cycle", targetId: cycleId, success: false, reason: "autonomousTaskLoop unavailable" };
         _record(rec); return rec;
     }
+
     _retryCount.set(cycleId, count);
 
-    const atl = _getATL();
-    if (!atl) {
-        const rec = { recId, strategy: "restart_workflow", targetType: "cycle", targetId: cycleId, success: false, reason: "autonomousTaskLoop unavailable" };
+    if (!cycle) {
+        const rec = { recId, strategy: decision.strategy, targetType: "cycle", targetId: cycleId, success: false, reason: "cycle not found" };
         _record(rec); return rec;
     }
 
     try {
-        const cycle = atl.getCycle(cycleId);
-        if (!cycle) {
-            const rec = { recId, strategy: "restart_workflow", targetType: "cycle", targetId: cycleId, success: false, reason: "cycle not found" };
-            _record(rec); return rec;
-        }
-
-        // Cancel the old cycle if still running
         if (["running", "pending"].includes(cycle.status)) {
             try { atl.cancelCycle(cycleId); } catch { /* already done */ }
         }
-
-        // Start a new cycle with the same goal
         const newCycle = atl.startCycle(cycle.goal, { goalType: cycle.goalType, source: "self_heal" });
-        const rec = { recId, strategy: "restart_workflow", targetType: "cycle", targetId: cycleId, newCycleId: newCycle.cycleId, success: true, attempt: count };
+        const rec = { recId, strategy: decision.strategy, targetType: "cycle", targetId: cycleId,
+            newCycleId: newCycle.cycleId, success: true, attempt: count,
+            strategyReason: decision.strategyReason,
+            alternativesRejected: decision.alternativesRejected,
+            expectedRecoveryProb: decision.expectedRecoveryProb,
+            ruleId: decision.ruleId, rcaClass: decision.rcaClass };
         _record(rec);
-        logger.info(`[SelfHeal] Cycle ${cycleId} restarted → ${newCycle.cycleId} (attempt ${count})`);
+        logger.info(`[SelfHeal] Cycle ${cycleId} restarted via ${decision.strategy} → ${newCycle.cycleId} (attempt ${count})`);
         return rec;
     } catch (e) {
-        const rec = { recId, strategy: "restart_workflow", targetType: "cycle", targetId: cycleId, success: false, reason: e.message };
+        const rec = { recId, strategy: decision.strategy, targetType: "cycle", targetId: cycleId, success: false, reason: e.message };
         _record(rec); return rec;
     }
 }
@@ -279,4 +617,4 @@ function getStatus() {
     };
 }
 
-module.exports = { probe, healTask, healCycle, circuitBreak, getHistory, getStatus, startProbeLoop, stopProbeLoop };
+module.exports = { probe, healTask, healCycle, circuitBreak, selectStrategy, getHistory, getStatus, startProbeLoop, stopProbeLoop };
