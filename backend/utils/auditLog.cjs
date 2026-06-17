@@ -21,7 +21,7 @@ const path = require("path");
 const LOG_DIR  = path.join(__dirname, "../../data/logs");
 const LOG_FILE = path.join(LOG_DIR, "audit.ndjson");
 const MAX_BYTES  = 20 * 1024 * 1024;  // 20 MB
-const RETAIN_MS  = 30 * 24 * 3600_000; // 30 days
+const RETAIN_MS  = 7 * 24 * 3600_000;  // 7 days
 
 let _stream    = null;
 let _streamErr = false;
@@ -65,6 +65,8 @@ function _pruneOld() {
 }
 
 setInterval(_maybeRotate, 60_000).unref();
+// Prune on startup so stale rotated files don't accumulate across dev restarts
+_pruneOld();
 
 /**
  * Write one audit entry. Internal — all public helpers call this.

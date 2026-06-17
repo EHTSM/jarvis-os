@@ -58,6 +58,8 @@ function _pruneOldLogs() {
 
 // Check rotation every minute
 setInterval(_maybeRotate, 60_000).unref();
+// Prune on startup so stale rotated files don't accumulate across dev restarts
+_pruneOldLogs();
 
 /**
  * Append one execution record to the persistent log.
