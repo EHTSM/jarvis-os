@@ -86,6 +86,7 @@ function _getOrc()  { try { return require("../../agents/runtime/runtimeOrchestr
 function _getRules(){ try { return require("./engineeringRuleRegistry.cjs");     } catch { return null; } }
 function _getRCA()  { try { return require("./rootCauseAnalysisEngine.cjs");     } catch { return null; } }
 function _getDLQ()  { try { return require("../../agents/runtime/deadLetterQueue.cjs"); } catch { return null; } }
+function _getCE()   { try { return require("./engineeringConfidenceEngine.cjs"); } catch { return null; } }
 
 // ── Strategy selector (Sprint 4 core) ────────────────────────────────────
 //
@@ -271,15 +272,26 @@ function selectStrategy(errorMsg, context = {}) {
         dead_letter:          0,  // archived
     }[chosen] ?? 50;
 
+    // Attach explainable confidence breakdown (Sprint 5)
+    let explainedConfidence = null;
+    try {
+        const ce = _getCE();
+        if (ce) {
+            explainedConfidence = ce.explain(errorMsg, { problemClass: rcaClass, strategy: chosen });
+            confidence = explainedConfidence.confidence; // override with evidence-derived value
+        }
+    } catch { /* non-fatal — fall back to heuristic confidence above */ }
+
     return {
-        strategy:             chosen,
+        strategy:              chosen,
         ruleId,
         rcaClass,
         confidence,
         strategyReason,
         alternativesRejected,
         expectedRecoveryProb,
-        description:          STRATEGY_DESCRIPTIONS[chosen],
+        description:           STRATEGY_DESCRIPTIONS[chosen],
+        explainedConfidence,   // full evidence breakdown from Sprint 5
     };
 }
 

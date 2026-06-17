@@ -771,4 +771,93 @@ router.get("/engineering/playbooks", (req, res) => {
     }
 });
 
+// ── Engineering Confidence Engine (Sprint 5) ──────────────────────────────
+
+function _ce() { return _try(() => require("../services/engineeringConfidenceEngine.cjs")); }
+
+/**
+ * POST /engineering/confidence/explain
+ * Body: { error, capability?, problemClass?, strategy?, retries?, maxRetries? }
+ * Returns a full reproducible confidence breakdown with evidence weights.
+ */
+router.post("/engineering/confidence/explain", (req, res) => {
+    try {
+        const ce = _ce();
+        if (!ce) return res.status(503).json({ ok: false, error: "confidence engine unavailable" });
+        const { error: errorMsg, ...context } = req.body;
+        if (!errorMsg) return res.status(400).json({ ok: false, error: "error field required" });
+        const result = ce.explain(errorMsg, context);
+        res.json({ ok: true, ...result });
+    } catch (err) {
+        logger.error(`[ConfEngine] explain failed: ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+/**
+ * GET /engineering/confidence/rule/:ruleId
+ * Returns a strength report for a specific engineering rule.
+ */
+router.get("/engineering/confidence/rule/:ruleId", (req, res) => {
+    try {
+        const ce = _ce();
+        if (!ce) return res.status(503).json({ ok: false, error: "confidence engine unavailable" });
+        const result = ce.explainRule(req.params.ruleId);
+        if (result.error) return res.status(404).json({ ok: false, ...result });
+        res.json({ ok: true, ...result });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+/**
+ * GET /engineering/confidence/rca/:problemClass
+ * Returns a confidence audit for an RCA problem class, comparing
+ * the reported confidence against a derived confidence from evidence.
+ */
+router.get("/engineering/confidence/rca/:problemClass", (req, res) => {
+    try {
+        const ce = _ce();
+        if (!ce) return res.status(503).json({ ok: false, error: "confidence engine unavailable" });
+        const result = ce.explainRCA(req.params.problemClass);
+        if (result.error) return res.status(404).json({ ok: false, ...result });
+        res.json({ ok: true, ...result });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+/**
+ * POST /engineering/confidence/strategy
+ * Body: { decision (StrategyDecision from selectStrategy), error, context? }
+ * Returns confidence breakdown specific to a healing strategy decision.
+ */
+router.post("/engineering/confidence/strategy", (req, res) => {
+    try {
+        const ce = _ce();
+        if (!ce) return res.status(503).json({ ok: false, error: "confidence engine unavailable" });
+        const { decision, error: errorMsg, context = {} } = req.body;
+        if (!decision) return res.status(400).json({ ok: false, error: "decision field required" });
+        const result = ce.explainStrategy(decision, errorMsg || "", context);
+        res.json({ ok: true, ...result });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+/**
+ * GET /engineering/confidence/stats
+ * Session statistics: how many decisions explained, avg confidence,
+ * which evidence source contributed most.
+ */
+router.get("/engineering/confidence/stats", (req, res) => {
+    try {
+        const ce = _ce();
+        if (!ce) return res.status(503).json({ ok: false, error: "confidence engine unavailable" });
+        res.json({ ok: true, ...ce.getStats() });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
 module.exports = router;
