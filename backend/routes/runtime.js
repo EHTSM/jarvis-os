@@ -11685,5 +11685,41 @@ router.get("/runtime/observer/statistics", rateLimiter(30, 60_000), (req, res) =
     return res.json({ success: true, ..._observer.getStatistics() });
 });
 
+// ── I5: Engineering Capability Layer ────────────────────────────────────────
+function _engCap() {
+    try { return require("../services/engineeringCapabilities.cjs"); } catch { return null; }
+}
+
+// GET /runtime/capabilities
+router.get("/runtime/capabilities", rateLimiter(30, 60_000), (req, res) => {
+    const ec = _engCap();
+    if (!ec) return res.status(503).json({ success: false, error: "engineering_capabilities_unavailable" });
+    return res.json({ success: true, capabilities: ec.getCapabilityMatrix() });
+});
+
+// POST /runtime/capabilities/remember
+router.post("/runtime/capabilities/remember", rateLimiter(30, 60_000), (req, res) => {
+    const ec = _engCap();
+    if (!ec) return res.status(503).json({ success: false, error: "engineering_capabilities_unavailable" });
+    const { type, data, opts } = req.body || {};
+    if (!type || !data) return res.status(400).json({ success: false, error: "type and data required" });
+    try {
+        const result = ec.remember(type, data, opts || {});
+        return res.json({ success: true, ...result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// POST /runtime/capabilities/recall
+router.post("/runtime/capabilities/recall", rateLimiter(30, 60_000), (req, res) => {
+    const ec = _engCap();
+    if (!ec) return res.status(503).json({ success: false, error: "engineering_capabilities_unavailable" });
+    const { query, opts } = req.body || {};
+    if (!query) return res.status(400).json({ success: false, error: "query required" });
+    const result = ec.recall(query, opts || {});
+    return res.json({ success: true, ...result });
+});
+
 module.exports = router;
 

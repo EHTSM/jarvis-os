@@ -119,10 +119,9 @@ export default function ExecutionRuntimePanel() {
   }, [filter]);
 
   const fetchCaps = useCallback(async () => {
-    // Capabilities come from statistics endpoint — reconstruct from stats
     try {
-      const st = await _fetch("/runtime/execution/statistics");
-      if (st?.success) setCaps(Array.from({ length: st.capabilities || 0 }, (_, i) => ({ name: `cap_${i}` })));
+      const r = await _fetch("/runtime/capabilities");
+      if (r?.success) setCaps(r.capabilities || []);
     } catch { /* ok */ }
   }, []);
 
@@ -172,7 +171,7 @@ export default function ExecutionRuntimePanel() {
       </div>
 
       <div style={{ display: "flex", borderBottom: "1px solid #1a1a1a", flexShrink: 0 }}>
-        {["executions", "statistics"].map(t => (
+        {["executions", "capabilities", "statistics"].map(t => (
           <button key={t} style={tabStyle(t)} onClick={() => setTab(t)}>{t}</button>
         ))}
       </div>
@@ -194,6 +193,22 @@ export default function ExecutionRuntimePanel() {
                 onRetry={id => action("retry", id)}
                 onCancel={id => action("cancel", id)}
                 onRollback={id => action("rollback", id)} />
+            ))}
+          </>
+        )}
+
+        {tab === "capabilities" && (
+          <>
+            <div style={{ color: "#555", fontSize: 11, marginBottom: 10 }}>{caps.length} engineering capabilities registered (I5)</div>
+            {caps.length === 0 && <div style={{ color: "#555", fontSize: 12 }}>No capabilities loaded yet.</div>}
+            {caps.map(c => (
+              <div key={c.name} style={{ display: "flex", gap: 8, alignItems: "baseline", padding: "4px 0", borderBottom: "1px solid #1a1a1a" }}>
+                <span style={{ color: "#607d8b", fontSize: 10, minWidth: 16 }}>●</span>
+                <span style={{ color: "#aaa", fontSize: 11, minWidth: 130, flexShrink: 0 }}>{c.name}</span>
+                <span style={{ color: "#555", fontSize: 10, minWidth: 70, flexShrink: 0 }}>{c.category}</span>
+                <span style={{ color: "#444", fontSize: 10, flex: 1 }}>{c.description}</span>
+                <span style={{ color: c.registered ? "#8bc34a" : "#f44336", fontSize: 10, flexShrink: 0 }}>{c.registered ? "active" : "inactive"}</span>
+              </div>
             ))}
           </>
         )}

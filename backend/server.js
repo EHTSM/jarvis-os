@@ -763,6 +763,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[ContinuousRuntimeObserver] failed to load (non-fatal):", obsErr.message);
     }
 
+    // ── Phase I5: Engineering Capability Layer ────────────────────────────
+    try {
+        const engCap = require("./services/engineeringCapabilities.cjs");
+        const regResult = engCap.register();
+        logger.info(`[EngCapabilities] I5 registered ${regResult.registered} production capability handlers`);
+    } catch (capErr) {
+        logger.warn("[EngCapabilities] failed to register (non-fatal):", capErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;
