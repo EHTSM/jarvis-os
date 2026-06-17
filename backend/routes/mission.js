@@ -130,4 +130,86 @@ router.get("/mission/state/:id", (req, res) => {
     });
 });
 
+// ── I3: Mission Orchestrator ──────────────────────────────────────────────────
+const _orch = (() => { try { return require("../services/missionOrchestrator.cjs"); } catch { return null; } })();
+const _orchErr = (res) => res.status(503).json({ success: false, error: "orchestrator_unavailable" });
+
+// GET /missions/orchestrator
+router.get("/missions/orchestrator", (req, res) => {
+    if (!_orch) return _orchErr(res);
+    const limit    = Math.min(parseInt(req.query.limit) || 100, 500);
+    const status   = req.query.status   || null;
+    const priority = req.query.priority || null;
+    const since    = req.query.since    || null;
+    return res.json({ success: true, ..._orch.listMissions({ status, priority, limit, since }) });
+});
+
+// GET /missions/orchestrator/statistics
+router.get("/missions/orchestrator/statistics", (req, res) => {
+    if (!_orch) return _orchErr(res);
+    return res.json({ success: true, ..._orch.getStatistics() });
+});
+
+// POST /missions/orchestrator/create
+router.post("/missions/orchestrator/create", (req, res) => {
+    if (!_orch) return _orchErr(res);
+    const { goal, priority, requiresApproval, rollbackPlan, skipCapabilities } = req.body;
+    try {
+        const mission = _orch.createManual({ goal, priority, requiresApproval, rollbackPlan, skipCapabilities });
+        return res.json({ success: true, mission });
+    } catch (err) {
+        return res.status(400).json({ success: false, error: err.message });
+    }
+});
+
+// POST /missions/orchestrator/pause
+router.post("/missions/orchestrator/pause", (req, res) => {
+    if (!_orch) return _orchErr(res);
+    const { missionId, reason } = req.body;
+    if (!missionId) return res.status(400).json({ success: false, error: "missionId required" });
+    try {
+        const mission = _orch.pause(missionId, reason);
+        return res.json({ success: true, mission });
+    } catch (err) {
+        const status = err.message.includes("not found") ? 404 : 409;
+        return res.status(status).json({ success: false, error: err.message });
+    }
+});
+
+// POST /missions/orchestrator/resume
+router.post("/missions/orchestrator/resume", (req, res) => {
+    if (!_orch) return _orchErr(res);
+    const { missionId } = req.body;
+    if (!missionId) return res.status(400).json({ success: false, error: "missionId required" });
+    try {
+        const mission = _orch.resume(missionId);
+        return res.json({ success: true, mission });
+    } catch (err) {
+        const status = err.message.includes("not found") ? 404 : 409;
+        return res.status(status).json({ success: false, error: err.message });
+    }
+});
+
+// POST /missions/orchestrator/cancel
+router.post("/missions/orchestrator/cancel", (req, res) => {
+    if (!_orch) return _orchErr(res);
+    const { missionId, reason } = req.body;
+    if (!missionId) return res.status(400).json({ success: false, error: "missionId required" });
+    try {
+        const mission = _orch.cancel(missionId, reason);
+        return res.json({ success: true, mission });
+    } catch (err) {
+        const status = err.message.includes("not found") ? 404 : 409;
+        return res.status(status).json({ success: false, error: err.message });
+    }
+});
+
+// GET /missions/orchestrator/:id  — must come last
+router.get("/missions/orchestrator/:id", (req, res) => {
+    if (!_orch) return _orchErr(res);
+    const mission = _orch.getMission(req.params.id);
+    if (!mission) return res.status(404).json({ success: false, error: "not_found" });
+    return res.json({ success: true, mission });
+});
+
 module.exports = router;

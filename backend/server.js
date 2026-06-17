@@ -724,6 +724,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[BackgroundRuntime] failed to start (non-fatal):", bgrErr.message);
     }
 
+    // ── Phase I3: Mission Orchestrator ────────────────────────────────────
+    try {
+        const orch = require("./services/missionOrchestrator.cjs");
+        orch.start();
+        logger.info("[MissionOrchestrator] I3 started");
+    } catch (orchErr) {
+        logger.warn("[MissionOrchestrator] failed to start (non-fatal):", orchErr.message);
+    }
+
     // ── Phase I2: Autonomous Decision Engine ──────────────────────────────
     try {
         const decEngine = require("./services/autonomousDecisionEngine.cjs");
