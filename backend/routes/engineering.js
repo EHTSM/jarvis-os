@@ -860,4 +860,58 @@ router.get("/engineering/confidence/stats", (req, res) => {
     }
 });
 
+// ── DLQ Drain Engine (Sprint 6) ───────────────────────────────────────────
+
+function _drain() { return _try(() => require("../services/dlqDrainEngine.cjs")); }
+
+/**
+ * POST /engineering/dlq/drain
+ * Body: { dryRun?: boolean, maxItems?: number, minConfidence?: number }
+ *
+ * Classify and optionally drain the Dead Letter Queue.
+ * dryRun defaults to true — pass dryRun:false to execute routing.
+ */
+router.post("/engineering/dlq/drain", (req, res) => {
+    try {
+        const engine = _drain();
+        if (!engine) return res.status(503).json({ ok: false, error: "DLQ drain engine unavailable" });
+        const { dryRun = true, maxItems, minConfidence } = req.body;
+        const report = engine.drain({ dryRun, maxItems, minConfidence });
+        res.json(report);
+    } catch (err) {
+        logger.error(`[DLQDrain] drain failed: ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+/**
+ * GET /engineering/dlq/report
+ * Returns the most recent drain report (classification + routing decisions).
+ */
+router.get("/engineering/dlq/report", (req, res) => {
+    try {
+        const engine = _drain();
+        if (!engine) return res.status(503).json({ ok: false, error: "DLQ drain engine unavailable" });
+        const report = engine.getLastReport();
+        if (!report) return res.status(404).json({ ok: false, error: "no drain run yet — POST /engineering/dlq/drain first" });
+        res.json({ ok: true, ...report });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+/**
+ * GET /engineering/dlq/stats
+ * Session aggregate statistics across all drain runs.
+ */
+router.get("/engineering/dlq/stats", (req, res) => {
+    try {
+        const engine = _drain();
+        if (!engine) return res.status(503).json({ ok: false, error: "DLQ drain engine unavailable" });
+        res.json({ ok: true, ...engine.getStats() });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
 module.exports = router;
