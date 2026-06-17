@@ -685,4 +685,90 @@ router.post("/engineering/rules", (req, res) => {
     }
 });
 
+// ── Root Cause Analysis (Sprint 3) ───────────────────────────────────────────
+
+function _rca() { return _try(() => require("../services/rootCauseAnalysisEngine.cjs")); }
+
+// GET /engineering/rca — list all root cause analyses
+router.get("/engineering/rca", (req, res) => {
+    try {
+        const rca = _rca();
+        if (!rca) return res.status(503).json({ ok: false, error: "RCA engine unavailable" });
+        const { status, minConfidence, limit = 50, offset = 0 } = req.query;
+        const result = rca.listAnalyses({
+            status,
+            minConfidence: minConfidence !== undefined ? Number(minConfidence) : undefined,
+            limit:  Number(limit),
+            offset: Number(offset),
+        });
+        res.json({ ok: true, ...result });
+    } catch (err) {
+        logger.error(`[EngineeringRCA] list failed: ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// GET /engineering/rca/stats — RCA statistics
+router.get("/engineering/rca/stats", (req, res) => {
+    try {
+        const rca = _rca();
+        if (!rca) return res.status(503).json({ ok: false, error: "RCA engine unavailable" });
+        res.json({ ok: true, ...rca.getStats() });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// GET /engineering/rca/:problemClass — get one RCA
+router.get("/engineering/rca/:problemClass", (req, res) => {
+    try {
+        const rca = _rca();
+        if (!rca) return res.status(503).json({ ok: false, error: "RCA engine unavailable" });
+        const analysis = rca.getAnalysis(req.params.problemClass);
+        if (!analysis) return res.status(404).json({ ok: false, error: "RCA not found" });
+        res.json({ ok: true, analysis });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// POST /engineering/rca/run — force a fresh analysis run
+router.post("/engineering/rca/run", (req, res) => {
+    try {
+        const rca = _rca();
+        if (!rca) return res.status(503).json({ ok: false, error: "RCA engine unavailable" });
+        rca.invalidate();
+        const result = rca.runAnalysis({ force: true });
+        _cache = null; _cacheTs = 0; // also invalidate intelligence cache
+        res.json({ ok: true, ...result });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// POST /engineering/rca/:rcaId/resolve — record that a fix succeeded
+router.post("/engineering/rca/:rcaId/resolve", (req, res) => {
+    try {
+        const rca = _rca();
+        if (!rca) return res.status(503).json({ ok: false, error: "RCA engine unavailable" });
+        const result = rca.recordFixSuccess(req.params.rcaId, req.body || {});
+        res.json({ ok: true, ...result });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// GET /engineering/playbooks — list engineering playbooks
+router.get("/engineering/playbooks", (req, res) => {
+    try {
+        const rca = _rca();
+        if (!rca) return res.status(503).json({ ok: false, error: "RCA engine unavailable" });
+        const { status, limit = 50, offset = 0 } = req.query;
+        const result = rca.listPlaybooks({ status, limit: Number(limit), offset: Number(offset) });
+        res.json({ ok: true, ...result });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
 module.exports = router;
