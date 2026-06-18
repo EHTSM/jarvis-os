@@ -66,6 +66,7 @@ router.use(require("./intelligence"));   // /intelligence/correlations, /intelli
 router.use(require("./engineering"));   // /engineering/intelligence (J4 engineering risk panel)
 router.use(require("./business"));      // /business/pipeline, /business/missions, /business/leads, /business/deals, /business/marketing/*, /business/customers, /business/operations
 router.use(require("./organizations")); // /orgs, /orgs/:orgId, /orgs/:orgId/departments, /orgs/:orgId/teams, /orgs/:orgId/missions, /orgs/me/context
+router.use(require("./workforce"));    // /workforce/:missionId/plan, /workforce/:missionId/steps/:stepId/*, /workforce/:missionId/approvals/*, /workforce/org/:orgId/workers
 router.use(require("./collaboration"));  // /collaboration/session/*, /collaboration/history/*, /collaboration/message, /collaboration/action, /collaboration/replan, /collaboration/approve, /collaboration/reject
 router.use(require("./workspace"));      // /workspace, /workspace/:id, /workspace/invite, /workspace/switch, /workspace/activity
 router.use(require("./security"));      // /security/sessions, /security/devices, /security/audit, /security/policies, /security/tokens, /security/score
