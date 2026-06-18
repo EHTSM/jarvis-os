@@ -278,10 +278,6 @@ function TabLibrary({ addToast, runningId, setRunningId }) {
                   >
                     {runningId === wf.id ? "⟳ Running…" : "▶ Run"}
                   </button>
-                  <button className="wov2-btn wov2-btn--ghost" title="Configuration coming soon"
-                    onClick={() => addToast("Workflow configuration coming soon", "info")}>
-                    ⚙
-                  </button>
                 </div>
               </div>
               <p className="wov2-wf-desc">{wf.desc}</p>

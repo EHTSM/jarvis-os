@@ -119,3 +119,10 @@
 .sc-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--surface-high);border:1px solid var(--border);border-radius:var(--radius-pill);padding:10px 20px;font-size:13px;font-weight:700;color:var(--text);box-shadow:0 6px 24px rgba(0,0,0,.40);z-index:200;white-space:nowrap;animation:fade-up var(--dur-enter) var(--ease-spring) both;}
 @media(max-width:720px){.support-center{padding:18px 16px 36px;}.sc-tickets-layout{grid-template-columns:1fr;}.sc-ticket-detail{position:static;max-height:none;}.sc-summary-strip{grid-template-columns:repeat(3,1fr);}.sc-analytics-cards{grid-template-columns:repeat(2,1fr);}}
 @media(prefers-reduced-motion:reduce){.sc-content,.sc-ticket-detail,.sc-toast{animation:none;}.sc-sla-bar-fill,.sc-cat-bar-fill{transition:none;}}
+
+/* ── AI draft button ────────────────────────── */
+.sc-td-reply-header  { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.sc-td-ai-btn        { font-size:11px; padding:4px 10px; border-radius:6px; border:1px solid rgba(124,111,255,.4); background:rgba(124,111,255,.08); color:#7c6fff; cursor:pointer; transition:opacity .15s; }
+.sc-td-ai-btn:hover  { opacity:.8; }
+.sc-td-ai-btn:disabled { opacity:.4; cursor:default; }
+

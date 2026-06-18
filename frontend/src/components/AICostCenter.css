@@ -150,3 +150,11 @@
   .acc-pc-header{flex-wrap:wrap;}
   .acc-pc-cost-block{margin-left:0;}
 }
+
+/* ── Live active provider indicator ─────────────────── */
+.acc-active-provider { display:flex; align-items:center; gap:6px; padding:6px 12px; background:#52d68a18; border:1px solid #52d68a40; border-radius:8px; }
+.acc-ap-dot          { width:7px; height:7px; border-radius:50%; background:#52d68a; flex-shrink:0; animation:pulse-dot 2s infinite; }
+.acc-ap-label        { font-size:12px; color:#8994b0; }
+.acc-ap-label strong { color:#52d68a; }
+@keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+

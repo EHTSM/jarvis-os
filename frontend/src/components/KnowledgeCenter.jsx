@@ -175,7 +175,7 @@ export default function KnowledgeCenter({ onNavigate }) {
         <span className="csb-icon">◎</span>
         <div className="csb-body">
           <span className="csb-title">Knowledge Base Engine <span className="csb-beta-badge">BETA</span></span>
-          <span className="csb-sub">Semantic search and real document indexing require the KnowledgeBaseEngine (not yet built). Documents and websites below are stored locally — they will sync to the backend engine when available.</span>
+          <span className="csb-sub">Documents and websites are stored locally and searchable here. Semantic vector indexing and cross-document search are planned for a future release.</span>
         </div>
       </div>
       {toast && <div className="kc-toast">{toast}</div>}

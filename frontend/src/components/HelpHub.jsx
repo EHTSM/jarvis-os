@@ -164,13 +164,14 @@ const TROUBLESHOOT = [
   },
 ];
 
-// ── Video placeholder ─────────────────────────────────────────────────
-function VideoCard({ title, duration, desc }) {
+// ── Video card ────────────────────────────────────────────────────────
+function VideoCard({ title, duration, desc, onRequest }) {
   return (
-    <div className="hh-video-card">
+    <div className="hh-video-card" onClick={onRequest} style={{ cursor: "pointer" }} title="Request this walkthrough">
       <div className="hh-video-thumb" aria-label={`Video: ${title}`}>
         <div className="hh-video-play">▶</div>
         <div className="hh-video-duration">{duration}</div>
+        <div className="hh-video-request-overlay">Request</div>
       </div>
       <div className="hh-video-meta">
         <p className="hh-video-title">{title}</p>
@@ -333,11 +334,14 @@ export default function HelpHub({ onNavigate }) {
         {tab === "videos" && (
           <div className="hh-videos-section">
             <p className="hh-videos-coming">
-              Video walkthroughs are coming soon. In the meantime, use the Quick-Start Guides above.
+              Click a video to request early access — we'll send it to your email when ready.
             </p>
             <div className="hh-videos-grid">
               {VIDEOS.map(v => (
-                <VideoCard key={v.title} {...v} />
+                <VideoCard key={v.title} {...v} onRequest={() => {
+                  window.location.href = `mailto:support@ooplix.com?subject=Video%20request:%20${encodeURIComponent(v.title)}`;
+                  track.event("help_video_requested", { title: v.title });
+                }} />
               ))}
             </div>
           </div>

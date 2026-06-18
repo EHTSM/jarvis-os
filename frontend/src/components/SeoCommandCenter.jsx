@@ -221,7 +221,7 @@ export default function SeoCommandCenter({ onNavigate }) {
         <span className="csb-icon">◎</span>
         <div className="csb-body">
           <span className="csb-title">SEO Monitoring Engine <span className="csb-beta-badge">BETA</span></span>
-          <span className="csb-sub">Live keyword ranking, automated audits, and GSC data sync require the SEOMonitoringEngine (not yet built). The readiness checks and content opportunities below are manually maintained.</span>
+          <span className="csb-sub">SEO readiness checks and content opportunities are maintained here. Automated keyword tracking and GSC data sync are planned for a future release — connect Google Search Console in Integrations to enable.</span>
         </div>
       </div>
 

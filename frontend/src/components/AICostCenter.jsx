@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
+import { _fetch } from "../_client";
 import "./AICostCenter.css";
 
 const PROVIDERS = [
@@ -107,35 +108,54 @@ function fmt(n) { return n.toLocaleString("en-IN"); }
 function fmtTok(n) { return n >= 1_000_000 ? (n/1_000_000).toFixed(2)+"M" : n >= 1000 ? (n/1000).toFixed(0)+"K" : n; }
 
 export default function AICostCenter({ onNavigate }) {
-  const [section, setSection] = useState("overview");
+  const [section,     setSection]     = useState("overview");
   const [selProvider, setSelProvider] = useState(null);
+  const [liveStatus,  setLiveStatus]  = useState(null);
+  const [loading,     setLoading]     = useState(true);
 
-  React.useEffect(() => { track.event("ai_cost_center_viewed"); }, []);
+  useEffect(() => {
+    track.event("ai_cost_center_viewed");
+    Promise.all([
+      _fetch("/ai/status").catch(() => null),
+      _fetch("/analytics/ai").catch(() => null),
+    ]).then(([aiStatus, aiAnalytics]) => {
+      setLiveStatus({ aiStatus, aiAnalytics });
+    }).finally(() => setLoading(false));
+  }, []);
 
-  const totalCost       = PROVIDERS.reduce((a,p)=>a+p.monthlyCost, 0);
-  const totalSavings    = PROVIDERS.reduce((a,p)=>a+p.savings, 0);
-  const totalRequests   = PROVIDERS.flatMap(p=>p.models).reduce((a,m)=>a+m.requests, 0);
-  const totalTokens     = PROVIDERS.flatMap(p=>p.models).reduce((a,m)=>a+m.tokens, 0);
-  const localProviders  = PROVIDERS.filter(p=>p.type==="local");
-  const hostedProviders = PROVIDERS.filter(p=>p.type==="hosted");
-  const localReqs       = localProviders.flatMap(p=>p.models).reduce((a,m)=>a+m.requests,0);
-  const localPct        = Math.round(localReqs/totalRequests*100);
-  const forecastTotal   = PROVIDERS.reduce((a,p)=>a+p.monthlyForecast, 0);
+  // Merge live provider health into PROVIDERS seed
+  const providers = PROVIDERS.map(p => {
+    const live = liveStatus?.aiStatus?.providers?.find?.(lp => lp.id === p.id);
+    return {
+      ...p,
+      status: live ? (live.health?.ok ? "active" : "degraded") : p.status,
+      liveHealth: live?.health || null,
+    };
+  });
+  const activeProvider = liveStatus?.aiStatus?.activeProvider;
+  const callCount      = liveStatus?.aiAnalytics?.callCount ?? null;
+  const totalCost      = providers.reduce((a,p)=>a+p.monthlyCost, 0);
+  const totalSavings   = providers.reduce((a,p)=>a+p.savings, 0);
+  const totalRequests  = callCount ?? providers.flatMap(p=>p.models).reduce((a,m)=>a+m.requests, 0);
+  const totalTokens    = providers.flatMap(p=>p.models).reduce((a,m)=>a+m.tokens, 0);
+  const localProviders = providers.filter(p=>p.type==="local");
+  const localReqs      = localProviders.flatMap(p=>p.models).reduce((a,m)=>a+m.requests,0);
+  const localPct       = totalRequests > 0 ? Math.round(localReqs/totalRequests*100) : 0;
+  const forecastTotal  = providers.reduce((a,p)=>a+p.monthlyForecast, 0);
 
   return (
     <div className="ai-cost-center page-enter">
-      <div className="coming-soon-banner">
-        <span className="csb-icon">◎</span>
-        <div className="csb-body">
-          <span className="csb-title">AI Cost Tracking Engine <span className="csb-beta-badge">BETA</span></span>
-          <span className="csb-sub">Live token usage and cost aggregation require the CostTrackingEngine (not yet built). The provider breakdown and routing rules below reflect the target configuration.</span>
-        </div>
-      </div>
       <div className="acc-header">
         <div>
           <h1 className="acc-title">AI Cost Management</h1>
           <p className="acc-subtitle">OpenRouter · Ollama · DeepSeek · Qwen · Llama — requests, tokens, cost, savings, routing, and budget.</p>
         </div>
+        {activeProvider && (
+          <div className="acc-active-provider">
+            <span className="acc-ap-dot" />
+            <span className="acc-ap-label">Active: <strong>{activeProvider}</strong></span>
+          </div>
+        )}
       </div>
 
       <div className="acc-summary-strip">
@@ -214,7 +234,7 @@ export default function AICostCenter({ onNavigate }) {
             </div>
 
             <div className="acc-provider-summary-list">
-              {PROVIDERS.map(p=>{
+              {providers.map(p=>{
                 const reqs = p.models.reduce((a,m)=>a+m.requests,0);
                 const toks = p.models.reduce((a,m)=>a+m.tokens,0);
                 return (
@@ -240,7 +260,7 @@ export default function AICostCenter({ onNavigate }) {
         {section==="providers" && (
           <div className="acc-providers">
             <div className="acc-prov-selector">
-              {PROVIDERS.map(p=>(
+              {providers.map(p=>(
                 <button key={p.id} className={`acc-prov-btn${selProvider===p.id?" acc-prov-btn--active":""}`}
                   style={selProvider===p.id?{borderColor:p.color,color:p.color}:{}}
                   onClick={()=>setSelProvider(selProvider===p.id?null:p.id)}>
@@ -251,7 +271,7 @@ export default function AICostCenter({ onNavigate }) {
               ))}
             </div>
 
-            {(selProvider ? PROVIDERS.filter(p=>p.id===selProvider) : PROVIDERS).map(p=>(
+            {(selProvider ? providers.filter(p=>p.id===selProvider) : providers).map(p=>(
               <div key={p.id} className="acc-provider-card">
                 <div className="acc-pc-header">
                   <div className="acc-pc-logo" style={{background:p.color+"22",color:p.color}}>{p.logo}</div>
@@ -359,7 +379,7 @@ export default function AICostCenter({ onNavigate }) {
             <div className="acc-forecast-card">
               <p className="acc-forecast-title">Monthly spend forecast</p>
               <div className="acc-forecast-grid">
-                {PROVIDERS.map(p=>(
+                {providers.map(p=>(
                   <div key={p.id} className="acc-forecast-item">
                     <span className="acc-forecast-name" style={{color:p.color}}>{p.name}</span>
                     <span className="acc-forecast-val">{p.monthlyForecast===0?"Free":`$${p.monthlyForecast.toFixed(2)}`}</span>

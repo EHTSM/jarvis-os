@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { track } from "../analytics";
+import { _fetch } from "../_client";
 import "./SupportCenter.css";
 
 const TKT_KEY = "ooplix_support_tickets";
@@ -65,8 +66,28 @@ function TicketRow({ ticket, selected, onSelect }) {
 }
 
 function TicketDetail({ ticket, onReply, onResolve, onEscalate }) {
-  const [replyText, setReplyText] = useState(ticket.reply||"");
+  const [replyText,    setReplyText]    = useState(ticket.reply||"");
+  const [aiGenerating, setAiGenerating] = useState(false);
   const sla = slaStatus(ticket);
+
+  async function handleAIReply() {
+    setAiGenerating(true);
+    try {
+      const r = await _fetch("/ai/chat", {
+        method: "POST",
+        body: JSON.stringify({
+          input: `You are a helpful customer support agent for Ooplix, an AI business automation platform. Draft a professional, empathetic reply to this support ticket:\n\nSubject: ${ticket.subject}\nPriority: ${ticket.priority}\nCategory: ${ticket.category}\n\nExisting reply (if any): ${ticket.reply || "None"}\n\nProvide a concise, helpful response in 2-3 sentences.`,
+          mode: "support",
+        }),
+      });
+      const text = r?.reply || r?.message || r?.result;
+      if (text) setReplyText(text);
+    } catch {
+      // silently fall back — textarea stays blank for manual entry
+    } finally {
+      setAiGenerating(false);
+    }
+  }
 
   return (
     <div className="sc-ticket-detail">
@@ -100,8 +121,13 @@ function TicketDetail({ ticket, onReply, onResolve, onEscalate }) {
       )}
       {ticket.status !== "resolved" && (
         <div className="sc-td-reply-section">
-          <label className="sc-td-reply-form-label">Reply</label>
-          <textarea className="sc-td-reply-input" value={replyText} onChange={e=>setReplyText(e.target.value)} rows={3} placeholder="Type response…" />
+          <div className="sc-td-reply-header">
+            <label className="sc-td-reply-form-label">Reply</label>
+            <button className="sc-td-ai-btn" onClick={handleAIReply} disabled={aiGenerating}>
+              {aiGenerating ? "⟳ Generating…" : "◎ AI Draft"}
+            </button>
+          </div>
+          <textarea className="sc-td-reply-input" value={replyText} onChange={e=>setReplyText(e.target.value)} rows={3} placeholder="Type response or use AI Draft…" />
           <div className="sc-td-actions">
             {ticket.status !== "escalated" && (
               <button className="sc-td-act sc-td-act--escalate" onClick={()=>onEscalate(ticket.id)}>Escalate</button>
@@ -158,7 +184,7 @@ export default function SupportCenter({ onNavigate }) {
         <span className="csb-icon">◎</span>
         <div className="csb-body">
           <span className="csb-title">Support Ticket Engine <span className="csb-beta-badge">BETA</span></span>
-          <span className="csb-sub">Backend ticket routing, SLA enforcement, and AI-assisted replies require the SupportTicketEngine (not yet built). Tickets below are stored locally for planning purposes.</span>
+          <span className="csb-sub">Tickets are stored locally with full SLA tracking and AI-assisted replies via the connected AI provider. Cloud sync and multi-agent routing coming in a future release.</span>
         </div>
       </div>
 

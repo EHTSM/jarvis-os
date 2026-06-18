@@ -1300,7 +1300,7 @@ function TabIntegrations({ addToast, onNavigate }) {
               <div className="dcv2-ic-actions">
                 {connected && !degraded && (
                   <>
-                    <button className="dcv2-btn dcv2-btn--ghost dcv2-btn--sm" onClick={() => addToast("Configuration coming soon", "info")}>Configure</button>
+                    <button className="dcv2-btn dcv2-btn--ghost dcv2-btn--sm" onClick={() => onNavigate?.("settings")}>Settings →</button>
                     <button className="dcv2-btn dcv2-btn--ghost dcv2-btn--sm" onClick={() => handleRevoke(intg)} disabled={revoking === intg.id}>{revoking === intg.id ? "Disconnecting…" : "Disconnect"}</button>
                   </>
                 )}

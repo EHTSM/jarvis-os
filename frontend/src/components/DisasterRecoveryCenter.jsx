@@ -89,7 +89,7 @@ export default function DisasterRecoveryCenter({ onNavigate }) {
         <span className="csb-icon">◎</span>
         <div className="csb-body">
           <span className="csb-title">Backup & Recovery Engine <span className="csb-beta-badge">BETA</span></span>
-          <span className="csb-sub">Live backup scheduling, automated restore, and failover switching require the BackupRecoveryEngine (not yet built). The runbooks and failover plans below reflect the target architecture.</span>
+          <span className="csb-sub">Runbooks and failover plans are stored and maintained here. Recovery memory and chain analysis connect to the runtime engine. Automated backup scheduling arrives in a future release.</span>
         </div>
       </div>
       <div className="drc-header">

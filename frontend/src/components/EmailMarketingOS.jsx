@@ -347,7 +347,7 @@ export default function EmailMarketingOS({ onNavigate }) {
         <span className="csb-icon">◎</span>
         <div className="csb-body">
           <span className="csb-title">Email Automation Engine <span className="csb-beta-badge">BETA</span></span>
-          <span className="csb-sub">Campaign sending, subscriber management, and open-rate analytics require the EmailAutomationEngine (not yet built). Drafts and campaign plans are saved locally.</span>
+          <span className="csb-sub">Draft campaigns, manage subscribers, and plan sequences here. Sending and open-rate analytics connect via the Business OS campaigns API. Bulk send automation arrives in a future release.</span>
         </div>
       </div>
 
