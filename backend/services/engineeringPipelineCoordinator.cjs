@@ -642,6 +642,7 @@ function approvePipeline(pipelineId) {
     if (!run) throw new Error(`Pipeline ${pipelineId} not found`);
     run.approvalStatus = "approved";
     _persist();
+    logger.info(`[PipelineCoord] Pipeline ${pipelineId} approved`);
     _emit("pipeline:approved", { pipelineId });
     return { ...run };
 }
