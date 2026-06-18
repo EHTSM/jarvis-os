@@ -79,6 +79,7 @@ function _bds()  { try { return require("../services/businessDataService.cjs"); 
 function _bem()  { try { return require("../services/businessEntityModel.cjs");  } catch { return null; } }
 function _bma()  { try { return require("../services/businessMissionAutomation.cjs");   } catch { return null; } }
 function _bie()  { try { return require("../services/businessIntelligenceEngine.cjs"); } catch { return null; } }
+function _bea()  { try { return require("../services/businessEventAdapter.cjs");      } catch { return null; } }
 
 function _ok(res, data)   { res.json({ success: true, ...data }); }
 function _err(res, e, status = 500) {
@@ -799,6 +800,83 @@ router.post("/business/intelligence/score", requireAuth, (req, res) => {
         const { signal, context } = req.body;
         if (!signal) return res.status(400).json({ success: false, error: "signal object required" });
         _ok(res, bie.scoreSignal(signal, context || {}));
+    } catch (e) { _err(res, e); }
+});
+
+// ── External Event Integration routes (Phase B4) ──────────────────────────────
+//
+// Public webhook endpoints (no auth — protected by source validation):
+//   POST /business/webhook/form        — website form submission
+//   POST /business/webhook/email       — inbound email (SendGrid/Mailgun/Postmark)
+//   POST /business/webhook/whatsapp    — WhatsApp Business API
+//   POST /business/webhook/telegram    — Telegram bot webhook
+//   POST /business/webhook/payment     — payment received
+//   POST /business/webhook/calendar    — calendar event (Google/Calendly)
+//   POST /business/webhook/:source     — generic webhook (any source)
+//
+// Authenticated management:
+//   POST /business/events/ingest       — manual/API trigger (auth required)
+//   GET  /business/events              — event log
+//   GET  /business/events/stats        — ingest stats by source/entity
+//   GET  /business/events/sources      — list supported sources
+
+// ── Shared webhook handler ────────────────────────────────────────────────────
+async function _handleWebhook(source, req, res) {
+    try {
+        const bea = _bea();
+        if (!bea) return res.status(503).json({ success: false, error: "event adapter unavailable" });
+        const automate = req.query.automate === "true";
+        const result   = await bea.ingest(source, req.body || {}, { automate });
+        res.json({ success: true, ...result });
+    } catch (e) {
+        logger.warn(`[Business/webhook/${source}] ${e.message}`);
+        res.status(400).json({ success: false, error: e.message });
+    }
+}
+
+// ── Public webhooks (no requireAuth — external systems post here) ─────────────
+router.post("/business/webhook/form",      (req, res) => _handleWebhook("form",      req, res));
+router.post("/business/webhook/email",     (req, res) => _handleWebhook("email",     req, res));
+router.post("/business/webhook/whatsapp",  (req, res) => _handleWebhook("whatsapp",  req, res));
+router.post("/business/webhook/telegram",  (req, res) => _handleWebhook("telegram",  req, res));
+router.post("/business/webhook/payment",   (req, res) => _handleWebhook("payment",   req, res));
+router.post("/business/webhook/calendar",  (req, res) => _handleWebhook("calendar",  req, res));
+router.post("/business/webhook/:source",   (req, res) => _handleWebhook(req.params.source, req, res));
+
+// ── Authenticated event management ────────────────────────────────────────────
+router.post("/business/events/ingest", requireAuth, async (req, res) => {
+    try {
+        const bea = _bea();
+        if (!bea) return _err(res, new Error("event adapter unavailable"), 503);
+        const { source = "manual", raw, automate, priority, alert } = req.body;
+        if (!raw || typeof raw !== "object") return res.status(400).json({ success: false, error: "raw event object required" });
+        const result = await bea.ingest(source, raw, { automate, priority, alert });
+        _ok(res, result);
+    } catch (e) { _err(res, e, 400); }
+});
+
+router.get("/business/events", requireAuth, (req, res) => {
+    try {
+        const bea = _bea();
+        if (!bea) return _err(res, new Error("event adapter unavailable"), 503);
+        const { source, entityType, status, limit, offset } = req.query;
+        _ok(res, bea.getEventLog({ source, entityType, status, limit: limit ? parseInt(limit, 10) : 50, offset: offset ? parseInt(offset, 10) : 0 }));
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/business/events/stats", requireAuth, (req, res) => {
+    try {
+        const bea = _bea();
+        if (!bea) return _err(res, new Error("event adapter unavailable"), 503);
+        _ok(res, bea.getStats());
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/business/events/sources", requireAuth, (req, res) => {
+    try {
+        const bea = _bea();
+        if (!bea) return _err(res, new Error("event adapter unavailable"), 503);
+        _ok(res, { sources: Object.values(bea.SOURCES) });
     } catch (e) { _err(res, e); }
 });
 
