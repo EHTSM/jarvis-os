@@ -817,3 +817,23 @@
   .wov2-task-info   { min-width: calc(100% - 20px); }
   .wov2-toast-container { bottom: 12px; right: 12px; left: 12px; }
 }
+
+/* ── Log overlay modal ─────────────────────────────────────────── */
+.wov2-log-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.55);
+  z-index: 9000; display: flex; align-items: center; justify-content: center;
+}
+.wov2-log-modal {
+  background: #1a1f35; border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px; width: 560px; max-width: calc(100vw - 32px);
+  max-height: 80vh; display: flex; flex-direction: column; overflow: hidden;
+}
+.wov2-log-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.wov2-log-modal-title { font-size: 13px; font-weight: 600; color: #dde2ec; }
+.wov2-log-modal-body  { padding: 16px 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.wov2-log-row         { display: flex; gap: 12px; font-size: 12px; }
+.wov2-log-key         { color: #8994b0; min-width: 72px; flex-shrink: 0; }
+.wov2-log-val         { color: #dde2ec; word-break: break-all; }

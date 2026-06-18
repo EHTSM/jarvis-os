@@ -151,19 +151,43 @@ function SkelRow() {
 function TabLibrary({ addToast, runningId, setRunningId }) {
   const [search, setSearch]   = useState("");
   const [catF,   setCatF]     = useState("all");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [liveWfs, setLiveWfs] = useState(null);
   const [cycles,  setCycles]  = useState(null);
   const [triggerInput, setTriggerInput] = useState("");
   const [triggering,   setTriggering]   = useState(false);
 
   useEffect(() => {
-    listCycles({ limit: 10 }).then(r => {
-      const arr = Array.isArray(r) ? r : (r?.cycles || r?.items || []);
+    Promise.all([
+      fetch("/runtime/workflows/library", { credentials: "include" })
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null),
+      listCycles({ limit: 10 }).catch(() => null),
+    ]).then(([libRes, cycRes]) => {
+      const serverWfs = libRes?.workflows;
+      if (Array.isArray(serverWfs) && serverWfs.length > 0) {
+        setLiveWfs(serverWfs.map(w => ({
+          id:       w.id,
+          icon:     "⬟",
+          name:     w.name || w.id,
+          label:    w.name || w.id,
+          desc:     w.goal || w.description || "",
+          category: w.category || "custom",
+          lastRun:  w.lastRunAt || null,
+          duration: w.avgDurationMs ? `${(w.avgDurationMs / 1000).toFixed(1)}s` : "—",
+          status:   w.lastStatus || "idle",
+          runsToday: w.usageCount || 0,
+          errorDetail: w.lastError || null,
+        })));
+      }
+      const arr = Array.isArray(cycRes) ? cycRes : (cycRes?.cycles || cycRes?.items || []);
       if (arr.length > 0) setCycles(arr);
-    }).catch(() => {});
+    }).finally(() => setLoading(false));
   }, []);
 
-  const filtered = WORKFLOW_LIBRARY.filter(wf => {
+  const library = liveWfs || WORKFLOW_LIBRARY;
+
+  const filtered = library.filter(wf => {
     const matchCat = catF === "all" || wf.category === catF;
     const q = search.toLowerCase();
     const matchQ = !q || wf.name.toLowerCase().includes(q) || wf.label.toLowerCase().includes(q) || wf.desc.toLowerCase().includes(q);
@@ -198,6 +222,12 @@ function TabLibrary({ addToast, runningId, setRunningId }) {
       setTriggering(false);
     }
   }
+
+  if (loading) return (
+    <div className="wov2-library-root">
+      {[0,1,2,4].map(i => <SkelRow key={i} />)}
+    </div>
+  );
 
   return (
     <div className="wov2-library-root">
@@ -322,7 +352,7 @@ const ACTION_TYPES = [
   { id: "payment",  label: "Generate Payment Link", icon: "💸" },
 ];
 
-function TabDesigner({ addToast }) {
+function TabDesigner({ addToast, onViewLibrary }) {
   const [step,       setStep]       = useState(0); // 0=trigger, 1=actions, 2=review, 3=done
   const [trigger,    setTrigger]    = useState(null);
   const [actions,    setActions]    = useState([]);
@@ -454,7 +484,7 @@ function TabDesigner({ addToast }) {
           <p className="wov2-success-sub">Your workflow draft has been saved. Full execution requires the visual builder (coming soon).</p>
           <div className="wov2-designer-nav" style={{ justifyContent: "center" }}>
             <button className="wov2-btn wov2-btn--ghost" onClick={reset}>Create another</button>
-            <button className="wov2-btn wov2-btn--primary" onClick={() => {}}>View Library</button>
+            <button className="wov2-btn wov2-btn--primary" onClick={onViewLibrary}>View Library</button>
           </div>
         </div>
       )}
@@ -469,6 +499,7 @@ function TabRunning({ addToast }) {
   const [loading,  setLoading]  = useState(true);
   const [stopping, setStopping] = useState(false);
   const [elapsed,  setElapsed]  = useState({});
+  const [logItem,  setLogItem]  = useState(null);
   const timerRef = useRef(null);
 
   useEffect(() => {
@@ -563,11 +594,39 @@ function TabRunning({ addToast }) {
               <span className="wov2-progress-label">Step {done} of {steps}</span>
             </div>
             <div className="wov2-rc-actions">
-              <button className="wov2-btn wov2-btn--ghost wov2-btn--sm" onClick={() => addToast("Live log streaming coming soon", "info")}>View Log</button>
+              <button className="wov2-btn wov2-btn--ghost wov2-btn--sm" onClick={() => setLogItem(item)}>View Log</button>
             </div>
           </div>
         );
       })}
+
+      {logItem && (
+        <div className="wov2-log-overlay" onClick={() => setLogItem(null)}>
+          <div className="wov2-log-modal" onClick={e => e.stopPropagation()}>
+            <div className="wov2-log-modal-header">
+              <span className="wov2-log-modal-title">Log — {logItem.input || logItem.goal || logItem.id}</span>
+              <button className="wov2-btn wov2-btn--ghost wov2-btn--sm" onClick={() => setLogItem(null)}>✕ Close</button>
+            </div>
+            <div className="wov2-log-modal-body">
+              {[
+                { label: "ID",        val: logItem.id },
+                { label: "Status",    val: logItem.status },
+                { label: "Type",      val: logItem.type || "task" },
+                { label: "Started",   val: logItem.timestamp || logItem.createdAt || "—" },
+                { label: "Input",     val: logItem.input || logItem.goal || "—" },
+                { label: "Output",    val: logItem.output || logItem.result || "—" },
+                { label: "Error",     val: logItem.error || "none" },
+                { label: "Duration",  val: logItem.durationMs != null ? `${logItem.durationMs}ms` : "—" },
+              ].map(({ label, val }) => (
+                <div key={label} className="wov2-log-row">
+                  <span className="wov2-log-key">{label}</span>
+                  <span className="wov2-log-val">{String(val)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1045,7 +1104,7 @@ export default function WorkflowOSV2({ onNavigate }) {
 
       <div className="wov2-tab-content">
         {tab === "library"    && <TabLibrary    addToast={addToast} runningId={runningId} setRunningId={setRunningId} />}
-        {tab === "designer"   && <TabDesigner   addToast={addToast} />}
+        {tab === "designer"   && <TabDesigner   addToast={addToast} onViewLibrary={() => setTab("library")} />}
         {tab === "running"    && <TabRunning    addToast={addToast} />}
         {tab === "scheduled"  && <TabScheduled  />}
         {tab === "history"    && <TabHistory    />}

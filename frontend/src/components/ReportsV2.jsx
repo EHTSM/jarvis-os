@@ -285,12 +285,13 @@ function ServiceHealth({ opsData, online, loading }) {
 // ── Root Reports V2 ───────────────────────────────────────────────────────────
 
 export default function ReportsV2({ online = false, onNavigate }) {
-  const [stats,   setStats]   = useState(null);
-  const [opsData, setOpsData] = useState(null);
-  const [metrics, setMetrics] = useState(null);
-  const [leads,   setLeads]   = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [period,  setPeriod]  = useState("week");
+  const [stats,     setStats]     = useState(null);
+  const [opsData,   setOpsData]   = useState(null);
+  const [metrics,   setMetrics]   = useState(null);
+  const [leads,     setLeads]     = useState(null);
+  const [loading,   setLoading]   = useState(true);
+  const [period,    setPeriod]    = useState("week");
+  const [exporting, setExporting] = useState(false);
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -307,6 +308,33 @@ export default function ReportsV2({ online = false, onNavigate }) {
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);
+
+  async function handleExport() {
+    setExporting(true);
+    try {
+      const res = await fetch("/runtime/export/analytics", { credentials: "include" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const blob = await res.blob();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement("a");
+      a.href     = url;
+      a.download = `ooplix-analytics-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      // Fallback: export current stats as JSON
+      const payload = { stats, opsData, metrics, exportedAt: new Date().toISOString() };
+      const blob    = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url     = URL.createObjectURL(blob);
+      const a       = document.createElement("a");
+      a.href        = url;
+      a.download    = `ooplix-report-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } finally {
+      setExporting(false);
+    }
+  }
 
   const now       = new Date();
   const monthName = MONTH_LABELS[now.getMonth()];
@@ -328,17 +356,14 @@ export default function ReportsV2({ online = false, onNavigate }) {
           <p className="rv2-page-sub">Executive summary · {monthName} {yearStr}</p>
         </div>
         <div className="rv2-header-right">
-          <button className="rv2-export-btn" title="Export — coming soon" disabled>
-            ↓ Export PDF
+          <button className="rv2-export-btn" onClick={handleExport} disabled={exporting || loading} title="Export report as JSON">
+            {exporting ? "⟳ Exporting…" : "↓ Export"}
           </button>
           <button className="rv2-refresh-btn" onClick={refresh} title="Refresh data">
             ↻ Refresh
           </button>
         </div>
       </div>
-
-      {/* Coming soon banner */}
-      <ComingSoon feature="Advanced reporting" />
 
       {/* Period selector */}
       <div className="rv2-period-tabs">

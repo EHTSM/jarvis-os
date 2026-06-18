@@ -574,13 +574,13 @@ function getStatus() {
  * @param {{ priority?, source?, acknowledged?, limit?, offset? }} opts
  * @returns {{ recommendations: Array, total: number }}
  */
-function getRecommendations({ priority, source, acknowledged, limit = 100, offset = 0 } = {}) {
+function getRecommendations({ priority, source, acknowledged, limit, offset = 0 } = {}) {
     let recs = _loadRecs().slice().reverse();   // newest first
     if (priority    !== undefined) recs = recs.filter(r => r.priority    === priority);
     if (source      !== undefined) recs = recs.filter(r => r.source      === source);
     if (acknowledged !== undefined) recs = recs.filter(r => !!r.acknowledged === !!acknowledged);
-    const total = recs.length;
-    return { recommendations: recs.slice(offset, offset + limit), total };
+    const sliced = limit !== undefined ? recs.slice(offset, offset + limit) : recs.slice(offset);
+    return { recommendations: sliced, total: sliced.length };
 }
 
 /**

@@ -137,9 +137,10 @@ function TabRuntime({ addToast }) {
   const [status,     setStatus]     = useState(null);
   const [history,    setHistory]    = useState([]);
   const [loading,    setLoading]    = useState(true);
-  const [stopping,   setStopping]   = useState(false);
-  const [resuming,   setResuming]   = useState(false);
-  const [emergency,  setEmergency]  = useState(false);
+  const [stopping,    setStopping]    = useState(false);
+  const [resuming,    setResuming]    = useState(false);
+  const [restarting,  setRestarting]  = useState(false);
+  const [emergency,   setEmergency]   = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -178,6 +179,28 @@ function TabRuntime({ addToast }) {
       track("emergency_resume");
     } catch (e) { addToast(`Resume failed: ${e.message}`, "error"); }
     finally    { setResuming(false); }
+  }
+
+  async function handleRestart() {
+    if (!window.confirm("Restart all runtime workers? Running tasks will be re-queued.")) return;
+    setRestarting(true);
+    try {
+      const r = await fetch("/runtime/reboot", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reason: "operator_restart" }),
+      });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      addToast("Workers restarted — runtime recovering", "success");
+      track("workers_restarted");
+      setTimeout(() => {
+        getRuntimeStatus().then(s => { setStatus(s); setRestarting(false); }).catch(() => setRestarting(false));
+      }, 3000);
+    } catch (e) {
+      addToast(`Restart failed: ${e.message}`, "error");
+      setRestarting(false);
+    }
   }
 
   const LOG_LEVEL_COLOR = { running:"#7c6fff", success:"#52d68a", error:"#f55b5b", warning:"#f0b429", info:"#8994b0" };
@@ -226,11 +249,11 @@ function TabRuntime({ addToast }) {
               ▶ {resuming ? "Resuming…" : "Resume Execution"}
             </button>
             <button
-              className="dv2-btn dv2-btn--ghost dv2-btn--disabled-ux"
-              disabled
-              title="Coming soon"
+              className={`dv2-btn dv2-btn--ghost${restarting ? " dv2-btn--loading" : ""}`}
+              onClick={handleRestart}
+              disabled={restarting}
             >
-              ↻ Restart Workers
+              {restarting ? "⟳ Restarting…" : "↻ Restart Workers"}
             </button>
           </div>
           <p className="dv2-ctrl-note">Emergency stop halts all queued and in-flight tasks. Resume restores normal operation.</p>
