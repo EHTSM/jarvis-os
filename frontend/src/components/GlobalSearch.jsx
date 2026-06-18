@@ -79,8 +79,12 @@ const STATIC_ROUTES = NAV_ROUTES.map(r => ({
 const STATIC_COMMANDS = [
   { type: 'command', id: 'cmd:terminal',   label: 'Open Terminal',              icon: '🖥',  action: 'nav:terminal'  },
   { type: 'command', id: 'cmd:explorer',   label: 'Open File Explorer',         icon: '📁',  action: 'nav:explorer'  },
+  { type: 'command', id: 'cmd:openfolder', label: 'Open Folder…',               icon: '📂',  action: 'open-folder'   },
   { type: 'command', id: 'cmd:console',    label: 'Open Engineering Console',   icon: '📊',  action: 'nav:console'   },
   { type: 'command', id: 'cmd:ai',         label: 'Open AI Overlay',            icon: '🤖',  action: 'nav:ai'        },
+  { type: 'command', id: 'cmd:aipair',     label: 'Open AI Pair Programming',   icon: '💡',  action: 'nav:pair'      },
+  { type: 'command', id: 'cmd:mission',    label: 'New Mission…',               icon: '◎',   action: 'nav:missions'  },
+  { type: 'command', id: 'cmd:git',        label: 'Open Visual Git',            icon: '🌿',  action: 'nav:git'       },
   { type: 'command', id: 'cmd:screenshot', label: 'Take Screenshot',            icon: '📸',  action: 'screenshot'    },
   { type: 'command', id: 'cmd:clipboard',  label: 'Clipboard History',          icon: '📋',  action: 'nav:clipboard' },
   { type: 'command', id: 'cmd:settings',   label: 'Open Settings',              icon: '⚙️', action: 'settings'      },
@@ -89,16 +93,19 @@ const STATIC_COMMANDS = [
 
 // ── Static: keyboard shortcuts ────────────────────────────────────────
 const STATIC_SHORTCUTS = [
-  { type: 'shortcut', id: 'sc:cmdK',    label: '⌘K — Global Search',              icon: '⌨', action: null },
-  { type: 'shortcut', id: 'sc:cmdP',    label: '⌘P — Quick Switcher (missions, repos, panels)', icon: '⌨', action: null },
-  { type: 'shortcut', id: 'sc:cmd1-5', label: '⌘1-5 — Switch sidebar panel',      icon: '⌨', action: null },
-  { type: 'shortcut', id: 'sc:cmdBs',  label: '⌘\\ — Split editor layout',        icon: '⌨', action: null },
-  { type: 'shortcut', id: 'sc:cmdShG', label: '⌘⇧G — Visual Git sidebar',         icon: '⌨', action: 'nav:git' },
-  { type: 'shortcut', id: 'sc:cmdShE', label: '⌘⇧E — File Explorer sidebar',      icon: '⌨', action: 'nav:explorer' },
-  { type: 'shortcut', id: 'sc:cmdShD', label: '⌘⇧D — Debugger panel',             icon: '⌨', action: 'nav:debugger' },
-  { type: 'shortcut', id: 'sc:cmdShP', label: '⌘⇧P — AI Pair panel',              icon: '⌨', action: 'nav:pair' },
-  { type: 'shortcut', id: 'sc:cmdTick','label': '⌘⇧` — Toggle bottom panel',      icon: '⌨', action: null },
-  { type: 'shortcut', id: 'sc:esc',    label: 'Esc — Close / Cancel',             icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:cmdK',    label: '⌘K — Global Search / Command Palette',          icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:cmdP',    label: '⌘P — Quick Switcher (projects, missions, panels)', icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:cmd1-6', label: '⌘1–6 — Switch sidebar panel',                    icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:cmdBs',  label: '⌘\\ — Split editor layout',                      icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:cmdB',   label: '⌘B — Toggle sidebar',                             icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:cmdShG', label: '⌘⇧G — Visual Git sidebar',                       icon: '⌨', action: 'nav:git' },
+  { type: 'shortcut', id: 'sc:cmdShE', label: '⌘⇧E — File Explorer sidebar',                    icon: '⌨', action: 'nav:explorer' },
+  { type: 'shortcut', id: 'sc:cmdShD', label: '⌘⇧D — Debugger panel',                           icon: '⌨', action: 'nav:debugger' },
+  { type: 'shortcut', id: 'sc:cmdShP', label: '⌘⇧P — AI Pair panel',                            icon: '⌨', action: 'nav:pair' },
+  { type: 'shortcut', id: 'sc:cmdShM', label: '⌘⇧M — Missions panel',                           icon: '⌨', action: 'nav:missions' },
+  { type: 'shortcut', id: 'sc:cmdShT', label: '⌘⇧T — Terminal panel',                           icon: '⌨', action: 'nav:terminal' },
+  { type: 'shortcut', id: 'sc:cmdTick','label': '⌘⇧` — Toggle bottom panel',                    icon: '⌨', action: null },
+  { type: 'shortcut', id: 'sc:esc',    label: 'Esc — Close / Cancel',                            icon: '⌨', action: null },
 ];
 
 const ALL_STATIC = [...STATIC_COMMANDS, ...STATIC_ROUTES, ...STATIC_SHORTCUTS];

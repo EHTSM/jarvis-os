@@ -765,11 +765,11 @@ function ApprovalQueue({ onNavigate }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const QUICK_CMDS = [
-  { label: "System status",    cmd: "run pm2 status"            },
-  { label: "Queue check",      cmd: "run pm2 list"              },
-  { label: "Pipeline summary", cmd: "Show my pipeline summary"  },
-  { label: "Agent list",       cmd: "List all active agents"    },
-  { label: "Health report",    cmd: "Run health diagnostics"    },
+  { label: "Health check",      cmd: "Run health diagnostics"      },
+  { label: "Active agents",     cmd: "List all active agents"      },
+  { label: "Pipeline summary",  cmd: "Show my pipeline summary"    },
+  { label: "Recent tasks",      cmd: "Show last 10 completed tasks" },
+  { label: "Memory stats",      cmd: "Show knowledge graph stats"   },
 ];
 
 function CommandDispatch({ online }) {

@@ -172,11 +172,12 @@ export default function MissionControl({ onNavigate }) {
   const [cycles,    setCycles]    = useState(null);
   const [actions,   setActions]   = useState([]);
 
-  const [loading,   setLoading]   = useState(true);
-  const [lastTick,  setLastTick]  = useState(null);
-  const [actionMsg, setActionMsg] = useState(null);
-  const [stopPend,  setStopPend]  = useState(false);
-  const [resPend,   setResPend]   = useState(false);
+  const [loading,    setLoading]    = useState(true);
+  const [lastTick,   setLastTick]   = useState(null);
+  const [actionMsg,  setActionMsg]  = useState(null);
+  const [stopPend,   setStopPend]   = useState(false);
+  const [resPend,    setResPend]    = useState(false);
+  const [stopConfirm, setStopConfirm] = useState(false);
 
   // ── Parallel fetch ────────────────────────────────────────────────
   const fetch_ = useCallback(async () => {
@@ -237,7 +238,11 @@ export default function MissionControl({ onNavigate }) {
 
   // ── Actions ───────────────────────────────────────────────────────
   async function doStop() {
-    if (!window.confirm("Emergency stop all agents?")) return;
+    setStopConfirm(true);
+  }
+
+  async function doStopConfirmed() {
+    setStopConfirm(false);
     setStopPend(true);
     try {
       await emergencyStop();
@@ -294,6 +299,21 @@ export default function MissionControl({ onNavigate }) {
   // ── Render ────────────────────────────────────────────────────────
   return (
     <div className="mc2-root">
+
+      {/* ── Emergency stop confirmation modal ── */}
+      {stopConfirm && (
+        <div className="mc2-stop-overlay" onClick={() => setStopConfirm(false)}>
+          <div className="mc2-stop-panel" onClick={e => e.stopPropagation()}>
+            <div className="mc2-stop-icon">⛔</div>
+            <div className="mc2-stop-title">Emergency Stop</div>
+            <div className="mc2-stop-body">Halt all in-flight and queued agents immediately. Active missions will be paused.</div>
+            <div className="mc2-stop-actions">
+              <button className="mc2-stop-btn mc2-stop-btn--cancel" onClick={() => setStopConfirm(false)}>Cancel</button>
+              <button className="mc2-stop-btn mc2-stop-btn--confirm" onClick={doStopConfirmed}>Stop All Agents</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Top bar ── */}
       <header className="mc2-header">
@@ -363,6 +383,39 @@ export default function MissionControl({ onNavigate }) {
         <Tile label="Approvals" value={pendingActions.length || 0} sub="pending"
           dot={pendingActions.length > 0 ? "warn" : "ok"} />
       </div>
+
+      {/* ── First-run guide: shown when system is empty ── */}
+      {!loading && graphs.length === 0 && agents.length === 0 && history.length === 0 && (
+        <div className="mc2-welcome">
+          <div className="mc2-welcome-title">Welcome to Ooplix</div>
+          <div className="mc2-welcome-steps">
+            <div className="mc2-welcome-step">
+              <span className="mc2-welcome-num">1</span>
+              <div>
+                <strong>Open a project</strong> — Press <kbd>⌘⇧E</kbd> or click 📁 in the sidebar to browse files. Click <strong>Open Folder…</strong> to select your project.
+              </div>
+            </div>
+            <div className="mc2-welcome-step">
+              <span className="mc2-welcome-num">2</span>
+              <div>
+                <strong>Create a mission</strong> — Click <button className="mc2-welcome-inline-btn" onClick={() => nav("missions")}>Missions ↗</button> in the bottom panel, then describe a goal (e.g. "Add JWT authentication").
+              </div>
+            </div>
+            <div className="mc2-welcome-step">
+              <span className="mc2-welcome-num">3</span>
+              <div>
+                <strong>Use AI on your code</strong> — Open any file, right-click selected code → <em>Explain code</em> or <em>Generate patch</em>. AI Pair opens automatically.
+              </div>
+            </div>
+            <div className="mc2-welcome-step">
+              <span className="mc2-welcome-num">4</span>
+              <div>
+                <strong>Explore shortcuts</strong> — Press <kbd>⌘K</kbd> to search everything, <kbd>⌘P</kbd> to switch projects, <kbd>?</kbd> for full shortcut list.
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Main 3-column grid ── */}
       <div className="mc2-grid">

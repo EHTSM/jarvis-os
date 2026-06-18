@@ -532,11 +532,13 @@ export default function ElectronWorkspace({ children }) {
       // Cmd+B — toggle sidebar (VSCode convention)
       if (e.key === 'b' && !e.shiftKey) { e.preventDefault(); setShowSidebar(s => !s); return; }
 
-      // Cmd+Shift+E/G/D/P — sidebar/panel shortcuts
+      // Cmd+Shift+E/G/D/P/M/T — sidebar/panel shortcuts
       if (e.shiftKey && e.key === 'E')  { e.preventDefault(); setSidebar('explorer'); return; }
       if (e.shiftKey && e.key === 'G')  { e.preventDefault(); setSidebar('git'); return; }
       if (e.shiftKey && e.key === 'D')  { e.preventDefault(); openBottomTab('debugger'); return; }
       if (e.shiftKey && e.key === 'P')  { e.preventDefault(); openBottomTab('pair'); return; }
+      if (e.shiftKey && e.key === 'M')  { e.preventDefault(); openBottomTab('missions'); return; }
+      if (e.shiftKey && e.key === 'T')  { e.preventDefault(); openBottomTab('terminal'); return; }
 
       // Cmd+1..6 — sidebar mode by position
       const sidebarKeys = Object.keys(SIDEBAR_MODES);
@@ -612,6 +614,16 @@ export default function ElectronWorkspace({ children }) {
     };
   }, []);
 
+  // Open AI Pair panel when editor right-click fires a capability with a selection
+  useEffect(() => {
+    const handler = (e) => {
+      const { payload } = e.detail || {};
+      if (payload?.selection) openBottomTab('pair');
+    };
+    window.addEventListener('jarvis-capability', handler);
+    return () => window.removeEventListener('jarvis-capability', handler);
+  }, [openBottomTab]);
+
   // Global search action handler
   const handleAction = useStableCallback((action, item) => {
     switch (action) {
@@ -643,8 +655,15 @@ export default function ElectronWorkspace({ children }) {
           if (p) api()?.showNotification?.({ title: 'Screenshot saved', body: p });
         });
         break;
-      case 'settings': api()?.openSettings?.(); break;
-      case 'update':   api()?.checkForUpdates?.(); break;
+      case 'settings':     api()?.openSettings?.(); break;
+      case 'update':       api()?.checkForUpdates?.(); break;
+      case 'nav:missions': openBottomTab('missions'); break;
+      case 'open-folder':
+        api()?.fsShowOpenDialog?.({ properties: ['openDirectory'] }).then(result => {
+          const p = result?.filePaths?.[0];
+          if (p) { setCwd(p); pushRepo({ path: p, name: p.split('/').pop(), id: Date.now(), ts: Date.now() }); setSidebar('explorer'); }
+        });
+        break;
       default: break;
     }
   });

@@ -31,6 +31,16 @@ const SHORTCUTS = [
   { id: 'emergency-stop',    keys: ['Meta+Shift+.', 'Ctrl+Shift+.'], description: 'Emergency Stop' },
   { id: 'emergency-resume',  keys: ['Meta+Shift+/', 'Ctrl+Shift+/'], description: 'Resume'         },
 
+  // Workspace panels
+  { id: 'explorer',          keys: ['Meta+Shift+E', 'Ctrl+Shift+E'], description: 'File Explorer sidebar'  },
+  { id: 'git',               keys: ['Meta+Shift+G', 'Ctrl+Shift+G'], description: 'Visual Git sidebar'     },
+  { id: 'terminal',          keys: ['Meta+Shift+T', 'Ctrl+Shift+T'], description: 'Terminal panel'          },
+  { id: 'ai-pair',           keys: ['Meta+Shift+P', 'Ctrl+Shift+P'], description: 'AI Pair panel'           },
+  { id: 'missions',          keys: ['Meta+Shift+M', 'Ctrl+Shift+M'], description: 'Missions panel'          },
+  { id: 'split',             keys: ['Meta+\\', 'Ctrl+\\'],           description: 'Split editor layout'    },
+  { id: 'sidebar-toggle',    keys: ['Meta+b', 'Ctrl+b'],             description: 'Toggle sidebar'         },
+  { id: 'quick-switcher',    keys: ['Meta+p', 'Ctrl+p'],             description: 'Quick Switcher'          },
+
   // View
   { id: 'zoom-in',           keys: ['Meta+=', 'Ctrl+='],           description: 'Zoom In'           },
   { id: 'zoom-out',          keys: ['Meta+-', 'Ctrl+-'],           description: 'Zoom Out'          },

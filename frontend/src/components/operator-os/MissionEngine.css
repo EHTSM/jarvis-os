@@ -343,3 +343,27 @@
   color: #f87171;
   line-height: 1.5;
 }
+
+/* ── Delete confirm modal ── */
+.me-del-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.6);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 500; border-radius: inherit;
+}
+.me-del-panel {
+  background: #13151e; border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 10px; padding: 20px 24px; width: 320px;
+  display: flex; flex-direction: column; gap: 10px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.8);
+}
+.me-del-title { font-size: 14px; font-weight: 700; color: #f9fafb; }
+.me-del-body  { font-size: 12px; color: #9ca3af; line-height: 1.5; }
+.me-del-actions { display: flex; gap: 8px; margin-top: 4px; }
+.me-del-btn {
+  flex: 1; padding: 7px 14px; border-radius: 6px; font-size: 12px;
+  font-family: inherit; cursor: pointer; border: 1px solid transparent; transition: background 0.12s;
+}
+.me-del-btn--cancel  { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: #9ca3af; }
+.me-del-btn--cancel:hover { background: rgba(255,255,255,0.1); }
+.me-del-btn--confirm { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #f87171; }
+.me-del-btn--confirm:hover { background: rgba(239,68,68,0.22); }

@@ -34,6 +34,7 @@ function PatchPreview({ patch, onApply, onDismiss }) {
 // ── Inline Code Action ─────────────────────────────────────────────────
 function InlineActions({ code, language, onResult }) {
   const [loading, setLoading] = useState(null);
+  const runRef = useRef(null);
 
   const run = useCallback(async (action) => {
     if (!code.trim()) return;
@@ -47,6 +48,18 @@ function InlineActions({ code, language, onResult }) {
       setLoading(null);
     }
   }, [code, language, onResult]);
+
+  // Keep ref up-to-date so auto-run event handler sees latest code/lang
+  runRef.current = run;
+
+  useEffect(() => {
+    const handler = (e) => {
+      const { action } = e.detail || {};
+      if (action) runRef.current?.(action);
+    };
+    window.addEventListener('aipp-auto-run', handler);
+    return () => window.removeEventListener('aipp-auto-run', handler);
+  }, []);
 
   const ACTIONS = [
     { id: 'explain',    label: 'Explain',      icon: '💡' },
@@ -269,6 +282,31 @@ export default function AIPairProgramming({ className = '' }) {
 
   const onResult = useCallback((action, res) => {
     setResult({ action, ...res });
+  }, []);
+
+  // Listen for selection pushed from the code editor right-click menu
+  useEffect(() => {
+    const handler = (e) => {
+      const { capability, payload } = e.detail || {};
+      if (!payload?.selection) return;
+      setCode(payload.selection);
+      setTab('actions');
+      // Auto-trigger the action if it maps to a known AI pair action
+      const capToAction = {
+        'code.explain': 'explain',
+        'code.review':  'review',
+        'code.generatePatch': 'refactor',
+      };
+      const action = capToAction[capability];
+      if (action) {
+        // Fire after state settles
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('aipp-auto-run', { detail: { action, code: payload.selection, lang: 'javascript' } }));
+        }, 80);
+      }
+    };
+    window.addEventListener('jarvis-capability', handler);
+    return () => window.removeEventListener('jarvis-capability', handler);
   }, []);
 
   const applyPatch = useCallback(async () => {

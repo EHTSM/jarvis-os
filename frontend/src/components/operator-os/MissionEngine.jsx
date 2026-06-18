@@ -155,9 +155,10 @@ export default function MissionEngine() {
   const [selected, setSelected] = useState(null);
   const [detail,   setDetail]   = useState(null);
 
-  const [input,    setInput]    = useState("");
-  const [creating, setCreating] = useState(false);
-  const [execMsg,  setExecMsg]  = useState(null);
+  const [input,        setInput]        = useState("");
+  const [creating,     setCreating]     = useState(false);
+  const [execMsg,      setExecMsg]      = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const textRef = useRef(null);
 
@@ -230,7 +231,12 @@ export default function MissionEngine() {
   }
 
   async function handleDelete(id) {
-    if (!window.confirm("Delete this mission?")) return;
+    setDeleteTarget(id);
+  }
+
+  async function handleDeleteConfirmed() {
+    const id = deleteTarget;
+    setDeleteTarget(null);
     try {
       await deleteGraph(id);
       if (selected?.id === id) setSelected(null);
@@ -244,6 +250,21 @@ export default function MissionEngine() {
 
   return (
     <div className="me-root">
+
+      {/* Delete confirm modal */}
+      {deleteTarget && (
+        <div className="me-del-overlay" onClick={() => setDeleteTarget(null)}>
+          <div className="me-del-panel" onClick={e => e.stopPropagation()}>
+            <div className="me-del-title">Delete Mission?</div>
+            <div className="me-del-body">This mission and all its task history will be permanently removed.</div>
+            <div className="me-del-actions">
+              <button className="me-del-btn me-del-btn--cancel" onClick={() => setDeleteTarget(null)}>Cancel</button>
+              <button className="me-del-btn me-del-btn--confirm" onClick={handleDeleteConfirmed}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <header className="me-header">
         <div>

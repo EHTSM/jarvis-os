@@ -539,3 +539,63 @@
 .mc2-col::-webkit-scrollbar       { width: 4px; }
 .mc2-col::-webkit-scrollbar-track { background: transparent; }
 .mc2-col::-webkit-scrollbar-thumb { background: var(--mc2-dim); border-radius: 2px; }
+
+/* ── First-run welcome guide ── */
+.mc2-welcome {
+  margin: 0 16px 16px;
+  background: rgba(59,130,246,0.04);
+  border: 1px solid rgba(59,130,246,0.15);
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+.mc2-welcome-title {
+  font-size: 13px; font-weight: 700; color: #93c5fd;
+  margin-bottom: 12px; letter-spacing: 0.02em;
+}
+.mc2-welcome-steps { display: flex; flex-direction: column; gap: 10px; }
+.mc2-welcome-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 12px; color: #a1a1aa; line-height: 1.5;
+}
+.mc2-welcome-step strong { color: #e4e4e7; }
+.mc2-welcome-step em { color: #60a5fa; font-style: normal; }
+.mc2-welcome-num {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.35);
+  color: #60a5fa; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; margin-top: 1px;
+}
+.mc2-welcome-step kbd {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px; padding: 1px 5px; font-size: 10px; font-family: inherit; color: #d4d4d8;
+}
+.mc2-welcome-inline-btn {
+  background: none; border: none; color: #60a5fa; cursor: pointer;
+  font-size: 12px; font-family: inherit; padding: 0; text-decoration: underline;
+}
+.mc2-welcome-inline-btn:hover { color: #93c5fd; }
+
+/* ── Emergency stop modal ── */
+.mc2-stop-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999; backdrop-filter: blur(2px);
+}
+.mc2-stop-panel {
+  background: #13151e; border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 12px; padding: 24px; width: 380px; max-width: 92vw;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.8);
+}
+.mc2-stop-icon  { font-size: 32px; }
+.mc2-stop-title { font-size: 16px; font-weight: 700; color: #f9fafb; }
+.mc2-stop-body  { font-size: 13px; color: #9ca3af; text-align: center; line-height: 1.5; }
+.mc2-stop-actions { display: flex; gap: 10px; margin-top: 4px; }
+.mc2-stop-btn {
+  padding: 8px 20px; border-radius: 7px; font-size: 13px;
+  font-family: inherit; cursor: pointer; border: 1px solid transparent; transition: background 0.12s;
+}
+.mc2-stop-btn--cancel  { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: #9ca3af; }
+.mc2-stop-btn--cancel:hover { background: rgba(255,255,255,0.1); }
+.mc2-stop-btn--confirm { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4); color: #f87171; }
+.mc2-stop-btn--confirm:hover { background: rgba(239,68,68,0.28); }
