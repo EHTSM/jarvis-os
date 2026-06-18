@@ -42,11 +42,13 @@
     "dist:mac": "npm run build:frontend && electron-builder --mac",
     "dist:win": "npm run build:frontend && electron-builder --win",
     "dist:linux": "npm run build:frontend && electron-builder --linux",
-    "dist:all": "npm run build:frontend && electron-builder --mac --win --linux"
+    "dist:all": "npm run build:frontend && electron-builder --mac --win --linux",
+    "rebuild": "electron-rebuild -f -w node-pty,better-sqlite3",
+    "postinstall": "electron-builder install-app-deps"
   },
   "build": {
     "appId": "com.ooplix.jarvis",
-    "productName": "JARVIS",
+    "productName": "Ooplix",
     "copyright": "Copyright © 2026 Ooplix",
     "files": [
       "electron/**/*",
@@ -59,6 +61,11 @@
       "!**/node_modules/.cache",
       "!**/tests/**",
       "!**/_archive/**"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/node-pty/**/*",
+      "node_modules/better-sqlite3/**/*"
     ],
     "extraResources": [],
     "mac": {
@@ -144,7 +151,8 @@
   "devDependencies": {
     "concurrently": "^9.2.1",
     "electron": "^41.4.0",
-    "electron-builder": "^25.1.8"
+    "electron-builder": "^25.1.8",
+    "electron-rebuild": "^3.2.9"
   },
   "repository": {
     "type": "git",

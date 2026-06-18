@@ -133,9 +133,13 @@ function statusClass(s) {
 }
 
 export default function BetaChecklist({ onNavigate }) {
-  const [results,  setResults]  = useState({});
-  const [running,  setRunning]  = useState(false);
-  const [expanded, setExpanded] = useState({});
+  const [results,       setResults]       = useState({});
+  const [running,       setRunning]       = useState(false);
+  const [expanded,      setExpanded]      = useState({});
+  const [feedbackOpen,  setFeedbackOpen]  = useState(false);
+  const [feedbackText,  setFeedbackText]  = useState('');
+  const [feedbackSent,  setFeedbackSent]  = useState(false);
+  const [feedbackSending, setFeedbackSending] = useState(false);
 
   const runAll = useCallback(async () => {
     setRunning(true);
@@ -154,6 +158,27 @@ export default function BetaChecklist({ onNavigate }) {
 
   useEffect(() => { runAll(); }, [runAll]);
 
+  const sendFeedback = useCallback(async () => {
+    if (!feedbackText.trim()) return;
+    setFeedbackSending(true);
+    try {
+      const _auto   = SECTIONS.flatMap(s => s.items.filter(i => i.verify));
+      const _passed = _auto.filter(i => results[i.id] === 'pass').length;
+      const _failed = _auto.filter(i => results[i.id] === 'fail').length;
+      const summary = `Beta Feedback [${new Date().toISOString()}]\nChecklist: ${_passed}/${_auto.length} auto pass, ${_failed} fail\n\n${feedbackText.trim()}`;
+      await _fetch('/ai/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input: `[BETA FEEDBACK] ${summary}`, system: 'beta-feedback' }),
+      }).catch(() => null);
+      setFeedbackSent(true);
+      setFeedbackText('');
+      setTimeout(() => { setFeedbackOpen(false); setFeedbackSent(false); }, 2000);
+    } finally {
+      setFeedbackSending(false);
+    }
+  }, [feedbackText, results]);
+
   const allItems   = SECTIONS.flatMap(s => s.items);
   const autoItems  = allItems.filter(i => i.verify);
   const passed     = autoItems.filter(i => results[i.id] === 'pass').length;
@@ -162,6 +187,36 @@ export default function BetaChecklist({ onNavigate }) {
 
   return (
     <div className="bc-root">
+      {feedbackOpen && (
+        <div className="bc-feedback-overlay" onClick={() => setFeedbackOpen(false)}>
+          <div className="bc-feedback-panel" onClick={e => e.stopPropagation()}>
+            <div className="bc-feedback-header">
+              <span className="bc-feedback-title">Send Beta Feedback</span>
+              <button className="bc-feedback-close" onClick={() => setFeedbackOpen(false)}>✕</button>
+            </div>
+            {feedbackSent ? (
+              <div className="bc-feedback-sent">✓ Feedback received — thank you!</div>
+            ) : (
+              <>
+                <textarea
+                  className="bc-feedback-input"
+                  autoFocus
+                  value={feedbackText}
+                  onChange={e => setFeedbackText(e.target.value)}
+                  placeholder="Describe what's broken, confusing, or missing. Include steps to reproduce if it's a bug."
+                  rows={6}
+                />
+                <div className="bc-feedback-actions">
+                  <span className="bc-feedback-hint">Checklist results are attached automatically.</span>
+                  <button className="bc-feedback-send" onClick={sendFeedback} disabled={!feedbackText.trim() || feedbackSending}>
+                    {feedbackSending ? 'Sending…' : 'Send Feedback'}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
       <div className="bc-header">
         <div className="bc-header-left">
           <span className="bc-title">Beta Launch Checklist</span>
@@ -246,6 +301,7 @@ export default function BetaChecklist({ onNavigate }) {
 
       <div className="bc-footer">
         <span>{allItems.length} total · {autoItems.length} automated · {allItems.length - autoItems.length} manual · Last run: {new Date().toLocaleTimeString()}</span>
+        <button className="bc-feedback-btn" onClick={() => setFeedbackOpen(true)}>✉ Send Feedback</button>
       </div>
     </div>
   );
