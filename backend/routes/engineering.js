@@ -914,4 +914,41 @@ router.get("/engineering/dlq/stats", (req, res) => {
     }
 });
 
+// ── Autonomous Engineering Scenario (Sprint 7) ────────────────────────────
+
+function _scenario() { return _try(() => require("../services/autonomousEngineeringScenario.cjs")); }
+
+/**
+ * POST /engineering/scenario/run
+ * Body: { goal, approved?, requireApproval? }
+ * Runs an end-to-end autonomous engineering scenario from a user goal string.
+ */
+router.post("/engineering/scenario/run", async (req, res) => {
+    try {
+        const engine = _scenario();
+        if (!engine) return res.status(503).json({ ok: false, error: "scenario engine unavailable" });
+        const { goal, approved, requireApproval } = req.body;
+        if (!goal) return res.status(400).json({ ok: false, error: "goal field required" });
+        const report = await engine.run(goal, { approved, requireApproval });
+        res.json(report);
+    } catch (err) {
+        logger.error(`[Scenario] run failed: ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+/**
+ * GET /engineering/scenario/list
+ * Lists available scenario goal strings.
+ */
+router.get("/engineering/scenario/list", (req, res) => {
+    try {
+        const engine = _scenario();
+        if (!engine) return res.status(503).json({ ok: false, error: "scenario engine unavailable" });
+        res.json({ ok: true, scenarios: engine.listScenarios() });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
 module.exports = router;

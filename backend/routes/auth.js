@@ -15,6 +15,9 @@ const COOKIE_OPTS = {
 };
 
 function _verifyPassword(password, stored) {
+  // Short-circuit before scryptSync for obviously invalid inputs.
+  // scryptSync costs 10-40ms; empty/short passwords can never match.
+  if (!password || password.length < 6) return false;
   const colonIdx = stored.indexOf(":");
   if (colonIdx < 0) return false;
   const salt = stored.slice(0, colonIdx);
@@ -31,7 +34,9 @@ function _verifyPassword(password, stored) {
 //   2. Password-only    → legacy operator password (backwards-compat)
 router.post("/auth/login", rateLimiter(10, 5 * 60_000), (req, res) => {
   const { email, password } = req.body || {};
+  const _loginStart = Date.now();
   if (!password) return res.status(400).json({ error: "Password required" });
+  res.on("finish", () => res.setHeader("X-Auth-Timing", `${Date.now() - _loginStart}ms`));
 
   // ── Path 1: email + password → account identity ──────────────────
   if (email) {
