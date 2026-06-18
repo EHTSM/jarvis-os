@@ -275,6 +275,7 @@ function classifyError(errorMsg) {
         if (savingsMs > 0) _memorySavedMs += savingsMs;
     }
 
+    if (best) logger.info(`[RuleRegistry] classifyError matched '${best.ruleId}' (${Math.min(100, Math.round(bestScore * 100))}% conf) for: ${(errorMsg||"").slice(0,60)}`);
     return { rule: best, confidence: Math.min(100, Math.round(bestScore * 100)) };
 }
 
