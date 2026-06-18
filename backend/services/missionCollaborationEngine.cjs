@@ -631,7 +631,8 @@ function getBlockedChains() {
 /**
  * getStalledHandoffs(thresholdMs) — handoffs that have been pending/claimed for too long
  */
-function getStalledHandoffs(thresholdMs = 5 * 60_000) {
+const DEFAULT_STALL_THRESHOLD_MS = 5 * 60_000; // 5 minutes
+function getStalledHandoffs(thresholdMs = DEFAULT_STALL_THRESHOLD_MS) {
     const store = _load();
     const cutoff = new Date(Date.now() - thresholdMs).toISOString();
     const stalled = [];
