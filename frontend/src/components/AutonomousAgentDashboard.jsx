@@ -31,8 +31,30 @@ const STATUS_COLOR = {
     starting:   "#3b82f6",
 };
 
-const ROLE_LABEL = { planner: "Planner", reviewer: "Reviewer", verifier: "Verifier" };
-const ROLE_ICON  = { planner: "◈", reviewer: "✎", verifier: "✔" };
+const ROLE_LABEL = {
+    planner:       "Planner",
+    reviewer:      "Reviewer",
+    verifier:      "Verifier",
+    developer:     "Developer",
+    tester:        "Tester",
+    security:      "Security",
+    documentation: "Documentation",
+    crm:           "CRM",
+    marketing:     "Marketing",
+    executive:     "Executive",
+};
+const ROLE_ICON = {
+    planner:       "◈",
+    reviewer:      "✎",
+    verifier:      "✔",
+    developer:     "⌨",
+    tester:        "⚗",
+    security:      "⛨",
+    documentation: "📋",
+    crm:           "👥",
+    marketing:     "📣",
+    executive:     "★",
+};
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
@@ -65,22 +87,55 @@ function MetricCell({ label, value, color }) {
     );
 }
 
-function AgentCard({ agent, onPause, onResume, onTick, pausing, resuming, ticking }) {
+function _fmtMs(ms) {
+    if (!ms && ms !== 0) return "—";
+    if (ms < 1000) return `${ms}ms`;
+    return `${(ms / 1000).toFixed(1)}s`;
+}
+
+function _fmtKb(kb) {
+    if (!kb && kb !== 0) return "—";
+    if (kb < 1024) return `${kb}KB`;
+    return `${(kb / 1024).toFixed(1)}MB`;
+}
+
+// Domain-specific metric for a role (missions created, lessons, verifies, etc.)
+function DomainMetric({ agent }) {
+    const role = agent.role;
+    if (role === "planner" || role === "developer" || role === "security" ||
+        role === "crm" || role === "marketing" || role === "executive" || role === "tester")
+        return <MetricCell label="Missions" value={agent.missionsCreated} color="#22c55e" />;
+    if (role === "reviewer" || role === "documentation")
+        return <MetricCell label="Lessons" value={agent.lessonsRegistered} color="#22c55e" />;
+    if (role === "verifier")
+        return <MetricCell label="Verifies" value={agent.verificationsRun} color="#3b82f6" />;
+    return null;
+}
+
+function AgentCard({ agent, onPause, onResume, onTick, onEnable, onDisable, pausing, resuming, ticking, enabling, disabling }) {
     const role  = agent.role;
     const color = STATUS_COLOR[agent.status] || "#6b7280";
+    const disabled = agent.enabled === false;
 
     return (
-        <div className="aad-card" style={{ borderLeft: `3px solid ${color}` }}>
+        <div className="aad-card" style={{ borderLeft: `3px solid ${color}`, opacity: disabled ? 0.6 : 1 }}>
             <div className="aad-card-header">
                 <div className="aad-card-title">
                     <span className="aad-role-icon">{ROLE_ICON[role] || "◉"}</span>
-                    <span className="aad-role-name">{ROLE_LABEL[role] || role}</span>
+                    <span className="aad-role-name">{agent.label || ROLE_LABEL[role] || role}</span>
                     <span className="aad-agent-id">{agent.id}</span>
                 </div>
-                <StatusPill status={agent.status} />
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    {disabled && <span style={{ fontSize: 10, color: "#6b7280", border: "1px solid #6b728055", borderRadius: 4, padding: "1px 5px" }}>disabled</span>}
+                    <StatusPill status={agent.status} />
+                </div>
             </div>
 
             <HealthBar health={agent.health ?? 0} />
+
+            {agent.description && (
+                <div style={{ fontSize: 10, color: "var(--text-dim, #94a3b8)", lineHeight: 1.4 }}>{agent.description}</div>
+            )}
 
             {agent.currentObjective && (
                 <div className="aad-objective">
@@ -99,14 +154,29 @@ function AgentCard({ agent, onPause, onResume, onTick, pausing, resuming, tickin
                 </div>
             )}
 
+            {/* Primary metrics row */}
             <div className="aad-metrics-row">
-                <MetricCell label="Uptime"     value={_dur(agent.uptime)} />
-                <MetricCell label="Ticks"      value={agent.tickCount} />
-                <MetricCell label="Recovery"   value={agent.recoveryCount} color={agent.recoveryCount > 0 ? "#f59e0b" : undefined} />
-                {role === "planner"  && <MetricCell label="Created"   value={agent.missionsCreated}  color="#22c55e" />}
-                {role === "reviewer" && <MetricCell label="Lessons"   value={agent.lessonsRegistered} color="#22c55e" />}
-                {role === "verifier" && <MetricCell label="Verifies"  value={agent.verificationsRun}  color="#3b82f6" />}
+                <MetricCell label="Uptime"    value={_dur(agent.uptime)} />
+                <MetricCell label="Ticks"     value={agent.tickCount} />
+                <MetricCell label="Success"   value={agent.successRate != null ? `${agent.successRate}%` : "—"} color={agent.successRate >= 80 ? "#22c55e" : agent.successRate >= 50 ? "#f59e0b" : "#ef4444"} />
+                <MetricCell label="Recovery"  value={agent.recoveryCount} color={agent.recoveryCount > 0 ? "#f59e0b" : undefined} />
             </div>
+
+            {/* Secondary metrics row — resource + domain */}
+            <div className="aad-metrics-row">
+                <MetricCell label="CPU"       value={_fmtMs(agent.cpuMs)} />
+                <MetricCell label="Mem"       value={_fmtKb(agent.memKb)} />
+                <MetricCell label="Interval"  value={agent.intervalMs ? `${agent.intervalMs/1000}s` : "—"} />
+                <DomainMetric agent={agent} />
+            </div>
+
+            {/* Next execution */}
+            {agent.nextTickAt && (
+                <div style={{ fontSize: 10, color: "var(--text-dim, #94a3b8)" }}>
+                    Next tick: {_ago(agent.nextTickAt).startsWith("-") ? "now" : _ago(agent.nextTickAt)}
+                    {" · "}Last: {_ago(agent.lastTickAt)}
+                </div>
+            )}
 
             {agent.recentErrors?.length > 0 && (
                 <div className="aad-errors">
@@ -126,14 +196,22 @@ function AgentCard({ agent, onPause, onResume, onTick, pausing, resuming, tickin
                         {pausing ? "…" : "Pause"}
                     </button>
                 )}
-                {(agent.status === "paused" || agent.status === "stopped") && (
+                {(agent.status === "paused" || agent.status === "stopped") && !disabled && (
                     <button className="aad-btn aad-btn--ok" onClick={() => onResume(agent.id)} disabled={resuming}>
                         {resuming ? "…" : "Resume"}
                     </button>
                 )}
-                <button className="aad-btn aad-btn--ghost" onClick={() => onTick(agent.id)} disabled={ticking}>
+                <button className="aad-btn aad-btn--ghost" onClick={() => onTick(agent.id)} disabled={ticking || disabled}>
                     {ticking ? "…" : "Force Tick"}
                 </button>
+                {!disabled
+                    ? <button className="aad-btn aad-btn--danger" onClick={() => onDisable(agent.id)} disabled={disabling} title="Disable agent">
+                        {disabling ? "…" : "Disable"}
+                    </button>
+                    : <button className="aad-btn aad-btn--ok" onClick={() => onEnable(agent.id)} disabled={enabling} title="Enable agent">
+                        {enabling ? "…" : "Enable"}
+                    </button>
+                }
             </div>
         </div>
     );
@@ -193,18 +271,20 @@ export default function AutonomousAgentDashboard() {
         return () => clearInterval(pollRef.current);
     }, [load]);
 
-    const _action = async (agentId, busyKey, path) => {
+    const _action = async (agentId, busyKey, path, method = "POST") => {
         setBusyMap(m => ({ ...m, [agentId]: busyKey }));
         try {
-            const r = await _fetch(path, { method: "POST" });
+            const r = await _fetch(path, { method });
             if (r?.ok) await load();
         } catch {}
         setBusyMap(m => { const n = { ...m }; delete n[agentId]; return n; });
     };
 
-    const handlePause  = id => _action(id, "pausing",  `/agents/runtime/supervisor/${id}/pause`);
-    const handleResume = id => _action(id, "resuming",  `/agents/runtime/supervisor/${id}/resume`);
-    const handleTick   = id => _action(id, "ticking",   `/agents/runtime/supervisor/${id}/tick`);
+    const handlePause   = id => _action(id, "pausing",   `/agents/runtime/supervisor/${id}/pause`);
+    const handleResume  = id => _action(id, "resuming",  `/agents/runtime/supervisor/${id}/resume`);
+    const handleTick    = id => _action(id, "ticking",   `/agents/runtime/supervisor/${id}/tick`);
+    const handleEnable  = id => _action(id, "enabling",  `/agents/runtime/registry/${id}/enable`);
+    const handleDisable = id => _action(id, "disabling", `/agents/runtime/registry/${id}/disable`);
 
     const handleStart  = async () => { setLoading(true); await _fetch("/agents/runtime/supervisor/start", { method: "POST" }); await load(); };
     const handleStop   = async () => { setLoading(true); await _fetch("/agents/runtime/supervisor/stop",  { method: "POST" }); await load(); };
@@ -220,7 +300,7 @@ export default function AutonomousAgentDashboard() {
             {/* Header */}
             <div className="aad-header">
                 <div className="aad-header-title">Autonomous Agent Runtime</div>
-                <div className="aad-header-sub">Phase I4 — Long-Running Continuous Execution</div>
+                <div className="aad-header-sub">Phase I4+I5 — Autonomous Agent Runtime · 10 Specialized Agents</div>
                 <button className="aad-btn aad-btn--ghost aad-refresh" onClick={load} disabled={loading}>
                     {loading ? "⟳" : "↻"} Refresh
                 </button>
@@ -239,11 +319,12 @@ export default function AutonomousAgentDashboard() {
             {/* Config strip */}
             {status?.config && (
                 <div className="aad-config-strip">
-                    <span>Planner: {status.config.plannerIntervalMs / 1000}s interval</span>
-                    <span>Reviewer: {status.config.reviewerIntervalMs / 1000}s interval</span>
-                    <span>Verifier: {status.config.verifierIntervalMs / 1000}s interval</span>
+                    <span>Agents: {status.agentCount} registered · {status.runningCount} running</span>
                     <span>Confidence threshold: {status.config.confidenceThreshold}%</span>
-                    <span>Max recovery attempts: {status.config.maxRecoveryAttempts}</span>
+                    <span>Max recovery: {status.config.maxRecoveryAttempts} attempts</span>
+                    {status.config.roleIntervals && Object.entries(status.config.roleIntervals).map(([role, ms]) => (
+                        <span key={role}>{ROLE_LABEL[role] || role}: {ms / 1000}s</span>
+                    ))}
                 </div>
             )}
 
@@ -259,9 +340,13 @@ export default function AutonomousAgentDashboard() {
                         onPause={handlePause}
                         onResume={handleResume}
                         onTick={handleTick}
+                        onEnable={handleEnable}
+                        onDisable={handleDisable}
                         pausing={busyMap[agent.id] === "pausing"}
                         resuming={busyMap[agent.id] === "resuming"}
                         ticking={busyMap[agent.id] === "ticking"}
+                        enabling={busyMap[agent.id] === "enabling"}
+                        disabling={busyMap[agent.id] === "disabling"}
                     />
                 ))}
             </div>

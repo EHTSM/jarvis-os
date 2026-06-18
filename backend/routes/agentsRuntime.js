@@ -107,4 +107,70 @@ router.post("/agents/runtime/supervisor/:id/tick", async (req, res) => {
     } catch (e) { _err(res, e); }
 });
 
+// ── I5-1 Registry routes ──────────────────────────────────────────────────────
+
+// GET /agents/runtime/registry — list all registered agents with health
+router.get("/agents/runtime/registry", (req, res) => {
+    try {
+        _ensureStarted();
+        const agents = _sup().listAgents();
+        _ok(res, { registry: agents, count: agents.length });
+    } catch (e) { _err(res, e); }
+});
+
+// POST /agents/runtime/registry/register — register a new agent
+router.post("/agents/runtime/registry/register", (req, res) => {
+    try {
+        const { id, role, label, description, intervalMs, enabled } = req.body || {};
+        if (!id || !role) return res.status(400).json({ ok: false, error: "id and role are required" });
+        const r = _sup().registerAgent({ id, role, label, description, intervalMs, enabled });
+        _ok(res, r);
+    } catch (e) { _err(res, e); }
+});
+
+// DELETE /agents/runtime/registry/:id — unregister an agent
+router.delete("/agents/runtime/registry/:id", (req, res) => {
+    try {
+        const r = _sup().unregisterAgent(req.params.id);
+        if (!r.ok) return res.status(404).json(r);
+        _ok(res, r);
+    } catch (e) { _err(res, e); }
+});
+
+// POST /agents/runtime/registry/:id/enable — enable a disabled agent
+router.post("/agents/runtime/registry/:id/enable", (req, res) => {
+    try {
+        const r = _sup().enableAgent(req.params.id);
+        if (!r.ok) return res.status(404).json(r);
+        _ok(res, r);
+    } catch (e) { _err(res, e); }
+});
+
+// POST /agents/runtime/registry/:id/disable — disable an agent
+router.post("/agents/runtime/registry/:id/disable", (req, res) => {
+    try {
+        const r = _sup().disableAgent(req.params.id);
+        if (!r.ok) return res.status(404).json(r);
+        _ok(res, r);
+    } catch (e) { _err(res, e); }
+});
+
+// GET /agents/runtime/registry/:id/health — agent health details
+router.get("/agents/runtime/registry/:id/health", (req, res) => {
+    try {
+        const h = _sup().getAgentHealth(req.params.id);
+        if (!h) return res.status(404).json({ ok: false, error: "Agent not found" });
+        _ok(res, { health: h });
+    } catch (e) { _err(res, e); }
+});
+
+// GET /agents/runtime/registry/:id/status — full agent status incl. registry spec
+router.get("/agents/runtime/registry/:id/status", (req, res) => {
+    try {
+        const s = _sup().getAgentStatus(req.params.id);
+        if (!s) return res.status(404).json({ ok: false, error: "Agent not found" });
+        _ok(res, { agent: s });
+    } catch (e) { _err(res, e); }
+});
+
 module.exports = router;
