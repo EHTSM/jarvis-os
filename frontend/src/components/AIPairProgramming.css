@@ -188,6 +188,43 @@ details.aipp-result__patch summary:hover { color: #9ca3af; }
   font-family: 'JetBrains Mono', Menlo, monospace;
 }
 
+/* ── ACP-2: Mode tabs (Chat / Patch) ─────────────────────────────── */
+.aipp-mode-tabs {
+  display: flex; border-bottom: 1px solid #111827; flex-shrink: 0;
+}
+.aipp-mode-tab {
+  padding: 5px 12px; background: transparent; border: none;
+  border-bottom: 2px solid transparent; color: #4b5563; font-size: 11px;
+  cursor: pointer; transition: color 0.15s;
+}
+.aipp-mode-tab:hover { color: #9ca3af; }
+.aipp-mode-tab--active { color: #f59e0b; border-bottom-color: #f59e0b; }
+
+/* ── ACP-2: Patch prompt placeholder ─────────────────────────────── */
+.aipp-patch-prompt {
+  flex: 1; display: flex; flex-direction: column; gap: 8px;
+  padding: 16px 12px; justify-content: center;
+}
+.aipp-patch-prompt__label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: #6b7280;
+}
+.aipp-patch-prompt__hint {
+  font-size: 12px; color: #374151; line-height: 1.6;
+}
+
+/* ── ACP-2: Ask button column ────────────────────────────────────── */
+.aipp-ask-btn-col {
+  display: flex; flex-direction: column; gap: 4px; align-self: flex-end;
+}
+.aipp-btn--patch-toggle {
+  padding: 4px 10px; border-radius: 4px; font-size: 13px; border: 1px solid #d97706;
+  background: #451a0320; color: #f59e0b; cursor: pointer;
+  transition: background 0.15s;
+}
+.aipp-btn--patch-toggle:hover:not(:disabled) { background: #451a0350; }
+.aipp-btn--patch-toggle:disabled { opacity: 0.4; cursor: not-allowed; }
+
 /* ── ACP-1: Ask tab ──────────────────────────────────────────────── */
 .aipp-ask {
   display: flex; flex-direction: column; height: 100%;
@@ -239,10 +276,14 @@ details.aipp-result__patch summary:hover { color: #9ca3af; }
 
 .aipp-ask-input-row {
   display: flex; gap: 6px; padding: 8px 10px; border-top: 1px solid #1f2937; flex-shrink: 0;
+  align-items: flex-end;
 }
 .aipp-ask-input {
   flex: 1; resize: none; min-height: 42px; max-height: 120px;
 }
 .aipp-ask-send {
-  padding: 5px 12px; font-size: 16px; align-self: flex-end; flex-shrink: 0;
+  padding: 5px 12px; font-size: 16px; flex-shrink: 0;
+}
+.aipp-chat-thinking {
+  padding: 8px 10px; color: #4b5563; font-size: 11px; font-style: italic;
 }

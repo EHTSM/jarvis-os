@@ -1,32 +1,48 @@
 "use strict";
 /**
- * Coding Assistant — ACP-1
+ * Coding Assistant — ACP-1 + ACP-2
  *
- * Repository-aware AI coding endpoint. Gathers context from:
- *   - Current file content (if provided)
- *   - Symbol context (function/class name at cursor)
- *   - Related file snippets (from ProjectSearch-style selection)
- *   - Active mission + recent mission objectives
- *   - Engineering rules (from Sprint 2 Rule Registry)
- *   - Git log summary (recent commits in cwd)
- *   - Knowledge Graph context (Q1/Q2 node lookup by label)
- *
- * Routes:
+ * ACP-1 routes (repository-aware AI):
  *   POST /coding/ask          — free-form question with full repo context
- *   POST /coding/action       — code action (explain / refactor / test / review / fix / document)
+ *   POST /coding/action       — explain / refactor / test / review / fix / document
  *   POST /coding/explain-file — explain an entire file
  *   POST /coding/find-impl    — "Where is X implemented?"
  *   POST /coding/summarize    — summarize a module/directory
  *   POST /coding/review       — review current diff before commit
- *   POST /coding/refactor     — multi-file refactor (was /jarvis/refactor)
- *   POST /coding/explain-error — explain stack trace (was /jarvis/explain-error)
+ *   POST /coding/refactor     — multi-file refactor
+ *   POST /coding/explain-error — explain stack trace
+ *
+ * ACP-2 routes (patch preview & pipeline apply):
+ *   POST /coding/generate-patch   — AI generates structured patch proposal
+ *   POST /coding/apply-patch      — apply via Engineering Pipeline (I7)
+ *   POST /coding/convert-to-mission — convert patch proposal → Mission
+ *   GET  /coding/patch-history    — list applied AI patches
+ *   POST /coding/undo-patch       — revert last AI-applied patch via git
  */
 
 const router  = require("express").Router();
-const { execSync } = require("child_process");
+const fs      = require("fs");
+const path    = require("path");
+const crypto  = require("crypto");
+const { execSync, spawnSync } = require("child_process");
 const { requireAuth } = require("../middleware/authMiddleware");
 const ai      = require("../services/aiService");
 const logger  = require("../utils/logger");
+
+const PATCH_HISTORY_PATH = path.join(__dirname, "../../data/ai-patch-history.json");
+
+function _loadPatchHistory() {
+    try { return JSON.parse(fs.readFileSync(PATCH_HISTORY_PATH, "utf8")); } catch { return { patches: [] }; }
+}
+function _savePatchHistory(store) {
+    fs.writeFileSync(PATCH_HISTORY_PATH, JSON.stringify(store, null, 2));
+}
+function _addToPatchHistory(entry) {
+    const store = _loadPatchHistory();
+    store.patches.unshift(entry);
+    if (store.patches.length > 100) store.patches = store.patches.slice(0, 100);
+    _savePatchHistory(store);
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -360,6 +376,274 @@ router.post("/coding/explain-error", async (req, res) => {
 
         res.json({ ok: true, explanation: reply, fix, patch, text: reply });
     } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+//  ACP-2: PATCH PREVIEW & PIPELINE APPLY
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── POST /coding/generate-patch — AI produces structured patch proposal ───────
+router.post("/coding/generate-patch", async (req, res) => {
+    try {
+        const { goal, cwd, filePath, fileContent, symbolContext } = req.body;
+        if (!goal?.trim()) return res.status(400).json({ ok: false, error: "goal required" });
+
+        const system = _buildRepoContext({ cwd, fileContent, filePath, symbolContext });
+
+        const prompt = `You are a code modification assistant. Given a goal, produce a structured patch proposal.
+
+Goal: ${_clean(goal, 1000)}
+
+Respond with ONLY valid JSON matching this schema (no markdown fences, no preamble):
+{
+  "explanation": "1-3 sentences explaining what will be changed and why",
+  "reasoning": "step-by-step reasoning for the approach taken",
+  "affectedFiles": ["relative/path/to/file1.js", "..."],
+  "confidence": 0.0-1.0,
+  "riskLevel": "low" | "medium" | "high",
+  "riskReason": "why this risk level",
+  "patchSpecs": [
+    {
+      "targetFile": "relative/path/to/file.js",
+      "patchTarget": "exact string to be replaced (must appear exactly once)",
+      "patchReplacement": "replacement string",
+      "description": "what this specific change does"
+    }
+  ],
+  "unifiedDiff": "unified diff string for display (optional, best-effort)",
+  "commitMsg": "conventional commit message"
+}
+
+If you cannot produce a safe, targeted patch (e.g. the change requires understanding files you don't have), set patchSpecs to [] and explain in the explanation field.`;
+
+        const raw = await ai.callAI(prompt, { system });
+
+        let proposal;
+        try {
+            const jsonMatch = raw.match(/\{[\s\S]+\}/);
+            proposal = JSON.parse(jsonMatch ? jsonMatch[0] : raw);
+        } catch {
+            proposal = {
+                explanation: raw.slice(0, 500),
+                reasoning: "",
+                affectedFiles: filePath ? [filePath] : [],
+                confidence: 0.3,
+                riskLevel: "medium",
+                riskReason: "Could not parse structured proposal",
+                patchSpecs: [],
+                unifiedDiff: "",
+                commitMsg: `feat: ${goal.slice(0, 60)}`,
+            };
+        }
+
+        // Validate patchSpecs — check each targetFile exists and patchTarget is found
+        const ROOT = cwd || path.join(__dirname, "../../");
+        const validation = (proposal.patchSpecs || []).map(spec => {
+            try {
+                const absPath = path.isAbsolute(spec.targetFile)
+                    ? spec.targetFile
+                    : path.join(ROOT, spec.targetFile);
+                if (!fs.existsSync(absPath)) return { ...spec, valid: false, error: "File not found" };
+                const content = fs.readFileSync(absPath, "utf8");
+                const count = content.split(spec.patchTarget).length - 1;
+                if (count === 0) return { ...spec, valid: false, error: "patchTarget not found in file" };
+                if (count > 1) return { ...spec, valid: false, error: `patchTarget appears ${count} times — ambiguous` };
+                return { ...spec, valid: true, error: null };
+            } catch (e) {
+                return { ...spec, valid: false, error: e.message };
+            }
+        });
+
+        const allValid = validation.every(v => v.valid);
+        const patchId  = crypto.randomUUID();
+
+        res.json({
+            ok: true,
+            patchId,
+            goal,
+            proposal: { ...proposal, patchSpecs: validation },
+            allValid,
+            canApply: allValid && validation.length > 0,
+        });
+    } catch (err) {
+        logger.error(`[GeneratePatch] ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// ── POST /coding/apply-patch — apply patchSpecs via Engineering Pipeline ──────
+router.post("/coding/apply-patch", async (req, res) => {
+    try {
+        const { patchSpecs = [], goal, cwd, commitMsg, requireApproval = false } = req.body;
+        if (!patchSpecs.length) return res.status(400).json({ ok: false, error: "patchSpecs required" });
+        if (!goal?.trim())      return res.status(400).json({ ok: false, error: "goal required" });
+
+        const ROOT = cwd || path.join(__dirname, "../../");
+
+        // Step 1: Apply each patchSpec as a string replacement, save originals for undo
+        const applied  = [];
+        const originals = [];
+        for (const spec of patchSpecs) {
+            const absPath = path.isAbsolute(spec.targetFile)
+                ? spec.targetFile
+                : path.join(ROOT, spec.targetFile);
+            if (!fs.existsSync(absPath)) {
+                return res.status(400).json({ ok: false, error: `File not found: ${spec.targetFile}` });
+            }
+            const original = fs.readFileSync(absPath, "utf8");
+            if (!original.includes(spec.patchTarget)) {
+                return res.status(400).json({ ok: false, error: `patchTarget not found in ${spec.targetFile}` });
+            }
+            const patched = original.replace(spec.patchTarget, spec.patchReplacement);
+            fs.writeFileSync(absPath, patched, "utf8");
+            originals.push({ targetFile: spec.targetFile, absPath, originalContent: original });
+            applied.push(spec.targetFile);
+        }
+
+        // Step 2: Stage the changed files
+        for (const f of originals) {
+            spawnSync("git", ["add", f.absPath], { cwd: ROOT });
+        }
+
+        // Step 3: Record in patch history
+        const histId = crypto.randomUUID();
+        _addToPatchHistory({
+            id:          histId,
+            goal,
+            commitMsg:   commitMsg || `feat: ${goal.slice(0, 80)} [ai-patch]`,
+            patchSpecs,
+            originals:   originals.map(o => ({ targetFile: o.targetFile, originalContent: o.originalContent })),
+            appliedFiles: applied,
+            appliedAt:   new Date().toISOString(),
+            status:      "staged",
+            pipelineId:  null,
+        });
+
+        // Step 4: Kick off Engineering Pipeline with the already-staged patch
+        let pipeline = null;
+        try {
+            const pc = require("../services/engineeringPipelineCoordinator.cjs");
+            const pipelinePromise = pc.runPipeline(goal, {
+                patchSpec:      patchSpecs[0], // primary spec for pipeline validation
+                requireApproval,
+                priority:       "high",
+            });
+            pipelinePromise.catch(e => logger.warn(`[ApplyPatch] pipeline error: ${e.message}`));
+            await new Promise(r => setTimeout(r, 80));
+            const active = pc.getActivePipelines();
+            pipeline = active[active.length - 1] || null;
+            // Update history with pipeline ID
+            if (pipeline) {
+                const store = _loadPatchHistory();
+                const rec   = store.patches.find(p => p.id === histId);
+                if (rec) { rec.pipelineId = pipeline.pipelineId; rec.status = "pipeline_running"; }
+                _savePatchHistory(store);
+            }
+        } catch (e) {
+            logger.warn(`[ApplyPatch] pipeline launch failed: ${e.message}`);
+        }
+
+        res.json({
+            ok:         true,
+            histId,
+            appliedFiles: applied,
+            staged:     true,
+            pipeline,
+            message:    pipeline
+                ? `Applied ${applied.length} file(s), pipeline ${pipeline.pipelineId} started`
+                : `Applied ${applied.length} file(s) and staged — pipeline unavailable`,
+        });
+    } catch (err) {
+        logger.error(`[ApplyPatch] ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// ── POST /coding/convert-to-mission — patch → Mission ─────────────────────────
+router.post("/coding/convert-to-mission", async (req, res) => {
+    try {
+        const { goal, patchSpecs = [], affectedFiles = [], confidence, riskLevel } = req.body;
+        if (!goal?.trim()) return res.status(400).json({ ok: false, error: "goal required" });
+
+        const mm = _missionMemory();
+        if (!mm) return res.status(503).json({ ok: false, error: "missionMemory unavailable" });
+
+        const subtasks = [
+            { description: `Review AI-generated patch for: ${goal}`, status: "pending" },
+            ...patchSpecs.map(s => ({ description: `Apply patch to ${s.targetFile}`, status: "pending" })),
+            { description: "Run tests and verify no regressions", status: "pending" },
+            { description: "Commit with conventional commit message", status: "pending" },
+        ];
+
+        const mission = mm.createMission({
+            objective: goal,
+            priority:  riskLevel === "high" ? "high" : riskLevel === "medium" ? "medium" : "low",
+            subtasks,
+            metadata: {
+                source:       "ai-patch-proposal",
+                affectedFiles,
+                confidence,
+                riskLevel,
+                patchSpecCount: patchSpecs.length,
+            },
+        });
+
+        res.json({ ok: true, mission });
+    } catch (err) {
+        logger.error(`[ConvertToMission] ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// ── GET /coding/patch-history — list applied AI patches ───────────────────────
+router.get("/coding/patch-history", (req, res) => {
+    try {
+        const { limit = 20 } = req.query;
+        const store = _loadPatchHistory();
+        res.json({ ok: true, patches: store.patches.slice(0, Number(limit)) });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// ── POST /coding/undo-patch — revert the most recent or a specific AI patch ───
+router.post("/coding/undo-patch", (req, res) => {
+    try {
+        const { histId, cwd } = req.body;
+        const store  = _loadPatchHistory();
+        const idx    = histId
+            ? store.patches.findIndex(p => p.id === histId)
+            : store.patches.findIndex(p => p.status !== "undone");
+
+        if (idx === -1) return res.status(404).json({ ok: false, error: "Patch not found" });
+
+        const rec    = store.patches[idx];
+        const ROOT   = cwd || path.join(__dirname, "../../");
+        const undone = [];
+        const errors = [];
+
+        for (const orig of rec.originals || []) {
+            try {
+                const absPath = path.isAbsolute(orig.targetFile)
+                    ? orig.targetFile
+                    : path.join(ROOT, orig.targetFile);
+                fs.writeFileSync(absPath, orig.originalContent, "utf8");
+                spawnSync("git", ["add", absPath], { cwd: ROOT });
+                undone.push(orig.targetFile);
+            } catch (e) {
+                errors.push(`${orig.targetFile}: ${e.message}`);
+            }
+        }
+
+        store.patches[idx].status    = "undone";
+        store.patches[idx].undoneAt  = new Date().toISOString();
+        _savePatchHistory(store);
+
+        res.json({ ok: true, undone, errors, histId: rec.id });
+    } catch (err) {
+        logger.error(`[UndoPatch] ${err.message}`);
         res.status(500).json({ ok: false, error: err.message });
     }
 });

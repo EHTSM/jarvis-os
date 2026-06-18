@@ -1,6 +1,8 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect, lazy, Suspense } from 'react';
 import { _fetch } from '../_client';
 import './AIPairProgramming.css';
+
+const PatchPreviewPanel = lazy(() => import('./PatchPreviewPanel'));
 
 async function codingPost(path, body) {
   return _fetch(path, { method: 'POST', body: JSON.stringify(body) });
@@ -49,11 +51,14 @@ function ContextBadge({ cwd, filePath, symbolContext }) {
   );
 }
 
-// ── Ask tab — free-form repo-aware chat ───────────────────────────────
+// ── Ask tab — free-form repo-aware chat + patch generation ────────────
 function RepoAsk({ cwd, filePath, fileContent, symbolContext }) {
+  const [mode,     setMode]     = useState('chat'); // 'chat' | 'patch'
   const [question, setQuestion] = useState('');
   const [history,  setHistory]  = useState([]);
   const [loading,  setLoading]  = useState(false);
+  const [patch,    setPatch]    = useState(null);   // { patchId, proposal, canApply, goal }
+  const [patchLoading, setPatchLoading] = useState(false);
   const bottomRef = useRef(null);
 
   const QUICK = [
@@ -87,60 +92,164 @@ function RepoAsk({ cwd, filePath, fileContent, symbolContext }) {
     }
   }, [question, history, loading, cwd, filePath, fileContent, symbolContext]);
 
+  const generatePatch = useCallback(async () => {
+    const goal = question.trim();
+    if (!goal || patchLoading) return;
+    setPatch(null);
+    setPatchLoading(true);
+    setQuestion('');
+    try {
+      const res = await codingPost('/coding/generate-patch', {
+        goal,
+        cwd,
+        filePath,
+        fileContent,
+        symbolContext,
+      });
+      if (res?.ok) {
+        setPatch({ patchId: res.patchId, proposal: res.proposal, canApply: res.canApply, goal });
+        setMode('patch');
+      } else {
+        setHistory(h => [...h, { role: 'assistant', content: `Patch generation failed: ${res?.error || 'unknown'}` }]);
+        setMode('chat');
+      }
+    } catch (e) {
+      setHistory(h => [...h, { role: 'assistant', content: `Error: ${e.message}` }]);
+      setMode('chat');
+    } finally {
+      setPatchLoading(false);
+    }
+  }, [question, patchLoading, cwd, filePath, fileContent, symbolContext]);
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history]);
 
   const onKey = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ask(); }
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (mode === 'patch' || e.altKey) generatePatch();
+      else ask();
+    }
+  };
+
+  const handleApplied = (r) => {
+    setHistory(h => [...h, {
+      role: 'assistant',
+      content: `Patch applied to ${r.appliedFiles?.join(', ')}. ${r.pipeline ? `Pipeline ${r.pipeline.pipelineId} running.` : ''}`,
+    }]);
+    setMode('chat');
+    setPatch(null);
+  };
+
+  const handleConvertToMission = (mission) => {
+    setHistory(h => [...h, {
+      role: 'assistant',
+      content: `Created mission: ${mission?.objective || 'untitled'} (${mission?.id || ''})`,
+    }]);
+    setMode('chat');
+    setPatch(null);
   };
 
   return (
     <div className="aipp-ask">
       <ContextBadge cwd={cwd} filePath={filePath} symbolContext={symbolContext} />
-      {!history.length && (
-        <div className="aipp-quick-cmds">
-          {QUICK.map((q, i) => (
-            <button key={i} className="aipp-quick-btn" onClick={() => ask(q.q)}>{q.label}</button>
-          ))}
+
+      <div className="aipp-mode-tabs">
+        <button className={`aipp-mode-tab${mode === 'chat'  ? ' aipp-mode-tab--active' : ''}`} onClick={() => setMode('chat')}>Chat</button>
+        <button className={`aipp-mode-tab${mode === 'patch' ? ' aipp-mode-tab--active' : ''}`} onClick={() => setMode('patch')}>
+          Patch {patch ? '●' : ''}
+        </button>
+      </div>
+
+      {mode === 'chat' && (
+        <>
+          {!history.length && (
+            <div className="aipp-quick-cmds">
+              {QUICK.map((q, i) => (
+                <button key={i} className="aipp-quick-btn" onClick={() => ask(q.q)}>{q.label}</button>
+              ))}
+            </div>
+          )}
+          <div className="aipp-chat-history">
+            {history.map((msg, i) => (
+              <div key={i} className={`aipp-chat-msg aipp-chat-msg--${msg.role}`}>
+                <span className="aipp-chat-msg__role">{msg.role === 'user' ? 'You' : 'AI'}</span>
+                <pre className="aipp-chat-msg__content">{msg.content}</pre>
+              </div>
+            ))}
+            {(loading || patchLoading) && (
+              <div className="aipp-chat-msg aipp-chat-msg--assistant">
+                <span className="aipp-chat-msg__role">AI</span>
+                <span className="aipp-chat-msg__thinking">
+                  {patchLoading ? 'Generating patch proposal…' : 'Gathering repository context…'}
+                </span>
+              </div>
+            )}
+            <div ref={bottomRef} />
+          </div>
+          {history.length > 0 && (
+            <button className="aipp-clear-btn" onClick={() => setHistory([])}>Clear</button>
+          )}
+        </>
+      )}
+
+      {mode === 'patch' && patch && (
+        <Suspense fallback={<div className="aipp-chat-thinking">Loading patch panel…</div>}>
+          <PatchPreviewPanel
+            goal={patch.goal}
+            proposal={patch.proposal}
+            canApply={patch.canApply}
+            patchId={patch.patchId}
+            cwd={cwd}
+            onApplied={handleApplied}
+            onRejected={() => { setPatch(null); setMode('chat'); }}
+            onConvertToMission={handleConvertToMission}
+          />
+        </Suspense>
+      )}
+      {mode === 'patch' && !patch && !patchLoading && (
+        <div className="aipp-patch-prompt">
+          <div className="aipp-patch-prompt__label">Generate Patch</div>
+          <div className="aipp-patch-prompt__hint">
+            Describe the change you want. The AI will generate a structured patch proposal with affected files, risk score, and confidence. You can then Apply via Pipeline, Convert → Mission, or Reject.
+          </div>
         </div>
       )}
-      <div className="aipp-chat-history">
-        {history.map((msg, i) => (
-          <div key={i} className={`aipp-chat-msg aipp-chat-msg--${msg.role}`}>
-            <span className="aipp-chat-msg__role">{msg.role === 'user' ? 'You' : 'AI'}</span>
-            <pre className="aipp-chat-msg__content">{msg.content}</pre>
-          </div>
-        ))}
-        {loading && (
-          <div className="aipp-chat-msg aipp-chat-msg--assistant">
-            <span className="aipp-chat-msg__role">AI</span>
-            <span className="aipp-chat-msg__thinking">Gathering repository context…</span>
-          </div>
-        )}
-        <div ref={bottomRef} />
-      </div>
-      {history.length > 0 && (
-        <button className="aipp-clear-btn" onClick={() => setHistory([])}>Clear</button>
-      )}
+
       <div className="aipp-ask-input-row">
         <textarea
           className="aipp-input aipp-ask-input"
-          placeholder="Ask anything about the repository… (Enter to send)"
+          placeholder={mode === 'patch'
+            ? 'Describe the change… e.g. "Rename auth middleware to authGuard" (Enter to generate patch)'
+            : 'Ask anything about the repository… (Enter to send)'}
           value={question}
           onChange={e => setQuestion(e.target.value)}
           onKeyDown={onKey}
           rows={2}
-          disabled={loading}
+          disabled={loading || patchLoading}
           data-no-shortcuts
         />
-        <button
-          className="aipp-btn aipp-btn--primary aipp-ask-send"
-          onClick={() => ask()}
-          disabled={loading || !question.trim()}
-        >
-          {loading ? '⟳' : '→'}
-        </button>
+        <div className="aipp-ask-btn-col">
+          <button
+            className="aipp-btn aipp-btn--primary aipp-ask-send"
+            onClick={mode === 'patch' ? generatePatch : ask}
+            disabled={(loading || patchLoading) || !question.trim()}
+            title={mode === 'patch' ? 'Generate Patch' : 'Ask AI'}
+          >
+            {(loading || patchLoading) ? '⟳' : mode === 'patch' ? '⚡' : '→'}
+          </button>
+          {mode === 'chat' && question.trim() && (
+            <button
+              className="aipp-btn aipp-btn--patch-toggle"
+              onClick={generatePatch}
+              disabled={patchLoading || !question.trim()}
+              title="Generate patch for this goal"
+            >
+              ⚡
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
