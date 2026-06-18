@@ -650,6 +650,7 @@ function approvePipeline(pipelineId) {
 function getStats() {
     const store  = _load();
     const active = Object.values(store.pipelines).filter(p => p.status === "running").length;
+    // recoveryMissionsCreated counts missions auto-created on build/test gate failure
     return { ..._stats, active, total: Object.keys(store.pipelines).length };
 }
 
