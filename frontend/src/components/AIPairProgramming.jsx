@@ -273,8 +273,14 @@ export default function AIPairProgramming({ className = '' }) {
 
   const applyPatch = useCallback(async () => {
     if (!result?.patch || !window.electronAPI?.shellExec) return;
-    await window.electronAPI.shellExec({ cmd: `echo '${result.patch}' | git apply` });
-    setResult(r => ({ ...r, applied: true }));
+    const tmp = `${Date.now()}-ooplix.patch`;
+    const appInfo = await window.electronAPI.getAppInfo?.() || {};
+    const tmpPath = `${appInfo.userData || ''}/ooplix-patches/${tmp}`;
+    const wr = await window.electronAPI.fsWriteFile({ filePath: tmpPath, data: result.patch });
+    if (!wr?.ok) { setResult(rv => ({ ...rv, error: wr?.error || 'Failed to write patch' })); return; }
+    const r = await window.electronAPI.shellExec({ command: `git apply "${tmpPath}"` });
+    if (!r?.ok) { setResult(rv => ({ ...rv, error: r?.stderr || 'Patch apply failed' })); return; }
+    setResult(rv => ({ ...rv, applied: true }));
   }, [result]);
 
   return (

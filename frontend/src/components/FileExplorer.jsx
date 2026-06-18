@@ -186,7 +186,7 @@ function TreeNode({ node, depth, selected, onSelect, onOpen, onContextMenu }) {
   );
 }
 
-export default function FileExplorer({ rootDir, cwd, onFileOpen, className = '' }) {
+export default function FileExplorer({ rootDir, cwd, onFileOpen, onOpenFolder, className = '' }) {
   const [tree, setTree]             = useState(null);
   const [loading, setLoading]       = useState(false);
   const [error, setError]           = useState(null);
@@ -461,7 +461,18 @@ export default function FileExplorer({ rootDir, cwd, onFileOpen, className = '' 
         {activeTab === 'tree' && (
           loading ? <div className="file-explorer__status">Loading…</div>
           : error  ? <div className="file-explorer__error">{error}</div>
-          : !tree  ? <div className="file-explorer__status">No directory loaded.</div>
+          : !tree  ? (
+            <div className="file-explorer__no-project">
+              <div className="file-explorer__no-project-icon">📂</div>
+              <div className="file-explorer__no-project-label">No folder open</div>
+              {onOpenFolder && (
+                <button className="file-explorer__open-folder-btn" onClick={onOpenFolder}>
+                  Open Folder…
+                </button>
+              )}
+              <div className="file-explorer__no-project-hint">or press ⌘5 → Projects</div>
+            </div>
+          )
           : (
             <div className="file-tree">
               {tree.tree?.map(node => (

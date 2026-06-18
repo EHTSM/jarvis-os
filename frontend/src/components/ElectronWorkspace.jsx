@@ -717,7 +717,15 @@ export default function ElectronWorkspace({ children }) {
               <div className="ew-sidebar__body">
                 <LazyPane active={sidebarMode === 'explorer'}>
                   <ErrorBoundary label="File Explorer">
-                    <FileExplorer cwd={cwd} onFileOpen={handleFileOpen} />
+                    <FileExplorer
+                      cwd={cwd}
+                      onFileOpen={handleFileOpen}
+                      onOpenFolder={async () => {
+                        const result = await api().fsShowOpenDialog({ properties: ['openDirectory'] });
+                        const p = result?.filePaths?.[0];
+                        if (p) { setCwd(p); pushRepo({ path: p, name: p.split('/').pop(), id: Date.now(), ts: Date.now() }); }
+                      }}
+                    />
                   </ErrorBoundary>
                 </LazyPane>
                 <LazyPane active={sidebarMode === 'code'}>
