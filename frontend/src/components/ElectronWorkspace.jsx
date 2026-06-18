@@ -429,6 +429,7 @@ export default function ElectronWorkspace({ children }) {
   // J2 code editor
   const [editorFile,    setEditorFile]    = useState(null); // path to open
   const [missionJump,   setMissionJump]   = useState(null); // { filePath, startLine, endLine }
+  const [gitChangedCount, setGitChangedCount] = useState(0);
 
   const { height: bottomH,   onResizerMouseDown: onBottomResize }  = useBottomResize(340);
   const { width:  sidebarW,  onResizerMouseDown: onSidebarResize, onResizerDoubleClick: onSidebarReset } = useSidebarResize(260);
@@ -436,6 +437,13 @@ export default function ElectronWorkspace({ children }) {
 
   const { recents: recentMissions, push: pushMission } = useRecentMissions();
   const { repos: recentRepos, push: pushRepo }         = useRecentRepos();
+
+  // ── Git changed-files badge ─────────────────────────────────────────
+  useEffect(() => {
+    const handler = (e) => setGitChangedCount(e.detail?.changed || 0);
+    window.addEventListener('git-status-update', handler);
+    return () => window.removeEventListener('git-status-update', handler);
+  }, []);
 
   // ── Restore session on mount ─────────────────────────────────────
   useEffect(() => {
@@ -532,8 +540,9 @@ export default function ElectronWorkspace({ children }) {
       // Cmd+B — toggle sidebar (VSCode convention)
       if (e.key === 'b' && !e.shiftKey) { e.preventDefault(); setShowSidebar(s => !s); return; }
 
-      // Cmd+Shift+E/G/D/P/M/T — sidebar/panel shortcuts
+      // Cmd+Shift+E/F/G/D/P/M/T — sidebar/panel shortcuts
       if (e.shiftKey && e.key === 'E')  { e.preventDefault(); setSidebar('explorer'); return; }
+      if (e.shiftKey && e.key === 'F')  { e.preventDefault(); setSidebar('code'); return; }
       if (e.shiftKey && e.key === 'G')  { e.preventDefault(); setSidebar('git'); return; }
       if (e.shiftKey && e.key === 'D')  { e.preventDefault(); openBottomTab('debugger'); return; }
       if (e.shiftKey && e.key === 'P')  { e.preventDefault(); openBottomTab('pair'); return; }
@@ -635,6 +644,7 @@ export default function ElectronWorkspace({ children }) {
       case 'nav:intelligence': setOsView('intelligence'); break;
       case 'nav:clipboard':    setSidebar('clipboard'); break;
       case 'nav:git':          setSidebar('git'); break;
+      case 'nav:search':       setSidebar('code'); break;
       case 'nav:debugger':     openBottomTab('debugger'); break;
       case 'nav:pair':         openBottomTab('pair'); break;
       case 'nav:ops':          openBottomTab('ops'); break;
@@ -693,6 +703,9 @@ export default function ElectronWorkspace({ children }) {
             shortcut={cfg.shortcut}
           >
             {cfg.icon}
+            {mode === 'git' && gitChangedCount > 0 && (
+              <span className="ew-activity__badge">{gitChangedCount > 99 ? '99+' : gitChangedCount}</span>
+            )}
           </ActivityBtn>
         ))}
         <div className="ew-activity__spacer" />
@@ -831,6 +844,8 @@ export default function ElectronWorkspace({ children }) {
                             initialPath={editorFile}
                             missionJump={missionJump}
                             onOpenMission={() => setOsView('os')}
+                            cwd={cwd}
+                            onRunInTerminal={() => openBottomTab('terminal')}
                           />
                         </Suspense>
                       </ErrorBoundary>

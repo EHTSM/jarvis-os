@@ -94,6 +94,7 @@
   color: #4b5563;
   transition: background 0.15s, color 0.15s;
   flex-shrink: 0;
+  position: relative;
 }
 .ew-activity-btn:hover { background: #1f2937; color: #9ca3af; }
 .ew-activity-btn--active { background: #10b98120; color: #10b981; border: 1px solid #10b98130; }
@@ -567,4 +568,24 @@
 @media (max-width: 640px) {
   .ew-shortcuts-body { grid-template-columns: 1fr; }
   .ew-shortcuts-group { border-right: none; }
+}
+
+/* Git changed-files badge on activity bar */
+.ew-activity__badge {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  background: #f97316;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  line-height: 1;
 }

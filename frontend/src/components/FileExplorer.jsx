@@ -55,7 +55,7 @@ function DeleteConfirm({ name, onConfirm, onCancel }) {
 }
 
 // ── Native context menu for file/directory nodes ──────────────────────
-function useFileContextMenu(onOpen, onRefresh, onAction) {
+function useFileContextMenu(onOpen, onRefresh, onAction, rootDir) {
   const targetRef = useRef(null);
 
   const showMenu = useCallback((e, node) => {
@@ -65,25 +65,27 @@ function useFileContextMenu(onOpen, onRefresh, onAction) {
     targetRef.current = node;
     const items = node.isDir
       ? [
-          { id: 'new-file',  label: 'New File…' },
-          { id: 'new-dir',   label: 'New Folder…' },
+          { id: 'new-file',       label: 'New File…' },
+          { id: 'new-dir',        label: 'New Folder…' },
           { type: 'separator' },
-          { id: 'rename',    label: 'Rename…' },
-          { id: 'delete',    label: 'Delete' },
+          { id: 'rename',         label: 'Rename…' },
+          { id: 'delete',         label: 'Delete' },
           { type: 'separator' },
-          { id: 'refresh',   label: 'Refresh' },
-          { id: 'copy-path', label: 'Copy Path' },
-          { id: 'reveal',    label: 'Reveal in Finder' },
+          { id: 'refresh',        label: 'Refresh' },
+          { id: 'copy-path',      label: 'Copy Path' },
+          { id: 'copy-rel-path',  label: 'Copy Relative Path' },
+          { id: 'reveal',         label: 'Reveal in Finder' },
         ]
       : [
-          { id: 'open',      label: 'Open File' },
+          { id: 'open',           label: 'Open File' },
           { type: 'separator' },
-          { id: 'rename',    label: 'Rename…' },
-          { id: 'delete',    label: 'Delete' },
+          { id: 'rename',         label: 'Rename…' },
+          { id: 'delete',         label: 'Delete' },
           { type: 'separator' },
-          { id: 'copy-path', label: 'Copy Path' },
-          { id: 'reveal',    label: 'Reveal in Finder' },
-          { id: 'drag',      label: 'Drag Out…' },
+          { id: 'copy-path',      label: 'Copy Path' },
+          { id: 'copy-rel-path',  label: 'Copy Relative Path' },
+          { id: 'reveal',         label: 'Reveal in Finder' },
+          { id: 'drag',           label: 'Drag Out…' },
         ];
     api()?.showContextMenu(items);
   }, []);
@@ -92,19 +94,26 @@ function useFileContextMenu(onOpen, onRefresh, onAction) {
     const node = targetRef.current;
     if (!node) return;
     switch (id) {
-      case 'open':      onOpen?.(node.path); break;
-      case 'refresh':   onRefresh?.(node.path); break;
-      case 'copy-path': api()?.clipboardWrite(node.path); break;
-      case 'reveal':    api()?.fsOpenPath(node.path); break;
-      case 'drag':      api()?.ondragstart(node.path); break;
-      case 'new-file':  onAction?.('new-file', node); break;
-      case 'new-dir':   onAction?.('new-dir',  node); break;
-      case 'rename':    onAction?.('rename',   node); break;
-      case 'delete':    onAction?.('delete',   node); break;
+      case 'open':          onOpen?.(node.path); break;
+      case 'refresh':       onRefresh?.(node.path); break;
+      case 'copy-path':     api()?.clipboardWrite(node.path); break;
+      case 'copy-rel-path': {
+        const rel = rootDir && node.path.startsWith(rootDir)
+          ? node.path.slice(rootDir.length).replace(/^\//, '')
+          : node.path;
+        api()?.clipboardWrite(rel);
+        break;
+      }
+      case 'reveal':        api()?.fsOpenPath(node.path); break;
+      case 'drag':          api()?.ondragstart(node.path); break;
+      case 'new-file':      onAction?.('new-file', node); break;
+      case 'new-dir':       onAction?.('new-dir',  node); break;
+      case 'rename':        onAction?.('rename',   node); break;
+      case 'delete':        onAction?.('delete',   node); break;
       default: break;
     }
     targetRef.current = null;
-  }, [onOpen, onRefresh, onAction]));
+  }, [onOpen, onRefresh, onAction, rootDir]));
 
   return showMenu;
 }
@@ -336,7 +345,7 @@ export default function FileExplorer({ rootDir, cwd, onFileOpen, onOpenFolder, c
     setTimeout(() => setOpStatus(''), 3000);
   }, [fileOp, root, loadTree]);
 
-  const showContextMenu = useFileContextMenu(handleOpen, loadTree, handleFileAction);
+  const showContextMenu = useFileContextMenu(handleOpen, loadTree, handleFileAction, root);
 
   const toggleFavorite = useCallback((path) => {
     setFavorites(f => {

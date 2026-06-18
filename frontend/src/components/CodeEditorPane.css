@@ -594,3 +594,33 @@
   color: #f55b5b;
 }
 .cep-delete-btn--confirm:hover { background: rgba(245,91,91,0.25); }
+
+/* Run script button */
+.cep-run-wrap { position: relative; display: flex; align-items: center; }
+.cep-run-btn  { color: #4ade80 !important; font-size: 11px !important; }
+.cep-run-btn:hover { background: rgba(74,222,128,0.12) !important; }
+.cep-run-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: #1a1d2e;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 8px;
+  min-width: 150px;
+  z-index: 200;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+.cep-run-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 14px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.75);
+  font-size: 12px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  cursor: pointer;
+}
+.cep-run-item:hover { background: rgba(255,255,255,0.06); color: #fff; }

@@ -10,6 +10,7 @@ import { EditorView, keymap, lineNumbers, drawSelection, highlightActiveLine, hi
 import { EditorState, Compartment } from '@codemirror/state';
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
 import { search, searchKeymap, openSearchPanel } from '@codemirror/search';
+import { autocompletion, completionKeymap, closeBracketsKeymap, closeBrackets } from '@codemirror/autocomplete';
 import { syntaxHighlighting, defaultHighlightStyle, bracketMatching, foldGutter, indentOnInput } from '@codemirror/language';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { javascript } from '@codemirror/lang-javascript';
@@ -103,9 +104,11 @@ function buildBaseExtensions(langComp, wordWrapComp) {
     // Multi-cursor: Alt+click adds cursor; Alt+drag adds rectangular selection
     rectangularSelection(),
     crosshairCursor(),
+    closeBrackets(),
+    autocompletion(),
     // Built-in find panel (Cmd+F)
     search({ top: true }),
-    keymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap, indentWithTab]),
+    keymap.of([...closeBracketsKeymap, ...completionKeymap, ...defaultKeymap, ...historyKeymap, ...searchKeymap, indentWithTab]),
     oneDark,
     langComp.of([]),
     wordWrapComp.of([]),
@@ -328,6 +331,8 @@ export default function CodeEditorPane({
   onOpenMission,
   diagnostics = [],
   className = '',
+  cwd,
+  onRunInTerminal,
 }) {
   const [tabs,          setTabs]          = useState([]);
   const [activeId,      setActiveId]      = useState(null);
@@ -341,6 +346,7 @@ export default function CodeEditorPane({
   const [wordWrap,      setWordWrap]      = useState(false);
   const [gotoLine,      setGotoLine]      = useState(false);
   const [gotoValue,     setGotoValue]     = useState('');
+  const [runMenu,       setRunMenu]       = useState(false);
   const gotoRef = useRef(null);
   const viewMap = useRef({});   // tabId → EditorView
   const autoSaveRef = useRef(null);
@@ -594,6 +600,19 @@ export default function CodeEditorPane({
     api()?.fsOpenPath?.(tab.path.split('/').slice(0, -1).join('/'));
   }, [tabs]);
 
+  // ── Run script ───────────────────────────────────────────────────────────
+
+  const runScript = useCallback(async (cmd) => {
+    setRunMenu(false);
+    if (!isElectron() || !cwd) return;
+    status(`Running: ${cmd}…`);
+    onRunInTerminal?.();
+    // Give terminal a tick to open/focus before dispatching
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('terminal-run', { detail: { command: cmd, cwd } }));
+    }, 120);
+  }, [cwd, onRunInTerminal, status]);
+
   // ── Context menu ─────────────────────────────────────────────────────────
 
   const handleEditorContextMenu = useCallback((e, view, tab) => {
@@ -706,6 +725,27 @@ export default function CodeEditorPane({
         >
           <TabBar tabs={tabs} activeId={activeId} onSelect={setActiveId} onClose={closeTab} onPin={pinTab} />
           <div className="cep-tabbar-actions">
+            {cwd && (
+              <div className="cep-run-wrap">
+                <button
+                  className="cep-icon-btn cep-run-btn"
+                  onClick={() => setRunMenu(m => !m)}
+                  title="Run script in terminal"
+                >▶</button>
+                {runMenu && (
+                  <div className="cep-run-menu" onMouseLeave={() => setRunMenu(false)}>
+                    {[
+                      { label: 'npm test',    cmd: 'npm test'    },
+                      { label: 'npm start',   cmd: 'npm start'   },
+                      { label: 'npm run build', cmd: 'npm run build' },
+                      { label: 'npm run lint',  cmd: 'npm run lint'  },
+                    ].map(({ label, cmd }) => (
+                      <button key={cmd} className="cep-run-item" onClick={() => runScript(cmd)}>{label}</button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
             <button
               className={`cep-icon-btn${wordWrap ? ' cep-icon-btn--active' : ''}`}
               onClick={() => setWordWrap(w => !w)}

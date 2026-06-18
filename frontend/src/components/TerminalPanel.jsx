@@ -177,6 +177,23 @@ export default function TerminalPanel({ cwd, className = '', onClose }) {
     return () => window.removeEventListener('keydown', handler);
   }, [addTab, closeTab, active]);
 
+  // terminal-run event: send command to active PTY session
+  const tabsRef = useRef(tabs);
+  tabsRef.current = tabs;
+  const activeRef = useRef(active);
+  activeRef.current = active;
+  useEffect(() => {
+    const handler = (e) => {
+      const { command } = e.detail || {};
+      if (!command) return;
+      const sessionId = tabsRef.current[activeRef.current]?.id;
+      if (!sessionId) return;
+      api()?.ptyInput(sessionId, command + '\r');
+    };
+    window.addEventListener('terminal-run', handler);
+    return () => window.removeEventListener('terminal-run', handler);
+  }, []);
+
   if (!isElectron) {
     return (
       <div className={`terminal-panel terminal-panel--stub ${className}`}>
