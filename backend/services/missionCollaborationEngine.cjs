@@ -138,7 +138,7 @@ const _stats = {
  * }
  */
 function createPlan(missionId, spec = {}) {
-    if (!missionId) throw new Error("createPlan: missionId required");
+    if (!missionId || typeof missionId !== "string") throw new Error("createPlan: missionId must be a non-empty string");
     const store = _load();
 
     // Validate mission exists
