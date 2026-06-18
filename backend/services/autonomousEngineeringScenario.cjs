@@ -49,6 +49,7 @@ function _mm()  { try { return require("./missionMemory.cjs");                 }
 // ── Stage execution helper ────────────────────────────────────────────────
 
 let _stageSeq = 0;
+function _resetSeq() { _stageSeq = 0; }
 async function _stage(label, capability, params, rt, opts = {}) {
     const stageId  = `s${++_stageSeq}_${capability}`;
     const startedAt = Date.now();
