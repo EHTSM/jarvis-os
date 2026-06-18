@@ -63,6 +63,8 @@ router.use(require("./mission"));      // /mission/runtime/*, /mission/timeline/
 router.use(require("./agents"));       // /agents/conversation/*, /agents/status/*, /agents/delegation/*, /agents/message, /agents/override, /agents/task/*
 router.use(require("./lifecycle"));    // /runtime/lifecycle/*, /runtime/stage/*, /runtime/events/*, /runtime/pause/*, /runtime/resume/*, /runtime/retry/*
 router.use(require("./intelligence"));   // /intelligence/correlations, /intelligence/insights, /intelligence/patterns, /intelligence/trends, /intelligence/recommendation-confidence
+router.use(require("./engineering"));   // /engineering/intelligence (J4 engineering risk panel)
+router.use(require("./business"));      // /business/pipeline, /business/missions, /business/leads, /business/deals, /business/marketing/*, /business/customers, /business/operations
 router.use(require("./collaboration"));  // /collaboration/session/*, /collaboration/history/*, /collaboration/message, /collaboration/action, /collaboration/replan, /collaboration/approve, /collaboration/reject
 router.use(require("./workspace"));      // /workspace, /workspace/:id, /workspace/invite, /workspace/switch, /workspace/activity
 router.use(require("./security"));      // /security/sessions, /security/devices, /security/audit, /security/policies, /security/tokens, /security/score
