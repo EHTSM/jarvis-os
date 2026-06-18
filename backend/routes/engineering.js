@@ -951,4 +951,61 @@ router.get("/engineering/scenario/list", (req, res) => {
     }
 });
 
+// ── Engineering Benchmark Suite (Sprint 8) ───────────────────────────────
+
+function _bench() { return _try(() => require("../services/engineeringBenchmark.cjs")); }
+
+/**
+ * POST /engineering/benchmark/run
+ * Run the full 10-scenario benchmark suite against the live repository.
+ * Warning: this commits real changes. Use in dev only.
+ */
+router.post("/engineering/benchmark/run", async (req, res) => {
+    try {
+        const b = _bench();
+        if (!b) return res.status(503).json({ ok: false, error: "benchmark engine unavailable" });
+        const report = await b.runAll(req.body || {});
+        res.json(report);
+    } catch (err) {
+        logger.error(`[Benchmark] run failed: ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+/** GET /engineering/benchmark/report — last benchmark report */
+router.get("/engineering/benchmark/report", (req, res) => {
+    try {
+        const b = _bench();
+        if (!b) return res.status(503).json({ ok: false, error: "benchmark engine unavailable" });
+        const report = b.getReport();
+        if (!report) return res.status(404).json({ ok: false, error: "no benchmark run yet" });
+        res.json(report);
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+/** GET /engineering/benchmark/scenarios — list all 10 scenario definitions */
+router.get("/engineering/benchmark/scenarios", (req, res) => {
+    try {
+        const b = _bench();
+        if (!b) return res.status(503).json({ ok: false, error: "benchmark engine unavailable" });
+        res.json({ ok: true, scenarios: b.SCENARIOS.map(s => ({ id: s.id, goal: s.goal, targetFile: s.targetFile })) });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+/** POST /engineering/benchmark/scenario/:id — run a single scenario */
+router.post("/engineering/benchmark/scenario/:id", async (req, res) => {
+    try {
+        const b = _bench();
+        if (!b) return res.status(503).json({ ok: false, error: "benchmark engine unavailable" });
+        const result = await b.runScenario(req.params.id, req.body || {});
+        res.json(result);
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
 module.exports = router;
