@@ -619,11 +619,15 @@ function getHistory({ strategy, targetType, limit = 100, offset = 0 } = {}) {
 }
 
 function getStatus() {
+    const healed  = _history.filter(r => r.success);
+    const byStrat = {};
+    for (const r of healed) byStrat[r.strategy] = (byStrat[r.strategy] || 0) + 1;
     return {
         lastProbeAt:  _lastProbeAt,
         probeCount:   _probeCount,
-        healedTotal:  _history.filter(r => r.success).length,
+        healedTotal:  healed.length,
         failedTotal:  _history.filter(r => !r.success).length,
+        healedByStrategy: byStrat,
         probeIntervalMs: PROBE_INTERVAL_MS,
         active:       !!_probeTimer,
     };
