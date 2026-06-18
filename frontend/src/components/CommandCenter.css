@@ -130,6 +130,22 @@
   flex-shrink: 0;
 }
 
+.cmd-pulse-refresh {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-xs, 5px);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.40);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.cmd-pulse-refresh:hover { background: rgba(255,255,255,0.09); color: rgba(255,255,255,0.75); }
+
 .cmd-pulse-stop {
   width: 26px;
   height: 26px;
@@ -145,6 +161,74 @@
   transition: background 0.15s ease;
 }
 .cmd-pulse-stop:hover { background: rgba(245,91,91,0.22); }
+
+/* ── Emergency Stop Confirmation Modal ──────────────────────────────────────── */
+.cmd-stop-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+  backdrop-filter: blur(2px);
+}
+.cmd-stop-confirm-panel {
+  background: var(--surface-2, #1a1a2e);
+  border: 1px solid rgba(245,91,91,0.30);
+  border-radius: 12px;
+  padding: 28px 28px 24px;
+  width: 360px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+}
+.cmd-stop-confirm-icon {
+  font-size: 28px;
+  color: var(--danger, #f55b5b);
+  text-align: center;
+}
+.cmd-stop-confirm-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.90);
+  text-align: center;
+}
+.cmd-stop-confirm-body {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  text-align: center;
+  line-height: 1.5;
+}
+.cmd-stop-confirm-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+}
+.cmd-stop-confirm-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.14s ease, opacity 0.14s ease;
+}
+.cmd-stop-confirm-btn--cancel {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.62);
+}
+.cmd-stop-confirm-btn--cancel:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+.cmd-stop-confirm-btn--stop {
+  background: rgba(245,91,91,0.15);
+  border: 1px solid rgba(245,91,91,0.30);
+  color: #f55b5b;
+}
+.cmd-stop-confirm-btn--stop:hover { background: rgba(245,91,91,0.25); }
 
 /* ── Page header ────────────────────────────────────────────────────────────── */
 .cmd-header {
@@ -740,6 +824,23 @@
 }
 .cmd-dispatch-input:disabled { opacity: 0.45; }
 
+.cmd-dispatch-clear {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: rgba(255,255,255,0.40);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.cmd-dispatch-clear:hover { background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.80); }
+
 .cmd-dispatch-run {
   flex-shrink: 0;
 }
@@ -795,11 +896,29 @@
 }
 .cmd-dispatch-result--err .cmd-dispatch-result-icon { color: var(--danger, #f55b5b); }
 .cmd-dispatch-result-text {
+  flex: 1;
   font-size: 13px;
   color: rgba(255,255,255,0.80);
   line-height: 1.45;
   word-break: break-word;
 }
+.cmd-dispatch-result-dismiss {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.25);
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 1px;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.cmd-dispatch-result-dismiss:hover { background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.65); }
 
 /* Spinner */
 .cmd-spinner {

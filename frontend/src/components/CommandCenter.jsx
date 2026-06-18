@@ -87,7 +87,7 @@ const STATE_LABEL = {
 // Always-visible system state strip — one animated pill per service.
 // ─────────────────────────────────────────────────────────────────────────────
 
-function HealthPulseBar({ opsData, online, emergencyActive, onResume, onStop }) {
+function HealthPulseBar({ opsData, online, emergencyActive, onResume, onStop, onRefresh }) {
   const services   = opsData?.services || {};
   const queue      = opsData?.queue    || {};
   const uptime     = opsData?.uptime?.seconds;
@@ -184,8 +184,13 @@ function HealthPulseBar({ opsData, online, emergencyActive, onResume, onStop }) 
         ))}
       </motion.div>
       <div className="cmd-pulse-actions">
+        {onRefresh && (
+          <button className="cmd-pulse-refresh" onClick={onRefresh} title="Refresh now" aria-label="Refresh status">
+            <span aria-hidden="true">↻</span>
+          </button>
+        )}
         {online && (
-          <button className="cmd-pulse-stop" onClick={onStop} title="Emergency stop" aria-label="Emergency stop">
+          <button className="cmd-pulse-stop" onClick={onStop} title="Emergency stop (⌘⇧.)" aria-label="Emergency stop">
             <span aria-hidden="true">⏹</span>
           </button>
         )}
@@ -772,11 +777,18 @@ function CommandDispatch({ online }) {
   const [result, setResult] = useState(null);
   const [busy,   setBusy]   = useState(false);
   const inputRef = useRef(null);
+  const resultTimerRef = useRef(null);
+
+  const dismissResult = useCallback(() => {
+    clearTimeout(resultTimerRef.current);
+    setResult(null);
+  }, []);
 
   const run = useCallback(async (cmd) => {
     const text = (cmd || input).trim();
     if (!text || busy || !online) return;
     setBusy(true);
+    clearTimeout(resultTimerRef.current);
     setResult(null);
     try {
       const res = await dispatchTask(text, 20000);
@@ -784,6 +796,9 @@ function CommandDispatch({ online }) {
         ok:   res.success !== false,
         text: res.reply || res.output || res.result || (res.success ? "Done." : res.error || "Failed."),
       });
+      if (res.success !== false) {
+        resultTimerRef.current = setTimeout(() => setResult(null), 8000);
+      }
     } catch (e) {
       setResult({ ok: false, text: e.message });
     } finally {
@@ -808,11 +823,22 @@ function CommandDispatch({ online }) {
           aria-label="Task or command input"
           value={input}
           onChange={e => setInput(e.target.value)}
-          onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); run(); } }}
+          onKeyDown={e => {
+            if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); run(); }
+            if (e.key === "Escape" && input) { e.stopPropagation(); setInput(""); dismissResult(); }
+          }}
           disabled={!online || busy}
           autoComplete="off"
           spellCheck={false}
         />
+        {input && !busy && (
+          <button
+            className="cmd-dispatch-clear"
+            onClick={() => { setInput(""); dismissResult(); inputRef.current?.focus(); }}
+            title="Clear (Esc)"
+            aria-label="Clear input"
+          >✕</button>
+        )}
         <motion.button
           className="btn btn--primary btn--sm cmd-dispatch-run"
           onClick={() => run()}
@@ -820,7 +846,7 @@ function CommandDispatch({ online }) {
           whileTap={{ scale: 0.94 }}
           transition={spring.snappy}
         >
-          {busy ? <span className="cmd-spinner" /> : "Run"}
+          {busy ? <span className="cmd-spinner" /> : "Run ↵"}
         </motion.button>
       </div>
 
@@ -831,6 +857,7 @@ function CommandDispatch({ online }) {
             className="cmd-chip"
             onClick={() => run(q.cmd)}
             disabled={!online || busy}
+            title={q.cmd}
           >
             {q.label}
           </button>
@@ -850,6 +877,12 @@ function CommandDispatch({ online }) {
               {result.ok ? "✓" : "✗"}
             </span>
             <span className="cmd-dispatch-result-text">{result.text}</span>
+            <button
+              className="cmd-dispatch-result-dismiss"
+              onClick={dismissResult}
+              title="Dismiss"
+              aria-label="Dismiss result"
+            >✕</button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -1226,17 +1259,22 @@ function SystemHealth({ opsData, online }) {
 // 3-column OS cockpit layout.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function CommandCenter({ stats, opsData, online, onNavigate, billing, onUpgrade }) {
+export default function CommandCenter({ stats, opsData, online, onNavigate, billing, onUpgrade, onRefreshOps }) {
   const [emergencyActive, setEmergencyActive] = useState(
     () => opsData?.emergencyStop?.active ?? false
   );
+  const [stopConfirm, setStopConfirm] = useState(false);
 
   useEffect(() => {
     setEmergencyActive(opsData?.emergencyStop?.active ?? false);
   }, [opsData]);
 
-  const handleStop = useCallback(async () => {
-    if (!window.confirm("Activate Emergency Stop? All running tasks will be halted.")) return;
+  const handleStop = useCallback(() => {
+    setStopConfirm(true);
+  }, []);
+
+  const handleStopConfirmed = useCallback(async () => {
+    setStopConfirm(false);
     const res = await emergencyStop("operator_initiated");
     if (res?.success !== false) setEmergencyActive(true);
   }, []);
@@ -1257,6 +1295,37 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
       animate={{ opacity: 1, y: 0,  filter: "blur(0px)" }}
       transition={transition.enter}
     >
+      {/* ── Emergency Stop Confirmation ───────────────────────────── */}
+      <AnimatePresence>
+        {stopConfirm && (
+          <motion.div
+            className="cmd-stop-confirm-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.12 }}
+            onClick={() => setStopConfirm(false)}
+          >
+            <motion.div
+              className="cmd-stop-confirm-panel"
+              initial={{ scale: 0.94, y: 8, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.96, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 420, damping: 30 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="cmd-stop-confirm-icon">⏹</div>
+              <div className="cmd-stop-confirm-title">Emergency Stop</div>
+              <div className="cmd-stop-confirm-body">All running tasks will be halted immediately. In-progress work will be paused and queued for resume.</div>
+              <div className="cmd-stop-confirm-actions">
+                <button className="cmd-stop-confirm-btn cmd-stop-confirm-btn--cancel" onClick={() => setStopConfirm(false)}>Cancel</button>
+                <button className="cmd-stop-confirm-btn cmd-stop-confirm-btn--stop" onClick={handleStopConfirmed}>Stop All Execution</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* ── Health Pulse Bar (always visible) ─────────────────────── */}
       <HealthPulseBar
         opsData={opsData}
@@ -1264,6 +1333,7 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
         emergencyActive={emergencyActive}
         onStop={handleStop}
         onResume={handleResume}
+        onRefresh={onRefreshOps}
       />
 
       {/* ── Page header ───────────────────────────────────────────── */}

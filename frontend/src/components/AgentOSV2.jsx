@@ -838,7 +838,6 @@ function TabActions({ opsData, online, history, toast }) {
   }, [opsData]);
 
   const handleStop = async () => {
-    if (!window.confirm("This will halt all running agents and queue processing. Continue?")) return;
     setStopping(true);
     try {
       await emergencyStop("operator-triggered");

@@ -232,16 +232,27 @@ function _loadProfile() {
 
 // ── More ▾ dropdown with live search ─────────────────────────────────────────
 function MoreMenu({ currentTab, onSelect }) {
-  const [query, setQuery] = React.useState('');
-  const inputRef = React.useRef(null);
+  const [query,   setQuery]   = React.useState('');
+  const [cursor,  setCursor]  = React.useState(0);
+  const inputRef  = React.useRef(null);
+  const listRef   = React.useRef(null);
 
   React.useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
+  React.useEffect(() => {
+    setCursor(0);
+  }, [query]);
+
   const filtered = query.trim()
     ? MORE_TABS.filter(m => m.label.toLowerCase().includes(query.toLowerCase()))
     : MORE_TABS;
+
+  const scrollItemIntoView = React.useCallback((idx) => {
+    const item = listRef.current?.children[idx];
+    item?.scrollIntoView({ block: 'nearest' });
+  }, []);
 
   return (
     <div className="tab-more-menu" role="menu">
@@ -249,30 +260,43 @@ function MoreMenu({ currentTab, onSelect }) {
         <input
           ref={inputRef}
           className="tab-more-search"
-          placeholder="Search tabs…"
+          placeholder={`Search ${MORE_TABS.length} modules…`}
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={e => {
             if (e.key === 'Escape') { e.stopPropagation(); onSelect(currentTab); }
-            if (e.key === 'Enter' && filtered.length > 0) { e.preventDefault(); onSelect(filtered[0].id); }
+            if (e.key === 'Enter' && filtered.length > 0) { e.preventDefault(); onSelect(filtered[cursor].id); }
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              const next = Math.min(cursor + 1, filtered.length - 1);
+              setCursor(next);
+              scrollItemIntoView(next);
+            }
+            if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              const prev = Math.max(cursor - 1, 0);
+              setCursor(prev);
+              scrollItemIntoView(prev);
+            }
           }}
           aria-label="Search tabs"
         />
       </div>
-      <div className="tab-more-list">
-        {filtered.map(m => (
+      <div className="tab-more-list" ref={listRef}>
+        {filtered.map((m, i) => (
           <button
             key={m.id}
-            className={`tab-more-item${currentTab === m.id ? " active" : ""}`}
+            className={`tab-more-item${currentTab === m.id ? " active" : ""}${i === cursor ? " focused" : ""}`}
             role="menuitem"
             aria-current={currentTab === m.id ? "page" : undefined}
+            onMouseEnter={() => setCursor(i)}
             onClick={() => onSelect(m.id)}
           >
             {m.label}
           </button>
         ))}
         {filtered.length === 0 && (
-          <div className="tab-more-empty">No tabs match "{query}"</div>
+          <div className="tab-more-empty">No modules match "{query}"</div>
         )}
       </div>
     </div>
@@ -725,7 +749,7 @@ function AppInner() {
                     aria-haspopup="true"
                     aria-expanded={moreOpen}
                   >
-                    {secondaryActive ? (MORE_TABS.find(m => m.id === tab)?.label ?? "More") + " ▾" : "More ▾"}
+                    {secondaryActive ? (MORE_TABS.find(m => m.id === tab)?.label ?? "More") + " ▾" : `More (${MORE_TABS.length}) ▾`}
                   </button>
                   {moreOpen && (
                     <MoreMenu
@@ -874,6 +898,12 @@ function AppInner() {
             opsData={opsData}
             online={online}
             onNavigate={setTab}
+            onRefreshOps={async () => {
+              if (!online) return;
+              const [st, ops] = await Promise.allSettled([getStats(), getOpsData()]);
+              if (st.value)  setStats(st.value);
+              if (ops.value) setOpsData(ops.value);
+            }}
           />
         )}
         {tab === "chat" && (

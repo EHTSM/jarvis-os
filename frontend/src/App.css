@@ -376,6 +376,7 @@
 }
 .tab-more-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.88); }
 .tab-more-item.active { background: rgba(102,87,232,0.12); color: #9d8ff5; }
+.tab-more-item.focused { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.88); }
 
 /* ── Main content ─────────────────────────────────────────────────────── */
 .app-main {

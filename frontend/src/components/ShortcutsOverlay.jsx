@@ -4,8 +4,9 @@ import { SHORTCUTS } from '../hooks/useKeyboardShortcuts';
 import './ShortcutsOverlay.css';
 
 const GROUPS = [
-  { label: 'Navigation', ids: ['nav-home','nav-intelligence','nav-engineering','nav-contacts','nav-payments','nav-reports','nav-chat'] },
-  { label: 'Actions',    ids: ['palette','new-task','search','escape'] },
+  { label: 'Navigation', ids: ['nav-home','nav-intelligence','nav-engineering','nav-contacts','nav-payments','nav-reports','nav-chat','nav-systemhealth','nav-globalactivity'] },
+  { label: 'History',    ids: ['nav-back','nav-forward'] },
+  { label: 'Actions',    ids: ['palette','new-task','search','help','escape'] },
   { label: 'Runtime',    ids: ['emergency-stop','emergency-resume'] },
   { label: 'View',       ids: ['zoom-in','zoom-out','fullscreen'] },
 ];

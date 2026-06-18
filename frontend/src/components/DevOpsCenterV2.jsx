@@ -159,7 +159,6 @@ function TabRuntime({ addToast }) {
   const mode = status?.mode || "normal";
 
   async function handleStop() {
-    if (!window.confirm("Trigger emergency stop? All running tasks will be halted.")) return;
     setStopping(true);
     try {
       await emergencyStop("operator_initiated");
@@ -182,7 +181,6 @@ function TabRuntime({ addToast }) {
   }
 
   async function handleRestart() {
-    if (!window.confirm("Restart all runtime workers? Running tasks will be re-queued.")) return;
     setRestarting(true);
     try {
       const r = await fetch("/runtime/reboot", {
