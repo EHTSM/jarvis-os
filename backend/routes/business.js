@@ -77,7 +77,8 @@ const logger = require("../utils/logger");
 
 function _bds()  { try { return require("../services/businessDataService.cjs");  } catch { return null; } }
 function _bem()  { try { return require("../services/businessEntityModel.cjs");  } catch { return null; } }
-function _bma()  { try { return require("../services/businessMissionAutomation.cjs"); } catch { return null; } }
+function _bma()  { try { return require("../services/businessMissionAutomation.cjs");   } catch { return null; } }
+function _bie()  { try { return require("../services/businessIntelligenceEngine.cjs"); } catch { return null; } }
 
 function _ok(res, data)   { res.json({ success: true, ...data }); }
 function _err(res, e, status = 500) {
@@ -678,6 +679,126 @@ router.get("/business/automation/status/:missionId", requireAuth, (req, res) => 
         const bma = _bma();
         if (!bma) return _err(res, new Error("automation unavailable"), 503);
         _ok(res, bma.getAutomationStatus(req.params.missionId));
+    } catch (e) { _err(res, e); }
+});
+
+// ── Intelligence routes (Phase B3) ────────────────────────────────────────────
+//
+// GET  /business/intelligence/scan             — full scan all entity types
+// GET  /business/intelligence/scan/leads       — scan leads only
+// GET  /business/intelligence/scan/deals       — scan deals only
+// GET  /business/intelligence/scan/customers   — scan customers only
+// GET  /business/intelligence/scan/campaigns   — scan campaigns only
+// GET  /business/intelligence/health           — business health metrics
+// GET  /business/intelligence/rules            — intelligence rule definitions
+// GET  /business/intelligence/recommendations  — open recommendations
+// POST /business/intelligence/recommendations/:id/dismiss  — dismiss
+// POST /business/intelligence/recommendations/:id/accept   — accept + optional mission
+// POST /business/intelligence/rules            — register a business rule
+// POST /business/intelligence/score            — score a signal for confidence
+
+router.get("/business/intelligence/scan", requireAuth, async (req, res) => {
+    try {
+        const bie = _bie();
+        if (!bie) return _err(res, new Error("intelligence engine unavailable"), 503);
+        const dryRun = req.query.dryRun === "true";
+        const result = bie.scan({ dryRun });
+        _ok(res, result);
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/business/intelligence/scan/leads", requireAuth, (req, res) => {
+    try {
+        const bie = _bie();
+        if (!bie) return _err(res, new Error("intelligence engine unavailable"), 503);
+        const result = bie.scanLeads({ dryRun: req.query.dryRun === "true" });
+        _ok(res, result);
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/business/intelligence/scan/deals", requireAuth, (req, res) => {
+    try {
+        const bie = _bie();
+        if (!bie) return _err(res, new Error("intelligence engine unavailable"), 503);
+        _ok(res, bie.scanDeals({ dryRun: req.query.dryRun === "true" }));
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/business/intelligence/scan/customers", requireAuth, (req, res) => {
+    try {
+        const bie = _bie();
+        if (!bie) return _err(res, new Error("intelligence engine unavailable"), 503);
+        _ok(res, bie.scanCustomers({ dryRun: req.query.dryRun === "true" }));
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/business/intelligence/scan/campaigns", requireAuth, (req, res) => {
+    try {
+        const bie = _bie();
+        if (!bie) return _err(res, new Error("intelligence engine unavailable"), 503);
+        _ok(res, bie.scanCampaigns({ dryRun: req.query.dryRun === "true" }));
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/business/intelligence/health", requireAuth, (req, res) => {
+    try {
+        const bie = _bie();
+        if (!bie) return _err(res, new Error("intelligence engine unavailable"), 503);
+        _ok(res, bie.getHealthMetrics());
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/business/intelligence/rules", requireAuth, (req, res) => {
+    try {
+        const bie = _bie();
+        if (!bie) return _err(res, new Error("intelligence engine unavailable"), 503);
+        _ok(res, { rules: bie.listIntelligenceRules() });
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/business/intelligence/recommendations", requireAuth, (req, res) => {
+    try {
+        const bie = _bie();
+        if (!bie) return _err(res, new Error("intelligence engine unavailable"), 503);
+        const { status, limit } = req.query;
+        _ok(res, bie.getRecommendations({ status, limit: limit ? parseInt(limit, 10) : 50 }));
+    } catch (e) { _err(res, e); }
+});
+
+router.post("/business/intelligence/recommendations/:id/dismiss", requireAuth, (req, res) => {
+    try {
+        const bie = _bie();
+        if (!bie) return _err(res, new Error("intelligence engine unavailable"), 503);
+        const updated = bie.dismissRecommendation(req.params.id);
+        _ok(res, { recommendation: updated });
+    } catch (e) { _err(res, e, e.message.includes("not found") ? 404 : 500); }
+});
+
+router.post("/business/intelligence/recommendations/:id/accept", requireAuth, (req, res) => {
+    try {
+        const bie = _bie();
+        if (!bie) return _err(res, new Error("intelligence engine unavailable"), 503);
+        const updated = bie.acceptRecommendation(req.params.id, req.body || {});
+        _ok(res, { recommendation: updated });
+    } catch (e) { _err(res, e, e.message.includes("not found") ? 404 : 500); }
+});
+
+router.post("/business/intelligence/rules", requireAuth, (req, res) => {
+    try {
+        const bie = _bie();
+        if (!bie) return _err(res, new Error("intelligence engine unavailable"), 503);
+        const rule = bie.registerBusinessRule(req.body);
+        _ok(res, { rule });
+    } catch (e) { _err(res, e, 400); }
+});
+
+router.post("/business/intelligence/score", requireAuth, (req, res) => {
+    try {
+        const bie = _bie();
+        if (!bie) return _err(res, new Error("intelligence engine unavailable"), 503);
+        const { signal, context } = req.body;
+        if (!signal) return res.status(400).json({ success: false, error: "signal object required" });
+        _ok(res, bie.scoreSignal(signal, context || {}));
     } catch (e) { _err(res, e); }
 });
 
