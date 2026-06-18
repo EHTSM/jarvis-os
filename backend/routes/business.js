@@ -77,6 +77,7 @@ const logger = require("../utils/logger");
 
 function _bds()  { try { return require("../services/businessDataService.cjs");  } catch { return null; } }
 function _bem()  { try { return require("../services/businessEntityModel.cjs");  } catch { return null; } }
+function _bma()  { try { return require("../services/businessMissionAutomation.cjs"); } catch { return null; } }
 
 function _ok(res, data)   { res.json({ success: true, ...data }); }
 function _err(res, e, status = 500) {
@@ -609,6 +610,75 @@ router.post("/business/operations", requireAuth, (req, res) => {
         const mission = bem.createBusinessMission("operation", entity, { priority });
         _ok(res, { mission });
     } catch (e) { _err(res, e, 400); }
+});
+
+// ── Automation routes (Phase B2) ──────────────────────────────────────────────
+
+// GET  /business/automation/templates          — list all workflow templates
+// GET  /business/automation/templates/:type    — single template + steps
+// GET  /business/automation/capabilities       — list registered capabilities
+// POST /business/automation/run                — run full template for entity
+// POST /business/automation/step               — run single step
+// GET  /business/automation/status/:missionId  — execution status for mission
+
+router.get("/business/automation/templates", requireAuth, (req, res) => {
+    try {
+        const bma = _bma();
+        if (!bma) return _err(res, new Error("automation unavailable"), 503);
+        bma.init();
+        _ok(res, { templates: bma.listTemplates() });
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/business/automation/templates/:entityType", requireAuth, (req, res) => {
+    try {
+        const bma = _bma();
+        if (!bma) return _err(res, new Error("automation unavailable"), 503);
+        const tpl = bma.getTemplate(req.params.entityType);
+        if (!tpl) return res.status(404).json({ success: false, error: `No template for entityType: ${req.params.entityType}` });
+        _ok(res, { template: tpl });
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/business/automation/capabilities", requireAuth, (req, res) => {
+    try {
+        const bma = _bma();
+        if (!bma) return _err(res, new Error("automation unavailable"), 503);
+        bma.init();
+        _ok(res, { capabilities: bma.listCapabilities() });
+    } catch (e) { _err(res, e); }
+});
+
+router.post("/business/automation/run", requireAuth, async (req, res) => {
+    try {
+        const bma = _bma();
+        if (!bma) return _err(res, new Error("automation unavailable"), 503);
+        const { entityType, entity, missionId, priority, failFast } = req.body;
+        if (!entityType) return res.status(400).json({ success: false, error: "entityType required" });
+        if (!entity || typeof entity !== "object") return res.status(400).json({ success: false, error: "entity object required" });
+        const result = await bma.runTemplate(entityType, entity, { missionId, priority, failFast });
+        _ok(res, result);
+    } catch (e) { _err(res, e); }
+});
+
+router.post("/business/automation/step", requireAuth, async (req, res) => {
+    try {
+        const bma = _bma();
+        if (!bma) return _err(res, new Error("automation unavailable"), 503);
+        const { entityType, stepName, entity, missionId } = req.body;
+        if (!entityType || !stepName) return res.status(400).json({ success: false, error: "entityType and stepName required" });
+        if (!entity || typeof entity !== "object") return res.status(400).json({ success: false, error: "entity object required" });
+        const result = await bma.runStep(entityType, stepName, entity, missionId);
+        _ok(res, result);
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/business/automation/status/:missionId", requireAuth, (req, res) => {
+    try {
+        const bma = _bma();
+        if (!bma) return _err(res, new Error("automation unavailable"), 503);
+        _ok(res, bma.getAutomationStatus(req.params.missionId));
+    } catch (e) { _err(res, e); }
 });
 
 module.exports = router;
