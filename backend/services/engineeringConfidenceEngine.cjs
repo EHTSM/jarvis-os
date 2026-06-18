@@ -508,7 +508,8 @@ function explain(error, context = {}) {
     const eUnknown    = _evidenceUnknown(otherTotal);
 
     const totalScore  = otherTotal + eUnknown.score;
-    const confidence  = Math.min(totalScore, 100);
+    // Floor at 1 — a matched rule with sparse evidence is still evidence.
+    const confidence  = Math.max(1, Math.min(totalScore, 100));
 
     // Evidence map (for display)
     const evidence = {
