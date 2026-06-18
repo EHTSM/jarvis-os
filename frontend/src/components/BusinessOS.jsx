@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { _fetch } from "../_client";
 import {
   getBusinessDashboard, getBusinessDailySummary, getBusinessWeeklySummary, getPipelineSummary,
   getLeadsV5, createBizLead, updateBizLead, qualifyBizLead, disqualifyBizLead, deleteBizLead,
@@ -44,6 +45,7 @@ const VIEWS = [
   { id: "opportunities", label: "Pipeline"    },
   { id: "campaigns",     label: "Campaigns"   },
   { id: "revenue",       label: "Revenue"     },
+  { id: "reasoning",     label: "Reasoning"   },
 ];
 
 // ── Shared UI atoms ───────────────────────────────────────────────
@@ -889,6 +891,108 @@ function RevenueView({ onToast }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
+// REASONING VIEW (Q2)
+// ═══════════════════════════════════════════════════════════════════
+
+function ReasoningView() {
+  const [data, setData]       = useState(null);
+  const [recs, setRecs]       = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      _fetch('/graph/reasoning/executive'),
+      _fetch('/graph/reasoning/recommendations'),
+    ]).then(([exec, recsR]) => {
+      if (exec?.ok)  setData(exec);
+      if (recsR?.ok) setRecs(recsR);
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <div className="bos-empty"><p className="bos-empty-title">Loading reasoning engine…</p></div>;
+  if (!data)   return <div className="bos-empty"><p className="bos-empty-title">Reasoning unavailable</p><p className="bos-empty-sub">Graph may not be indexed yet. Try POST /graph/index first.</p></div>;
+
+  const health  = data.healthScore;
+  const summary = data.summary;
+  const risks   = data.topRisks || [];
+  const blocked = data.topBlockers || [];
+  const gaps    = data.topKnowledgeGaps || [];
+  const rList   = recs?.recommendations || [];
+
+  const riskColor = r => r.risk === 'critical' || r.severity === 'critical' ? '#ef4444' : r.risk === 'high' || r.severity === 'warning' ? '#f59e0b' : '#3b82f6';
+
+  return (
+    <div className="bos-section">
+      <div className="bos-section-header">
+        <h3 className="bos-section-title">Graph Reasoning Engine</h3>
+        {health != null && (
+          <span style={{ fontSize: 12, fontWeight: 600, color: health >= 70 ? '#22c55e' : health >= 40 ? '#f59e0b' : '#ef4444' }}>
+            System Health: {health}/100
+          </span>
+        )}
+      </div>
+      {summary && <p style={{ fontSize: 12, color: 'var(--text-dim,#888)', marginBottom: 16 }}>{summary}</p>}
+
+      {risks.length > 0 && (
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8, color: 'var(--text-dim,#888)' }}>Top Risks</div>
+          {risks.map((r, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 8, padding: '8px 10px', background: 'var(--bg2,#18181b)', borderRadius: 6, borderLeft: `3px solid ${riskColor(r)}` }}>
+              <span style={{ background: riskColor(r), borderRadius: 3, padding: '1px 6px', fontSize: 10, color: '#fff', flexShrink: 0, marginTop: 1 }}>
+                {(r.type || '').replace(/_/g,' ')}
+              </span>
+              <span style={{ fontSize: 12 }}>{r.explanation || r.description || r.objective || r.id}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {blocked.length > 0 && (
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8, color: 'var(--text-dim,#888)' }}>Blocked Missions</div>
+          {blocked.map((b, i) => (
+            <div key={i} style={{ fontSize: 12, padding: '6px 10px', background: 'var(--bg2,#18181b)', borderRadius: 6, marginBottom: 6, borderLeft: '3px solid #f59e0b' }}>
+              <strong>{b.objective || b.missionId}</strong>
+              {b.blockers && <span style={{ color: 'var(--text-dim,#888)', marginLeft: 8 }}>{b.blockers.join(' · ')}</span>}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {rList.length > 0 && (
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8, color: 'var(--text-dim,#888)' }}>Recommended Actions</div>
+          {rList.slice(0, 6).map((r, i) => (
+            <div key={i} style={{ fontSize: 12, padding: '8px 10px', background: 'var(--bg2,#18181b)', borderRadius: 6, marginBottom: 6, display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+              <span style={{ background: r.priority === 'critical' ? '#ef4444' : r.priority === 'high' ? '#f59e0b' : '#3b82f6', borderRadius: 3, padding: '1px 6px', fontSize: 10, color: '#fff', flexShrink: 0, marginTop: 1 }}>
+                {r.priority}
+              </span>
+              <div>
+                <div style={{ fontWeight: 500 }}>{r.title}</div>
+                {r.description && <div style={{ color: 'var(--text-dim,#888)', marginTop: 2 }}>{r.description.slice(0,120)}</div>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {gaps.length > 0 && (
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8, color: 'var(--text-dim,#888)' }}>Knowledge Gaps</div>
+          {gaps.map((g, i) => (
+            <div key={i} style={{ fontSize: 12, color: 'var(--text-dim,#888)', padding: '4px 0' }}>• {g.objective} <em>({g.ageDays}d old)</em></div>
+          ))}
+        </div>
+      )}
+
+      {risks.length === 0 && blocked.length === 0 && rList.length === 0 && (
+        <Empty title="No reasoning signals" sub="Index the graph first with POST /graph/index, then re-open this view." />
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // ROOT COMPONENT
 // ═══════════════════════════════════════════════════════════════════
 
@@ -912,6 +1016,7 @@ export default function BusinessOS({ onToast }) {
         {view === "opportunities" && <OpportunitiesView onToast={onToast} />}
         {view === "campaigns"     && <CampaignsView     onToast={onToast} />}
         {view === "revenue"       && <RevenueView       onToast={onToast} />}
+        {view === "reasoning"     && <ReasoningView     />}
       </div>
     </div>
   );

@@ -520,6 +520,57 @@ function LifecyclePanel() {
   );
 }
 
+// ── Graph Reasoning Panel (Q2) ─────────────────────────────────────
+function MissionReasoningPanel() {
+  const [data, setData]       = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    _fetch('/graph/reasoning/critical')
+      .then(r => { if (r?.ok) setData(r); })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading || !data) return null;
+
+  const critical = data.criticalDependencies?.criticalDependencies || [];
+  const spofs    = data.singlePointsOfFailure?.singlePointsOfFailure || [];
+  if (critical.length === 0 && spofs.length === 0) return null;
+
+  return (
+    <section className="mc-section">
+      <div className="mc-section-head">
+        <h2>Graph Reasoning — Critical Signals</h2>
+      </div>
+      {critical.length > 0 && (
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: '#888', marginBottom: 6 }}>CRITICAL DEPENDENCIES</div>
+          {critical.slice(0, 4).map((d, i) => (
+            <div key={i} className="mc-activity-row">
+              <StatusDot ok={false} warn={d.risk !== 'critical'} />
+              <span className="mc-activity-text"><code>{d.type}:{d.id}</code></span>
+              <span className="mc-activity-status" style={{ color: d.risk === 'critical' ? '#ef4444' : '#f59e0b' }}>{d.inDegree} deps</span>
+            </div>
+          ))}
+        </div>
+      )}
+      {spofs.length > 0 && (
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 600, color: '#888', marginBottom: 6 }}>SINGLE POINTS OF FAILURE</div>
+          {spofs.slice(0, 3).map((s, i) => (
+            <div key={i} className="mc-activity-row">
+              <StatusDot ok={false} warn={false} />
+              <span className="mc-activity-text"><code>{s.type}:{s.id}</code></span>
+              <span className="mc-activity-status" style={{ color: '#ef4444' }}>SPOF</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default function MissionControlV1({ onNavigate }) {
   const [health,    setHealth]    = useState(null);
   const [ops,       setOps]       = useState(null);
@@ -849,6 +900,9 @@ export default function MissionControlV1({ onNavigate }) {
           <p className="mc-empty">No recent activity</p>
         )}
       </section>
+
+      {/* Graph Reasoning Panel */}
+      <MissionReasoningPanel />
 
       {/* Quick Navigation */}
       <section className="mc-section">

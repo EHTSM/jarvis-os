@@ -800,6 +800,84 @@ export default function ExecutiveDashboard({ onNavigate }) {
         </div>
       </motion.div>
 
+      {/* ── Row 7: Graph Reasoning ── */}
+      <GraphReasoningSection />
+
     </div>
+  );
+}
+
+// ── Graph Reasoning Section (Q2) ─────────────────────────────────────
+function GraphReasoningSection() {
+  const [data, setData]       = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    _fetch('/graph/reasoning/executive')
+      .then(r => { if (r?.ok) setData(r); })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const FADE_UP = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 } };
+  const fadeUp  = (d = 0) => ({ ...FADE_UP, transition: { duration: 0.35, delay: d } });
+
+  if (loading) return null;
+  if (!data)   return null;
+
+  const risks   = data.topRisks || [];
+  const ops     = data.topOpportunities || [];
+  const recs    = data.topRecommendedMissions || [];
+  const health  = data.healthScore;
+  const summary = data.summary;
+
+  return (
+    <motion.div className="ed-section" {...fadeUp(0.35)}>
+      <div className="ed-section__title">
+        Graph Reasoning
+        {health != null && (
+          <span style={{ marginLeft: 8, fontSize: 11, color: health >= 70 ? '#22c55e' : health >= 40 ? '#f59e0b' : '#ef4444', fontWeight: 600 }}>
+            Health {health}/100
+          </span>
+        )}
+      </div>
+      {summary && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 8 }}>{summary}</div>}
+
+      {risks.length > 0 && (
+        <div style={{ marginBottom: 10 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, marginBottom: 4, color: 'var(--text-dim)' }}>TOP RISKS</div>
+          {risks.slice(0, 3).map((r, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+              <span style={{ background: r.risk === 'critical' || r.severity === 'critical' ? '#ef4444' : '#f59e0b', borderRadius: 3, padding: '1px 5px', fontSize: 10, color: '#fff', flexShrink: 0 }}>
+                {r.type?.replace(/_/g,' ')}
+              </span>
+              <span style={{ fontSize: 11, color: 'var(--text)' }}>{r.explanation || r.description || r.objective || r.id}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {ops.length > 0 && (
+        <div style={{ marginBottom: 10 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, marginBottom: 4, color: 'var(--text-dim)' }}>TOP OPPORTUNITIES</div>
+          {ops.slice(0, 3).map((o, i) => (
+            <div key={i} style={{ fontSize: 11, color: 'var(--text)', marginBottom: 3 }}>
+              <span style={{ color: 'var(--accent)', marginRight: 6 }}>▸</span>{o.title}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {recs.length > 0 && (
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 600, marginBottom: 4, color: 'var(--text-dim)' }}>RECOMMENDED MISSIONS</div>
+          {recs.slice(0, 3).map((r, i) => (
+            <div key={i} style={{ fontSize: 11, color: 'var(--text)', marginBottom: 3 }}>
+              <span style={{ color: '#22c55e', marginRight: 6 }}>+</span>{r.title}
+            </div>
+          ))}
+        </div>
+      )}
+    </motion.div>
   );
 }

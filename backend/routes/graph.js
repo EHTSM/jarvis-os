@@ -148,4 +148,59 @@ router.get("/graph/lookup/mission/:missionId/team", (req, res) => {
     } catch (e) { _err(res, e); }
 });
 
+// ── Q2-6 Reasoning routes ─────────────────────────────────────────────────────
+function _re() { return require("../services/graphReasoningEngine.cjs"); }
+
+router.get("/graph/reasoning", (req, res) => {
+    try {
+        const re = _re();
+        _ok(res, {
+            criticalDependencies:  re.findCriticalDependencies({ limit: parseInt(req.query.limit)||10 }),
+            singlePointsOfFailure: re.findSinglePointsOfFailure({ limit: 5 }),
+            blockedMissions:       re.findBlockedMissions({ limit: parseInt(req.query.limit)||10 }),
+            missionClusters:       re.findMissionClusters({ limit: 5 }),
+            highRiskOwners:        re.findHighRiskOwners({ limit: 5 }),
+            highRiskOrgs:          re.findHighRiskOrganizations({ limit: 5 }),
+            knowledgeGaps:         re.findKnowledgeGaps({ limit: parseInt(req.query.limit)||10 }),
+            duplicateWork:         re.findDuplicateWork({ limit: 5 }),
+        });
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/graph/reasoning/critical", (req, res) => {
+    try {
+        const re = _re();
+        _ok(res, {
+            criticalDependencies:  re.findCriticalDependencies({ limit: parseInt(req.query.limit)||10 }),
+            singlePointsOfFailure: re.findSinglePointsOfFailure({ limit: parseInt(req.query.limit)||10 }),
+        });
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/graph/reasoning/impact/:type/:id", (req, res) => {
+    try {
+        const maxDepth = req.query.maxDepth ? parseInt(req.query.maxDepth, 10) : 3;
+        const scenario = req.query.scenario || undefined;
+        _ok(res, _re().simulateImpact(req.params.type, req.params.id, { maxDepth, scenario }));
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/graph/reasoning/dependencies/:type/:id", (req, res) => {
+    try { _ok(res, _re().analyzeDependencies(req.params.type, req.params.id)); }
+    catch (e) { _err(res, e); }
+});
+
+router.get("/graph/reasoning/recommendations", (req, res) => {
+    try {
+        const limit      = req.query.limit      ? parseInt(req.query.limit, 10)  : 10;
+        const autoCreate = req.query.autoCreate === "true";
+        _ok(res, _re().generateRecommendations({ limit, autoCreate }));
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/graph/reasoning/executive", (req, res) => {
+    try { _ok(res, _re().executeReasoning()); }
+    catch (e) { _err(res, e); }
+});
+
 module.exports = router;
