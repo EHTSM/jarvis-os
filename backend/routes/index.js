@@ -61,6 +61,7 @@ router.use(require("./phase26"));      // /p26/graph, /p26/memory, /p26/reason, 
 router.use(require("./phase27"));      // /p27/executive, /p27/missions, /p27/planning, /p27/ai, /p27/improvement
 router.use(require("./mission"));      // /mission/runtime/*, /mission/timeline/*, /mission/graph/*, /mission/replay/*, /mission/state/*
 router.use(require("./agents"));       // /agents/conversation/*, /agents/status/*, /agents/delegation/*, /agents/message, /agents/override, /agents/task/*
+router.use(require("./agentsRuntime")); // /agents/runtime/supervisor — Phase I4 long-running agent runtime
 router.use(require("./lifecycle"));    // /runtime/lifecycle/*, /runtime/stage/*, /runtime/events/*, /runtime/pause/*, /runtime/resume/*, /runtime/retry/*
 router.use(require("./intelligence"));   // /intelligence/correlations, /intelligence/insights, /intelligence/patterns, /intelligence/trends, /intelligence/recommendation-confidence
 router.use(require("./engineering"));   // /engineering/intelligence (J4 engineering risk panel)

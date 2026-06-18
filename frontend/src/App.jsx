@@ -76,6 +76,7 @@ const AutonomousRevenueCenter  = lazy(() => import("./components/AutonomousReven
 const AutonomousMarketingCenter = lazy(() => import("./components/AutonomousMarketingCenter.jsx"));
 const AutonomousSupportCenter  = lazy(() => import("./components/AutonomousSupportCenter.jsx"));
 const OoplixRunsOoplixCenter   = lazy(() => import("./components/OoplixRunsOoplixCenter.jsx"));
+const AutonomousAgentDashboard = lazy(() => import("./components/AutonomousAgentDashboard.jsx"));
 const AgentFactoryCenter       = lazy(() => import("./components/AgentFactoryCenter.jsx"));
 const MemoryIntelligenceCenter = lazy(() => import("./components/MemoryIntelligenceCenter.jsx"));
 const SelfImprovementCenter    = lazy(() => import("./components/SelfImprovementCenter.jsx"));
@@ -178,6 +179,7 @@ const MORE_TABS = [
   { id: "automarketing",label:"Auto Marketing" },
   { id: "autosupport",  label:"Auto Support"   },
   { id: "oroplix",    label: "Ooplix Runs Ooplix" },
+  { id: "agentruntime", label: "Agent Runtime" },
   { id: "agentfactory", label:"Agent Factory"  },
   { id: "memoryintel",  label:"Memory Intel"   },
   { id: "selfimprove",  label:"Self-Improve"   },
@@ -959,6 +961,7 @@ function AppInner() {
         {tab === "automarketing"     && <AutonomousMarketingCenter  onNavigate={setTab} />}
         {tab === "autosupport"       && <AutonomousSupportCenter    onNavigate={setTab} />}
         {tab === "oroplix"           && <OoplixRunsOoplixCenter     onNavigate={setTab} />}
+        {tab === "agentruntime"      && <AutonomousAgentDashboard />}
         {tab === "agentfactory"      && <AgentFactoryCenter         onNavigate={setTab} />}
         {tab === "memoryintel"       && <MemoryIntelligenceCenter   onNavigate={setTab} />}
         {tab === "selfimprove"       && <SelfImprovementCenter      onNavigate={setTab} />}
