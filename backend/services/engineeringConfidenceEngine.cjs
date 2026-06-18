@@ -192,7 +192,10 @@ function _evidenceHistoricalSuccess(errorMsg, problemClass, context = {}) {
         const rca = _rca();
         if (rca && problemClass) {
             const analysis = rca.getAnalysis(problemClass);
-            rcaResolved = analysis?.status?.startsWith("resolved") || false;
+            // Explicit null-check before status access — getAnalysis returns null for unknown classes
+            if (analysis && typeof analysis.status === "string") {
+                rcaResolved = analysis.status.startsWith("resolved");
+            }
         }
     } catch { /* non-fatal */ }
 
