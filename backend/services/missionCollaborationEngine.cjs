@@ -706,8 +706,9 @@ function getStats() {
  * getHandoffs(missionId) — all handoffs for a mission
  */
 function getHandoffs(missionId) {
-    const store = _load();
-    return (store.handoffs[missionId] || []).map(h => ({ ...h }));
+    const store  = _load();
+    const items  = (store.handoffs[missionId] || []).map(h => ({ ...h }));
+    return items; // caller can use items.length for total
 }
 
 module.exports = {
