@@ -556,6 +556,10 @@ async function runPipeline(goal, opts = {}) {
     run.startedAt = new Date().toISOString();
     const t0      = Date.now();
 
+    if (run.stages.length === 0) {
+        run.status = "completed"; run.completedAt = new Date().toISOString();
+        _persist(); return { ...run };
+    }
     _emit("pipeline:started", { pipelineId: run.pipelineId, goal: goal.trim(), stageCount: run.stages.length });
     logger.info(`[PipelineCoord] ▶ Pipeline ${run.pipelineId} — "${goal.slice(0, 80)}"`);
 
