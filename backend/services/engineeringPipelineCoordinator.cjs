@@ -116,6 +116,7 @@ const _stats = {
     buildGateBlocked: 0, testGateBlocked: 0, commitGateBlocked: 0,
     rollbacks: 0, recoveryMissionsCreated: 0,
     // i7-s2: expose cancel count for dashboard
+    // i7-s10: validationRuns tracks I7-7 benchmark invocations
     validationRuns: 0,
 };
 
