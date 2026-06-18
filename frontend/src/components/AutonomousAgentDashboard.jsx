@@ -417,6 +417,148 @@ function CollaborationTab() {
     );
 }
 
+// ── I7: Pipeline Dashboard sub-components ─────────────────────────────────────
+
+const STAGE_ICON = {
+    repo_read:      "📂", repo_analysis: "🔍", patch_generate: "✏",
+    patch_validate: "✓",  patch_apply:   "⚡", build_gate:    "🏗",
+    test_gate:      "⚗",  review_gate:   "👁", commit_gate:   "🔏",
+    observe:        "📊",  learn:         "🧠",
+};
+
+const STAGE_STATUS_COLOR = {
+    completed: "#22c55e",
+    running:   "#3b82f6",
+    failed:    "#ef4444",
+    pending:   "#6b7280",
+};
+
+function PipelineStageRow({ stage }) {
+    const color = STAGE_STATUS_COLOR[stage.status] || "#6b7280";
+    return (
+        <div className="aad-handoff-row" style={{ borderLeft: `2px solid ${color}`, gap: 8 }}>
+            <span style={{ fontSize: 13 }}>{STAGE_ICON[stage.id] || "◉"}</span>
+            <span style={{ flex: 1, fontWeight: stage.status === "running" ? 600 : 400 }}>{stage.label}</span>
+            {stage.durationMs > 0 && <span style={{ fontSize: 10, color: "var(--text-dim, #94a3b8)" }}>{stage.durationMs}ms</span>}
+            {stage.retries > 0 && <span style={{ fontSize: 10, color: "#f59e0b" }}>↺{stage.retries}</span>}
+            {stage.gateResult && !stage.gateResult.ok && <span style={{ fontSize: 10, color: "#ef4444" }}>BLOCKED</span>}
+            <span className="aad-handoff-status" style={{ background: color + "22", color, borderColor: color + "55" }}>{stage.status}</span>
+        </div>
+    );
+}
+
+function PipelineCard({ pipeline }) {
+    const [expanded, setExpanded] = useState(false);
+    const statusColor = { completed: "#22c55e", running: "#3b82f6", failed: "#ef4444", cancelled: "#6b7280", pending: "#f59e0b" }[pipeline.status] || "#6b7280";
+    const progress = pipeline.stagesTotal > 0 ? Math.round(pipeline.stagesCompleted / pipeline.stagesTotal * 100) : 0;
+
+    return (
+        <div className="aad-collab-card" style={{ borderLeft: `3px solid ${statusColor}` }}>
+            <div className="aad-collab-card-header">
+                <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 600, fontSize: 12, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {pipeline.goal?.slice(0, 70)}
+                    </div>
+                    <div className="aad-collab-mission-id">{pipeline.pipelineId} · {pipeline.stagesCompleted}/{pipeline.stagesTotal} stages</div>
+                </div>
+                <span className="aad-handoff-status" style={{ background: statusColor + "22", color: statusColor }}>{pipeline.status}</span>
+            </div>
+
+            {/* Progress bar */}
+            <div style={{ height: 4, background: "var(--bg3, #27272a)", borderRadius: 2 }}>
+                <div style={{ height: "100%", width: `${progress}%`, background: statusColor, borderRadius: 2, transition: "width 0.4s ease" }} />
+            </div>
+
+            {/* Key metrics */}
+            <div style={{ display: "flex", gap: 12, fontSize: 11, color: "var(--text-dim, #94a3b8)", flexWrap: "wrap" }}>
+                {pipeline.durationMs > 0 && <span>Duration: {Math.round(pipeline.durationMs / 1000)}s</span>}
+                {pipeline.commitHash && <span style={{ color: "#22c55e" }}>Commit: {pipeline.commitHash}</span>}
+                {pipeline.rollbackExecuted && <span style={{ color: "#f59e0b" }}>⎌ Rolled back</span>}
+                {pipeline.failedStage && <span style={{ color: "#ef4444" }}>Failed: {pipeline.failedStage}</span>}
+                {pipeline.risk?.criticalDeps > 0 && <span style={{ color: "#f59e0b" }}>⚠ {pipeline.risk.criticalDeps} critical deps</span>}
+                {pipeline.approvalStatus === "pending" && <span style={{ color: "#a78bfa" }}>⏳ Awaiting approval</span>}
+            </div>
+
+            {/* Stage list (collapsible) */}
+            <button className="aad-btn aad-btn--ghost" style={{ fontSize: 11, padding: "3px 8px", alignSelf: "flex-start" }} onClick={() => setExpanded(e => !e)}>
+                {expanded ? "▲ Hide stages" : "▼ Show stages"}
+            </button>
+            {expanded && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 4 }}>
+                    {(pipeline.stages || []).map(s => <PipelineStageRow key={s.id} stage={s} />)}
+                </div>
+            )}
+        </div>
+    );
+}
+
+function PipelineTab() {
+    const [data, setData]       = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError]     = useState(null);
+    const [allPipes, setAll]    = useState([]);
+    const pollRef = useRef(null);
+
+    const load = useCallback(async () => {
+        try {
+            const [activeR, statsR, listR] = await Promise.all([
+                _fetch("/pipeline/active"),
+                _fetch("/pipeline/stats"),
+                _fetch("/pipeline?limit=20"),
+            ]);
+            setData({ active: activeR?.pipelines || [], stats: statsR?.stats || null });
+            setAll(listR?.pipelines || []);
+            setError(null);
+        } catch (e) { setError(e.message); }
+        finally { setLoading(false); }
+    }, []);
+
+    useEffect(() => {
+        load();
+        pollRef.current = setInterval(load, 10_000);
+        return () => clearInterval(pollRef.current);
+    }, [load]);
+
+    if (loading && !data) return <div className="aad-loading">Loading pipeline data…</div>;
+    if (error) return <div className="aad-error-banner">{error}</div>;
+
+    const { active = [], stats } = data || {};
+
+    return (
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {/* Stat bar */}
+            {stats && (
+                <div className="aad-collab-summary">
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#3b82f6" }}>{stats.active ?? 0}</span><span className="aad-collab-stat-lbl">Active</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#22c55e" }}>{stats.completed ?? 0}</span><span className="aad-collab-stat-lbl">Completed</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#ef4444" }}>{stats.failed ?? 0}</span><span className="aad-collab-stat-lbl">Failed</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#f59e0b" }}>{stats.rollbacks ?? 0}</span><span className="aad-collab-stat-lbl">Rollbacks</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#a78bfa" }}>{stats.buildGateBlocked ?? 0}</span><span className="aad-collab-stat-lbl">Build⛔</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#a78bfa" }}>{stats.testGateBlocked ?? 0}</span><span className="aad-collab-stat-lbl">Test⛔</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#ef4444" }}>{stats.recoveryMissionsCreated ?? 0}</span><span className="aad-collab-stat-lbl">Recoveries</span></div>
+                </div>
+            )}
+
+            {active.length > 0 && (
+                <div>
+                    <div className="aad-collab-section-title">Running ({active.length})</div>
+                    <div className="aad-cards" style={{ marginTop: 8 }}>
+                        {active.map(p => <PipelineCard key={p.pipelineId} pipeline={p} />)}
+                    </div>
+                </div>
+            )}
+
+            <div className="aad-collab-section-title">Recent Pipelines ({allPipes.length})</div>
+            {allPipes.length === 0 && (
+                <div className="aad-empty">No pipelines yet. POST /pipeline/run with a goal to start.</div>
+            )}
+            <div className="aad-cards">
+                {allPipes.map(p => <PipelineCard key={p.pipelineId} pipeline={p} />)}
+            </div>
+        </div>
+    );
+}
+
 // ── Supervisor summary bar ────────────────────────────────────────────────────
 
 function SupervisorBar({ status, onStart, onStop, loading }) {
@@ -501,7 +643,7 @@ export default function AutonomousAgentDashboard() {
             {/* Header */}
             <div className="aad-header">
                 <div className="aad-header-title">Autonomous Agent Runtime</div>
-                <div className="aad-header-sub">Phase I4+I5+I6 — 10 Specialized Agents · Multi-Agent Collaboration</div>
+                <div className="aad-header-sub">Phase I4–I7 — 10 Agents · Collaboration · Autonomous Engineering Pipeline</div>
                 <button className="aad-btn aad-btn--ghost aad-refresh" onClick={load} disabled={loading}>
                     {loading ? "⟳" : "↻"} Refresh
                 </button>
@@ -527,6 +669,9 @@ export default function AutonomousAgentDashboard() {
                 </button>
                 <button className={`aad-tab ${activeTab === "collaboration" ? "active" : ""}`} onClick={() => setActiveTab("collaboration")}>
                     Collaboration
+                </button>
+                <button className={`aad-tab ${activeTab === "pipeline" ? "active" : ""}`} onClick={() => setActiveTab("pipeline")}>
+                    Pipeline (I7)
                 </button>
             </div>
 
@@ -569,6 +714,9 @@ export default function AutonomousAgentDashboard() {
 
             {/* Collaboration tab (I6) */}
             {activeTab === "collaboration" && <CollaborationTab />}
+
+            {/* Pipeline tab (I7) */}
+            {activeTab === "pipeline" && <PipelineTab />}
 
             {/* Footer */}
             <div className="aad-footer">

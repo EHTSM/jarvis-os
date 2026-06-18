@@ -465,16 +465,194 @@ async function _stage(label, capability, params, rt, opts = {}) {`,
     },
 ];
 
+// ── I7 Scenarios (10 new scenarios against I6+I7 files) ──────────────────────
+const SCENARIOS_I7 = [
+    // I7-S1: Add failed handoff count to collab engine stats
+    {
+        id:   "i7-collab-stats-failed",
+        goal: "Add handoffsFailed count to collaboration engine getStats()",
+        targetFile: "backend/services/missionCollaborationEngine.cjs",
+        patchTarget: `        totalMissions: Object.keys(store.handoffs).length,`,
+        patchReplacement: `        totalMissions: Object.keys(store.handoffs).length,
+        totalHandoffsFailed: _stats.handoffsFailed,`,
+        commitMsg: "feat(collab): expose handoffsFailed in getStats() [i7-s1]",
+        errorSignal: "missing metric handoff failures",
+        requireBuild: false,
+        lesson: "collaboration engine getStats() was missing handoffsFailed — added for observability",
+        tags: ["collaboration", "metrics", "i7"],
+    },
+    // I7-S2: Add cancelled count to pipeline coordinator stats
+    {
+        id:   "i7-pipeline-stats-cancelled",
+        goal: "Expose cancelled pipeline count in coordinator stats",
+        targetFile: "backend/services/engineeringPipelineCoordinator.cjs",
+        patchTarget: `    buildGateBlocked: 0, testGateBlocked: 0, commitGateBlocked: 0,
+    rollbacks: 0, recoveryMissionsCreated: 0,`,
+        patchReplacement: `    buildGateBlocked: 0, testGateBlocked: 0, commitGateBlocked: 0,
+    rollbacks: 0, recoveryMissionsCreated: 0,
+    // i7-s2: expose cancel count for dashboard`,
+        commitMsg: "fix(pipeline): document cancel stat in _stats block [i7-s2]",
+        errorSignal: "missing metric cancelled pipelines",
+        requireBuild: false,
+        lesson: "pipeline coordinator _stats.cancelled existed but was not commented — made explicit",
+        tags: ["pipeline", "metrics", "i7"],
+    },
+    // I7-S3: Add stalled handoff threshold constant to collab engine
+    {
+        id:   "i7-collab-stall-constant",
+        goal: "Extract stall threshold to named constant in collaboration engine",
+        targetFile: "backend/services/missionCollaborationEngine.cjs",
+        patchTarget: `function getStalledHandoffs(thresholdMs = 5 * 60_000) {`,
+        patchReplacement: `const DEFAULT_STALL_THRESHOLD_MS = 5 * 60_000; // 5 minutes
+function getStalledHandoffs(thresholdMs = DEFAULT_STALL_THRESHOLD_MS) {`,
+        commitMsg: "fix(collab): extract stall threshold to named constant [i7-s3]",
+        errorSignal: "magic number stall threshold",
+        requireBuild: false,
+        lesson: "getStalledHandoffs() used inline magic number 5*60_000 — extracted to DEFAULT_STALL_THRESHOLD_MS",
+        tags: ["constants", "collaboration", "i7"],
+    },
+    // I7-S4: Add guard for empty plan.stages before advance
+    {
+        id:   "i7-pipeline-empty-guard",
+        goal: "Add early-exit guard for zero-stage pipelines in coordinator",
+        targetFile: "backend/services/engineeringPipelineCoordinator.cjs",
+        patchTarget: `    _emit("pipeline:started", { pipelineId: run.pipelineId, goal: goal.trim(), stageCount: run.stages.length });`,
+        patchReplacement: `    if (run.stages.length === 0) {
+        run.status = "completed"; run.completedAt = new Date().toISOString();
+        _persist(); return { ...run };
+    }
+    _emit("pipeline:started", { pipelineId: run.pipelineId, goal: goal.trim(), stageCount: run.stages.length });`,
+        commitMsg: "fix(pipeline): early-exit for zero-stage pipelines [i7-s4]",
+        errorSignal: "missing guard empty pipeline stages",
+        requireBuild: false,
+        lesson: "runPipeline() would start a loop over 0 stages — added early-exit for safety",
+        tags: ["guard", "pipeline", "i7"],
+    },
+    // I7-S5: Add handoff log entry count to collab getHandoffs
+    {
+        id:   "i7-collab-handoff-total",
+        goal: "Add total count to getHandoffs return value",
+        targetFile: "backend/services/missionCollaborationEngine.cjs",
+        patchTarget: `function getHandoffs(missionId) {
+    const store = _load();
+    return (store.handoffs[missionId] || []).map(h => ({ ...h }));
+}`,
+        patchReplacement: `function getHandoffs(missionId) {
+    const store  = _load();
+    const items  = (store.handoffs[missionId] || []).map(h => ({ ...h }));
+    return items; // caller can use items.length for total
+}`,
+        commitMsg: "docs(collab): clarify getHandoffs caller uses .length for total [i7-s5]",
+        errorSignal: "unclear api contract handoffs total",
+        requireBuild: false,
+        lesson: "getHandoffs() contract was unclear — added comment to clarify total is items.length",
+        tags: ["api", "collaboration", "i7"],
+    },
+    // I7-S6: Add log entry to pipeline approval
+    {
+        id:   "i7-pipeline-approval-log",
+        goal: "Log pipeline approval event to logger",
+        targetFile: "backend/services/engineeringPipelineCoordinator.cjs",
+        patchTarget: `    run.approvalStatus = "approved";
+    _persist();
+    _emit("pipeline:approved", { pipelineId });
+    return { ...run };`,
+        patchReplacement: `    run.approvalStatus = "approved";
+    _persist();
+    logger.info(\`[PipelineCoord] Pipeline \${pipelineId} approved\`);
+    _emit("pipeline:approved", { pipelineId });
+    return { ...run };`,
+        commitMsg: "fix(pipeline): add logger.info on pipeline approval [i7-s6]",
+        errorSignal: "missing log approval event",
+        requireBuild: false,
+        lesson: "approvePipeline() emitted event but had no log line — added for operator observability",
+        tags: ["logging", "pipeline", "i7"],
+    },
+    // I7-S7: Add guard for missing missionId in collab createPlan
+    {
+        id:   "i7-collab-plan-guard",
+        goal: "Add missionId validation guard in createPlan",
+        targetFile: "backend/services/missionCollaborationEngine.cjs",
+        patchTarget: `    if (!missionId) throw new Error("createPlan: missionId required");`,
+        patchReplacement: `    if (!missionId || typeof missionId !== "string") throw new Error("createPlan: missionId must be a non-empty string");`,
+        commitMsg: "fix(collab): strengthen missionId validation in createPlan [i7-s7]",
+        errorSignal: "weak validation missionId type",
+        requireBuild: false,
+        lesson: "createPlan() only checked for falsy missionId — strengthened to also check typeof string",
+        tags: ["validation", "collaboration", "i7"],
+    },
+    // I7-S8: Add recovery mission count to pipeline getStats
+    {
+        id:   "i7-pipeline-recovery-note",
+        goal: "Document recoveryMissionsCreated in pipeline getStats docblock",
+        targetFile: "backend/services/engineeringPipelineCoordinator.cjs",
+        patchTarget: `function getStats() {
+    const store  = _load();
+    const active = Object.values(store.pipelines).filter(p => p.status === "running").length;
+    return { ..._stats, active, total: Object.keys(store.pipelines).length };
+}`,
+        patchReplacement: `function getStats() {
+    const store  = _load();
+    const active = Object.values(store.pipelines).filter(p => p.status === "running").length;
+    // recoveryMissionsCreated counts missions auto-created on build/test gate failure
+    return { ..._stats, active, total: Object.keys(store.pipelines).length };
+}`,
+        commitMsg: "docs(pipeline): clarify recoveryMissionsCreated in getStats [i7-s8]",
+        errorSignal: "undocumented stat recovery missions",
+        requireBuild: false,
+        lesson: "getStats() returned recoveryMissionsCreated without documentation — clarified meaning",
+        tags: ["docs", "pipeline", "i7"],
+    },
+    // I7-S9: Add parallel group success rate to collab getStats
+    {
+        id:   "i7-collab-parallel-rate",
+        goal: "Add parallel execution success rate to collab getStats",
+        targetFile: "backend/services/missionCollaborationEngine.cjs",
+        patchTarget: `        totalPlans:    plans.length,
+        activePlans:   plans.filter(p => p.status === "active").length,
+        completedPlans:plans.filter(p => p.status === "completed").length,`,
+        patchReplacement: `        totalPlans:    plans.length,
+        activePlans:   plans.filter(p => p.status === "active").length,
+        completedPlans:plans.filter(p => p.status === "completed").length,
+        planCompletionRate: plans.length ? Math.round(plans.filter(p=>p.status==="completed").length / plans.length * 100) : 0,`,
+        commitMsg: "feat(collab): add planCompletionRate to getStats() [i7-s9]",
+        errorSignal: "missing metric plan completion rate",
+        requireBuild: false,
+        lesson: "collab getStats() had no completion rate — added planCompletionRate for dashboard KPI",
+        tags: ["metrics", "collaboration", "i7"],
+    },
+    // I7-S10: Add validationRuns count to pipeline getStats
+    {
+        id:   "i7-pipeline-validation-count",
+        goal: "Surface validationRuns count in pipeline getStats",
+        targetFile: "backend/services/engineeringPipelineCoordinator.cjs",
+        patchTarget: `    buildGateBlocked: 0, testGateBlocked: 0, commitGateBlocked: 0,
+    rollbacks: 0, recoveryMissionsCreated: 0,
+    // i7-s2: expose cancel count for dashboard`,
+        patchReplacement: `    buildGateBlocked: 0, testGateBlocked: 0, commitGateBlocked: 0,
+    rollbacks: 0, recoveryMissionsCreated: 0,
+    // i7-s2: expose cancel count for dashboard
+    // i7-s10: validationRuns tracks I7-7 benchmark invocations`,
+        commitMsg: "docs(pipeline): document validationRuns stat [i7-s10]",
+        errorSignal: "undocumented stat validation runs",
+        requireBuild: false,
+        lesson: "validationRuns stat in pipeline coordinator was undocumented — added comment",
+        tags: ["docs", "pipeline", "i7"],
+    },
+];
+
 // ── Main benchmark runner ─────────────────────────────────────────────────
 
 let _lastReport = null;
 
 async function runAll(opts = {}) {
     const suiteStart = Date.now();
+    const useI7 = opts.suite === "i7" || opts.suite === "all";
+    const scenarios = useI7 ? SCENARIOS_I7 : SCENARIOS;
 
     logger.info("[Benchmark] ═══════════════════════════════════");
-    logger.info("[Benchmark] Engineering Benchmark Suite — Sprint 8");
-    logger.info("[Benchmark] 10 scenarios against live repository");
+    logger.info(`[Benchmark] Engineering Benchmark Suite — ${useI7 ? "I7 (10 new scenarios)" : "Sprint 8 (10 baseline scenarios)"}`);
+    logger.info(`[Benchmark] ${scenarios.length} scenarios against live repository`);
     logger.info("[Benchmark] ═══════════════════════════════════");
 
     // Bootstrap runtime once for all scenarios
@@ -485,9 +663,9 @@ async function runAll(opts = {}) {
 
     const results = [];
 
-    for (let i = 0; i < SCENARIOS.length; i++) {
-        const def = SCENARIOS[i];
-        logger.info(`[Benchmark] ── Scenario ${i+1}/10: ${def.id} ──`);
+    for (let i = 0; i < scenarios.length; i++) {
+        const def = scenarios[i];
+        logger.info(`[Benchmark] ── Scenario ${i+1}/${scenarios.length}: ${def.id} ──`);
         try {
             const r = await _run(def, rt, opts);
             results.push(r);
@@ -510,14 +688,15 @@ async function runAll(opts = {}) {
     try {
         const cle = _cle();
         if (cle) {
+            const suiteName = useI7 ? "I7" : "Sprint 8";
             cle.createLesson({
                 type:   "success",
                 source: "engineering_benchmark",
-                title:  `Sprint 8 Benchmark: ${report.successRate}% success rate`,
-                detail: `10 scenarios, ${report.successCount} passed, ${report.failCount} failed. ` +
+                title:  `${suiteName} Benchmark: ${report.successRate}% success rate`,
+                detail: `${scenarios.length} scenarios, ${report.successCount} passed, ${report.failCount} failed. ` +
                         `Avg time: ${report.avgMs}ms. Avg confidence: ${report.avgConfidence}%. ` +
                         `V1 production readiness: ${report.productionReadinessScore}%.`,
-                tags:   ["benchmark", "sprint8", "v1"],
+                tags:   ["benchmark", suiteName.toLowerCase(), "v1"],
             });
         }
     } catch {}
@@ -607,4 +786,4 @@ async function runScenario(id, opts = {}) {
 
 function getReport() { return _lastReport; }
 
-module.exports = { runAll, runScenario, getReport, SCENARIOS };
+module.exports = { runAll, runScenario, getReport, SCENARIOS, SCENARIOS_I7 };
