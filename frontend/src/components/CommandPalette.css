@@ -101,6 +101,11 @@
 
 .cp-group { padding: 0 8px 4px; }
 
+/* Recent group gets a special tint */
+.cp-group:first-child .cp-group-label[data-group="Recent"] {
+  color: rgba(124, 111, 255, 0.7);
+}
+
 .cp-group-label {
   padding: 8px 10px 5px;
   font-size: var(--label-size);

@@ -382,6 +382,7 @@
 .ew-qs-item__sub   { font-size: 11px; color: #6b7280; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ew-qs-item__type  { font-size: 10px; color: #374151; text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0; }
 .ew-qs-empty { padding: 20px; text-align: center; color: #4b5563; font-size: 13px; }
+.ew-qs-empty__hint { font-size: 11px; color: #374151; margin-top: 4px; }
 .ew-qs-footer {
   display: flex;
   gap: 16px;
@@ -427,3 +428,28 @@
 }
 .ew-os-home-btn::before { content: '← '; opacity: 0.6; }
 .ew-os-home-btn:hover { background: rgba(16,185,129,0.14); }
+
+/* J2 topbar wrapper — holds breadcrumb next to home btn */
+.ew-topbar {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  background: rgba(16,185,129,0.04);
+  border-bottom: 1px solid rgba(16,185,129,0.12);
+}
+.ew-topbar .ew-os-home-btn {
+  border-bottom: none;
+  width: auto;
+  flex-shrink: 0;
+}
+.ew-topbar__sep {
+  color: rgba(255,255,255,0.2);
+  font-size: 12px;
+  padding: 0 4px;
+}
+.ew-topbar__view {
+  font-size: 11px;
+  color: #8994b0;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
+}

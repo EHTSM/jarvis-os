@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useIpcCleanup } from '../hooks/useResourceManager';
 import './FileExplorer.css';
 
@@ -190,18 +190,28 @@ export default function FileExplorer({ rootDir, cwd, onFileOpen, className = '' 
     return () => clearTimeout(searchTimer.current);
   }, [search, root]);
 
-  // Global Cmd+P shortcut
-  useEffect(() => {
-    const handler = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'p') {
-        e.preventDefault();
-        setActiveTab('search');
-        setTimeout(() => searchInput.current?.focus(), 50);
+  // Flatten visible tree nodes for keyboard navigation
+  const flatNodes = useMemo(() => {
+    if (activeTab !== 'tree' || !tree?.tree) return [];
+    const out = [];
+    function flatten(nodes, depth = 0) {
+      for (const n of nodes) {
+        out.push(n);
+        if (n.isDir && n._expanded !== false && n.children?.length) flatten(n.children, depth + 1);
       }
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, []);
+    }
+    flatten(tree.tree);
+    return out;
+  }, [activeTab, tree]);
+
+  // Keyboard navigation inside file tree
+  const handleTreeKey = useCallback((e) => {
+    if (activeTab !== 'tree' || !flatNodes.length) return;
+    const idx = flatNodes.findIndex(n => n.path === selected);
+    if (e.key === 'ArrowDown') { e.preventDefault(); const next = flatNodes[Math.min(idx + 1, flatNodes.length - 1)]; if (next) setSelected(next.path); }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); const prev = flatNodes[Math.max(idx - 1, 0)]; if (prev) setSelected(prev.path); }
+    if (e.key === 'Enter' && selected) { const n = flatNodes.find(x => x.path === selected); if (n && !n.isDir) handleOpen(n.path); }
+  }, [activeTab, flatNodes, selected, handleOpen]);
 
   const handleOpen = useCallback((path) => {
     if (onFileOpen) onFileOpen(path);
@@ -277,8 +287,8 @@ export default function FileExplorer({ rootDir, cwd, onFileOpen, className = '' 
         </div>
       )}
 
-      {/* Body */}
-      <div className="file-explorer__body">
+      {/* Body — tabIndex for keyboard navigation */}
+      <div className="file-explorer__body" tabIndex={0} onKeyDown={handleTreeKey} style={{ outline: 'none' }}>
         {/* Tree tab */}
         {activeTab === 'tree' && (
           loading ? <div className="file-explorer__status">Loading…</div>

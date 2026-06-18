@@ -1,0 +1,534 @@
+/* CodeEditorPane — J2 Engineering Code Workspace */
+
+.cep-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #1a1d2e;
+  color: #c8cdd8;
+  font-family: inherit;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Tab bar ──────────────────────────────────────────────────────────────── */
+
+.cep-tabbar-wrap {
+  display: flex;
+  align-items: center;
+  background: #161928;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.cep-tabbar {
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  flex: 1;
+  min-height: 32px;
+  scrollbar-width: none;
+}
+.cep-tabbar::-webkit-scrollbar { display: none; }
+
+.cep-tab {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 10px;
+  min-width: 100px;
+  max-width: 200px;
+  cursor: pointer;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #8994b0;
+  font-size: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.12s, color 0.12s;
+  user-select: none;
+}
+.cep-tab:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #c8cdd8;
+}
+.cep-tab--active {
+  background: #1a1d2e;
+  color: #e8ecf4;
+  border-bottom-color: #7c6fff;
+}
+.cep-tab--dirty .cep-tab__name {
+  font-style: italic;
+}
+.cep-tab--pinned .cep-tab__name::after {
+  content: '';
+}
+
+.cep-tab__pin {
+  font-size: 9px;
+  color: #7c6fff;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.cep-tab__name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+.cep-tab__dirty {
+  color: #f0b429;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+.cep-tab__close {
+  opacity: 0;
+  background: none;
+  border: none;
+  color: #8994b0;
+  cursor: pointer;
+  font-size: 10px;
+  padding: 2px 3px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: opacity 0.1s, background 0.1s;
+}
+.cep-tab:hover .cep-tab__close,
+.cep-tab--active .cep-tab__close {
+  opacity: 1;
+}
+.cep-tab__close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f55b5b;
+}
+
+.cep-tabbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+
+/* ── Icon buttons ─────────────────────────────────────────────────────────── */
+
+.cep-icon-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #8994b0;
+  border-radius: 4px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 11px;
+  transition: background 0.12s, color 0.12s;
+}
+.cep-icon-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.06);
+  color: #c8cdd8;
+}
+.cep-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.cep-icon-btn--active {
+  background: rgba(124, 111, 255, 0.2);
+  border-color: rgba(124, 111, 255, 0.4);
+  color: #a89fff;
+}
+
+/* ── Go-to-line overlay ───────────────────────────────────────────────────── */
+
+.cep-goto-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 36px;
+}
+
+.cep-goto-dialog {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1e2235;
+  border: 1px solid rgba(124, 111, 255, 0.4);
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  min-width: 220px;
+}
+
+.cep-goto-label {
+  font-size: 11px;
+  color: #8994b0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cep-goto-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 4px;
+  color: #e8ecf4;
+  font-size: 13px;
+  padding: 4px 8px;
+  font-family: 'SF Mono', monospace;
+  outline: none;
+  width: 100px;
+}
+.cep-goto-input:focus { border-color: #7c6fff; }
+
+/* ── Welcome state ────────────────────────────────────────────────────────── */
+
+.cep-welcome {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #8994b0;
+}
+.cep-welcome__icon {
+  font-size: 40px;
+  opacity: 0.2;
+}
+.cep-welcome__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #c8cdd8;
+}
+.cep-welcome__hint {
+  font-size: 12px;
+}
+
+/* ── Editor panels ────────────────────────────────────────────────────────── */
+
+.cep-editors {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.cep-editor-panel {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.cep-editor-panel .cm-editor {
+  height: 100%;
+}
+.cep-editor-panel .cm-scroller {
+  overflow: auto;
+}
+
+/* ── Bottom panel ─────────────────────────────────────────────────────────── */
+
+.cep-bottom {
+  display: flex;
+  flex-direction: column;
+  height: 180px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: #161928;
+  flex-shrink: 0;
+}
+
+.cep-bottom__tabs {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+  gap: 1px;
+  padding: 0 4px;
+}
+
+.cep-bottom__tab {
+  padding: 0 10px;
+  height: 100%;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #8994b0;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.12s, border-color 0.12s;
+}
+.cep-bottom__tab:hover { color: #c8cdd8; }
+.cep-bottom__tab--active {
+  color: #e8ecf4;
+  border-bottom-color: #7c6fff;
+}
+
+.cep-bottom__close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #8994b0;
+  cursor: pointer;
+  font-size: 11px;
+  padding: 0 6px;
+}
+.cep-bottom__close:hover { color: #f55b5b; }
+
+.cep-bottom__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+/* ── Problems ─────────────────────────────────────────────────────────────── */
+
+.cep-problem {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: background 0.1s;
+}
+.cep-problem:hover { background: rgba(255, 255, 255, 0.04); }
+.cep-problem--error { border-left-color: #f55b5b; }
+.cep-problem--warning { border-left-color: #f0b429; }
+.cep-problem--info { border-left-color: #44a2ff; }
+
+.cep-problem__icon {
+  flex-shrink: 0;
+  font-size: 11px;
+}
+.cep-problem--error .cep-problem__icon { color: #f55b5b; }
+.cep-problem--warning .cep-problem__icon { color: #f0b429; }
+.cep-problem--info .cep-problem__icon { color: #44a2ff; }
+
+.cep-problem__msg {
+  flex: 1;
+  color: #c8cdd8;
+}
+.cep-problem__loc {
+  color: #8994b0;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.cep-problems-empty {
+  padding: 12px 16px;
+  color: #8994b0;
+  font-size: 12px;
+}
+
+.cep-output {
+  padding: 6px 12px;
+  font-family: 'SF Mono', monospace;
+  font-size: 12px;
+  color: #8994b0;
+  white-space: pre-wrap;
+}
+
+/* ── Status bar ───────────────────────────────────────────────────────────── */
+
+.cep-statusbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 22px;
+  padding: 0 10px;
+  background: #0f1120;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
+  font-size: 11px;
+  color: #8994b0;
+}
+
+.cep-statusbar__path {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'SF Mono', monospace;
+  font-size: 10px;
+}
+.cep-statusbar__dirty { color: #f0b429; }
+.cep-statusbar__hint { color: #4a526a; }
+.cep-statusbar__msg {
+  background: rgba(124, 111, 255, 0.15);
+  color: #7c6fff;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+}
+.cep-statusbar__mission-btn {
+  background: none;
+  border: 1px solid rgba(82, 214, 138, 0.3);
+  color: #52d68a;
+  border-radius: 3px;
+  padding: 0 6px;
+  font-size: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.cep-statusbar__mission-btn:hover { background: rgba(82, 214, 138, 0.1); }
+
+.cep-statusbar__problems-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.cep-statusbar__badge {
+  font-size: 10px;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+.cep-statusbar__badge--error { color: #f55b5b; background: rgba(245, 91, 91, 0.12); }
+.cep-statusbar__badge--warn  { color: #f0b429; background: rgba(240, 180, 41, 0.12); }
+
+/* ── AI context menu ──────────────────────────────────────────────────────── */
+
+.cep-ai-menu {
+  position: fixed;
+  z-index: 9999;
+  background: #1e2235;
+  border: 1px solid rgba(124, 111, 255, 0.3);
+  border-radius: 8px;
+  padding: 4px;
+  min-width: 160px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.cep-ai-menu__header {
+  padding: 4px 10px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7c6fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 2px;
+}
+
+.cep-ai-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 10px;
+  background: none;
+  border: none;
+  color: #c8cdd8;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-family: inherit;
+  text-align: left;
+  transition: background 0.1s, color 0.1s;
+}
+.cep-ai-menu__item:hover {
+  background: rgba(124, 111, 255, 0.12);
+  color: #e8ecf4;
+}
+.cep-ai-menu__icon {
+  font-size: 12px;
+  color: #7c6fff;
+  width: 14px;
+  text-align: center;
+}
+
+/* ── Rename dialog ────────────────────────────────────────────────────────── */
+
+.cep-rename-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.cep-rename-dialog {
+  background: #1e2235;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 20px;
+  width: 340px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+.cep-rename-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8ecf4;
+  margin-bottom: 12px;
+}
+.cep-rename-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: #e8ecf4;
+  font-size: 13px;
+  padding: 7px 10px;
+  font-family: 'SF Mono', monospace;
+  outline: none;
+  box-sizing: border-box;
+}
+.cep-rename-input:focus { border-color: #7c6fff; }
+
+.cep-rename-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+
+.cep-btn {
+  padding: 5px 14px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  color: #c8cdd8;
+  font-family: inherit;
+  transition: background 0.12s, color 0.12s;
+}
+.cep-btn:hover { background: rgba(255, 255, 255, 0.1); }
+.cep-btn--primary {
+  background: rgba(124, 111, 255, 0.2);
+  border-color: rgba(124, 111, 255, 0.4);
+  color: #a89fff;
+}
+.cep-btn--primary:hover {
+  background: rgba(124, 111, 255, 0.3);
+  color: #c0b8ff;
+}
+.cep-btn--sm { padding: 4px 10px; }
+
+/* ── Unavailable state ────────────────────────────────────────────────────── */
+
+.cep-unavailable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #4a526a;
+  font-size: 13px;
+}

@@ -137,11 +137,27 @@ function _highlight(label, query) {
   );
 }
 
+// ── Recent commands (localStorage) ────────────────────────────────
+
+const RECENTS_KEY = 'cp-recents';
+const MAX_RECENTS = 5;
+
+function getRecents() {
+  try { return JSON.parse(localStorage.getItem(RECENTS_KEY) || '[]'); } catch { return []; }
+}
+function pushRecent(id) {
+  try {
+    const prev = getRecents().filter(r => r !== id);
+    localStorage.setItem(RECENTS_KEY, JSON.stringify([id, ...prev].slice(0, MAX_RECENTS)));
+  } catch {}
+}
+
 // ── Component ──────────────────────────────────────────────────────
 
 export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
   const [query,   setQuery]   = useState("");
   const [active,  setActive]  = useState(0);
+  const [recents, setRecents] = useState(getRecents);
   const inputRef  = useRef(null);
   const listRef   = useRef(null);
 
@@ -150,16 +166,32 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
     if (open) {
       setQuery("");
       setActive(0);
+      setRecents(getRecents());
       setTimeout(() => inputRef.current?.focus(), 30);
     }
   }, [open]);
 
+  // Recent items surfaced at top when no query
+  const recentActions = useMemo(() => {
+    if (query.trim()) return [];
+    return recents
+      .map(id => ALL_ACTIONS.find(a => a.id === id))
+      .filter(Boolean)
+      .map(a => ({ ...a, _recent: true }));
+  }, [recents, query]);
+
   const results = useMemo(() => {
-    return ALL_ACTIONS
+    const base = ALL_ACTIONS
       .map(a => ({ ...a, score: _score(a.label, query) }))
       .filter(a => a.score > 0)
       .sort((a, b) => b.score - a.score);
-  }, [query]);
+    if (!query.trim() && recentActions.length) {
+      // Deduplicate recents from base
+      const recentIds = new Set(recentActions.map(r => r.id));
+      return [...recentActions, ...base.filter(a => !recentIds.has(a.id))];
+    }
+    return base;
+  }, [query, recentActions]);
 
   // Clamp active index when results change
   useEffect(() => {
@@ -174,6 +206,7 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
 
   const execute = useCallback((action) => {
     if (!action) return;
+    pushRecent(action.id);
     onClose();
     if (action.type === "ask") {
       onNavigate?.("chat");
@@ -208,9 +241,9 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
 
   if (!open) return null;
 
-  // Group results for display
+  // Group results for display — recents appear under "Recent" group
   const grouped = results.reduce((acc, action, idx) => {
-    const g = action.group;
+    const g = action._recent ? 'Recent' : action.group;
     if (!acc[g]) acc[g] = [];
     acc[g].push({ ...action, _idx: idx });
     return acc;

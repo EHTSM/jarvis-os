@@ -1,13 +1,27 @@
+/**
+ * VisualGit — J3 Mission-Aware Git Workspace
+ *
+ * Extends existing git client with mission awareness:
+ * - Mission tab: active mission context, git history, commit timeline
+ * - AI-generated commit messages from diff/mission context
+ * - Approval-gated commits for missions that require it
+ * - Mission branch creation (auto-slugged from objective)
+ * - Rollback with mission timeline recording
+ * - Review request recorded as mission approval
+ * - All git ops emit to executionEventBus → Observer panel
+ */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useMissionGit } from '../hooks/useMissionGit';
 import './VisualGit.css';
 
-const api = () => window.electronAPI;
+const api        = () => window.electronAPI;
 const isElectron = () => !!window.electronAPI?.isElectron;
 
 // ── Utilities ──────────────────────────────────────────────────────────
+
 function useGitData(fetcher, interval = 0) {
-  const [data, setData]     = useState(null);
-  const [error, setError]   = useState(null);
+  const [data,    setData]    = useState(null);
+  const [error,   setError]   = useState(null);
   const [loading, setLoading] = useState(true);
   const mounted = useRef(true);
 
@@ -36,6 +50,7 @@ function useGitData(fetcher, interval = 0) {
 }
 
 // ── Diff view ──────────────────────────────────────────────────────────
+
 function DiffLine({ line }) {
   const isAdd  = line.startsWith('+') && !line.startsWith('+++');
   const isDel  = line.startsWith('-') && !line.startsWith('---');
@@ -52,11 +67,9 @@ function DiffLine({ line }) {
 function DiffViewer({ diff, title, sideBySide = false }) {
   const [mode, setMode] = useState(sideBySide ? 'split' : 'unified');
   if (!diff) return <div className="vg-empty">No diff available.</div>;
-
   const lines = diff.split('\n');
 
   if (mode === 'split') {
-    // Build side-by-side pairs
     const left = [], right = [];
     lines.forEach(line => {
       if (line.startsWith('+') && !line.startsWith('+++')) {
@@ -70,13 +83,12 @@ function DiffViewer({ diff, title, sideBySide = false }) {
         right.push({ text: line, type: '' });
       }
     });
-
     return (
       <div className="vg-diff-viewer">
         <div className="vg-diff-toolbar">
           {title && <span className="vg-diff-title">{title}</span>}
           <button className={`vg-btn-xs${mode === 'unified' ? ' active' : ''}`} onClick={() => setMode('unified')}>Unified</button>
-          <button className={`vg-btn-xs${mode === 'split' ? ' active' : ''}`}   onClick={() => setMode('split')}>Split</button>
+          <button className={`vg-btn-xs${mode === 'split'   ? ' active' : ''}`} onClick={() => setMode('split')}>Split</button>
         </div>
         <div className="vg-diff-split">
           <div className="vg-diff-split-pane">
@@ -96,7 +108,7 @@ function DiffViewer({ diff, title, sideBySide = false }) {
       <div className="vg-diff-toolbar">
         {title && <span className="vg-diff-title">{title}</span>}
         <button className={`vg-btn-xs${mode === 'unified' ? ' active' : ''}`} onClick={() => setMode('unified')}>Unified</button>
-        <button className={`vg-btn-xs${mode === 'split' ? ' active' : ''}`}   onClick={() => setMode('split')}>Split</button>
+        <button className={`vg-btn-xs${mode === 'split'   ? ' active' : ''}`} onClick={() => setMode('split')}>Split</button>
       </div>
       <div className="vg-diff-body">
         {lines.map((line, i) => <DiffLine key={i} line={line} />)}
@@ -105,27 +117,36 @@ function DiffViewer({ diff, title, sideBySide = false }) {
   );
 }
 
-// ── Commit graph ───────────────────────────────────────────────────────
-function CommitGraph({ commits, onSelect, selected }) {
+// ── Commit graph with mission badges ───────────────────────────────────
+
+function CommitGraph({ commits, onSelect, selected, missionHistory = [] }) {
   if (!commits?.length) return <div className="vg-empty">No commits found.</div>;
+
+  // Build a set of mission-linked commit hashes for quick lookup
+  const missionHashes = new Set(
+    missionHistory.map(h => h.commitHash).filter(Boolean)
+  );
+  const hashToMission = {};
+  for (const h of missionHistory) {
+    if (h.commitHash) hashToMission[h.commitHash] = h;
+  }
 
   return (
     <div className="vg-commit-graph">
       {commits.map((c, i) => {
         const isSelected = selected?.hash === c.hash;
+        const mCtx       = hashToMission[c.hash] || hashToMission[c.hash?.slice(0, 8)];
         return (
           <div
             key={c.hash}
-            className={`vg-commit-row${isSelected ? ' vg-commit-row--selected' : ''}`}
+            className={`vg-commit-row${isSelected ? ' vg-commit-row--selected' : ''}${mCtx ? ' vg-commit-row--mission' : ''}`}
             onClick={() => onSelect(c)}
           >
-            {/* Graph column */}
-            <div className="vg-commit-graph-col">
+            <div className="vg-commit-graph__track">
               <div className="vg-commit-line vg-commit-line--top" style={{ opacity: i === 0 ? 0 : 1 }} />
-              <div className={`vg-commit-dot${isSelected ? ' vg-commit-dot--selected' : ''}`} />
+              <div className={`vg-commit-dot${mCtx ? ' vg-commit-dot--mission' : ''}`} />
               <div className="vg-commit-line vg-commit-line--bot" style={{ opacity: i === commits.length - 1 ? 0 : 1 }} />
             </div>
-            {/* Commit info */}
             <div className="vg-commit-info">
               <div className="vg-commit-header">
                 <span className="vg-commit-hash" title={c.hash}>{c.hash?.slice(0, 7)}</span>
@@ -134,6 +155,11 @@ function CommitGraph({ commits, onSelect, selected }) {
                     {ref}
                   </span>
                 ))}
+                {mCtx && (
+                  <span className="vg-ref-badge vg-ref-badge--mission" title={mCtx.objective}>
+                    ◎ {mCtx.objective?.slice(0, 30)}
+                  </span>
+                )}
               </div>
               <div className="vg-commit-subject">{c.subject}</div>
               <div className="vg-commit-meta">
@@ -148,30 +174,85 @@ function CommitGraph({ commits, onSelect, selected }) {
   );
 }
 
-// ── Branch manager ─────────────────────────────────────────────────────
-function BranchManager({ cwd, onMessage }) {
-  const getBranches = useCallback(() => isElectron() ? api().gitBranches(cwd) : Promise.resolve({ branches: [], current: '' }), [cwd]);
+// ── Branch manager with mission branch creation ────────────────────────
+
+function BranchManager({ cwd, onMessage, missionGit }) {
+  const { missionContext, missionBranch, activeMission } = missionGit;
+  const [creating,      setCreating]      = useState(false);
+  const [newBranch,     setNewBranch]     = useState('');
+  const [createLoading, setCreateLoading] = useState(false);
+
+  const getBranches = useCallback(
+    () => isElectron() ? api().gitBranches(cwd) : Promise.resolve({ branches: [], current: '' }),
+    [cwd]
+  );
   const { data, loading, error, refresh } = useGitData(getBranches);
 
   const checkout = useCallback(async (branch) => {
-    try {
-      const result = await api().gitCheckout(cwd, branch);
-      if (result?.error) throw new Error(result.error);
-      onMessage?.(`Checked out ${branch}`);
+    const r = await missionBranch(branch, 'checkout');
+    if (r?.error) onMessage?.(`Error: ${r.error}`, 'error');
+    else { onMessage?.(`Checked out ${branch}`); refresh(); }
+  }, [missionBranch, onMessage, refresh]);
+
+  const createBranch = useCallback(async () => {
+    if (!newBranch.trim()) return;
+    setCreateLoading(true);
+    const r = await missionBranch(newBranch.trim(), 'create');
+    setCreateLoading(false);
+    if (r?.error) onMessage?.(`Error: ${r.error}`, 'error');
+    else {
+      onMessage?.(`Created branch ${newBranch.trim()}${activeMission ? ' — recorded in mission' : ''}`);
+      setNewBranch('');
+      setCreating(false);
       refresh();
-    } catch (e) {
-      onMessage?.(`Error: ${e.message}`, 'error');
     }
-  }, [cwd, onMessage, refresh]);
+  }, [newBranch, missionBranch, activeMission, onMessage, refresh]);
 
   if (loading) return <div className="vg-empty">Loading branches…</div>;
   if (error)   return <div className="vg-error">{error}</div>;
 
   const branches = data?.branches || [];
-  const current  = data?.current || '';
+  const current  = data?.current  || '';
 
   return (
     <div className="vg-branch-list">
+      {/* Mission branch suggestion */}
+      {missionContext?.suggestedBranch && !branches.includes(missionContext.suggestedBranch) && (
+        <div className="vg-mission-branch-hint">
+          <span className="vg-mission-branch-hint__label">◎ Mission branch</span>
+          <code className="vg-mission-branch-hint__name">{missionContext.suggestedBranch}</code>
+          <button
+            className="vg-btn-xs vg-btn-xs--purple"
+            onClick={() => { setNewBranch(missionContext.suggestedBranch); setCreating(true); }}
+          >
+            Create
+          </button>
+        </div>
+      )}
+
+      {/* Create branch form */}
+      {creating ? (
+        <div className="vg-branch-create">
+          <input
+            className="vg-input"
+            value={newBranch}
+            onChange={e => setNewBranch(e.target.value)}
+            placeholder="branch-name"
+            onKeyDown={e => { if (e.key === 'Enter') createBranch(); if (e.key === 'Escape') setCreating(false); }}
+            autoFocus
+          />
+          <button className="vg-btn-sm vg-btn-sm--green" onClick={createBranch} disabled={createLoading}>
+            {createLoading ? '…' : 'Create'}
+          </button>
+          <button className="vg-btn-xs" onClick={() => setCreating(false)}>Cancel</button>
+        </div>
+      ) : (
+        <button className="vg-btn-sm vg-branch-create-btn" onClick={() => setCreating(true)}>
+          + New Branch
+        </button>
+      )}
+
+      {/* Branch list */}
       {branches.map(b => (
         <div
           key={b}
@@ -189,6 +270,7 @@ function BranchManager({ cwd, onMessage }) {
 }
 
 // ── Stash manager ──────────────────────────────────────────────────────
+
 function StashManager({ cwd }) {
   const [stashes, setStashes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -198,7 +280,7 @@ function StashManager({ cwd }) {
     if (!isElectron()) return;
     setLoading(true);
     try {
-      const result = await api().shellExec({ command:'git stash list --format="%gd|%s|%ci"', cwd });
+      const result = await api().shellExec({ command: 'git stash list --format="%gd|%s|%ci"', cwd });
       const lines  = (result?.stdout || '').split('\n').filter(Boolean);
       setStashes(lines.map(l => { const [ref, subject, date] = l.split('|'); return { ref, subject, date }; }));
     } catch {}
@@ -208,7 +290,7 @@ function StashManager({ cwd }) {
   useEffect(() => { load(); }, [load]);
 
   const stashCmd = useCallback(async (cmd) => {
-    const result = await api().shellExec({ command:`git ${cmd}`, cwd });
+    const result = await api().shellExec({ command: `git ${cmd}`, cwd });
     setMsg(result?.stdout?.trim() || result?.stderr?.trim() || 'Done');
     load();
   }, [cwd, load]);
@@ -239,6 +321,7 @@ function StashManager({ cwd }) {
 }
 
 // ── Conflict resolution ────────────────────────────────────────────────
+
 function ConflictResolution({ cwd }) {
   const [conflicts, setConflicts] = useState([]);
   const [selected,  setSelected]  = useState(null);
@@ -249,9 +332,8 @@ function ConflictResolution({ cwd }) {
     if (!isElectron()) return;
     setLoading(true);
     try {
-      const result = await api().shellExec({ command:'git diff --name-only --diff-filter=U', cwd });
-      const files  = (result?.stdout || '').split('\n').filter(Boolean);
-      setConflicts(files);
+      const result = await api().shellExec({ command: 'git diff --name-only --diff-filter=U', cwd });
+      setConflicts((result?.stdout || '').split('\n').filter(Boolean));
     } catch {}
     setLoading(false);
   }, [cwd]);
@@ -269,7 +351,7 @@ function ConflictResolution({ cwd }) {
     const cmd = strategy === 'ours'
       ? `git checkout --ours "${selected}" && git add "${selected}"`
       : `git checkout --theirs "${selected}" && git add "${selected}"`;
-    await api().shellExec({ cmd, cwd });
+    await api().shellExec({ command: cmd, cwd });
     load();
     setSelected(null);
     setContent('');
@@ -281,14 +363,13 @@ function ConflictResolution({ cwd }) {
   return (
     <div className="vg-conflict">
       <div className="vg-conflict__list">
-        <div className="vg-conflict__count">{conflicts.length} conflict{conflicts.length > 1 ? 's' : ''}</div>
         {conflicts.map(f => (
           <div
             key={f}
             className={`vg-conflict__file${selected === f ? ' vg-conflict__file--selected' : ''}`}
             onClick={() => viewConflict(f)}
           >
-            <span className="vg-conflict__icon">⚠</span>
+            <span className="vg-status-badge vg-status-badge--red">!</span>
             {f}
           </div>
         ))}
@@ -307,84 +388,370 @@ function ConflictResolution({ cwd }) {
   );
 }
 
-// ── Commit dialog ──────────────────────────────────────────────────────
-function CommitDialog({ cwd, onCommit }) {
-  const [message, setMessage] = useState('');
-  const [status,  setStatus]  = useState(null);
-  const [loading, setLoading] = useState(false);
+// ── Mission-Aware Commit Dialog ────────────────────────────────────────
 
-  const loadStatus = useCallback(async () => {
-    if (!isElectron()) return;
-    const result = await api().gitStatus(cwd);
-    setStatus(result);
-  }, [cwd]);
+function MissionCommitDialog({ cwd, missionGit, onCommit }) {
+  const {
+    activeMission, missionContext, pendingApproval,
+    aiSummary, aiLoading,
+    missionCommit, approveCommit, generateSummary,
+    gitStatus, refreshStatus,
+    setAiSummary,
+  } = missionGit;
 
-  useEffect(() => { loadStatus(); }, [loadStatus]);
+  const [message,    setMessage]    = useState('');
+  const [isFinal,    setIsFinal]    = useState(false);
+  const [loading,    setLoading]    = useState(false);
+  const [diffCache,  setDiffCache]  = useState('');
+  const [diffLoaded, setDiffLoaded] = useState(false);
+
+  // Pre-load diff for AI summary
+  useEffect(() => {
+    if (!isElectron() || !cwd || diffLoaded) return;
+    api().gitDiff(cwd, null).then(r => {
+      setDiffCache(r?.diff || r?.stdout || '');
+      setDiffLoaded(true);
+    }).catch(() => {});
+  }, [cwd, diffLoaded]);
+
+  const staged   = gitStatus?.staged   || [];
+  const unstaged = gitStatus?.unstaged || [];
+
+  const handleAI = useCallback(async () => {
+    const files = [...staged, ...unstaged].map(f => f.path || f);
+    const summary = await generateSummary(diffCache, files);
+    if (summary) setMessage(summary);
+  }, [staged, unstaged, diffCache, generateSummary]);
+
+  useEffect(() => {
+    if (aiSummary && !message) setMessage(aiSummary);
+  }, [aiSummary]); // eslint-disable-line
 
   const commit = useCallback(async () => {
     if (!message.trim()) return;
     setLoading(true);
-    try {
-      await api().shellExec({ command:'git add -A', cwd });
-      const result = await api().gitCommit(cwd, message.trim());
-      if (result?.error) throw new Error(result.error);
+    const r = await missionCommit(message.trim(), { isFinal });
+    setLoading(false);
+    if (r?.error) {
+      onCommit?.(`Error: ${r.error}`, 'error');
+    } else if (r?.pendingApproval) {
+      onCommit?.('Approval requested — commit queued for review', 'warn');
+    } else {
       setMessage('');
-      onCommit?.(`Committed: ${message.trim()}`);
-      loadStatus();
-    } catch (e) {
-      onCommit?.(`Error: ${e.message}`, 'error');
-    } finally {
-      setLoading(false);
+      setIsFinal(false);
+      onCommit?.(
+        activeMission
+          ? isFinal
+            ? `Mission complete: ${message.trim()}`
+            : `Committed + recorded in mission: ${message.trim()}`
+          : `Committed: ${message.trim()}`,
+        'ok'
+      );
     }
-  }, [message, cwd, onCommit, loadStatus]);
-
-  const staged   = status?.staged   || [];
-  const unstaged = status?.unstaged || [];
+  }, [message, isFinal, missionCommit, activeMission, onCommit]);
 
   return (
     <div className="vg-commit-dialog">
-      <div className="vg-commit-dialog__section">
-        <div className="vg-commit-dialog__label">Staged ({staged.length})</div>
-        {staged.length ? staged.map((f, i) => (
-          <div key={i} className="vg-status-file vg-status-file--staged">
-            <span className="vg-status-badge vg-status-badge--green">{f.x || 'M'}</span>
-            <span>{f.path || f}</span>
+      {/* Mission context banner */}
+      {activeMission && (
+        <div className="vg-mission-banner">
+          <span className="vg-mission-banner__icon">◎</span>
+          <div className="vg-mission-banner__body">
+            <div className="vg-mission-banner__label">Active Mission</div>
+            <div className="vg-mission-banner__obj">{activeMission.objective}</div>
+            {missionContext?.commitCount > 0 && (
+              <div className="vg-mission-banner__commits">
+                {missionContext.commitCount} commit{missionContext.commitCount !== 1 ? 's' : ''} recorded
+              </div>
+            )}
           </div>
-        )) : <div className="vg-empty">Nothing staged.</div>}
+          <span className={`vg-mission-banner__status vg-mission-banner__status--${activeMission.status}`}>
+            {activeMission.status}
+          </span>
+        </div>
+      )}
+
+      {/* Pending approval notice */}
+      {pendingApproval && (
+        <div className="vg-approval-gate">
+          <div className="vg-approval-gate__title">⚠ Approval Required</div>
+          <div className="vg-approval-gate__desc">
+            This mission requires approval before commits land. The request has been recorded.
+          </div>
+          <div className="vg-approval-gate__actions">
+            <button className="vg-btn-sm vg-btn-sm--green" onClick={() => approveCommit(message)}>
+              Approve &amp; Commit
+            </button>
+            <button className="vg-btn-xs" onClick={() => missionGit.setPendingApproval(false)}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* File status — staged files with unstage button */}
+      <div className="vg-commit-dialog__section">
+        <div className="vg-commit-dialog__label-row">
+          <span>Staged ({staged.length})</span>
+          {staged.length > 0 && (
+            <button className="vg-btn-xs vg-btn-xs--dim" onClick={async () => {
+              await api().shellExec({ command: 'git restore --staged .', cwd });
+              refreshStatus?.();
+            }} title="Unstage all">Unstage all</button>
+          )}
+        </div>
+        {staged.length
+          ? staged.map((f, i) => (
+              <div key={i} className="vg-status-file vg-status-file--staged">
+                <span className="vg-status-badge vg-status-badge--green">{f.x || 'M'}</span>
+                <span className="vg-status-file__name">{f.path || f}</span>
+                <button className="vg-status-file__action" onClick={async e => {
+                  e.stopPropagation();
+                  await api().shellExec({ command: `git restore --staged "${f.path || f}"`, cwd });
+                  refreshStatus?.();
+                }} title="Unstage">↓</button>
+              </div>
+            ))
+          : <div className="vg-empty">Nothing staged.</div>
+        }
       </div>
       <div className="vg-commit-dialog__section">
-        <div className="vg-commit-dialog__label">Changes ({unstaged.length})</div>
-        {unstaged.length ? unstaged.map((f, i) => (
-          <div key={i} className="vg-status-file">
-            <span className="vg-status-badge">{f.y || 'M'}</span>
-            <span>{f.path || f}</span>
-          </div>
-        )) : <div className="vg-empty">No unstaged changes.</div>}
+        <div className="vg-commit-dialog__label-row">
+          <span>Changes ({unstaged.length})</span>
+          {unstaged.length > 0 && (
+            <button className="vg-btn-xs vg-btn-xs--green" onClick={async () => {
+              await api().shellExec({ command: 'git add -A', cwd });
+              refreshStatus?.();
+            }} title="Stage all">Stage all</button>
+          )}
+        </div>
+        {unstaged.length
+          ? unstaged.map((f, i) => (
+              <div key={i} className="vg-status-file">
+                <span className="vg-status-badge">{f.y || 'M'}</span>
+                <span className="vg-status-file__name">{f.path || f}</span>
+                <button className="vg-status-file__action vg-status-file__action--stage" onClick={async e => {
+                  e.stopPropagation();
+                  await api().shellExec({ command: `git add "${f.path || f}"`, cwd });
+                  refreshStatus?.();
+                }} title="Stage this file">↑</button>
+              </div>
+            ))
+          : <div className="vg-empty">No unstaged changes.</div>
+        }
       </div>
+
+      {/* Commit message + AI */}
       <div className="vg-commit-dialog__input-area">
+        <div className="vg-commit-ai-bar">
+          <button
+            className="vg-btn-xs vg-btn-xs--ai"
+            onClick={handleAI}
+            disabled={aiLoading}
+            title="Generate commit message with AI"
+          >
+            {aiLoading ? '⟳ Generating…' : '✨ AI Summary'}
+          </button>
+          {aiSummary && (
+            <span className="vg-commit-ai-badge" title="AI-generated">AI</span>
+          )}
+        </div>
         <textarea
           className="vg-commit-msg-input"
-          placeholder="Commit message…"
+          placeholder="Commit message… (⌘+Enter to commit)"
           value={message}
           onChange={e => setMessage(e.target.value)}
           rows={3}
-          onKeyDown={e => { if (e.metaKey && e.key === 'Enter') commit(); }}
+          onKeyDown={e => {
+          if (e.metaKey && e.key === 'Enter') { e.preventDefault(); commit(); }
+          if (e.key === 'Escape') { e.preventDefault(); setMessage(''); }
+        }}
         />
-        <div className="vg-commit-dialog__hint">Cmd+Enter to commit</div>
+        <div className="vg-commit-dialog__hint">⌘+Enter to commit · Esc to clear</div>
+
+        {/* Final commit toggle */}
+        {activeMission && (
+          <label className="vg-final-commit-toggle">
+            <input
+              type="checkbox"
+              checked={isFinal}
+              onChange={e => setIsFinal(e.target.checked)}
+            />
+            <span>Mark mission as complete after this commit</span>
+          </label>
+        )}
+
         <button
-          className="vg-btn vg-btn--primary"
+          className={`vg-btn vg-btn--primary${isFinal ? ' vg-btn--mission-complete' : ''}`}
           onClick={commit}
-          disabled={loading || !message.trim()}
+          disabled={loading || !message.trim() || pendingApproval}
         >
-          {loading ? 'Committing…' : 'Commit All (git add -A)'}
+          {loading
+            ? 'Committing…'
+            : isFinal
+            ? '⬡ Commit + Complete Mission'
+            : activeMission
+            ? '◎ Commit (Mission-Tracked)'
+            : 'Commit All (git add -A)'
+          }
         </button>
       </div>
     </div>
   );
 }
 
+// ── Mission git panel ──────────────────────────────────────────────────
+
+function MissionGitPanel({ cwd, missionGit, onMessage }) {
+  const {
+    activeMission, missionContext, getMissionHistory, missionRollback, missionReview, refreshMission,
+  } = missionGit;
+
+  const [history,  setHistory]  = useState([]);
+  const [hLoading, setHLoading] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [diff,     setDiff]     = useState(null);
+  const [action,   setAction]   = useState(null); // 'rollback'|'review'
+
+  useEffect(() => {
+    setHLoading(true);
+    getMissionHistory(40).then(h => { setHistory(h); setHLoading(false); });
+  }, [getMissionHistory]);
+
+  const viewDiff = useCallback(async (hash) => {
+    if (!hash || !isElectron()) return;
+    setDiff(null);
+    const r = await api().gitDiff(cwd, hash);
+    setDiff(r?.diff || r?.stdout || '');
+  }, [cwd]);
+
+  const doRollback = useCallback(async (hash) => {
+    const reason = window.prompt(`Reason for rollback to ${hash.slice(0, 8)}?`, 'Reverting problematic change');
+    if (!reason) return;
+    const r = await missionRollback(hash, reason);
+    if (r?.error) onMessage?.(`Rollback failed: ${r.error}`, 'error');
+    else { onMessage?.(`Rolled back to ${hash.slice(0, 8)} — recorded in mission`); setAction(null); }
+  }, [missionRollback, onMessage]);
+
+  const doReview = useCallback(async () => {
+    const files = missionContext?.gitArtifacts?.flatMap(a => a.metadata?.filesChanged || []) || [];
+    const r = await missionReview(files, `Review requested for ${activeMission?.objective}`);
+    if (r?.error) onMessage?.(`Review request failed: ${r.error}`, 'error');
+    else onMessage?.('Review request recorded in mission');
+  }, [missionReview, missionContext, activeMission, onMessage]);
+
+  return (
+    <div className="vg-mission-panel">
+      {/* Active mission header */}
+      {activeMission ? (
+        <div className="vg-mission-panel__header">
+          <div className="vg-mission-panel__title">
+            <span className="vg-mission-panel__icon">◎</span>
+            <div>
+              <div className="vg-mission-panel__objective">{activeMission.objective}</div>
+              <div className="vg-mission-panel__meta">
+                <span className={`vg-mission-status vg-mission-status--${activeMission.status}`}>
+                  {activeMission.status}
+                </span>
+                {missionContext?.suggestedBranch && (
+                  <span className="vg-mission-panel__branch">⎇ {missionContext.suggestedBranch}</span>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="vg-mission-panel__actions">
+            <button className="vg-btn-xs vg-btn-xs--purple" onClick={doReview} title="Request code review">
+              ★ Review
+            </button>
+            <button className="vg-btn-xs" onClick={refreshMission} title="Refresh">↻</button>
+          </div>
+        </div>
+      ) : (
+        <div className="vg-mission-panel__no-mission">
+          <span className="vg-mission-panel__no-mission-icon">◻</span>
+          <div>No active mission</div>
+          <div className="vg-mission-panel__hint">Start a mission to link commits to engineering context</div>
+        </div>
+      )}
+
+      {/* Git stats for active mission */}
+      {missionContext && (
+        <div className="vg-mission-panel__stats">
+          <div className="vg-mission-stat">
+            <span className="vg-mission-stat__val">{missionContext.commitCount}</span>
+            <span className="vg-mission-stat__label">Commits</span>
+          </div>
+          <div className="vg-mission-stat">
+            <span className="vg-mission-stat__val">{missionContext.gitDecisions?.length || 0}</span>
+            <span className="vg-mission-stat__label">Decisions</span>
+          </div>
+          <div className="vg-mission-stat">
+            <span className="vg-mission-stat__val">{missionContext.gitArtifacts?.length || 0}</span>
+            <span className="vg-mission-stat__label">Artifacts</span>
+          </div>
+          <div className="vg-mission-stat">
+            <span className={`vg-mission-stat__val ${missionContext.requiresApproval ? 'vg-mission-stat__val--warn' : 'vg-mission-stat__val--ok'}`}>
+              {missionContext.requiresApproval ? 'Yes' : 'No'}
+            </span>
+            <span className="vg-mission-stat__label">Approval</span>
+          </div>
+        </div>
+      )}
+
+      {/* Mission-linked commit history */}
+      <div className="vg-mission-panel__section-label">Mission Commit History</div>
+      {hLoading ? (
+        <div className="vg-empty">Loading…</div>
+      ) : !history.length ? (
+        <div className="vg-empty">No mission-linked commits yet.</div>
+      ) : history.map((h, i) => (
+        <div
+          key={i}
+          className={`vg-mission-commit${selected === i ? ' vg-mission-commit--selected' : ''}`}
+          onClick={() => { setSelected(i); viewDiff(h.commitHash); }}
+        >
+          <div className="vg-mission-commit__header">
+            <span className="vg-mission-commit__hash">{(h.commitHash || '').slice(0, 7)}</span>
+            {h.isFinal && <span className="vg-badge vg-badge--green">final</span>}
+            <span className={`vg-badge vg-badge--${h.missionStatus === 'completed' ? 'green' : h.missionStatus === 'failed' ? 'red' : 'purple'}`}>
+              {h.missionStatus}
+            </span>
+          </div>
+          <div className="vg-mission-commit__msg">{h.commitMessage}</div>
+          <div className="vg-mission-commit__meta">
+            <span className="vg-mission-commit__obj" title={h.objective}>
+              ◎ {h.objective?.slice(0, 40)}
+            </span>
+            {h.branch && <span className="vg-mission-commit__branch">⎇ {h.branch}</span>}
+          </div>
+          {selected === i && (
+            <div className="vg-mission-commit__actions">
+              <button
+                className="vg-btn-xs vg-btn-xs--red"
+                onClick={e => { e.stopPropagation(); doRollback(h.commitHash); }}
+                title="Revert this commit (recorded in mission)"
+              >
+                ↩ Rollback
+              </button>
+            </div>
+          )}
+        </div>
+      ))}
+
+      {/* Inline diff for selected history item */}
+      {diff && selected !== null && (
+        <div className="vg-mission-panel__diff">
+          <DiffViewer diff={diff} title="Commit diff" />
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main VisualGit ─────────────────────────────────────────────────────
+
 const TABS = [
+  { id: 'mission',   label: '◎ Mission' },
   { id: 'graph',     label: 'Graph' },
   { id: 'diff',      label: 'Diff' },
   { id: 'branches',  label: 'Branches' },
@@ -394,21 +761,30 @@ const TABS = [
 ];
 
 export default function VisualGit({ cwd, className = '' }) {
-  const [tab,       setTab]       = useState('graph');
-  const [selected,  setSelected]  = useState(null);
-  const [diff,      setDiff]      = useState(null);
-  const [diffFile,  setDiffFile]  = useState(null);
-  const [msg,       setMsg]       = useState(null);
+  const [tab,      setTab]      = useState('mission');
+  const [selected, setSelected] = useState(null);
+  const [diff,     setDiff]     = useState(null);
+  const [diffFile, setDiffFile] = useState(null);
+  const [msg,      setMsg]      = useState(null);
+  const [history,  setHistory]  = useState([]);
+  const [pulling,  setPulling]  = useState(false);
+  const [pushing,  setPushing]  = useState(false);
 
-  const workdir = cwd || process?.env?.HOME || '/';
+  const workdir  = cwd || process?.env?.HOME || '/';
+  const missionGit = useMissionGit(workdir);
+  const { activeMission, getMissionHistory } = missionGit;
 
   const fetchLog = useCallback(
     () => isElectron() ? api().gitLog(workdir, 50) : Promise.resolve({ commits: [] }),
     [workdir]
   );
   const { data: logData, loading: logLoading, error: logError, refresh: refreshLog } = useGitData(fetchLog, 15000);
-
   const commits = logData?.commits || [];
+
+  // Load mission-linked commit history for the graph badge overlay
+  useEffect(() => {
+    getMissionHistory(50).then(setHistory);
+  }, [getMissionHistory]);
 
   const selectCommit = useCallback(async (commit) => {
     setSelected(commit);
@@ -422,8 +798,25 @@ export default function VisualGit({ cwd, className = '' }) {
 
   const onMessage = useCallback((text, type = 'ok') => {
     setMsg({ text, type });
-    setTimeout(() => setMsg(null), 4000);
+    setTimeout(() => setMsg(null), 4500);
   }, []);
+
+  const gitPull = useCallback(async () => {
+    setPulling(true);
+    const r = await api().shellExec({ command: 'git pull', cwd: workdir });
+    setPulling(false);
+    onMessage(r?.stdout?.trim() || r?.stderr?.trim() || 'Pull complete');
+    refreshLog();
+  }, [workdir, onMessage, refreshLog]);
+
+  const gitPush = useCallback(async () => {
+    setPushing(true);
+    const r = await api().shellExec({ command: 'git push', cwd: workdir });
+    setPushing(false);
+    const out = r?.stderr?.trim() || r?.stdout?.trim() || 'Push complete';
+    const isErr = r?.code !== 0;
+    onMessage(out, isErr ? 'error' : 'ok');
+  }, [workdir, onMessage]);
 
   if (!isElectron()) {
     return (
@@ -438,8 +831,19 @@ export default function VisualGit({ cwd, className = '' }) {
       {/* Header */}
       <div className="vg-header">
         <span className="vg-header__title">Git</span>
+        {activeMission && (
+          <span className="vg-header__mission" title={activeMission.objective}>
+            ◎ {activeMission.objective?.slice(0, 24)}
+          </span>
+        )}
         <span className="vg-header__cwd" title={workdir}>{workdir.split('/').slice(-2).join('/')}</span>
         <button className="vg-header__btn" onClick={refreshLog} title="Refresh">↻</button>
+        <button className="vg-header__btn" onClick={gitPull} disabled={pulling} title="git pull">
+          {pulling ? '…' : '⇣'}
+        </button>
+        <button className="vg-header__btn" onClick={gitPush} disabled={pushing} title="git push">
+          {pushing ? '…' : '⇡'}
+        </button>
       </div>
 
       {/* Message bar */}
@@ -452,7 +856,7 @@ export default function VisualGit({ cwd, className = '' }) {
         {TABS.map(t => (
           <button
             key={t.id}
-            className={`vg-tab${tab === t.id ? ' vg-tab--active' : ''}`}
+            className={`vg-tab${tab === t.id ? ' vg-tab--active' : ''}${t.id === 'mission' && activeMission ? ' vg-tab--mission' : ''}`}
             onClick={() => setTab(t.id)}
           >
             {t.label}
@@ -462,10 +866,14 @@ export default function VisualGit({ cwd, className = '' }) {
 
       {/* Body */}
       <div className="vg-body">
+        {tab === 'mission' && (
+          <MissionGitPanel cwd={workdir} missionGit={missionGit} onMessage={onMessage} />
+        )}
+
         {tab === 'graph' && (
           logLoading ? <div className="vg-empty">Loading commits…</div>
           : logError  ? <div className="vg-error">{logError}</div>
-          : <CommitGraph commits={commits} selected={selected} onSelect={selectCommit} />
+          : <CommitGraph commits={commits} selected={selected} onSelect={selectCommit} missionHistory={history} />
         )}
 
         {tab === 'diff' && (
@@ -473,11 +881,15 @@ export default function VisualGit({ cwd, className = '' }) {
         )}
 
         {tab === 'branches' && (
-          <BranchManager cwd={workdir} onMessage={onMessage} />
+          <BranchManager cwd={workdir} onMessage={onMessage} missionGit={missionGit} />
         )}
 
         {tab === 'commit' && (
-          <CommitDialog cwd={workdir} onCommit={(text, type) => { onMessage(text, type); refreshLog(); }} />
+          <MissionCommitDialog
+            cwd={workdir}
+            missionGit={missionGit}
+            onCommit={(text, type) => { onMessage(text, type); refreshLog(); missionGit.refreshMission(); }}
+          />
         )}
 
         {tab === 'stash' && (

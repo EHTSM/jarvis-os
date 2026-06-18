@@ -29,6 +29,9 @@ const RuntimeObserverPanel    = lazy(() => import('./RuntimeObserverPanel'));
 const DecisionQueuePanel      = lazy(() => import('./DecisionQueuePanel'));
 const MissionOrchestratorPanel = lazy(() => import('./MissionOrchestratorPanel'));
 const ExecutionRuntimePanel    = lazy(() => import('./ExecutionRuntimePanel'));
+const CodeEditorPane              = lazy(() => import('./CodeEditorPane'));
+const ProjectSearch               = lazy(() => import('./ProjectSearch'));
+const EngineeringIntelligencePane = lazy(() => import('./EngineeringIntelligencePane'));
 
 // ── Generic resize hook ───────────────────────────────────────────────
 function useResize(initial, min, max, axis = 'y') {
@@ -66,8 +69,21 @@ function useBottomResize(initial = 340) {
 }
 
 function useSidebarResize(initial = 260) {
-  const { size: width, onResizerMouseDown } = useResize(initial, 160, 520, 'x');
-  return { width, onResizerMouseDown };
+  const stored = (() => { try { return parseInt(localStorage.getItem('ew-sidebar-w') || '', 10) || initial; } catch { return initial; } })();
+  const { size: width, onResizerMouseDown: _mouse } = useResize(stored, 160, 520, 'x');
+
+  // Persist on change
+  useEffect(() => {
+    try { localStorage.setItem('ew-sidebar-w', String(width)); } catch {}
+  }, [width]);
+
+  // Double-click to reset to default
+  const onDoubleClick = useCallback(() => {
+    try { localStorage.setItem('ew-sidebar-w', String(initial)); } catch {}
+    window.location.reload(); // simplest reset — reload persists correctly
+  }, [initial]);
+
+  return { width, onResizerMouseDown: _mouse, onResizerDoubleClick: onDoubleClick };
 }
 
 // Horizontal split resize — for center panel split layout
@@ -105,10 +121,11 @@ function useCenterSplitResize(initial = 50) {
 // ── Constants ──────────────────────────────────────────────────────────
 const SIDEBAR_MODES = {
   explorer:     { label: 'Files',        icon: '📁', title: 'File Explorer',             shortcut: '1' },
-  git:          { label: 'Git',          icon: '🌿', title: 'Visual Git',                shortcut: '2' },
-  clipboard:    { label: 'Clipboard',    icon: '📋', title: 'Clipboard History',          shortcut: '3' },
-  productivity: { label: 'Workspace',    icon: '🗂',  title: 'Workspace',                 shortcut: '4' },
-  intelligence: { label: 'Intelligence', icon: '◈',  title: 'Engineering Intelligence',  shortcut: '5' },
+  code:         { label: 'Search',       icon: '⌕',  title: 'Project Search',            shortcut: '2' },
+  git:          { label: 'Git',          icon: '🌿', title: 'Visual Git',                shortcut: '3' },
+  clipboard:    { label: 'Clipboard',    icon: '📋', title: 'Clipboard History',          shortcut: '4' },
+  productivity: { label: 'Workspace',    icon: '🗂',  title: 'Workspace',                 shortcut: '5' },
+  intelligence: { label: 'Intelligence', icon: '◈',  title: 'Engineering Intelligence',  shortcut: '6' },
 };
 
 const BOTTOM_TABS = {
@@ -275,16 +292,40 @@ function useRecentRepos() {
 }
 
 // ── Quick Switcher (Cmd+P) ─────────────────────────────────────────────
+const _QS_BASE = (process.env.REACT_APP_API_URL || '').replace(/\/$/, '');
+
 const QuickSwitcher = memo(function QuickSwitcher({ open, onClose, onSelect, recentMissions, recentRepos }) {
-  const [query, setQuery] = useState('');
-  const [cursor, setCursor] = useState(0);
+  const [query,       setQuery]       = useState('');
+  const [cursor,      setCursor]      = useState(0);
+  const [liveMissions, setLiveMissions] = useState([]);
   const inputRef = useRef(null);
+  const debounce = useRef(null);
 
   useEffect(() => {
-    if (open) { setQuery(''); setCursor(0); setTimeout(() => inputRef.current?.focus(), 40); }
+    if (open) { setQuery(''); setCursor(0); setLiveMissions([]); setTimeout(() => inputRef.current?.focus(), 40); }
   }, [open]);
 
+  // Live mission search from backend
+  useEffect(() => {
+    if (!query.trim()) { setLiveMissions([]); return; }
+    clearTimeout(debounce.current);
+    debounce.current = setTimeout(async () => {
+      try {
+        const r = await fetch(`${_QS_BASE}/missions?search=${encodeURIComponent(query)}&limit=6`, { credentials: 'include' });
+        if (!r.ok) return;
+        const d = await r.json();
+        const list = d.missions || d || [];
+        setLiveMissions(list.slice(0, 6));
+      } catch {}
+    }, 200);
+    return () => clearTimeout(debounce.current);
+  }, [query]);
+
   const items = React.useMemo(() => {
+    const liveMissionItems = liveMissions.map(m => ({
+      type: 'mission', id: `lm:${m.id}`, label: m.title || m.objective || `Mission ${m.id}`,
+      sub: m.status, icon: '◎', data: m,
+    }));
     const all = [
       ...recentMissions.map(m => ({ type: 'mission', id: `m:${m.id}`, label: m.title || `Mission ${m.id}`, icon: '◎', data: m })),
       ...recentRepos.map(r => ({ type: 'repo', id: `r:${r.path}`, label: r.name, sub: r.path, icon: '📁', data: r })),
@@ -293,8 +334,12 @@ const QuickSwitcher = memo(function QuickSwitcher({ open, onClose, onSelect, rec
     ];
     if (!query.trim()) return all.slice(0, 12);
     const q = query.toLowerCase();
-    return all.filter(i => i.label.toLowerCase().includes(q) || (i.sub || '').toLowerCase().includes(q)).slice(0, 12);
-  }, [query, recentMissions, recentRepos]);
+    const filtered = all.filter(i => i.label.toLowerCase().includes(q) || (i.sub || '').toLowerCase().includes(q));
+    // Merge live results, dedup by id
+    const seen = new Set(filtered.map(x => x.id));
+    const merged = [...filtered, ...liveMissionItems.filter(x => !seen.has(x.id))];
+    return merged.slice(0, 14);
+  }, [query, recentMissions, recentRepos, liveMissions]);
 
   const onKey = (e) => {
     if (e.key === 'ArrowDown') { e.preventDefault(); setCursor(c => Math.min(c + 1, items.length - 1)); }
@@ -323,7 +368,12 @@ const QuickSwitcher = memo(function QuickSwitcher({ open, onClose, onSelect, rec
           <button className="ew-qs-close" onClick={onClose}>Esc</button>
         </div>
         <div className="ew-qs-list">
-          {items.length === 0 && <div className="ew-qs-empty">No matches</div>}
+          {items.length === 0 && (
+            <div className="ew-qs-empty">
+              <div>No matches for "{query}"</div>
+              <div className="ew-qs-empty__hint">Try: mission name, panel name, or file path</div>
+            </div>
+          )}
           {items.map((item, i) => (
             <div
               key={item.id}
@@ -373,11 +423,14 @@ export default function ElectronWorkspace({ children }) {
   const [sessionLoaded, setSessionLoaded] = useState(false);
   const [splitLayout,   setSplitLayout]   = useState(false); // center horizontal split
   const [splitContent,  setSplitContent]  = useState('missions'); // what fills the split bottom pane
-  // Operator OS home — 'os' = Mission Control; anything else = App tab name
+  // Operator OS home — 'os' = Mission Control; 'editor' = Code Editor; anything else = App tab name
   const [osView,        setOsView]        = useState('os');
+  // J2 code editor
+  const [editorFile,    setEditorFile]    = useState(null); // path to open
+  const [missionJump,   setMissionJump]   = useState(null); // { filePath, startLine, endLine }
 
   const { height: bottomH,   onResizerMouseDown: onBottomResize }  = useBottomResize(340);
-  const { width:  sidebarW,  onResizerMouseDown: onSidebarResize } = useSidebarResize(260);
+  const { width:  sidebarW,  onResizerMouseDown: onSidebarResize, onResizerDoubleClick: onSidebarReset } = useSidebarResize(260);
   const { pct: splitPct, containerRef: splitRef, onResizerMouseDown: onSplitResize } = useCenterSplitResize(55);
 
   const { recents: recentMissions, push: pushMission } = useRecentMissions();
@@ -424,7 +477,12 @@ export default function ElectronWorkspace({ children }) {
   }, [cwd]); // eslint-disable-line
 
   // Sidebar toggle — stable, no re-renders on consumers
+  // 'intelligence' opens the J4 Engineering Intelligence center pane instead of a sidebar
   const setSidebar = useStableCallback((mode) => {
+    if (mode === 'intelligence') {
+      setOsView(v => v === 'intelligence' ? 'os' : 'intelligence');
+      return;
+    }
     setSidebarMode(prev => {
       if (prev === mode && showSidebar) { setShowSidebar(false); return prev; }
       setShowSidebar(true);
@@ -466,6 +524,9 @@ export default function ElectronWorkspace({ children }) {
       // Cmd+Shift+` — toggle bottom panel
       if (e.shiftKey && e.key === '`') { e.preventDefault(); setShowBottom(s => !s); return; }
 
+      // Cmd+B — toggle sidebar (VSCode convention)
+      if (e.key === 'b' && !e.shiftKey) { e.preventDefault(); setShowSidebar(s => !s); return; }
+
       // Cmd+Shift+E/G/D/P — sidebar/panel shortcuts
       if (e.shiftKey && e.key === 'E')  { e.preventDefault(); setSidebar('explorer'); return; }
       if (e.shiftKey && e.key === 'G')  { e.preventDefault(); setSidebar('git'); return; }
@@ -480,9 +541,20 @@ export default function ElectronWorkspace({ children }) {
         setSidebar(sidebarKeys[num - 1]);
       }
     };
+
+    const escHandler = (e) => {
+      if (e.key !== 'Escape') return;
+      if (switcherOpen || searchOpen) return;
+      if (showBottom) { setShowBottom(false); }
+    };
+
     window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [setSidebar, openBottomTab]);
+    window.addEventListener('keydown', escHandler);
+    return () => {
+      window.removeEventListener('keydown', handler);
+      window.removeEventListener('keydown', escHandler);
+    };
+  }, [setSidebar, openBottomTab, switcherOpen, searchOpen, showBottom]);
 
   // Native menu actions
   useEffect(() => {
@@ -511,6 +583,29 @@ export default function ElectronWorkspace({ children }) {
     }
   });
 
+  // J2: open file in code editor
+  const handleFileOpen = useStableCallback((filePath) => {
+    setEditorFile(filePath);
+    setOsView('editor');
+  });
+
+  // J2: mission jump-to-line (from mission runtime events)
+  useEffect(() => {
+    const handler = (e) => {
+      const { filePath, startLine, endLine } = e.detail || {};
+      if (!filePath) return;
+      setMissionJump({ filePath, startLine, endLine });
+      setEditorFile(filePath);
+      setOsView('editor');
+    };
+    window.addEventListener('cep-jump', handler);
+    window.addEventListener('jarvis-mission-jump', handler);
+    return () => {
+      window.removeEventListener('cep-jump', handler);
+      window.removeEventListener('jarvis-mission-jump', handler);
+    };
+  }, []);
+
   // Global search action handler
   const handleAction = useStableCallback((action, item) => {
     switch (action) {
@@ -518,6 +613,8 @@ export default function ElectronWorkspace({ children }) {
       case 'nav:explorer':     setSidebar('explorer'); break;
       case 'nav:console':      openBottomTab('console'); break;
       case 'nav:ai':           setShowAI(true); setAiCollapsed(false); break;
+      case 'nav:editor':       setOsView('editor'); setSidebar('code'); break;
+      case 'nav:intelligence': setOsView('intelligence'); break;
       case 'nav:clipboard':    setSidebar('clipboard'); break;
       case 'nav:git':          setSidebar('git'); break;
       case 'nav:debugger':     openBottomTab('debugger'); break;
@@ -613,7 +710,20 @@ export default function ElectronWorkspace({ children }) {
               <div className="ew-sidebar__body">
                 <LazyPane active={sidebarMode === 'explorer'}>
                   <ErrorBoundary label="File Explorer">
-                    <FileExplorer cwd={cwd} onFileOpen={() => {}} />
+                    <FileExplorer cwd={cwd} onFileOpen={handleFileOpen} />
+                  </ErrorBoundary>
+                </LazyPane>
+                <LazyPane active={sidebarMode === 'code'}>
+                  <ErrorBoundary label="Project Search">
+                    <Suspense fallback={<PanelSkeleton />}>
+                      <ProjectSearch
+                        cwd={cwd}
+                        onJumpToFile={(file, line) => {
+                          setMissionJump({ filePath: file, startLine: line });
+                          handleFileOpen(file);
+                        }}
+                      />
+                    </Suspense>
                   </ErrorBoundary>
                 </LazyPane>
                 <LazyPane active={sidebarMode === 'git'}>
@@ -642,8 +752,8 @@ export default function ElectronWorkspace({ children }) {
                 </LazyPane>
               </div>
             </div>
-            {/* Sidebar resize handle */}
-            <div className="ew-sidebar-resizer" onMouseDown={onSidebarResize} />
+            {/* Sidebar resize handle — double-click to reset to default width */}
+            <div className="ew-sidebar-resizer" onMouseDown={onSidebarResize} onDoubleClick={onSidebarReset} title="Drag to resize · Double-click to reset" />
           </>
         )}
 
@@ -651,9 +761,23 @@ export default function ElectronWorkspace({ children }) {
         <div className="ew-center" ref={splitRef}>
           {/* OS home button — shown when not on Mission Control */}
           {osView !== 'os' && (
-            <button className="ew-os-home-btn" onClick={() => setOsView('os')} title="Back to Mission Control">
-              ⬡ Mission Control
-            </button>
+            <div className="ew-topbar">
+              <button className="ew-os-home-btn" onClick={() => setOsView('os')} title="Back to Mission Control">
+                ⬡ Mission Control
+              </button>
+              {osView === 'editor' && (
+                <>
+                  <span className="ew-topbar__sep">›</span>
+                  <span className="ew-topbar__view">Code Editor</span>
+                </>
+              )}
+              {osView === 'intelligence' && (
+                <>
+                  <span className="ew-topbar__sep">›</span>
+                  <span className="ew-topbar__view">Engineering Intelligence</span>
+                </>
+              )}
+            </div>
           )}
 
           {/* Split layout or normal content */}
@@ -665,6 +789,26 @@ export default function ElectronWorkspace({ children }) {
                 <div style={{ flex: 'none', height: `${splitPct}%`, overflow: 'hidden', minHeight: 80 }}>
                   {osView === 'os'
                     ? <ErrorBoundary label="Mission Control"><MissionControl onNavigate={navigateOs} /></ErrorBoundary>
+                    : osView === 'editor'
+                    ? (
+                      <ErrorBoundary label="Code Editor">
+                        <Suspense fallback={<PanelSkeleton label="Code Editor" />}>
+                          <CodeEditorPane
+                            initialPath={editorFile}
+                            missionJump={missionJump}
+                            onOpenMission={() => setOsView('os')}
+                          />
+                        </Suspense>
+                      </ErrorBoundary>
+                    )
+                    : osView === 'intelligence'
+                    ? (
+                      <ErrorBoundary label="Engineering Intelligence">
+                        <Suspense fallback={<PanelSkeleton label="Engineering Intelligence" />}>
+                          <EngineeringIntelligencePane style={{ height: '100%' }} />
+                        </Suspense>
+                      </ErrorBoundary>
+                    )
                     : children
                   }
                 </div>
@@ -700,11 +844,25 @@ export default function ElectronWorkspace({ children }) {
                   </div>
                 </div>
               </>
-            ) : (
-              osView === 'os'
-                ? <ErrorBoundary label="Mission Control"><MissionControl onNavigate={navigateOs} /></ErrorBoundary>
-                : children
-            )}
+            ) : osView === 'os' ? (
+              <ErrorBoundary label="Mission Control"><MissionControl onNavigate={navigateOs} /></ErrorBoundary>
+            ) : osView === 'editor' ? (
+              <ErrorBoundary label="Code Editor">
+                <Suspense fallback={<PanelSkeleton label="Code Editor" />}>
+                  <CodeEditorPane
+                    initialPath={editorFile}
+                    missionJump={missionJump}
+                    onOpenMission={() => setOsView('os')}
+                  />
+                </Suspense>
+              </ErrorBoundary>
+            ) : osView === 'intelligence' ? (
+              <ErrorBoundary label="Engineering Intelligence">
+                <Suspense fallback={<PanelSkeleton label="Engineering Intelligence" />}>
+                  <EngineeringIntelligencePane style={{ height: '100%' }} />
+                </Suspense>
+              </ErrorBoundary>
+            ) : children}
           </div>
 
           {/* Bottom panel */}
