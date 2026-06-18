@@ -1,7 +1,9 @@
 /**
  * CodeEditorPane — J2 Engineering Code Workspace
  * Integrated code editor: tabs, dirty indicators, session restore,
- * AI right-click context menu, mission jump-to-line, inline diagnostics.
+ * AI right-click context menu, mission jump-to-line, inline diagnostics,
+ * symbol index, breadcrumb, go-to-definition, find references, rename,
+ * fuzzy file search (⌘T), workspace symbol search (⌘⇧O), nav history.
  */
 import React, {
   useState, useEffect, useCallback, useRef, useMemo, memo,
@@ -20,6 +22,8 @@ import { json } from '@codemirror/lang-json';
 import { python } from '@codemirror/lang-python';
 import { markdown } from '@codemirror/lang-markdown';
 import { xml } from '@codemirror/lang-xml';
+import { extractSymbols, findOccurrences, enclosingSymbol } from '../hooks/useSymbolIndex';
+import FuzzyFinder from './FuzzyFinder';
 import './CodeEditorPane.css';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -271,7 +275,7 @@ function RenameDialog({ path, onConfirm, onCancel }) {
 
 // ── AI Context Menu ───────────────────────────────────────────────────────────
 
-function AIContextMenu({ x, y, selection, filePath, onAction, onClose }) {
+function AIContextMenu({ x, y, selection, filePath, onAction, onClose, onGoToDef, onFindRefs, onRename }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -280,9 +284,14 @@ function AIContextMenu({ x, y, selection, filePath, onAction, onClose }) {
     return () => document.removeEventListener('mousedown', handler);
   }, [onClose]);
 
-  const ACTIONS = [
+  const EDITOR_ACTIONS = [
+    { id: 'gotodef',  label: 'Go to Definition',  icon: 'F12', fn: onGoToDef },
+    { id: 'findrefs', label: 'Find References',    icon: '⌕',  fn: onFindRefs },
+    { id: 'rename',   label: 'Rename Symbol',      icon: 'F2',  fn: onRename },
+  ];
+
+  const AI_ACTIONS = [
     { id: 'explain', label: 'Explain code',   icon: '◈' },
-    { id: 'usages',  label: 'Find usages',     icon: '⌕' },
     { id: 'patch',   label: 'Generate patch',  icon: '⧗' },
     { id: 'mission', label: 'Create mission',  icon: '◎' },
     { id: 'review',  label: 'Review file',     icon: '★' },
@@ -290,8 +299,16 @@ function AIContextMenu({ x, y, selection, filePath, onAction, onClose }) {
 
   return (
     <div ref={ref} className="cep-ai-menu" style={{ left: x, top: y }}>
+      <div className="cep-ai-menu__header">Editor</div>
+      {EDITOR_ACTIONS.map(a => (
+        <button key={a.id} className="cep-ai-menu__item" onClick={() => { a.fn?.(); onClose(); }}>
+          <span className="cep-ai-menu__icon cep-ai-menu__icon--editor">{a.icon}</span>
+          {a.label}
+        </button>
+      ))}
+      <div className="cep-ai-menu__sep" />
       <div className="cep-ai-menu__header">AI Actions</div>
-      {ACTIONS.map(a => (
+      {AI_ACTIONS.map(a => (
         <button
           key={a.id}
           className="cep-ai-menu__item"
@@ -347,6 +364,16 @@ export default function CodeEditorPane({
   const [gotoLine,      setGotoLine]      = useState(false);
   const [gotoValue,     setGotoValue]     = useState('');
   const [runMenu,       setRunMenu]       = useState(false);
+  // ERP-1: symbol features
+  const [symbols,       setSymbols]       = useState([]);        // current file symbols
+  const [wsSymbols,     setWsSymbols]     = useState([]);        // workspace-wide index
+  const [activeLine,    setActiveLine]    = useState(1);         // cursor line for breadcrumb
+  const [refsPanel,     setRefsPanel]     = useState(null);      // { name, results: [{file,line}] }
+  const [renameSymbol,  setRenameSymbol]  = useState(null);      // { name, newName }
+  const [fuzzyMode,     setFuzzyMode]     = useState(null);      // 'file' | 'symbol' | null
+  const [hoverInfo,     setHoverInfo]     = useState(null);      // { x, y, text }
+  const navHistoryRef   = useRef([]);    // [{filePath, line}]
+  const navPosRef       = useRef(-1);    // current position in history
   const gotoRef = useRef(null);
   const viewMap = useRef({});   // tabId → EditorView
   const autoSaveRef = useRef(null);
@@ -435,6 +462,167 @@ export default function CodeEditorPane({
     if (diagnostics.length > 0) { setShowBottom(true); setBottomTab('problems'); }
   }, [diagnostics]);
 
+  // ── ERP-1: Symbol extraction for active file ─────────────────────────────
+
+  useEffect(() => {
+    const view = viewMap.current[activeId];
+    const src = view ? view.state.doc.toString() : (activeTab?.content || '');
+    const syms = extractSymbols(src, activeTab?.path || '');
+    setSymbols(syms);
+    // Merge into workspace index
+    setWsSymbols(prev => {
+      const filtered = prev.filter(s => s.filePath !== activeTab?.path);
+      return [...filtered, ...syms];
+    });
+    // Broadcast to SymbolPanel sidebar
+    window.dispatchEvent(new CustomEvent('symbol-index-update', {
+      detail: { symbols: syms, filePath: activeTab?.path || '' },
+    }));
+  }, [activeId, activeTab]);
+
+  // Track cursor line for breadcrumb (poll active view selection)
+  useEffect(() => {
+    const id = setInterval(() => {
+      const view = viewMap.current[activeId];
+      if (!view) return;
+      try {
+        const pos  = view.state.selection.main.head;
+        const line = view.state.doc.lineAt(pos).number;
+        setActiveLine(l => l !== line ? line : l);
+      } catch {}
+    }, 350);
+    return () => clearInterval(id);
+  }, [activeId]);
+
+  // ── ERP-1: Navigation history ─────────────────────────────────────────────
+
+  const pushNavHistory = useCallback((filePath, line) => {
+    const hist = navHistoryRef.current;
+    const pos  = navPosRef.current;
+    // Truncate forward history
+    const next = hist.slice(0, pos + 1);
+    const last = next[next.length - 1];
+    if (last?.filePath === filePath && last?.line === line) return;
+    next.push({ filePath, line });
+    if (next.length > 100) next.shift();
+    navHistoryRef.current = next;
+    navPosRef.current = next.length - 1;
+  }, []);
+
+  const navBack = useCallback(() => {
+    const pos = navPosRef.current;
+    if (pos <= 0) return;
+    navPosRef.current = pos - 1;
+    const { filePath, line } = navHistoryRef.current[pos - 1];
+    openFile(filePath).then(() => {
+      setTimeout(() => jumpToLine(line), 200);
+    });
+  }, []); // eslint-disable-line
+
+  const navForward = useCallback(() => {
+    const pos  = navPosRef.current;
+    const hist = navHistoryRef.current;
+    if (pos >= hist.length - 1) return;
+    navPosRef.current = pos + 1;
+    const { filePath, line } = hist[pos + 1];
+    openFile(filePath).then(() => {
+      setTimeout(() => jumpToLine(line), 200);
+    });
+  }, []); // eslint-disable-line
+
+  // ── ERP-1: Go to Definition (word under cursor in workspace index) ────────
+
+  const goToDefinition = useCallback(() => {
+    const view = viewMap.current[activeId];
+    if (!view) return;
+    const sel  = view.state.selection.main;
+    let word   = view.state.sliceDoc(sel.from, sel.to).trim();
+    if (!word) {
+      // Expand to word boundaries
+      const line = view.state.doc.lineAt(sel.head);
+      const text = line.text;
+      const col  = sel.head - line.from;
+      const start = text.slice(0, col).search(/\w+$/);
+      const end   = col + (text.slice(col).match(/^\w*/) || [''])[0].length;
+      word = text.slice(start < 0 ? col : start, end);
+    }
+    if (!word) { status('Place cursor on a symbol'); return; }
+    const hits = wsSymbols.filter(s => s.name === word);
+    if (!hits.length) { status(`No definition found for "${word}"`); return; }
+    const def = hits[0];
+    pushNavHistory(activeTab?.path, activeLine);
+    openFile(def.filePath).then(() => {
+      setTimeout(() => jumpToLine(def.line), 200);
+      pushNavHistory(def.filePath, def.line);
+    });
+  }, [activeId, wsSymbols, activeTab, activeLine, pushNavHistory, openFile, jumpToLine, status]); // eslint-disable-line
+
+  // ── ERP-1: Find References ────────────────────────────────────────────────
+
+  const findReferences = useCallback(async () => {
+    const view = viewMap.current[activeId];
+    if (!view) return;
+    const sel = view.state.selection.main;
+    let word = view.state.sliceDoc(sel.from, sel.to).trim();
+    if (!word) {
+      const line = view.state.doc.lineAt(sel.head);
+      const text = line.text;
+      const col  = sel.head - line.from;
+      const start = text.slice(0, col).search(/\w+$/);
+      const end   = col + (text.slice(col).match(/^\w*/) || [''])[0].length;
+      word = text.slice(start < 0 ? col : start, end);
+    }
+    if (!word) { status('Place cursor on a symbol'); return; }
+    // Search in all open tabs + workspace index files
+    const results = [];
+    for (const tab of tabs) {
+      const src = viewMap.current[tab.id]
+        ? viewMap.current[tab.id].state.doc.toString()
+        : tab.content || '';
+      const occurrences = findOccurrences(src, word);
+      occurrences.forEach(o => results.push({ filePath: tab.path, file: tab.name, ...o }));
+    }
+    setRefsPanel({ name: word, results });
+    setShowBottom(true);
+    setBottomTab('references');
+  }, [activeId, tabs, status]);
+
+  // ── ERP-1: Rename Symbol (single-file) ───────────────────────────────────
+
+  const startRenameSymbol = useCallback(() => {
+    const view = viewMap.current[activeId];
+    if (!view || !activeTab) return;
+    const sel  = view.state.selection.main;
+    const line = view.state.doc.lineAt(sel.head);
+    const text = line.text;
+    const col  = sel.head - line.from;
+    const start = text.slice(0, col).search(/\w+$/);
+    const end   = col + (text.slice(col).match(/^\w*/) || [''])[0].length;
+    const word  = text.slice(start < 0 ? col : start, end);
+    if (!word) { status('Place cursor on a symbol to rename'); return; }
+    setRenameSymbol({ name: word, newName: word });
+  }, [activeId, activeTab, status]);
+
+  const doRenameSymbol = useCallback(async () => {
+    if (!renameSymbol || !activeTab) return;
+    const { name, newName } = renameSymbol;
+    if (!newName.trim() || newName === name) { setRenameSymbol(null); return; }
+    const view = viewMap.current[activeId];
+    const src  = view ? view.state.doc.toString() : activeTab.content;
+    const re   = new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
+    const replaced = src.replace(re, newName.trim());
+    const count  = (src.match(re) || []).length;
+    // Apply to editor
+    if (view) {
+      view.dispatch({
+        changes: { from: 0, to: view.state.doc.length, insert: replaced },
+      });
+    }
+    setTabs(prev => prev.map(t => t.id === activeId ? { ...t, content: replaced, dirty: true } : t));
+    setRenameSymbol(null);
+    status(`Renamed ${count} occurrence${count !== 1 ? 's' : ''} of "${name}" → "${newName.trim()}"`);
+  }, [renameSymbol, activeId, activeTab, status]);
+
   // ── Tab operations ───────────────────────────────────────────────────────
 
   const closeTab = useCallback((id) => {
@@ -522,6 +710,14 @@ export default function CodeEditorPane({
   useEffect(() => {
     const handler = e => {
       const ctrl = e.metaKey || e.ctrlKey;
+      // F12 — Go to Definition
+      if (e.key === 'F12') { e.preventDefault(); goToDefinition(); return; }
+      // F2 — Rename Symbol
+      if (e.key === 'F2') { e.preventDefault(); startRenameSymbol(); return; }
+      // Alt+Left — Navigate Back
+      if (e.altKey && e.key === 'ArrowLeft' && !ctrl) { e.preventDefault(); navBack(); return; }
+      // Alt+Right — Navigate Forward
+      if (e.altKey && e.key === 'ArrowRight' && !ctrl) { e.preventDefault(); navForward(); return; }
       if (!ctrl) return;
       // Cmd+S — save
       if (e.key === 's' && !e.shiftKey) { e.preventDefault(); saveActive(); return; }
@@ -539,12 +735,16 @@ export default function CodeEditorPane({
         setTimeout(() => gotoRef.current?.focus(), 40);
         return;
       }
+      // Cmd+T — fuzzy file search
+      if (e.key === 't' && !e.shiftKey) { e.preventDefault(); setFuzzyMode('file'); return; }
+      // Cmd+Shift+O — workspace symbol search
+      if (e.key === 'o' && e.shiftKey) { e.preventDefault(); setFuzzyMode('symbol'); return; }
       // Cmd+Shift+W — toggle word wrap
       if (e.key === 'w' && e.shiftKey) { e.preventDefault(); setWordWrap(w => !w); return; }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [saveActive, closeActiveTab, switchTab]);
+  }, [saveActive, closeActiveTab, switchTab, goToDefinition, startRenameSymbol, navBack, navForward]);
 
   // ── File operations ──────────────────────────────────────────────────────
 
@@ -813,6 +1013,34 @@ export default function CodeEditorPane({
         </div>
       )}
 
+      {/* Breadcrumb — shows file path + enclosing symbol at cursor */}
+      {activeTab && (
+        <div className="cep-breadcrumb">
+          <span
+            className="cep-breadcrumb__file"
+            title={activeTab.path}
+            onClick={() => setFuzzyMode('file')}
+          >
+            {activeTab.path?.split('/').slice(-2).join('/')}
+          </span>
+          {(() => { const sym = enclosingSymbol(symbols, activeLine); return sym ? (
+            <>
+              <span className="cep-breadcrumb__sep">›</span>
+              <span className="cep-breadcrumb__sym" onClick={() => setFuzzyMode('symbol')}>
+                {sym.name}
+              </span>
+            </>
+          ) : null; })()}
+          <div className="cep-breadcrumb__actions">
+            <button className="cep-breadcrumb__btn" onClick={goToDefinition} title="Go to Definition (F12)">F12</button>
+            <button className="cep-breadcrumb__btn" onClick={findReferences} title="Find References">Refs</button>
+            <button className="cep-breadcrumb__btn" onClick={startRenameSymbol} title="Rename Symbol (F2)">F2</button>
+            <button className="cep-breadcrumb__btn" onClick={navBack} title="Navigate Back (Alt+←)">‹</button>
+            <button className="cep-breadcrumb__btn" onClick={navForward} title="Navigate Forward (Alt+→)">›</button>
+          </div>
+        </div>
+      )}
+
       {/* Bottom panel */}
       {showBottom && (
         <div className="cep-bottom">
@@ -822,6 +1050,9 @@ export default function CodeEditorPane({
             </button>
             <button className={`cep-bottom__tab${bottomTab === 'output' ? ' cep-bottom__tab--active' : ''}`} onClick={() => setBottomTab('output')}>
               Output
+            </button>
+            <button className={`cep-bottom__tab${bottomTab === 'references' ? ' cep-bottom__tab--active' : ''}`} onClick={() => setBottomTab('references')}>
+              References{refsPanel ? ` (${refsPanel.results.length})` : ''}
             </button>
             <button className="cep-bottom__close" onClick={() => setShowBottom(false)}>✕</button>
           </div>
@@ -836,6 +1067,26 @@ export default function CodeEditorPane({
             {bottomTab === 'output' && (
               <div className="cep-output">{statusMsg || 'No output.'}</div>
             )}
+            {bottomTab === 'references' && (
+              <div className="cep-refs">
+                {!refsPanel ? <div className="cep-problems-empty">No references searched yet.</div> : (
+                  <>
+                    <div className="cep-refs__header">References to "{refsPanel.name}" — {refsPanel.results.length} found</div>
+                    {refsPanel.results.map((r, i) => (
+                      <div
+                        key={i}
+                        className="cep-refs__row"
+                        onClick={() => { openFile(r.filePath); setTimeout(() => jumpToLine(r.line), 200); }}
+                      >
+                        <span className="cep-refs__file">{r.file}</span>
+                        <span className="cep-refs__line">:{r.line}</span>
+                        <span className="cep-refs__col"> col {r.col}</span>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -844,7 +1095,8 @@ export default function CodeEditorPane({
       <div className="cep-statusbar">
         {activeTab ? (
           <>
-            <span className="cep-statusbar__path" title={activeTab.path}>{activeTab.path}</span>
+            <span className="cep-statusbar__path" title={activeTab.path}>{activeTab.name}</span>
+            <span className="cep-statusbar__linenum">Ln {activeLine}</span>
             {activeTab.dirty && <span className="cep-statusbar__dirty">● Modified</span>}
           </>
         ) : (
@@ -874,13 +1126,37 @@ export default function CodeEditorPane({
         </button>
       </div>
 
-      {/* Rename dialog */}
+      {/* Rename dialog (file rename) */}
       {renaming && (
         <RenameDialog
           path={renaming.path}
           onConfirm={name => renameFile(renaming.id, name)}
           onCancel={() => setRenaming(null)}
         />
+      )}
+
+      {/* Rename Symbol dialog */}
+      {renameSymbol && (
+        <div className="cep-rename-overlay" onClick={() => setRenameSymbol(null)}>
+          <div className="cep-rename-dialog" onClick={e => e.stopPropagation()}>
+            <div className="cep-rename-title">Rename Symbol: <strong>{renameSymbol.name}</strong></div>
+            <input
+              className="cep-rename-input"
+              autoFocus
+              value={renameSymbol.newName}
+              onChange={e => setRenameSymbol(rs => ({ ...rs, newName: e.target.value }))}
+              onKeyDown={e => {
+                if (e.key === 'Enter') doRenameSymbol();
+                if (e.key === 'Escape') setRenameSymbol(null);
+              }}
+            />
+            <div className="cep-rename-hint">Renames all occurrences in this file</div>
+            <div className="cep-rename-actions">
+              <button className="cep-rename-btn cep-rename-btn--cancel" onClick={() => setRenameSymbol(null)}>Cancel</button>
+              <button className="cep-rename-btn cep-rename-btn--ok" onClick={doRenameSymbol}>Rename</button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* AI context menu */}
@@ -892,6 +1168,30 @@ export default function CodeEditorPane({
           filePath={aiMenu.filePath}
           onAction={handleAIAction}
           onClose={() => setAiMenu(null)}
+          onGoToDef={() => { setAiMenu(null); goToDefinition(); }}
+          onFindRefs={() => { setAiMenu(null); findReferences(); }}
+          onRename={() => { setAiMenu(null); startRenameSymbol(); }}
+        />
+      )}
+
+      {/* Fuzzy File / Symbol picker */}
+      {fuzzyMode && (
+        <FuzzyFinder
+          mode={fuzzyMode}
+          cwd={cwd}
+          wsSymbols={wsSymbols}
+          onSelect={(item) => {
+            setFuzzyMode(null);
+            if (fuzzyMode === 'file') {
+              const filePath = item.path?.startsWith('/') ? item.path : `${cwd}/${item.path}`;
+              openFile(filePath);
+            } else {
+              openFile(item.filePath).then(() => {
+                setTimeout(() => jumpToLine(item.line), 200);
+              });
+            }
+          }}
+          onClose={() => setFuzzyMode(null)}
         />
       )}
     </div>

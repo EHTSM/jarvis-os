@@ -624,3 +624,103 @@
   cursor: pointer;
 }
 .cep-run-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+
+/* ERP-1: Breadcrumb */
+.cep-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  background: rgba(0,0,0,0.15);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 12px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  flex-shrink: 0;
+  min-height: 26px;
+  overflow: hidden;
+}
+.cep-breadcrumb__file {
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+.cep-breadcrumb__file:hover { color: #60a5fa; }
+.cep-breadcrumb__sep { color: rgba(255,255,255,0.20); }
+.cep-breadcrumb__sym {
+  color: #fbbf24;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.cep-breadcrumb__sym:hover { color: #fde68a; }
+.cep-breadcrumb__actions {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.cep-breadcrumb__btn {
+  padding: 1px 7px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px;
+  color: rgba(255,255,255,0.45);
+  font-size: 10px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.cep-breadcrumb__btn:hover {
+  background: rgba(165,180,252,0.12);
+  color: #a5b4fc;
+  border-color: rgba(165,180,252,0.25);
+}
+
+/* ERP-1: References panel */
+.cep-refs { padding: 4px 0; }
+.cep-refs__header {
+  padding: 4px 12px 6px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 2px;
+}
+.cep-refs__row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  transition: background 0.08s;
+}
+.cep-refs__row:hover { background: rgba(165,180,252,0.10); }
+.cep-refs__file { color: #60a5fa; }
+.cep-refs__line { color: rgba(255,255,255,0.45); }
+.cep-refs__col  { color: rgba(255,255,255,0.25); font-size: 11px; }
+
+/* ERP-1: Status bar line number */
+.cep-statusbar__linenum {
+  font-size: 11px;
+  color: rgba(255,255,255,0.30);
+  margin-left: 8px;
+}
+
+/* AI context menu separator */
+.cep-ai-menu__sep {
+  height: 1px;
+  background: rgba(255,255,255,0.07);
+  margin: 4px 0;
+}
+.cep-ai-menu__icon--editor {
+  font-size: 9px !important;
+  background: rgba(165,180,252,0.12);
+  border-radius: 3px;
+  padding: 1px 3px;
+  color: #a5b4fc !important;
+  font-family: inherit;
+  font-style: normal;
+}

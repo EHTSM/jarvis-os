@@ -32,6 +32,7 @@ const ExecutionRuntimePanel    = lazy(() => import('./ExecutionRuntimePanel'));
 const CodeEditorPane              = lazy(() => import('./CodeEditorPane'));
 const ProjectSearch               = lazy(() => import('./ProjectSearch'));
 const EngineeringIntelligencePane = lazy(() => import('./EngineeringIntelligencePane'));
+const SymbolPanel                 = lazy(() => import('./SymbolPanel'));
 
 // ── Generic resize hook ───────────────────────────────────────────────
 function useResize(initial, min, max, axis = 'y') {
@@ -123,9 +124,10 @@ const SIDEBAR_MODES = {
   explorer:     { label: 'Files',        icon: '📁', title: 'File Explorer',             shortcut: '1' },
   code:         { label: 'Search',       icon: '⌕',  title: 'Project Search',            shortcut: '2' },
   git:          { label: 'Git',          icon: '🌿', title: 'Visual Git',                shortcut: '3' },
-  clipboard:    { label: 'Clipboard',    icon: '📋', title: 'Clipboard History',          shortcut: '4' },
-  productivity: { label: 'Workspace',    icon: '🗂',  title: 'Workspace',                 shortcut: '5' },
-  intelligence: { label: 'Intelligence', icon: '◈',  title: 'Engineering Intelligence',  shortcut: '6' },
+  symbols:      { label: 'Outline',      icon: 'ƒ',  title: 'File Outline & Symbols',    shortcut: '4' },
+  clipboard:    { label: 'Clipboard',    icon: '📋', title: 'Clipboard History',          shortcut: '5' },
+  productivity: { label: 'Workspace',    icon: '🗂',  title: 'Workspace',                 shortcut: '6' },
+  intelligence: { label: 'Intelligence', icon: '◈',  title: 'Engineering Intelligence',  shortcut: '7' },
 };
 
 const BOTTOM_TABS = {
@@ -430,6 +432,8 @@ export default function ElectronWorkspace({ children }) {
   const [editorFile,    setEditorFile]    = useState(null); // path to open
   const [missionJump,   setMissionJump]   = useState(null); // { filePath, startLine, endLine }
   const [gitChangedCount, setGitChangedCount] = useState(0);
+  const [editorSymbols,   setEditorSymbols]   = useState([]);
+  const [editorSymFile,   setEditorSymFile]   = useState('');
 
   const { height: bottomH,   onResizerMouseDown: onBottomResize }  = useBottomResize(340);
   const { width:  sidebarW,  onResizerMouseDown: onSidebarResize, onResizerDoubleClick: onSidebarReset } = useSidebarResize(260);
@@ -443,6 +447,16 @@ export default function ElectronWorkspace({ children }) {
     const handler = (e) => setGitChangedCount(e.detail?.changed || 0);
     window.addEventListener('git-status-update', handler);
     return () => window.removeEventListener('git-status-update', handler);
+  }, []);
+
+  // ── Symbol index from active editor ─────────────────────────────────
+  useEffect(() => {
+    const handler = (e) => {
+      setEditorSymbols(e.detail?.symbols || []);
+      setEditorSymFile(e.detail?.filePath || '');
+    };
+    window.addEventListener('symbol-index-update', handler);
+    return () => window.removeEventListener('symbol-index-update', handler);
   }, []);
 
   // ── Restore session on mount ─────────────────────────────────────
@@ -540,10 +554,11 @@ export default function ElectronWorkspace({ children }) {
       // Cmd+B — toggle sidebar (VSCode convention)
       if (e.key === 'b' && !e.shiftKey) { e.preventDefault(); setShowSidebar(s => !s); return; }
 
-      // Cmd+Shift+E/F/G/D/P/M/T — sidebar/panel shortcuts
+      // Cmd+Shift+E/F/G/S/D/P/M/T — sidebar/panel shortcuts
       if (e.shiftKey && e.key === 'E')  { e.preventDefault(); setSidebar('explorer'); return; }
       if (e.shiftKey && e.key === 'F')  { e.preventDefault(); setSidebar('code'); return; }
       if (e.shiftKey && e.key === 'G')  { e.preventDefault(); setSidebar('git'); return; }
+      if (e.shiftKey && e.key === 'S')  { e.preventDefault(); setSidebar('symbols'); return; }
       if (e.shiftKey && e.key === 'D')  { e.preventDefault(); openBottomTab('debugger'); return; }
       if (e.shiftKey && e.key === 'P')  { e.preventDefault(); openBottomTab('pair'); return; }
       if (e.shiftKey && e.key === 'M')  { e.preventDefault(); openBottomTab('missions'); return; }
@@ -645,6 +660,7 @@ export default function ElectronWorkspace({ children }) {
       case 'nav:clipboard':    setSidebar('clipboard'); break;
       case 'nav:git':          setSidebar('git'); break;
       case 'nav:search':       setSidebar('code'); break;
+      case 'nav:symbols':      setSidebar('symbols'); break;
       case 'nav:debugger':     openBottomTab('debugger'); break;
       case 'nav:pair':         openBottomTab('pair'); break;
       case 'nav:ops':          openBottomTab('ops'); break;
@@ -776,6 +792,20 @@ export default function ElectronWorkspace({ children }) {
                 <LazyPane active={sidebarMode === 'git'}>
                   <ErrorBoundary label="Visual Git">
                     <VisualGit cwd={cwd} />
+                  </ErrorBoundary>
+                </LazyPane>
+                <LazyPane active={sidebarMode === 'symbols'}>
+                  <ErrorBoundary label="Symbol Outline">
+                    <Suspense fallback={<PanelSkeleton />}>
+                      <SymbolPanel
+                        symbols={editorSymbols}
+                        filePath={editorSymFile}
+                        onJump={(sym) => {
+                          if (sym.filePath) handleFileOpen(sym.filePath);
+                          setMissionJump({ filePath: sym.filePath || editorSymFile, startLine: sym.line });
+                        }}
+                      />
+                    </Suspense>
                   </ErrorBoundary>
                 </LazyPane>
                 <LazyPane active={sidebarMode === 'clipboard'}>

@@ -35,6 +35,7 @@ const SHORTCUTS = [
   { id: 'explorer',          keys: ['Meta+Shift+E', 'Ctrl+Shift+E'], description: 'File Explorer sidebar'  },
   { id: 'search',            keys: ['Meta+Shift+F', 'Ctrl+Shift+F'], description: 'Project Search sidebar' },
   { id: 'git',               keys: ['Meta+Shift+G', 'Ctrl+Shift+G'], description: 'Visual Git sidebar'     },
+  { id: 'symbols',           keys: ['Meta+Shift+S', 'Ctrl+Shift+S'], description: 'File Outline & Symbols sidebar' },
   { id: 'terminal',          keys: ['Meta+Shift+T', 'Ctrl+Shift+T'], description: 'Terminal panel'          },
   { id: 'ai-pair',           keys: ['Meta+Shift+P', 'Ctrl+Shift+P'], description: 'AI Pair panel'           },
   { id: 'missions',          keys: ['Meta+Shift+M', 'Ctrl+Shift+M'], description: 'Missions panel'          },
