@@ -72,6 +72,7 @@ router.use(require("./graph"));        // /graph/stats, /graph/node/:type/:id, /
 router.use(require("./collaboration"));       // /collaboration/session/*, /collaboration/history/*, /collaboration/message, /collaboration/action, /collaboration/replan, /collaboration/approve, /collaboration/reject
 router.use(require("./collaborationEngine")); // /collab/plans/*, /collab/handoff, /collab/active, /collab/blocked, /collab/stalled, /collab/stats (Phase I6)
 router.use(require("./pipeline"));           // /pipeline/run, /pipeline/:id, /pipeline/active, /pipeline/stats, /pipeline/validate (Phase I7)
+router.use(require("./deployment"));         // /deployment/run, /deployment/:id, /deployment/targets, /deployment/active, /deployment/benchmark (Phase I8)
 router.use(require("./workspace"));      // /workspace, /workspace/:id, /workspace/invite, /workspace/switch, /workspace/activity
 router.use(require("./security"));      // /security/sessions, /security/devices, /security/audit, /security/policies, /security/tokens, /security/score
 router.use(require("./admin"));         // /admin/team, /admin/member/*, /admin/departments, /admin/profile, /admin/statistics, /admin/quotas

@@ -559,6 +559,153 @@ function PipelineTab() {
     );
 }
 
+// ── I8: Deployment Dashboard sub-components (I8-5) ────────────────────────────
+
+const TARGET_COLOR = { development: "#22c55e", staging: "#f59e0b", production: "#ef4444" };
+const DEPLOY_STATUS_COLOR = { completed: "#22c55e", running: "#3b82f6", failed: "#ef4444", cancelled: "#6b7280", rolled_back: "#f59e0b", pending: "#94a3b8" };
+const DEPLOY_STAGE_ICON = { pre_check: "🔍", deploy: "🚀", health_verify: "💚", service_check: "🔧", observe: "📊", learn: "🧠", rollback: "⎌" };
+
+function DeploymentCard({ dep }) {
+    const [expanded, setExpanded] = useState(false);
+    const statusColor = DEPLOY_STATUS_COLOR[dep.status] || "#6b7280";
+    const targetColor = TARGET_COLOR[dep.target] || "#94a3b8";
+    const progress    = dep.stagesTotal > 0 ? Math.round(dep.stagesCompleted / dep.stagesTotal * 100) : 0;
+    const health      = dep.healthSnapshot?.score;
+
+    return (
+        <div className="aad-collab-card" style={{ borderLeft: `3px solid ${statusColor}` }}>
+            <div className="aad-collab-card-header">
+                <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 600, fontSize: 12, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {dep.goal?.slice(0, 70)}
+                    </div>
+                    <div className="aad-collab-mission-id">
+                        {dep.deployId} · <span style={{ color: targetColor, fontWeight: 600 }}>{dep.target}</span>
+                    </div>
+                </div>
+                <span className="aad-handoff-status" style={{ background: statusColor + "22", color: statusColor }}>{dep.status}</span>
+            </div>
+
+            {/* Progress bar */}
+            <div style={{ height: 4, background: "var(--bg3, #27272a)", borderRadius: 2 }}>
+                <div style={{ height: "100%", width: `${progress}%`, background: statusColor, borderRadius: 2, transition: "width 0.4s ease" }} />
+            </div>
+
+            {/* Key metrics */}
+            <div style={{ display: "flex", gap: 12, fontSize: 11, color: "var(--text-dim, #94a3b8)", flexWrap: "wrap" }}>
+                {dep.durationMs > 0 && <span>Duration: {Math.round(dep.durationMs / 1000)}s</span>}
+                {health !== null && health !== undefined && (
+                    <span style={{ color: health >= 80 ? "#22c55e" : health >= 50 ? "#f59e0b" : "#ef4444" }}>
+                        Health: {health}%
+                    </span>
+                )}
+                {dep.rollbackExecuted && <span style={{ color: "#f59e0b" }}>⎌ Rolled back: {dep.rollbackReason?.slice(0, 40)}</span>}
+                {dep.failedStage && <span style={{ color: "#ef4444" }}>Failed: {dep.failedStage}</span>}
+                {dep.approvalStatus === "pending" && <span style={{ color: "#a78bfa" }}>⏳ Awaiting approval</span>}
+                {dep.commitHash && <span style={{ color: "#22c55e" }}>Commit: {dep.commitHash.slice(0, 7)}</span>}
+                {dep.recoveryMissionId && <span style={{ color: "#f87171" }}>Recovery mission created</span>}
+            </div>
+
+            <button className="aad-btn aad-btn--ghost" style={{ fontSize: 11, padding: "3px 8px", alignSelf: "flex-start" }} onClick={() => setExpanded(e => !e)}>
+                {expanded ? "▲ Hide stages" : "▼ Show stages"}
+            </button>
+            {expanded && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 4 }}>
+                    {(dep.stages || []).map(s => (
+                        <div key={s.id} className="aad-handoff-row" style={{ borderLeft: `2px solid ${DEPLOY_STATUS_COLOR[s.status] || "#6b7280"}`, gap: 8 }}>
+                            <span style={{ fontSize: 13 }}>{DEPLOY_STAGE_ICON[s.id] || "◉"}</span>
+                            <span style={{ flex: 1, fontWeight: s.status === "running" ? 600 : 400 }}>{s.label}</span>
+                            {s.durationMs > 0 && <span style={{ fontSize: 10, color: "var(--text-dim, #94a3b8)" }}>{s.durationMs}ms</span>}
+                            <span className="aad-handoff-status" style={{ background: (DEPLOY_STATUS_COLOR[s.status] || "#6b7280") + "22", color: DEPLOY_STATUS_COLOR[s.status] || "#6b7280" }}>{s.status}</span>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
+function DeploymentTab() {
+    const [data, setData]       = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError]     = useState(null);
+    const [allDeps, setAll]     = useState([]);
+    const [targets, setTargets] = useState({});
+    const pollRef = useRef(null);
+
+    const load = useCallback(async () => {
+        try {
+            const [activeR, statsR, listR, targR] = await Promise.all([
+                _fetch("/deployment/active"),
+                _fetch("/deployment/stats"),
+                _fetch("/deployment?limit=20"),
+                _fetch("/deployment/targets"),
+            ]);
+            setData({ active: activeR?.deployments || [], stats: statsR?.stats || null });
+            setAll(listR?.deployments || []);
+            setTargets(targR?.targets || {});
+            setError(null);
+        } catch (e) { setError(e.message); }
+        finally { setLoading(false); }
+    }, []);
+
+    useEffect(() => {
+        load();
+        pollRef.current = setInterval(load, 12_000);
+        return () => clearInterval(pollRef.current);
+    }, [load]);
+
+    if (loading && !data) return <div className="aad-loading">Loading deployment data…</div>;
+    if (error) return <div className="aad-error-banner">{error}</div>;
+
+    const { active = [], stats } = data || {};
+
+    return (
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {/* Deployment stat bar */}
+            {stats && (
+                <div className="aad-collab-summary">
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#3b82f6" }}>{stats.active ?? 0}</span><span className="aad-collab-stat-lbl">Active</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#22c55e" }}>{stats.completed ?? 0}</span><span className="aad-collab-stat-lbl">Completed</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#ef4444" }}>{stats.failed ?? 0}</span><span className="aad-collab-stat-lbl">Failed</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#f59e0b" }}>{stats.rolledBack ?? 0}</span><span className="aad-collab-stat-lbl">Rollbacks</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#a78bfa" }}>{stats.verificationFailed ?? 0}</span><span className="aad-collab-stat-lbl">Verify⛔</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#f87171" }}>{stats.recoveryMissionsCreated ?? 0}</span><span className="aad-collab-stat-lbl">Recoveries</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#94a3b8" }}>{stats.avgVerifyMs ?? 0}ms</span><span className="aad-collab-stat-lbl">Avg Verify</span></div>
+                </div>
+            )}
+
+            {/* Target profiles */}
+            {Object.keys(targets).length > 0 && (
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    {Object.values(targets).map(t => (
+                        <div key={t.id} style={{ padding: "4px 10px", borderRadius: 4, fontSize: 10, fontWeight: 600, background: (TARGET_COLOR[t.id] || "#6b7280") + "22", color: TARGET_COLOR[t.id] || "#6b7280", border: `1px solid ${(TARGET_COLOR[t.id] || "#6b7280")}44` }}>
+                            {t.label} · {t.requireApproval ? "Approval req" : "Auto"} · Health≥{t.healthThreshold}%
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {active.length > 0 && (
+                <div>
+                    <div className="aad-collab-section-title">Active Deployments ({active.length})</div>
+                    <div className="aad-cards" style={{ marginTop: 8 }}>
+                        {active.map(d => <DeploymentCard key={d.deployId} dep={d} />)}
+                    </div>
+                </div>
+            )}
+
+            <div className="aad-collab-section-title">Deployment History ({allDeps.length})</div>
+            {allDeps.length === 0 && (
+                <div className="aad-empty">No deployments yet. POST /deployment/run with a target to start.</div>
+            )}
+            <div className="aad-cards">
+                {allDeps.map(d => <DeploymentCard key={d.deployId} dep={d} />)}
+            </div>
+        </div>
+    );
+}
+
 // ── Supervisor summary bar ────────────────────────────────────────────────────
 
 function SupervisorBar({ status, onStart, onStop, loading }) {
@@ -643,7 +790,7 @@ export default function AutonomousAgentDashboard() {
             {/* Header */}
             <div className="aad-header">
                 <div className="aad-header-title">Autonomous Agent Runtime</div>
-                <div className="aad-header-sub">Phase I4–I7 — 10 Agents · Collaboration · Autonomous Engineering Pipeline</div>
+                <div className="aad-header-sub">Phase I4–I8 — 10 Agents · Collaboration · Pipeline · Deployment & Production Ops</div>
                 <button className="aad-btn aad-btn--ghost aad-refresh" onClick={load} disabled={loading}>
                     {loading ? "⟳" : "↻"} Refresh
                 </button>
@@ -672,6 +819,9 @@ export default function AutonomousAgentDashboard() {
                 </button>
                 <button className={`aad-tab ${activeTab === "pipeline" ? "active" : ""}`} onClick={() => setActiveTab("pipeline")}>
                     Pipeline (I7)
+                </button>
+                <button className={`aad-tab ${activeTab === "deployment" ? "active" : ""}`} onClick={() => setActiveTab("deployment")}>
+                    Deploy (I8)
                 </button>
             </div>
 
@@ -717,6 +867,9 @@ export default function AutonomousAgentDashboard() {
 
             {/* Pipeline tab (I7) */}
             {activeTab === "pipeline" && <PipelineTab />}
+
+            {/* Deployment tab (I8) */}
+            {activeTab === "deployment" && <DeploymentTab />}
 
             {/* Footer */}
             <div className="aad-footer">
