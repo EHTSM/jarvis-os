@@ -648,4 +648,90 @@ router.post("/coding/undo-patch", (req, res) => {
     }
 });
 
+// ══════════════════════════════════════════════════════════════════════════════
+//  ACP-3: ENGINEERING SMELL DETECTION (PROACTIVE RECOMMENDATIONS)
+// ══════════════════════════════════════════════════════════════════════════════
+
+function _smellDetector() { return _try(() => require("../services/engineeringSmellDetector.cjs")); }
+
+// ── GET /coding/smells — scan repo and return recommendation cards ─────────────
+router.get("/coding/smells", async (req, res) => {
+    try {
+        const { cwd, enrichAI } = req.query;
+        const root = cwd || path.join(__dirname, "../../");
+
+        const sd = _smellDetector();
+        if (!sd) return res.status(503).json({ ok: false, error: "smell detector unavailable" });
+
+        const result = sd.scan(root);
+
+        // Optional AI enrichment: for high-severity smells, auto-generate patch proposals
+        if (enrichAI === "true" && result.smells.length) {
+            const highSmells = result.smells.filter(s => s.severity === "high" && s.patchHint && s.file).slice(0, 3);
+            await Promise.allSettled(highSmells.map(async (smell) => {
+                try {
+                    const absPath = path.isAbsolute(smell.file)
+                        ? smell.file
+                        : path.join(root, smell.file);
+                    const fileContent = fs.existsSync(absPath)
+                        ? fs.readFileSync(absPath, "utf8").slice(0, 3000)
+                        : "";
+                    const system = _buildRepoContext({ cwd: root, filePath: smell.file, fileContent });
+                    const prompt = `Given this engineering smell: "${smell.detail}" in file ${smell.file} at line ${smell.line || "unknown"}, and the hint: "${smell.patchHint}", generate ONLY valid JSON:
+{
+  "patchTarget": "exact string to replace (must appear in file, short)",
+  "patchReplacement": "replacement string",
+  "explanation": "one line"
+}
+If you cannot produce a safe, targeted single-string replacement, respond with {"patchTarget":null}.`;
+                    const raw   = await ai.callAI(prompt, { system });
+                    const m     = raw.match(/\{[\s\S]+\}/);
+                    if (m) {
+                        const parsed = JSON.parse(m[0]);
+                        if (parsed.patchTarget) {
+                            smell.aiPatchSpec = {
+                                targetFile:        smell.file,
+                                patchTarget:       parsed.patchTarget,
+                                patchReplacement:  parsed.patchReplacement || "",
+                                description:       parsed.explanation || smell.patchHint,
+                            };
+                        }
+                    }
+                } catch {}
+            }));
+        }
+
+        res.json({ ok: true, ...result });
+    } catch (err) {
+        logger.error(`[Smells] ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// ── POST /coding/smells/dismiss — dismiss a smell ────────────────────────────
+router.post("/coding/smells/dismiss", (req, res) => {
+    try {
+        const { smellId } = req.body;
+        if (!smellId) return res.status(400).json({ ok: false, error: "smellId required" });
+        const sd = _smellDetector();
+        if (!sd) return res.status(503).json({ ok: false, error: "smell detector unavailable" });
+        res.json(sd.dismiss(smellId));
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// ── POST /coding/smells/undismiss ─────────────────────────────────────────────
+router.post("/coding/smells/undismiss", (req, res) => {
+    try {
+        const { smellId } = req.body;
+        if (!smellId) return res.status(400).json({ ok: false, error: "smellId required" });
+        const sd = _smellDetector();
+        if (!sd) return res.status(503).json({ ok: false, error: "smell detector unavailable" });
+        res.json(sd.undismiss(smellId));
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
 module.exports = router;

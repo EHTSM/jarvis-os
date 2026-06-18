@@ -1,0 +1,187 @@
+.smells-panel {
+  display: flex; flex-direction: column; height: 100%;
+  background: #0d1117; font-size: 13px; font-family: system-ui, sans-serif;
+  color: #d1d5db; overflow: hidden;
+}
+
+.smells-panel__header {
+  display: flex; align-items: center; padding: 0 12px; height: 34px;
+  background: #111; border-bottom: 1px solid #1f2937; flex-shrink: 0;
+}
+.smells-panel__title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: #6b7280; flex: 1;
+}
+.smells-panel__last-scan { font-size: 10px; color: #374151; }
+
+/* Summary bar */
+.smells-summary {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 12px; border-bottom: 1px solid #111827; flex-shrink: 0;
+  background: #0a0e17;
+}
+.smells-summary__counts { display: flex; align-items: center; gap: 8px; flex: 1; flex-wrap: wrap; }
+.smells-summary__count { font-size: 11px; font-weight: 600; }
+.smells-summary__count--high   { color: #f87171; }
+.smells-summary__count--medium { color: #fbbf24; }
+.smells-summary__count--low    { color: #6b7280; }
+.smells-summary__sep   { color: #1f2937; }
+.smells-summary__conf  { font-size: 10px; color: #4b5563; }
+.smells-summary__saved { font-size: 10px; color: #10b981; }
+.smells-summary__loading { font-size: 11px; color: #4b5563; font-style: italic; }
+.smells-refresh-btn {
+  background: transparent; border: 1px solid #1f2937; border-radius: 4px;
+  color: #4b5563; font-size: 14px; padding: 2px 7px; cursor: pointer; flex-shrink: 0;
+  transition: color 0.15s;
+}
+.smells-refresh-btn:hover:not(:disabled) { color: #9ca3af; }
+.smells-refresh-btn:disabled { opacity: 0.4; }
+
+/* Filter bar */
+.smells-filter-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-bottom: 1px solid #111827; flex-shrink: 0;
+  background: #0a0e17;
+}
+.smells-filter-sev { display: flex; gap: 3px; }
+.smells-filter-btn {
+  padding: 3px 9px; border-radius: 4px; font-size: 11px; font-weight: 600;
+  border: 1px solid #1f2937; background: transparent; color: #4b5563; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.05em; transition: background 0.12s, color 0.12s;
+}
+.smells-filter-btn:hover { background: #111827; color: #9ca3af; }
+.smells-filter-btn--active { background: #1f2937; color: #d1d5db; border-color: #374151; }
+.smells-type-select {
+  margin-left: auto; background: #0a0e17; border: 1px solid #1f2937; border-radius: 4px;
+  color: #6b7280; font-size: 11px; padding: 3px 6px; outline: none; cursor: pointer;
+}
+
+/* Smell list */
+.smells-list {
+  flex: 1; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: #1f2937 transparent;
+}
+.smells-list::-webkit-scrollbar { width: 4px; }
+.smells-list::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 2px; }
+
+/* Empty state */
+.smells-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 200px; gap: 8px; color: #374151;
+}
+.smells-empty__icon { font-size: 28px; }
+.smells-empty__text { font-size: 13px; color: #4b5563; }
+.smells-empty__sub  { font-size: 11px; color: #374151; }
+
+.smells-error {
+  margin: 8px 12px; padding: 7px 10px; background: #450a0a20; border: 1px solid #7f1d1d;
+  border-radius: 4px; color: #f87171; font-size: 12px;
+}
+
+/* Smell card */
+.smell-card {
+  border-bottom: 1px solid #111827; padding: 10px 12px;
+  transition: background 0.12s;
+}
+.smell-card:hover { background: #0a0e1750; }
+.smell-card--high   { border-left: 2px solid #ef4444; }
+.smell-card--medium { border-left: 2px solid #f59e0b; }
+.smell-card--low    { border-left: 2px solid #374151; }
+
+.smell-card__header {
+  display: flex; align-items: center; gap: 6px; cursor: pointer; margin-bottom: 5px;
+}
+.smell-card__badges { display: flex; gap: 5px; flex: 1; flex-wrap: wrap; }
+.smell-card__arrow  { color: #374151; font-size: 11px; }
+
+.smell-type-badge {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.06em;
+  padding: 2px 6px; border-radius: 3px; border: 1px solid; white-space: nowrap;
+}
+.smell-sev-badge {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 2px 5px; border-radius: 3px;
+}
+.smell-sev-badge--high   { background: #450a0a; color: #f87171; }
+.smell-sev-badge--medium { background: #451a03; color: #fbbf24; }
+.smell-sev-badge--low    { background: #1f2937; color: #6b7280; }
+
+.smell-card__detail {
+  font-size: 12px; color: #d1d5db; line-height: 1.5; margin-bottom: 5px;
+}
+.smell-card__location {
+  font-family: 'JetBrains Mono', Menlo, monospace; font-size: 10px;
+  color: #60a5fa; margin-bottom: 5px;
+}
+.smell-card__file { }
+.smell-card__line { color: #4b5563; }
+
+/* Confidence bar in card */
+.smell-card__meta {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+}
+.smell-card__conf-bar {
+  flex: 1; height: 3px; background: #1f2937; border-radius: 2px; overflow: hidden; max-width: 80px;
+}
+.smell-card__conf-fill {
+  height: 100%; background: #10b981; border-radius: 2px;
+}
+.smell-card__conf-label { font-size: 9px; color: #4b5563; }
+.smell-card__time { font-size: 9px; color: #10b981; margin-left: auto; }
+
+/* Expanded body */
+.smell-card__body { padding: 6px 0; display: flex; flex-direction: column; gap: 6px; }
+.smell-card__hint {
+  font-size: 11px; color: #9ca3af; background: #111827; border-radius: 4px; padding: 6px 8px;
+  line-height: 1.4;
+}
+.smell-card__hint-label {
+  display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: #4b5563; margin-right: 6px;
+}
+.smell-card__ai-patch {
+  background: #05271820; border: 1px solid #05271840; border-radius: 4px; padding: 6px 8px;
+}
+.smell-card__ai-label {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  color: #10b981; display: block; margin-bottom: 4px;
+}
+.smell-card__patch-target {
+  display: flex; flex-direction: column; gap: 2px;
+  font-family: 'JetBrains Mono', Menlo, monospace; font-size: 10px;
+}
+.diff-del { color: #f87171; }
+.diff-add { color: #34d399; }
+
+/* Action buttons */
+.smell-card__actions {
+  display: flex; gap: 5px; flex-wrap: wrap; margin-top: 4px;
+}
+.smell-action-btn {
+  padding: 3px 9px; border-radius: 4px; font-size: 11px; border: 1px solid; cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.smell-action-btn--patch   { background: #05271820; border-color: #059669; color: #34d399; }
+.smell-action-btn--patch:hover { background: #052e16; }
+.smell-action-btn--mission { background: #1e3a5f20; border-color: #1d4ed8; color: #60a5fa; }
+.smell-action-btn--mission:hover { background: #1e3a5f50; }
+.smell-action-btn--dismiss { background: transparent; border-color: #1f2937; color: #374151; }
+.smell-action-btn--dismiss:hover { color: #6b7280; border-color: #374151; }
+.smell-action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Patch view overlay */
+.smells-patch-view {
+  display: flex; flex-direction: column; height: 100%; overflow: hidden;
+}
+.smells-patch-view__back {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 12px; border-bottom: 1px solid #1f2937; background: #0a0e17; flex-shrink: 0;
+}
+.smells-back-btn {
+  background: transparent; border: 1px solid #1f2937; border-radius: 4px;
+  color: #6b7280; font-size: 11px; padding: 3px 8px; cursor: pointer;
+}
+.smells-back-btn:hover { color: #9ca3af; border-color: #374151; }
+.smells-patch-view__title {
+  font-size: 11px; color: #4b5563; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}

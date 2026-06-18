@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, lazy, Suspense } from "react";
+const SmellsPanel = lazy(() => import("./SmellsPanel"));
 import { _fetch } from "../_client";
 import "./AutonomousAgentDashboard.css";
 
@@ -823,6 +824,9 @@ export default function AutonomousAgentDashboard() {
                 <button className={`aad-tab ${activeTab === "deployment" ? "active" : ""}`} onClick={() => setActiveTab("deployment")}>
                     Deploy (I8)
                 </button>
+                <button className={`aad-tab ${activeTab === "smells" ? "active" : ""}`} onClick={() => setActiveTab("smells")}>
+                    Smells
+                </button>
             </div>
 
             {/* Agents tab */}
@@ -870,6 +874,13 @@ export default function AutonomousAgentDashboard() {
 
             {/* Deployment tab (I8) */}
             {activeTab === "deployment" && <DeploymentTab />}
+
+            {/* Smells tab (ACP-3) */}
+            {activeTab === "smells" && (
+                <Suspense fallback={<div style={{ padding: 16, color: "#4b5563" }}>Loading…</div>}>
+                    <SmellsPanel cwd={null} />
+                </Suspense>
+            )}
 
             {/* Footer */}
             <div className="aad-footer">
