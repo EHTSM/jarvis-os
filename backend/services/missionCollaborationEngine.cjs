@@ -697,6 +697,7 @@ function getStats() {
         activePlans:   plans.filter(p => p.status === "active").length,
         completedPlans:plans.filter(p => p.status === "completed").length,
         totalMissions: Object.keys(store.handoffs).length,
+        totalHandoffsFailed: _stats.handoffsFailed,
     };
 }
 
