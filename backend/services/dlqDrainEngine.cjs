@@ -19,8 +19,10 @@
  *   reroute_capability           → purge  (no alternative available without UI)
  *
  * Run modes:
- *   drain({ dryRun: true })  — classify only, no mutations
+ *   drain({ dryRun: true })  — classify only, no mutations     [DEFAULT]
  *   drain({ dryRun: false }) — classify + execute routing
+ *
+ * Safety: dryRun defaults to true. Mutations require explicit opt-in.
  *
  * Public API:
  *   drain(opts)         → DrainReport
