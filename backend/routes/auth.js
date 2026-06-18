@@ -180,7 +180,8 @@ router.post("/auth/firebase-session", rateLimiter(20, 5 * 60_000), async (req, r
       return res.status(503).json({ error: "Firebase auth not configured" });
     }
     // Dev-only: allow through with warning
-    console.warn("[Auth] firebase-admin not initialised — skipping token verification (dev only)");
+    // eslint-disable-next-line no-console
+    if (process.env.NODE_ENV !== "production") console.warn("[Auth] firebase-admin not initialised — skipping token verification (dev only)");
   }
 
   const cleanEmail = email.trim().toLowerCase();
