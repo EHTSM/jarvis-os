@@ -226,3 +226,153 @@
   text-align: center;
   padding-bottom: 8px;
 }
+
+/* ── I6: Collaboration tab ──────────────────────────────────────────────── */
+
+.aad-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border, #27272a);
+  margin-bottom: 8px;
+}
+.aad-tab {
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--text-dim, #94a3b8);
+  border-bottom: 2px solid transparent;
+  font-family: inherit;
+  transition: color 0.15s;
+}
+.aad-tab:hover { color: var(--text, #e2e8f0); }
+.aad-tab.active {
+  color: var(--text, #e2e8f0);
+  border-bottom-color: #3b82f6;
+}
+
+/* Collab summary row */
+.aad-collab-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--bg2, #18181b);
+  border: 1px solid var(--border, #27272a);
+  border-radius: 8px;
+  font-size: 11px;
+}
+.aad-collab-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 60px;
+}
+.aad-collab-stat-val {
+  font-size: 18px;
+  font-weight: 700;
+}
+.aad-collab-stat-lbl {
+  font-size: 10px;
+  color: var(--text-dim, #94a3b8);
+}
+
+/* Collaboration chain card */
+.aad-collab-card {
+  background: var(--bg2, #18181b);
+  border: 1px solid var(--border, #27272a);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.aad-collab-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.aad-collab-mission-id {
+  font-size: 10px;
+  color: var(--text-dim, #94a3b8);
+}
+
+/* Agent chain */
+.aad-chain {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 11px;
+}
+.aad-chain-agent {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  border: 1px solid;
+}
+.aad-chain-agent.active  { background: #3b82f622; color: #3b82f6; border-color: #3b82f655; }
+.aad-chain-agent.done    { background: #22c55e22; color: #22c55e; border-color: #22c55e55; }
+.aad-chain-agent.pending { background: var(--bg3, #27272a); color: var(--text-dim, #94a3b8); border-color: var(--border, #3f3f46); }
+.aad-chain-agent.failed  { background: #ef444422; color: #ef4444; border-color: #ef444455; }
+.aad-chain-arrow { color: var(--text-dim, #94a3b8); font-size: 10px; }
+
+/* Parallel group */
+.aad-parallel-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 10px;
+  background: #a78bfa11;
+  border: 1px solid #a78bfa33;
+  border-radius: 6px;
+  font-size: 11px;
+}
+.aad-parallel-group-label { font-size: 10px; color: #a78bfa; font-weight: 600; margin-bottom: 2px; }
+.aad-parallel-agents { display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* Blocked / stalled warning rows */
+.aad-alert-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+}
+.aad-alert-row.warn    { background: #f59e0b11; border: 1px solid #f59e0b33; color: #f59e0b; }
+.aad-alert-row.danger  { background: #ef444411; border: 1px solid #ef444433; color: #ef4444; }
+.aad-alert-icon { flex-shrink: 0; font-size: 13px; }
+.aad-alert-body { flex: 1; }
+.aad-alert-title { font-weight: 600; }
+.aad-alert-meta  { color: var(--text-dim, #94a3b8); font-size: 10px; margin-top: 2px; }
+
+/* Handoff list */
+.aad-handoff-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  background: var(--bg3, #1e1e21);
+  font-size: 11px;
+}
+.aad-handoff-status {
+  padding: 1px 6px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.aad-collab-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}

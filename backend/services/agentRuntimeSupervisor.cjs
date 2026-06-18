@@ -63,6 +63,7 @@ function _sec()    { try { return require("./securityLayer.cjs");               
 function _bds()    { try { return require("./businessDataService.cjs");                      } catch { return null; } }
 function _bie()    { try { return require("./businessIntelligenceEngine.cjs");               } catch { return null; } }
 function _ce()     { try { return require("./engineeringConfidenceEngine.cjs");              } catch { return null; } }
+function _collab() { try { return require("./missionCollaborationEngine.cjs");               } catch { return null; } }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIG
@@ -823,11 +824,49 @@ async function _executiveTick(s) {
         }
     } catch {}
 
+    // I6-6: Executive coordination — stalled handoffs, blocked chains, duplicate work
+    try {
+        const collab  = _collab();
+        if (collab) {
+            // Stalled handoffs (> 10 min) → recovery mission
+            const stalled = collab.getStalledHandoffs(10 * 60_000);
+            for (const hoff of stalled.slice(0, 2)) {
+                const m = _createMission(id, {
+                    objective: `Recover stalled collaboration handoff: ${hoff.handoffId} on mission ${hoff.missionId}`,
+                    priority:  "high",
+                    subtasks: [
+                        { description: `Handoff from ${hoff.fromAgent || "origin"} to ${hoff.toAgent} has been pending since ${hoff.createdAt}` },
+                        { description: "Retry handoff or reassign to available agent" },
+                    ],
+                    metadata: { autoCreatedBy: "executive_agent", handoffId: hoff.handoffId, domain: "collaboration", requiresHumanApproval: false },
+                });
+                if (m) { created++; try { collab.retry(hoff.missionId, hoff.handoffId); } catch {} }
+            }
+
+            // Blocked chains — stages running but no active handoff
+            const blocked = collab.getBlockedChains();
+            for (const chain of blocked.slice(0, 2)) {
+                const staleSec = chain.blockedSince ? Math.round((Date.now() - new Date(chain.blockedSince).getTime()) / 1000) : 0;
+                if (staleSec < 300) continue; // only escalate if blocked > 5 min
+                const m = _createMission(id, {
+                    objective: `Unblock collaboration chain: mission ${chain.missionId}, stage ${chain.blockedStage?.stage}`,
+                    priority:  "high",
+                    subtasks: [
+                        { description: `Stage "${chain.blockedStage?.stage}" on mission ${chain.missionId} is blocked (owner: ${chain.currentOwner})` },
+                        { description: "Reassign stage or trigger retry on the blocked agent" },
+                    ],
+                    metadata: { autoCreatedBy: "executive_agent", missionId: chain.missionId, domain: "collaboration" },
+                });
+                if (m) created++;
+            }
+        }
+    } catch {}
+
     _setState(id, {
         lastTickAt: new Date().toISOString(),
         lastDecisionAt: new Date().toISOString(),
         lastDecision: `Health ${healthScore}/100 — ${summary?.slice(0, 80)}`,
-        currentObjective: `Summary registered — health ${healthScore}/100`,
+        currentObjective: created > 0 ? `Escalated ${created} issue(s) — health ${healthScore}/100` : `Summary registered — health ${healthScore}/100`,
     });
 }
 

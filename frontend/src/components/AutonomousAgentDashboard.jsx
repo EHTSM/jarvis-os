@@ -217,6 +217,206 @@ function AgentCard({ agent, onPause, onResume, onTick, onEnable, onDisable, paus
     );
 }
 
+// ── I6: Collaboration panel sub-components ────────────────────────────────────
+
+const HANDOFF_STATUS_COLOR = {
+    pending:   "#f59e0b",
+    claimed:   "#3b82f6",
+    accepted:  "#8b5cf6",
+    running:   "#22c55e",
+    completed: "#22c55e",
+    failed:    "#ef4444",
+    rejected:  "#ef4444",
+};
+
+function CollabStatBar({ stats }) {
+    if (!stats) return null;
+    return (
+        <div className="aad-collab-summary">
+            <div className="aad-collab-stat">
+                <span className="aad-collab-stat-val" style={{ color: "#3b82f6" }}>{stats.activePlans ?? 0}</span>
+                <span className="aad-collab-stat-lbl">Active</span>
+            </div>
+            <div className="aad-collab-stat">
+                <span className="aad-collab-stat-val" style={{ color: "#22c55e" }}>{stats.completedPlans ?? 0}</span>
+                <span className="aad-collab-stat-lbl">Completed</span>
+            </div>
+            <div className="aad-collab-stat">
+                <span className="aad-collab-stat-val">{stats.handoffsTotal ?? 0}</span>
+                <span className="aad-collab-stat-lbl">Handoffs</span>
+            </div>
+            <div className="aad-collab-stat">
+                <span className="aad-collab-stat-val" style={{ color: "#22c55e" }}>{stats.handoffsCompleted ?? 0}</span>
+                <span className="aad-collab-stat-lbl">Done</span>
+            </div>
+            <div className="aad-collab-stat">
+                <span className="aad-collab-stat-val" style={{ color: "#f59e0b" }}>{stats.handoffsRetried ?? 0}</span>
+                <span className="aad-collab-stat-lbl">Retried</span>
+            </div>
+            <div className="aad-collab-stat">
+                <span className="aad-collab-stat-val" style={{ color: "#a78bfa" }}>{stats.parallelGroupsExecuted ?? 0}</span>
+                <span className="aad-collab-stat-lbl">Parallel</span>
+            </div>
+            <div className="aad-collab-stat">
+                <span className="aad-collab-stat-val" style={{ color: "#ef4444" }}>{stats.recoveryMissionsCreated ?? 0}</span>
+                <span className="aad-collab-stat-lbl">Recoveries</span>
+            </div>
+        </div>
+    );
+}
+
+function AgentChip({ agentId, stageStatus }) {
+    const cls = stageStatus === "running" ? "active" : stageStatus === "completed" ? "done" : stageStatus === "failed" ? "failed" : "pending";
+    return <span className={`aad-chain-agent ${cls}`}>{ROLE_ICON[agentId?.replace("agent_", "")] || "◉"} {ROLE_LABEL[agentId?.replace("agent_", "")] || agentId}</span>;
+}
+
+function CollabChainCard({ collab }) {
+    const order = collab.executionOrder || [];
+    const groups = collab.parallelGroups || [];
+    const current = collab.currentStage;
+
+    return (
+        <div className="aad-collab-card" style={{ borderLeft: collab.status === "active" ? "3px solid #3b82f6" : collab.status === "waiting_approval" ? "3px solid #f59e0b" : "3px solid #22c55e" }}>
+            <div className="aad-collab-card-header">
+                <div>
+                    <span style={{ fontWeight: 600, fontSize: 12 }}>Mission Collaboration</span>
+                    <span className="aad-collab-mission-id"> · {collab.missionId}</span>
+                </div>
+                <StatusPill status={collab.status === "waiting_approval" ? "paused" : collab.status === "active" ? "running" : "stopped"} />
+            </div>
+
+            {/* Owner */}
+            {collab.currentOwner && (
+                <div style={{ fontSize: 11, color: "var(--text-dim, #94a3b8)" }}>
+                    Owner: <span style={{ color: "var(--text, #e2e8f0)", fontWeight: 600 }}>{ROLE_LABEL[collab.currentOwner?.replace("agent_", "")] || collab.currentOwner}</span>
+                    {current && <span> · Stage: {current.stage}</span>}
+                </div>
+            )}
+
+            {/* Sequential chain */}
+            {order.length > 0 && (
+                <div className="aad-chain">
+                    {order.map((stage, i) => (
+                        <React.Fragment key={stage.stage}>
+                            <AgentChip agentId={stage.agentId} stageStatus={stage.status} />
+                            {i < order.length - 1 && <span className="aad-chain-arrow">→</span>}
+                        </React.Fragment>
+                    ))}
+                </div>
+            )}
+
+            {/* Parallel groups */}
+            {groups.filter(g => g.agents?.length > 0).map(grp => (
+                <div key={grp.groupId} className="aad-parallel-group">
+                    <div className="aad-parallel-group-label">⇉ Parallel: {grp.description || grp.groupId}</div>
+                    <div className="aad-parallel-agents">
+                        {grp.agents.map(agentId => (
+                            <AgentChip key={agentId} agentId={agentId} stageStatus={grp.status === "completed" ? "completed" : grp.status === "running" ? "running" : "pending"} />
+                        ))}
+                    </div>
+                </div>
+            ))}
+
+            {/* Pending handoffs */}
+            {collab.pendingHandoffs > 0 && (
+                <div style={{ fontSize: 11, color: "#f59e0b" }}>⏳ {collab.pendingHandoffs} pending handoff(s)</div>
+            )}
+
+            {/* Approval gate */}
+            {collab.status === "waiting_approval" && (
+                <div style={{ fontSize: 11, padding: "5px 8px", background: "#f59e0b11", borderRadius: 4, color: "#f59e0b" }}>
+                    ⚠ Waiting for approval gate
+                </div>
+            )}
+        </div>
+    );
+}
+
+function CollaborationTab() {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const pollRef = useRef(null);
+
+    const load = useCallback(async () => {
+        try {
+            const [activeR, blockedR, stalledR, statsR] = await Promise.all([
+                _fetch("/collab/active"),
+                _fetch("/collab/blocked"),
+                _fetch("/collab/stalled"),
+                _fetch("/collab/stats"),
+            ]);
+            setData({
+                collaborations: activeR?.collaborations || [],
+                blocked:        blockedR?.blocked || [],
+                stalled:        stalledR?.stalled || [],
+                stats:          statsR?.stats || null,
+            });
+            setError(null);
+        } catch (e) { setError(e.message); }
+        finally { setLoading(false); }
+    }, []);
+
+    useEffect(() => {
+        load();
+        pollRef.current = setInterval(load, 15_000);
+        return () => clearInterval(pollRef.current);
+    }, [load]);
+
+    if (loading && !data) return <div className="aad-loading">Loading collaboration data…</div>;
+    if (error) return <div className="aad-error-banner">{error}</div>;
+
+    const { collaborations = [], blocked = [], stalled = [], stats } = data || {};
+
+    return (
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            <CollabStatBar stats={stats} />
+
+            {/* Blocked chains */}
+            {blocked.length > 0 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    <div className="aad-collab-section-title">Blocked Chains ({blocked.length})</div>
+                    {blocked.map(chain => (
+                        <div key={chain.missionId} className="aad-alert-row danger">
+                            <span className="aad-alert-icon">⛔</span>
+                            <div className="aad-alert-body">
+                                <div className="aad-alert-title">Mission {chain.missionId} — Stage "{chain.blockedStage?.stage}"</div>
+                                <div className="aad-alert-meta">Owner: {ROLE_LABEL[chain.currentOwner?.replace("agent_","")]||chain.currentOwner} · Blocked since: {_ago(chain.blockedSince)}</div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Stalled handoffs */}
+            {stalled.length > 0 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    <div className="aad-collab-section-title">Stalled Handoffs ({stalled.length})</div>
+                    {stalled.map(h => (
+                        <div key={h.handoffId} className="aad-alert-row warn">
+                            <span className="aad-alert-icon">⏳</span>
+                            <div className="aad-alert-body">
+                                <div className="aad-alert-title">{h.fromAgent || "origin"} → {ROLE_LABEL[h.toAgent?.replace("agent_","")]||h.toAgent}</div>
+                                <div className="aad-alert-meta">Mission: {h.missionId} · Pending {_ago(h.createdAt)} · Retries: {h.retries}/{h.maxRetries}</div>
+                            </div>
+                            <span className="aad-handoff-status" style={{ background: "#f59e0b22", color: "#f59e0b" }}>{h.status}</span>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Active collaborations */}
+            <div className="aad-collab-section-title">Active Collaborations ({collaborations.length})</div>
+            {collaborations.length === 0 && (
+                <div className="aad-empty">No active multi-agent collaborations. Create a plan via POST /collab/plans/:missionId</div>
+            )}
+            <div className="aad-cards">
+                {collaborations.map(c => <CollabChainCard key={c.missionId} collab={c} />)}
+            </div>
+        </div>
+    );
+}
+
 // ── Supervisor summary bar ────────────────────────────────────────────────────
 
 function SupervisorBar({ status, onStart, onStop, loading }) {
@@ -254,6 +454,7 @@ export default function AutonomousAgentDashboard() {
     const [loading,  setLoading]  = useState(true);
     const [error,    setError]    = useState(null);
     const [busyMap,  setBusyMap]  = useState({}); // agentId → "pausing"|"resuming"|"ticking"
+    const [activeTab, setActiveTab] = useState("agents");
     const pollRef = useRef(null);
 
     const load = useCallback(async () => {
@@ -300,7 +501,7 @@ export default function AutonomousAgentDashboard() {
             {/* Header */}
             <div className="aad-header">
                 <div className="aad-header-title">Autonomous Agent Runtime</div>
-                <div className="aad-header-sub">Phase I4+I5 — Autonomous Agent Runtime · 10 Specialized Agents</div>
+                <div className="aad-header-sub">Phase I4+I5+I6 — 10 Specialized Agents · Multi-Agent Collaboration</div>
                 <button className="aad-btn aad-btn--ghost aad-refresh" onClick={load} disabled={loading}>
                     {loading ? "⟳" : "↻"} Refresh
                 </button>
@@ -316,44 +517,62 @@ export default function AutonomousAgentDashboard() {
                 loading={loading}
             />
 
-            {/* Config strip */}
-            {status?.config && (
-                <div className="aad-config-strip">
-                    <span>Agents: {status.agentCount} registered · {status.runningCount} running</span>
-                    <span>Confidence threshold: {status.config.confidenceThreshold}%</span>
-                    <span>Max recovery: {status.config.maxRecoveryAttempts} attempts</span>
-                    {status.config.roleIntervals && Object.entries(status.config.roleIntervals).map(([role, ms]) => (
-                        <span key={role}>{ROLE_LABEL[role] || role}: {ms / 1000}s</span>
+            {/* Tab navigation */}
+            <div className="aad-tabs">
+                <button className={`aad-tab ${activeTab === "agents" ? "active" : ""}`} onClick={() => setActiveTab("agents")}>
+                    Agents {status ? `(${status.runningCount}/${status.agentCount})` : ""}
+                </button>
+                <button className={`aad-tab ${activeTab === "config" ? "active" : ""}`} onClick={() => setActiveTab("config")}>
+                    Config
+                </button>
+                <button className={`aad-tab ${activeTab === "collaboration" ? "active" : ""}`} onClick={() => setActiveTab("collaboration")}>
+                    Collaboration
+                </button>
+            </div>
+
+            {/* Agents tab */}
+            {activeTab === "agents" && (
+                <div className="aad-cards">
+                    {agents.length === 0 && (
+                        <div className="aad-empty">No agents running. Click "Start All" to begin autonomous execution.</div>
+                    )}
+                    {agents.map(agent => (
+                        <AgentCard
+                            key={agent.id}
+                            agent={agent}
+                            onPause={handlePause}
+                            onResume={handleResume}
+                            onTick={handleTick}
+                            onEnable={handleEnable}
+                            onDisable={handleDisable}
+                            pausing={busyMap[agent.id] === "pausing"}
+                            resuming={busyMap[agent.id] === "resuming"}
+                            ticking={busyMap[agent.id] === "ticking"}
+                            enabling={busyMap[agent.id] === "enabling"}
+                            disabling={busyMap[agent.id] === "disabling"}
+                        />
                     ))}
                 </div>
             )}
 
-            {/* Agent cards */}
-            <div className="aad-cards">
-                {agents.length === 0 && (
-                    <div className="aad-empty">No agents running. Click "Start All" to begin autonomous execution.</div>
-                )}
-                {agents.map(agent => (
-                    <AgentCard
-                        key={agent.id}
-                        agent={agent}
-                        onPause={handlePause}
-                        onResume={handleResume}
-                        onTick={handleTick}
-                        onEnable={handleEnable}
-                        onDisable={handleDisable}
-                        pausing={busyMap[agent.id] === "pausing"}
-                        resuming={busyMap[agent.id] === "resuming"}
-                        ticking={busyMap[agent.id] === "ticking"}
-                        enabling={busyMap[agent.id] === "enabling"}
-                        disabling={busyMap[agent.id] === "disabling"}
-                    />
-                ))}
-            </div>
+            {/* Config tab */}
+            {activeTab === "config" && status?.config && (
+                <div className="aad-config-strip" style={{ flexDirection: "column", alignItems: "flex-start", gap: 8 }}>
+                    <span style={{ fontWeight: 600 }}>Confidence threshold: {status.config.confidenceThreshold}%</span>
+                    <span style={{ fontWeight: 600 }}>Max recovery attempts: {status.config.maxRecoveryAttempts}</span>
+                    <span style={{ fontWeight: 600, marginTop: 4 }}>Role intervals:</span>
+                    {status.config.roleIntervals && Object.entries(status.config.roleIntervals).map(([role, ms]) => (
+                        <span key={role}>{ROLE_ICON[role] || "◉"} {ROLE_LABEL[role] || role}: {ms / 1000}s</span>
+                    ))}
+                </div>
+            )}
 
-            {/* Footer: last poll time */}
+            {/* Collaboration tab (I6) */}
+            {activeTab === "collaboration" && <CollaborationTab />}
+
+            {/* Footer */}
             <div className="aad-footer">
-                Auto-refreshes every 10s · Observer → Reasoning → Mission → Execution → Verification → Learning → Repeat
+                Auto-refreshes every 10s · Observer → Reasoning → Mission → Collaboration → Execution → Verification → Learning → Repeat
             </div>
         </div>
     );
