@@ -473,6 +473,9 @@ function IssuesView({ onToast }) {
   const [form, setForm] = useState(EMPTY_ISSUE);
   const [editing, setEditing] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [assignTarget, setAssignTarget] = useState(null);
+  const [assignName, setAssignName]     = useState("");
+  const [deleteTarget, setDeleteTarget] = useState(null);
   const searchRef = useRef(null);
 
   const load = useCallback(async () => {
@@ -513,10 +516,11 @@ function IssuesView({ onToast }) {
     setSaving(false);
   };
 
-  const handleAssign = async (issueId) => {
-    const assignee = window.prompt("Assign issue to:");
-    if (!assignee) return;
-    const r = await assignDevIssue(issueId, assignee);
+  const handleAssign = (issueId) => { setAssignTarget(issueId); setAssignName(""); };
+  const handleAssignConfirm = async () => {
+    if (!assignName.trim()) return;
+    const r = await assignDevIssue(assignTarget, assignName.trim());
+    setAssignTarget(null);
     if (r.success === false || r.ok === false) onToast?.("error", r.error || "Assign failed");
     else { onToast?.("success", "Issue assigned"); load(); }
   };
@@ -533,15 +537,40 @@ function IssuesView({ onToast }) {
     else { onToast?.("success", "Issue reopened"); load(); }
   };
 
-  const handleDelete = async (issueId) => {
-    if (!window.confirm("Delete this issue permanently?")) return;
-    const r = await deleteDevIssue(issueId);
+  const handleDelete = (issueId) => setDeleteTarget(issueId);
+  const handleDeleteConfirm = async () => {
+    const r = await deleteDevIssue(deleteTarget);
+    setDeleteTarget(null);
     if (r.success === false || r.ok === false) onToast?.("error", r.error || "Delete failed");
     else { onToast?.("success", "Issue deleted"); load(); }
   };
 
   return (
     <div className="dos-section">
+      {assignTarget && (
+        <div className="dos-dialog-overlay" onClick={() => setAssignTarget(null)}>
+          <div className="dos-dialog" onClick={e => e.stopPropagation()}>
+            <div className="dos-dialog-title">Assign Issue</div>
+            <input className="dos-input" autoFocus value={assignName} onChange={e => setAssignName(e.target.value)} onKeyDown={e => { if (e.key === "Enter") handleAssignConfirm(); if (e.key === "Escape") setAssignTarget(null); }} placeholder="Assignee name or email" />
+            <div className="dos-dialog-actions">
+              <button className="dos-btn outline" onClick={() => setAssignTarget(null)}>Cancel</button>
+              <button className="dos-btn primary" onClick={handleAssignConfirm} disabled={!assignName.trim()}>Assign</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {deleteTarget && (
+        <div className="dos-dialog-overlay" onClick={() => setDeleteTarget(null)}>
+          <div className="dos-dialog" onClick={e => e.stopPropagation()}>
+            <div className="dos-dialog-title">Delete Issue?</div>
+            <div className="dos-dialog-body">This cannot be undone.</div>
+            <div className="dos-dialog-actions">
+              <button className="dos-btn outline" onClick={() => setDeleteTarget(null)}>Cancel</button>
+              <button className="dos-btn danger" onClick={handleDeleteConfirm}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="dos-section-header">
         <h3 className="dos-section-title">Developer Issues</h3>
         <button className="dos-btn outline" onClick={openNew}>New issue</button>
@@ -753,6 +782,8 @@ function DeploymentsView({ onToast }) {
   const [status, setStatus] = useState("all");
   const [form, setForm] = useState(EMPTY_DEPLOYMENT);
   const [saving, setSaving] = useState(false);
+  const [rollbackTarget, setRollbackTarget] = useState(null);
+  const [rollbackReason, setRollbackReason] = useState("");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -776,16 +807,29 @@ function DeploymentsView({ onToast }) {
     setSaving(false);
   };
 
-  const handleRollback = async (deploymentId) => {
-    const reason = window.prompt("Reason for rollback:");
-    if (!reason) return;
-    const r = await rollbackDevDeployment(deploymentId, { reason });
+  const handleRollback = (deploymentId) => { setRollbackTarget(deploymentId); setRollbackReason(""); };
+  const handleRollbackConfirm = async () => {
+    if (!rollbackReason.trim()) return;
+    const r = await rollbackDevDeployment(rollbackTarget, { reason: rollbackReason.trim() });
+    setRollbackTarget(null);
     if (r.success === false || r.ok === false) onToast?.("error", r.error || "Rollback failed");
     else { onToast?.("success", "Rollback recorded"); load(); }
   };
 
   return (
     <div className="dos-section">
+      {rollbackTarget && (
+        <div className="dos-dialog-overlay" onClick={() => setRollbackTarget(null)}>
+          <div className="dos-dialog" onClick={e => e.stopPropagation()}>
+            <div className="dos-dialog-title">Rollback Deployment</div>
+            <input className="dos-input" autoFocus value={rollbackReason} onChange={e => setRollbackReason(e.target.value)} onKeyDown={e => { if (e.key === "Enter") handleRollbackConfirm(); if (e.key === "Escape") setRollbackTarget(null); }} placeholder="Reason for rollback…" />
+            <div className="dos-dialog-actions">
+              <button className="dos-btn outline" onClick={() => setRollbackTarget(null)}>Cancel</button>
+              <button className="dos-btn danger" onClick={handleRollbackConfirm} disabled={!rollbackReason.trim()}>Rollback</button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="dos-section-header">
         <h3 className="dos-section-title">Deployments</h3>
       </div>

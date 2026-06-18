@@ -401,3 +401,17 @@
 .vg-badge--green  { background: rgba(82,214,138,0.12); color: #52d68a; }
 .vg-badge--red    { background: rgba(245,91,91,0.12); color: #f55b5b; }
 .vg-badge--purple { background: rgba(124,111,255,0.12); color: #a89fff; }
+
+/* ── Rollback confirm dialog ──────────────────────────────────── */
+.vg-rb-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 9300; backdrop-filter: blur(2px); }
+.vg-rb-dialog  { background: #13151e; border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 20px; width: 340px; max-width: 90vw; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+.vg-rb-title   { font-size: 14px; font-weight: 700; color: #f9fafb; }
+.vg-rb-input   { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 7px 10px; color: rgba(255,255,255,0.88); font-size: 13px; font-family: inherit; outline: none; width: 100%; box-sizing: border-box; }
+.vg-rb-input:focus { border-color: rgba(102,87,232,0.45); }
+.vg-rb-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.vg-rb-btn     { padding: 7px 14px; border-radius: 6px; font-size: 13px; font-family: inherit; cursor: pointer; border: 1px solid transparent; transition: background 0.12s; }
+.vg-rb-btn--cancel  { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.10); color: rgba(255,255,255,0.6); }
+.vg-rb-btn--cancel:hover { background: rgba(255,255,255,0.12); }
+.vg-rb-btn--confirm { background: rgba(245,91,91,0.15); border-color: rgba(245,91,91,0.30); color: #f87171; }
+.vg-rb-btn--confirm:hover:not(:disabled) { background: rgba(245,91,91,0.25); }
+.vg-rb-btn--confirm:disabled { opacity: 0.4; cursor: not-allowed; }

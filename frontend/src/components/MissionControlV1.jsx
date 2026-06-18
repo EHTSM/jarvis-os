@@ -587,6 +587,7 @@ export default function MissionControlV1({ onNavigate }) {
   const [stopPending,   setStopPending]   = useState(false);
   const [resumePending, setResumePending] = useState(false);
   const [actionMsg, setActionMsg] = useState(null);
+  const [stopConfirm, setStopConfirm]   = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -625,7 +626,11 @@ export default function MissionControlV1({ onNavigate }) {
   }, [load]);
 
   async function handleStop() {
-    if (!window.confirm("Emergency stop all agents?")) return;
+    setStopConfirm(true);
+  }
+
+  async function handleStopConfirmed() {
+    setStopConfirm(false);
     setStopPending(true);
     try {
       await emergencyStop();
@@ -683,6 +688,19 @@ export default function MissionControlV1({ onNavigate }) {
 
   return (
     <div className="mc-root">
+      {stopConfirm && (
+        <div className="mc-stop-overlay" onClick={() => setStopConfirm(false)}>
+          <div className="mc-stop-panel" onClick={e => e.stopPropagation()}>
+            <div className="mc-stop-icon">⛔</div>
+            <div className="mc-stop-title">Emergency Stop</div>
+            <div className="mc-stop-body">Halt all in-flight and queued agents immediately. This cannot be undone without manually resuming.</div>
+            <div className="mc-stop-actions">
+              <button className="mc-stop-btn mc-stop-btn--cancel" onClick={() => setStopConfirm(false)}>Cancel</button>
+              <button className="mc-stop-btn mc-stop-btn--confirm" onClick={handleStopConfirmed}>Stop All Agents</button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="mc-header">
         <div className="mc-header-left">
           <span className="mc-logo">⬡</span>

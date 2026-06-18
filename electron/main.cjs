@@ -60,7 +60,7 @@ const store = Store ? new Store({
         theme:           "dark",
         notifications:   true,
         trayOnClose:     true,
-        lastTab:         "dashboard",
+        lastTab:         "home",
         offlineCache:    {},
         updateChannel:   "latest",
     }

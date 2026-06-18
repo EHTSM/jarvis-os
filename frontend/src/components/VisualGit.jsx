@@ -607,11 +607,13 @@ function MissionGitPanel({ cwd, missionGit, onMessage }) {
     activeMission, missionContext, getMissionHistory, missionRollback, missionReview, refreshMission,
   } = missionGit;
 
-  const [history,  setHistory]  = useState([]);
-  const [hLoading, setHLoading] = useState(false);
-  const [selected, setSelected] = useState(null);
-  const [diff,     setDiff]     = useState(null);
-  const [action,   setAction]   = useState(null); // 'rollback'|'review'
+  const [history,        setHistory]        = useState([]);
+  const [hLoading,       setHLoading]       = useState(false);
+  const [selected,       setSelected]       = useState(null);
+  const [diff,           setDiff]           = useState(null);
+  const [action,         setAction]         = useState(null); // 'rollback'|'review'
+  const [rollbackTarget, setRollbackTarget] = useState(null);
+  const [rollbackReason, setRollbackReason] = useState('');
 
   useEffect(() => {
     setHLoading(true);
@@ -625,13 +627,19 @@ function MissionGitPanel({ cwd, missionGit, onMessage }) {
     setDiff(r?.diff || r?.stdout || '');
   }, [cwd]);
 
-  const doRollback = useCallback(async (hash) => {
-    const reason = window.prompt(`Reason for rollback to ${hash.slice(0, 8)}?`, 'Reverting problematic change');
-    if (!reason) return;
-    const r = await missionRollback(hash, reason);
+  const doRollback = useCallback((hash) => {
+    setRollbackTarget(hash);
+    setRollbackReason('Reverting problematic change');
+  }, []);
+
+  const doRollbackConfirm = useCallback(async () => {
+    if (!rollbackReason.trim() || !rollbackTarget) return;
+    const hash = rollbackTarget;
+    setRollbackTarget(null);
+    const r = await missionRollback(hash, rollbackReason.trim());
     if (r?.error) onMessage?.(`Rollback failed: ${r.error}`, 'error');
     else { onMessage?.(`Rolled back to ${hash.slice(0, 8)} — recorded in mission`); setAction(null); }
-  }, [missionRollback, onMessage]);
+  }, [rollbackTarget, rollbackReason, missionRollback, onMessage]);
 
   const doReview = useCallback(async () => {
     const files = missionContext?.gitArtifacts?.flatMap(a => a.metadata?.filesChanged || []) || [];
@@ -642,6 +650,18 @@ function MissionGitPanel({ cwd, missionGit, onMessage }) {
 
   return (
     <div className="vg-mission-panel">
+      {rollbackTarget && (
+        <div className="vg-rb-overlay" onClick={() => setRollbackTarget(null)}>
+          <div className="vg-rb-dialog" onClick={e => e.stopPropagation()}>
+            <div className="vg-rb-title">Rollback to {rollbackTarget.slice(0, 8)}</div>
+            <input className="vg-rb-input" autoFocus value={rollbackReason} onChange={e => setRollbackReason(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') doRollbackConfirm(); if (e.key === 'Escape') setRollbackTarget(null); }} placeholder="Reason for rollback…" />
+            <div className="vg-rb-actions">
+              <button className="vg-rb-btn vg-rb-btn--cancel" onClick={() => setRollbackTarget(null)}>Cancel</button>
+              <button className="vg-rb-btn vg-rb-btn--confirm" onClick={doRollbackConfirm} disabled={!rollbackReason.trim()}>Rollback</button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Active mission header */}
       {activeMission ? (
         <div className="vg-mission-panel__header">
