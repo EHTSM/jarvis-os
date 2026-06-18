@@ -980,7 +980,7 @@ export default function ElectronWorkspace({ children }) {
                     <ErrorBoundary label="Architecture"><VisualArchitecture /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'pair'}>
-                    <ErrorBoundary label="AI Pair"><AIPairProgramming /></ErrorBoundary>
+                    <ErrorBoundary label="AI Pair"><AIPairProgramming cwd={cwd} filePath={editorFile} /></ErrorBoundary>
                   </LazyPane>
                   <LazyPane active={bottomTab === 'agents'}>
                     <ErrorBoundary label="Live Agents"><LiveAgentCollaboration /></ErrorBoundary>

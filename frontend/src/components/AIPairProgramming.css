@@ -129,17 +129,20 @@
   display: flex; gap: 10px; padding: 7px 10px;
   border-radius: 5px; border: 1px solid; margin: 2px 0;
 }
-.aipp-issue--critical, .aipp-issue--error { background: #450a0a20; border-color: #7f1d1d; }
-.aipp-issue--warning  { background: #451a0320; border-color: #78350f; }
-.aipp-issue--info     { background: #1e3a5f20; border-color: #1d4ed8; }
+.aipp-issue--critical, .aipp-issue--error, .aipp-issue--high { background: #450a0a20; border-color: #7f1d1d; }
+.aipp-issue--warning, .aipp-issue--medium { background: #451a0320; border-color: #78350f; }
+.aipp-issue--info, .aipp-issue--low       { background: #1e3a5f20; border-color: #1d4ed8; }
 .aipp-issue__sev {
   font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
   padding: 2px 5px; border-radius: 3px; flex-shrink: 0; align-self: flex-start;
 }
 .aipp-issue--critical .aipp-issue__sev,
-.aipp-issue--error .aipp-issue__sev { background: #450a0a; color: #f87171; }
-.aipp-issue--warning  .aipp-issue__sev { background: #451a03; color: #fbbf24; }
-.aipp-issue--info     .aipp-issue__sev { background: #1e3a5f; color: #60a5fa; }
+.aipp-issue--error    .aipp-issue__sev,
+.aipp-issue--high     .aipp-issue__sev { background: #450a0a; color: #f87171; }
+.aipp-issue--warning  .aipp-issue__sev,
+.aipp-issue--medium   .aipp-issue__sev { background: #451a03; color: #fbbf24; }
+.aipp-issue--info     .aipp-issue__sev,
+.aipp-issue--low      .aipp-issue__sev { background: #1e3a5f; color: #60a5fa; }
 .aipp-issue__body { flex: 1; min-width: 0; }
 .aipp-issue__title { font-size: 12px; color: #d1d5db; font-weight: 500; }
 .aipp-issue__desc  { font-size: 11px; color: #6b7280; margin-top: 3px; line-height: 1.4; }
@@ -166,3 +169,80 @@
 details.aipp-result__patch { margin: 4px 0; }
 details.aipp-result__patch summary { font-size: 11px; color: #6b7280; cursor: pointer; padding: 4px 0; font-family: monospace; }
 details.aipp-result__patch summary:hover { color: #9ca3af; }
+
+/* ── ACP-1: Header context ────────────────────────────────────────── */
+.aipp-header__ctx {
+  margin-left: 8px; font-size: 10px; color: #10b981;
+  background: #05271820; border: 1px solid #05271840; border-radius: 3px;
+  padding: 1px 6px; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* ── ACP-1: Context badges ────────────────────────────────────────── */
+.aipp-ctx-badges {
+  display: flex; flex-wrap: wrap; gap: 4px; padding: 6px 10px 0;
+}
+.aipp-ctx-badge {
+  font-size: 10px; color: #10b981; background: #05271820;
+  border: 1px solid #05271840; border-radius: 3px; padding: 2px 6px;
+  max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: 'JetBrains Mono', Menlo, monospace;
+}
+
+/* ── ACP-1: Ask tab ──────────────────────────────────────────────── */
+.aipp-ask {
+  display: flex; flex-direction: column; height: 100%;
+  padding: 0; overflow: hidden;
+}
+
+.aipp-quick-cmds {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 10px;
+}
+.aipp-quick-btn {
+  padding: 8px 10px; background: #111; border: 1px solid #1f2937; border-radius: 6px;
+  color: #6b7280; font-size: 11px; cursor: pointer; text-align: left;
+  transition: background 0.15s, color 0.15s, border-color 0.15s; line-height: 1.4;
+}
+.aipp-quick-btn:hover { background: #1f2937; color: #d1d5db; border-color: #374151; }
+
+.aipp-chat-history {
+  flex: 1; overflow-y: auto; padding: 8px 10px; display: flex; flex-direction: column; gap: 10px;
+  scrollbar-width: thin; scrollbar-color: #2d3748 transparent;
+}
+.aipp-chat-history::-webkit-scrollbar { width: 4px; }
+.aipp-chat-history::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 2px; }
+
+.aipp-chat-msg { display: flex; flex-direction: column; gap: 3px; }
+.aipp-chat-msg__role {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.aipp-chat-msg--user .aipp-chat-msg__role  { color: #10b981; }
+.aipp-chat-msg--assistant .aipp-chat-msg__role { color: #6b7280; }
+.aipp-chat-msg__content {
+  margin: 0; font-family: inherit; font-size: 12px; color: #d1d5db;
+  line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+  background: #111; border: 1px solid #1f2937; border-radius: 6px; padding: 8px 10px;
+}
+.aipp-chat-msg--user .aipp-chat-msg__content {
+  background: #05271820; border-color: #05271840;
+}
+.aipp-chat-msg__thinking {
+  font-size: 11px; color: #4b5563; font-style: italic; padding: 4px 0;
+  animation: aipp-blink 1s ease-in-out infinite;
+}
+@keyframes aipp-blink { 0%,100%{ opacity:1 } 50%{ opacity:0.4 } }
+
+.aipp-clear-btn {
+  margin: 0 10px 4px; padding: 3px 10px; background: transparent; border: 1px solid #1f2937;
+  border-radius: 4px; color: #4b5563; font-size: 10px; cursor: pointer; align-self: flex-start;
+}
+.aipp-clear-btn:hover { color: #9ca3af; border-color: #374151; }
+
+.aipp-ask-input-row {
+  display: flex; gap: 6px; padding: 8px 10px; border-top: 1px solid #1f2937; flex-shrink: 0;
+}
+.aipp-ask-input {
+  flex: 1; resize: none; min-height: 42px; max-height: 120px;
+}
+.aipp-ask-send {
+  padding: 5px 12px; font-size: 16px; align-self: flex-end; flex-shrink: 0;
+}
