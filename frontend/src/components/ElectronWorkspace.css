@@ -453,3 +453,118 @@
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 0.04em;
 }
+
+/* ── Workspace Shortcuts Overlay (⌘⇧/) ─────────────────────────────────────── */
+.ew-shortcuts-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 60px;
+  z-index: 9500;
+  backdrop-filter: blur(6px);
+}
+.ew-shortcuts-panel {
+  background: #0d1117;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 700px;
+  max-height: calc(100vh - 100px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+}
+.ew-shortcuts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+.ew-shortcuts-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: -0.01em;
+}
+.ew-shortcuts-close {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 6px;
+  padding: 3px 8px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.40);
+  font-size: 11px;
+}
+.ew-shortcuts-close:hover { color: rgba(255,255,255,0.70); border-color: rgba(255,255,255,0.20); }
+.ew-shortcuts-body {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  overflow-y: auto;
+  flex: 1;
+  padding: 8px 0;
+}
+.ew-shortcuts-group {
+  padding: 14px 20px;
+  border-right: 1px solid rgba(255,255,255,0.04);
+}
+.ew-shortcuts-group:nth-child(even) { border-right: none; }
+.ew-shortcuts-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: rgba(255,255,255,0.26);
+  margin-bottom: 10px;
+}
+.ew-shortcuts-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.ew-shortcuts-row:last-child { border-bottom: none; }
+.ew-shortcuts-desc {
+  font-size: 12px;
+  color: rgba(255,255,255,0.58);
+  flex: 1;
+}
+.ew-shortcuts-keys {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  padding: 2px 7px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.ew-shortcuts-footer {
+  padding: 10px 20px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 11px;
+  color: rgba(255,255,255,0.28);
+  flex-shrink: 0;
+}
+.ew-shortcuts-footer kbd {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: inherit;
+  font-size: 11px;
+}
+@media (max-width: 640px) {
+  .ew-shortcuts-body { grid-template-columns: 1fr; }
+  .ew-shortcuts-group { border-right: none; }
+}

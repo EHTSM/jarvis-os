@@ -532,3 +532,65 @@
   color: #4a526a;
   font-size: 13px;
 }
+
+/* ── Delete confirmation modal ────────────────────────────────────────────── */
+.cep-delete-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.60);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9200;
+  backdrop-filter: blur(2px);
+}
+.cep-delete-modal {
+  background: #13151e;
+  border: 1px solid rgba(245,91,91,0.25);
+  border-radius: 12px;
+  padding: 24px 24px 20px;
+  width: 320px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+}
+.cep-delete-icon { font-size: 28px; }
+.cep-delete-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.88);
+  text-align: center;
+}
+.cep-delete-body {
+  font-size: 12px;
+  color: rgba(255,255,255,0.40);
+  text-align: center;
+}
+.cep-delete-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.cep-delete-btn {
+  padding: 7px 16px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+.cep-delete-btn--cancel {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.55);
+}
+.cep-delete-btn--cancel:hover { background: rgba(255,255,255,0.10); }
+.cep-delete-btn--confirm {
+  background: rgba(245,91,91,0.15);
+  border: 1px solid rgba(245,91,91,0.30);
+  color: #f55b5b;
+}
+.cep-delete-btn--confirm:hover { background: rgba(245,91,91,0.25); }

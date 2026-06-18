@@ -333,6 +333,7 @@ export default function CodeEditorPane({
   const [activeId,      setActiveId]      = useState(null);
   const [sessionLoaded, setLoaded]        = useState(false);
   const [renaming,      setRenaming]      = useState(null);
+  const [deleteConfirm, setDeleteConfirm] = useState(null); // tabId to confirm delete
   const [aiMenu,        setAiMenu]        = useState(null);
   const [bottomTab,     setBottomTab]     = useState('problems');
   const [showBottom,    setShowBottom]    = useState(false);
@@ -342,6 +343,7 @@ export default function CodeEditorPane({
   const [gotoValue,     setGotoValue]     = useState('');
   const gotoRef = useRef(null);
   const viewMap = useRef({});   // tabId → EditorView
+  const autoSaveRef = useRef(null);
 
   const genId = () => `t${Date.now()}${Math.random().toString(36).slice(2, 5)}`;
 
@@ -466,6 +468,25 @@ export default function CodeEditorPane({
     }
   }, [activeTab, status]);
 
+  // ── Auto-save dirty files every 4 seconds ────────────────────────────────
+  const tabsRef = useRef(tabs);
+  useEffect(() => { tabsRef.current = tabs; }, [tabs]);
+
+  useEffect(() => {
+    autoSaveRef.current = setInterval(async () => {
+      const dirtyTabs = tabsRef.current.filter(t => t.dirty && t.path);
+      for (const tab of dirtyTabs) {
+        const view    = viewMap.current[tab.id];
+        const content = view ? view.state.doc.toString() : tab.content;
+        try {
+          await writeFile(tab.path, content);
+          setTabs(prev => prev.map(t => t.id === tab.id ? { ...t, dirty: false, savedContent: content, content } : t));
+        } catch {}
+      }
+    }, 4000);
+    return () => clearInterval(autoSaveRef.current);
+  }, []);
+
   const jumpToLine = useCallback((lineNum) => {
     if (!activeTab) return;
     const view = viewMap.current[activeTab.id];
@@ -535,15 +556,23 @@ export default function CodeEditorPane({
     setRenaming(null);
   }, [tabs, status]);
 
-  const deleteFile = useCallback(async (id) => {
+  const deleteFile = useCallback((id) => {
     const tab = tabs.find(t => t.id === id);
-    if (!tab || !window.confirm(`Delete "${tab.name}"? This cannot be undone.`)) return;
+    if (!tab) return;
+    setDeleteConfirm(id);
+  }, [tabs]);
+
+  const deleteFileConfirmed = useCallback(async () => {
+    const id  = deleteConfirm;
+    const tab = tabs.find(t => t.id === id);
+    setDeleteConfirm(null);
+    if (!tab) return;
     try {
       await shellExec(`rm "${tab.path}"`);
       closeTab(id);
       status(`Deleted ${tab.name}`);
     } catch (e) { status(`Delete failed: ${e.message}`, 4000); }
-  }, [tabs, closeTab, status]);
+  }, [deleteConfirm, tabs, closeTab, status]);
 
   const duplicateFile = useCallback(async (id) => {
     const tab = tabs.find(t => t.id === id);
@@ -644,8 +673,25 @@ export default function CodeEditorPane({
     return <div className={`cep-unavailable ${className}`}>Code editor requires the desktop app.</div>;
   }
 
+  const confirmDeleteTab = tabs.find(t => t.id === deleteConfirm);
+
   return (
     <div className={`cep-shell ${className}`}>
+      {/* Delete confirmation modal */}
+      {confirmDeleteTab && (
+        <div className="cep-delete-overlay" onClick={() => setDeleteConfirm(null)}>
+          <div className="cep-delete-modal" onClick={e => e.stopPropagation()}>
+            <div className="cep-delete-icon">🗑</div>
+            <div className="cep-delete-title">Delete "{confirmDeleteTab.name}"?</div>
+            <div className="cep-delete-body">This cannot be undone.</div>
+            <div className="cep-delete-actions">
+              <button className="cep-delete-btn cep-delete-btn--cancel" onClick={() => setDeleteConfirm(null)}>Cancel</button>
+              <button className="cep-delete-btn cep-delete-btn--confirm" onClick={deleteFileConfirmed}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Tab bar */}
       {tabs.length > 0 ? (
         <div

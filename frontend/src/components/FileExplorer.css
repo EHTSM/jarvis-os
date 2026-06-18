@@ -23,12 +23,108 @@
 .file-explorer__header {
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 6px 0 10px;
   height: 32px;
   background: #111;
   border-bottom: 1px solid #1f2937;
   flex-shrink: 0;
 }
+
+.file-explorer__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+/* Op status bar */
+.file-explorer__op-status {
+  padding: 3px 10px;
+  font-size: 11px;
+  color: #10b981;
+  background: rgba(16,185,129,0.07);
+  border-bottom: 1px solid rgba(16,185,129,0.12);
+  flex-shrink: 0;
+}
+
+/* ── Name prompt overlay ──────────────────────────────────────────── */
+.fe-name-prompt-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9100;
+  backdrop-filter: blur(2px);
+}
+.fe-name-prompt {
+  background: #13151e;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 10px;
+  padding: 20px 20px 16px;
+  width: 320px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+}
+.fe-name-prompt__label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.80);
+  font-weight: 500;
+}
+.fe-name-prompt__hint {
+  font-size: 12px;
+  color: rgba(255,255,255,0.40);
+  margin-top: -4px;
+}
+.fe-name-prompt__input {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 7px 10px;
+  color: rgba(255,255,255,0.88);
+  font-size: 13px;
+  font-family: "JetBrains Mono", monospace;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+.fe-name-prompt__input:focus { border-color: rgba(102,87,232,0.45); }
+.fe-name-prompt__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.fe-name-prompt__btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+.fe-name-prompt__btn--cancel {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.55);
+}
+.fe-name-prompt__btn--cancel:hover { background: rgba(255,255,255,0.10); }
+.fe-name-prompt__btn--ok {
+  background: rgba(102,87,232,0.20);
+  border: 1px solid rgba(102,87,232,0.35);
+  color: #9d8ff5;
+}
+.fe-name-prompt__btn--ok:hover:not(:disabled) { background: rgba(102,87,232,0.30); }
+.fe-name-prompt__btn--ok:disabled { opacity: 0.4; cursor: not-allowed; }
+.fe-name-prompt__btn--danger {
+  background: rgba(245,91,91,0.15);
+  border: 1px solid rgba(245,91,91,0.30);
+  color: #f55b5b;
+}
+.fe-name-prompt__btn--danger:hover { background: rgba(245,91,91,0.25); }
 
 .file-explorer__title {
   flex: 1;

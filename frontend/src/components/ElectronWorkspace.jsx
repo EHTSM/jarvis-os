@@ -413,6 +413,7 @@ function dockTabToFloat(tabId) {
 export default function ElectronWorkspace({ children }) {
   const [searchOpen,    setSearchOpen]    = useState(false);
   const [switcherOpen,  setSwitcherOpen]  = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [aiCollapsed,   setAiCollapsed]   = useState(false);
   const [sidebarMode,   setSidebarMode]   = useState('explorer');
   const [showSidebar,   setShowSidebar]   = useState(true);
@@ -510,6 +511,10 @@ export default function ElectronWorkspace({ children }) {
   useEffect(() => {
     const handler = (e) => {
       const ctrl = e.metaKey || e.ctrlKey;
+
+      // Cmd+? — keyboard shortcuts overlay (must check before ctrl guard)
+      if (ctrl && e.shiftKey && e.key === '/') { e.preventDefault(); setShortcutsOpen(s => !s); return; }
+
       if (!ctrl) return;
 
       // Cmd+K — global search
@@ -533,7 +538,7 @@ export default function ElectronWorkspace({ children }) {
       if (e.shiftKey && e.key === 'D')  { e.preventDefault(); openBottomTab('debugger'); return; }
       if (e.shiftKey && e.key === 'P')  { e.preventDefault(); openBottomTab('pair'); return; }
 
-      // Cmd+1..5 — sidebar mode by position
+      // Cmd+1..6 — sidebar mode by position
       const sidebarKeys = Object.keys(SIDEBAR_MODES);
       const num = parseInt(e.key, 10);
       if (num >= 1 && num <= sidebarKeys.length && !e.shiftKey) {
@@ -544,6 +549,7 @@ export default function ElectronWorkspace({ children }) {
 
     const escHandler = (e) => {
       if (e.key !== 'Escape') return;
+      if (shortcutsOpen) { setShortcutsOpen(false); return; }
       if (switcherOpen || searchOpen) return;
       if (showBottom) { setShowBottom(false); }
     };
@@ -554,7 +560,7 @@ export default function ElectronWorkspace({ children }) {
       window.removeEventListener('keydown', handler);
       window.removeEventListener('keydown', escHandler);
     };
-  }, [setSidebar, openBottomTab, switcherOpen, searchOpen, showBottom]);
+  }, [setSidebar, openBottomTab, switcherOpen, searchOpen, showBottom, shortcutsOpen]);
 
   // Native menu actions
   useEffect(() => {
@@ -695,6 +701,7 @@ export default function ElectronWorkspace({ children }) {
         {/* Quick switcher shortcut */}
         <ActivityBtn active={switcherOpen} onClick={() => setSwitcherOpen(true)} title="Quick Switcher (⌘P)">⌘</ActivityBtn>
         <ActivityBtn active={false} onClick={() => setSearchOpen(true)} title="Global Search (⌘K)">⌕</ActivityBtn>
+        <ActivityBtn active={shortcutsOpen} onClick={() => setShortcutsOpen(s => !s)} title="Keyboard Shortcuts (⌘⇧/)">?</ActivityBtn>
       </div>
 
       {/* Main workspace */}
@@ -966,6 +973,81 @@ export default function ElectronWorkspace({ children }) {
           recentRepos={recentRepos}
         />
       </Suspense>
+
+      {/* Keyboard Shortcuts Overlay (⌘⇧/) */}
+      {shortcutsOpen && (
+        <WorkspaceShortcutsOverlay onClose={() => setShortcutsOpen(false)} />
+      )}
+    </div>
+  );
+}
+
+// ── Workspace Keyboard Shortcuts Overlay ──────────────────────────────
+const WS_SHORTCUTS = [
+  { group: 'Navigation', rows: [
+    { keys: '⌘K',       desc: 'Global search' },
+    { keys: '⌘P',       desc: 'Quick switcher (files, missions, panels)' },
+    { keys: '⌘B',       desc: 'Toggle sidebar' },
+    { keys: '⌘1–6',     desc: 'Switch sidebar panel (Files, Search, Git, Clipboard, Workspace, AI)' },
+    { keys: '⌘⇧E',      desc: 'Files sidebar' },
+    { keys: '⌘⇧G',      desc: 'Git sidebar' },
+  ]},
+  { group: 'Editor', rows: [
+    { keys: '⌘S',       desc: 'Save file (auto-save also runs every 4s)' },
+    { keys: '⌘W',       desc: 'Close tab' },
+    { keys: '⌘⇧[',      desc: 'Previous tab' },
+    { keys: '⌘⇧]',      desc: 'Next tab' },
+    { keys: '⌃G',       desc: 'Go to line' },
+    { keys: '⌘⇧W',      desc: 'Toggle word wrap' },
+    { keys: '⌘F',       desc: 'Find in file' },
+  ]},
+  { group: 'Panels', rows: [
+    { keys: '⌘⇧`',      desc: 'Toggle bottom panel' },
+    { keys: '⌘⇧D',      desc: 'Debugger panel' },
+    { keys: '⌘⇧P',      desc: 'AI Pair Programming' },
+    { keys: '⌘\\',      desc: 'Toggle split layout' },
+    { keys: 'Esc',       desc: 'Close bottom panel / overlays' },
+  ]},
+  { group: 'Git', rows: [
+    { keys: '⌘⇧G',      desc: 'Open Git sidebar' },
+    { keys: '⌘↵',       desc: 'Commit (in commit message textarea)' },
+  ]},
+  { group: 'File Explorer', rows: [
+    { keys: '↑↓',        desc: 'Navigate files' },
+    { keys: '↵',         desc: 'Open selected file' },
+    { keys: 'Right-click', desc: 'New File, New Folder, Rename, Delete, Copy Path' },
+  ]},
+];
+
+function WorkspaceShortcutsOverlay({ onClose }) {
+  useEffect(() => {
+    const h = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, [onClose]);
+
+  return (
+    <div className="ew-shortcuts-overlay" onClick={onClose}>
+      <div className="ew-shortcuts-panel" onClick={e => e.stopPropagation()}>
+        <div className="ew-shortcuts-header">
+          <span className="ew-shortcuts-title">Workspace Keyboard Shortcuts</span>
+          <button className="ew-shortcuts-close" onClick={onClose}><kbd>Esc</kbd></button>
+        </div>
+        <div className="ew-shortcuts-body">
+          {WS_SHORTCUTS.map(group => (
+            <div key={group.group} className="ew-shortcuts-group">
+              <div className="ew-shortcuts-group-label">{group.group}</div>
+              {group.rows.map(row => (
+                <div key={row.desc} className="ew-shortcuts-row">
+                  <span className="ew-shortcuts-desc">{row.desc}</span>
+                  <kbd className="ew-shortcuts-keys">{row.keys}</kbd>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="ew-shortcuts-footer">Press <kbd>⌘⇧/</kbd> to open · <kbd>Esc</kbd> to close</div>
+      </div>
     </div>
   );
 }

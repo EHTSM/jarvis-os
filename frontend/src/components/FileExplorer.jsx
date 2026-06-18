@@ -5,8 +5,57 @@ import './FileExplorer.css';
 const api = () => window.electronAPI;
 const isElectron = () => !!window.electronAPI?.isElectron;
 
+// ── Inline name-prompt overlay ────────────────────────────────────────
+function NamePrompt({ prompt, defaultValue = '', onConfirm, onCancel }) {
+  const [val, setVal] = useState(defaultValue);
+  const inputRef = useRef(null);
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef.current?.focus();
+      inputRef.current?.select();
+    }, 30);
+  }, []);
+  return (
+    <div className="fe-name-prompt-overlay" onClick={onCancel}>
+      <div className="fe-name-prompt" onClick={e => e.stopPropagation()}>
+        <div className="fe-name-prompt__label">{prompt}</div>
+        <input
+          ref={inputRef}
+          className="fe-name-prompt__input"
+          value={val}
+          onChange={e => setVal(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === 'Enter' && val.trim()) { e.preventDefault(); onConfirm(val.trim()); }
+            if (e.key === 'Escape') { e.preventDefault(); onCancel(); }
+          }}
+        />
+        <div className="fe-name-prompt__actions">
+          <button className="fe-name-prompt__btn fe-name-prompt__btn--cancel" onClick={onCancel}>Cancel</button>
+          <button className="fe-name-prompt__btn fe-name-prompt__btn--ok" disabled={!val.trim()} onClick={() => val.trim() && onConfirm(val.trim())}>OK</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Inline delete confirmation ────────────────────────────────────────
+function DeleteConfirm({ name, onConfirm, onCancel }) {
+  return (
+    <div className="fe-name-prompt-overlay" onClick={onCancel}>
+      <div className="fe-name-prompt" onClick={e => e.stopPropagation()}>
+        <div className="fe-name-prompt__label">Delete <strong>{name}</strong>?</div>
+        <div className="fe-name-prompt__hint">This cannot be undone.</div>
+        <div className="fe-name-prompt__actions">
+          <button className="fe-name-prompt__btn fe-name-prompt__btn--cancel" onClick={onCancel}>Cancel</button>
+          <button className="fe-name-prompt__btn fe-name-prompt__btn--danger" onClick={onConfirm}>Delete</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Native context menu for file/directory nodes ──────────────────────
-function useFileContextMenu(onOpen, onRefresh) {
+function useFileContextMenu(onOpen, onRefresh, onAction) {
   const targetRef = useRef(null);
 
   const showMenu = useCallback((e, node) => {
@@ -16,17 +65,24 @@ function useFileContextMenu(onOpen, onRefresh) {
     targetRef.current = node;
     const items = node.isDir
       ? [
-          { id: 'refresh',   label: 'Refresh' },
+          { id: 'new-file',  label: 'New File…' },
+          { id: 'new-dir',   label: 'New Folder…' },
           { type: 'separator' },
+          { id: 'rename',    label: 'Rename…' },
+          { id: 'delete',    label: 'Delete' },
+          { type: 'separator' },
+          { id: 'refresh',   label: 'Refresh' },
           { id: 'copy-path', label: 'Copy Path' },
           { id: 'reveal',    label: 'Reveal in Finder' },
         ]
       : [
           { id: 'open',      label: 'Open File' },
           { type: 'separator' },
+          { id: 'rename',    label: 'Rename…' },
+          { id: 'delete',    label: 'Delete' },
+          { type: 'separator' },
           { id: 'copy-path', label: 'Copy Path' },
           { id: 'reveal',    label: 'Reveal in Finder' },
-          { type: 'separator' },
           { id: 'drag',      label: 'Drag Out…' },
         ];
     api()?.showContextMenu(items);
@@ -41,10 +97,14 @@ function useFileContextMenu(onOpen, onRefresh) {
       case 'copy-path': api()?.clipboardWrite(node.path); break;
       case 'reveal':    api()?.fsOpenPath(node.path); break;
       case 'drag':      api()?.ondragstart(node.path); break;
+      case 'new-file':  onAction?.('new-file', node); break;
+      case 'new-dir':   onAction?.('new-dir',  node); break;
+      case 'rename':    onAction?.('rename',   node); break;
+      case 'delete':    onAction?.('delete',   node); break;
       default: break;
     }
     targetRef.current = null;
-  }, [onOpen, onRefresh]));
+  }, [onOpen, onRefresh, onAction]));
 
   return showMenu;
 }
@@ -141,6 +201,8 @@ export default function FileExplorer({ rootDir, cwd, onFileOpen, className = '' 
     try { return JSON.parse(localStorage.getItem('file-explorer-recent') || '[]'); } catch { return []; }
   });
   const [activeTab, setActiveTab]   = useState('tree');
+  const [fileOp, setFileOp]         = useState(null); // { type: 'new-file'|'new-dir'|'rename'|'delete', node }
+  const [opStatus, setOpStatus]     = useState('');
   const searchTimer = useRef(null);
   const searchInput = useRef(null);
 
@@ -222,7 +284,59 @@ export default function FileExplorer({ rootDir, cwd, onFileOpen, className = '' 
     });
   }, [onFileOpen]);
 
-  const showContextMenu = useFileContextMenu(handleOpen, loadTree);
+  const handleFileAction = useCallback((type, node) => {
+    setFileOp({ type, node });
+  }, []);
+
+  const execFileOp = useCallback(async (name) => {
+    if (!fileOp) return;
+    const { type, node } = fileOp;
+    setFileOp(null);
+    const dir = node.isDir ? node.path : node.path.split('/').slice(0, -1).join('/');
+    const refreshDir = root || dir;
+
+    try {
+      if (type === 'new-file') {
+        const newPath = `${dir}/${name}`;
+        await api().shellExec({ command: `touch "${newPath}"` });
+        setOpStatus(`Created ${name}`);
+        await loadTree(refreshDir);
+        onFileOpen?.(newPath);
+      } else if (type === 'new-dir') {
+        await api().shellExec({ command: `mkdir -p "${dir}/${name}"` });
+        setOpStatus(`Folder created`);
+        await loadTree(refreshDir);
+      } else if (type === 'rename') {
+        const parentDir = node.path.split('/').slice(0, -1).join('/');
+        const newPath   = `${parentDir}/${name}`;
+        const r = await api().shellExec({ command: `mv "${node.path}" "${newPath}"` });
+        if (r?.stderr && r?.code !== 0) throw new Error(r.stderr);
+        setOpStatus(`Renamed to ${name}`);
+        await loadTree(refreshDir);
+      }
+    } catch (e) {
+      setOpStatus(`Error: ${e.message}`);
+    }
+    setTimeout(() => setOpStatus(''), 3000);
+  }, [fileOp, root, loadTree, onFileOpen]);
+
+  const execDelete = useCallback(async () => {
+    if (!fileOp) return;
+    const { node } = fileOp;
+    setFileOp(null);
+    try {
+      const cmd = node.isDir ? `rm -rf "${node.path}"` : `rm "${node.path}"`;
+      const r = await api().shellExec({ command: cmd });
+      if (r?.code !== 0 && r?.stderr) throw new Error(r.stderr);
+      setOpStatus(`Deleted ${node.name}`);
+      await loadTree(root || node.path.split('/').slice(0, -1).join('/'));
+    } catch (e) {
+      setOpStatus(`Error: ${e.message}`);
+    }
+    setTimeout(() => setOpStatus(''), 3000);
+  }, [fileOp, root, loadTree]);
+
+  const showContextMenu = useFileContextMenu(handleOpen, loadTree, handleFileAction);
 
   const toggleFavorite = useCallback((path) => {
     setFavorites(f => {
@@ -247,15 +361,69 @@ export default function FileExplorer({ rootDir, cwd, onFileOpen, className = '' 
 
   return (
     <div className={`file-explorer ${className}`}>
+      {/* File operation modals */}
+      {fileOp?.type === 'new-file' && (
+        <NamePrompt
+          prompt={`New file in ${fileOp.node.name || 'folder'}`}
+          defaultValue="untitled.js"
+          onConfirm={execFileOp}
+          onCancel={() => setFileOp(null)}
+        />
+      )}
+      {fileOp?.type === 'new-dir' && (
+        <NamePrompt
+          prompt={`New folder in ${fileOp.node.name || 'directory'}`}
+          defaultValue="new-folder"
+          onConfirm={execFileOp}
+          onCancel={() => setFileOp(null)}
+        />
+      )}
+      {fileOp?.type === 'rename' && (
+        <NamePrompt
+          prompt={`Rename "${fileOp.node.name}"`}
+          defaultValue={fileOp.node.name}
+          onConfirm={execFileOp}
+          onCancel={() => setFileOp(null)}
+        />
+      )}
+      {fileOp?.type === 'delete' && (
+        <DeleteConfirm
+          name={fileOp.node.name}
+          onConfirm={execDelete}
+          onCancel={() => setFileOp(null)}
+        />
+      )}
+
       {/* Header */}
       <div className="file-explorer__header">
         <span className="file-explorer__title">Explorer</span>
-        <button
-          className="file-explorer__btn"
-          onClick={() => root && loadTree(root)}
-          title="Refresh"
-        >↻</button>
+        <div className="file-explorer__header-actions">
+          <button
+            className="file-explorer__btn"
+            onClick={() => {
+              const dirNode = selected
+                ? { path: root || selected, name: 'project', isDir: true }
+                : { path: root || '', name: 'project', isDir: true };
+              setFileOp({ type: 'new-file', node: dirNode });
+            }}
+            title="New File"
+          >＋📄</button>
+          <button
+            className="file-explorer__btn"
+            onClick={() => {
+              const dirNode = { path: root || '', name: 'project', isDir: true };
+              setFileOp({ type: 'new-dir', node: dirNode });
+            }}
+            title="New Folder"
+          >＋📁</button>
+          <button
+            className="file-explorer__btn"
+            onClick={() => root && loadTree(root)}
+            title="Refresh"
+          >↻</button>
+        </div>
       </div>
+      {opStatus && <div className="file-explorer__op-status">{opStatus}</div>}
 
       {/* Tabs */}
       <div className="file-explorer__tabs">
