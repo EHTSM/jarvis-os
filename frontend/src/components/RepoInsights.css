@@ -1,0 +1,36 @@
+/* ── RepoInsights ─────────────────────────────────────────────────────── */
+
+.ri-root { display: flex; flex-direction: column; gap: 10px; }
+.ri-header { display: flex; align-items: center; }
+.ri-rings {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.ri-ring-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.ri-ring {
+  position: relative;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--color, var(--accent)) calc(var(--pct, 0) * 1%),
+    rgba(255,255,255,0.07) 0%
+  );
+  display: flex; align-items: center; justify-content: center;
+}
+.ri-ring::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  background: var(--surface-base);
+  border-radius: 50%;
+}
+.ri-ring-inner { position: relative; z-index: 1; }
+.ri-ring-val { font-size: 9px; font-weight: 800; color: var(--text); }
+.ri-ring-label {
+  font-size: 9px; font-weight: 700; color: var(--text-faint);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.ri-ring-sub { font-size: 8px; color: var(--text-faint); opacity: 0.7; }

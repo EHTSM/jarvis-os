@@ -1,0 +1,280 @@
+/* ProjectSearch — J2 */
+
+.ps-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #161928;
+  color: #c8cdd8;
+  font-family: inherit;
+  overflow: hidden;
+}
+
+/* ── Search input ─────────────────────────────────────────────────────────── */
+
+.ps-input-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 8px 4px;
+  flex-shrink: 0;
+}
+
+.ps-input-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.12s;
+}
+.ps-input-wrap:focus-within { border-color: #7c6fff; }
+
+.ps-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #e8ecf4;
+  font-size: 12px;
+  padding: 6px 8px;
+  font-family: inherit;
+  min-width: 0;
+}
+.ps-input::placeholder { color: #4a526a; }
+.ps-input--replace { border-radius: 6px; }
+
+.ps-input-flags {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding-right: 4px;
+}
+
+.ps-flag-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: #8994b0;
+  font-size: 11px;
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, color 0.1s;
+  font-family: inherit;
+}
+.ps-flag-btn:hover { background: rgba(255,255,255,0.08); color: #c8cdd8; }
+.ps-flag-btn--on {
+  background: rgba(124, 111, 255, 0.2);
+  border-color: rgba(124, 111, 255, 0.4);
+  color: #a89fff;
+}
+
+.ps-search-btn {
+  width: 28px;
+  height: 28px;
+  background: rgba(124, 111, 255, 0.15);
+  border: 1px solid rgba(124, 111, 255, 0.3);
+  border-radius: 5px;
+  color: #a89fff;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.12s;
+}
+.ps-search-btn:hover:not(:disabled) { background: rgba(124, 111, 255, 0.25); }
+.ps-search-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.ps-replace-toggle {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  color: #8994b0;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.12s, color 0.12s;
+}
+.ps-replace-toggle:hover { background: rgba(255,255,255,0.08); color: #c8cdd8; }
+.ps-replace-toggle--on {
+  background: rgba(240, 180, 41, 0.12);
+  border-color: rgba(240, 180, 41, 0.3);
+  color: #f0b429;
+}
+
+/* ── Replace row ─────────────────────────────────────────────────────────── */
+
+.ps-replace-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px 6px;
+  flex-shrink: 0;
+}
+.ps-replace-row .ps-input-wrap { flex: 1; }
+
+.ps-replace-all-btn {
+  padding: 4px 10px;
+  background: rgba(240, 180, 41, 0.12);
+  border: 1px solid rgba(240, 180, 41, 0.3);
+  border-radius: 5px;
+  color: #f0b429;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-family: inherit;
+  transition: background 0.12s;
+}
+.ps-replace-all-btn:hover:not(:disabled) { background: rgba(240, 180, 41, 0.2); }
+.ps-replace-all-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Status ──────────────────────────────────────────────────────────────── */
+
+.ps-status {
+  padding: 3px 10px;
+  font-size: 11px;
+  color: #8994b0;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ps-spinner {
+  animation: ps-spin 0.8s linear infinite;
+  display: inline-block;
+}
+@keyframes ps-spin { to { transform: rotate(360deg); } }
+
+/* ── Results ─────────────────────────────────────────────────────────────── */
+
+.ps-results {
+  flex: 1;
+  overflow-y: auto;
+}
+.ps-results::-webkit-scrollbar { width: 4px; }
+.ps-results::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+
+.ps-empty {
+  padding: 20px 12px;
+  color: #4a526a;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* ── Result group ────────────────────────────────────────────────────────── */
+
+.ps-group {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.ps-group__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 11px;
+  user-select: none;
+  transition: background 0.1s;
+}
+.ps-group__header:hover { background: rgba(255, 255, 255, 0.05); }
+
+.ps-group__arrow { color: #8994b0; font-size: 9px; flex-shrink: 0; }
+.ps-group__file {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #c8cdd8;
+  font-family: 'SF Mono', monospace;
+}
+.ps-group__count {
+  background: rgba(124, 111, 255, 0.15);
+  color: #a89fff;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+/* ── Match row ───────────────────────────────────────────────────────────── */
+
+.ps-match-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 3px 8px 3px 24px;
+  cursor: pointer;
+  transition: background 0.1s;
+  min-height: 20px;
+}
+.ps-match-row:hover { background: rgba(255, 255, 255, 0.04); }
+
+.ps-match-row__line {
+  flex-shrink: 0;
+  width: 32px;
+  text-align: right;
+  font-family: 'SF Mono', monospace;
+  font-size: 10px;
+  color: #4a526a;
+}
+.ps-match-row__text {
+  flex: 1;
+  font-family: 'SF Mono', monospace;
+  font-size: 11px;
+  color: #8994b0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ps-match-row__replace-btn {
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid rgba(240, 180, 41, 0.3);
+  border-radius: 3px;
+  color: #f0b429;
+  font-size: 11px;
+  padding: 0 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+.ps-match-row:hover .ps-match-row__replace-btn { opacity: 1; }
+.ps-match-row__replace-btn:hover { background: rgba(240, 180, 41, 0.1); }
+
+.ps-match mark {
+  background: rgba(240, 180, 41, 0.25);
+  color: #f0b429;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+
+.ps-footer {
+  padding: 4px 10px;
+  font-size: 10px;
+  color: #4a526a;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.01);
+}

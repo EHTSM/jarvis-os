@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { getStats, getOpsData, getMetrics } from "../telemetryApi";
 import { getLeads } from "../api";
 import JourneyBanner from "./JourneyBanner";
+import EmptyState from "./EmptyState";
 import "./ReportsV2.css";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -364,6 +365,8 @@ export default function ReportsV2({ online = false, onNavigate }) {
           </button>
         </div>
       </div>
+
+
 
       {/* Period selector */}
       <div className="rv2-period-tabs">

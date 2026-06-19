@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, lazy, Suspense } from "react";
+import React, { useState, useEffect, useCallback, useRef, lazy, Suspense } from "react";
 import "./Chat.css";
 const AIWelcomeBrief = lazy(() => import("./AIWelcomeBrief"));
 
@@ -12,6 +12,26 @@ const MODELS = [
 ];
 
 export { MODELS };
+
+const BASE = process.env.REACT_APP_API_URL || "";
+
+// ── Workspace Context Strip ───────────────────────────────────────
+function WorkspaceContext() {
+  const [ctx, setCtx] = useState(null);
+  useEffect(() => {
+    fetch(`${BASE}/coding/context`, { credentials: "include" })
+      .then(r => r.json()).then(d => setCtx(d)).catch(() => {});
+  }, []);
+  if (!ctx) return null;
+  return (
+    <div className="chat-ws-ctx">
+      {ctx.cwd    && <span className="chat-ctx-chip">📁 {ctx.cwd.split("/").pop()}</span>}
+      {ctx.branch && <span className="chat-ctx-chip">⎇ {ctx.branch}</span>}
+      {ctx.activeMission && <span className="chat-ctx-chip chat-ctx-chip--mission">✦ {ctx.activeMission}</span>}
+      {ctx.health && <span className={`chat-ctx-chip chat-ctx-chip--health chat-ctx-chip--${ctx.health}`}>◎ {ctx.health}</span>}
+    </div>
+  );
+}
 
 const CHAT_PROMPTS = [
   "What's my pipeline status?",
@@ -210,6 +230,9 @@ export default function Chat({
 
   return (
     <div className="chat">
+      {/* Workspace context strip */}
+      <WorkspaceContext />
+
       {/* Chat header — model selector */}
       <div className="chat-header">
         <div className="chat-header-left">

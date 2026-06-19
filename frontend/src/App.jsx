@@ -107,6 +107,8 @@ const EnterpriseOS             = lazy(() => import("./components/EnterpriseOS.js
 const CapabilitiesOverview     = lazy(() => import("./components/CapabilitiesOverview.jsx"));
 const MissionControlV1         = lazy(() => import("./components/MissionControlV1.jsx"));
 const ExecutiveDashboard       = lazy(() => import("./components/ExecutiveDashboard.jsx"));
+const DevHUD                   = lazy(() => import("./components/DevHUD.jsx"));
+const EndOfDayReview           = lazy(() => import("./components/EndOfDayReview.jsx"));
 import WorkspaceSwitcher        from "./components/WorkspaceSwitcher.jsx";
 import Tooltip                  from "./components/Tooltip.jsx";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts.js";
@@ -427,13 +429,15 @@ function AppInner() {
   });
   const tabHistory  = useRef(["home"]);
   const tabFuture   = useRef([]);
+  const [showEOD,     setShowEOD]     = useState(false);
+
   const setTab = useCallback((next) => {
+    if (next === "eod") { setShowEOD(true); return; }
     _setTab(prev => {
       if (prev === next) return prev;
       tabHistory.current.push(next);
       if (tabHistory.current.length > 40) tabHistory.current.shift();
       tabFuture.current = [];
-      // Persist last tab (desktop + web)
       try { localStorage.setItem("ooplix_last_tab", next); } catch {}
       if (_IS_DESKTOP) window.electronAPI?.storeSet?.("lastTab", next);
       return next;
@@ -446,6 +450,7 @@ function AppInner() {
   });
   const [showWelcome,  setShowWelcome]  = useState(false);
   const [showTour,     setShowTour]     = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
 
   // First launch: show WelcomeFlow on Desktop, offer tour after dismiss
   useEffect(() => {
@@ -455,14 +460,12 @@ function AppInner() {
       const t = setTimeout(() => setShowWelcome(true), 700);
       return () => clearTimeout(t);
     }
-    // Offer tour if welcome done but tour not done
     const tourDone = localStorage.getItem("ooplix_tour_done") === "1";
     if (!tourDone) {
       const t = setTimeout(() => setShowTour(true), 1200);
       return () => clearTimeout(t);
     }
   }, [screen]);
-  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [stats,     setStats]     = useState(null);
   const [opsData,   setOpsData]   = useState(null);
   const [toasts,    setToasts]    = useState([]);
@@ -580,6 +583,7 @@ function AppInner() {
     },
     'help':                () => setShortcutsOpen(o => !o),
     'search':              () => setPaletteOpen(true),
+    'eod-review':          () => setShowEOD(o => !o),
     'escape':              () => {
       if (shortcutsOpen) { setShortcutsOpen(false); return; }
       if (paletteOpen)   { setPaletteOpen(false);   return; }
@@ -1028,7 +1032,7 @@ function AppInner() {
 
       <main className="app-main" id="main-content" role="main">
         {/* key forces remount on tab change — triggers page-enter CSS animation */}
-        <div key={tab} className="app-tab-pane">
+        <div key={tab} className="app-tab-pane motion-premium">
         <ErrorBoundary label={tab}>
         <Suspense fallback={<TabSkeleton />}>
         {tab === "mission"  && <MissionControlV1 onNavigate={setTab} />}
@@ -1166,6 +1170,21 @@ function AppInner() {
         </ErrorBoundary>
         </div>
       </main>
+
+      {/* Developer HUD — slim status bar */}
+      <Suspense fallback={null}>
+        <DevHUD online={online} onNavigate={setTab} />
+      </Suspense>
+
+      {/* End of Day Review modal */}
+      <AnimatePresence>
+        {showEOD && (
+          <Suspense fallback={null}>
+            <EndOfDayReview onClose={() => setShowEOD(false)} />
+          </Suspense>
+        )}
+      </AnimatePresence>
+
       {!_IS_DESKTOP && <CompanyFooter onNavigate={openLegal} />}
     </div>
     </ElectronWorkspace>

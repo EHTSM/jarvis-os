@@ -113,6 +113,22 @@
   --dur-std:     220ms;
   --dur-slow:    360ms;
   --dur-enter:   280ms;
+
+  /* ── Premium Sprint 3 tokens ─────────────────────────── */
+  --shadow-inner:        inset 0 1px 0 rgba(255,255,255,0.06);
+  --surface-glass:       rgba(255,255,255,0.03);
+  --surface-glass-hover: rgba(255,255,255,0.055);
+  --border-subtle:       rgba(255,255,255,0.04);
+  --gradient-accent:     linear-gradient(135deg, #7c6fff 0%, #4ecdc4 100%);
+  --gradient-card:       linear-gradient(160deg, rgba(124,111,255,0.06) 0%, rgba(78,205,196,0.03) 100%);
+  --gradient-hero:       linear-gradient(135deg, rgba(124,111,255,0.12) 0%, transparent 60%);
+
+  /* Type scale */
+  --type-display: clamp(1.75rem, 3vw, 2.25rem);
+  --type-title:   clamp(1.1rem, 2vw, 1.35rem);
+  --type-body:    0.875rem;
+  --type-caption: 0.75rem;
+  --type-micro:   0.6875rem;
 }
 
 /* ── Reset ────────────────────────────────────────────────────────────── */
@@ -348,6 +364,86 @@ a { color: inherit; text-decoration: none; }
 }
 .counter-value--up   { color: var(--success) !important; }
 .counter-value--down { color: var(--danger)  !important; }
+
+/* ── Premium Sprint 3 utilities ──────────────────────────────────────── */
+
+/* Premium card */
+.premium-card {
+  background: var(--gradient-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-xs), var(--shadow-inner);
+  transition: transform var(--dur-std) var(--ease-spring),
+              box-shadow var(--dur-std) var(--ease-spring),
+              border-color var(--dur-fast) var(--ease-out);
+}
+.premium-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow), var(--shadow-inner);
+  border-color: var(--border-strong);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass surface */
+.glass-surface {
+  background: var(--surface-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+.glass-surface:hover { background: var(--surface-glass-hover); }
+
+/* ── Premium Motion System (Sprint 3 #8) ────────────────────────────── */
+
+@keyframes premium-enter {
+  from { opacity:0; transform: translateY(12px) scale(0.98); filter: blur(2px); }
+  to   { opacity:1; transform: translateY(0)    scale(1);    filter: blur(0); }
+}
+@keyframes card-morph {
+  from { opacity:0; transform: scale(0.95) translateY(8px); border-radius: var(--radius-xl); }
+  to   { opacity:1; transform: scale(1)    translateY(0);   border-radius: var(--radius); }
+}
+@keyframes celebrate {
+  0%   { transform: scale(1); }
+  20%  { transform: scale(1.08) rotate(-1deg); }
+  40%  { transform: scale(1.05) rotate(1deg); }
+  60%  { transform: scale(1.02) rotate(-0.5deg); }
+  80%  { transform: scale(1.01); }
+  100% { transform: scale(1); }
+}
+@keyframes loading-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+}
+@keyframes ripple-out {
+  from { transform: scale(0); opacity: 0.4; }
+  to   { transform: scale(2.5); opacity: 0; }
+}
+@keyframes premium-page-enter {
+  from { opacity:0; transform: translateX(8px); }
+  to   { opacity:1; transform: translateX(0); }
+}
+
+.motion-premium  { animation: premium-enter        var(--dur-enter) var(--ease-spring) both; }
+.motion-card     { animation: card-morph            var(--dur-std)   var(--ease-spring) both; }
+.motion-celebrate{ animation: celebrate             0.5s             var(--ease-spring); }
+.motion-page     { animation: premium-page-enter   var(--dur-std)   var(--ease-spring) both; }
+.motion-loading  { animation: loading-pulse         1.4s ease-in-out infinite; }
+
+.motion-stagger > * { animation: premium-enter var(--dur-enter) var(--ease-spring) both; }
+.motion-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.motion-stagger > *:nth-child(2) { animation-delay: 50ms; }
+.motion-stagger > *:nth-child(3) { animation-delay: 100ms; }
+.motion-stagger > *:nth-child(4) { animation-delay: 150ms; }
+.motion-stagger > *:nth-child(5) { animation-delay: 200ms; }
+.motion-stagger > *:nth-child(n+6) { animation-delay: 250ms; }
 
 /* Shimmer loading — full-width shimmer bar */
 @keyframes shimmer {

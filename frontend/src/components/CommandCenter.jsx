@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-const MissionTemplates = lazy(() => import("./MissionTemplates"));
-const RecentSessions   = lazy(() => import("./RecentSessions"));
+const MissionTemplates         = lazy(() => import("./MissionTemplates"));
+const RecentSessions           = lazy(() => import("./RecentSessions"));
+const RepoInsights             = lazy(() => import("./RepoInsights"));
+const WorkspacePersonalization = lazy(() => import("./WorkspacePersonalization"));
 import {
   emergencyStop,
   emergencyResume,
@@ -1453,6 +1455,28 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
               </button>
             </div>
             <SystemHealth opsData={opsData} online={online} />
+          </motion.section>
+
+          <motion.section
+            className="cmd-panel"
+            initial={{ opacity: 0, x: 14 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ ...transition.enter, delay: 0.28 }}
+          >
+            <Suspense fallback={null}>
+              <RepoInsights />
+            </Suspense>
+          </motion.section>
+
+          <motion.section
+            className="cmd-panel"
+            initial={{ opacity: 0, x: 14 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ ...transition.enter, delay: 0.34 }}
+          >
+            <Suspense fallback={null}>
+              <WorkspacePersonalization onNavigate={onNavigate} />
+            </Suspense>
           </motion.section>
         </div>
 

@@ -177,6 +177,64 @@
 }
 .cp-item--active .cp-item-enter { opacity: 1; }
 
+/* ── Row wrapper (item + pin button) ─────────────────────────────────── */
+.cp-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  position: relative;
+}
+.cp-row .cp-item { flex: 1; }
+
+/* ── Pin button ───────────────────────────────────────────────────────── */
+.cp-pin-btn {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--dur-fast), color var(--dur-fast), background var(--dur-fast);
+}
+.cp-row:hover .cp-pin-btn { opacity: 1; }
+.cp-pin-btn:hover { background: var(--surface-glass); color: var(--text-dim); }
+.cp-pin-btn--active { opacity: 1 !important; color: var(--accent) !important; }
+
+/* ── Pinned section header ────────────────────────────────────────────── */
+.cp-pin-section .cp-group-label { color: rgba(124,111,255,0.75); }
+
+/* ── Recent / Pinned group first-child accent ─────────────────────────── */
+.cp-group:first-child .cp-group-label[data-group="Recent"],
+.cp-group:first-child .cp-group-label[data-group="Pinned"] {
+  color: rgba(124,111,255,0.7);
+}
+
+/* ── Shortcut kbd badge ───────────────────────────────────────────────── */
+.cp-kbd {
+  font-size: 10px;
+  font-family: var(--font-mono, monospace);
+  color: var(--text-faint);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 4px;
+  padding: 2px 6px;
+  flex-shrink: 0;
+}
+
+/* ── List animation ───────────────────────────────────────────────────── */
+@keyframes cp-list-enter {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: none; }
+}
+.cp-list-animate { animation: cp-list-enter 0.14s var(--ease-spring) both; }
+
 /* ── Empty state ──────────────────────────────────────────────────────── */
 .cp-empty {
   display: flex;
