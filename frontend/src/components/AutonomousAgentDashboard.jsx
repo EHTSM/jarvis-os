@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, lazy, Suspense } from "react";
-const SmellsPanel = lazy(() => import("./SmellsPanel"));
+const SmellsPanel       = lazy(() => import("./SmellsPanel"));
+const DecisionsPanel    = lazy(() => import("./DecisionsPanel"));
+const TechDebtDashboard = lazy(() => import("./TechDebtDashboard"));
 import { _fetch } from "../_client";
 import "./AutonomousAgentDashboard.css";
 
@@ -827,6 +829,12 @@ export default function AutonomousAgentDashboard() {
                 <button className={`aad-tab ${activeTab === "smells" ? "active" : ""}`} onClick={() => setActiveTab("smells")}>
                     Smells
                 </button>
+                <button className={`aad-tab ${activeTab === "decisions" ? "active" : ""}`} onClick={() => setActiveTab("decisions")}>
+                    Decisions
+                </button>
+                <button className={`aad-tab ${activeTab === "debt" ? "active" : ""}`} onClick={() => setActiveTab("debt")}>
+                    Debt
+                </button>
             </div>
 
             {/* Agents tab */}
@@ -879,6 +887,20 @@ export default function AutonomousAgentDashboard() {
             {activeTab === "smells" && (
                 <Suspense fallback={<div style={{ padding: 16, color: "#4b5563" }}>Loading…</div>}>
                     <SmellsPanel cwd={null} />
+                </Suspense>
+            )}
+
+            {/* Decisions tab (ACP-4) */}
+            {activeTab === "decisions" && (
+                <Suspense fallback={<div style={{ padding: 16, color: "#4b5563" }}>Loading…</div>}>
+                    <DecisionsPanel cwd={null} />
+                </Suspense>
+            )}
+
+            {/* Technical Debt Dashboard (ACP-4) */}
+            {activeTab === "debt" && (
+                <Suspense fallback={<div style={{ padding: 16, color: "#4b5563" }}>Loading…</div>}>
+                    <TechDebtDashboard />
                 </Suspense>
             )}
 
