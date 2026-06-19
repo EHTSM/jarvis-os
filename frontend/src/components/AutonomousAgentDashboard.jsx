@@ -5,7 +5,8 @@ const TechDebtDashboard = lazy(() => import("./TechDebtDashboard"));
 const BundlePreviewPanel = lazy(() => import("./BundlePreviewPanel"));
 const ComposerPanel         = lazy(() => import("./ComposerPanel"));
 const AutonomousAgentPanel  = lazy(() => import("./AutonomousAgentPanel"));
-const RepositoryMapPanel    = lazy(() => import("./RepositoryMapPanel"));
+const RepositoryMapPanel      = lazy(() => import("./RepositoryMapPanel"));
+const EngineeringMemoryPanel  = lazy(() => import("./EngineeringMemoryPanel"));
 import { _fetch } from "../_client";
 import "./AutonomousAgentDashboard.css";
 
@@ -851,6 +852,9 @@ export default function AutonomousAgentDashboard() {
                 <button className={`aad-tab ${activeTab === "repository" ? "active" : ""}`} onClick={() => setActiveTab("repository")}>
                     Repository
                 </button>
+                <button className={`aad-tab ${activeTab === "memory" ? "active" : ""}`} onClick={() => setActiveTab("memory")}>
+                    Memory
+                </button>
             </div>
 
             {/* Agents tab */}
@@ -945,6 +949,13 @@ export default function AutonomousAgentDashboard() {
             {activeTab === "repository" && (
                 <Suspense fallback={<div style={{ padding: 16, color: "#4b5563" }}>Loading…</div>}>
                     <RepositoryMapPanel />
+                </Suspense>
+            )}
+
+            {/* Engineering Memory (ACP-10) */}
+            {activeTab === "memory" && (
+                <Suspense fallback={<div style={{ padding: 16, color: "#4b5563" }}>Loading…</div>}>
+                    <EngineeringMemoryPanel />
                 </Suspense>
             )}
 
