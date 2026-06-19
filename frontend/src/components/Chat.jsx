@@ -1,5 +1,16 @@
-import React from "react";
+import React, { useState, useCallback, useRef } from "react";
 import "./Chat.css";
+
+// ── Model selector config ─────────────────────────────────────────
+const MODELS = [
+  { id: "auto",            label: "Auto",           provider: null,       model: null                    },
+  { id: "groq-llama",      label: "Llama 3.3 70B",  provider: "groq",     model: "llama-3.3-70b-versatile" },
+  { id: "groq-llama-fast", label: "Llama 3.1 8B",   provider: "groq",     model: "llama-3.1-8b-instant"    },
+  { id: "openai-gpt4o",    label: "GPT-4o mini",    provider: "openai",   model: "gpt-4o-mini"             },
+  { id: "claude",          label: "Claude Haiku",   provider: "openrouter", model: "anthropic/claude-haiku-4-5" },
+];
+
+export { MODELS };
 
 const CHAT_PROMPTS = [
   "What's my pipeline status?",
@@ -163,7 +174,8 @@ const QUICK_ACTIONS = _buildQuickActions();
 export default function Chat({
   messages, input, loading, online,
   inputRef, endRef,
-  onInput, onSend, onKey, onClear
+  onInput, onSend, onKey, onClear,
+  model, onModelChange,
 }) {
   const currentWorkflow = messages
     .slice()
@@ -175,8 +187,32 @@ export default function Chat({
     currentWorkflow.status === "done"
   );
 
+  const selectedModel = MODELS.find(m => m.id === model) || MODELS[0];
+
   return (
     <div className="chat">
+      {/* Chat header — model selector */}
+      <div className="chat-header">
+        <div className="chat-header-left">
+          <span className="chat-header-title">AI</span>
+          {loading && <span className="chat-stream-indicator"><span /><span /><span /></span>}
+        </div>
+        <div className="chat-header-right">
+          <select
+            className="chat-model-select"
+            value={model || "auto"}
+            onChange={e => onModelChange?.(e.target.value)}
+            disabled={loading}
+            title="Select AI model"
+            aria-label="Select AI model"
+          >
+            {MODELS.map(m => (
+              <option key={m.id} value={m.id}>{m.label}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       {/* Workflow status banner — thin, informational */}
       {currentWorkflow && (
         <div className={`chat-workflow-banner${workflowDone ? " chat-workflow-banner--done" : ""}`}>
@@ -209,13 +245,14 @@ export default function Chat({
           );
         })}
 
-        {/* AI thinking indicator */}
+        {/* AI streaming/thinking indicator */}
         {loading && (
-          <div className="msg msg--jarvis msg--ai">
+          <div className="msg msg--jarvis msg--ai msg--streaming">
             <div className="msg-header">
               <div className="msg-meta-left">
                 <span className="msg-role" style={{ color: ROLE_COLORS.jarvis }}>Ooplix</span>
-                <span className="msg-thinking-label">thinking…</span>
+                <span className="msg-badge">{selectedModel.label}</span>
+                <span className="msg-thinking-label">generating…</span>
               </div>
             </div>
             <div className="msg-body typing">

@@ -1,0 +1,93 @@
+.eb-root {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 22px;
+  margin: 16px;
+  background: rgba(239,68,68,0.06);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 10px;
+  max-width: 480px;
+}
+
+.eb-icon {
+  font-size: 22px;
+  color: #ef4444;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 1px;
+  opacity: 0.85;
+}
+
+.eb-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.eb-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f87171;
+  margin: 0;
+}
+
+.eb-crash-count {
+  font-weight: 400;
+  opacity: 0.6;
+  font-size: 11px;
+  margin-left: 4px;
+}
+
+.eb-subtitle {
+  font-size: 12px;
+  color: rgba(248,113,113,0.7);
+  margin: 0;
+}
+
+.eb-message {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  font-family: ui-monospace, monospace;
+  margin: 4px 0 0;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+.eb-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.eb-btn {
+  padding: 5px 13px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+
+.eb-btn--primary {
+  background: rgba(239,68,68,0.15);
+  border-color: rgba(239,68,68,0.35);
+  color: #f87171;
+}
+.eb-btn--primary:hover {
+  background: rgba(239,68,68,0.25);
+  border-color: rgba(239,68,68,0.5);
+}
+
+.eb-btn--ghost {
+  background: transparent;
+  border-color: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.4);
+}
+.eb-btn--ghost:hover {
+  border-color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6);
+}

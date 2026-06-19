@@ -312,7 +312,7 @@
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
-  min-width: 200px;
+  min-width: 220px;
   background: var(--os-raised, #0d1117);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
@@ -323,10 +323,27 @@
   z-index: 200;
   box-shadow: 0 16px 48px rgba(0,0,0,0.70);
   backdrop-filter: blur(20px);
+  animation: more-menu-in 140ms cubic-bezier(0.22,1,0.36,1) both;
+}
+
+@keyframes more-menu-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
 }
 
 .tab-more-search-wrap {
   padding: 4px 4px 2px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.tab-more-search-icon {
+  position: absolute;
+  left: 12px;
+  color: rgba(255,255,255,0.3);
+  font-size: 13px;
+  pointer-events: none;
 }
 
 .tab-more-search {
@@ -337,7 +354,7 @@
   border-radius: 7px;
   color: #e2e8f0;
   font-size: 12px;
-  padding: 5px 9px;
+  padding: 5px 9px 5px 28px;
   font-family: var(--font-sans);
   transition: border-color 0.12s;
   outline: none;
@@ -346,7 +363,7 @@
 .tab-more-search::placeholder { color: rgba(255,255,255,0.2); }
 
 .tab-more-list {
-  max-height: 340px;
+  max-height: 380px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #1e2333 transparent;
@@ -361,22 +378,48 @@
   text-align: center;
 }
 
+/* Group heading */
+.tab-more-group { margin-top: 4px; }
+.tab-more-group:first-child { margin-top: 0; }
+.tab-more-group-label {
+  padding: 6px 10px 3px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.22);
+}
+
 .tab-more-item {
   width: 100%;
   text-align: left;
-  padding: 7px 10px;
+  padding: 6px 10px;
   border-radius: 7px;
   background: none;
   border: none;
   color: rgba(255,255,255,0.62);
-  font-size: 13px;
+  font-size: 12px;
   font-family: var(--font-sans);
   cursor: pointer;
   transition: background 0.10s, color 0.10s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 .tab-more-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.88); }
 .tab-more-item.active { background: rgba(102,87,232,0.12); color: #9d8ff5; }
 .tab-more-item.focused { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.88); }
+
+/* Group badge in search results */
+.tab-more-item-group {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.22);
+  flex-shrink: 0;
+}
 
 /* ── Main content ─────────────────────────────────────────────────────── */
 .app-main {
@@ -403,6 +446,37 @@
   align-items: flex-start;
   padding: 32px 24px;
   min-height: 0;
+}
+
+/* ── Contextual tab skeleton ────────────────────────────────────────────── */
+.tab-skeleton {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.tab-skeleton__header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 4px;
+}
+
+.tab-skeleton__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.tab-skeleton__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 4px;
 }
 
 /* ── Utility buttons ──────────────────────────────────────────────────── */

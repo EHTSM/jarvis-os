@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { motion } from "framer-motion";
 import "./CommandPalette.css";
 
 // ── Action registry ────────────────────────────────────────────────
@@ -239,8 +240,6 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
     }
   }, [results, active, execute, onClose]);
 
-  if (!open) return null;
-
   // Group results for display — recents appear under "Recent" group
   const grouped = results.reduce((acc, action, idx) => {
     const g = action._recent ? 'Recent' : action.group;
@@ -250,8 +249,25 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
   }, {});
 
   return (
-    <div className="cp-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Command palette">
-      <div className="cp-panel animate-fade-up" onClick={e => e.stopPropagation()}>
+    <motion.div
+      className="cp-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.12 }}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Command palette"
+    >
+      <motion.div
+        className="cp-panel"
+        initial={{ opacity: 0, y: -12, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0,   scale: 1    }}
+        exit={{    opacity: 0, y: -8,  scale: 0.97 }}
+        transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+        onClick={e => e.stopPropagation()}
+      >
 
         {/* Input */}
         <div className="cp-input-row">
@@ -316,7 +332,7 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
           <span className="cp-hint"><kbd>↵</kbd> select</span>
           <span className="cp-hint"><kbd>ESC</kbd> close</span>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

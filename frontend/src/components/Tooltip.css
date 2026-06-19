@@ -1,0 +1,49 @@
+.tt-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.tt-tip {
+  position: absolute;
+  z-index: 9999;
+  white-space: nowrap;
+  padding: 4px 8px;
+  background: rgba(10, 10, 20, 0.96);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  pointer-events: none;
+  animation: tt-in 120ms ease both;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+@keyframes tt-in {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tt-tip--bottom {
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tt-tip--top {
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tt-tip--left {
+  right: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tt-tip--right {
+  left: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+}

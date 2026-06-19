@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { getLeads, createLead, updateLead, sendFollowUp } from "../crmApi";
 import { generatePaymentLink } from "../paymentApi";
 import JourneyBanner from "./JourneyBanner";
+import EmptyState from "./EmptyState";
 import "./ContactsV2.css";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -629,27 +630,21 @@ export default function ContactsV2({ onNavigate }) {
             </div>
           ))
         ) : filtered.length === 0 ? (
-          <div className="cv2-empty">
-            <div className="cv2-empty-icon">◈</div>
-            <p className="cv2-empty-title">
-              {leads?.length === 0 ? "No contacts yet" : "No contacts match your search"}
-            </p>
-            <p className="cv2-empty-sub">
-              {leads?.length === 0
-                ? "Add your first lead to start tracking deals and sending follow-ups."
-                : "Try a different search term or status filter."}
-            </p>
-            {leads?.length === 0 && (
-              <button className="cv2-btn cv2-btn--primary" onClick={() => setShowAdd(true)}>
-                + Add First Contact
-              </button>
-            )}
-            {leads?.length > 0 && (
+          leads?.length === 0 ? (
+            <EmptyState
+              variant="contacts"
+              onNavigate={() => setShowAdd(true)}
+            />
+          ) : (
+            <div className="cv2-empty">
+              <div className="cv2-empty-icon">◈</div>
+              <p className="cv2-empty-title">No contacts match your search</p>
+              <p className="cv2-empty-sub">Try a different search term or status filter.</p>
               <button className="cv2-btn cv2-btn--ghost" onClick={() => { setSearch(""); setStatusFilter("all"); }}>
                 Clear filters
               </button>
-            )}
-          </div>
+            </div>
+          )
         ) : (
           filtered.map((c, i) => (
             <ContactRow

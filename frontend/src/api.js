@@ -27,7 +27,7 @@ export * from "./paymentApi";
 // Kept here because it uses _normalize and is the primary Jarvis gateway.
 import { _isElectron, _normalize, _fetch } from "./_client";
 
-export async function sendMessage(input, mode = "smart") {
+export async function sendMessage(input, mode = "smart", modelOpts = {}) {
   if (!input?.trim()) return { success: false, reply: "No input provided." };
 
   if (_isElectron()) {
@@ -38,7 +38,7 @@ export async function sendMessage(input, mode = "smart") {
   try {
     const data = await _fetch("/jarvis", {
       method: "POST",
-      body:   JSON.stringify({ input, mode })
+      body:   JSON.stringify({ input, mode, ...modelOpts })
     });
     return _normalize(data);
   } catch (err) {

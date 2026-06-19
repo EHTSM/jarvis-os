@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo, Suspense, lazy } from "react";
+import { AnimatePresence } from "framer-motion";
 import { track } from "./analytics";
 import { getBillingStatus } from "./billingApi";
 import { checkHealth, getStats, getOpsData } from "./telemetryApi";
@@ -14,7 +15,7 @@ import OperatorConsole    from "./components/operator/OperatorConsole.jsx";
 import LoginPage          from "./components/auth/LoginPage.jsx";
 import SignupPage         from "./components/auth/SignupPage.jsx";
 import ForgotPassword     from "./components/auth/ForgotPassword.jsx";
-import Chat               from "./components/Chat.jsx";
+import Chat, { MODELS }  from "./components/Chat.jsx";
 import Dashboard          from "./components/Dashboard.jsx";
 import CommandCenter      from "./components/CommandCenter.jsx";
 import CompanyFooter      from "./components/legal/CompanyFooter.jsx";
@@ -105,6 +106,7 @@ const CapabilitiesOverview     = lazy(() => import("./components/CapabilitiesOve
 const MissionControlV1         = lazy(() => import("./components/MissionControlV1.jsx"));
 const ExecutiveDashboard       = lazy(() => import("./components/ExecutiveDashboard.jsx"));
 import WorkspaceSwitcher        from "./components/WorkspaceSwitcher.jsx";
+import Tooltip                  from "./components/Tooltip.jsx";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts.js";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import { useElectronEvent } from "./hooks/useElectron.js";
@@ -121,78 +123,85 @@ const TABS = [
   { id: "more",     label: "More ▾"     },
 ];
 
-// Power-user overflow — all secondary modules
+// Power-user overflow — all secondary modules, grouped by domain
 const MORE_TABS = [
-  { id: "success",    label: "Getting Started" },
-  { id: "activity",   label: "History"         },
-  { id: "billing",    label: "Billing"         },
-  { id: "help",       label: "Help & Guides"   },
-  { id: "reports",    label: "Reports"         },
-  { id: "settings",   label: "Settings"        },
-  { id: "mission",    label: "Mission Control" },
-  { id: "runtime",    label: "Runtime Console"  },
-  { id: "agents",     label: "Agents"          },
-  { id: "seo",        label: "SEO"             },
-  { id: "content",    label: "Content"         },
-  { id: "social",     label: "Social"          },
-  { id: "email",      label: "Email"           },
-  { id: "referral",   label: "Referral"        },
-  { id: "partners",   label: "Partners"        },
-  { id: "launch",     label: "Launch"          },
-  { id: "personal",   label: "Personal"        },
-  { id: "business",   label: "Business"        },
-  { id: "developer",  label: "Developer"       },
-  { id: "enterprise", label: "Enterprise"      },
-  { id: "team",       label: "Team"            },
-  { id: "ecrm",       label: "Enterprise CRM"  },
-  { id: "knowledge",  label: "Knowledge"       },
-  { id: "memory",     label: "Memory"          },
-  { id: "integrations",label:"Integrations"    },
-  { id: "copilot",    label: "Copilot"         },
-  { id: "engineering",label: "Engineering"     },
-  { id: "workspace",  label: "Eng Workspace"  },
-  { id: "intel",      label: "Intelligence"   },
-  { id: "predict",    label: "Prediction"     },
-  { id: "guardrails", label: "Guardrails"     },
-  { id: "recommend",  label: "Recommend"      },
-  { id: "execution",   label: "Execution"      },
-  { id: "reliability", label: "Reliability"    },
-  { id: "devops",     label: "DevOps"          },
-  { id: "selfhealing",label: "Self-Healing"    },
-  { id: "registry",   label: "Registry"        },
-  { id: "taskrouter", label: "Task Router"     },
-  { id: "sharedmem",  label: "Memory Fabric"   },
-  { id: "operations", label: "Operations"      },
-  { id: "collab",     label: "Collaboration"   },
-  { id: "toolfabric", label: "Tool Fabric"     },
-  { id: "autonomy",   label: "Autonomous Co"   },
-  { id: "orchestrator",label:"Orchestrator"    },
-  { id: "dataowner",  label: "Data"            },
-  { id: "supportos",  label: "Support"         },
-  { id: "trustcompliance", label:"Trust"       },
-  { id: "disasterrecovery",label:"Recovery"    },
-  { id: "mobile",     label: "Mobile"          },
-  { id: "community",  label: "Community"       },
-  { id: "marketplace",label: "Marketplace"     },
-  { id: "aicost",     label: "AI Costs"        },
-  { id: "autorevenue",  label:"Auto Revenue"   },
-  { id: "automarketing",label:"Auto Marketing" },
-  { id: "autosupport",  label:"Auto Support"   },
-  { id: "oroplix",    label: "Ooplix Runs Ooplix" },
-  { id: "agentruntime", label: "Agent Runtime" },
-  { id: "agentfactory", label:"Agent Factory"  },
-  { id: "memoryintel",  label:"Memory Intel"   },
-  { id: "selfimprove",  label:"Self-Improve"   },
-  { id: "jarvisbrain",    label:"Jarvis Brain"     },
-  { id: "executivedash",  label:"Executive Dash"   },
-  { id: "execconnector",  label:"Exec Connectors"  },
-  { id: "autonomouswf", label:"Auto Workflows" },
-  { id: "agentactions", label:"Agent Actions"  },
-  { id: "autonomyscore",   label:"Autonomy Score"     },
-  { id: "globalactivity", label:"Global Activity"    },
-  { id: "systemhealth",   label:"System Health"      },
-  { id: "betachecklist",  label:"Beta Checklist"     },
-  { id: "overview",       label: "Overview"          },
+  // ── Account & Setup
+  { id: "success",    label: "Getting Started",    group: "Account"      },
+  { id: "billing",    label: "Billing",            group: "Account"      },
+  { id: "settings",   label: "Settings",           group: "Account"      },
+  { id: "help",       label: "Help & Guides",      group: "Account"      },
+  { id: "betachecklist", label: "Beta Checklist",  group: "Account"      },
+  { id: "overview",   label: "Overview",           group: "Account"      },
+  // ── Operations
+  { id: "activity",   label: "History",            group: "Operations"   },
+  { id: "reports",    label: "Reports",            group: "Operations"   },
+  { id: "mission",    label: "Mission Control",    group: "Operations"   },
+  { id: "runtime",    label: "Runtime Console",    group: "Operations"   },
+  { id: "execution",  label: "Execution",          group: "Operations"   },
+  { id: "operations", label: "Operations",         group: "Operations"   },
+  { id: "orchestrator",label:"Orchestrator",       group: "Operations"   },
+  { id: "reliability",label: "Reliability",        group: "Operations"   },
+  { id: "globalactivity", label:"Global Activity", group: "Operations"   },
+  { id: "systemhealth",   label:"System Health",   group: "Operations"   },
+  // ── AI & Agents
+  { id: "agents",     label: "Agents",             group: "AI & Agents"  },
+  { id: "agentruntime", label: "Agent Runtime",    group: "AI & Agents"  },
+  { id: "agentfactory", label:"Agent Factory",     group: "AI & Agents"  },
+  { id: "agentactions", label:"Agent Actions",     group: "AI & Agents"  },
+  { id: "collab",     label: "Collaboration",      group: "AI & Agents"  },
+  { id: "taskrouter", label: "Task Router",        group: "AI & Agents"  },
+  { id: "registry",   label: "Registry",           group: "AI & Agents"  },
+  { id: "toolfabric", label: "Tool Fabric",        group: "AI & Agents"  },
+  { id: "autonomy",   label: "Autonomous Co",      group: "AI & Agents"  },
+  { id: "autonomouswf",label:"Auto Workflows",     group: "AI & Agents"  },
+  { id: "autonomyscore", label:"Autonomy Score",   group: "AI & Agents"  },
+  // ── Intelligence
+  { id: "intel",      label: "Intelligence",       group: "Intelligence" },
+  { id: "predict",    label: "Prediction",         group: "Intelligence" },
+  { id: "recommend",  label: "Recommendations",    group: "Intelligence" },
+  { id: "guardrails", label: "Guardrails",         group: "Intelligence" },
+  { id: "memory",     label: "Memory",             group: "Intelligence" },
+  { id: "sharedmem",  label: "Memory Fabric",      group: "Intelligence" },
+  { id: "memoryintel",label:"Memory Intel",        group: "Intelligence" },
+  { id: "knowledge",  label: "Knowledge",          group: "Intelligence" },
+  { id: "selfimprove",label:"Self-Improve",        group: "Intelligence" },
+  { id: "jarvisbrain",label:"Jarvis Brain",        group: "Intelligence" },
+  // ── Engineering
+  { id: "engineering",label: "Engineering",        group: "Engineering"  },
+  { id: "workspace",  label: "Eng Workspace",      group: "Engineering"  },
+  { id: "copilot",    label: "Copilot",            group: "Engineering"  },
+  { id: "devops",     label: "DevOps",             group: "Engineering"  },
+  { id: "selfhealing",label: "Self-Healing",       group: "Engineering"  },
+  { id: "developer",  label: "Developer OS",       group: "Engineering"  },
+  { id: "execconnector", label:"Exec Connectors",  group: "Engineering"  },
+  // ── Growth & Revenue
+  { id: "seo",        label: "SEO",                group: "Growth"       },
+  { id: "content",    label: "Content",            group: "Growth"       },
+  { id: "social",     label: "Social",             group: "Growth"       },
+  { id: "email",      label: "Email",              group: "Growth"       },
+  { id: "referral",   label: "Referral",           group: "Growth"       },
+  { id: "partners",   label: "Partners",           group: "Growth"       },
+  { id: "launch",     label: "Launch",             group: "Growth"       },
+  { id: "autorevenue",  label:"Auto Revenue",      group: "Growth"       },
+  { id: "automarketing",label:"Auto Marketing",    group: "Growth"       },
+  { id: "autosupport",  label:"Auto Support",      group: "Growth"       },
+  { id: "aicost",     label: "AI Costs",           group: "Growth"       },
+  // ── Enterprise & Platform
+  { id: "personal",   label: "Personal OS",        group: "Enterprise"   },
+  { id: "business",   label: "Business OS",        group: "Enterprise"   },
+  { id: "enterprise", label: "Enterprise OS",      group: "Enterprise"   },
+  { id: "team",       label: "Team",               group: "Enterprise"   },
+  { id: "ecrm",       label: "Enterprise CRM",     group: "Enterprise"   },
+  { id: "integrations",label:"Integrations",       group: "Enterprise"   },
+  { id: "mobile",     label: "Mobile",             group: "Enterprise"   },
+  { id: "marketplace",label: "Marketplace",        group: "Enterprise"   },
+  { id: "community",  label: "Community",          group: "Enterprise"   },
+  { id: "trustcompliance",label:"Trust",           group: "Enterprise"   },
+  { id: "disasterrecovery",label:"Recovery",       group: "Enterprise"   },
+  { id: "supportos",  label: "Support",            group: "Enterprise"   },
+  { id: "dataowner",  label: "Data",               group: "Enterprise"   },
+  { id: "oroplix",    label: "Ooplix Runs Ooplix", group: "Enterprise"   },
+  { id: "executivedash",label:"Executive Dash",    group: "Enterprise"   },
 ];
 
 // ── Context detection ─────────────────────────────────────────────
@@ -230,33 +239,42 @@ function _loadProfile() {
   catch { return null; }
 }
 
-// ── More ▾ dropdown with live search ─────────────────────────────────────────
+// ── More ▾ dropdown with live search + grouped sections ──────────────────────
 function MoreMenu({ currentTab, onSelect }) {
   const [query,   setQuery]   = React.useState('');
   const [cursor,  setCursor]  = React.useState(0);
   const inputRef  = React.useRef(null);
   const listRef   = React.useRef(null);
 
-  React.useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+  React.useEffect(() => { inputRef.current?.focus(); }, []);
+  React.useEffect(() => { setCursor(0); }, [query]);
 
-  React.useEffect(() => {
-    setCursor(0);
+  const filtered = React.useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return q ? MORE_TABS.filter(m => m.label.toLowerCase().includes(q) || m.group?.toLowerCase().includes(q)) : MORE_TABS;
   }, [query]);
 
-  const filtered = query.trim()
-    ? MORE_TABS.filter(m => m.label.toLowerCase().includes(query.toLowerCase()))
-    : MORE_TABS;
+  // Build grouped structure for display
+  const grouped = React.useMemo(() => {
+    if (query.trim()) return null; // flat list when searching
+    const acc = {};
+    for (const m of MORE_TABS) {
+      const g = m.group || "Other";
+      if (!acc[g]) acc[g] = [];
+      acc[g].push(m);
+    }
+    return acc;
+  }, [query]);
 
   const scrollItemIntoView = React.useCallback((idx) => {
-    const item = listRef.current?.children[idx];
+    const item = listRef.current?.querySelectorAll('.tab-more-item')[idx];
     item?.scrollIntoView({ block: 'nearest' });
   }, []);
 
   return (
     <div className="tab-more-menu" role="menu">
       <div className="tab-more-search-wrap">
+        <span className="tab-more-search-icon" aria-hidden="true">⌕</span>
         <input
           ref={inputRef}
           className="tab-more-search"
@@ -279,24 +297,50 @@ function MoreMenu({ currentTab, onSelect }) {
               scrollItemIntoView(prev);
             }
           }}
-          aria-label="Search tabs"
+          aria-label="Search modules"
         />
       </div>
       <div className="tab-more-list" ref={listRef}>
-        {filtered.map((m, i) => (
-          <button
-            key={m.id}
-            className={`tab-more-item${currentTab === m.id ? " active" : ""}${i === cursor ? " focused" : ""}`}
-            role="menuitem"
-            aria-current={currentTab === m.id ? "page" : undefined}
-            onMouseEnter={() => setCursor(i)}
-            onClick={() => onSelect(m.id)}
-          >
-            {m.label}
-          </button>
-        ))}
         {filtered.length === 0 && (
           <div className="tab-more-empty">No modules match "{query}"</div>
+        )}
+        {query.trim() ? (
+          // Flat list when searching
+          filtered.map((m, i) => (
+            <button
+              key={m.id}
+              className={`tab-more-item${currentTab === m.id ? " active" : ""}${i === cursor ? " focused" : ""}`}
+              role="menuitem"
+              aria-current={currentTab === m.id ? "page" : undefined}
+              onMouseEnter={() => setCursor(i)}
+              onClick={() => onSelect(m.id)}
+            >
+              {m.label}
+              {m.group && <span className="tab-more-item-group">{m.group}</span>}
+            </button>
+          ))
+        ) : (
+          // Grouped sections when not searching
+          Object.entries(grouped).map(([group, items]) => (
+            <div key={group} className="tab-more-group">
+              <div className="tab-more-group-label">{group}</div>
+              {items.map((m) => {
+                const flatIdx = filtered.indexOf(m);
+                return (
+                  <button
+                    key={m.id}
+                    className={`tab-more-item${currentTab === m.id ? " active" : ""}${flatIdx === cursor ? " focused" : ""}`}
+                    role="menuitem"
+                    aria-current={currentTab === m.id ? "page" : undefined}
+                    onMouseEnter={() => setCursor(flatIdx)}
+                    onClick={() => onSelect(m.id)}
+                  >
+                    {m.label}
+                  </button>
+                );
+              })}
+            </div>
+          ))
         )}
       </div>
     </div>
@@ -314,6 +358,30 @@ function _welcomeMessage(profile) {
     return `Hi! Ooplix is set up for ${profile.business || "your work"}.\n\nAdd your first contact in the Contacts tab — just a name and WhatsApp number — and I'll handle all follow-ups from there.\n\nOr open the Control Room to run a task, automate a workflow, or execute anything directly.`;
   }
   return `Hi! Ooplix is running for ${profile.business || "your business"}.\n\nI'm monitoring your pipeline, sending follow-ups, and ready for your next command. Check the Pipeline tab for lead activity, or the History tab for what I've sent.\n\nWhat do you need?`;
+}
+
+function TabSkeleton() {
+  return (
+    <div className="tab-skeleton" aria-hidden="true">
+      <div className="tab-skeleton__header">
+        <div className="sk-row sk-row--lg sk-row--w33" />
+        <div className="sk-row sk-row--sm sk-row--w50" />
+      </div>
+      <div className="tab-skeleton__cards">
+        <div className="sk-card" />
+        <div className="sk-card" />
+        <div className="sk-card" />
+        <div className="sk-card" />
+      </div>
+      <div className="tab-skeleton__rows">
+        <div className="sk-row sk-row--w75" />
+        <div className="sk-row sk-row--w50" />
+        <div className="sk-row sk-row--w33" />
+        <div className="sk-row sk-row--w75" />
+        <div className="sk-row sk-row--w50" />
+      </div>
+    </div>
+  );
 }
 
 export default function App() {
@@ -345,7 +413,16 @@ function AppInner() {
   const [loading, setLoading] = useState(false);
   const [online,  setOnline]  = useState(false);
   // Default: Control Center (home) — overview + dispatch + live status
-  const [tab,      _setTab]     = useState("home");
+  const [tab,      _setTab]     = useState(() => {
+    // Restore last tab from electron-store on desktop; skip for non-desktop
+    if (_IS_DESKTOP) {
+      try {
+        const saved = localStorage.getItem("ooplix_last_tab");
+        if (saved) return saved;
+      } catch {}
+    }
+    return "home";
+  });
   const tabHistory  = useRef(["home"]);
   const tabFuture   = useRef([]);
   const setTab = useCallback((next) => {
@@ -354,11 +431,17 @@ function AppInner() {
       tabHistory.current.push(next);
       if (tabHistory.current.length > 40) tabHistory.current.shift();
       tabFuture.current = [];
+      // Persist last tab (desktop + web)
+      try { localStorage.setItem("ooplix_last_tab", next); } catch {}
+      if (_IS_DESKTOP) window.electronAPI?.storeSet?.("lastTab", next);
       return next;
     });
   }, []);
   const [moreOpen,    setMoreOpen]    = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const [chatModel,   setChatModel]   = useState(() => {
+    try { return localStorage.getItem("ooplix_chat_model") || "auto"; } catch { return "auto"; }
+  });
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [stats,     setStats]     = useState(null);
   const [opsData,   setOpsData]   = useState(null);
@@ -531,8 +614,14 @@ function AppInner() {
 
     const isExecCmd = /^(run|execute|create file|read file|open |launch )/i.test(cmd);
 
+    // Resolve model/provider from chatModel selection
+    const selectedModelCfg = MODELS.find(m => m.id === chatModel) || MODELS[0];
+    const modelOpts = selectedModelCfg.provider
+      ? { provider: selectedModelCfg.provider, model: selectedModelCfg.model }
+      : {};
+
     try {
-      const res = await sendMessage(cmd, "smart");
+      const res = await sendMessage(cmd, "smart", modelOpts);
       push(res.success ? "jarvis" : "error", res.reply || (res.success ? "Done." : "Request failed."));
       if (isExecCmd) {
         if (res.success) addToast("success", _execSummary(cmd, res));
@@ -545,7 +634,7 @@ function AppInner() {
       setLoading(false);
       setTimeout(() => inputRef.current?.focus(), 50);
     }
-  }, [input, loading, online, push, addToast]);
+  }, [input, loading, online, push, addToast, chatModel]);
 
   function _execSummary(cmd, res) {
     if (/^run\s|^execute\s/i.test(cmd)) return "Command executed";
@@ -716,18 +805,26 @@ function AppInner() {
       <a href="#main-content" className="skip-link">Skip to content</a>
       <ProgressBar visible={loading} />
       <ToastContainer toasts={toasts} onRemove={removeToast} />
-      {/* Global overlays */}
+      {/* Global overlays — AnimatePresence enables mount/unmount transitions */}
       <Suspense fallback={null}>
-        <CommandPalette
-          open={paletteOpen}
-          onClose={() => setPaletteOpen(false)}
-          onNavigate={(tabId) => { setTab(tabId); setMoreOpen(false); }}
-          onAsk={(text) => {
-            setTab("chat");
-            if (text) setTimeout(() => handleSend(text), 150);
-          }}
-        />
-        <ShortcutsOverlay open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
+        <AnimatePresence>
+          {paletteOpen && (
+            <CommandPalette
+              open={paletteOpen}
+              onClose={() => setPaletteOpen(false)}
+              onNavigate={(tabId) => { setTab(tabId); setMoreOpen(false); }}
+              onAsk={(text) => {
+                setTab("chat");
+                if (text) setTimeout(() => handleSend(text), 150);
+              }}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {shortcutsOpen && (
+            <ShortcutsOverlay open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
+          )}
+        </AnimatePresence>
       </Suspense>
 
       {/* OS Topbar — unified header: logo + tabs + actions */}
@@ -776,53 +873,57 @@ function AppInner() {
 
         <div className="topbar-actions">
           {/* Back / Forward nav arrows */}
-          <button
-            className="topbar-nav-arrow"
-            disabled={tabHistory.current.length < 2}
-            title="Go back (⌘[)"
-            onClick={() => {
-              const hist = tabHistory.current;
-              if (hist.length < 2) return;
-              const leaving = hist.pop();
-              const prev = hist[hist.length - 1];
-              tabFuture.current.unshift(leaving);
-              _setTab(prev);
-            }}
-            aria-label="Go back"
-          >‹</button>
-          <button
-            className="topbar-nav-arrow"
-            disabled={tabFuture.current.length === 0}
-            title="Go forward (⌘])"
-            onClick={() => {
-              const next = tabFuture.current.shift();
-              if (!next) return;
-              tabHistory.current.push(next);
-              _setTab(next);
-            }}
-            aria-label="Go forward"
-          >›</button>
+          <Tooltip label="Go back (⌘[)" placement="bottom">
+            <button
+              className="topbar-nav-arrow"
+              disabled={tabHistory.current.length < 2}
+              onClick={() => {
+                const hist = tabHistory.current;
+                if (hist.length < 2) return;
+                const leaving = hist.pop();
+                const prev = hist[hist.length - 1];
+                tabFuture.current.unshift(leaving);
+                _setTab(prev);
+              }}
+              aria-label="Go back"
+            >‹</button>
+          </Tooltip>
+          <Tooltip label="Go forward (⌘])" placement="bottom">
+            <button
+              className="topbar-nav-arrow"
+              disabled={tabFuture.current.length === 0}
+              onClick={() => {
+                const next = tabFuture.current.shift();
+                if (!next) return;
+                tabHistory.current.push(next);
+                _setTab(next);
+              }}
+              aria-label="Go forward"
+            >›</button>
+          </Tooltip>
           {(tab === "home" || tab === "runtime") && (
             opsData?.status === "critical" ? (
-              <button
-                className="btn btn--success btn--sm"
-                title="Resume all executions"
-                onClick={async () => {
-                  const r = await emergencyResume();
-                  if (r.success) addToast("success", "Execution resumed");
-                  else addToast("error", r.error || "Resume failed");
-                }}
-              >Resume</button>
+              <Tooltip label="Resume all executions" placement="bottom">
+                <button
+                  className="btn btn--success btn--sm"
+                  onClick={async () => {
+                    const r = await emergencyResume();
+                    if (r.success) addToast("success", "Execution resumed");
+                    else addToast("error", r.error || "Resume failed");
+                  }}
+                >Resume</button>
+              </Tooltip>
             ) : (
-              <button
-                className="btn btn--danger btn--sm"
-                title="Emergency stop — halt all task execution"
-                onClick={async () => {
-                  const r = await emergencyStop();
-                  if (r.success) addToast("warn", "Emergency stop active — all execution halted", 6000);
-                  else addToast("error", r.error || "Stop failed");
-                }}
-              >Stop</button>
+              <Tooltip label="Emergency stop — halt all execution (⌘⇧.)" placement="bottom">
+                <button
+                  className="btn btn--danger btn--sm"
+                  onClick={async () => {
+                    const r = await emergencyStop();
+                    if (r.success) addToast("warn", "Emergency stop active — all execution halted", 6000);
+                    else addToast("error", r.error || "Stop failed");
+                  }}
+                >Stop</button>
+              </Tooltip>
             )
           )}
           <WorkspaceSwitcher onNavigate={setTab} />
@@ -890,7 +991,7 @@ function AppInner() {
         {/* key forces remount on tab change — triggers page-enter CSS animation */}
         <div key={tab} className="app-tab-pane">
         <ErrorBoundary label={tab}>
-        <Suspense fallback={<div className="tab-suspense-loading"><div className="sk-row sk-row--w75" style={{margin:"24px auto"}} /></div>}>
+        <Suspense fallback={<TabSkeleton />}>
         {tab === "mission"  && <MissionControlV1 onNavigate={setTab} />}
         {tab === "home"     && (
           <CommandCenter
@@ -921,6 +1022,11 @@ function AppInner() {
               id: Date.now(), role: "system",
               text: "Chat cleared.", ts: Date.now()
             }])}
+            model={chatModel}
+            onModelChange={(m) => {
+              setChatModel(m);
+              try { localStorage.setItem("ooplix_chat_model", m); } catch {}
+            }}
           />
         )}
         {tab === "overview"  && <CapabilitiesOverview onNavigate={setTab} />}
