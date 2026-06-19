@@ -23,6 +23,7 @@ import { python } from '@codemirror/lang-python';
 import { markdown } from '@codemirror/lang-markdown';
 import { xml } from '@codemirror/lang-xml';
 import { extractSymbols, findOccurrences, enclosingSymbol } from '../hooks/useSymbolIndex';
+import { aiInlineExtension, setDiagsEffect } from './aiInlineExtension';
 import FuzzyFinder from './FuzzyFinder';
 import './CodeEditorPane.css';
 
@@ -93,7 +94,7 @@ async function saveEditorSession(state) {
 
 // ── Shared base extensions (no language, no update listener) ─────────────────
 
-function buildBaseExtensions(langComp, wordWrapComp) {
+function buildBaseExtensions(langComp, wordWrapComp, aiExt = []) {
   return [
     lineNumbers(),
     highlightSpecialChars(),
@@ -116,6 +117,7 @@ function buildBaseExtensions(langComp, wordWrapComp) {
     oneDark,
     langComp.of([]),
     wordWrapComp.of([]),
+    ...aiExt,
     EditorView.theme({
       '&': { height: '100%', fontSize: '13px' },
       '.cm-scroller': {
@@ -151,7 +153,7 @@ function buildBaseExtensions(langComp, wordWrapComp) {
 
 // ── Single editor panel — each tab gets its own mounted CodeMirror ────────────
 
-const EditorPanel = memo(function EditorPanel({ tab, active, onDirty, onContextMenu, onViewReady, wordWrap }) {
+const EditorPanel = memo(function EditorPanel({ tab, active, onDirty, onContextMenu, onViewReady, wordWrap, aiExt }) {
   const containerRef = useRef(null);
   const viewRef      = useRef(null);
   const langComp     = useRef(new Compartment());
@@ -169,7 +171,7 @@ const EditorPanel = memo(function EditorPanel({ tab, active, onDirty, onContextM
 
     const lang = langForPath(tab.path);
     const extensions = [
-      ...buildBaseExtensions(langComp.current, wrapComp.current),
+      ...buildBaseExtensions(langComp.current, wrapComp.current, aiExt || []),
       langComp.current.reconfigure(lang ? [lang] : []),
       wrapComp.current.reconfigure(wordWrap ? [EditorView.lineWrapping] : []),
       EditorView.updateListener.of(update => {
@@ -372,6 +374,9 @@ export default function CodeEditorPane({
   const [renameSymbol,  setRenameSymbol]  = useState(null);      // { name, newName }
   const [fuzzyMode,     setFuzzyMode]     = useState(null);      // 'file' | 'symbol' | null
   const [hoverInfo,     setHoverInfo]     = useState(null);      // { x, y, text }
+  const [hoverResult,   setHoverResult]   = useState(null);      // { action, reply, patchSpec, lineNum }
+  const [hoverLoading,  setHoverLoading]  = useState(false);
+  const [acp5Metrics,   setAcp5Metrics]   = useState({ ghostTriggered: 0, ghostAccepted: 0, acceptRate: 0 });
   const navHistoryRef   = useRef([]);    // [{filePath, line}]
   const navPosRef       = useRef(-1);    // current position in history
   const gotoRef = useRef(null);
@@ -379,6 +384,71 @@ export default function CodeEditorPane({
   const autoSaveRef = useRef(null);
 
   const genId = () => `t${Date.now()}${Math.random().toString(36).slice(2, 5)}`;
+
+  // ── ACP-5: AI inline extension ──────────────────────────────────────────
+
+  const { BASE_URL } = useMemo(() => {
+    try { return { BASE_URL: window.__JARVIS_API__ || '' }; } catch { return { BASE_URL: '' }; }
+  }, []);
+
+  const activeTabRef = useRef(null);
+  useEffect(() => { activeTabRef.current = tabs.find(t => t.id === activeId) ?? null; }, [tabs, activeId]);
+
+  const handleHoverAction = useCallback(async (actionId, ctx) => {
+    if (actionId === 'lightbulb') {
+      status('AI: analyzing line…');
+      return;
+    }
+    setHoverLoading(true);
+    setHoverResult(null);
+    try {
+      const tab     = activeTabRef.current;
+      const view    = viewMap.current[activeId];
+      const content = view ? view.state.doc.toString().slice(0, 4000) : '';
+      const resp    = await fetch(`${BASE_URL}/coding/hover`, {
+        method: 'POST', credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: actionId, word: ctx.word || '', line: ctx.line || '', lineNum: ctx.lineNum, filePath: tab?.path, cwd, fileContent: content }),
+      });
+      const data = await resp.json();
+      if (data?.ok) {
+        setHoverResult(data);
+        setShowBottom(true);
+        setBottomTab('ai-hover');
+      }
+      // Record metric
+      fetch(`${BASE_URL}/coding/metrics/record`, {
+        method: 'POST', credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event: 'hover_action', data: { action: actionId } }),
+      }).catch(() => {});
+    } catch (e) { status(`AI hover: ${e.message}`, 3000); }
+    finally { setHoverLoading(false); }
+  }, [activeId, cwd, BASE_URL, status]);
+
+  const handleAIMetric = useCallback((event, data) => {
+    setAcp5Metrics(prev => ({
+      ...prev,
+      ghostTriggered: event === 'ghost_triggered' ? prev.ghostTriggered + 1 : prev.ghostTriggered,
+      ghostAccepted:  event === 'ghost_accepted'  ? prev.ghostAccepted  + 1 : prev.ghostAccepted,
+    }));
+    fetch(`${BASE_URL}/coding/metrics/record`, {
+      method: 'POST', credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event, data }),
+    }).catch(() => {});
+  }, [BASE_URL]);
+
+  // Build aiExt once per component mount (stable ref via useMemo with no deps)
+  const aiExt = useMemo(() => aiInlineExtension({
+    apiBase:        BASE_URL,
+    onAction:       handleHoverAction,
+    onMetric:       handleAIMetric,
+    getFileContext: () => {
+      const tab = activeTabRef.current;
+      return { filePath: tab?.path || '', cwd: cwd || '', symbolContext: '' };
+    },
+  }), []); // eslint-disable-line
 
   const status = useCallback((msg, ms = 2500) => {
     setStatusMsg(msg);
@@ -983,6 +1053,7 @@ export default function CodeEditorPane({
             onContextMenu={handleEditorContextMenu}
             onViewReady={handleViewReady}
             wordWrap={wordWrap}
+            aiExt={aiExt}
           />
         ))}
       </div>
@@ -1054,6 +1125,9 @@ export default function CodeEditorPane({
             <button className={`cep-bottom__tab${bottomTab === 'references' ? ' cep-bottom__tab--active' : ''}`} onClick={() => setBottomTab('references')}>
               References{refsPanel ? ` (${refsPanel.results.length})` : ''}
             </button>
+            <button className={`cep-bottom__tab${bottomTab === 'ai-hover' ? ' cep-bottom__tab--active' : ''}`} onClick={() => setBottomTab('ai-hover')}>
+              AI {hoverLoading ? '⟳' : hoverResult ? `(${hoverResult.action})` : ''}
+            </button>
             <button className="cep-bottom__close" onClick={() => setShowBottom(false)}>✕</button>
           </div>
           <div className="cep-bottom__body">
@@ -1066,6 +1140,37 @@ export default function CodeEditorPane({
             )}
             {bottomTab === 'output' && (
               <div className="cep-output">{statusMsg || 'No output.'}</div>
+            )}
+            {bottomTab === 'ai-hover' && (
+              <div className="cep-ai-result">
+                {hoverLoading && <div className="cep-ai-result__loading">AI thinking…</div>}
+                {!hoverLoading && !hoverResult && <div className="cep-ai-result__empty">Hover over a symbol and click an action.</div>}
+                {hoverResult && (
+                  <>
+                    <div className="cep-ai-result__header">
+                      <span className="cep-ai-result__action">{hoverResult.action}</span>
+                      {hoverResult.lineNum && <span className="cep-ai-result__line">Line {hoverResult.lineNum}</span>}
+                    </div>
+                    <pre className="cep-ai-result__body">{hoverResult.reply}</pre>
+                    {hoverResult.patchSpec && (
+                      <div className="cep-ai-result__patch">
+                        <div className="cep-ai-result__patch-label">Suggested fix:</div>
+                        <div className="cep-ai-result__patch-diff">
+                          <div className="cep-ai-result__del">- {hoverResult.patchSpec.patchTarget?.slice(0, 100)}</div>
+                          <div className="cep-ai-result__add">+ {hoverResult.patchSpec.patchReplacement?.slice(0, 100)}</div>
+                        </div>
+                        <button
+                          className="cep-ai-result__apply-btn"
+                          onClick={() => {
+                            window.dispatchEvent(new CustomEvent('acp5-apply-patch', { detail: hoverResult }));
+                            status('Patch dispatched to Preview Panel');
+                          }}
+                        >⚡ Send to Patch Preview</button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
             )}
             {bottomTab === 'references' && (
               <div className="cep-refs">
@@ -1101,6 +1206,11 @@ export default function CodeEditorPane({
           </>
         ) : (
           <span className="cep-statusbar__hint">Open a file to start editing</span>
+        )}
+        {acp5Metrics.ghostAccepted > 0 && (
+          <span className="cep-statusbar__ai-badge" title={`Ghost completions: ${acp5Metrics.ghostAccepted} accepted / ${acp5Metrics.ghostTriggered} triggered`}>
+            AI {Math.round((acp5Metrics.ghostAccepted / Math.max(1, acp5Metrics.ghostTriggered)) * 100)}%
+          </span>
         )}
         {onOpenMission && (
           <button className="cep-statusbar__mission-btn" onClick={onOpenMission}>

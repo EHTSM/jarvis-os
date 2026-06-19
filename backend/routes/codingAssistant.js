@@ -734,4 +734,174 @@ router.post("/coding/smells/undismiss", (req, res) => {
     }
 });
 
+// ══════════════════════════════════════════════════════════════════════════════
+//  ACP-5: INLINE AI COMPLETION & HOVER ACTIONS
+// ══════════════════════════════════════════════════════════════════════════════
+
+// Persistent LRU cache: prefix → { completion, confidence, ts }
+const _completionCache = new Map();
+const CACHE_TTL = 60_000;
+const CACHE_MAX = 200;
+
+function _cacheGet(key) {
+    const v = _completionCache.get(key);
+    if (!v) return null;
+    if (Date.now() - v.ts > CACHE_TTL) { _completionCache.delete(key); return null; }
+    return v;
+}
+function _cacheSet(key, val) {
+    if (_completionCache.size >= CACHE_MAX) {
+        _completionCache.delete(_completionCache.keys().next().value);
+    }
+    _completionCache.set(key, { ...val, ts: Date.now() });
+}
+
+// ── POST /coding/complete — inline ghost completion ────────────────────────────
+router.post("/coding/complete", async (req, res) => {
+    try {
+        const { prefix, filePath, cwd, symbolContext } = req.body;
+        if (!prefix || prefix.trim().length < 3) {
+            return res.json({ ok: true, completion: '', confidence: 0 });
+        }
+
+        // Cache by prefix+filePath (first 120 chars of prefix as key)
+        const cacheKey = `${filePath || ''}:${prefix.slice(-120)}`;
+        const cached   = _cacheGet(cacheKey);
+        if (cached) return res.json({ ok: true, completion: cached.completion, confidence: cached.confidence, cached: true });
+
+        // Lightweight context: current file snippet around cursor + rules
+        const rules   = _rulesContext();
+        const system  = `You are an expert inline code completion engine.
+Return ONLY the completion text — no markdown, no explanation, no code fence.
+The completion continues exactly from where the prefix ends.
+If completing a function body, return just the body lines.
+If completing an import, return just the import path/names.
+Never repeat the prefix. Max 8 lines. Repository: ${cwd ? path.basename(cwd) : 'unknown'}.
+${rules ? `\nKnown engineering rules:\n${rules}` : ''}
+${symbolContext ? `\nSymbol context: ${symbolContext}` : ''}`;
+
+        const prompt = `Complete this code:\n\`\`\`\n${_clean(prefix, 1200)}\n\`\`\`\nCompletion (continue from last character, no prefix repeat):`;
+
+        const raw = await ai.callAI(prompt, { system });
+
+        // Strip any accidental fence
+        const completion = raw
+            .replace(/^```[a-z]*\n?/, '')
+            .replace(/\n?```$/, '')
+            .replace(/^\/\/ completion:?\s*/i, '')
+            .trimEnd();
+
+        // Confidence heuristic: longer completions + matching language = higher
+        const confidence = Math.min(0.95, 0.5 + completion.length / 300);
+
+        _cacheSet(cacheKey, { completion, confidence });
+        res.json({ ok: true, completion, confidence });
+    } catch (err) {
+        logger.error(`[Complete] ${err.message}`);
+        res.json({ ok: true, completion: '', confidence: 0 });
+    }
+});
+
+// ── POST /coding/hover — hover action (explain/review/refactor/tests/optimize/document/fix) ──
+router.post("/coding/hover", async (req, res) => {
+    try {
+        const { action, word, line: codeLine, lineNum, filePath, cwd, fileContent } = req.body;
+
+        const validActions = ['explain', 'review', 'refactor', 'tests', 'optimize', 'document', 'fix'];
+        if (!validActions.includes(action)) {
+            return res.status(400).json({ ok: false, error: `unknown action: ${action}` });
+        }
+
+        const system = _buildRepoContext({ cwd, fileContent, filePath });
+        const rules  = _rulesContext();
+
+        const ACTION_PROMPTS = {
+            explain:  `Explain what \`${word}\` does in 2-3 sentences. Context line:\n\`${codeLine}\``,
+            review:   `Review this line of code and identify issues:\n\`${codeLine}\`\n${rules ? `\nEngineering rules:\n${rules}` : ''}`,
+            refactor: `Suggest a better implementation for:\n\`${codeLine}\`\nReturn the refactored line only, no explanation.`,
+            tests:    `Generate 2-3 unit test cases for the function containing:\n\`${codeLine}\`\nUse the same language and testing style as the file.`,
+            optimize: `Optimize this code for performance:\n\`${codeLine}\`\nReturn optimized version with a one-line comment explaining why.`,
+            document: `Write a JSDoc comment for the symbol \`${word}\` on this line:\n\`${codeLine}\`\nReturn only the comment block.`,
+            fix:      `This line may have a bug:\n\`${codeLine}\`\nReturn: 1) what the bug is, 2) the fixed line.`,
+        };
+
+        const reply = await ai.callAI(ACTION_PROMPTS[action], { system });
+
+        // For refactor/tests/optimize/document/fix — extract patchSpec if applicable
+        let patchSpec = null;
+        if (['refactor', 'fix', 'optimize'].includes(action) && codeLine) {
+            const codeMatch = reply.match(/`([^`]+)`/);
+            if (codeMatch && codeMatch[1] !== word) {
+                patchSpec = {
+                    targetFile:       filePath,
+                    patchTarget:      codeLine.trim(),
+                    patchReplacement: codeMatch[1].trim(),
+                    description:      `${action}: ${word}`,
+                };
+            }
+        }
+
+        res.json({ ok: true, action, word, lineNum, reply, patchSpec });
+    } catch (err) {
+        logger.error(`[Hover] ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
+// ── GET /coding/metrics — ACP-5 telemetry ─────────────────────────────────────
+const ACP5_METRICS_FILE = path.join(__dirname, "../../data/acp5-metrics.json");
+
+function _loadACP5Metrics() {
+    try { return JSON.parse(fs.readFileSync(ACP5_METRICS_FILE, "utf8")); }
+    catch { return { ghostTriggered: 0, ghostAccepted: 0, hoverActions: {}, sessionsWithAccept: 0, totalLatencyMs: 0, samples: 0 }; }
+}
+function _saveACP5Metrics(m) { fs.writeFileSync(ACP5_METRICS_FILE, JSON.stringify(m, null, 2)); }
+
+router.post("/coding/metrics/record", (req, res) => {
+    try {
+        const { event, data } = req.body;
+        const m = _loadACP5Metrics();
+        if (event === 'ghost_triggered') { m.ghostTriggered = (m.ghostTriggered || 0) + 1; }
+        if (event === 'ghost_accepted')  {
+            m.ghostAccepted = (m.ghostAccepted || 0) + 1;
+            if (data?.length) { m.totalLatencyMs = (m.totalLatencyMs || 0) + (data.latencyMs || 0); m.samples = (m.samples || 0) + 1; }
+        }
+        if (event === 'hover_action')    { m.hoverActions = m.hoverActions || {}; m.hoverActions[data?.action] = (m.hoverActions[data?.action] || 0) + 1; }
+        m.lastUpdated = new Date().toISOString();
+        _saveACP5Metrics(m);
+        res.json({ ok: true });
+    } catch (err) {
+        res.json({ ok: false, error: err.message });
+    }
+});
+
+router.get("/coding/metrics", (req, res) => {
+    try {
+        const m = _loadACP5Metrics();
+        const acceptRate = m.ghostTriggered > 0
+            ? Math.round((m.ghostAccepted / m.ghostTriggered) * 100)
+            : 0;
+        const avgLatency = m.samples > 0
+            ? Math.round(m.totalLatencyMs / m.samples)
+            : 0;
+
+        // Heuristic scores
+        const replaceCursor = Math.min(100, acceptRate * 0.6 + (m.ghostAccepted || 0) * 0.5);
+        const ooplixScore   = Math.min(100, acceptRate * 0.4 + Object.values(m.hoverActions || {}).reduce((a, b) => a + b, 0) * 0.8);
+
+        res.json({
+            ok: true,
+            metrics: {
+                ...m,
+                acceptRate,
+                avgLatency,
+                replaceCursorScore: Math.round(replaceCursor),
+                buildOoplixScore:   Math.round(ooplixScore),
+            },
+        });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
 module.exports = router;
