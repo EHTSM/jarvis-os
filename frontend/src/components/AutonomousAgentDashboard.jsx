@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef, lazy, Suspense } from 
 const SmellsPanel       = lazy(() => import("./SmellsPanel"));
 const DecisionsPanel    = lazy(() => import("./DecisionsPanel"));
 const TechDebtDashboard = lazy(() => import("./TechDebtDashboard"));
+const BundlePreviewPanel = lazy(() => import("./BundlePreviewPanel"));
 import { _fetch } from "../_client";
 import "./AutonomousAgentDashboard.css";
 
@@ -835,6 +836,9 @@ export default function AutonomousAgentDashboard() {
                 <button className={`aad-tab ${activeTab === "debt" ? "active" : ""}`} onClick={() => setActiveTab("debt")}>
                     Debt
                 </button>
+                <button className={`aad-tab ${activeTab === "bundle" ? "active" : ""}`} onClick={() => setActiveTab("bundle")}>
+                    Bundle
+                </button>
             </div>
 
             {/* Agents tab */}
@@ -901,6 +905,13 @@ export default function AutonomousAgentDashboard() {
             {activeTab === "debt" && (
                 <Suspense fallback={<div style={{ padding: 16, color: "#4b5563" }}>Loading…</div>}>
                     <TechDebtDashboard />
+                </Suspense>
+            )}
+
+            {/* Bundle Edit (ACP-6) */}
+            {activeTab === "bundle" && (
+                <Suspense fallback={<div style={{ padding: 16, color: "#4b5563" }}>Loading…</div>}>
+                    <BundlePreviewPanel cwd={null} />
                 </Suspense>
             )}
 
