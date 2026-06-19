@@ -31,6 +31,7 @@ const MissionOrchestratorPanel = lazy(() => import('./MissionOrchestratorPanel')
 const ExecutionRuntimePanel    = lazy(() => import('./ExecutionRuntimePanel'));
 const CodeEditorPane              = lazy(() => import('./CodeEditorPane'));
 const ProjectSearch               = lazy(() => import('./ProjectSearch'));
+const WorkspaceTemplates          = lazy(() => import('./WorkspaceTemplates'));
 const EngineeringIntelligencePane = lazy(() => import('./EngineeringIntelligencePane'));
 const SymbolPanel                 = lazy(() => import('./SymbolPanel'));
 
@@ -434,6 +435,7 @@ export default function ElectronWorkspace({ children }) {
   const [gitChangedCount, setGitChangedCount] = useState(0);
   const [editorSymbols,   setEditorSymbols]   = useState([]);
   const [editorSymFile,   setEditorSymFile]   = useState('');
+  const [showTemplates,   setShowTemplates]   = useState(false);
 
   const { height: bottomH,   onResizerMouseDown: onBottomResize }  = useBottomResize(340);
   const { width:  sidebarW,  onResizerMouseDown: onSidebarResize, onResizerDoubleClick: onSidebarReset } = useSidebarResize(260);
@@ -765,15 +767,35 @@ export default function ElectronWorkspace({ children }) {
               <div className="ew-sidebar__body">
                 <LazyPane active={sidebarMode === 'explorer'}>
                   <ErrorBoundary label="File Explorer">
-                    <FileExplorer
-                      cwd={cwd}
-                      onFileOpen={handleFileOpen}
-                      onOpenFolder={async () => {
-                        const result = await api().fsShowOpenDialog({ properties: ['openDirectory'] });
-                        const p = result?.filePaths?.[0];
-                        if (p) { setCwd(p); pushRepo({ path: p, name: p.split('/').pop(), id: Date.now(), ts: Date.now() }); }
-                      }}
-                    />
+                    <div className="ew-explorer-wrap">
+                      {recentRepos.length > 1 && (
+                        <div className="ew-recent-repos">
+                          <span className="ew-recent-repos__label">Recent</span>
+                          <div className="ew-recent-repos__list">
+                            {recentRepos.slice(0, 5).map(r => (
+                              <button
+                                key={r.path}
+                                className={`ew-recent-repo-btn${r.path === cwd ? ' ew-recent-repo-btn--active' : ''}`}
+                                title={r.path}
+                                onClick={() => { setCwd(r.path); pushRepo(r); }}
+                              >
+                                <span className="ew-recent-repo-icon">📁</span>
+                                <span className="ew-recent-repo-name">{r.name}</span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      <FileExplorer
+                        cwd={cwd}
+                        onFileOpen={handleFileOpen}
+                        onOpenFolder={async () => {
+                          const result = await api().fsShowOpenDialog({ properties: ['openDirectory'] });
+                          const p = result?.filePaths?.[0];
+                          if (p) { setCwd(p); pushRepo({ path: p, name: p.split('/').pop(), id: Date.now(), ts: Date.now() }); }
+                        }}
+                      />
+                    </div>
                   </ErrorBoundary>
                 </LazyPane>
                 <LazyPane active={sidebarMode === 'code'}>
@@ -864,7 +886,9 @@ export default function ElectronWorkspace({ children }) {
               <>
                 {/* Top pane — primary content */}
                 <div style={{ flex: 'none', height: `${splitPct}%`, overflow: 'hidden', minHeight: 80 }}>
-                  {osView === 'os'
+                  {showTemplates
+                    ? <ErrorBoundary label="Workspace Templates"><Suspense fallback={null}><WorkspaceTemplates onOpenFolder={(path) => { setCwd(path); setShowTemplates(false); }} onDismiss={() => setShowTemplates(false)} /></Suspense></ErrorBoundary>
+                    : osView === 'os'
                     ? <ErrorBoundary label="Mission Control"><MissionControl onNavigate={navigateOs} /></ErrorBoundary>
                     : osView === 'editor'
                     ? (
@@ -923,8 +947,19 @@ export default function ElectronWorkspace({ children }) {
                   </div>
                 </div>
               </>
+            ) : showTemplates ? (
+              <ErrorBoundary label="Workspace Templates">
+                <Suspense fallback={<PanelSkeleton label="Templates" />}>
+                  <WorkspaceTemplates
+                    onOpenFolder={(path) => { setCwd(path); pushRepo({ path, name: path.split('/').pop() }); setSidebar('explorer'); }}
+                    onDismiss={() => setShowTemplates(false)}
+                  />
+                </Suspense>
+              </ErrorBoundary>
             ) : osView === 'os' ? (
-              <ErrorBoundary label="Mission Control"><MissionControl onNavigate={navigateOs} /></ErrorBoundary>
+              <ErrorBoundary label="Mission Control">
+                <MissionControl onNavigate={navigateOs} />
+              </ErrorBoundary>
             ) : osView === 'editor' ? (
               <ErrorBoundary label="Code Editor">
                 <Suspense fallback={<PanelSkeleton label="Code Editor" />}>

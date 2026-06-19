@@ -1,0 +1,188 @@
+.awb-root {
+  margin: 12px 16px 0;
+  background: rgba(124,111,255,0.05);
+  border: 1px solid rgba(124,111,255,0.15);
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.awb-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(124,111,255,0.1);
+}
+
+.awb-header-icon { font-size: 16px; color: var(--accent, #7c6fff); }
+
+.awb-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.awb-header-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+}
+
+.awb-header-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+}
+
+.awb-dismiss {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.12s;
+}
+.awb-dismiss:hover { color: rgba(255,255,255,0.6); }
+
+/* Summary row */
+.awb-summary {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(124,111,255,0.1);
+}
+
+.awb-summary-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 8px;
+  border-right: 1px solid rgba(124,111,255,0.1);
+  gap: 3px;
+}
+.awb-summary-item:last-child { border-right: none; }
+
+.awb-summary-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+}
+
+.awb-summary-val {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+}
+.awb-summary-val--warn { color: #eab308; }
+.awb-summary-val--info { color: #3b82f6; }
+.awb-summary-val--ok   { color: #22c55e; }
+.awb-summary-val--crit { color: #ef4444; }
+
+/* Smells */
+.awb-smells {
+  border-bottom: 1px solid rgba(124,111,255,0.1);
+}
+
+.awb-smells-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.55);
+  text-align: left;
+}
+.awb-smells-toggle:hover { color: rgba(255,255,255,0.8); }
+
+.awb-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 999px;
+}
+.awb-badge--warn { background: rgba(234,179,8,0.15); color: #eab308; }
+
+.awb-toggle-arrow { margin-left: auto; font-size: 9px; opacity: 0.5; }
+
+.awb-smell-list {
+  list-style: none;
+  padding: 0 14px 10px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.awb-smell-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+}
+
+.awb-smell-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #eab308;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* Missions */
+.awb-missions {
+  padding: 10px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.awb-missions-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgba(255,255,255,0.3);
+}
+
+.awb-mission-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.awb-mission-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  background: rgba(124,111,255,0.08);
+  border: 1px solid rgba(124,111,255,0.18);
+  border-radius: 6px;
+  color: rgba(255,255,255,0.65);
+  font-size: 11px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.awb-mission-chip:hover {
+  background: rgba(124,111,255,0.16);
+  border-color: rgba(124,111,255,0.35);
+  color: rgba(255,255,255,0.88);
+}
+
+.awb-mission-icon { font-size: 11px; color: var(--accent, #7c6fff); }

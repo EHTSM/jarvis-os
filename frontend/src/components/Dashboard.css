@@ -99,10 +99,48 @@
   border: 1px solid var(--border, rgba(255,255,255,0.07));
   border-radius: var(--radius, 14px);
   padding: 16px;
-  transition: border-color 0.18s;
+  transition: border-color 0.18s, transform 0.15s, box-shadow 0.15s;
+  cursor: default;
 }
 
-.dv2-metric:hover { border-color: var(--border-strong, rgba(255,255,255,0.12)); }
+.dv2-metric:hover {
+  border-color: var(--border-strong, rgba(255,255,255,0.12));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.dv2-trend {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+.dv2-trend--up {
+  background: rgba(82,214,138,0.12);
+  color: #52d68a;
+}
+.dv2-trend--down {
+  background: rgba(255,89,89,0.12);
+  color: #ff6b6b;
+}
+
+.dv2-spark {
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+  height: 22px;
+  margin-top: 8px;
+}
+.dv2-spark-bar {
+  flex: 1;
+  min-height: 2px;
+  background: rgba(124,111,255,0.35);
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+.dv2-metric:hover .dv2-spark-bar { background: rgba(124,111,255,0.6); }
 
 .dv2-metric-top {
   display: flex;

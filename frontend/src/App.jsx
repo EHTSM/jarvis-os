@@ -21,6 +21,8 @@ import CommandCenter      from "./components/CommandCenter.jsx";
 import CompanyFooter      from "./components/legal/CompanyFooter.jsx";
 // Non-critical paths — lazy-split from main bundle
 const LandingPage        = lazy(() => import("./components/LandingPage.jsx"));
+const WelcomeFlow        = lazy(() => import("./components/WelcomeFlow.jsx"));
+const GuidedTour         = lazy(() => import("./components/GuidedTour.jsx"));
 const Onboarding         = lazy(() => import("./components/Onboarding.jsx"));
 const PricingPage        = lazy(() => import("./components/PricingPage.jsx"));
 const CompanyPage        = lazy(() => import("./components/legal/CompanyPage.jsx"));
@@ -442,6 +444,24 @@ function AppInner() {
   const [chatModel,   setChatModel]   = useState(() => {
     try { return localStorage.getItem("ooplix_chat_model") || "auto"; } catch { return "auto"; }
   });
+  const [showWelcome,  setShowWelcome]  = useState(false);
+  const [showTour,     setShowTour]     = useState(false);
+
+  // First launch: show WelcomeFlow on Desktop, offer tour after dismiss
+  useEffect(() => {
+    if (!_IS_DESKTOP || screen !== "app") return;
+    const done = localStorage.getItem("ooplix_welcome_done") === "1";
+    if (!done) {
+      const t = setTimeout(() => setShowWelcome(true), 700);
+      return () => clearTimeout(t);
+    }
+    // Offer tour if welcome done but tour not done
+    const tourDone = localStorage.getItem("ooplix_tour_done") === "1";
+    if (!tourDone) {
+      const t = setTimeout(() => setShowTour(true), 1200);
+      return () => clearTimeout(t);
+    }
+  }, [screen]);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [stats,     setStats]     = useState(null);
   const [opsData,   setOpsData]   = useState(null);
@@ -807,6 +827,25 @@ function AppInner() {
       <ToastContainer toasts={toasts} onRemove={removeToast} />
       {/* Global overlays — AnimatePresence enables mount/unmount transitions */}
       <Suspense fallback={null}>
+        <AnimatePresence>
+          {showWelcome && (
+            <WelcomeFlow
+              onDismiss={(completed) => {
+                if (completed) { try { localStorage.setItem("ooplix_welcome_done", "1"); } catch {} }
+                setShowWelcome(false);
+                if (completed) setTimeout(() => setShowTour(true), 400);
+              }}
+              onDispatchMission={(goal) => {
+                setTab("jarvisbrain");
+              }}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {showTour && (
+            <GuidedTour onFinish={() => setShowTour(false)} />
+          )}
+        </AnimatePresence>
         <AnimatePresence>
           {paletteOpen && (
             <CommandPalette

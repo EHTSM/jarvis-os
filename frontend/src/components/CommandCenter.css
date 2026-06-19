@@ -299,6 +299,48 @@
   color: rgba(255,255,255,0.88);
 }
 
+/* ── Quick Actions strip ──────────────────────────────────────────────────── */
+.cmd-quick-actions {
+  display: flex;
+  gap: 6px;
+  padding: 0 16px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cmd-quick-actions::-webkit-scrollbar { display: none; }
+
+.cmd-qa-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.12s, border-color 0.12s, transform 0.1s;
+}
+.cmd-qa-btn:hover {
+  background: rgba(124,111,255,0.08);
+  border-color: rgba(124,111,255,0.22);
+  transform: translateY(-1px);
+}
+.cmd-qa-btn:active { transform: translateY(0); }
+
+.cmd-qa-icon {
+  font-size: 12px;
+  color: var(--accent, #7c6fff);
+}
+.cmd-qa-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+}
+.cmd-qa-btn:hover .cmd-qa-label { color: rgba(255,255,255,0.85); }
+
 /* ── 3-column cockpit layout ────────────────────────────────────────────────
    Row 1: feed (35%) | agents (30%) | side-col (35%)
    Row 2: timeline (spans feed+agents) | dispatch (spans feed+agents)

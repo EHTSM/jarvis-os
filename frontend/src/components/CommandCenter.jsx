@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+const MissionTemplates = lazy(() => import("./MissionTemplates"));
+const RecentSessions   = lazy(() => import("./RecentSessions"));
 import {
   emergencyStop,
   emergencyResume,
@@ -1363,6 +1365,32 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
         </div>
       </motion.div>
 
+      {/* ── Quick Actions strip ───────────────────────────────────── */}
+      <motion.div
+        className="cmd-quick-actions"
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ...transition.enter, delay: 0.09 }}
+      >
+        {[
+          { icon: "✦", label: "New Mission",  tab: "execution"    },
+          { icon: "◎", label: "AI Chat",      tab: "jarvisbrain"  },
+          { icon: "⌥", label: "Analytics",    tab: "analytics"    },
+          { icon: "⬡", label: "Automation",   tab: "autonomouswf" },
+          { icon: "◈", label: "Contacts",     tab: "crm"          },
+          { icon: "₹", label: "Payments",     tab: "billing"      },
+        ].map(({ icon, label, tab }) => (
+          <button
+            key={tab}
+            className="cmd-qa-btn"
+            onClick={() => onNavigate?.(tab)}
+          >
+            <span className="cmd-qa-icon">{icon}</span>
+            <span className="cmd-qa-label">{label}</span>
+          </button>
+        ))}
+      </motion.div>
+
       {/* ── 3-column cockpit layout ───────────────────────────────── */}
       <div className="cmd-layout">
 
@@ -1438,6 +1466,18 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
           <EngineeringTimeline opsData={opsData} />
         </motion.section>
 
+        {/* ── Mission Templates ──── */}
+        <motion.section
+          className="cmd-panel cmd-col-dispatch"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...transition.enter, delay: 0.28 }}
+        >
+          <Suspense fallback={null}>
+            <MissionTemplates onNavigate={onNavigate} />
+          </Suspense>
+        </motion.section>
+
         {/* ── Row 2, Col 1+2: Command Dispatch ──── */}
         <motion.section
           className="cmd-panel cmd-col-dispatch"
@@ -1498,6 +1538,17 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
             <span className="section-label">Queue Status</span>
           </div>
           <QueueOverview opsData={opsData} />
+        </motion.section>
+
+        <motion.section
+          className="cmd-panel"
+          initial={{ opacity: 0, x: -8 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ ...transition.enter, delay: 0.41 }}
+        >
+          <Suspense fallback={null}>
+            <RecentSessions onNavigate={onNavigate} />
+          </Suspense>
         </motion.section>
 
         <motion.section

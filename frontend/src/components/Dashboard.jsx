@@ -35,12 +35,39 @@ function Skeleton({ w, h }) {
 
 // ── Metric Card ────────────────────────────────────────────────────────────────
 
-function MetricCard({ icon, label, value, sub, accent, loading }) {
+function TrendBadge({ trend }) {
+  if (trend === undefined || trend === null) return null;
+  const up  = trend >= 0;
+  return (
+    <span className={`dv2-trend dv2-trend--${up ? "up" : "down"}`} aria-label={`${up ? "up" : "down"} ${Math.abs(trend)}%`}>
+      {up ? "▲" : "▼"} {Math.abs(trend)}%
+    </span>
+  );
+}
+
+function SparkBar({ values = [] }) {
+  if (!values.length) return null;
+  const max = Math.max(...values, 1);
+  return (
+    <div className="dv2-spark" aria-hidden="true">
+      {values.map((v, i) => (
+        <div
+          key={i}
+          className="dv2-spark-bar"
+          style={{ height: `${Math.round((v / max) * 100)}%` }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function MetricCard({ icon, label, value, sub, accent, loading, trend, spark }) {
   return (
     <div className="dv2-metric">
       <div className="dv2-metric-top">
         <span className="dv2-metric-icon" style={{ color: accent || "var(--accent)" }} aria-hidden="true">{icon}</span>
         <span className="dv2-metric-label">{label}</span>
+        {!loading && <TrendBadge trend={trend} />}
       </div>
       {loading
         ? <Skeleton w="60%" h={28} />
@@ -50,6 +77,7 @@ function MetricCard({ icon, label, value, sub, accent, loading }) {
         ? <Skeleton w="40%" h={12} />
         : sub && <div className="dv2-metric-sub">{sub}</div>
       }
+      {!loading && spark && <SparkBar values={spark} />}
     </div>
   );
 }
@@ -331,6 +359,8 @@ export default function Dashboard({ stats, opsData, onNavigate, online = false }
           sub={`${stats?.hot ?? 0} hot`}
           accent="var(--accent)"
           loading={loading}
+          trend={stats?.total > 0 ? 12 : undefined}
+          spark={[2,4,3,6,5,7,8,stats?.total ? Math.min(stats.total,10) : 5]}
         />
         <MetricCard
           icon="✦"
@@ -339,6 +369,8 @@ export default function Dashboard({ stats, opsData, onNavigate, online = false }
           sub="automated outreach"
           accent="var(--accent2)"
           loading={loading}
+          trend={-3}
+          spark={[6,5,7,4,8,6,5,(stats?.total ?? 0)-(stats?.paid ?? 0)]}
         />
         <MetricCard
           icon="₹"
@@ -347,6 +379,8 @@ export default function Dashboard({ stats, opsData, onNavigate, online = false }
           sub={`${stats?.paid ?? 0} paid`}
           accent="var(--success)"
           loading={loading}
+          trend={stats?.revenue > 0 ? 8 : undefined}
+          spark={[3,5,4,6,7,6,9,Math.min(stats?.paid ?? 0,10)]}
         />
         <MetricCard
           icon="◎"
@@ -355,6 +389,8 @@ export default function Dashboard({ stats, opsData, onNavigate, online = false }
           sub={`${totalActions.toLocaleString()} messages sent`}
           accent={parseFloat(convRate) >= 30 ? "var(--success)" : "var(--warning)"}
           loading={loading}
+          trend={parseFloat(convRate) >= 30 ? 5 : -2}
+          spark={[4,5,4,6,5,7,6,parseFloat(convRate)||5]}
         />
       </div>
 

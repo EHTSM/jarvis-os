@@ -1,5 +1,6 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, lazy, Suspense } from "react";
 import "./Chat.css";
+const AIWelcomeBrief = lazy(() => import("./AIWelcomeBrief"));
 
 // ── Model selector config ─────────────────────────────────────────
 const MODELS = [
@@ -171,12 +172,30 @@ function _buildQuickActions() {
 
 const QUICK_ACTIONS = _buildQuickActions();
 
+const AI_BRIEF_KEY = "ooplix_ai_brief_done";
+
 export default function Chat({
   messages, input, loading, online,
   inputRef, endRef,
   onInput, onSend, onKey, onClear,
   model, onModelChange,
 }) {
+  const [briefDismissed, setBriefDismissed] = useState(
+    () => { try { return localStorage.getItem(AI_BRIEF_KEY) === "1"; } catch { return true; } }
+  );
+
+  const handleBriefDismiss = () => {
+    try { localStorage.setItem(AI_BRIEF_KEY, "1"); } catch {}
+    setBriefDismissed(true);
+  };
+
+  const handleBriefSend = (prompt) => {
+    handleBriefDismiss();
+    onSend?.(prompt);
+  };
+
+  const showBrief = !briefDismissed && messages.length <= 1;
+
   const currentWorkflow = messages
     .slice()
     .reverse()
@@ -212,6 +231,13 @@ export default function Chat({
           </select>
         </div>
       </div>
+
+      {/* AI Welcome Brief — shown once on first chat open */}
+      {showBrief && (
+        <Suspense fallback={null}>
+          <AIWelcomeBrief onSend={handleBriefSend} onDismiss={handleBriefDismiss} />
+        </Suspense>
+      )}
 
       {/* Workflow status banner — thin, informational */}
       {currentWorkflow && (
