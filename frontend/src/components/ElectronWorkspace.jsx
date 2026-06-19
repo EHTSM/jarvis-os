@@ -35,6 +35,15 @@ const WorkspaceTemplates          = lazy(() => import('./WorkspaceTemplates'));
 const MissionDock                 = lazy(() => import('./MissionDock'));
 const EngineeringIntelligencePane = lazy(() => import('./EngineeringIntelligencePane'));
 const SymbolPanel                 = lazy(() => import('./SymbolPanel'));
+const GitBlame                    = lazy(() => import('./GitBlame'));
+const QuickPush                   = lazy(() => import('./QuickPush'));
+const WorkspaceHealth             = lazy(() => import('./WorkspaceHealth'));
+const DevDashboard                = lazy(() => import('./DevDashboard'));
+const PluginMarketplace           = lazy(() => import('./PluginMarketplace'));
+const LicenseManager              = lazy(() => import('./LicenseManager'));
+const PerformanceAudit            = lazy(() => import('./PerformanceAudit'));
+const ClosedBetaAudit             = lazy(() => import('./ClosedBetaAudit'));
+const WorkspaceRecovery           = lazy(() => import('./WorkspaceRecovery'));
 
 // ── Generic resize hook ───────────────────────────────────────────────
 function useResize(initial, min, max, axis = 'y') {
@@ -133,20 +142,29 @@ const SIDEBAR_MODES = {
 };
 
 const BOTTOM_TABS = {
-  terminal:  { label: 'Terminal',  icon: '🖥' },
-  console:   { label: 'Console',   icon: '📊' },
-  debugger:  { label: 'Debugger',  icon: '🔍' },
-  ops:       { label: 'Auto-Ops',  icon: '🤖' },
-  arch:      { label: 'Arch',      icon: '🗺' },
-  pair:      { label: 'AI Pair',   icon: '💡' },
-  agents:    { label: 'Agents',    icon: '⬡' },
-  missions:  { label: 'Missions',  icon: '◎' },
-  command:   { label: 'Command',   icon: '❯' },
-  execloop:  { label: 'Exec Loop', icon: '↻' },
-  observer:  { label: 'Observer',  icon: '◉' },
-  decisions: { label: 'Decisions', icon: '◈' },
-  orchestrator: { label: 'Orchestrator', icon: '◎' },
-  execution:    { label: 'Execution',    icon: '⚙' },
+  terminal:    { label: 'Terminal',    icon: '🖥' },
+  console:     { label: 'Console',     icon: '📊' },
+  debugger:    { label: 'Debugger',    icon: '🔍' },
+  ops:         { label: 'Auto-Ops',    icon: '🤖' },
+  arch:        { label: 'Arch',        icon: '🗺' },
+  pair:        { label: 'AI Pair',     icon: '💡' },
+  agents:      { label: 'Agents',      icon: '⬡' },
+  missions:    { label: 'Missions',    icon: '◎' },
+  command:     { label: 'Command',     icon: '❯' },
+  execloop:    { label: 'Exec Loop',   icon: '↻' },
+  observer:    { label: 'Observer',    icon: '◉' },
+  decisions:   { label: 'Decisions',   icon: '◈' },
+  orchestrator:{ label: 'Orchestrator',icon: '◎' },
+  execution:   { label: 'Execution',   icon: '⚙' },
+  blame:       { label: 'Git Blame',   icon: '⎇' },
+  push:        { label: 'Quick Push',  icon: '▲' },
+  health:      { label: 'WS Health',   icon: '◉' },
+  devdash:     { label: 'Dev Stats',   icon: '★' },
+  plugins:     { label: 'Plugins',     icon: '◈' },
+  license:     { label: 'License',     icon: '🔑' },
+  perf:        { label: 'Perf Audit',  icon: '⚡' },
+  betaaudit:   { label: 'Beta Audit',  icon: '◎' },
+  recovery:    { label: 'Recovery',    icon: '💾' },
 };
 
 const api        = () => window.electronAPI;
@@ -1055,6 +1073,33 @@ export default function ElectronWorkspace({ children }) {
                   </LazyPane>
                   <LazyPane active={bottomTab === 'execution'}>
                     <ErrorBoundary label="Execution Runtime"><ExecutionRuntimePanel /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'blame'}>
+                    <ErrorBoundary label="Git Blame"><GitBlame filePath={editorFile} cwd={cwd} lineCount={500} visible={bottomTab === 'blame'} onViewHistory={() => openBottomTab('missions')} /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'push'}>
+                    <ErrorBoundary label="Quick Push"><QuickPush cwd={cwd} /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'health'}>
+                    <ErrorBoundary label="Workspace Health"><WorkspaceHealth cwd={cwd} filePath={editorFile} /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'devdash'}>
+                    <ErrorBoundary label="Dev Dashboard"><DevDashboard cwd={cwd} /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'plugins'}>
+                    <ErrorBoundary label="Plugin Marketplace"><PluginMarketplace /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'license'}>
+                    <ErrorBoundary label="License Manager"><LicenseManager /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'perf'}>
+                    <ErrorBoundary label="Performance Audit"><PerformanceAudit cwd={cwd} /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'betaaudit'}>
+                    <ErrorBoundary label="Beta Audit"><ClosedBetaAudit /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'recovery'}>
+                    <ErrorBoundary label="Recovery"><WorkspaceRecovery currentSession={{ cwd, osView, bottomTab, sidebarMode }} /></ErrorBoundary>
                   </LazyPane>
                 </div>
               </div>

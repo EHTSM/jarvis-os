@@ -141,4 +141,71 @@ router.post("/metrics/errors/:fingerprint/resolve", (req, res) => {
     }
 });
 
+// ── GET /metrics/summary ─────────────────────────────────────────
+// Used by DevDashboard — lightweight daily stats summary.
+router.get("/metrics/summary", (req, res) => {
+    try {
+        const dashboard = ms.getDashboard ? ms.getDashboard() : {};
+        res.json({
+            period:           req.query.period || "today",
+            requestsTotal:    dashboard.totalRequests   || 0,
+            errorsTotal:      dashboard.totalErrors     || 0,
+            avgLatencyMs:     dashboard.avgLatencyMs    || 0,
+            uptimeSeconds:    dashboard.uptimeSeconds   || 0,
+        });
+    } catch (err) {
+        res.json({ period: "today", requestsTotal: 0, errorsTotal: 0 });
+    }
+});
+
+// ── GET /metrics/perf-audit ──────────────────────────────────────
+// Performance audit: startup, memory, CPU, repo indexing, AI latency.
+// Returns current process stats + recommendations.
+router.get("/metrics/perf-audit", (req, res) => {
+    try {
+        const mem   = process.memoryUsage();
+        const cpu   = process.cpuUsage();
+        const upMs  = process.uptime() * 1000;
+
+        const dashboard = ms.getDashboard ? ms.getDashboard() : {};
+        const errors    = (ea.getErrors ? ea.getErrors({ limit: 5 }) : []);
+
+        // Build recommendations from real data
+        const recommendations = [];
+        const heapUsedMB = mem.heapUsed / 1024 / 1024;
+        if (heapUsedMB > 300)  recommendations.push({ area: "memory",  severity: "high",   text: `Heap at ${heapUsedMB.toFixed(0)}MB — consider lazy-loading heavy modules` });
+        if ((dashboard.avgLatencyMs || 0) > 500) recommendations.push({ area: "api",     severity: "high",   text: `Avg API latency ${dashboard.avgLatencyMs}ms — add caching or query optimization` });
+        if ((dashboard.errorRate || 0) > 0.05)   recommendations.push({ area: "errors",  severity: "medium", text: `Error rate ${((dashboard.errorRate || 0) * 100).toFixed(1)}% — check error aggregator` });
+        if (upMs < 5000)                         recommendations.push({ area: "startup", severity: "info",   text: "Process recently started — startup time within normal range" });
+        if (recommendations.length === 0)        recommendations.push({ area: "overall", severity: "ok",    text: "No critical performance issues detected" });
+
+        res.json({
+            timestamp:     new Date().toISOString(),
+            process: {
+                uptimeMs:    Math.round(upMs),
+                heapUsedMB:  Math.round(heapUsedMB),
+                heapTotalMB: Math.round(mem.heapTotal / 1024 / 1024),
+                rssMB:       Math.round(mem.rss / 1024 / 1024),
+                cpuUserMs:   Math.round(cpu.user / 1000),
+                cpuSysMs:    Math.round(cpu.system / 1000),
+            },
+            api: {
+                avgLatencyMs:      dashboard.avgLatencyMs    || 0,
+                p95LatencyMs:      dashboard.p95LatencyMs    || 0,
+                requestsPerMinute: dashboard.requestsPerMinute || 0,
+                errorRate:         dashboard.errorRate        || 0,
+            },
+            recentErrors: errors.slice(0, 3),
+            recommendations,
+            score: Math.max(0, 100
+                - (heapUsedMB > 300 ? 20 : 0)
+                - ((dashboard.avgLatencyMs || 0) > 500 ? 25 : 0)
+                - ((dashboard.errorRate || 0) > 0.05 ? 20 : 0)
+            ),
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;

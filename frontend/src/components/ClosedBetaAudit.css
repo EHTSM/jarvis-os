@@ -1,0 +1,171 @@
+.cba-root {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  padding: 14px;
+  height: 100%;
+  overflow-y: auto;
+}
+.cba-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cba-title { font-size: 13px; font-weight: 800; color: var(--text); }
+.cba-run-btn {
+  padding: 5px 14px;
+  background: var(--accent, #7c6fff);
+  border: none;
+  border-radius: var(--radius-pill, 999px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.12s, opacity 0.12s;
+}
+.cba-run-btn:hover:not(:disabled) { background: #8d7fff; }
+.cba-run-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.cba-error {
+  padding: 8px 10px;
+  background: rgba(245,91,91,0.08);
+  border: 1px solid rgba(245,91,91,0.2);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--danger, #f55b5b);
+}
+
+/* Verdict banner */
+.cba-verdict {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--verdict-color, var(--border));
+  border-radius: var(--radius-sm);
+}
+.cba-verdict__label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-faint);
+}
+.cba-verdict__value {
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--verdict-color, var(--text));
+}
+
+/* Score rings */
+.cba-rings {
+  display: flex;
+  gap: 8px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 4px 0;
+}
+.cba-ring {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.cba-ring__label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+/* Sections */
+.cba-section { display: flex; flex-direction: column; gap: 6px; }
+.cba-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.cba-all-clear { color: var(--success, #52d68a); }
+.cba-count-high { color: var(--danger, #f55b5b); }
+.cba-empty { font-size: 11px; color: var(--success, #52d68a); padding: 4px 0; }
+
+/* Blockers */
+.cba-blocker {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 8px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-left: 3px solid var(--sev, var(--text-faint));
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.cba-blocker__sev {
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--sev, var(--text-faint));
+  min-width: 44px;
+  padding-top: 1px;
+}
+.cba-blocker__body { display: flex; flex-direction: column; gap: 2px; }
+.cba-blocker__area {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+.cba-blocker__text { font-size: 11px; color: var(--text-faint); line-height: 1.4; }
+
+/* Checks */
+.cba-checks { display: flex; flex-direction: column; gap: 3px; }
+.cba-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+}
+.cba-check--ok   { background: rgba(82,214,138,0.04); }
+.cba-check--fail { background: rgba(245,91,91,0.05); }
+.cba-check__icon { font-size: 11px; font-weight: 800; }
+.cba-check--ok   .cba-check__icon { color: var(--success, #52d68a); }
+.cba-check--fail .cba-check__icon { color: var(--danger, #f55b5b);  }
+.cba-check__label { font-size: 11px; color: var(--text-faint); }
+
+/* Score breakdown */
+.cba-score-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+}
+.cba-score-key { color: var(--text-faint); min-width: 90px; text-transform: capitalize; }
+.cba-score-bar-wrap {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.cba-score-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+.cba-score-val { font-weight: 700; font-family: var(--font-mono); min-width: 24px; text-align: right; color: var(--text-dim); }
+
+.cba-loading { display: flex; flex-direction: column; gap: 8px; }

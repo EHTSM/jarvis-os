@@ -25,6 +25,7 @@ import { xml } from '@codemirror/lang-xml';
 import { extractSymbols, findOccurrences, enclosingSymbol } from '../hooks/useSymbolIndex';
 import { aiInlineExtension, setDiagsEffect, makeInlineDiffExtension, setInlineDiffEffect, clearInlineDiffEffect } from './aiInlineExtension';
 import FuzzyFinder from './FuzzyFinder';
+import LSPStatus from './LSPStatus';
 import './CodeEditorPane.css';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -1124,6 +1125,7 @@ export default function CodeEditorPane({
             </>
           ) : null; })()}
           <span className="cep-breadcrumb__line">:{activeLine}</span>
+          <LSPStatus filePath={activeTab?.path} cwd={cwd} diagnosticCount={diagnostics.length} />
           <div className="cep-breadcrumb__actions">
             <button
               className="cep-breadcrumb__btn cep-breadcrumb__btn--ai"
@@ -1132,6 +1134,11 @@ export default function CodeEditorPane({
                 window.dispatchEvent(new CustomEvent('ew-open-bottom-tab', { detail: 'pair' }));
               }}
             >⬡ AI</button>
+            <button
+              className="cep-breadcrumb__btn"
+              title="Git Blame"
+              onClick={() => window.dispatchEvent(new CustomEvent('ew-open-bottom-tab', { detail: 'blame' }))}
+            >⎇</button>
             <button className="cep-breadcrumb__btn" onClick={goToDefinition} title="Go to Definition (F12)">F12</button>
             <button className="cep-breadcrumb__btn" onClick={findReferences} title="Find References">Refs</button>
             <button className="cep-breadcrumb__btn" onClick={startRenameSymbol} title="Rename Symbol (F2)">F2</button>

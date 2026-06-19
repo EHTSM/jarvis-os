@@ -1,0 +1,160 @@
+.lsp-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+}
+
+.lsp-status__badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-pill, 999px);
+  cursor: default;
+  user-select: none;
+}
+.lsp-status__badge--active { border-color: rgba(82,214,138,0.25); background: rgba(82,214,138,0.06); }
+.lsp-status__badge--error  { border-color: rgba(245,91,91,0.3);   background: rgba(245,91,91,0.06); }
+
+.lsp-status__icon {
+  font-size: 9px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--lsp-color, #aaa);
+  letter-spacing: 0.02em;
+}
+
+.lsp-status__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-faint);
+}
+.lsp-status__badge--active .lsp-status__dot {
+  background: var(--success, #52d68a);
+  box-shadow: 0 0 4px rgba(82,214,138,0.5);
+  animation: lsp-pulse 2s ease-in-out infinite;
+}
+.lsp-status__badge--error .lsp-status__dot { background: var(--danger, #f55b5b); }
+
+@keyframes lsp-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+.lsp-status__diag {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--warning, #f0b429);
+  padding: 2px 6px;
+  background: rgba(240,180,41,0.08);
+  border: 1px solid rgba(240,180,41,0.2);
+  border-radius: var(--radius-pill, 999px);
+}
+
+.lsp-status__import-btn {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill, 999px);
+  color: var(--text-faint);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.1s, color 0.1s;
+}
+.lsp-status__import-btn:hover:not(:disabled) {
+  background: var(--surface-glass);
+  color: var(--text-dim);
+}
+.lsp-status__import-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Hover tooltip */
+.lsp-hover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 200;
+  min-width: 180px;
+  max-width: 340px;
+  background: var(--surface, #1a1c26);
+  border: 1px solid var(--border-strong, rgba(255,255,255,0.12));
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  padding: 8px 10px;
+}
+.lsp-hover__type {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent2, #4ecdc4);
+  margin-bottom: 4px;
+  word-break: break-all;
+}
+.lsp-hover__doc {
+  font-size: 10px;
+  color: var(--text-faint);
+  line-height: 1.5;
+}
+
+/* Auto-import panel */
+.lsp-import-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 200;
+  min-width: 260px;
+  background: var(--surface, #1a1c26);
+  border: 1px solid var(--border-strong, rgba(255,255,255,0.12));
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+.lsp-import-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--border);
+}
+.lsp-import-panel__dismiss {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  font-size: 10px;
+  padding: 0;
+  line-height: 1;
+}
+.lsp-import-panel__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+}
+.lsp-import-panel__item:last-child { border-bottom: none; }
+.lsp-import-panel__sym  { color: var(--accent); font-weight: 700; }
+.lsp-import-panel__from { color: var(--text-faint); flex: 1; }
+.lsp-import-panel__from code { color: var(--text-dim); font-family: var(--font-mono); font-size: 10px; }
+.lsp-import-panel__add {
+  padding: 2px 8px;
+  background: rgba(82,214,138,0.1);
+  border: 1px solid rgba(82,214,138,0.25);
+  border-radius: var(--radius-pill, 999px);
+  color: var(--success, #52d68a);
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.lsp-import-panel__add:hover { background: rgba(82,214,138,0.18); }
