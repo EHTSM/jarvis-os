@@ -3,6 +3,7 @@ const SmellsPanel       = lazy(() => import("./SmellsPanel"));
 const DecisionsPanel    = lazy(() => import("./DecisionsPanel"));
 const TechDebtDashboard = lazy(() => import("./TechDebtDashboard"));
 const BundlePreviewPanel = lazy(() => import("./BundlePreviewPanel"));
+const ComposerPanel      = lazy(() => import("./ComposerPanel"));
 import { _fetch } from "../_client";
 import "./AutonomousAgentDashboard.css";
 
@@ -839,6 +840,9 @@ export default function AutonomousAgentDashboard() {
                 <button className={`aad-tab ${activeTab === "bundle" ? "active" : ""}`} onClick={() => setActiveTab("bundle")}>
                     Bundle
                 </button>
+                <button className={`aad-tab ${activeTab === "composer" ? "active" : ""}`} onClick={() => setActiveTab("composer")}>
+                    Composer
+                </button>
             </div>
 
             {/* Agents tab */}
@@ -912,6 +916,13 @@ export default function AutonomousAgentDashboard() {
             {activeTab === "bundle" && (
                 <Suspense fallback={<div style={{ padding: 16, color: "#4b5563" }}>Loading…</div>}>
                     <BundlePreviewPanel cwd={null} />
+                </Suspense>
+            )}
+
+            {/* AI Composer (ACP-7) */}
+            {activeTab === "composer" && (
+                <Suspense fallback={<div style={{ padding: 16, color: "#4b5563" }}>Loading…</div>}>
+                    <ComposerPanel cwd={null} />
                 </Suspense>
             )}
 
