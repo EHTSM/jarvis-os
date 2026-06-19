@@ -626,18 +626,32 @@
 .cep-run-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
 
 /* ERP-1: Breadcrumb */
+/* ── Premium Breadcrumb ─────────────────────────────────────── */
 .cep-breadcrumb {
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 3px 10px;
-  background: rgba(0,0,0,0.15);
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  background: rgba(5,7,13,0.80);
+  backdrop-filter: blur(8px) saturate(1.4);
+  -webkit-backdrop-filter: blur(8px) saturate(1.4);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
   font-size: 12px;
   font-family: 'SF Mono', 'Fira Code', monospace;
   flex-shrink: 0;
-  min-height: 26px;
+  min-height: 27px;
   overflow: hidden;
+  animation: breadcrumb-appear 0.18s ease-out both;
+}
+/* sticky modifier keeps it visible over scrolling editor content */
+.cep-breadcrumb--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+}
+@keyframes breadcrumb-appear {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .cep-breadcrumb__file {
   color: rgba(255,255,255,0.45);
@@ -645,16 +659,23 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 200px;
+  max-width: 220px;
+  transition: color 0.12s;
 }
 .cep-breadcrumb__file:hover { color: #60a5fa; }
-.cep-breadcrumb__sep { color: rgba(255,255,255,0.20); }
+.cep-breadcrumb__sep { color: rgba(255,255,255,0.18); }
 .cep-breadcrumb__sym {
   color: #fbbf24;
   cursor: pointer;
   white-space: nowrap;
+  transition: color 0.12s;
 }
 .cep-breadcrumb__sym:hover { color: #fde68a; }
+.cep-breadcrumb__line {
+  color: rgba(255,255,255,0.22);
+  font-size: 10px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
 .cep-breadcrumb__actions {
   display: flex;
   gap: 4px;
@@ -663,19 +684,66 @@
 }
 .cep-breadcrumb__btn {
   padding: 1px 7px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
   border-radius: 4px;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.40);
   font-size: 10px;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.12s;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
 .cep-breadcrumb__btn:hover {
-  background: rgba(165,180,252,0.12);
+  background: rgba(165,180,252,0.10);
   color: #a5b4fc;
-  border-color: rgba(165,180,252,0.25);
+  border-color: rgba(165,180,252,0.22);
+}
+/* AI button in breadcrumb — accent styled */
+.cep-breadcrumb__btn--ai {
+  background: rgba(124,111,255,0.10);
+  border-color: rgba(124,111,255,0.20);
+  color: #a5b4fc;
+  font-weight: 700;
+}
+.cep-breadcrumb__btn--ai:hover {
+  background: rgba(124,111,255,0.18);
+  border-color: rgba(124,111,255,0.35);
+  color: #c4b5fd;
+}
+
+/* ── Animated search highlight (CodeMirror) ─────────────────── */
+.cm-searchMatch {
+  background: rgba(240,180,41,0.18) !important;
+  border-radius: 2px;
+  outline: 1px solid rgba(240,180,41,0.35);
+  animation: search-flash 0.3s ease-out both;
+}
+.cm-searchMatch-selected {
+  background: rgba(240,180,41,0.38) !important;
+  outline: 1px solid rgba(240,180,41,0.7) !important;
+}
+@keyframes search-flash {
+  0%   { background: rgba(240,180,41,0.55); }
+  100% { background: rgba(240,180,41,0.18); }
+}
+
+/* ── Smooth cursor ──────────────────────────────────────────── */
+.cm-cursor {
+  border-left-color: rgba(165,180,252,0.9) !important;
+  border-left-width: 2px !important;
+  animation: cursor-blink 1.1s step-end infinite;
+}
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Selection polish ───────────────────────────────────────── */
+.cm-selectionBackground {
+  background: rgba(124,111,255,0.18) !important;
+}
+.cm-focused .cm-selectionBackground {
+  background: rgba(124,111,255,0.25) !important;
 }
 
 /* ERP-1: References panel */

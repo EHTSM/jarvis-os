@@ -1,0 +1,143 @@
+.md-dock {
+  background: rgba(5,7,13,0.97);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+.md-dock--empty {
+  flex-direction: row;
+  align-items: center;
+  padding: 6px 12px;
+  gap: 10px;
+}
+.md-empty-label { font-size: 10px; color: var(--text-faint); flex: 1; }
+
+.md-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s;
+}
+.md-bar:hover { background: rgba(255,255,255,0.02); }
+
+.md-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--text-faint);
+}
+.md-dot--sm { width: 5px; height: 5px; }
+.md-dot--run  { background: var(--accent); animation: md-pulse 2s ease-in-out infinite; }
+.md-dot--done { background: var(--success); }
+.md-dot--err  { background: var(--danger); }
+.md-dot--queue { background: var(--warning); }
+.md-dot--idle { background: var(--text-faint); }
+
+@keyframes md-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(124,111,255,0.4); }
+  50%       { opacity: 0.7; box-shadow: 0 0 0 3px rgba(124,111,255,0); }
+}
+
+.md-mission-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.md-stage-badge {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent);
+  background: rgba(124,111,255,0.08);
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(124,111,255,0.2);
+}
+
+.md-ago {
+  font-size: 9px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+}
+
+.md-chevron {
+  font-size: 9px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+.md-pipeline {
+  display: flex;
+  gap: 2px;
+  padding: 0 10px 4px;
+}
+.md-stage {
+  flex: 1;
+  height: 2px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 1px;
+  transition: background 0.3s;
+}
+.md-stage--done   { background: rgba(82,214,138,0.5); }
+.md-stage--active { background: var(--accent); animation: md-stage-pulse 1.5s ease-in-out infinite; }
+@keyframes md-stage-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+.md-detail {
+  padding: 8px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.md-goal {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.md-queue { display: flex; flex-direction: column; gap: 4px; }
+.md-queue-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-faint);
+}
+.md-queue-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 4px;
+}
+.md-queue-title { font-size: 11px; color: var(--text-dim); }
+
+.md-nav-btn {
+  align-self: flex-start;
+  padding: 5px 12px;
+  background: rgba(124,111,255,0.08);
+  border: 1px solid rgba(124,111,255,0.2);
+  border-radius: var(--radius-pill);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.md-nav-btn:hover { background: rgba(124,111,255,0.15); }

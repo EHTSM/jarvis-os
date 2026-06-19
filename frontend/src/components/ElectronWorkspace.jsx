@@ -32,6 +32,7 @@ const ExecutionRuntimePanel    = lazy(() => import('./ExecutionRuntimePanel'));
 const CodeEditorPane              = lazy(() => import('./CodeEditorPane'));
 const ProjectSearch               = lazy(() => import('./ProjectSearch'));
 const WorkspaceTemplates          = lazy(() => import('./WorkspaceTemplates'));
+const MissionDock                 = lazy(() => import('./MissionDock'));
 const EngineeringIntelligencePane = lazy(() => import('./EngineeringIntelligencePane'));
 const SymbolPanel                 = lazy(() => import('./SymbolPanel'));
 
@@ -650,6 +651,13 @@ export default function ElectronWorkspace({ children }) {
     return () => window.removeEventListener('jarvis-capability', handler);
   }, [openBottomTab]);
 
+  // Breadcrumb "⬡ AI" button and direct event-based tab open
+  useEffect(() => {
+    const handler = (e) => openBottomTab(e.detail || 'pair');
+    window.addEventListener('ew-open-bottom-tab', handler);
+    return () => window.removeEventListener('ew-open-bottom-tab', handler);
+  }, [openBottomTab]);
+
   // Global search action handler
   const handleAction = useStableCallback((action, item) => {
     switch (action) {
@@ -978,6 +986,13 @@ export default function ElectronWorkspace({ children }) {
               </ErrorBoundary>
             ) : children}
           </div>
+
+          {/* Mission Dock — always visible when in editor view */}
+          {osView === 'editor' && (
+            <Suspense fallback={null}>
+              <MissionDock onNavigate={(tab) => window.dispatchEvent(new CustomEvent('jarvis-nav', { detail: tab }))} />
+            </Suspense>
+          )}
 
           {/* Bottom panel */}
           {showBottom && (

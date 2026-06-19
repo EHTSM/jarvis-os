@@ -1,0 +1,161 @@
+.tg-root {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding: 12px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.tg-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.tg-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text);
+}
+.tg-fw-select {
+  appearance: none;
+  background: var(--surface-glass, rgba(255,255,255,0.03));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 10px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 3px 20px 3px 8px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath fill='rgba(255,255,255,0.3)' d='M0 0l4 5 4-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 5px center;
+  outline: none;
+}
+
+.tg-code-section { display: flex; flex-direction: column; gap: 5px; }
+.tg-label-row { display: flex; align-items: center; gap: 7px; }
+.tg-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-faint); }
+.tg-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  background: rgba(78,205,196,0.1);
+  border: 1px solid rgba(78,205,196,0.25);
+  border-radius: var(--radius-pill);
+  color: var(--accent2);
+}
+
+.tg-code-area {
+  width: 100%;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.5;
+  padding: 8px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.12s;
+}
+.tg-code-area:focus { border-color: rgba(124,111,255,0.35); }
+
+.tg-generate-btn {
+  padding: 9px 18px;
+  background: var(--accent2, #4ecdc4);
+  border: none;
+  border-radius: var(--radius-pill);
+  color: #000;
+  font-size: 12px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.12s, transform 0.1s, opacity 0.12s;
+}
+.tg-generate-btn:hover:not(:disabled) { background: var(--accent2-hover, #63d9d1); }
+.tg-generate-btn:active:not(:disabled) { transform: scale(0.97); }
+.tg-generate-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.tg-error {
+  padding: 8px 12px;
+  background: var(--danger-muted);
+  border: 1px solid var(--danger-border);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--danger);
+}
+
+.tg-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tg-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.tg-preview-actions { display: flex; gap: 5px; }
+.tg-action-btn {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-faint);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+.tg-action-btn:hover:not(:disabled) { background: var(--surface-glass); color: var(--text-dim); border-color: var(--border-strong); }
+.tg-action-btn--run { color: var(--success); border-color: var(--success-border); background: var(--success-muted); }
+.tg-action-btn--run:hover:not(:disabled) { background: rgba(82,214,138,0.15); }
+.tg-action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.tg-code-preview {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text);
+  line-height: 1.55;
+  background: rgba(0,0,0,0.28);
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  overflow-x: auto;
+  white-space: pre;
+  max-height: 280px;
+  overflow-y: auto;
+  margin: 0;
+}
+
+.tg-run-result {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.tg-run-result--ok  { border-color: var(--success-border); background: var(--success-muted); }
+.tg-run-result--fail { border-color: var(--danger-border); background: var(--danger-muted); }
+.tg-run-status {
+  display: block;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.tg-run-result--ok  .tg-run-status { color: var(--success); }
+.tg-run-result--fail .tg-run-status { color: var(--danger); }
+.tg-run-output {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  padding: 6px 10px 8px;
+  white-space: pre-wrap;
+  margin: 0;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  max-height: 120px;
+  overflow-y: auto;
+}

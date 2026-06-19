@@ -1,0 +1,141 @@
+.ca-root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.ca-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ca-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.1px;
+}
+.ca-cwd {
+  font-size: 10px;
+  color: var(--text-faint);
+  background: var(--surface-glass, rgba(255,255,255,0.03));
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+}
+
+.ca-diff-section { display: flex; flex-direction: column; gap: 5px; }
+.ca-label-row { display: flex; align-items: center; justify-content: space-between; }
+.ca-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-faint); }
+.ca-char-count { font-size: 9px; color: var(--text-faint); opacity: 0.6; }
+
+.ca-diff-area {
+  width: 100%;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.5;
+  padding: 8px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.12s;
+}
+.ca-diff-area:focus { border-color: rgba(124,111,255,0.35); }
+
+.ca-analyze-btn {
+  padding: 9px 18px;
+  background: var(--accent, #7c6fff);
+  border: none;
+  border-radius: var(--radius-pill);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.12s, transform 0.1s, opacity 0.12s;
+  align-self: flex-start;
+}
+.ca-analyze-btn:hover:not(:disabled) { background: var(--accent-hover, #9488ff); }
+.ca-analyze-btn:active:not(:disabled) { transform: scale(0.97); }
+.ca-analyze-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.ca-error {
+  padding: 10px 12px;
+  background: var(--danger-muted);
+  border: 1px solid var(--danger-border);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--danger);
+}
+
+.ca-results { display: flex; flex-direction: column; gap: 10px; }
+
+.ca-result-block {
+  background: var(--surface-glass, rgba(255,255,255,0.03));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ca-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ca-result-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+.ca-result-body { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+.ca-risk-reason { font-size: 10px; color: var(--text-faint); font-style: italic; }
+
+.ca-risk {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.ca-risk--success { background: var(--success-muted); color: var(--success); border: 1px solid var(--success-border); }
+.ca-risk--warning { background: var(--warning-muted); color: var(--warning); border: 1px solid var(--warning-border); }
+.ca-risk--danger  { background: var(--danger-muted);  color: var(--danger);  border: 1px solid var(--danger-border);  }
+.ca-risk--info    { background: var(--info-muted);    color: var(--info);    border: 1px solid var(--info-border);    }
+
+.ca-copy-btn {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-faint);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+.ca-copy-btn:hover { background: var(--surface-glass); color: var(--text-dim); border-color: var(--border-strong); }
+
+.ca-commit-msg,
+.ca-pr-desc {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  background: rgba(0,0,0,0.2);
+  padding: 8px;
+  border-radius: 6px;
+  margin: 0;
+}

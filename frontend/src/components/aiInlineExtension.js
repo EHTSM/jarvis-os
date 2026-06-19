@@ -475,6 +475,126 @@ export function aiInlineExtension(opts = {}) {
   ];
 }
 
+// ── Inline Diff Overlay ───────────────────────────────────────────────────────
+// Renders a green/red diff inside CodeMirror 6 with per-chunk accept/reject.
+// Usage (from CodeEditorPane.jsx):
+//   view.dispatch({ effects: setInlineDiffEffect.of(unifiedDiffString) });
+//   view.dispatch({ effects: clearInlineDiffEffect.of(null) });
+
+export const setInlineDiffEffect   = StateEffect.define();
+export const clearInlineDiffEffect = StateEffect.define();
+
+// Parsed chunk: { type: 'add'|'del'|'ctx', text, lineNum }
+function parseDiff(unifiedDiff) {
+  const lines = unifiedDiff.split('\n');
+  const chunks = [];
+  let lineNum = 0;
+  for (const l of lines) {
+    if (l.startsWith('@@')) {
+      const m = l.match(/@@ -\d+(?:,\d+)? \+(\d+)/);
+      if (m) lineNum = parseInt(m[1], 10) - 1;
+      continue;
+    }
+    if (l.startsWith('+++') || l.startsWith('---')) continue;
+    if (l.startsWith('+')) { chunks.push({ type: 'add', text: l.slice(1), lineNum: ++lineNum }); }
+    else if (l.startsWith('-')) { chunks.push({ type: 'del', text: l.slice(1), lineNum }); }
+    else { lineNum++; }
+  }
+  return chunks;
+}
+
+class InlineDiffWidget extends WidgetType {
+  constructor(chunk, onAccept, onReject) {
+    super();
+    this.chunk = chunk;
+    this.onAccept = onAccept;
+    this.onReject = onReject;
+  }
+  eq(other) { return other.chunk.text === this.chunk.text && other.chunk.type === this.chunk.type; }
+  toDOM() {
+    const wrap = document.createElement('span');
+    wrap.className = `cm-diff-chunk cm-diff-chunk--${this.chunk.type}`;
+    const text = document.createElement('span');
+    text.textContent = this.chunk.text;
+    wrap.appendChild(text);
+    if (this.chunk.type !== 'ctx') {
+      const btnWrap = document.createElement('span');
+      btnWrap.className = 'cm-diff-actions';
+      if (this.chunk.type === 'add') {
+        const a = document.createElement('button');
+        a.textContent = '✓ Accept';
+        a.className   = 'cm-diff-btn cm-diff-btn--accept';
+        a.onclick     = (e) => { e.stopPropagation(); this.onAccept(this.chunk); };
+        btnWrap.appendChild(a);
+      }
+      const r = document.createElement('button');
+      r.textContent = '✕ Reject';
+      r.className   = 'cm-diff-btn cm-diff-btn--reject';
+      r.onclick     = (e) => { e.stopPropagation(); this.onReject(this.chunk); };
+      btnWrap.appendChild(r);
+      wrap.appendChild(btnWrap);
+    }
+    return wrap;
+  }
+}
+
+export function makeInlineDiffExtension({ onAccept, onReject } = {}) {
+  let chunks = [];
+
+  const diffState = StateField.define({
+    create: () => Decoration.none,
+    update(decos, tr) {
+      // Map positions through doc changes
+      decos = decos.map(tr.changes);
+      for (const e of tr.effects) {
+        if (e.is(clearInlineDiffEffect)) { chunks = []; return Decoration.none; }
+        if (e.is(setInlineDiffEffect)) {
+          chunks = parseDiff(e.value);
+          const builder = new RangeSetBuilder();
+          const doc = tr.state.doc;
+          for (const chunk of chunks) {
+            const lineN = Math.max(1, Math.min(chunk.lineNum, doc.lines));
+            const line  = doc.line(lineN);
+            const bgCls = chunk.type === 'add' ? 'cm-diff-line--add' : chunk.type === 'del' ? 'cm-diff-line--del' : '';
+            if (bgCls) {
+              builder.add(line.from, line.from, Decoration.line({ class: bgCls }));
+            }
+            builder.add(line.to, line.to, Decoration.widget({
+              widget: new InlineDiffWidget(
+                chunk,
+                (c) => onAccept?.(c),
+                (c) => onReject?.(c),
+              ),
+              side: 1,
+            }));
+          }
+          return builder.finish();
+        }
+      }
+      return decos;
+    },
+    provide: f => EditorView.decorations.from(f),
+  });
+
+  const diffTheme = EditorView.baseTheme({
+    '.cm-diff-line--add': { background: 'rgba(82,214,138,0.10)' },
+    '.cm-diff-line--del': { background: 'rgba(245,91,91,0.10)',  textDecoration: 'line-through', opacity: '0.6' },
+    '.cm-diff-chunk'     : { fontFamily: 'inherit', fontSize: 'inherit' },
+    '.cm-diff-chunk--add': { color: 'rgba(82,214,138,0.9)', borderLeft: '2px solid rgba(82,214,138,0.5)', paddingLeft: '4px' },
+    '.cm-diff-chunk--del': { color: 'rgba(245,91,91,0.7)',   borderLeft: '2px solid rgba(245,91,91,0.5)',  paddingLeft: '4px', textDecoration: 'line-through' },
+    '.cm-diff-actions'   : { marginLeft: '8px', display: 'inline-flex', gap: '4px', verticalAlign: 'middle' },
+    '.cm-diff-btn': {
+      fontSize: '9px', fontWeight: '700', padding: '1px 7px', borderRadius: '3px',
+      border: 'none', cursor: 'pointer', fontFamily: 'inherit', verticalAlign: 'middle',
+    },
+    '.cm-diff-btn--accept': { background: 'rgba(82,214,138,0.18)', color: 'rgb(82,214,138)', border: '1px solid rgba(82,214,138,0.35)' },
+    '.cm-diff-btn--reject': { background: 'rgba(245,91,91,0.12)',  color: 'rgb(245,91,91)',  border: '1px solid rgba(245,91,91,0.3)'  },
+    '.cm-diff-btn:hover'  : { opacity: '0.85' },
+  });
+
+  return [diffState, diffTheme];
+}
+
 // ── Exported effects for wiring from outside ──────────────────────────────────
 
 export { setGhostEffect, setDiagsEffect, ghostState };

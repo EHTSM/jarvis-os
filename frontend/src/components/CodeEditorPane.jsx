@@ -23,7 +23,7 @@ import { python } from '@codemirror/lang-python';
 import { markdown } from '@codemirror/lang-markdown';
 import { xml } from '@codemirror/lang-xml';
 import { extractSymbols, findOccurrences, enclosingSymbol } from '../hooks/useSymbolIndex';
-import { aiInlineExtension, setDiagsEffect } from './aiInlineExtension';
+import { aiInlineExtension, setDiagsEffect, makeInlineDiffExtension, setInlineDiffEffect, clearInlineDiffEffect } from './aiInlineExtension';
 import FuzzyFinder from './FuzzyFinder';
 import './CodeEditorPane.css';
 
@@ -159,6 +159,24 @@ const EditorPanel = memo(function EditorPanel({ tab, active, onDirty, onContextM
   const langComp     = useRef(new Compartment());
   const wrapComp     = useRef(new Compartment());
 
+  // Inline diff overlay extension — lives here so we can use viewRef
+  const inlineDiffExt = useMemo(() => makeInlineDiffExtension({
+    onAccept: (chunk) => {
+      const view = viewRef.current;
+      if (!view) return;
+      const doc   = view.state.doc;
+      const lineN = Math.max(1, Math.min(chunk.lineNum, doc.lines));
+      const line  = doc.line(lineN);
+      view.dispatch({ changes: { from: line.from, to: line.to, insert: chunk.text } });
+      view.dispatch({ effects: clearInlineDiffEffect.of(null) });
+    },
+    onReject: () => {
+      const view = viewRef.current;
+      if (!view) return;
+      view.dispatch({ effects: clearInlineDiffEffect.of(null) });
+    },
+  }), []);
+
   // Toggle word wrap dynamically without remounting
   useEffect(() => {
     const view = viewRef.current;
@@ -171,7 +189,7 @@ const EditorPanel = memo(function EditorPanel({ tab, active, onDirty, onContextM
 
     const lang = langForPath(tab.path);
     const extensions = [
-      ...buildBaseExtensions(langComp.current, wrapComp.current, aiExt || []),
+      ...buildBaseExtensions(langComp.current, wrapComp.current, [...(aiExt || []), ...(inlineDiffExt || [])]),
       langComp.current.reconfigure(lang ? [lang] : []),
       wrapComp.current.reconfigure(wordWrap ? [EditorView.lineWrapping] : []),
       EditorView.updateListener.of(update => {
@@ -293,10 +311,11 @@ function AIContextMenu({ x, y, selection, filePath, onAction, onClose, onGoToDef
   ];
 
   const AI_ACTIONS = [
-    { id: 'explain', label: 'Explain code',   icon: '◈' },
-    { id: 'patch',   label: 'Generate patch',  icon: '⧗' },
+    { id: 'explain', label: 'Explain code',    icon: '◈' },
+    { id: 'patch',   label: 'Fix / Generate patch', icon: '⧗' },
     { id: 'mission', label: 'Create mission',  icon: '◎' },
     { id: 'review',  label: 'Review file',     icon: '★' },
+    { id: 'tests',   label: 'Generate tests',  icon: '⬡' },
   ];
 
   return (
@@ -449,6 +468,7 @@ export default function CodeEditorPane({
       return { filePath: tab?.path || '', cwd: cwd || '', symbolContext: '' };
     },
   }), []); // eslint-disable-line
+
 
   const status = useCallback((msg, ms = 2500) => {
     setStatusMsg(msg);
@@ -898,6 +918,7 @@ export default function CodeEditorPane({
       patch:   'code.generatePatch',
       mission: 'mission.create',
       review:  'code.review',
+      tests:   'code.generateTests',
     };
     const capability = capMap[actionId];
     if (!capability) return;
@@ -1084,9 +1105,9 @@ export default function CodeEditorPane({
         </div>
       )}
 
-      {/* Breadcrumb — shows file path + enclosing symbol at cursor */}
+      {/* Breadcrumb — sticky, shows file path + enclosing symbol at cursor */}
       {activeTab && (
-        <div className="cep-breadcrumb">
+        <div className="cep-breadcrumb cep-breadcrumb--sticky">
           <span
             className="cep-breadcrumb__file"
             title={activeTab.path}
@@ -1102,7 +1123,15 @@ export default function CodeEditorPane({
               </span>
             </>
           ) : null; })()}
+          <span className="cep-breadcrumb__line">:{activeLine}</span>
           <div className="cep-breadcrumb__actions">
+            <button
+              className="cep-breadcrumb__btn cep-breadcrumb__btn--ai"
+              title="Open AI Pair (⇧P)"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('ew-open-bottom-tab', { detail: 'pair' }));
+              }}
+            >⬡ AI</button>
             <button className="cep-breadcrumb__btn" onClick={goToDefinition} title="Go to Definition (F12)">F12</button>
             <button className="cep-breadcrumb__btn" onClick={findReferences} title="Find References">Refs</button>
             <button className="cep-breadcrumb__btn" onClick={startRenameSymbol} title="Rename Symbol (F2)">F2</button>

@@ -2,7 +2,10 @@ import React, { useState, useCallback, useRef, useEffect, lazy, Suspense } from 
 import { _fetch } from '../_client';
 import './AIPairProgramming.css';
 
-const PatchPreviewPanel = lazy(() => import('./PatchPreviewPanel'));
+const PatchPreviewPanel    = lazy(() => import('./PatchPreviewPanel'));
+const CommitAssistant      = lazy(() => import('./CommitAssistant'));
+const TestGenerator        = lazy(() => import('./TestGenerator'));
+const AITimeline           = lazy(() => import('./AITimeline'));
 
 async function codingPost(path, body) {
   return _fetch(path, { method: 'POST', body: JSON.stringify(body) });
@@ -63,9 +66,13 @@ function RepoAsk({ cwd, filePath, fileContent, symbolContext }) {
 
   const QUICK = [
     { label: 'Explain this repository',    q: 'Give me an overview of this repository: its purpose, architecture, key modules, and entry points.' },
-    { label: 'Where is X implemented?',    q: 'Where is authentication implemented in this repository?' },
+    { label: 'Where is auth implemented?', q: 'Where is authentication implemented in this repository? List all relevant files and functions.' },
+    { label: 'Why is login slow?',         q: 'Analyze the login flow in this repository and identify potential performance bottlenecks.' },
+    { label: 'Which services depend on auth?', q: 'Which services, modules, or files depend on the authentication system in this repository?' },
     { label: 'Summarize current file',     q: 'Summarize the current file: what it does, its exports, and key design decisions.' },
     { label: 'Review before commit',       q: 'Review the current uncommitted changes. List any bugs, security issues, or style problems.' },
+    { label: 'Find code smells',           q: 'Identify the top 5 code smells in this repository and suggest fixes.' },
+    { label: 'Suggest next action',        q: 'Based on the current state of this repository, what is the most impactful next engineering task?' },
   ];
 
   const ask = useCallback(async (q) => {
@@ -501,10 +508,13 @@ function CodeReview({ cwd: defaultCwd }) {
 
 // ── Main component ─────────────────────────────────────────────────────
 const TABS = [
-  { id: 'ask',      label: 'Ask AI' },
-  { id: 'actions',  label: 'Code Actions' },
-  { id: 'refactor', label: 'Refactor' },
-  { id: 'trace',    label: 'Stack Traces' },
+  { id: 'ask',      label: 'Ask AI'      },
+  { id: 'actions',  label: 'Code Actions'},
+  { id: 'tests',    label: 'Tests'       },
+  { id: 'commit',   label: 'Commit'      },
+  { id: 'timeline', label: 'Timeline'    },
+  { id: 'refactor', label: 'Refactor'    },
+  { id: 'trace',    label: 'Stack Traces'},
   { id: 'review',   label: 'Code Review' },
 ];
 
@@ -535,10 +545,17 @@ export default function AIPairProgramming({ className = '', cwd, filePath, symbo
       setCode(payload.selection);
       setTab('actions');
       const capToAction = {
-        'code.explain': 'explain',
-        'code.review':  'review',
+        'code.explain':       'explain',
+        'code.review':        'review',
         'code.generatePatch': 'refactor',
       };
+      const capToTab = {
+        'code.generateTests': 'tests',
+        'code.explain':       'actions',
+        'code.generatePatch': 'actions',
+      };
+      const destTab = capToTab[capability];
+      if (destTab) setTab(destTab);
       const action = capToAction[capability];
       if (action) {
         setTimeout(() => {
@@ -649,6 +666,21 @@ export default function AIPairProgramming({ className = '', cwd, filePath, symbo
           </div>
         )}
 
+        {tab === 'tests' && (
+          <Suspense fallback={<div className="aipp-loading">Loading…</div>}>
+            <TestGenerator cwd={cwd} filePath={filePath} />
+          </Suspense>
+        )}
+        {tab === 'commit' && (
+          <Suspense fallback={<div className="aipp-loading">Loading…</div>}>
+            <CommitAssistant cwd={cwd} />
+          </Suspense>
+        )}
+        {tab === 'timeline' && (
+          <Suspense fallback={<div className="aipp-loading">Loading…</div>}>
+            <AITimeline cwd={cwd} />
+          </Suspense>
+        )}
         {tab === 'refactor' && <MultiFileRefactor cwd={cwd} />}
         {tab === 'trace'    && <StackTraceExplainer cwd={cwd} filePath={filePath} fileContent={fileContent} />}
         {tab === 'review'   && <CodeReview cwd={cwd} />}
