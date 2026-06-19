@@ -4,6 +4,7 @@ import { listManagedAgents, createManagedAgent } from "../phase20Api";
 import { getOpsData, getStats } from "../telemetryApi";
 import { getRuntimeHistory, dispatchTask, emergencyStop, emergencyResume } from "../runtimeApi";
 import { sendMessage, checkHealth } from "../api";
+import EmptyState from "./EmptyState";
 import "./AgentOSV2.css";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -502,11 +503,6 @@ function TabFactory({ onAgentCreated, toast }) {
 
   return (
     <div className="av2-tab-content">
-      <ComingSoon
-        title="Agent Factory"
-        sub="Full visual agent creation wizard is under development. You can create agents via the API or use the form below for early access."
-      />
-
       {/* Step indicator */}
       <div className="av2-wizard-steps">
         {["Template", "Configure", "Capabilities", "Review"].map((s, i) => (
@@ -638,11 +634,6 @@ function TabCollaboration({ agents }) {
 
   return (
     <div className="av2-tab-content">
-      <ComingSoon
-        title="Multi-agent Collaboration"
-        sub="Visual coordination graph and real-time message streams are under development. Event feed below shows live activity."
-      />
-
       {/* Session overview */}
       <div className="av2-collab-header">
         <div className="av2-collab-session">

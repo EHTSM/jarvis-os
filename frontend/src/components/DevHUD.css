@@ -1,0 +1,33 @@
+/* ── Developer HUD Status Bar ─────────────────────────────────────────── */
+
+.hud-bar {
+  display: flex; align-items: center; gap: 1px;
+  height: 24px; padding: 0 10px;
+  background: rgba(5, 7, 13, 0.95);
+  border-top: 1px solid var(--border);
+  font-size: 10px; flex-shrink: 0;
+}
+
+.hud-item {
+  display: flex; align-items: center; gap: 4px;
+  padding: 0 7px; height: 24px;
+  background: transparent; border: none;
+  color: var(--text-faint); font-family: inherit; font-size: 10px;
+  cursor: pointer; border-radius: 4px;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.hud-item:hover { background: var(--surface-glass); color: var(--text-dim); }
+.hud-item--passive { cursor: default; }
+.hud-item--passive:hover { background: transparent; }
+
+.hud-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--text-faint); flex-shrink: 0;
+}
+.hud-dot--ok   { background: var(--success); }
+.hud-dot--warn { background: var(--warning); }
+.hud-dot--off  { background: var(--danger); }
+
+.hud-icon  { font-size: 9px; }
+.hud-label { font-weight: 600; letter-spacing: 0.03em; }
+.hud-spacer { flex: 1; }

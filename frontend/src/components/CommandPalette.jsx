@@ -137,11 +137,39 @@ function _highlight(label, query) {
   );
 }
 
+// ── Recent + Pin persistence ───────────────────────────────────────
+
+const CP_RECENT_KEY = "ooplix_cmd_recent";
+const CP_PINS_KEY   = "ooplix_cmd_pins";
+const MAX_RECENTS   = 8;
+
+function getStoredRecents() {
+  try { return JSON.parse(localStorage.getItem(CP_RECENT_KEY) || "[]"); } catch { return []; }
+}
+function pushStoredRecent(id) {
+  try {
+    const prev = getStoredRecents().filter(r => r !== id);
+    localStorage.setItem(CP_RECENT_KEY, JSON.stringify([id, ...prev].slice(0, MAX_RECENTS)));
+  } catch {}
+}
+function getStoredPins() {
+  try { return JSON.parse(localStorage.getItem(CP_PINS_KEY) || "[]"); } catch { return []; }
+}
+function toggleStoredPin(id, setPins) {
+  const current = getStoredPins();
+  const next = current.includes(id) ? current.filter(x => x !== id) : [id, ...current];
+  try { localStorage.setItem(CP_PINS_KEY, JSON.stringify(next)); } catch {}
+  setPins(next);
+}
+
 // ── Component ──────────────────────────────────────────────────────
 
 export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
   const [query,   setQuery]   = useState("");
   const [active,  setActive]  = useState(0);
+  const [recents, setRecents] = useState(getStoredRecents);
+  const [pins,    setPins]    = useState(getStoredPins);
+  const [listKey, setListKey] = useState(0);
   const inputRef  = useRef(null);
   const listRef   = useRef(null);
 
@@ -150,16 +178,48 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
     if (open) {
       setQuery("");
       setActive(0);
+      setRecents(getStoredRecents());
+      setPins(getStoredPins());
       setTimeout(() => inputRef.current?.focus(), 30);
     }
   }, [open]);
 
+  // Animate list when query changes
+  useEffect(() => { setListKey(k => k + 1); }, [query]);
+
+  const recentActions = useMemo(() => {
+    if (query.trim()) return [];
+    return recents
+      .map(id => ALL_ACTIONS.find(a => a.id === id))
+      .filter(Boolean)
+      .map(a => ({ ...a, _recent: true }));
+  }, [recents, query]);
+
+  const pinnedActions = useMemo(() => {
+    if (query.trim()) return [];
+    return pins
+      .map(id => ALL_ACTIONS.find(a => a.id === id))
+      .filter(Boolean)
+      .map(a => ({ ...a, _pinned: true }));
+  }, [pins, query]);
+
   const results = useMemo(() => {
-    return ALL_ACTIONS
+    const base = ALL_ACTIONS
       .map(a => ({ ...a, score: _score(a.label, query) }))
       .filter(a => a.score > 0)
       .sort((a, b) => b.score - a.score);
-  }, [query]);
+    if (!query.trim()) {
+      const pinnedIds  = new Set(pinnedActions.map(p => p.id));
+      const recentIds  = new Set(recentActions.map(r => r.id));
+      const combined   = new Set([...pinnedIds, ...recentIds]);
+      return [
+        ...pinnedActions,
+        ...recentActions.filter(r => !pinnedIds.has(r.id)),
+        ...base.filter(a => !combined.has(a.id)),
+      ];
+    }
+    return base;
+  }, [query, recentActions, pinnedActions]);
 
   // Clamp active index when results change
   useEffect(() => {
@@ -174,10 +234,11 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
 
   const execute = useCallback((action) => {
     if (!action) return;
+    pushStoredRecent(action.id);
+    setRecents(getStoredRecents());
     onClose();
     if (action.type === "ask") {
       onNavigate?.("chat");
-      // Pre-fill the chat with the query as a task
       if (query.trim() && query.trim().toLowerCase() !== "ask ooplix") {
         setTimeout(() => onAsk?.(query.trim()), 120);
       }
@@ -208,9 +269,12 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
 
   if (!open) return null;
 
-  // Group results for display
+  // Group results for display — pins and recents get special groups
   const grouped = results.reduce((acc, action, idx) => {
-    const g = action.group;
+    let g;
+    if (action._pinned) g = "Pinned";
+    else if (action._recent) g = "Recent";
+    else g = action.group;
     if (!acc[g]) acc[g] = [];
     acc[g].push({ ...action, _idx: idx });
     return acc;
@@ -243,7 +307,7 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
         </div>
 
         {/* Results */}
-        <div className="cp-results" ref={listRef} role="listbox">
+        <div className="cp-results cp-list-animate" key={listKey} ref={listRef} role="listbox">
           {results.length === 0 ? (
             <div className="cp-empty">
               <span className="cp-empty-icon">◎</span>
@@ -251,27 +315,40 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
             </div>
           ) : (
             Object.entries(grouped).map(([group, items]) => (
-              <div key={group} className="cp-group">
-                <div className="cp-group-label section-label">{group}</div>
-                {items.map(action => (
-                  <button
-                    key={action.id}
-                    data-idx={action._idx}
-                    className={`cp-item${action._idx === active ? " cp-item--active" : ""}`}
-                    onMouseEnter={() => setActive(action._idx)}
-                    onClick={() => execute(action)}
-                    role="option"
-                    aria-selected={action._idx === active}
-                  >
-                    <span className="cp-item-icon" aria-hidden="true">{action.icon}</span>
-                    <span className="cp-item-label">
-                      {_highlight(action.label, query)}
-                    </span>
-                    {action._idx === active && (
-                      <kbd className="cp-item-enter">↵</kbd>
-                    )}
-                  </button>
-                ))}
+              <div key={group} className={`cp-group${group === "Pinned" ? " cp-pin-section" : ""}`}>
+                <div className="cp-group-label section-label" data-group={group}>{group}</div>
+                {items.map(action => {
+                  const isPinned = pins.includes(action.id);
+                  return (
+                    <div key={action.id} className="cp-row">
+                      <button
+                        data-idx={action._idx}
+                        className={`cp-item${action._idx === active ? " cp-item--active" : ""}`}
+                        onMouseEnter={() => setActive(action._idx)}
+                        onClick={() => execute(action)}
+                        role="option"
+                        aria-selected={action._idx === active}
+                      >
+                        <span className="cp-item-icon" aria-hidden="true">{action.icon}</span>
+                        <span className="cp-item-label">
+                          {_highlight(action.label, query)}
+                        </span>
+                        {action.shortcut && <kbd className="cp-kbd">{action.shortcut}</kbd>}
+                        {action._idx === active && !action.shortcut && (
+                          <kbd className="cp-item-enter">↵</kbd>
+                        )}
+                      </button>
+                      <button
+                        className={`cp-pin-btn${isPinned ? " cp-pin-btn--active" : ""}`}
+                        title={isPinned ? "Unpin" : "Pin"}
+                        onClick={e => { e.stopPropagation(); toggleStoredPin(action.id, setPins); }}
+                        aria-label={isPinned ? "Unpin command" : "Pin command"}
+                      >
+                        {isPinned ? "★" : "☆"}
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             ))
           )}

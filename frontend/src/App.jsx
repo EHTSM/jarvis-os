@@ -103,6 +103,8 @@ const EnterpriseOS             = lazy(() => import("./components/EnterpriseOS.js
 const CapabilitiesOverview     = lazy(() => import("./components/CapabilitiesOverview.jsx"));
 const MissionControlV1         = lazy(() => import("./components/MissionControlV1.jsx"));
 const ExecutiveDashboard       = lazy(() => import("./components/ExecutiveDashboard.jsx"));
+const DevHUD                   = lazy(() => import("./components/DevHUD.jsx"));
+const EndOfDayReview           = lazy(() => import("./components/EndOfDayReview.jsx"));
 import WorkspaceSwitcher        from "./components/WorkspaceSwitcher.jsx";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts.js";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
@@ -322,7 +324,13 @@ function AppInner() {
   const [tab,      _setTab]     = useState("home");
   const tabHistory  = useRef(["home"]);
   const tabFuture   = useRef([]);
+  const [moreOpen,    setMoreOpen]    = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [showEOD,     setShowEOD]     = useState(false);
+
   const setTab = useCallback((next) => {
+    if (next === "eod") { setShowEOD(true); return; }
     _setTab(prev => {
       if (prev === next) return prev;
       tabHistory.current.push(next);
@@ -331,9 +339,6 @@ function AppInner() {
       return next;
     });
   }, []);
-  const [moreOpen,    setMoreOpen]    = useState(false);
-  const [paletteOpen, setPaletteOpen] = useState(false);
-  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [stats,     setStats]     = useState(null);
   const [opsData,   setOpsData]   = useState(null);
   const [toasts,    setToasts]    = useState([]);
@@ -451,6 +456,7 @@ function AppInner() {
     },
     'help':                () => setShortcutsOpen(o => !o),
     'search':              () => setPaletteOpen(true),
+    'eod-review':          () => setShowEOD(o => !o),
     'escape':              () => {
       if (shortcutsOpen) { setShortcutsOpen(false); return; }
       if (paletteOpen)   { setPaletteOpen(false);   return; }
@@ -862,7 +868,7 @@ function AppInner() {
 
       <main className="app-main" id="main-content" role="main">
         {/* key forces remount on tab change — triggers page-enter CSS animation */}
-        <div key={tab} className="app-tab-pane">
+        <div key={tab} className="app-tab-pane motion-premium">
         <ErrorBoundary label={tab}>
         <Suspense fallback={<div className="tab-suspense-loading"><div className="sk-row sk-row--w75" style={{margin:"24px auto"}} /></div>}>
         {tab === "mission"  && <MissionControlV1 onNavigate={setTab} />}
@@ -988,6 +994,21 @@ function AppInner() {
         </ErrorBoundary>
         </div>
       </main>
+
+      {/* Developer HUD — slim status bar */}
+      <Suspense fallback={null}>
+        <DevHUD online={online} onNavigate={setTab} />
+      </Suspense>
+
+      {/* End of Day Review modal */}
+      <AnimatePresence>
+        {showEOD && (
+          <Suspense fallback={null}>
+            <EndOfDayReview onClose={() => setShowEOD(false)} />
+          </Suspense>
+        )}
+      </AnimatePresence>
+
       {!_IS_DESKTOP && <CompanyFooter onNavigate={openLegal} />}
     </div>
     </ElectronWorkspace>

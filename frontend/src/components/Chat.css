@@ -7,6 +7,25 @@
   overflow: hidden;
 }
 
+/* ── Workspace context strip (#3) ─────────────────────────────────────── */
+.chat-ws-ctx {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  padding: 8px 14px 4px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.chat-ctx-chip {
+  font-size: 10px; font-weight: 600;
+  padding: 3px 8px; border-radius: var(--radius-pill);
+  background: var(--surface-glass); border: 1px solid var(--border);
+  color: var(--text-dim); white-space: nowrap;
+}
+.chat-ctx-chip--mission { border-color: rgba(124,111,255,0.25); color: var(--accent); }
+.chat-ctx-chip--health  { }
+.chat-ctx-chip--good    { border-color: var(--success-border); color: var(--success); }
+.chat-ctx-chip--warn    { border-color: var(--warning-border); color: var(--warning); }
+.chat-ctx-chip--crit    { border-color: var(--danger-border);  color: var(--danger);  }
+
 /* ── Message list ─────────────────────────────────────────────────────── */
 .chat-messages {
   flex: 1;

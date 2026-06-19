@@ -4,6 +4,7 @@ import { sendMessage } from "../api";
 import { getRuntimeHistory, dispatchTask, emergencyStop } from "../runtimeApi";
 import { getOpsData } from "../telemetryApi";
 import { startCycle, listCycles, cycleStats } from "../phase18Api";
+import EmptyState from "./EmptyState";
 import "./WorkflowOSV2.css";
 
 // ── Constants ─────────────────────────────────────────────────────────
@@ -293,13 +294,6 @@ function TabLibrary({ addToast, runningId, setRunningId }) {
         </div>
       </div>
 
-      <div className="wov2-coming-soon">
-        <span className="wov2-coming-icon">⬡</span>
-        <div>
-          <p className="wov2-coming-title">Workflow Builder <span className="csb-beta-badge">BETA</span></p>
-          <p className="wov2-coming-sub">Visual drag-and-drop designer with triggers, conditions, branches, and multi-agent steps is under development.</p>
-        </div>
-      </div>
     </div>
   );
 }
@@ -349,14 +343,6 @@ function TabDesigner({ addToast }) {
 
   return (
     <div className="wov2-designer-root">
-      <div className="wov2-coming-soon">
-        <span className="wov2-coming-icon">⬟</span>
-        <div>
-          <p className="wov2-coming-title">Visual Workflow Designer <span className="csb-beta-badge">BETA</span></p>
-          <p className="wov2-coming-sub">Node-based drag-and-drop builder with conditional branches, loops, and multi-agent orchestration is in development. Basic wizard available below.</p>
-        </div>
-      </div>
-
       <div className="wov2-wizard-steps">
         {STEPS.map((s, i) => (
           <div key={s} className={`wov2-wizard-step${step === i ? " wov2-wizard-step--active" : ""}${step > i ? " wov2-wizard-step--done" : ""}`}>
@@ -589,14 +575,6 @@ function TabScheduled() {
 
   return (
     <div className="wov2-sched-root">
-      <div className="wov2-coming-soon">
-        <span className="wov2-coming-icon">🕐</span>
-        <div>
-          <p className="wov2-coming-title">Workflow Scheduling <span className="csb-beta-badge">BETA</span></p>
-          <p className="wov2-coming-sub">Dynamic cron-based triggers and schedule management will be configurable here. Schedules below are illustrative of what's in the backend config.</p>
-        </div>
-      </div>
-
       <div className="wov2-sched-list">
         {schedules.map(s => (
           <div key={s.name} className={`wov2-sched-row${!s.enabled ? " wov2-sched-row--off" : ""}`}>
@@ -856,13 +834,6 @@ function TabRouter({ addToast }) {
         )}
       </div>
 
-      <div className="wov2-coming-soon">
-        <span className="wov2-coming-icon">◈</span>
-        <div>
-          <p className="wov2-coming-title">Dynamic Routing Rules <span className="csb-beta-badge">BETA</span></p>
-          <p className="wov2-coming-sub">Create custom routing rules, agent assignment logic, and priority queues from this interface.</p>
-        </div>
-      </div>
     </div>
   );
 }
@@ -882,14 +853,6 @@ function TabAutonomous({ addToast }) {
 
   return (
     <div className="wov2-auto-root">
-      <div className="wov2-coming-soon">
-        <span className="wov2-coming-icon">◎</span>
-        <div>
-          <p className="wov2-coming-title">Autonomous Operations <span className="csb-beta-badge">BETA</span></p>
-          <p className="wov2-coming-sub">This is where Ooplix will manage itself: auto-optimise workflows, self-heal agents, and improve performance over time.</p>
-        </div>
-      </div>
-
       <div className="wov2-live-today">
         <p className="wov2-lt-title">Live Today</p>
         <div className="wov2-live-cards">
@@ -960,7 +923,7 @@ function TabAutonomous({ addToast }) {
       </div>
 
       <div className="wov2-cs-list">
-        <p className="wov2-cs-title">Coming Soon</p>
+        <p className="wov2-cs-title">In Active Development</p>
         {[
           "Agent self-optimisation (auto-tuning prompts based on success rates)",
           "Workflow auto-generation from detected patterns",
@@ -968,7 +931,7 @@ function TabAutonomous({ addToast }) {
           "Ooplix Runs Ooplix — full autonomous business mode",
         ].map(item => (
           <div key={item} className="wov2-cs-item">
-            <span className="wov2-cs-dot">○</span>
+            <span className="wov2-cs-dot">◎</span>
             <span className="wov2-cs-text">{item}</span>
           </div>
         ))}

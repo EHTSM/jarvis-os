@@ -1,0 +1,106 @@
+/* ── End of Day Review ────────────────────────────────────────────────── */
+
+.eod-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.65); z-index: 1800;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.eod-panel {
+  background: var(--surface-base);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  width: 100%; max-width: 580px; max-height: 80vh;
+  overflow: hidden; display: flex; flex-direction: column;
+  box-shadow: var(--shadow-xl);
+}
+.eod-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 20px 20px 14px; border-bottom: 1px solid var(--border);
+}
+.eod-title {
+  font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: -0.3px;
+}
+.eod-date {
+  font-size: 11px; color: var(--text-faint); margin-top: 2px; display: block;
+}
+.eod-close {
+  background: transparent; border: none; color: var(--text-faint);
+  font-size: 14px; cursor: pointer; padding: 4px 6px; border-radius: 6px;
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.eod-close:hover { color: var(--text); background: var(--surface-glass); }
+
+.eod-body {
+  flex: 1; overflow-y: auto; padding: 14px 20px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.eod-section { display: flex; flex-direction: column; gap: 8px; }
+.eod-section-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-faint);
+  display: flex; align-items: center; gap: 6px;
+}
+.eod-count {
+  background: var(--surface-raised); color: var(--text-dim);
+  padding: 1px 6px; border-radius: var(--radius-pill); font-size: 10px;
+}
+.eod-empty { font-size: 12px; color: var(--text-faint); font-style: italic; }
+
+.eod-mission-list { display: flex; flex-direction: column; gap: 4px; }
+.eod-mission-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px;
+  background: var(--surface-glass); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.eod-status {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--text-faint); flex-shrink: 0;
+}
+.eod-status--done,
+.eod-status--completed,
+.eod-status--success { background: var(--success); }
+.eod-status--running,
+.eod-status--active  { background: var(--accent); }
+.eod-status--failed,
+.eod-status--error   { background: var(--danger); }
+.eod-mission-title {
+  flex: 1; font-size: 12px; color: var(--text-dim);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.eod-mission-status { font-size: 10px; color: var(--text-faint); font-weight: 600; }
+
+.eod-lessons { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.eod-lesson {
+  font-size: 12px; color: var(--text-dim);
+  padding: 5px 10px;
+  background: var(--surface-glass); border-radius: var(--radius-sm);
+  border-left: 2px solid var(--accent);
+}
+
+.eod-suggestions { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.eod-suggestion {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 12px; color: var(--text-dim);
+}
+.eod-suggestion-num {
+  flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-size: 9px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.eod-loading { padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.eod-skel { height: 32px; }
+
+.eod-footer {
+  padding: 14px 20px; border-top: 1px solid var(--border);
+  display: flex; justify-content: flex-end;
+}
+.eod-btn {
+  padding: 8px 20px; border: none; border-radius: var(--radius-pill);
+  font-family: inherit; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: background var(--dur-fast);
+}
+.eod-btn--primary { background: var(--accent); color: #fff; }
+.eod-btn--primary:hover { background: var(--accent-hover); }

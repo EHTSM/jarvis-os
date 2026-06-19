@@ -265,11 +265,23 @@ const VARIANTS = {
     metric: null,
   },
 
+  default: {
+    icon:  "◌",
+    title: "Nothing here yet",
+    desc:  "Start working to see content here.",
+    steps: null,
+    primaryLabel: null,
+    primaryTab:   null,
+    secondaryLabel: null,
+    secondaryTab:   null,
+    metric: null,
+  },
+
 };
 
 // ── Root component ────────────────────────────────────────────────────
-export default function EmptyState({ variant = "pipeline", onNavigate, onExampleClick }) {
-  const v = VARIANTS[variant] || VARIANTS.pipeline;
+export default function EmptyState({ variant = "pipeline", onNavigate, onExampleClick, body }) {
+  const v = VARIANTS[variant] || VARIANTS.default;
 
   const handlePrimary = () => {
     track.event("empty_state_cta", { variant, action: "primary" });
@@ -285,7 +297,7 @@ export default function EmptyState({ variant = "pipeline", onNavigate, onExample
     <div className="es-root animate-fade-up">
       <div className="es-icon" aria-hidden="true">{v.icon}</div>
       <h2 className="es-title">{v.title}</h2>
-      <p className="es-desc">{v.desc}</p>
+      <p className="es-desc">{body || v.desc}</p>
 
       {v.steps && <Steps steps={v.steps} />}
 
