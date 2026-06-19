@@ -1,0 +1,467 @@
+/* ACP-12 — Autonomous Engineering Platform Panel */
+
+.app-root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #0f172a;
+    color: #e5e7eb;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 13px;
+    overflow: hidden;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+
+.app-header {
+    flex-shrink: 0;
+    background: #111827;
+    border-bottom: 1px solid #1f2937;
+    padding: 10px 16px 0;
+}
+
+.app-header-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #6b7280;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.app-header-icon { color: #60a5fa; font-size: 15px; }
+
+.app-header-tabs { display: flex; gap: 2px; }
+
+.app-hdr-tab {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-family: inherit;
+    transition: color 0.15s, border-color 0.15s;
+}
+.app-hdr-tab:hover { color: #d1d5db; }
+.app-hdr-tab--active { color: #60a5fa; border-bottom-color: #60a5fa; }
+
+/* ── Content ────────────────────────────────────────────────────────────────── */
+
+.app-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.app-empty     { color: #4b5563; text-align: center; padding: 24px; font-size: 12px; }
+.app-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mono { font-family: ui-monospace, monospace; font-size: 11px; }
+
+/* ── Goal input ─────────────────────────────────────────────────────────────── */
+
+.app-goal-input {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.app-goal-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #60a5fa;
+    margin-bottom: 10px;
+}
+
+.app-goal-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.app-goal-textarea {
+    flex: 1;
+    background: #0f172a;
+    border: 1px solid #374151;
+    border-radius: 6px;
+    color: #f1f5f9;
+    font-family: inherit;
+    font-size: 13px;
+    padding: 8px 12px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.15s;
+}
+.app-goal-textarea:focus { border-color: #60a5fa; }
+
+.app-run-btn {
+    background: #1d4ed8;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: background 0.15s;
+    align-self: stretch;
+}
+.app-run-btn:hover:not(:disabled) { background: #2563eb; }
+.app-run-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.app-samples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.app-sample-btn {
+    background: #1f2937;
+    color: #9ca3af;
+    border: 1px solid #374151;
+    border-radius: 5px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: inherit;
+    transition: background 0.12s, color 0.12s;
+}
+.app-sample-btn:hover:not(:disabled) { background: #374151; color: #f1f5f9; }
+.app-sample-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Dashboard layout ───────────────────────────────────────────────────────── */
+
+.app-dashboard-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 900px) {
+    .app-dashboard-cols { grid-template-columns: 1fr; }
+}
+
+.app-dashboard-left, .app-dashboard-right { min-width: 0; }
+
+.app-dashboard-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    gap: 12px;
+    text-align: center;
+}
+.app-empty-icon  { font-size: 32px; color: #374151; }
+.app-empty-title { font-size: 16px; font-weight: 700; color: #4b5563; }
+.app-empty-sub   { font-size: 12px; color: #374151; line-height: 1.8; }
+.app-empty-meta  { font-size: 11px; color: #6b7280; margin-top: 8px; }
+
+/* ── Execution panel ────────────────────────────────────────────────────────── */
+
+.app-exec-panel {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 10px;
+    padding: 14px;
+    height: 100%;
+}
+
+.app-exec-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    font-size: 12px;
+}
+.app-exec-status  { font-weight: 700; font-size: 13px; }
+.app-exec-duration { color: #4b5563; }
+.app-exec-risk     { font-size: 11px; }
+.app-exec-conf     { font-size: 11px; color: #9ca3af; }
+.app-exec-repairs  { color: #f59e0b; font-size: 11px; }
+
+.app-exec-goal {
+    color: #f1f5f9;
+    font-size: 13px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid #1f2937;
+    padding-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* Timeline */
+.app-timeline { display: flex; flex-direction: column; }
+
+.app-tl-step {
+    display: flex;
+    gap: 10px;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.app-tl-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 2px;
+    z-index: 1;
+}
+
+.app-tl-line {
+    position: absolute;
+    left: 4px;
+    top: 12px;
+    width: 2px;
+    height: 100%;
+}
+
+.app-tl-body {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 12px;
+}
+.app-tl-stage  { color: #d1d5db; font-weight: 600; width: 60px; }
+.app-tl-status { font-size: 11px; min-width: 40px; }
+.app-tl-detail { color: #6b7280; font-size: 11px; }
+.app-tl-err    { color: #ef4444; font-size: 11px; }
+
+/* ── Executive report ───────────────────────────────────────────────────────── */
+
+.app-report {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 10px;
+    padding: 14px;
+}
+
+.app-report-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    border-bottom: 1px solid #1f2937;
+    padding-bottom: 10px;
+}
+.app-report-status { font-weight: 700; font-size: 14px; }
+.app-report-id     { color: #6b7280; font-size: 11px; }
+.app-report-ts     { color: #4b5563; font-size: 11px; margin-left: auto; }
+.app-report-goal   { color: #f1f5f9; margin-bottom: 14px; font-size: 13px; line-height: 1.5; }
+
+.app-report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.app-report-section {
+    background: #0f172a;
+    border-radius: 6px;
+    padding: 10px;
+}
+.app-report-section .app-section-label { display: block; margin-bottom: 6px; }
+
+.app-kv-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    padding: 2px 0;
+}
+.app-kv-row span:first-child { color: #6b7280; }
+.app-kv-row span:last-child  { color: #d1d5db; text-align: right; }
+
+/* Pipeline stages */
+.app-report-pipeline { margin-bottom: 12px; }
+
+.app-pipe-stages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.app-pipe-stage {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #0f172a;
+    border-radius: 5px;
+    padding: 4px 8px;
+    font-size: 11px;
+}
+.app-pipe-dot    { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.app-pipe-name   { color: #9ca3af; }
+.app-pipe-status { font-size: 10px; }
+.app-pipe-ms     { color: #4b5563; }
+
+.app-rollback-badge {
+    margin-top: 8px;
+    background: #ef444415;
+    color: #ef4444;
+    border: 1px solid #ef444430;
+    border-radius: 5px;
+    padding: 4px 10px;
+    font-size: 11px;
+    display: inline-block;
+}
+
+/* Recommendations */
+.app-report-recs { margin-top: 4px; }
+
+.app-rec-row {
+    display: flex;
+    gap: 10px;
+    padding: 5px 0;
+    border-bottom: 1px solid #1f2937;
+    font-size: 11px;
+}
+.app-rec-src  { color: #60a5fa; min-width: 130px; flex-shrink: 0; }
+.app-rec-text { color: #9ca3af; }
+
+/* ── Run history ────────────────────────────────────────────────────────────── */
+
+.app-history-view { display: flex; flex-direction: column; gap: 20px; }
+
+.app-history-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.app-hist-stat {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    padding: 10px 16px;
+    min-width: 80px;
+    text-align: center;
+}
+.app-hist-val { font-size: 20px; font-weight: 700; }
+.app-hist-key { font-size: 10px; color: #6b7280; text-transform: uppercase; margin-top: 4px; }
+
+.app-run-list { display: flex; flex-direction: column; gap: 4px; }
+
+.app-run-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: #111827;
+    cursor: pointer;
+    font-size: 12px;
+    border: 1px solid transparent;
+    transition: border-color 0.12s, background 0.12s;
+}
+.app-run-row:hover { background: #1f2937; }
+.app-run-row--selected { border-color: #60a5fa44; background: #1e3a5f22; }
+
+.app-run-dot     { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.app-run-cat     { font-size: 13px; min-width: 18px; text-align: center; }
+.app-run-goal    { flex: 1; color: #d1d5db; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.app-run-status  { font-size: 10px; min-width: 60px; text-align: right; }
+.app-run-conf    { color: #9ca3af; font-size: 11px; min-width: 34px; text-align: right; }
+.app-run-repairs { color: #f59e0b; font-size: 10px; }
+.app-run-dur     { color: #4b5563; font-size: 11px; min-width: 50px; text-align: right; }
+.app-run-ts      { color: #374151; font-size: 10px; min-width: 55px; text-align: right; }
+
+.app-selected-report { margin-top: 16px; }
+
+/* ── Benchmark ──────────────────────────────────────────────────────────────── */
+
+.app-bench { display: flex; flex-direction: column; gap: 16px; }
+
+.app-bench-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.app-bench-title { font-size: 14px; font-weight: 700; color: #f1f5f9; }
+
+.app-bench-kpis {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.app-bench-kpi {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    padding: 12px 18px;
+    min-width: 80px;
+    text-align: center;
+}
+.app-bench-kpi-val { font-size: 20px; font-weight: 700; }
+.app-bench-kpi-lbl { font-size: 10px; color: #6b7280; text-transform: uppercase; margin-top: 4px; }
+
+.app-bench-scenarios { display: flex; flex-direction: column; gap: 4px; }
+
+.app-bench-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #111827;
+    border-radius: 6px;
+    font-size: 12px;
+}
+.app-bench-row--fail { border: 1px solid #ef444420; }
+.app-bench-num  { color: #4b5563; width: 18px; flex-shrink: 0; }
+.app-bench-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.app-bench-goal { flex: 1; color: #d1d5db; }
+.app-bench-meta { color: #6b7280; font-size: 11px; min-width: 180px; text-align: right; }
+.app-bench-err  { color: #ef4444; font-size: 11px; }
+.app-bench-ms   { color: #4b5563; font-size: 11px; min-width: 55px; text-align: right; }
+
+/* Architecture audit */
+.app-audit {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    padding: 14px;
+}
+.app-audit-head {
+    font-size: 12px;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin-bottom: 12px;
+}
+.app-audit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 4px;
+}
+.app-audit-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+.app-audit-row--fail { background: #ef444410; }
+.app-audit-dot  { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.app-audit-name { color: #9ca3af; }

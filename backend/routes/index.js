@@ -85,7 +85,8 @@ router.use(require("./composer"));        // /composer/* (ACP-7)
 router.use(require("./autonomousAgent")); // /autonomous/* (ACP-8)
 router.use(require("./repositoryViz"));      // /repo-viz/* (ACP-9)
 router.use(require("./engineeringMemory"));   // /memory/* (ACP-10)
-router.use(require("./selfImprovement"));    // /improvement/* (ACP-11)
+router.use(require("./selfImprovement"));      // /improvement/* (ACP-11)
+router.use(require("./autonomousPlatform"));  // /platform/* (ACP-12)
 router.use(require("./analytics"));    // /analytics/executive, /workspace, /productivity, /automation, /security, /governance, /ai, /runtime, /missions, /reports
 router.use(require("./plugins"));      // /plugins, /plugins/:id, /plugins/install, /plugins/uninstall, /plugins/enable, /plugins/disable, /plugins/health, /plugins/diagnostics
 router.use(require("./marketplace"));  // /marketplace/catalog, /plugin/:id, /categories, /featured, /search, /recommendations, /versions/:id, /changelog/:id

@@ -7,7 +7,8 @@ const ComposerPanel         = lazy(() => import("./ComposerPanel"));
 const AutonomousAgentPanel  = lazy(() => import("./AutonomousAgentPanel"));
 const RepositoryMapPanel      = lazy(() => import("./RepositoryMapPanel"));
 const EngineeringMemoryPanel  = lazy(() => import("./EngineeringMemoryPanel"));
-const SelfImprovementPanel    = lazy(() => import("./SelfImprovementPanel"));
+const SelfImprovementPanel      = lazy(() => import("./SelfImprovementPanel"));
+const AutonomousPlatformPanel   = lazy(() => import("./AutonomousPlatformPanel"));
 import { _fetch } from "../_client";
 import "./AutonomousAgentDashboard.css";
 
@@ -859,6 +860,9 @@ export default function AutonomousAgentDashboard() {
                 <button className={`aad-tab ${activeTab === "evolution" ? "active" : ""}`} onClick={() => setActiveTab("evolution")}>
                     Evolution
                 </button>
+                <button className={`aad-tab ${activeTab === "platform" ? "active" : ""}`} onClick={() => setActiveTab("platform")}>
+                    Autonomous
+                </button>
             </div>
 
             {/* Agents tab */}
@@ -967,6 +971,13 @@ export default function AutonomousAgentDashboard() {
             {activeTab === "evolution" && (
                 <Suspense fallback={<div style={{ padding: 16, color: "#4b5563" }}>Loading…</div>}>
                     <SelfImprovementPanel />
+                </Suspense>
+            )}
+
+            {/* Autonomous Engineering Platform (ACP-12) */}
+            {activeTab === "platform" && (
+                <Suspense fallback={<div style={{ padding: 16, color: "#4b5563" }}>Loading…</div>}>
+                    <AutonomousPlatformPanel />
                 </Suspense>
             )}
 
