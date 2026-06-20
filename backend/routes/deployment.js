@@ -145,4 +145,14 @@ router.post("/deployment/:id/cancel", (req, res) => {
     catch (e) { _err(res, e, e.message?.includes("not found") ? 404 : 400); }
 });
 
+// ── OP-1: Deployment Report ──────────────────────────────────────────────────
+// GET /deployment/op1-report — generate OP-1 production deployment report
+router.get("/deployment/op1-report", async (req, res) => {
+    try {
+        const { generateReport } = require("../services/deploymentReport.cjs");
+        const report = await generateReport();
+        res.json({ ok: true, report });
+    } catch (e) { _err(res, e); }
+});
+
 module.exports = router;

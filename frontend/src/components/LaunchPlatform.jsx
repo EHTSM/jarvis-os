@@ -26,6 +26,7 @@ const TABS = [
   { id: "benchmark",   label: "Benchmark"   },
   { id: "pcpreport",   label: "PCP Report"  },
   { id: "pipreport",   label: "PIP Report"  },
+  { id: "op1report",   label: "Deploy"      },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1079,6 +1080,102 @@ function PIPReportPanel() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// MODULE 13: Deployment Report (OP-1)
+// ─────────────────────────────────────────────────────────────────────────────
+function OP1ReportPanel() {
+  const [report, setReport] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const load = async () => {
+    setLoading(true);
+    const r = await api("/deployment/op1-report");
+    if (r.ok) setReport(r.report);
+    setLoading(false);
+  };
+
+  const STATUS_COLOR = {
+    running: "#22c55e", configured: "#22c55e", passed: "#22c55e", current: "#22c55e", local_dev: "#7c6af7",
+    partial: "#f59e0b", stale: "#f59e0b", warning: "#f59e0b", configured_not_running: "#f59e0b",
+    not_installed: "#888", not_ready: "#ef4444", server_down: "#ef4444", incomplete: "#ef4444",
+    generated: "#22c55e", generated_with_warnings: "#f59e0b",
+  };
+
+  const VERDICT_COLOR = { "GO": "#22c55e", "CONDITIONAL GO": "#f59e0b", "NOT YET": "#ef4444" };
+  const verdict = report?.recommendation?.split(" — ")[0];
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+        <p className="launch-section-title" style={{ margin: 0 }}>Deployment Report — OP-1</p>
+        <button className="btn-primary" onClick={load} disabled={loading}>{loading ? "Generating…" : "Generate Report"}</button>
+      </div>
+
+      {!report && !loading && (
+        <div style={{ textAlign: "center", padding: "40px 0", color: "#888" }}>
+          <div style={{ fontSize: 32, marginBottom: 8 }}>⬡</div>
+          <div>Audits 10 production deployment tasks: VPS · PM2 · Nginx · SSL · Domains · .env · Validation · Backups · Monitoring · Report</div>
+          <div style={{ marginTop: 8, fontSize: 11, color: "#555" }}>Runs live checks against the running server, environment, and file system</div>
+        </div>
+      )}
+
+      {report && (
+        <>
+          <div className="launch-grid" style={{ marginBottom: 16 }}>
+            <div className="launch-card accent">
+              <h4>Readiness Score</h4>
+              <div className="val">{report.overallScore}%</div>
+              <div className="sub">{report.summary.passed}/{report.summary.totalChecks} checks passed</div>
+            </div>
+            <div className="launch-card" style={{ borderLeft: `3px solid ${VERDICT_COLOR[verdict] || "#888"}` }}>
+              <h4 style={{ color: VERDICT_COLOR[verdict] || "#888" }}>Verdict</h4>
+              <div className="val" style={{ fontSize: 16, color: VERDICT_COLOR[verdict] }}>{verdict}</div>
+              <div className="sub" style={{ fontSize: 10 }}>{report.recommendation.split(" — ")[1] || ""}</div>
+            </div>
+            <div className="launch-card">
+              <h4>Tasks</h4>
+              <div className="val">{report.summary.tasks}</div>
+              <div className="sub">{report.summary.configured} configured · {report.summary.warning} warn · {report.summary.not_ready} blocking</div>
+            </div>
+            <div className="launch-card">
+              <h4>Generated</h4>
+              <div className="val" style={{ fontSize: 12 }}>{report.generatedAt?.slice(0, 16).replace("T", " ")}</div>
+              <div className="sub">OP-1 Production Deployment</div>
+            </div>
+          </div>
+
+          <div className="check-list">
+            {report.tasks.map((task) => {
+              const color = STATUS_COLOR[task.status] || "#888";
+              const checks = Object.entries(task.checks || {});
+              return (
+                <div key={task.task} style={{ marginBottom: 12 }}>
+                  <div className="check-row" style={{ borderLeft: `3px solid ${color}`, flexDirection: "column", alignItems: "flex-start", gap: 4 }}>
+                    <div style={{ display: "flex", gap: 8, alignItems: "center", width: "100%" }}>
+                      <span className="check-label" style={{ flex: 1, fontWeight: 600 }}>{task.task}</span>
+                      <span style={{ fontSize: 10, color, background: "rgba(0,0,0,0.3)", padding: "1px 8px", borderRadius: 8, whiteSpace: "nowrap" }}>{task.status}</span>
+                      <span style={{ fontSize: 10, color: "#666" }}>{task.score?.pass}/{task.score?.total}</span>
+                    </div>
+                    <div style={{ fontSize: 11, color: "#888", paddingLeft: 2 }}>{task.detail}</div>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 12px", paddingLeft: 2, marginTop: 2 }}>
+                      {checks.map(([k, v]) => (
+                        <span key={k} style={{ fontSize: 10, color: v.ok === true ? "#22c55e" : v.ok === false ? "#ef4444" : "#888" }}>
+                          {v.ok === true ? "✓" : v.ok === false ? "✗" : "—"} {k.replace(/_/g, " ")}
+                          {v.detail ? ` (${v.detail})` : ""}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Root component
 // ─────────────────────────────────────────────────────────────────────────────
 export default function LaunchPlatform() {
@@ -1097,6 +1194,7 @@ export default function LaunchPlatform() {
     benchmark:  <BenchmarkPanel  />,
     pcpreport:  <PCPReportPanel  />,
     pipreport:  <PIPReportPanel  />,
+    op1report:  <OP1ReportPanel  />,
   };
 
   return (
