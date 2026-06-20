@@ -49,6 +49,7 @@ const AdminDashboard              = lazy(() => import('./AdminDashboard'));
 const CommercialBenchmark         = lazy(() => import('./CommercialBenchmark'));
 const AIMarketplace               = lazy(() => import('./AIMarketplace'));
 const AIBenchmarkLab              = lazy(() => import('./AIBenchmarkLab'));
+const AutomationDashboard         = lazy(() => import('./AutomationDashboard'));
 
 // ── Generic resize hook ───────────────────────────────────────────────
 function useResize(initial, min, max, axis = 'y') {
@@ -175,6 +176,7 @@ const BOTTOM_TABS = {
   benchmark:   { label: 'Benchmark',   icon: '◈' },
   aimarket:    { label: 'AI Market',   icon: '◎' },
   aibench:     { label: 'AI Bench',    icon: '◈' },
+  automation:  { label: 'Automation',  icon: '⬢' },
 };
 
 const api        = () => window.electronAPI;
@@ -1125,6 +1127,9 @@ export default function ElectronWorkspace({ children }) {
                   </LazyPane>
                   <LazyPane active={bottomTab === 'aibench'}>
                     <ErrorBoundary label="AI Benchmark Lab"><AIBenchmarkLab /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'automation'}>
+                    <ErrorBoundary label="Automation Dashboard"><AutomationDashboard /></ErrorBoundary>
                   </LazyPane>
                 </div>
               </div>
