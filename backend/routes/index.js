@@ -98,6 +98,7 @@ router.use(require("./creativeStudio")); // /creative/* — Creative Registry, U
 router.use(require("./launchPlatform")); // /launch/* — Dashboard, Onboarding, Workspaces, Docs, Academy, Referral, CST, Feedback, Readiness, Benchmark
 router.use(require("./founderJournal")); // /fop/* — FOP-1: Journal, Escape, Crash, Perf, AI, Credits, Friction, Weekly Score, Launch Confidence, Ship Recommendation
 router.use(require("./growthOS"));        // /growth/* — G1: Email, SMS, WhatsApp, Push, Automation, Audience, Analytics, Templates, Dashboard, Benchmark
+router.use(require("./contentSEO"));      // /content/* — G2: Blog Studio, SEO, Repurposing, Landing Pages, Docs, Calendar, Keywords, Brand Voice, Dashboard, Benchmark
 router.use(require("./plan-management")); // /plan/* — current plan, upgrade
 
 module.exports = router;
