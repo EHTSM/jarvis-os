@@ -53,6 +53,7 @@ const AutomationDashboard         = lazy(() => import('./AutomationDashboard'));
 const CreativeStudio              = lazy(() => import('./CreativeStudio'));
 const LaunchPlatform              = lazy(() => import('./LaunchPlatform'));
 const FounderJournal              = lazy(() => import('./FounderJournal'));
+const GrowthOS                    = lazy(() => import('./GrowthOS'));
 
 // ── Generic resize hook ───────────────────────────────────────────────
 function useResize(initial, min, max, axis = 'y') {
@@ -183,6 +184,7 @@ const BOTTOM_TABS = {
   creative:    { label: 'Creative',    icon: '✦' },
   launch:      { label: 'Launch',      icon: '◎' },
   fop:         { label: 'Founder',     icon: '◇' },
+  growth:      { label: 'Growth',      icon: '⬢' },
 };
 
 const api        = () => window.electronAPI;
@@ -1145,6 +1147,9 @@ export default function ElectronWorkspace({ children }) {
                   </LazyPane>
                   <LazyPane active={bottomTab === 'fop'}>
                     <ErrorBoundary label="Founder Journal"><FounderJournal /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'growth'}>
+                    <ErrorBoundary label="Growth OS"><GrowthOS /></ErrorBoundary>
                   </LazyPane>
                 </div>
               </div>

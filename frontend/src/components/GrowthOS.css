@@ -1,0 +1,396 @@
+/* Growth Operating System — G1 */
+
+.gos-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #0f0f13;
+  color: #e2e2e8;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  overflow: hidden;
+}
+
+.gos-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid #1e1e2e;
+  flex-shrink: 0;
+}
+
+.gos-title    { font-size: 13px; font-weight: 700; color: #22c55e; }
+.gos-subtitle { font-size: 11px; color: #555; }
+
+/* ── Tabs ── */
+.gos-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 6px 16px;
+  border-bottom: 1px solid #1e1e2e;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+.gos-tabs::-webkit-scrollbar { display: none; }
+
+.gos-tab {
+  background: none;
+  border: 1px solid transparent;
+  color: #666;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+.gos-tab:hover { color: #aaa; }
+.gos-tab.active {
+  color: #22c55e;
+  border-color: #1e3a2e;
+  background: #0f2e1e;
+}
+.gos-tab-icon { font-size: 10px; }
+
+/* ── Content ── */
+.gos-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+/* ── Section headers ── */
+.gos-section-hdr {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.gos-section-title { font-size: 13px; font-weight: 700; }
+.gos-sub-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #555;
+  margin: 14px 0 6px;
+}
+
+/* ── Stats grid ── */
+.gos-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.gos-stat-card {
+  background: #12121c;
+  border: 1px solid #1e1e2e;
+  border-radius: 6px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.gos-stat-val { font-size: 18px; font-weight: 700; color: #e2e2e8; }
+.gos-stat-lbl { font-size: 10px; color: #666; margin-top: 2px; }
+.gos-stat-sub { font-size: 10px; color: #555; }
+
+/* ── Channel grid ── */
+.gos-channel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.gos-channel-card {
+  background: #12121c;
+  border: 1px solid #1e1e2e;
+  border-radius: 8px;
+  padding: 14px;
+}
+.gos-channel-icon  { font-size: 18px; margin-bottom: 6px; }
+.gos-channel-name  { font-size: 12px; font-weight: 700; color: #e2e2e8; }
+.gos-channel-val   { font-size: 16px; font-weight: 700; color: #22c55e; margin: 4px 0; }
+.gos-channel-meta  { font-size: 10px; color: #888; }
+.gos-channel-count { font-size: 10px; color: #555; margin-top: 4px; }
+
+/* ── Lists ── */
+.gos-list { display: flex; flex-direction: column; gap: 4px; }
+
+.gos-campaign-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #12121c;
+  border: 1px solid #1e1e2e;
+  border-radius: 4px;
+  flex-wrap: wrap;
+}
+.gos-campaign-row.gos-row-fail { border-left: 3px solid #ef4444; }
+.gos-campaign-name  { font-size: 12px; font-weight: 600; color: #e2e2e8; flex: 1; min-width: 0; }
+.gos-campaign-meta  { font-size: 11px; color: #777; }
+.gos-campaign-sent  { font-size: 11px; color: #aaa; white-space: nowrap; }
+.gos-campaign-stats { display: flex; gap: 10px; font-size: 11px; color: #aaa; }
+
+/* ── Sub-tabs ── */
+.gos-sub-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+.gos-sub-tab {
+  background: none;
+  border: 1px solid #2a2a3a;
+  border-radius: 4px;
+  color: #777;
+  font-size: 11px;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.gos-sub-tab:hover { color: #ccc; }
+.gos-sub-tab.active { color: #22c55e; border-color: #1e3a2e; background: #0f2e1e; }
+
+/* ── Forms ── */
+.gos-form {
+  background: #12121c;
+  border: 1px solid #1e1e2e;
+  border-radius: 6px;
+  padding: 14px;
+}
+.gos-form-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #e2e2e8;
+  margin-bottom: 10px;
+}
+.gos-form-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.gos-input {
+  background: #0f0f13;
+  border: 1px solid #2a2a3a;
+  border-radius: 4px;
+  color: #e2e2e8;
+  font-size: 12px;
+  padding: 6px 10px;
+  font-family: inherit;
+  outline: none;
+  flex: 1;
+  min-width: 120px;
+}
+.gos-input:focus { border-color: #22c55e; }
+
+.gos-textarea {
+  background: #0f0f13;
+  border: 1px solid #2a2a3a;
+  border-radius: 4px;
+  color: #e2e2e8;
+  font-size: 12px;
+  padding: 8px 10px;
+  font-family: inherit;
+  outline: none;
+  resize: vertical;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 72px;
+  line-height: 1.5;
+}
+.gos-textarea:focus { border-color: #22c55e; }
+
+.gos-select {
+  background: #0f0f13;
+  border: 1px solid #2a2a3a;
+  border-radius: 4px;
+  color: #e2e2e8;
+  font-size: 12px;
+  padding: 6px 10px;
+  font-family: inherit;
+  outline: none;
+}
+.gos-select:focus { border-color: #22c55e; }
+
+.gos-check-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #888;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* ── Buttons ── */
+.gos-btn {
+  background: #22c55e;
+  border: none;
+  border-radius: 4px;
+  color: #0f0f13;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 7px 16px;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.gos-btn:hover   { background: #16a34a; }
+.gos-btn:disabled { opacity: 0.5; cursor: default; }
+
+.gos-btn-sm {
+  background: none;
+  border: 1px solid #2a3a2e;
+  border-radius: 4px;
+  color: #22c55e;
+  font-size: 10px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.gos-btn-sm:hover { background: #0f2e1e; }
+
+/* ── Chips ── */
+.gos-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 10px;
+  background: #1e1e2e;
+  color: #888;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.gos-chip-green  { background: #0f2e1e; color: #22c55e; }
+.gos-chip-red    { background: #2e0f0f; color: #ef4444; }
+.gos-chip-yellow { background: #2e2a0f; color: #f59e0b; }
+.gos-chip-purple { background: #1e1a2e; color: #7c6af7; }
+.gos-chip-gray   { background: #1a1a1a; color: #666; }
+
+/* ── Status dot ── */
+.gos-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.gos-dot-green  { background: #22c55e; }
+.gos-dot-gray   { background: #555; }
+.gos-dot-yellow { background: #f59e0b; }
+
+/* ── Bar ── */
+.gos-bar-track { flex: 1; min-width: 60px; background: #1a1a24; border-radius: 4px; height: 5px; overflow: hidden; }
+.gos-bar-fill  { height: 100%; border-radius: 4px; }
+
+/* ── Filter row ── */
+.gos-filter-row {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.gos-filter-btn {
+  background: none;
+  border: 1px solid #2a2a3a;
+  border-radius: 4px;
+  color: #777;
+  font-size: 11px;
+  padding: 3px 10px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.gos-filter-btn:hover { color: #ccc; }
+.gos-filter-btn.active { color: #22c55e; border-color: #1e3a2e; background: #0f2e1e; }
+
+/* ── Template grid ── */
+.gos-template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.gos-template-card {
+  background: #12121c;
+  border: 1px solid #1e1e2e;
+  border-radius: 6px;
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.gos-template-card:hover  { border-color: #22c55e; }
+.gos-template-card.selected { border-color: #22c55e; background: #0f2e1e; }
+.gos-tpl-header   { display: flex; gap: 4px; margin-bottom: 6px; }
+.gos-tpl-name     { font-size: 12px; font-weight: 700; color: #e2e2e8; margin-bottom: 2px; }
+.gos-tpl-category { font-size: 10px; color: #666; margin-bottom: 4px; }
+.gos-tpl-subject  { font-size: 11px; color: #aaa; margin-bottom: 4px; }
+.gos-tpl-body     { font-size: 10px; color: #666; white-space: pre-wrap; }
+
+.gos-tpl-preview {
+  background: #0a0a12;
+  border: 1px solid #22c55e;
+  border-radius: 6px;
+  padding: 14px;
+  margin-top: 8px;
+}
+.gos-tpl-preview-subject { font-size: 12px; color: #aaa; margin-bottom: 8px; }
+.gos-tpl-preview-body    { font-size: 11px; color: #888; white-space: pre-wrap; margin: 0; font-family: inherit; }
+
+/* ── WhatsApp features ── */
+.gos-wa-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+}
+.gos-wa-feature-card {
+  background: #12121c;
+  border: 1px solid #1e1e2e;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.gos-wa-feat-icon  { font-size: 18px; flex-shrink: 0; }
+.gos-wa-feat-label { font-size: 12px; font-weight: 600; color: #e2e2e8; }
+.gos-wa-feat-desc  { font-size: 10px; color: #666; margin-top: 2px; }
+
+/* ── Push platforms ── */
+.gos-push-platforms {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.gos-push-platform-card {
+  background: #12121c;
+  border: 1px solid #1e1e2e;
+  border-radius: 6px;
+  padding: 14px;
+  text-align: center;
+}
+.gos-push-icon  { font-size: 20px; display: block; margin-bottom: 6px; }
+.gos-push-label { font-size: 12px; font-weight: 600; color: #e2e2e8; }
+.gos-push-desc  { font-size: 10px; color: #666; margin-top: 2px; }
+
+/* ── Tag cloud ── */
+.gos-tag-cloud { display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* ── Check icon ── */
+.gos-check-icon { font-size: 13px; font-weight: 700; flex-shrink: 0; }
+
+/* ── Misc ── */
+.gos-empty   { font-size: 12px; color: #555; padding: 20px 0; text-align: center; }
+.gos-loading { font-size: 12px; color: #555; padding: 20px; }
+.gos-msg     { font-size: 11px; color: #22c55e; margin-left: 8px; }
+.gos-hint    { font-size: 10px; color: #555; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gos-bar-fill, .gos-template-card { transition: none; }
+}
