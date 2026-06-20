@@ -403,4 +403,17 @@ router.get("/launch/pip-report", requireAuth, (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// ══════════════════════════════════════════════════════════════════
+// MODULE 13: GitHub & Company Presence Report (OP-2)
+// ══════════════════════════════════════════════════════════════════
+
+const op2Report = require("../services/op2Report.cjs");
+
+router.get("/launch/op2-report", requireAuth, (req, res) => {
+  try {
+    const report = op2Report.generateReport();
+    res.json({ ok: true, report });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 module.exports = router;

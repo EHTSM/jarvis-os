@@ -1,0 +1,194 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  # ── 1. Build frontend for release ───────────────────────────────────────────
+  build:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install frontend deps
+        run: npm ci --prefix frontend
+
+      - name: Build frontend
+        run: npm run build:frontend
+        env:
+          REACT_APP_API_URL: ""
+          CI: false
+
+      - name: Upload frontend build
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/build/
+
+  # ── 2. Package server release archive ───────────────────────────────────────
+  package:
+    name: Package Server Release
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install backend dependencies (prod only)
+        run: npm ci --omit=dev
+
+      - name: Download frontend build
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/build/
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Create server package
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          PACKAGE_NAME="ooplix-server-v${VERSION}"
+
+          mkdir -p "${PACKAGE_NAME}"
+
+          # Copy server files
+          cp -r backend agents scripts deploy nginx.conf ecosystem.config.cjs \
+                 .env.production.example CHANGELOG.md README.md SECURITY.md \
+                 "${PACKAGE_NAME}/"
+
+          # Copy pre-built frontend
+          mkdir -p "${PACKAGE_NAME}/frontend"
+          cp -r frontend/build "${PACKAGE_NAME}/frontend/"
+
+          # Copy package files (for npm ci on VPS)
+          cp package.json package-lock.json "${PACKAGE_NAME}/"
+
+          # Create archive
+          tar -czf "${PACKAGE_NAME}.tar.gz" "${PACKAGE_NAME}"
+          sha256sum "${PACKAGE_NAME}.tar.gz" > "${PACKAGE_NAME}.tar.gz.sha256"
+
+          echo "Package: ${PACKAGE_NAME}.tar.gz ($(du -sh ${PACKAGE_NAME}.tar.gz | cut -f1))"
+
+      - name: Upload server package
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-package
+          path: |
+            ooplix-server-v*.tar.gz
+            ooplix-server-v*.tar.gz.sha256
+
+  # ── 3. Extract changelog for this release ───────────────────────────────────
+  changelog:
+    name: Extract Changelog
+    runs-on: ubuntu-latest
+
+    outputs:
+      notes: ${{ steps.extract.outputs.notes }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract release notes from CHANGELOG.md
+        id: extract
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+
+          # Extract the section for this version from CHANGELOG.md
+          NOTES=$(awk "/^## \[${VERSION}\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG.md 2>/dev/null || echo "")
+
+          if [ -z "$NOTES" ]; then
+            NOTES="See [CHANGELOG.md](CHANGELOG.md) for details."
+          fi
+
+          # Write to file to avoid quoting issues
+          echo "$NOTES" > /tmp/release_notes.md
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          cat /tmp/release_notes.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+  # ── 4. Create GitHub Release ─────────────────────────────────────────────────
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [package, changelog]
+
+    steps:
+      - name: Download server package
+        uses: actions/download-artifact@v4
+        with:
+          name: server-package
+
+      - name: Determine pre-release
+        id: prerelease
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          if [[ "$TAG" == *"-beta."* ]] || [[ "$TAG" == *"-rc."* ]]; then
+            echo "IS_PRERELEASE=true" >> $GITHUB_OUTPUT
+          else
+            echo "IS_PRERELEASE=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Ooplix ${{ github.ref_name }}"
+          body: |
+            ## Ooplix ${{ github.ref_name }}
+
+            ${{ needs.changelog.outputs.notes }}
+
+            ---
+
+            ### Installation
+
+            **VPS (recommended):**
+            ```bash
+            # Download and extract
+            wget https://github.com/EHTSM/jarvis-os/releases/download/${{ github.ref_name }}/ooplix-server-v${{ github.ref_name }}.tar.gz
+            tar -xzf ooplix-server-v*.tar.gz
+            cd ooplix-server-v*
+
+            # Configure
+            cp .env.production.example .env
+            # Edit .env
+
+            # Deploy
+            npm ci --omit=dev
+            bash deploy.sh
+            ```
+
+            **SHA-256 verification:** see the `.sha256` file attached to this release.
+
+            ### What's changed
+
+            See [CHANGELOG.md](https://github.com/EHTSM/jarvis-os/blob/main/CHANGELOG.md) for the full history.
+          draft: false
+          prerelease: ${{ steps.prerelease.outputs.IS_PRERELEASE }}
+          files: |
+            ooplix-server-v*.tar.gz
+            ooplix-server-v*.tar.gz.sha256
+          token: ${{ secrets.GITHUB_TOKEN }}

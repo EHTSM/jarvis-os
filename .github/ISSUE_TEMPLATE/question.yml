@@ -1,0 +1,45 @@
+name: Question
+description: Ask a question about Ooplix setup, usage, or configuration
+title: "[Question]: "
+labels: ["question"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For quick answers, try [Discord](https://discord.gg/ooplix) or check the [FAQ](../../docs/faq/FAQ.md) and [documentation](../../docs/).
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Question category
+      options:
+        - Installation / Setup
+        - Configuration (.env / environment)
+        - Deployment (VPS / nginx / SSL)
+        - Using a specific feature
+        - API / Integration
+        - Billing / Credits
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: What do you want to know?
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you already tried?
+      description: Steps you've already taken, docs you've read, etc.
+
+  - type: input
+    id: version
+    attributes:
+      label: Ooplix version
+      placeholder: "3.0.0"

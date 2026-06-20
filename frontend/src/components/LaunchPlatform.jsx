@@ -27,6 +27,7 @@ const TABS = [
   { id: "pcpreport",   label: "PCP Report"  },
   { id: "pipreport",   label: "PIP Report"  },
   { id: "op1report",   label: "Deploy"      },
+  { id: "op2report",   label: "Company"     },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1176,6 +1177,110 @@ function OP1ReportPanel() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// MODULE 14: GitHub & Company Presence Report (OP-2)
+// ─────────────────────────────────────────────────────────────────────────────
+function OP2ReportPanel() {
+  const [report, setReport] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState(null);
+
+  const load = async () => {
+    setLoading(true);
+    const r = await api("/launch/op2-report");
+    if (r.ok) setReport(r.report);
+    setLoading(false);
+  };
+
+  const DIM_ICONS = {
+    "Trust": "🔒",
+    "Documentation": "📚",
+    "Open Source Quality": "⭐",
+    "Developer Experience": "🛠",
+    "Commercial Presence": "🏢",
+  };
+
+  const scoreColor = (pct) =>
+    pct >= 90 ? "#22c55e" : pct >= 70 ? "#f59e0b" : "#ef4444";
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+        <p className="launch-section-title" style={{ margin: 0 }}>GitHub & Company Presence — OP-2</p>
+        <button className="btn-primary" onClick={load} disabled={loading}>{loading ? "Auditing…" : "Run Audit"}</button>
+      </div>
+
+      {!report && !loading && (
+        <div style={{ textAlign: "center", padding: "40px 0", color: "#888" }}>
+          <div style={{ fontSize: 32, marginBottom: 8 }}>⭐</div>
+          <div>Audits Ooplix as if it belongs to a billion-dollar software company.</div>
+          <div style={{ marginTop: 8, fontSize: 11, color: "#555" }}>Scores: Trust · Documentation · Open Source Quality · Developer Experience · Commercial Presence</div>
+        </div>
+      )}
+
+      {report && (
+        <>
+          <div className="launch-grid" style={{ marginBottom: 16 }}>
+            <div className="launch-card accent" style={{ position: "relative" }}>
+              <h4>Overall Score</h4>
+              <div className="val" style={{ color: scoreColor(report.overallScore) }}>{report.overallScore}%</div>
+              <div className="sub">{report.summary.passed}/{report.summary.totalChecks} checks passed</div>
+            </div>
+            <div className="launch-card" style={{ gridColumn: "span 3", borderLeft: `3px solid ${scoreColor(report.overallScore)}` }}>
+              <h4 style={{ color: scoreColor(report.overallScore) }}>Verdict</h4>
+              <div style={{ fontSize: 13, color: "#ccc", marginTop: 6 }}>{report.verdict}</div>
+            </div>
+          </div>
+
+          {report.dimensions.map(dim => (
+            <div key={dim.dimension} style={{ marginBottom: 8 }}>
+              <div
+                className="check-row"
+                style={{ cursor: "pointer", borderLeft: `3px solid ${scoreColor(dim.score.pct)}` }}
+                onClick={() => setExpanded(expanded === dim.dimension ? null : dim.dimension)}
+              >
+                <span className="check-label" style={{ flex: 1, display: "flex", alignItems: "center", gap: 8 }}>
+                  <span>{DIM_ICONS[dim.dimension] || "◈"}</span>
+                  <span style={{ fontWeight: 600 }}>{dim.dimension}</span>
+                </span>
+                <span style={{ fontSize: 18, fontWeight: 700, color: scoreColor(dim.score.pct) }}>{dim.score.pct}%</span>
+                <span style={{ fontSize: 11, color: "#555", marginLeft: 8 }}>{dim.score.earned}/{dim.score.total} pts</span>
+                <span style={{ fontSize: 10, color: "#555", marginLeft: 12 }}>{expanded === dim.dimension ? "▲" : "▼"}</span>
+              </div>
+
+              {expanded === dim.dimension && (
+                <div style={{ background: "#0d0d14", border: "1px solid #1e1e2e", borderTop: "none", padding: "8px 16px", borderRadius: "0 0 6px 6px" }}>
+                  {Object.entries(dim.checks).map(([name, check]) => (
+                    <div key={name} style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 0", borderBottom: "1px solid #111" }}>
+                      <span style={{ color: check.ok ? "#22c55e" : "#ef4444", fontSize: 13, width: 16 }}>{check.ok ? "✓" : "✗"}</span>
+                      <span style={{ flex: 1, fontSize: 12, color: check.ok ? "#ccc" : "#f59e0b" }}>{name}</span>
+                      <span style={{ fontSize: 10, color: "#555" }}>w{check.weight}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+
+          {report.topFailures.length > 0 && (
+            <div style={{ marginTop: 16, padding: "12px 16px", background: "#1a0f0f", border: "1px solid #3a1a1a", borderRadius: 8 }}>
+              <div style={{ fontWeight: 600, color: "#f59e0b", marginBottom: 8, fontSize: 12 }}>Top items to fix</div>
+              {report.topFailures.map((f, i) => (
+                <div key={i} style={{ display: "flex", gap: 8, fontSize: 11, color: "#ccc", marginBottom: 4 }}>
+                  <span style={{ color: "#ef4444" }}>✗</span>
+                  <span style={{ color: "#888" }}>{f.dimension}:</span>
+                  <span>{f.name}</span>
+                  <span style={{ color: "#555", marginLeft: "auto" }}>w{f.weight}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Root component
 // ─────────────────────────────────────────────────────────────────────────────
 export default function LaunchPlatform() {
@@ -1195,6 +1300,7 @@ export default function LaunchPlatform() {
     pcpreport:  <PCPReportPanel  />,
     pipreport:  <PIPReportPanel  />,
     op1report:  <OP1ReportPanel  />,
+    op2report:  <OP2ReportPanel  />,
   };
 
   return (

@@ -1,0 +1,49 @@
+name: Security Report (Non-sensitive)
+description: Report a minor security concern that is NOT a vulnerability (use email for vulnerabilities)
+title: "[Security]: "
+labels: ["security", "triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > **⚠️ For actual security vulnerabilities, DO NOT use this form.**
+        > Email [security@ooplix.com](mailto:security@ooplix.com) instead.
+        > See [SECURITY.md](../../SECURITY.md) for our responsible disclosure process.
+
+        This form is for minor security improvements (e.g., missing headers, weak defaults, docs gaps) that are **not exploitable vulnerabilities**.
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: This is NOT an exploitable security vulnerability — I have emailed security@ooplix.com if it is
+          required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type of concern
+      options:
+        - Missing security header
+        - Weak default configuration
+        - Documentation gap (missing security warning)
+        - Dependency with known CVE (non-critical)
+        - Other minor concern
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the security concern (not a vulnerability).
+    validations:
+      required: true
+
+  - type: textarea
+    id: recommendation
+    attributes:
+      label: Recommended improvement
+      description: What should be changed or documented?
