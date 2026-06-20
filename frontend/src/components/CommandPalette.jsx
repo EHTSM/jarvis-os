@@ -69,6 +69,8 @@ const NAV_ACTIONS = [
   { id: "nav-referral",   label: "Referral",              icon: "◇", group: "Growth & Revenue",    tab: "referral"   },
   { id: "nav-partners",   label: "Partners",              icon: "◈", group: "Growth & Revenue",    tab: "partners"   },
   { id: "nav-launch",     label: "Launch",                icon: "⚡", group: "Growth & Revenue",    tab: "launch"     },
+  { id: "nav-automation", label: "Browser Automation",    icon: "⬡", group: "Growth & Revenue",    tab: "automation" },
+  { id: "nav-creative",   label: "Creative Studio",       icon: "◈", group: "Growth & Revenue",    tab: "creative"   },
   { id: "nav-autorevenue",label: "Auto Revenue",          icon: "✦", group: "Growth & Revenue",    tab: "autorevenue"},
   { id: "nav-automarketing",label:"Auto Marketing",       icon: "◎", group: "Growth & Revenue",    tab: "automarketing"},
   { id: "nav-autosupport",label: "Auto Support",          icon: "⬡", group: "Growth & Revenue",    tab: "autosupport"},

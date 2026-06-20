@@ -8,6 +8,7 @@ import {
   getMemoryStats, searchP26Memory, getHealth, getOps,
   getDeployHistory, getAgents, getCycleStats, getActions,
 } from "./operatorApi";
+import { useConfirm } from "../ConfirmDialog";
 import "./OperatorCommandLayer.css";
 
 // ── Built-in slash commands ────────────────────────────────────────────
@@ -86,6 +87,7 @@ export default function OperatorCommandLayer() {
   const [loading,   setLoading]   = useState(false);
   const [cmdHist,   setCmdHist]   = useState([]);  // input history for ↑/↓
   const [histIdx,   setHistIdx]   = useState(-1);
+  const [confirm, ConfirmUI] = useConfirm();
   const [suggestions, setSuggestions] = useState([]);
   const [sugIdx,    setSugIdx]    = useState(-1);
 
@@ -130,7 +132,7 @@ export default function OperatorCommandLayer() {
         push("data", COMMANDS.map(c => `${c.cmd.padEnd(16)} ${c.desc}`).join("\n"));
 
       } else if (cmd.startsWith("/stop")) {
-        if (!window.confirm("Emergency stop all agents?")) { push("system", "Cancelled."); return; }
+        if (!await confirm({ title: 'Emergency stop all agents?', message: 'All running agents and tasks will be halted immediately.', danger: true, confirmLabel: 'Stop Everything' })) { push("system", "Cancelled."); return; }
         const r = await emergencyStop();
         push("success", fmt(r));
 
@@ -314,6 +316,7 @@ export default function OperatorCommandLayer() {
 
   return (
     <div className="ocl-root">
+      {ConfirmUI}
       <header className="ocl-header">
         <span className="ocl-title">Operator Command</span>
         <span className="ocl-subtitle">Slash commands · Natural language · Jarvis dispatch</span>

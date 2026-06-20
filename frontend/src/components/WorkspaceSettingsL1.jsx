@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
 import { HEALTH_COLOR_SH, DIAG_COLOR_SH } from "./WorkspaceSettingsL3";
+import { useConfirm } from "./ConfirmDialog";
 
 // ── L1 Plugin Manager Panels ─────────────────────────────────────
 const HEALTH_COLOR = HEALTH_COLOR_SH;
@@ -13,6 +14,7 @@ function PluginsPanel() {
   const [form,      setForm]      = useState({ id: "", name: "", version: "1.0.0", description: "", author: "", capabilities: "", category: "general" });
   const [saving,    setSaving]    = useState(false);
   const [err,       setErr]       = useState(null);
+  const [confirm, ConfirmUI]      = useConfirm();
 
   const reload = () => {
     setLoading(true);
@@ -47,7 +49,7 @@ function PluginsPanel() {
   };
 
   const uninstall = async (pluginId) => {
-    if (!window.confirm(`Uninstall plugin "${pluginId}"?`)) return;
+    if (!await confirm({ title: `Uninstall "${pluginId}"?`, message: 'This plugin will be removed. You can reinstall it at any time.', danger: true, confirmLabel: 'Uninstall' })) return;
     await _fetch("/plugins/uninstall", { method: "POST", body: JSON.stringify({ pluginId }) }).catch(() => {});
     reload();
   };
@@ -56,6 +58,7 @@ function PluginsPanel() {
 
   return (
     <div className="l1-panel">
+      {ConfirmUI}
       <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
         <button className="k2-form-btn" onClick={() => setShowForm(f => !f)}>{showForm ? "Cancel" : "+ Install Plugin"}</button>
         <button className="k2-form-btn" style={{ background: "none", color: "var(--text-dim)" }} onClick={reload}>↺ Refresh</button>

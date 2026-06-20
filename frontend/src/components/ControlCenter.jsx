@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from "react";
+import { useConfirm } from "./ConfirmDialog";
 import { dispatchTask, emergencyStop, emergencyResume } from "../runtimeApi";
 import { getStats, getOpsData } from "../telemetryApi";
 import "./ControlCenter.css";
@@ -341,12 +342,13 @@ function ActivityFeed({ opsData, stats, loading, onNavigate }) {
 
 function QuickActions({ online, onNavigate, onEmergencyStop, emergencyActive }) {
   const [stopBusy, setStopBusy] = useState(false);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const handleStop = useCallback(async () => {
-    if (!window.confirm("Activate Emergency Stop? All running tasks will be halted.")) return;
+    if (!await confirm({ title: 'Emergency Stop', message: 'All running tasks will be halted immediately. This cannot be undone without manual resume.', danger: true, confirmLabel: 'Stop Everything' })) return;
     setStopBusy(true);
     try { await onEmergencyStop?.(); } finally { setStopBusy(false); }
-  }, [onEmergencyStop]);
+  }, [onEmergencyStop, confirm]);
 
   const actions = [
     { icon: "◈", label: "Add Contact",           onClick: () => onNavigate?.("clients") },
@@ -357,6 +359,7 @@ function QuickActions({ online, onNavigate, onEmergencyStop, emergencyActive }) 
 
   return (
     <div className="cc2-actions-list">
+      {ConfirmUI}
       {actions.map(a => (
         <button
           key={a.label}

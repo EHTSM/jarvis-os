@@ -379,4 +379,17 @@ router.post("/launch/benchmark/simulate", (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// ══════════════════════════════════════════════════════════════════
+// MODULE 11: Product Completion Report (PCP-1)
+// ══════════════════════════════════════════════════════════════════
+
+const pcpReport = require("../services/pcpReport.cjs");
+
+router.get("/launch/pcp-report", requireAuth, (req, res) => {
+  try {
+    const report = pcpReport.generateReport();
+    res.json({ ok: true, report });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 module.exports = router;

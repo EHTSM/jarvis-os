@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
+import { useConfirm } from './ConfirmDialog';
 import './ComposerPanel.css';
 
 async function api(method, path, body) {
@@ -414,6 +415,7 @@ export default function ComposerPanel({ cwd }) {
     const [busy,      setBusy]      = useState(null);   // 'approve'|'execute'|...
     const [error,     setError]     = useState(null);
     const [bench,     setBench]     = useState(null);
+    const [confirm, ConfirmUI] = useConfirm();
     const [benching,  setBenching]  = useState(false);
     const goalRef = useRef(null);
 
@@ -491,7 +493,7 @@ export default function ComposerPanel({ cwd }) {
     }, [selected, loadPlans, loadStats]);
 
     const doCancel = useCallback(async () => {
-        if (!selected || !window.confirm('Cancel this plan?')) return;
+        if (!selected || !await confirm({ title: 'Cancel this plan?', message: 'The plan will be cancelled. Completed steps remain in place.', danger: true, confirmLabel: 'Cancel Plan' })) return;
         try {
             const r = await api('POST', `/composer/${selected.planId}/cancel`);
             if (r?.ok) { setSelected(r.plan); loadPlans(); }
@@ -511,6 +513,7 @@ export default function ComposerPanel({ cwd }) {
     // ── Render ────────────────────────────────────────────────────────────────
     return (
         <div className="cp-root">
+            {ConfirmUI}
             {/* Header */}
             <div className="cp-header">
                 <span className="cp-header__title">AI Composer</span>

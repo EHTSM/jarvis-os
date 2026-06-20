@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
+import { useConfirm } from './ConfirmDialog';
 import './BundlePreviewPanel.css';
 
 async function api(method, path, body) {
@@ -195,6 +196,7 @@ export default function BundlePreviewPanel({ cwd, onApplied }) {
   const [view,         setView]         = useState('new'); // 'new' | 'history' | 'stats'
   const [requireApproval, setRequireApproval] = useState(false);
   const goalRef = useRef(null);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const loadHistory = useCallback(async () => {
     try {
@@ -244,7 +246,7 @@ export default function BundlePreviewPanel({ cwd, onApplied }) {
 
   const rollback = useCallback(async () => {
     if (!bundle?.bundleId) return;
-    if (!window.confirm('Roll back all changes in this bundle?')) return;
+    if (!await confirm({ title: 'Roll back bundle?', message: 'All changes in this bundle will be reverted. This cannot be undone.', danger: true, confirmLabel: 'Roll Back' })) return;
     setRolling(true);
     try {
       const r = await api('POST', `/coding/bundle/${bundle.bundleId}/rollback`);
@@ -297,6 +299,7 @@ export default function BundlePreviewPanel({ cwd, onApplied }) {
 
   return (
     <div className="bpp-root">
+      {ConfirmUI}
       {/* Header */}
       <div className="bpp-header">
         <span className="bpp-header__title">Repository Bundle Edit</span>

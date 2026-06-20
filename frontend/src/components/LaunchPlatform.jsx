@@ -24,6 +24,7 @@ const TABS = [
   { id: "feedback",    label: "Feedback"    },
   { id: "readiness",   label: "Readiness"   },
   { id: "benchmark",   label: "Benchmark"   },
+  { id: "pcpreport",   label: "PCP Report"  },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -742,6 +743,250 @@ function BenchmarkPanel() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// MODULE 11: Product Completion Report
+// ─────────────────────────────────────────────────────────────────────────────
+function PCPReportPanel() {
+  const [report, setReport] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [section, setSection] = useState("summary");
+
+  const load = async () => {
+    setLoading(true);
+    const r = await api("/launch/pcp-report");
+    if (r.ok) setReport(r.report);
+    setLoading(false);
+  };
+
+  const SECTIONS = [
+    { id: "summary",      label: "Summary"      },
+    { id: "workflows",    label: "100 Workflows" },
+    { id: "friction",     label: "Friction"      },
+    { id: "blockers",     label: "Blockers"      },
+    { id: "scores",       label: "Scores"        },
+    { id: "selfbuild",    label: "Self-Build"    },
+    { id: "a11y",         label: "Accessibility" },
+    { id: "recommendation", label: "Verdict"     },
+  ];
+
+  const sevColor = s => s === "critical" ? "#ef4444" : s === "warning" ? "#f59e0b" : "#888";
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+        <p className="launch-section-title" style={{ margin: 0 }}>Product Completion Report — PCP-1</p>
+        <button className="btn-primary" onClick={load} disabled={loading}>{loading ? "Generating…" : "Generate Report"}</button>
+      </div>
+
+      {!report && !loading && (
+        <div style={{ textAlign: "center", padding: "40px 0", color: "#888" }}>
+          <div style={{ fontSize: 32, marginBottom: 8 }}>◎</div>
+          <div>Click Generate Report for a full audit — 100 workflows, friction points, accessibility, scores, and launch verdict.</div>
+          <div style={{ marginTop: 8, fontSize: 11, color: "#666" }}>Shortcut: open Launch tab → PCP Report → Generate</div>
+        </div>
+      )}
+
+      {report && (
+        <>
+          <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
+            {SECTIONS.map(s => (
+              <button
+                key={s.id}
+                className={`launch-tab${section === s.id ? " active" : ""}`}
+                style={{ fontSize: 11, padding: "4px 10px" }}
+                onClick={() => setSection(s.id)}
+              >{s.label}</button>
+            ))}
+          </div>
+
+          {section === "summary" && (
+            <div className="launch-grid">
+              <div className="launch-card accent">
+                <h4>Daily Driver</h4>
+                <div className="val">{report.dailyDriverScore?.overall}/100</div>
+                <div className="sub">Reachability · Speed · Friction</div>
+              </div>
+              <div className="launch-card">
+                <h4>Commercial</h4>
+                <div className="val">{report.commercialScore?.overall}/100</div>
+                <div className="sub">Revenue · Maturity · GTM</div>
+              </div>
+              <div className="launch-card">
+                <h4>Workflows</h4>
+                <div className="val">{report.summary?.reachability}</div>
+                <div className="sub">{report.summary?.within2Interactions}</div>
+              </div>
+              <div className="launch-card">
+                <h4>Self-Build?</h4>
+                <div className="val" style={{ fontSize: 14 }}>{report.selfBuildAssessment?.verdict}</div>
+                <div className="sub">{report.selfBuildAssessment?.available}/{report.selfBuildAssessment?.total} capabilities available</div>
+              </div>
+              <div className="launch-card">
+                <h4>Friction Points</h4>
+                <div className="val">{report.summary?.frictionPoints}</div>
+                <div className="sub">Low severity, no blockers</div>
+              </div>
+              <div className="launch-card">
+                <h4>Critical Blockers</h4>
+                <div className="val" style={{ color: report.summary?.criticalBlockers > 0 ? "#ef4444" : "#22c55e" }}>
+                  {report.summary?.criticalBlockers}
+                </div>
+                <div className="sub">{report.summary?.recommendation}</div>
+              </div>
+            </div>
+          )}
+
+          {section === "workflows" && (
+            <div>
+              <div style={{ fontSize: 12, color: "#888", marginBottom: 10 }}>
+                {report.workflowAudit?.reachable}/{report.workflowAudit?.total} reachable &nbsp;·&nbsp;
+                {report.workflowAudit?.within2Interactions} in ≤2 interactions &nbsp;·&nbsp;
+                {report.workflowAudit?.frictionCount} with friction
+              </div>
+              <div className="check-list">
+                {(report.workflowAudit?.workflows || []).map(w => (
+                  <div key={w.id} className={`check-row ${w.reachable ? "pass" : "fail"}`}>
+                    <span className="check-icon">{w.reachable ? "✓" : "✗"}</span>
+                    <span className="check-label">[{w.id}] {w.category} — {w.flow}</span>
+                    {w.interactions > 2 && <span style={{ marginLeft: "auto", fontSize: 10, color: "#f59e0b" }}>{w.interactions} interactions</span>}
+                    {w.friction && <span style={{ marginLeft: 8, fontSize: 10, color: "#f59e0b" }}>{w.friction}</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {section === "friction" && (
+            <div className="check-list">
+              {(report.frictionPoints || []).map(f => (
+                <div key={f.id} className="check-row" style={{ borderLeft: `3px solid ${sevColor(f.severity)}` }}>
+                  <span className="check-label">[{f.id}] <strong>{f.area}</strong> — {f.description}</span>
+                  <span style={{ marginLeft: "auto", fontSize: 10, color: sevColor(f.severity), textTransform: "uppercase" }}>{f.severity}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {section === "blockers" && (
+            <div className="check-list">
+              {(report.launchBlockers || []).map(b => (
+                <div key={b.id} className={`check-row ${b.severity === "critical" ? "fail" : ""}`}>
+                  <span className="check-icon" style={{ color: sevColor(b.severity) }}>!</span>
+                  <span className="check-label"><strong>[{b.severity.toUpperCase()}]</strong> {b.blocker}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {section === "scores" && (
+            <div>
+              <p className="launch-section-title">Daily Driver Breakdown</p>
+              {Object.entries(report.dailyDriverScore?.scores || {}).map(([k, v]) => (
+                <div key={k} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                  <span style={{ width: 160, fontSize: 12, color: "#aaa", textTransform: "capitalize" }}>{k.replace(/([A-Z])/g, " $1")}</span>
+                  <div style={{ flex: 1, background: "#1a1a24", borderRadius: 4, height: 8 }}>
+                    <div style={{ width: `${v}%`, background: v >= 80 ? "#22c55e" : v >= 60 ? "#f59e0b" : "#ef4444", height: "100%", borderRadius: 4 }} />
+                  </div>
+                  <span style={{ width: 40, fontSize: 12, textAlign: "right" }}>{v}%</span>
+                </div>
+              ))}
+              <p className="launch-section-title" style={{ marginTop: 20 }}>Commercial Breakdown</p>
+              {Object.entries(report.commercialScore?.scores || {}).map(([k, v]) => (
+                <div key={k} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                  <span style={{ width: 160, fontSize: 12, color: "#aaa", textTransform: "capitalize" }}>{k.replace(/([A-Z])/g, " $1")}</span>
+                  <div style={{ flex: 1, background: "#1a1a24", borderRadius: 4, height: 8 }}>
+                    <div style={{ width: `${v}%`, background: v >= 80 ? "#22c55e" : v >= 60 ? "#f59e0b" : "#ef4444", height: "100%", borderRadius: 4 }} />
+                  </div>
+                  <span style={{ width: 40, fontSize: 12, textAlign: "right" }}>{v}%</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {section === "selfbuild" && (
+            <div>
+              <div style={{ marginBottom: 12 }}>
+                <span style={{ fontSize: 18, fontWeight: 700 }}>Can Ehtesham build Ooplix using only Ooplix?</span>
+                <span style={{ marginLeft: 12, fontSize: 16, color: "#7c6af7" }}>{report.selfBuildAssessment?.verdict}</span>
+              </div>
+              <div style={{ fontSize: 12, color: "#888", marginBottom: 12 }}>
+                {report.selfBuildAssessment?.available}/{report.selfBuildAssessment?.total} capabilities available
+                ({report.selfBuildAssessment?.pct}%)
+              </div>
+              <div className="check-list">
+                {(report.selfBuildAssessment?.capabilities || []).map((c, i) => (
+                  <div key={i} className={`check-row ${c.available ? "pass" : "fail"}`}>
+                    <span className="check-icon">{c.available ? "✓" : "✗"}</span>
+                    <span className="check-label">{c.task}</span>
+                    <span style={{ marginLeft: "auto", fontSize: 10, color: "#888" }}>{c.tool}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {section === "a11y" && (
+            <div>
+              <div style={{ marginBottom: 12, fontSize: 12, color: "#888" }}>
+                Score: {report.accessibilityAudit?.score}% &nbsp;·&nbsp;
+                {report.accessibilityAudit?.pass} pass, {report.accessibilityAudit?.partial} partial, {report.accessibilityAudit?.fail} fail
+              </div>
+              <div className="check-list">
+                {(report.accessibilityAudit?.checks || []).map(c => (
+                  <div key={c.id} className={`check-row ${c.status === "pass" ? "pass" : c.status === "fail" ? "fail" : ""}`}>
+                    <span className="check-icon" style={{ color: c.status === "pass" ? "#22c55e" : c.status === "fail" ? "#ef4444" : "#f59e0b" }}>
+                      {c.status === "pass" ? "✓" : c.status === "fail" ? "✗" : "~"}
+                    </span>
+                    <div>
+                      <div className="check-label">{c.area}</div>
+                      <div style={{ fontSize: 10, color: "#888" }}>{c.note}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {section === "recommendation" && (
+            <div>
+              <div style={{
+                padding: 20,
+                borderRadius: 8,
+                border: `2px solid ${
+                  report.launchRecommendation?.recommendation === "LAUNCH READY" ? "#22c55e" :
+                  report.launchRecommendation?.recommendation === "LAUNCH WITH WARNINGS" ? "#f59e0b" : "#ef4444"
+                }`,
+                marginBottom: 20,
+              }}>
+                <div style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>{report.launchRecommendation?.recommendation}</div>
+                <div style={{ fontSize: 13, color: "#aaa" }}>{report.launchRecommendation?.reason}</div>
+                {report.launchRecommendation?.daysToLaunch > 0 && (
+                  <div style={{ marginTop: 8, fontSize: 12, color: "#888" }}>
+                    Estimated {report.launchRecommendation?.daysToLaunch} day(s) to clear blockers
+                  </div>
+                )}
+              </div>
+              {(report.launchRecommendation?.priority || []).length > 0 && (
+                <>
+                  <p className="launch-section-title">Priority Actions</p>
+                  <div className="check-list">
+                    {report.launchRecommendation.priority.map((p, i) => (
+                      <div key={i} className="check-row">
+                        <span className="check-icon" style={{ color: "#7c6af7" }}>{i + 1}</span>
+                        <span className="check-label">{p}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Root component
 // ─────────────────────────────────────────────────────────────────────────────
 export default function LaunchPlatform() {
@@ -758,6 +1003,7 @@ export default function LaunchPlatform() {
     feedback:   <FeedbackPanel   />,
     readiness:  <ReadinessPanel  />,
     benchmark:  <BenchmarkPanel  />,
+    pcpreport:  <PCPReportPanel  />,
   };
 
   return (

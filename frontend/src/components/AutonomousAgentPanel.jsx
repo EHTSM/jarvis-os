@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
+import { useConfirm } from './ConfirmDialog';
 import './AutonomousAgentPanel.css';
 
 async function api(method, path, body) {
@@ -302,6 +303,7 @@ export default function AutonomousAgentPanel({ cwd }) {
     const [error,     setError]     = useState(null);
     const [benching,  setBenching]  = useState(false);
     const [composerPlanId, setComposerPlanId] = useState('');
+    const [confirm, ConfirmUI] = useConfirm();
     const [launching, setLaunching] = useState(false);
     const pollRef  = useRef(null);
 
@@ -371,7 +373,7 @@ export default function AutonomousAgentPanel({ cwd }) {
     }, [selected, loadMissions]);
 
     const doCancel = useCallback(async () => {
-        if (!selected || !window.confirm('Cancel this mission? Latest bundle will be rolled back.')) return;
+        if (!selected || !await confirm({ title: 'Cancel mission?', message: 'The latest bundle will be rolled back. This cannot be undone.', danger: true, confirmLabel: 'Cancel Mission' })) return;
         try {
             const r = await api('POST', `/autonomous/${selected.agentMissionId}/cancel`);
             if (r?.ok) { setSelected(r.mission); loadMissions(); }
@@ -405,6 +407,7 @@ export default function AutonomousAgentPanel({ cwd }) {
 
     return (
         <div className="aap-root">
+            {ConfirmUI}
             {/* Header */}
             <div className="aap-header">
                 <span className="aap-header-title">

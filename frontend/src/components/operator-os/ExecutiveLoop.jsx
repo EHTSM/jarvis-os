@@ -9,6 +9,7 @@ import {
   emergencyStop, emergencyResume, recoverQueue, recoverGovernor,
 } from "./operatorApi";
 import { useIntervalCleanup } from "../../hooks/useResourceManager";
+import { useConfirm } from "../ConfirmDialog";
 import "./ExecutiveLoop.css";
 
 const TICK_MS = 10_000;
@@ -82,6 +83,7 @@ export default function ExecutiveLoop() {
   const [cycles,    setCycles]    = useState(null);
   const [actions,   setActions]   = useState([]);
   const [agents,    setAgents]    = useState([]);
+  const [confirm, ConfirmUI] = useConfirm();
   const [graphs,    setGraphs]    = useState([]);
   const [memStat,   setMemStat]   = useState(null);
   const [autonomy,  setAutonomy]  = useState(null);
@@ -191,6 +193,7 @@ export default function ExecutiveLoop() {
   // ── Render ────────────────────────────────────────────────────────
   return (
     <div className="el-root">
+      {ConfirmUI}
       {/* Header */}
       <header className="el-header">
         <div className="el-header-left">
@@ -212,7 +215,7 @@ export default function ExecutiveLoop() {
           <button className="el-btn el-btn--heal"    onClick={doHeal}>⬡ Heal</button>
           {isHalted
             ? <button className="el-btn el-btn--resume" onClick={async () => { await emergencyResume(); fetchAll(); }}>▶ Resume</button>
-            : <button className="el-btn el-btn--stop"   onClick={async () => { if(window.confirm("Emergency stop?")) { await emergencyStop(); fetchAll(); } }}>⛔ Stop</button>
+            : <button className="el-btn el-btn--stop"   onClick={async () => { if(await confirm({ title: 'Emergency Stop?', message: 'All running tasks will be halted immediately.', danger: true, confirmLabel: 'Stop Everything' })) { await emergencyStop(); fetchAll(); } }}>⛔ Stop</button>
           }
           <button className="el-btn el-btn--ghost" onClick={fetchAll}>↻</button>
         </div>
