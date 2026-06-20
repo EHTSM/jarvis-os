@@ -44,6 +44,9 @@ const LicenseManager              = lazy(() => import('./LicenseManager'));
 const PerformanceAudit            = lazy(() => import('./PerformanceAudit'));
 const ClosedBetaAudit             = lazy(() => import('./ClosedBetaAudit'));
 const WorkspaceRecovery           = lazy(() => import('./WorkspaceRecovery'));
+const DeveloperConsole            = lazy(() => import('./DeveloperConsole'));
+const AdminDashboard              = lazy(() => import('./AdminDashboard'));
+const CommercialBenchmark         = lazy(() => import('./CommercialBenchmark'));
 
 // ── Generic resize hook ───────────────────────────────────────────────
 function useResize(initial, min, max, axis = 'y') {
@@ -165,6 +168,9 @@ const BOTTOM_TABS = {
   perf:        { label: 'Perf Audit',  icon: '⚡' },
   betaaudit:   { label: 'Beta Audit',  icon: '◎' },
   recovery:    { label: 'Recovery',    icon: '💾' },
+  devconsole:  { label: 'Dev Console', icon: '⬡' },
+  admin:       { label: 'Admin',       icon: '★' },
+  benchmark:   { label: 'Benchmark',   icon: '◈' },
 };
 
 const api        = () => window.electronAPI;
@@ -1100,6 +1106,15 @@ export default function ElectronWorkspace({ children }) {
                   </LazyPane>
                   <LazyPane active={bottomTab === 'recovery'}>
                     <ErrorBoundary label="Recovery"><WorkspaceRecovery currentSession={{ cwd, osView, bottomTab, sidebarMode }} /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'devconsole'}>
+                    <ErrorBoundary label="Developer Console"><DeveloperConsole /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'admin'}>
+                    <ErrorBoundary label="Admin Dashboard"><AdminDashboard /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'benchmark'}>
+                    <ErrorBoundary label="Commercial Benchmark"><CommercialBenchmark /></ErrorBoundary>
                   </LazyPane>
                 </div>
               </div>

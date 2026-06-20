@@ -91,5 +91,6 @@ router.use(require("./analytics"));    // /analytics/executive, /workspace, /pro
 router.use(require("./plugins"));      // /plugins, /plugins/:id, /plugins/install, /plugins/uninstall, /plugins/enable, /plugins/disable, /plugins/health, /plugins/diagnostics
 router.use(require("./marketplace"));  // /marketplace/catalog, /plugin/:id, /categories, /featured, /search, /recommendations, /versions/:id, /changelog/:id
 router.use(require("./extensions"));   // /extensions/runtime, /extensions/:id, /extensions/load, /unload, /suspend, /resume, /restart, /metrics, /hooks, /quotas
+router.use(require("./commercial"));   // /commercial/* — AI Credit Engine, Smart Router, Usage Metering, Billing Core, Feature Gates, Provider Manager, Cost Analytics, Developer Console, Admin Dashboard, Commercial Benchmark
 
 module.exports = router;
