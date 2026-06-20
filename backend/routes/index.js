@@ -94,5 +94,6 @@ router.use(require("./extensions"));   // /extensions/runtime, /extensions/:id, 
 router.use(require("./commercial"));      // /commercial/* — AI Credit Engine, Smart Router, Usage Metering, Billing Core, Feature Gates, Provider Manager, Cost Analytics, Developer Console, Admin Dashboard, Commercial Benchmark
 router.use(require("./aiEcosystem"));     // /ai-ecosystem/* — Universal Registry, Capability Router, Model Marketplace, Local Runtime, Creative Hub, Browser AI, Enterprise Policies, Benchmark Lab, Marketplace UI, Viability
 router.use(require("./browserPlatform")); // /browser-platform/* — Browser Registry, Session Manager, Visual Controller, NL Browser, Memory, Workflow Builder, HITL, Marketplace, Dashboard, Benchmark
+router.use(require("./creativeStudio")); // /creative/* — Creative Registry, Unified Router, Image/Video/Voice/Brand/Social Studios, Workspace, Asset Library, Benchmark
 
 module.exports = router;
