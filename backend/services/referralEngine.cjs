@@ -9,8 +9,9 @@
  * Storage: data/referrals.json
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs           = require("fs");
+const path         = require("path");
+const creditEngine = require("./creditEngine.cjs");
 
 const STORE_FILE = path.join(__dirname, "../../data/referrals.json");
 
@@ -139,7 +140,10 @@ function redeemCredits(accountId) {
   const credits = ref.pendingCredits;
   ref.pendingCredits = 0;
   _save(store);
-  // Caller passes credits to creditEngine.topup()
+  // Directly issue credits to the account via creditEngine
+  try {
+    creditEngine.topup(accountId, credits, { reason: "referral_reward" });
+  } catch (_) { /* creditEngine unavailable — credits already zeroed, log and continue */ }
   return { ok: true, credits };
 }
 

@@ -25,6 +25,7 @@ const TABS = [
   { id: "readiness",   label: "Readiness"   },
   { id: "benchmark",   label: "Benchmark"   },
   { id: "pcpreport",   label: "PCP Report"  },
+  { id: "pipreport",   label: "PIP Report"  },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -987,6 +988,97 @@ function PCPReportPanel() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// MODULE 12: Production Integration Report (PIP-1)
+// ─────────────────────────────────────────────────────────────────────────────
+function PIPReportPanel() {
+  const [report, setReport] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("all");
+
+  const load = async () => {
+    setLoading(true);
+    const r = await api("/launch/pip-report");
+    if (r.ok) setReport(r.report);
+    setLoading(false);
+  };
+
+  const STATUS_META = {
+    production_ready:       { label: "Production Ready",       color: "#22c55e", bg: "#0f2e1e" },
+    needs_credentials:      { label: "Needs Credentials",      color: "#f59e0b", bg: "#2e2a0f" },
+    needs_external_account: { label: "Needs External Account", color: "#7c6af7", bg: "#1e1a2e" },
+    deferred_by_design:     { label: "Deferred by Design",     color: "#888",    bg: "#1a1a1a" },
+  };
+
+  const filteredList = report
+    ? (filter === "all" ? report.integrations : report.integrations.filter(i => i.status === filter))
+    : [];
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+        <p className="launch-section-title" style={{ margin: 0 }}>Production Integration Report — PIP-1</p>
+        <button className="btn-primary" onClick={load} disabled={loading}>{loading ? "Auditing…" : "Run Audit"}</button>
+      </div>
+
+      {!report && !loading && (
+        <div style={{ textAlign: "center", padding: "40px 0", color: "#888" }}>
+          <div style={{ fontSize: 32, marginBottom: 8 }}>⬡</div>
+          <div>Audits every integration point — AI providers, billing, email, SMS, WhatsApp, browser automation, creative studio, marketplace, analytics, growth, founder OS, and launch platform.</div>
+          <div style={{ marginTop: 8, fontSize: 11, color: "#555" }}>Classifies as: Production Ready · Needs Credentials · Needs External Account · Deferred by Design</div>
+        </div>
+      )}
+
+      {report && (
+        <>
+          <div className="launch-grid" style={{ marginBottom: 16 }}>
+            <div className="launch-card accent">
+              <h4>Readiness Score</h4>
+              <div className="val">{report.readinessScore}%</div>
+              <div className="sub">{report.total} integrations audited</div>
+            </div>
+            {Object.entries(report.summary).map(([status, count]) => {
+              const m = STATUS_META[status] || {};
+              return (
+                <div key={status} className="launch-card" style={{ borderLeft: `3px solid ${m.color}` }}>
+                  <h4 style={{ color: m.color }}>{m.label}</h4>
+                  <div className="val">{count}</div>
+                  <div className="sub">{Math.round(count / report.total * 100)}% of integrations</div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
+            <button className={`launch-tab${filter === "all" ? " active" : ""}`} style={{ fontSize: 11, padding: "3px 10px" }} onClick={() => setFilter("all")}>All ({report.total})</button>
+            {Object.entries(STATUS_META).map(([s, m]) => (
+              <button key={s} className={`launch-tab${filter === s ? " active" : ""}`} style={{ fontSize: 11, padding: "3px 10px", color: m.color }} onClick={() => setFilter(s)}>
+                {m.label} ({report.summary[s] || 0})
+              </button>
+            ))}
+          </div>
+
+          <div className="check-list">
+            {filteredList.map(intg => {
+              const m = STATUS_META[intg.status] || {};
+              return (
+                <div key={intg.id} className="check-row" style={{ borderLeft: `3px solid ${m.color}`, flexDirection: "column", alignItems: "flex-start", gap: 3 }}>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center", width: "100%" }}>
+                    <span style={{ fontSize: 10, color: "#555", width: 120, flexShrink: 0 }}>{intg.category}</span>
+                    <span className="check-label" style={{ flex: 1 }}>{intg.name}</span>
+                    <span style={{ fontSize: 10, color: m.color, background: m.bg, padding: "1px 6px", borderRadius: 8, whiteSpace: "nowrap" }}>{m.label}</span>
+                  </div>
+                  <div style={{ fontSize: 10, color: "#666", paddingLeft: 128 }}>{intg.detail}</div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Root component
 // ─────────────────────────────────────────────────────────────────────────────
 export default function LaunchPlatform() {
@@ -1004,6 +1096,7 @@ export default function LaunchPlatform() {
     readiness:  <ReadinessPanel  />,
     benchmark:  <BenchmarkPanel  />,
     pcpreport:  <PCPReportPanel  />,
+    pipreport:  <PIPReportPanel  />,
   };
 
   return (

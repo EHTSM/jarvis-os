@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
 import "./ReferralEngine.css";
 
@@ -70,14 +70,13 @@ const SHARE_TEMPLATES = [
   },
 ];
 
-// ── Placeholder leaderboard ───────────────────────────────────────────
-const LEADERBOARD = [
-  { rank: 1, name: "Arjun M.",   referrals: 14, reward: "3 months free",  badge: "★" },
-  { rank: 2, name: "Priya S.",   referrals: 9,  reward: "3 months free",  badge: "◉" },
-  { rank: 3, name: "Rohan I.",   referrals: 7,  reward: "1 month free",   badge: "◎" },
-  { rank: 4, name: "Fatima A.",  referrals: 5,  reward: "1 month free",   badge: "◎" },
-  { rank: 5, name: "You",        referrals: 0,  reward: "—",              badge: "—", isYou: true },
-];
+const BASE = process.env.REACT_APP_API_URL || "";
+const _api = (path) => fetch(`${BASE}${path}`, { credentials: "include" }).then(r => r.json());
+const _post = (path, body) => fetch(`${BASE}${path}`, {
+  method: "POST", credentials: "include",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(body),
+}).then(r => r.json());
 
 function CopyButton({ text, label = "Copy" }) {
   const [copied, setCopied] = useState(false);
@@ -96,13 +95,21 @@ function CopyButton({ text, label = "Copy" }) {
 }
 
 export default function ReferralEngine({ onNavigate }) {
-  const [section,   setSection]   = useState("link");
-  const [copiedTpl, setCopiedTpl] = useState(null);
+  const [section,     setSection]     = useState("link");
+  const [copiedTpl,   setCopiedTpl]   = useState(null);
+  const [dashboard,   setDashboard]   = useState(null);
+  const [leaderboard, setLeaderboard] = useState([]);
 
-  const referralLink = "https://ooplix.com/?ref=OP12345";  // placeholder
-  const referralCode = "OP12345";
+  const referralCode = dashboard?.code || "—";
+  const referralLink = dashboard?.code
+    ? `https://ooplix.com/?ref=${dashboard.code}`
+    : "https://ooplix.com/?ref=loading…";
 
-  React.useEffect(() => { track.event("referral_center_viewed"); }, []);
+  useEffect(() => {
+    track.event("referral_center_viewed");
+    _api("/launch/referral").then(r => { if (r.ok) setDashboard(r.dashboard); });
+    _api("/launch/referral/leaderboard").then(r => { if (r.ok) setLeaderboard(r.leaderboard || []); });
+  }, []);
 
   const handleCopyTemplate = (id, text) => {
     navigator.clipboard.writeText(text.replace("{{referral_link}}", referralLink));
@@ -252,16 +259,18 @@ export default function ReferralEngine({ onNavigate }) {
               Top referrers this month. Leaderboard updates daily.
             </p>
             <div className="ref-lb-list">
-              {LEADERBOARD.map(entry => (
-                <div
-                  key={entry.rank}
-                  className={`ref-lb-row${entry.isYou ? " ref-lb-row--you" : ""}`}
-                >
-                  <span className="ref-lb-rank">{entry.rank}</span>
-                  <span className="ref-lb-badge">{entry.badge}</span>
-                  <span className="ref-lb-name">{entry.name}{entry.isYou ? " (you)" : ""}</span>
-                  <span className="ref-lb-referrals">{entry.referrals} referrals</span>
-                  <span className="ref-lb-reward">{entry.reward}</span>
+              {leaderboard.length === 0 && (
+                <div style={{ fontSize: 12, color: "#666", padding: "16px 0" }}>
+                  No referrals yet. Share your link to appear on the leaderboard.
+                </div>
+              )}
+              {leaderboard.map((entry, i) => (
+                <div key={entry.accountId} className="ref-lb-row">
+                  <span className="ref-lb-rank">#{i + 1}</span>
+                  <span className="ref-lb-badge">{i === 0 ? "★" : i === 1 ? "◉" : "◎"}</span>
+                  <span className="ref-lb-name">{entry.accountId?.slice(0, 8)}…</span>
+                  <span className="ref-lb-referrals">{entry.invites} referrals</span>
+                  <span className="ref-lb-reward">{entry.totalEarned} credits earned</span>
                 </div>
               ))}
             </div>

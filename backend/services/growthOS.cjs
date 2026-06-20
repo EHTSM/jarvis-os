@@ -222,8 +222,27 @@ function syncWhatsAppCRM(campaignId) {
   const c = s.campaigns[campaignId];
   if (!c || c.type !== "whatsapp") throw new Error("Not a WhatsApp campaign");
   const leadsCount = c.stats?.leads || 0;
-  // In real implementation this would push leads into crmService
-  return { synced: leadsCount, campaignId, syncedAt: _ts() };
+
+  // Push reply contacts as CRM leads
+  let synced = 0;
+  const members = c.audienceId && s.audiences[c.audienceId]
+    ? (s.audiences[c.audienceId].memberIds || [])
+    : [];
+  for (const contactId of members.slice(0, leadsCount)) {
+    try {
+      crm.saveLead({
+        id:      contactId,
+        source:  "whatsapp",
+        channel: "whatsapp",
+        campaign: campaignId,
+        status:  "new",
+        tags:    ["whatsapp-lead"],
+      });
+      synced++;
+    } catch (_) { /* skip duplicates */ }
+  }
+
+  return { synced, campaignId, syncedAt: _ts() };
 }
 
 function listWhatsAppCampaigns(status) {

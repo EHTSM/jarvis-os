@@ -250,8 +250,6 @@ router.post("/launch/referral/redeem", (req, res) => {
   try {
     const result = referral.redeemCredits(_account(req));
     if (!result.ok) return res.status(400).json({ error: "No pending credits" });
-    // Issue credits via creditEngine
-    creditEngine.topup(_account(req), result.credits, { plan: _plan(req), reason: "referral_reward" });
     res.json({ ok: true, credits: result.credits });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -388,6 +386,19 @@ const pcpReport = require("../services/pcpReport.cjs");
 router.get("/launch/pcp-report", requireAuth, (req, res) => {
   try {
     const report = pcpReport.generateReport();
+    res.json({ ok: true, report });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ══════════════════════════════════════════════════════════════════
+// MODULE 12: Production Integration Report (PIP-1)
+// ══════════════════════════════════════════════════════════════════
+
+const pipReport = require("../services/pipReport.cjs");
+
+router.get("/launch/pip-report", requireAuth, (req, res) => {
+  try {
+    const report = pipReport.generateReport();
     res.json({ ok: true, report });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
