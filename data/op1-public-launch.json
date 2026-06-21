@@ -1,0 +1,502 @@
+{
+  "weeks": {
+    "w1": {
+      "id": "w1",
+      "label": "Week 1 — Deploy & Verify",
+      "description": "Deploy production. Verify backups, billing, AI providers, monitoring.",
+      "status": "in_progress",
+      "items": [
+        {
+          "id": "w1_deploy",
+          "label": "Deploy production stack (VPS/Backend/Frontend/PM2/Nginx/SSL)",
+          "done": false,
+          "critical": true,
+          "doneAt": null,
+          "note": "benchmark: marked done"
+        },
+        {
+          "id": "w1_backups",
+          "label": "Verify backup script runs and restores correctly",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w1_billing",
+          "label": "Verify Razorpay live keys — process test payment ₹1",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w1_ai",
+          "label": "Verify AI providers — Groq + OpenRouter responding",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w1_monitoring",
+          "label": "Verify PM2 alerts + error logs + uptime monitoring active",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w1_ssl",
+          "label": "Verify SSL cert auto-renewal (Let's Encrypt / certbot)",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w1_domain",
+          "label": "Verify app.ooplix.com resolves and loads correctly",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w1_auth",
+          "label": "Verify login/logout/OTP flow end-to-end",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w1_whatsapp",
+          "label": "Verify WhatsApp webhook receives and processes messages",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w1_crm",
+          "label": "Verify CRM: add lead, set stage, view pipeline",
+          "done": false,
+          "critical": false
+        }
+      ],
+      "startedAt": "2026-06-21T07:21:03.839Z"
+    },
+    "w2": {
+      "id": "w2",
+      "label": "Week 2 — Founder Usage",
+      "description": "14-day founder usage — 100% Ooplix, zero external IDE. Log every escape. Fix every blocker.",
+      "status": "pending",
+      "items": [
+        {
+          "id": "w2_d1",
+          "label": "Day 1: Use CRM + WhatsApp for all customer communication",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w2_d2",
+          "label": "Day 2: Use Mission system for all task planning",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w2_d3",
+          "label": "Day 3: Use AI chat instead of ChatGPT/Claude web — log gaps",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w2_d4",
+          "label": "Day 4: Use Analytics dashboard instead of spreadsheets",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w2_d5",
+          "label": "Day 5: Run browser automation instead of manual web tasks",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w2_d6",
+          "label": "Day 6: Use Creative Studio for all design/content needs",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w2_d7",
+          "label": "Day 7: Weekly review — log all friction points",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w2_d8",
+          "label": "Day 8-10: Fix all critical blockers from week 1 usage",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w2_d11",
+          "label": "Day 11-12: Use AI Coding to improve Ooplix from within Ooplix",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w2_d13",
+          "label": "Day 13: Final polish — fix all UX rough edges found",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w2_d14",
+          "label": "Day 14: Founder sign-off — ready for alpha users",
+          "done": false,
+          "critical": true
+        }
+      ]
+    },
+    "w3": {
+      "id": "w3",
+      "label": "Week 3 — Alpha Users (10)",
+      "description": "Invite 10 alpha users. Collect every bug. Collect every suggestion. Daily releases.",
+      "status": "pending",
+      "items": [
+        {
+          "id": "w3_invites",
+          "label": "Send 10 invite codes to curated alpha users",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w3_onboard",
+          "label": "Personally onboard each alpha user (call + walkthrough)",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w3_kb",
+          "label": "KB: ensure Getting Started + FAQ covers all alpha questions",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w3_inbox",
+          "label": "CS inbox: respond to every alpha message within 4h",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w3_bugs",
+          "label": "Triage every bug — fix critical within 24h",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w3_releases",
+          "label": "Ship daily releases (at least 5 days of the week)",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w3_nps",
+          "label": "Collect NPS from each alpha user (min 7/10 responses)",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w3_record",
+          "label": "Record activation: who hit first value? How long?",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w3_review",
+          "label": "End-of-week: synthesize feedback → Week 4 readiness go/no-go",
+          "done": false,
+          "critical": true
+        }
+      ]
+    },
+    "w4": {
+      "id": "w4",
+      "label": "Week 4 — Closed Beta (50 Users)",
+      "description": "Launch Closed Beta. 50 users. Track NPS, activation, retention.",
+      "status": "pending",
+      "items": [
+        {
+          "id": "w4_50users",
+          "label": "Invite cohort to 50 beta users (beta_50 tier)",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w4_announce",
+          "label": "Send beta launch announcement email to waitlist",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w4_onboard",
+          "label": "Automated onboarding flow runs without founder hand-holding",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w4_nps",
+          "label": "Track NPS — target NPS > 30 from beta cohort",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w4_activation",
+          "label": "Track D1/D3/D7 activation — target 60% D7 retention",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w4_retention",
+          "label": "DAU ≥ 25 (50% of beta users active daily)",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w4_bugs",
+          "label": "Zero P0 (crash/data-loss) bugs open by EOW",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w4_revenue",
+          "label": "First 5 paid conversions (₹999 Starter plan)",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w4_referrals",
+          "label": "At least 3 organic referrals from beta users",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w4_report",
+          "label": "Beta health report → Public Beta go/no-go decision",
+          "done": false,
+          "critical": true
+        }
+      ]
+    },
+    "w5": {
+      "id": "w5",
+      "label": "Week 5 — Public Beta",
+      "description": "Website. Documentation. Community. Referral. Organic marketing.",
+      "status": "pending",
+      "items": [
+        {
+          "id": "w5_website",
+          "label": "Launch ooplix.com landing page (homepage + pricing + demo)",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w5_docs",
+          "label": "Public docs live: getting-started, API reference, integrations",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w5_community",
+          "label": "WhatsApp community group live — first 100 members",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w5_referral",
+          "label": "Referral program live: refer 3 → 1 month free",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w5_organic",
+          "label": "3 organic posts: demo video + founder story + product walk",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w5_ph",
+          "label": "Product Hunt listing ready (schedule launch)",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w5_seo",
+          "label": "Core SEO pages indexed (homepage + 3 feature pages)",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w5_open_beta",
+          "label": "Remove invite gate — allow self-signup with email verification",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w5_100users",
+          "label": "Target: 100 total registered users by EOW",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w5_report",
+          "label": "Public beta report → Full launch go/no-go",
+          "done": false,
+          "critical": true
+        }
+      ]
+    },
+    "w6plus": {
+      "id": "w6plus",
+      "label": "Week 6+ — Scale",
+      "description": "Revenue optimization. Conversion optimization. Customer success. Scale.",
+      "status": "pending",
+      "items": [
+        {
+          "id": "w6_revenue",
+          "label": "Revenue: 20 paying users (₹999+/month)",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w6_conversion",
+          "label": "Trial→Paid conversion funnel optimized (target 20%)",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w6_cs",
+          "label": "CS: every user has a success plan, <24h response SLA",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w6_nps50",
+          "label": "NPS > 50 sustained across 100+ users",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w6_dau",
+          "label": "DAU ≥ 60 (60% of registered users active daily)",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w6_adoption",
+          "label": "Feature adoption > 60% (avg user uses 4+ features)",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w6_referral",
+          "label": "Organic referrals: 20% of new signups from referral",
+          "done": false,
+          "critical": false
+        },
+        {
+          "id": "w6_mrr",
+          "label": "MRR ≥ ₹20,000 (20 × ₹999)",
+          "done": false,
+          "critical": true
+        },
+        {
+          "id": "w6_launched",
+          "label": "Company officially launched — announce publicly",
+          "done": false,
+          "critical": true
+        }
+      ]
+    }
+  },
+  "escapes": [
+    {
+      "id": "esc-1782026463831-005f",
+      "date": "2026-06-21",
+      "category": "friction_too_high",
+      "description": "benchmark test escape",
+      "tool": "",
+      "severity": "low",
+      "blocked": true,
+      "fixedAt": "2026-06-21T07:21:03.834Z",
+      "createdAt": "2026-06-21T07:21:03.833Z"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "blk-1782026463834-0s8t",
+      "title": "benchmark blocker",
+      "description": "",
+      "severity": "P2",
+      "week": "w2",
+      "module": "",
+      "status": "resolved",
+      "fixedAt": "2026-06-21T07:21:03.834Z",
+      "createdAt": "2026-06-21T07:21:03.834Z"
+    }
+  ],
+  "dailyReleases": [
+    {
+      "id": "rel-1782026463835-cv28",
+      "date": "2026-06-21",
+      "version": "1.0.1-alpha",
+      "notes": "Benchmark test release",
+      "fixes": [
+        "test fix 1"
+      ],
+      "week": "w3",
+      "shippedAt": "2026-06-21T07:21:03.835Z"
+    }
+  ],
+  "successKPIs": {
+    "active_users": {
+      "label": "Active Users",
+      "target": 100,
+      "current": 0,
+      "unit": "users"
+    },
+    "paying_users": {
+      "label": "Paying Users",
+      "target": 20,
+      "current": 0,
+      "unit": "users"
+    },
+    "nps": {
+      "label": "NPS Score",
+      "target": 50,
+      "current": null,
+      "unit": "score"
+    },
+    "dau": {
+      "label": "Daily Active Users",
+      "target": 60,
+      "current": 0,
+      "unit": "users"
+    },
+    "feature_adoption": {
+      "label": "Feature Adoption",
+      "target": 60,
+      "current": 0,
+      "unit": "%"
+    },
+    "organic_referrals": {
+      "label": "Organic Referrals",
+      "target": 20,
+      "current": 0,
+      "unit": "users"
+    },
+    "mrr": {
+      "label": "MRR (₹)",
+      "target": 20000,
+      "current": 0,
+      "unit": "₹"
+    }
+  },
+  "launchLog": [
+    {
+      "id": "le-1782026464179-nwcc",
+      "type": "milestone",
+      "body": "Benchmark: OP-1 launch operations verified",
+      "week": "w1",
+      "milestone": null,
+      "ts": "2026-06-21T07:21:04.179Z"
+    }
+  ]
+}
