@@ -109,6 +109,7 @@ router.use(require("./productionWiring")); // /wiring/* — Production Wiring Sp
 router.use(require("./productionWiring2")); // /wiring2/* — Production Wiring Sprint 2: SMTP/AI-extended/OAuth/Monitoring/Storage/E2E
 router.use(require("./pcsCredentials")); // /credentials/* — PCS-1: Email/AI/OAuth/Crash/Storage credential audit + env var report
 router.use(require("./pcs2ExternalPlatforms")); // /ext/* — PCS-2: Meta/Google/Microsoft/Git/Productivity/Design/Commerce/Automation audit
+router.use(require("./dop1")); // /dop/* — DOP-1: Production Infrastructure Validation (10 modules: VPS/Nginx/SSL/DNS/Domains/Deploy/Backup/Monitor/Security/Stress)
 router.use(require("./plan-management")); // /plan/* — current plan, upgrade
 
 module.exports = router;

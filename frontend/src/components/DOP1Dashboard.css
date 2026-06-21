@@ -1,0 +1,126 @@
+/* ── DOP-1 Production Infrastructure Validation Dashboard ──────── */
+:root { --dop-accent: #38bdf8; } /* sky blue */
+
+.dop-root     { display: flex; flex-direction: column; height: 100%; background: #0f172a; color: #e2e8f0; font-family: system-ui, sans-serif; overflow: hidden; }
+.dop-header   { padding: 10px 16px 6px; border-bottom: 1px solid #1e293b; }
+.dop-title    { font-size: 14px; font-weight: 700; color: var(--dop-accent); }
+.dop-subtitle { font-size: 10px; color: #64748b; margin-top: 2px; }
+.dop-msg      { font-size: 11px; color: #fbbf24; margin-top: 4px; }
+
+.dop-tabs     { display: flex; gap: 2px; padding: 6px 10px; background: #0f172a; border-bottom: 1px solid #1e293b; overflow-x: auto; flex-shrink: 0; }
+.dop-tab      { background: none; border: 1px solid transparent; border-radius: 5px; padding: 4px 9px; font-size: 10px; color: #94a3b8; cursor: pointer; white-space: nowrap; }
+.dop-tab:hover { background: #1e293b; color: #e2e8f0; }
+.dop-tab.active{ background: #1e293b; border-color: var(--dop-accent); color: var(--dop-accent); }
+
+.dop-body     { flex: 1; overflow-y: auto; padding: 12px; }
+
+/* ── Hero ──────────────────────────────────────────────────────── */
+.dop-hero     { display: flex; align-items: center; gap: 16px; background: #1e293b; border-radius: 10px; padding: 14px 18px; margin-bottom: 12px; flex-wrap: wrap; }
+.dop-hero-info { flex: 1; min-width: 0; }
+.dop-hero-verdict { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.dop-hero-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+.dop-hero-run { font-size: 10px; color: #475569; margin-top: 6px; }
+
+.dop-stat     { display: flex; flex-direction: column; align-items: center; min-width: 40px; }
+.dop-stat-v   { font-size: 18px; font-weight: 700; }
+.dop-stat-l   { font-size: 10px; color: #64748b; }
+.dop-green    { color: #34d399; }
+.dop-red      { color: #f87171; }
+.dop-yellow   { color: #fbbf24; }
+
+/* ── Verdict badge ─────────────────────────────────────────────── */
+.dop-verdict  { font-size: 11px; font-weight: 700; border: 1px solid; border-radius: 5px; padding: 3px 10px; }
+
+/* ── Module grid ───────────────────────────────────────────────── */
+.dop-module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; margin-bottom: 12px; }
+.dop-mod-card   { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 8px; text-align: center; }
+.dop-mod-icon   { font-size: 18px; margin-bottom: 4px; }
+.dop-mod-score  { font-size: 18px; font-weight: 700; }
+.dop-mod-label  { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+.dop-mod-verdict{ font-size: 9px; font-weight: 600; margin-top: 2px; }
+
+/* ── Module panel ──────────────────────────────────────────────── */
+.dop-module-panel  { display: flex; flex-direction: column; gap: 8px; }
+.dop-module-header { display: flex; align-items: center; gap: 12px; background: #1e293b; border-radius: 8px; padding: 10px 14px; flex-wrap: wrap; }
+.dop-module-title  { font-size: 14px; font-weight: 700; }
+.dop-module-sub    { font-size: 11px; color: #64748b; }
+
+/* ── Check rows ────────────────────────────────────────────────── */
+.dop-checks   { display: flex; flex-direction: column; gap: 3px; }
+.dop-check    { display: flex; align-items: flex-start; gap: 8px; background: #1e293b; border-radius: 5px; padding: 7px 10px; border-left: 3px solid transparent; cursor: pointer; }
+.dop-check.pass { border-left-color: #34d399; }
+.dop-check.warn { border-left-color: #fbbf24; }
+.dop-check.fail { border-left-color: #f87171; }
+.dop-check:hover { background: #263347; }
+.dop-check-icon  { font-size: 12px; flex-shrink: 0; padding-top: 1px; }
+.dop-check-body  { flex: 1; min-width: 0; }
+.dop-check-label { font-size: 11px; font-weight: 600; }
+.dop-check-detail{ margin-top: 4px; }
+.dop-check-detail-text { font-size: 10px; color: #94a3b8; }
+.dop-check-fix   { font-size: 10px; color: #fbbf24; background: rgba(251,191,36,0.07); border-radius: 3px; padding: 2px 6px; margin-top: 3px; display: inline-block; font-family: monospace; }
+.dop-check-expand{ font-size: 9px; color: #475569; flex-shrink: 0; }
+
+/* ── Failing / warning blocks ──────────────────────────────────── */
+.dop-failing-block { background: rgba(248,113,113,0.05); border: 1px solid rgba(248,113,113,0.18); border-radius: 8px; padding: 10px 12px; }
+.dop-warn-block    { background: rgba(251,191,36,0.05); border: 1px solid rgba(251,191,36,0.18); border-radius: 8px; padding: 10px 12px; }
+.dop-pass-block    { background: rgba(52,211,153,0.04); border: 1px solid rgba(52,211,153,0.15); border-radius: 8px; padding: 10px 12px; }
+.dop-block-title   { font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 6px; }
+
+.dop-fail-row  { display: flex; align-items: flex-start; gap: 6px; padding: 4px 0; border-bottom: 1px solid #1e293b; font-size: 11px; }
+.dop-crit      { font-size: 9px; font-weight: 700; background: rgba(248,113,113,0.15); color: #f87171; border-radius: 3px; padding: 1px 5px; white-space: nowrap; flex-shrink: 0; }
+.dop-warn      { font-size: 9px; font-weight: 700; background: rgba(251,191,36,0.12); color: #fbbf24; border-radius: 3px; padding: 1px 5px; white-space: nowrap; flex-shrink: 0; }
+.dop-fail-label{ flex: 1; }
+.dop-fail-fix  { font-size: 10px; color: #64748b; }
+
+/* ── Reports panel ─────────────────────────────────────────────── */
+.dop-reports       { display: flex; flex-direction: column; gap: 8px; }
+.dop-report-tabs   { display: flex; gap: 4px; flex-wrap: wrap; }
+.dop-rep-tab       { background: #1e293b; border: 1px solid #334155; border-radius: 5px; padding: 5px 12px; font-size: 11px; color: #94a3b8; cursor: pointer; }
+.dop-rep-tab.active{ border-color: var(--dop-accent); color: var(--dop-accent); background: rgba(56,189,248,0.07); }
+.dop-report-body   { background: #1e293b; border-radius: 8px; padding: 12px; }
+.dop-report-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.dop-report-type   { font-size: 13px; font-weight: 700; }
+
+/* ── Module scores bar ─────────────────────────────────────────── */
+.dop-module-scores { display: flex; flex-direction: column; gap: 4px; }
+.dop-ms-row        { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+.dop-ms-label      { width: 100px; flex-shrink: 0; color: #94a3b8; }
+.dop-ms-bar-wrap   { flex: 1; background: #0f172a; border-radius: 3px; height: 6px; overflow: hidden; }
+.dop-ms-bar        { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+.dop-ms-score      { width: 35px; text-align: right; font-weight: 600; color: #e2e8f0; }
+
+/* ── Performance table ─────────────────────────────────────────── */
+.dop-table         { width: 100%; border-collapse: collapse; font-size: 11px; }
+.dop-table th      { background: #0f172a; padding: 6px 8px; text-align: left; color: #94a3b8; font-weight: 600; }
+.dop-table td      { padding: 5px 8px; border-bottom: 1px solid #0f172a; }
+.dop-table tr:last-child td { border-bottom: none; }
+.dop-tr-pass td    { background: rgba(52,211,153,0.04); }
+.dop-tr-fail td    { background: rgba(248,113,113,0.04); }
+.dop-perf-summary  { display: flex; flex-direction: column; gap: 2px; }
+.dop-perf-row      { font-size: 11px; padding: 4px 8px; background: #0f172a; border-radius: 4px; font-family: monospace; }
+.dop-perf-block    { }
+
+/* ── Overview ──────────────────────────────────────────────────── */
+.dop-overview { display: flex; flex-direction: column; gap: 10px; }
+
+/* ── Benchmark ─────────────────────────────────────────────────── */
+.dop-bench    { display: flex; flex-direction: column; gap: 10px; }
+.dop-run-at   { font-size: 10px; color: #475569; text-align: right; margin-top: 4px; }
+
+/* ── Ring ──────────────────────────────────────────────────────── */
+.dop-ring { flex-shrink: 0; }
+
+/* ── Buttons ───────────────────────────────────────────────────── */
+.dop-btn-primary { background: var(--dop-accent); color: #0f172a; border: none; border-radius: 7px; padding: 8px 18px; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+.dop-btn-primary:hover:not(:disabled) { opacity: 0.9; }
+.dop-btn-primary:disabled             { opacity: 0.5; cursor: not-allowed; }
+.dop-btn-sm      { background: #334155; border: none; border-radius: 5px; padding: 5px 12px; font-size: 11px; color: #e2e8f0; cursor: pointer; flex-shrink: 0; }
+.dop-btn-sm:hover:not(:disabled) { background: #475569; }
+.dop-btn-sm:disabled             { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Empty / loading ───────────────────────────────────────────── */
+.dop-empty       { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 40px 20px; text-align: center; }
+.dop-empty-icon  { font-size: 36px; }
+.dop-empty-title { font-size: 14px; font-weight: 700; }
+.dop-empty-sub   { font-size: 12px; color: #64748b; }
+.dop-loading     { color: #64748b; font-size: 12px; padding: 20px; text-align: center; }

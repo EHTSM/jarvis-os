@@ -1,0 +1,3181 @@
+{
+  "reports": [
+    {
+      "id": "dop1-1782075487922",
+      "runAt": "2026-06-21T20:58:07.922Z",
+      "durationMs": 4166,
+      "productionScore": 53,
+      "verdict": "CONDITIONAL GO",
+      "totalChecks": 96,
+      "totalPassing": 51,
+      "criticalFails": 28,
+      "modules": {
+        "vps": {
+          "module": "vps",
+          "label": "VPS Validation",
+          "checks": [
+            {
+              "id": "vps_ubuntu",
+              "label": "Ubuntu 22.04+",
+              "pass": false,
+              "detail": "Ubuntu ",
+              "fix": "Upgrade to Ubuntu 22.04 LTS: do-release-upgrade",
+              "severity": "critical"
+            },
+            {
+              "id": "vps_cpu",
+              "label": "CPU ≥ 2 cores",
+              "pass": false,
+              "detail": "0 core(s) detected",
+              "fix": "Resize VPS to at least 2 vCPUs",
+              "severity": "warning"
+            },
+            {
+              "id": "vps_ram",
+              "label": "RAM ≥ 1GB",
+              "pass": false,
+              "detail": "0MB RAM detected",
+              "fix": "Resize VPS to at least 2GB RAM",
+              "severity": "warning"
+            },
+            {
+              "id": "vps_disk",
+              "label": "Disk ≥ 5GB free",
+              "pass": false,
+              "detail": "0GB free on /",
+              "fix": "Free disk space or expand volume",
+              "severity": "warning"
+            },
+            {
+              "id": "vps_swap",
+              "label": "Swap configured",
+              "pass": false,
+              "detail": "No swap configured",
+              "fix": "sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile",
+              "severity": "warning"
+            },
+            {
+              "id": "vps_timezone",
+              "label": "Timezone (UTC preferred)",
+              "pass": false,
+              "detail": "Timezone: IST",
+              "fix": "sudo timedatectl set-timezone UTC",
+              "severity": "warning"
+            },
+            {
+              "id": "vps_ssh",
+              "label": "SSH service running",
+              "pass": false,
+              "detail": "SSH: Command failed: systemctl is-active ssh 2>/dev/null || systemctl is-active sshd 2>/dev/null",
+              "fix": "sudo systemctl enable --now ssh",
+              "severity": "critical"
+            },
+            {
+              "id": "vps_ufw",
+              "label": "UFW firewall active",
+              "pass": false,
+              "detail": "",
+              "fix": "sudo ufw allow 22 && sudo ufw allow 80 && sudo ufw allow 443 && sudo ufw --force enable",
+              "severity": "critical"
+            },
+            {
+              "id": "vps_fail2ban",
+              "label": "Fail2Ban active",
+              "pass": false,
+              "detail": "Fail2Ban: Command failed: systemctl is-active fail2ban 2>/dev/null",
+              "fix": "sudo apt install fail2ban -y && sudo systemctl enable --now fail2ban",
+              "severity": "critical"
+            },
+            {
+              "id": "vps_cron",
+              "label": "Cron daemon active",
+              "pass": false,
+              "detail": "Cron: Command failed: systemctl is-active cron 2>/dev/null || systemctl is-active crond 2>/dev/null",
+              "fix": "sudo systemctl enable --now cron",
+              "severity": "warning"
+            },
+            {
+              "id": "vps_pm2",
+              "label": "PM2 running (≥1 online process)",
+              "pass": false,
+              "detail": "0 process(es) online",
+              "fix": "pm2 start ecosystem.config.cjs --env production",
+              "severity": "critical"
+            }
+          ],
+          "passing": 0,
+          "total": 11,
+          "score": 0
+        },
+        "nginx": {
+          "module": "nginx",
+          "label": "Nginx",
+          "checks": [
+            {
+              "id": "nginx_installed",
+              "label": "Nginx installed",
+              "pass": true,
+              "detail": "/bin/sh: nginx: command not found",
+              "fix": "sudo apt install nginx -y && sudo systemctl enable --now nginx",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_running",
+              "label": "Nginx service running",
+              "pass": false,
+              "detail": "nginx: Command failed: systemctl is-active nginx 2>/dev/null",
+              "fix": "sudo systemctl start nginx && sudo systemctl enable nginx",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_config",
+              "label": "Nginx config valid (nginx -t)",
+              "pass": false,
+              "detail": "/bin/sh: nginx: command not found",
+              "fix": "Edit /etc/nginx/sites-available/ooplix — fix the reported syntax error and sudo nginx -t",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_conf_file",
+              "label": "Ooplix nginx site config exists",
+              "pass": false,
+              "detail": "nginx config not at /etc/nginx/sites-enabled/ooplix",
+              "fix": "sudo cp nginx.conf /etc/nginx/sites-available/ooplix && sudo ln -s /etc/nginx/sites-available/ooplix /etc/nginx/sites-enabled/ && sudo nginx -t && sudo systemctl reload nginx",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_https",
+              "label": "HTTPS (port 443) listening",
+              "pass": false,
+              "detail": "Port 443 not responding",
+              "fix": "Ensure SSL cert is installed and nginx is configured for HTTPS",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_http_redirect",
+              "label": "HTTP → HTTPS redirect",
+              "pass": false,
+              "detail": "Cannot probe (no domain configured)",
+              "fix": "Add 'return 301 https://$host$request_uri;' in the :80 server block",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_gzip",
+              "label": "Gzip compression enabled",
+              "pass": true,
+              "detail": "gzip on found in nginx.conf",
+              "fix": "Add 'gzip on; gzip_types text/plain text/css application/json application/javascript;' to nginx.conf",
+              "severity": "warning"
+            },
+            {
+              "id": "nginx_caching",
+              "label": "Static asset caching configured",
+              "pass": true,
+              "detail": "Cache-Control: set in nginx.conf",
+              "fix": "Add 'expires 1y; add_header Cache-Control \"public, immutable\";' for /static/ location in nginx.conf",
+              "severity": "warning"
+            },
+            {
+              "id": "nginx_sec_headers",
+              "label": "Security headers (HSTS/X-Frame/X-Content-Type)",
+              "pass": true,
+              "detail": "HSTS: false, X-Frame: false, X-Content-Type: false",
+              "fix": "Add HSTS, X-Frame-Options, X-Content-Type-Options, X-XSS-Protection in nginx.conf server block",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_upload",
+              "label": "Large upload (client_max_body_size) set",
+              "pass": true,
+              "detail": "client_max_body_size configured in nginx.conf",
+              "fix": "Add 'client_max_body_size 50m;' to the server block in nginx.conf",
+              "severity": "warning"
+            },
+            {
+              "id": "nginx_websocket",
+              "label": "WebSocket proxying configured",
+              "pass": false,
+              "detail": "WebSocket headers not found in nginx.conf",
+              "fix": "Add: proxy_http_version 1.1; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection 'upgrade';",
+              "severity": "warning"
+            }
+          ],
+          "passing": 5,
+          "total": 11,
+          "score": 45
+        },
+        "ssl": {
+          "module": "ssl",
+          "label": "SSL / TLS",
+          "checks": [
+            {
+              "id": "ssl_cert",
+              "label": "SSL certificate file exists",
+              "pass": false,
+              "detail": "No cert found at /etc/letsencrypt/live/",
+              "fix": "sudo certbot certonly --nginx -d app.ooplix.com -d www.ooplix.com -d ooplix.com",
+              "severity": "critical"
+            },
+            {
+              "id": "ssl_expiry",
+              "label": "SSL cert valid for ≥ 30 days",
+              "pass": true,
+              "detail": "79 days remaining",
+              "fix": "sudo certbot renew --force-renewal",
+              "severity": "critical"
+            },
+            {
+              "id": "ssl_autorenew",
+              "label": "Certbot auto-renew active",
+              "pass": false,
+              "detail": "Auto-renew not detected",
+              "fix": "sudo systemctl enable certbot.timer && sudo systemctl start certbot.timer  OR  add: 0 12 * * * /usr/bin/certbot renew --quiet",
+              "severity": "critical"
+            },
+            {
+              "id": "ssl_ocsp",
+              "label": "OCSP stapling enabled",
+              "pass": true,
+              "detail": "ssl_stapling on in nginx.conf",
+              "fix": "Add 'ssl_stapling on; ssl_stapling_verify on;' to nginx.conf HTTPS server block",
+              "severity": "warning"
+            },
+            {
+              "id": "ssl_tls_version",
+              "label": "TLS 1.0/1.1 disabled (TLS 1.2+ only)",
+              "pass": true,
+              "detail": "ssl_protocols TLSv1.2 TLSv1.3 in nginx.conf",
+              "fix": "Set 'ssl_protocols TLSv1.2 TLSv1.3;' in nginx.conf",
+              "severity": "critical"
+            }
+          ],
+          "passing": 3,
+          "total": 5,
+          "score": 60
+        },
+        "dns": {
+          "module": "dns",
+          "label": "DNS",
+          "checks": [
+            {
+              "id": "dns_a",
+              "label": "A record for ooplix.com",
+              "pass": true,
+              "detail": "ooplix.com → 82.29.162.93",
+              "fix": "Add A record: ooplix.com → <VPS_IP> in your DNS provider",
+              "severity": "critical"
+            },
+            {
+              "id": "dns_aaaa",
+              "label": "AAAA record for ooplix.com",
+              "pass": false,
+              "detail": "No AAAA record (IPv6)",
+              "fix": "Add AAAA record pointing to your VPS IPv6 address",
+              "severity": "warning"
+            },
+            {
+              "id": "dns_cname_www",
+              "label": "www.ooplix.com resolves",
+              "pass": true,
+              "detail": "www.ooplix.com → 82.29.162.93 (A)",
+              "fix": "Add CNAME: www → ooplix.com OR A record for www",
+              "severity": "warning"
+            },
+            {
+              "id": "dns_mx",
+              "label": "MX record for ooplix.com",
+              "pass": false,
+              "detail": "No MX records",
+              "fix": "Add MX records via your email provider (e.g., Google Workspace, Resend)",
+              "severity": "critical"
+            },
+            {
+              "id": "dns_txt",
+              "label": "TXT records for ooplix.com",
+              "pass": false,
+              "detail": "No TXT records",
+              "fix": "Add domain verification TXT records for your services",
+              "severity": "warning"
+            },
+            {
+              "id": "dns_spf",
+              "label": "SPF record",
+              "pass": false,
+              "detail": "No SPF record",
+              "fix": "Add TXT: v=spf1 include:_spf.resend.com include:sendgrid.net ~all (match your email provider)",
+              "severity": "critical"
+            },
+            {
+              "id": "dns_dkim",
+              "label": "DKIM record",
+              "pass": false,
+              "detail": "No DKIM record at resend._domainkey.ooplix.com: ENOTFOUND",
+              "fix": "Configure DKIM via your email provider (Resend: resend._domainkey.ooplix.com → provided TXT)",
+              "severity": "critical"
+            },
+            {
+              "id": "dns_dmarc",
+              "label": "DMARC record",
+              "pass": false,
+              "detail": "No DMARC record (_dmarc.ooplix.com)",
+              "fix": "Add TXT _dmarc.ooplix.com: v=DMARC1; p=quarantine; rua=mailto:dmarc@ooplix.com",
+              "severity": "critical"
+            },
+            {
+              "id": "dns_caa",
+              "label": "CAA record",
+              "pass": false,
+              "detail": "No CAA record for ooplix.com",
+              "fix": "Add CAA record: 0 issue \"letsencrypt.org\" for ooplix.com",
+              "severity": "warning"
+            },
+            {
+              "id": "dns_propagation",
+              "label": "DNS propagated (3/3 resolvers)",
+              "pass": true,
+              "detail": "3/3 public resolvers return A record",
+              "fix": "DNS propagation takes up to 48h. Verify at whatsmydns.net",
+              "severity": "warning"
+            }
+          ],
+          "passing": 3,
+          "total": 10,
+          "score": 30
+        },
+        "domains": {
+          "module": "domains",
+          "label": "Domain Audit",
+          "checks": [
+            {
+              "id": "domain_root",
+              "label": "ooplix.com resolves",
+              "pass": true,
+              "detail": "→ 82.29.162.93 | HTTPS 200",
+              "fix": "Add DNS A/CNAME for ooplix.com → VPS IP",
+              "severity": "critical"
+            },
+            {
+              "id": "domain_https_root",
+              "label": "ooplix.com HTTPS responds",
+              "pass": true,
+              "detail": "HTTPS accessible",
+              "fix": "Ensure nginx SSL config covers this subdomain",
+              "severity": "critical"
+            },
+            {
+              "id": "domain_www",
+              "label": "www.ooplix.com resolves",
+              "pass": true,
+              "detail": "→ 82.29.162.93 | HTTPS 200",
+              "fix": "Add DNS A/CNAME for www.ooplix.com → VPS IP",
+              "severity": "warning"
+            },
+            {
+              "id": "domain_https_www",
+              "label": "www.ooplix.com HTTPS responds",
+              "pass": true,
+              "detail": "HTTPS accessible",
+              "fix": "Ensure nginx SSL config covers this subdomain",
+              "severity": "warning"
+            },
+            {
+              "id": "domain_app",
+              "label": "app.ooplix.com resolves",
+              "pass": true,
+              "detail": "→ 82.29.162.93 | HTTPS 200",
+              "fix": "Add DNS A/CNAME for app.ooplix.com → VPS IP",
+              "severity": "critical"
+            },
+            {
+              "id": "domain_https_app",
+              "label": "app.ooplix.com HTTPS responds",
+              "pass": true,
+              "detail": "HTTPS accessible",
+              "fix": "Ensure nginx SSL config covers this subdomain",
+              "severity": "critical"
+            },
+            {
+              "id": "domain_api",
+              "label": "api.ooplix.com resolves",
+              "pass": true,
+              "detail": "→ 82.29.162.93 | HTTPS 401",
+              "fix": "Add DNS A/CNAME for api.ooplix.com → VPS IP",
+              "severity": "warning"
+            },
+            {
+              "id": "domain_https_api",
+              "label": "api.ooplix.com HTTPS responds",
+              "pass": true,
+              "detail": "HTTPS accessible",
+              "fix": "Ensure nginx SSL config covers this subdomain",
+              "severity": "warning"
+            },
+            {
+              "id": "domain_docs",
+              "label": "docs.ooplix.com resolves",
+              "pass": false,
+              "detail": "DNS: NXDOMAIN / ENOTFOUND",
+              "fix": "Add DNS A/CNAME for docs.ooplix.com → VPS IP",
+              "severity": "warning"
+            },
+            {
+              "id": "domain_status",
+              "label": "status.ooplix.com resolves",
+              "pass": false,
+              "detail": "DNS: NXDOMAIN / ENOTFOUND",
+              "fix": "Add DNS A/CNAME for status.ooplix.com → VPS IP",
+              "severity": "warning"
+            },
+            {
+              "id": "domain_cdn",
+              "label": "cdn.ooplix.com resolves",
+              "pass": false,
+              "detail": "DNS: NXDOMAIN / ENOTFOUND",
+              "fix": "Add DNS A/CNAME for cdn.ooplix.com → VPS IP",
+              "severity": "warning"
+            }
+          ],
+          "passing": 8,
+          "total": 11,
+          "score": 73
+        },
+        "deployment": {
+          "module": "deployment",
+          "label": "Deployment Validation",
+          "checks": [
+            {
+              "id": "deploy_frontend",
+              "label": "Frontend build artifacts present",
+              "pass": true,
+              "detail": "frontend/build/index.html + 161 JS chunks",
+              "fix": "cd frontend && npm ci && npm run build",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_backend",
+              "label": "Backend entry point (backend/server.js)",
+              "pass": true,
+              "detail": "backend/server.js present",
+              "fix": "Ensure backend/server.js exists and is the PM2 entry point",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_pm2_config",
+              "label": "PM2 ecosystem config (ecosystem.config.cjs)",
+              "pass": true,
+              "detail": "ecosystem.config.cjs present",
+              "fix": "PM2 ecosystem config required: pm2 start ecosystem.config.cjs --env production",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_pm2_running",
+              "label": "PM2 jarvis-os process online",
+              "pass": false,
+              "detail": "jarvis-os not running in PM2",
+              "fix": "pm2 start ecosystem.config.cjs --env production && pm2 save",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_health",
+              "label": "Health endpoint /api/health responds 200",
+              "pass": false,
+              "detail": "HTTP 0 from /api/health",
+              "fix": "Ensure backend is running: pm2 restart jarvis-os && pm2 logs jarvis-os --lines 20",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_electron_updater",
+              "label": "Electron auto-updater configured",
+              "pass": true,
+              "detail": "electron-builder publish config or GH_TOKEN found",
+              "fix": "Set GH_TOKEN and add publish: {provider: github} to package.json build config",
+              "severity": "warning"
+            },
+            {
+              "id": "deploy_restart",
+              "label": "PM2 restart capability",
+              "pass": false,
+              "detail": "PM2 process not registered",
+              "fix": "pm2 start ecosystem.config.cjs --env production && pm2 save && pm2 startup",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_rollback",
+              "label": "Git rollback capability (git log reachable)",
+              "pass": true,
+              "detail": "Last commits: fc5c775 feat(pcs-2): Production Credentials Sprint 2 — External Platform Matrix (8 ecosystems, 39 platforms)",
+              "fix": "Ensure repo is initialized and commits are present for rollback",
+              "severity": "warning"
+            }
+          ],
+          "passing": 5,
+          "total": 8,
+          "score": 63
+        },
+        "backup": {
+          "module": "backup",
+          "label": "Backup Validation",
+          "checks": [
+            {
+              "id": "backup_script",
+              "label": "Backup script present (backup.sh / safe-backup.cjs)",
+              "pass": true,
+              "detail": "backup.sh scripts/safe-backup.cjs",
+              "fix": "Create backup.sh that tarballs data/ and uploads to S3/R2",
+              "severity": "critical"
+            },
+            {
+              "id": "backup_dir",
+              "label": "Backups directory exists",
+              "pass": true,
+              "detail": "/Users/ehtsm/jarvis-os/backups",
+              "fix": "mkdir -p backups && chmod 700 backups",
+              "severity": "warning"
+            },
+            {
+              "id": "backup_recent",
+              "label": "Backup exists (< 25h old)",
+              "pass": false,
+              "detail": "4 backup(s), newest: 458h ago",
+              "fix": "Run: ./backup.sh   OR add to cron: 0 2 * * * cd /opt/jarvis-os && ./backup.sh >> logs/backup.log 2>&1",
+              "severity": "critical"
+            },
+            {
+              "id": "backup_database",
+              "label": "data/ directory has files (flat-file DB)",
+              "pass": true,
+              "detail": "282 data files in data/",
+              "fix": "Ensure data/ is included in backup: tar -czf backup.tar.gz data/",
+              "severity": "critical"
+            },
+            {
+              "id": "backup_config",
+              "label": ".env (config) backup awareness",
+              "pass": true,
+              "detail": ".env file present — ensure it's backed up securely off-site (NOT in git)",
+              "fix": "Back up .env to a secrets manager (Doppler, AWS Secrets Manager, Vault) — NEVER commit to git",
+              "severity": "warning"
+            },
+            {
+              "id": "backup_assets",
+              "label": "Assets (frontend build / uploads) exist",
+              "pass": true,
+              "detail": "frontend/build present",
+              "fix": "Include frontend/build and uploads/ in your backup script",
+              "severity": "warning"
+            },
+            {
+              "id": "backup_restore",
+              "label": "Restore test script present",
+              "pass": true,
+              "detail": "test-restore.cjs found",
+              "fix": "Create scripts/test-restore.cjs to validate backup integrity on every backup run",
+              "severity": "warning"
+            },
+            {
+              "id": "backup_integrity",
+              "label": "Latest backup file is readable",
+              "pass": true,
+              "detail": "Latest backup: jarvis_full_2026-06-02T18-32-27-889Z.tar.gz — 29 files",
+              "fix": "Re-run ./backup.sh and verify tar -tzf backups/latest.tar.gz completes without errors",
+              "severity": "critical"
+            },
+            {
+              "id": "backup_retention",
+              "label": "Backup retention ≥ 7 copies",
+              "pass": false,
+              "detail": "4 backup(s) retained",
+              "fix": "Update backup.sh retention: keep last 14 backups with: ls -t backups/*.tar.gz | tail -n +15 | xargs rm -f",
+              "severity": "warning"
+            },
+            {
+              "id": "backup_offsite",
+              "label": "Off-site backup configured (S3/R2/rsync)",
+              "pass": false,
+              "detail": "No S3/R2 credentials — backups are local only",
+              "fix": "Set AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY (or R2 keys) and upload: aws s3 cp backups/ s3://your-bucket/ --recursive",
+              "severity": "warning"
+            }
+          ],
+          "passing": 7,
+          "total": 10,
+          "score": 70
+        },
+        "monitoring": {
+          "module": "monitoring",
+          "label": "Monitoring",
+          "checks": [
+            {
+              "id": "monitor_pm2",
+              "label": "PM2 process monitoring",
+              "pass": false,
+              "detail": "PM2 not available",
+              "fix": "pm2 start ecosystem.config.cjs --env production && pm2 monit",
+              "severity": "critical"
+            },
+            {
+              "id": "monitor_memory",
+              "label": "Memory usage < 90%",
+              "pass": true,
+              "detail": "Memory: 0% used",
+              "fix": "Investigate memory leak: pm2 logs jarvis-os --lines 50 && pm2 monit",
+              "severity": "warning"
+            },
+            {
+              "id": "monitor_cpu",
+              "label": "CPU usage < 80%",
+              "pass": true,
+              "detail": "CPU: 0% used",
+              "fix": "Scale VPS or optimize hot code paths",
+              "severity": "warning"
+            },
+            {
+              "id": "monitor_disk",
+              "label": "Disk usage < 85%",
+              "pass": true,
+              "detail": "Disk: 32% used",
+              "fix": "Clean old logs: pm2 flush && find logs/ -mtime +7 -delete && df -h /",
+              "severity": "warning"
+            },
+            {
+              "id": "monitor_telegram",
+              "label": "Telegram alerts configured",
+              "pass": false,
+              "detail": "TELEGRAM_TOKEN or TELEGRAM_OPERATOR_CHAT_ID not set",
+              "fix": "Set TELEGRAM_TOKEN (from @BotFather) and TELEGRAM_OPERATOR_CHAT_ID in .env",
+              "severity": "warning"
+            },
+            {
+              "id": "monitor_logrotate",
+              "label": "Log rotation configured",
+              "pass": false,
+              "detail": "No log rotation detected",
+              "fix": "pm2 install pm2-logrotate && pm2 set pm2-logrotate:max_size 50M && pm2 set pm2-logrotate:retain 7",
+              "severity": "warning"
+            },
+            {
+              "id": "monitor_health_endpoint",
+              "label": "Health endpoint accessible",
+              "pass": false,
+              "detail": "HTTP 0 from localhost:5050/api/health",
+              "fix": "Ensure the backend is running: pm2 restart jarvis-os",
+              "severity": "critical"
+            }
+          ],
+          "passing": 3,
+          "total": 7,
+          "score": 43
+        },
+        "security": {
+          "module": "security",
+          "label": "Security",
+          "checks": [
+            {
+              "id": "sec_headers",
+              "label": "Security headers (HSTS, X-Frame, X-Content-Type, CSP, Referrer-Policy)",
+              "pass": false,
+              "detail": "X-Frame: false, X-Content-Type: false, HSTS: false, CSP: false, Referrer: false",
+              "fix": "Set security headers in nginx.conf: HSTS, X-Frame-Options DENY, X-Content-Type-Options nosniff, CSP",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_jwt",
+              "label": "JWT_SECRET ≥ 32 characters",
+              "pass": false,
+              "detail": "JWT_SECRET not set",
+              "fix": "Generate: openssl rand -hex 32  then set JWT_SECRET in .env",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_secrets",
+              "label": ".env excluded from git (.gitignore)",
+              "pass": true,
+              "detail": ".env in .gitignore",
+              "fix": "echo '.env' >> .gitignore && git rm --cached .env 2>/dev/null || true",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_permissions",
+              "label": ".env permissions 600 (owner read/write only)",
+              "pass": true,
+              "detail": ".env permissions: 600",
+              "fix": "chmod 600 .env",
+              "severity": "warning"
+            },
+            {
+              "id": "sec_ssh",
+              "label": "SSH password authentication disabled",
+              "pass": true,
+              "detail": "Cannot probe sshd config (may be OK in local dev)",
+              "fix": "Set PasswordAuthentication no in /etc/ssh/sshd_config then: sudo systemctl reload sshd",
+              "severity": "warning"
+            },
+            {
+              "id": "sec_ports",
+              "label": "No unexpected ports open",
+              "pass": true,
+              "detail": "Open ports: ",
+              "fix": "Close unexpected ports: sudo ufw deny ",
+              "severity": "warning"
+            },
+            {
+              "id": "sec_rate_limit",
+              "label": "Nginx rate limiting configured",
+              "pass": true,
+              "detail": "limit_req_zone + limit_req found in nginx.conf",
+              "fix": "Add limit_req_zone and limit_req directives to nginx.conf (see project nginx.conf for reference)",
+              "severity": "critical"
+            }
+          ],
+          "passing": 5,
+          "total": 7,
+          "score": 71
+        },
+        "stress": {
+          "module": "stress",
+          "label": "Stress Test",
+          "checks": [
+            {
+              "id": "stress_50u_p95",
+              "label": "50 users: P95 ≤ 800ms",
+              "pass": true,
+              "detail": "P95: 15ms (avg: 13ms, P99: 16ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_50u_err",
+              "label": "50 users: Error rate ≤ 1%",
+              "pass": false,
+              "detail": "50/50 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_50u_cpu",
+              "label": "50 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_50u_mem",
+              "label": "50 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_100u_p95",
+              "label": "100 users: P95 ≤ 1500ms",
+              "pass": true,
+              "detail": "P95: 15ms (avg: 12ms, P99: 15ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_100u_err",
+              "label": "100 users: Error rate ≤ 2%",
+              "pass": false,
+              "detail": "100/100 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_100u_cpu",
+              "label": "100 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_100u_mem",
+              "label": "100 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_250u_p95",
+              "label": "250 users: P95 ≤ 3000ms",
+              "pass": true,
+              "detail": "P95: 17ms (avg: 13ms, P99: 18ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_250u_err",
+              "label": "250 users: Error rate ≤ 5%",
+              "pass": false,
+              "detail": "250/250 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_250u_cpu",
+              "label": "250 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_250u_mem",
+              "label": "250 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_500u_p95",
+              "label": "500 users: P95 ≤ 5000ms",
+              "pass": true,
+              "detail": "P95: 14ms (avg: 11ms, P99: 15ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_500u_err",
+              "label": "500 users: Error rate ≤ 10%",
+              "pass": false,
+              "detail": "500/500 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_500u_cpu",
+              "label": "500 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_500u_mem",
+              "label": "500 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            }
+          ],
+          "passing": 12,
+          "total": 16,
+          "score": 75,
+          "results": [
+            {
+              "users": 50,
+              "p50": 13,
+              "p95": 15,
+              "p99": 16,
+              "avg": 13,
+              "errors": 50,
+              "total": 50,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            },
+            {
+              "users": 100,
+              "p50": 12,
+              "p95": 15,
+              "p99": 15,
+              "avg": 12,
+              "errors": 100,
+              "total": 100,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            },
+            {
+              "users": 250,
+              "p50": 13,
+              "p95": 17,
+              "p99": 18,
+              "avg": 13,
+              "errors": 250,
+              "total": 250,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            },
+            {
+              "users": 500,
+              "p50": 11,
+              "p95": 14,
+              "p99": 15,
+              "avg": 11,
+              "errors": 500,
+              "total": 500,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            }
+          ]
+        }
+      },
+      "reports": {
+        "infrastructure": {
+          "type": "Infrastructure Report",
+          "score": 53,
+          "verdict": "CONDITIONAL GO",
+          "totalChecks": 96,
+          "passing": 51,
+          "failing": 45,
+          "criticalFails": 28,
+          "failingChecks": [
+            {
+              "id": "vps_ubuntu",
+              "label": "Ubuntu 22.04+",
+              "pass": false,
+              "detail": "Ubuntu ",
+              "fix": "Upgrade to Ubuntu 22.04 LTS: do-release-upgrade",
+              "severity": "critical",
+              "module": "vps"
+            },
+            {
+              "id": "vps_cpu",
+              "label": "CPU ≥ 2 cores",
+              "pass": false,
+              "detail": "0 core(s) detected",
+              "fix": "Resize VPS to at least 2 vCPUs",
+              "severity": "warning",
+              "module": "vps"
+            },
+            {
+              "id": "vps_ram",
+              "label": "RAM ≥ 1GB",
+              "pass": false,
+              "detail": "0MB RAM detected",
+              "fix": "Resize VPS to at least 2GB RAM",
+              "severity": "warning",
+              "module": "vps"
+            },
+            {
+              "id": "vps_disk",
+              "label": "Disk ≥ 5GB free",
+              "pass": false,
+              "detail": "0GB free on /",
+              "fix": "Free disk space or expand volume",
+              "severity": "warning",
+              "module": "vps"
+            },
+            {
+              "id": "vps_swap",
+              "label": "Swap configured",
+              "pass": false,
+              "detail": "No swap configured",
+              "fix": "sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile",
+              "severity": "warning",
+              "module": "vps"
+            },
+            {
+              "id": "vps_timezone",
+              "label": "Timezone (UTC preferred)",
+              "pass": false,
+              "detail": "Timezone: IST",
+              "fix": "sudo timedatectl set-timezone UTC",
+              "severity": "warning",
+              "module": "vps"
+            },
+            {
+              "id": "vps_ssh",
+              "label": "SSH service running",
+              "pass": false,
+              "detail": "SSH: Command failed: systemctl is-active ssh 2>/dev/null || systemctl is-active sshd 2>/dev/null",
+              "fix": "sudo systemctl enable --now ssh",
+              "severity": "critical",
+              "module": "vps"
+            },
+            {
+              "id": "vps_ufw",
+              "label": "UFW firewall active",
+              "pass": false,
+              "detail": "",
+              "fix": "sudo ufw allow 22 && sudo ufw allow 80 && sudo ufw allow 443 && sudo ufw --force enable",
+              "severity": "critical",
+              "module": "vps"
+            },
+            {
+              "id": "vps_fail2ban",
+              "label": "Fail2Ban active",
+              "pass": false,
+              "detail": "Fail2Ban: Command failed: systemctl is-active fail2ban 2>/dev/null",
+              "fix": "sudo apt install fail2ban -y && sudo systemctl enable --now fail2ban",
+              "severity": "critical",
+              "module": "vps"
+            },
+            {
+              "id": "vps_cron",
+              "label": "Cron daemon active",
+              "pass": false,
+              "detail": "Cron: Command failed: systemctl is-active cron 2>/dev/null || systemctl is-active crond 2>/dev/null",
+              "fix": "sudo systemctl enable --now cron",
+              "severity": "warning",
+              "module": "vps"
+            },
+            {
+              "id": "vps_pm2",
+              "label": "PM2 running (≥1 online process)",
+              "pass": false,
+              "detail": "0 process(es) online",
+              "fix": "pm2 start ecosystem.config.cjs --env production",
+              "severity": "critical",
+              "module": "vps"
+            },
+            {
+              "id": "nginx_running",
+              "label": "Nginx service running",
+              "pass": false,
+              "detail": "nginx: Command failed: systemctl is-active nginx 2>/dev/null",
+              "fix": "sudo systemctl start nginx && sudo systemctl enable nginx",
+              "severity": "critical",
+              "module": "nginx"
+            },
+            {
+              "id": "nginx_config",
+              "label": "Nginx config valid (nginx -t)",
+              "pass": false,
+              "detail": "/bin/sh: nginx: command not found",
+              "fix": "Edit /etc/nginx/sites-available/ooplix — fix the reported syntax error and sudo nginx -t",
+              "severity": "critical",
+              "module": "nginx"
+            },
+            {
+              "id": "nginx_conf_file",
+              "label": "Ooplix nginx site config exists",
+              "pass": false,
+              "detail": "nginx config not at /etc/nginx/sites-enabled/ooplix",
+              "fix": "sudo cp nginx.conf /etc/nginx/sites-available/ooplix && sudo ln -s /etc/nginx/sites-available/ooplix /etc/nginx/sites-enabled/ && sudo nginx -t && sudo systemctl reload nginx",
+              "severity": "critical",
+              "module": "nginx"
+            },
+            {
+              "id": "nginx_https",
+              "label": "HTTPS (port 443) listening",
+              "pass": false,
+              "detail": "Port 443 not responding",
+              "fix": "Ensure SSL cert is installed and nginx is configured for HTTPS",
+              "severity": "critical",
+              "module": "nginx"
+            },
+            {
+              "id": "nginx_http_redirect",
+              "label": "HTTP → HTTPS redirect",
+              "pass": false,
+              "detail": "Cannot probe (no domain configured)",
+              "fix": "Add 'return 301 https://$host$request_uri;' in the :80 server block",
+              "severity": "critical",
+              "module": "nginx"
+            },
+            {
+              "id": "nginx_websocket",
+              "label": "WebSocket proxying configured",
+              "pass": false,
+              "detail": "WebSocket headers not found in nginx.conf",
+              "fix": "Add: proxy_http_version 1.1; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection 'upgrade';",
+              "severity": "warning",
+              "module": "nginx"
+            },
+            {
+              "id": "ssl_cert",
+              "label": "SSL certificate file exists",
+              "pass": false,
+              "detail": "No cert found at /etc/letsencrypt/live/",
+              "fix": "sudo certbot certonly --nginx -d app.ooplix.com -d www.ooplix.com -d ooplix.com",
+              "severity": "critical",
+              "module": "ssl"
+            },
+            {
+              "id": "ssl_autorenew",
+              "label": "Certbot auto-renew active",
+              "pass": false,
+              "detail": "Auto-renew not detected",
+              "fix": "sudo systemctl enable certbot.timer && sudo systemctl start certbot.timer  OR  add: 0 12 * * * /usr/bin/certbot renew --quiet",
+              "severity": "critical",
+              "module": "ssl"
+            },
+            {
+              "id": "dns_aaaa",
+              "label": "AAAA record for ooplix.com",
+              "pass": false,
+              "detail": "No AAAA record (IPv6)",
+              "fix": "Add AAAA record pointing to your VPS IPv6 address",
+              "severity": "warning",
+              "module": "dns"
+            }
+          ],
+          "moduleScores": [
+            {
+              "module": "vps",
+              "label": "VPS Validation",
+              "score": 0,
+              "passing": 0,
+              "total": 11
+            },
+            {
+              "module": "nginx",
+              "label": "Nginx",
+              "score": 45,
+              "passing": 5,
+              "total": 11
+            },
+            {
+              "module": "ssl",
+              "label": "SSL / TLS",
+              "score": 60,
+              "passing": 3,
+              "total": 5
+            },
+            {
+              "module": "dns",
+              "label": "DNS",
+              "score": 30,
+              "passing": 3,
+              "total": 10
+            },
+            {
+              "module": "domains",
+              "label": "Domain Audit",
+              "score": 73,
+              "passing": 8,
+              "total": 11
+            },
+            {
+              "module": "deployment",
+              "label": "Deployment Validation",
+              "score": 63,
+              "passing": 5,
+              "total": 8
+            },
+            {
+              "module": "backup",
+              "label": "Backup Validation",
+              "score": 70,
+              "passing": 7,
+              "total": 10
+            },
+            {
+              "module": "monitoring",
+              "label": "Monitoring",
+              "score": 43,
+              "passing": 3,
+              "total": 7
+            },
+            {
+              "module": "security",
+              "label": "Security",
+              "score": 71,
+              "passing": 5,
+              "total": 7
+            },
+            {
+              "module": "stress",
+              "label": "Stress Test",
+              "score": 75,
+              "passing": 12,
+              "total": 16
+            }
+          ]
+        },
+        "deployment": {
+          "type": "Deployment Report",
+          "score": 63,
+          "verdict": "CONDITIONAL GO",
+          "checks": [
+            {
+              "id": "deploy_frontend",
+              "label": "Frontend build artifacts present",
+              "pass": true,
+              "detail": "frontend/build/index.html + 161 JS chunks",
+              "fix": "cd frontend && npm ci && npm run build",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_backend",
+              "label": "Backend entry point (backend/server.js)",
+              "pass": true,
+              "detail": "backend/server.js present",
+              "fix": "Ensure backend/server.js exists and is the PM2 entry point",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_pm2_config",
+              "label": "PM2 ecosystem config (ecosystem.config.cjs)",
+              "pass": true,
+              "detail": "ecosystem.config.cjs present",
+              "fix": "PM2 ecosystem config required: pm2 start ecosystem.config.cjs --env production",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_pm2_running",
+              "label": "PM2 jarvis-os process online",
+              "pass": false,
+              "detail": "jarvis-os not running in PM2",
+              "fix": "pm2 start ecosystem.config.cjs --env production && pm2 save",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_health",
+              "label": "Health endpoint /api/health responds 200",
+              "pass": false,
+              "detail": "HTTP 0 from /api/health",
+              "fix": "Ensure backend is running: pm2 restart jarvis-os && pm2 logs jarvis-os --lines 20",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_electron_updater",
+              "label": "Electron auto-updater configured",
+              "pass": true,
+              "detail": "electron-builder publish config or GH_TOKEN found",
+              "fix": "Set GH_TOKEN and add publish: {provider: github} to package.json build config",
+              "severity": "warning"
+            },
+            {
+              "id": "deploy_restart",
+              "label": "PM2 restart capability",
+              "pass": false,
+              "detail": "PM2 process not registered",
+              "fix": "pm2 start ecosystem.config.cjs --env production && pm2 save && pm2 startup",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_rollback",
+              "label": "Git rollback capability (git log reachable)",
+              "pass": true,
+              "detail": "Last commits: fc5c775 feat(pcs-2): Production Credentials Sprint 2 — External Platform Matrix (8 ecosystems, 39 platforms)",
+              "fix": "Ensure repo is initialized and commits are present for rollback",
+              "severity": "warning"
+            }
+          ],
+          "healthEndpointOk": false
+        },
+        "security": {
+          "type": "Security Report",
+          "score": 71,
+          "verdict": "CONDITIONAL GO",
+          "checks": [
+            {
+              "id": "sec_headers",
+              "label": "Security headers (HSTS, X-Frame, X-Content-Type, CSP, Referrer-Policy)",
+              "pass": false,
+              "detail": "X-Frame: false, X-Content-Type: false, HSTS: false, CSP: false, Referrer: false",
+              "fix": "Set security headers in nginx.conf: HSTS, X-Frame-Options DENY, X-Content-Type-Options nosniff, CSP",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_jwt",
+              "label": "JWT_SECRET ≥ 32 characters",
+              "pass": false,
+              "detail": "JWT_SECRET not set",
+              "fix": "Generate: openssl rand -hex 32  then set JWT_SECRET in .env",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_secrets",
+              "label": ".env excluded from git (.gitignore)",
+              "pass": true,
+              "detail": ".env in .gitignore",
+              "fix": "echo '.env' >> .gitignore && git rm --cached .env 2>/dev/null || true",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_permissions",
+              "label": ".env permissions 600 (owner read/write only)",
+              "pass": true,
+              "detail": ".env permissions: 600",
+              "fix": "chmod 600 .env",
+              "severity": "warning"
+            },
+            {
+              "id": "sec_ssh",
+              "label": "SSH password authentication disabled",
+              "pass": true,
+              "detail": "Cannot probe sshd config (may be OK in local dev)",
+              "fix": "Set PasswordAuthentication no in /etc/ssh/sshd_config then: sudo systemctl reload sshd",
+              "severity": "warning"
+            },
+            {
+              "id": "sec_ports",
+              "label": "No unexpected ports open",
+              "pass": true,
+              "detail": "Open ports: ",
+              "fix": "Close unexpected ports: sudo ufw deny ",
+              "severity": "warning"
+            },
+            {
+              "id": "sec_rate_limit",
+              "label": "Nginx rate limiting configured",
+              "pass": true,
+              "detail": "limit_req_zone + limit_req found in nginx.conf",
+              "fix": "Add limit_req_zone and limit_req directives to nginx.conf (see project nginx.conf for reference)",
+              "severity": "critical"
+            }
+          ],
+          "criticalIssues": [
+            {
+              "id": "sec_headers",
+              "label": "Security headers (HSTS, X-Frame, X-Content-Type, CSP, Referrer-Policy)",
+              "pass": false,
+              "detail": "X-Frame: false, X-Content-Type: false, HSTS: false, CSP: false, Referrer: false",
+              "fix": "Set security headers in nginx.conf: HSTS, X-Frame-Options DENY, X-Content-Type-Options nosniff, CSP",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_jwt",
+              "label": "JWT_SECRET ≥ 32 characters",
+              "pass": false,
+              "detail": "JWT_SECRET not set",
+              "fix": "Generate: openssl rand -hex 32  then set JWT_SECRET in .env",
+              "severity": "critical"
+            }
+          ],
+          "warnings": []
+        },
+        "performance": {
+          "type": "Performance Report",
+          "score": 75,
+          "verdict": "CONDITIONAL GO",
+          "results": [
+            {
+              "users": 50,
+              "p50": 13,
+              "p95": 15,
+              "p99": 16,
+              "avg": 13,
+              "errors": 50,
+              "total": 50,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            },
+            {
+              "users": 100,
+              "p50": 12,
+              "p95": 15,
+              "p99": 15,
+              "avg": 12,
+              "errors": 100,
+              "total": 100,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            },
+            {
+              "users": 250,
+              "p50": 13,
+              "p95": 17,
+              "p99": 18,
+              "avg": 13,
+              "errors": 250,
+              "total": 250,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            },
+            {
+              "users": 500,
+              "p50": 11,
+              "p95": 14,
+              "p99": 15,
+              "avg": 11,
+              "errors": 500,
+              "total": 500,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            }
+          ],
+          "checks": [
+            {
+              "id": "stress_50u_p95",
+              "label": "50 users: P95 ≤ 800ms",
+              "pass": true,
+              "detail": "P95: 15ms (avg: 13ms, P99: 16ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_50u_err",
+              "label": "50 users: Error rate ≤ 1%",
+              "pass": false,
+              "detail": "50/50 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_50u_cpu",
+              "label": "50 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_50u_mem",
+              "label": "50 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_100u_p95",
+              "label": "100 users: P95 ≤ 1500ms",
+              "pass": true,
+              "detail": "P95: 15ms (avg: 12ms, P99: 15ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_100u_err",
+              "label": "100 users: Error rate ≤ 2%",
+              "pass": false,
+              "detail": "100/100 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_100u_cpu",
+              "label": "100 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_100u_mem",
+              "label": "100 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_250u_p95",
+              "label": "250 users: P95 ≤ 3000ms",
+              "pass": true,
+              "detail": "P95: 17ms (avg: 13ms, P99: 18ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_250u_err",
+              "label": "250 users: Error rate ≤ 5%",
+              "pass": false,
+              "detail": "250/250 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_250u_cpu",
+              "label": "250 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_250u_mem",
+              "label": "250 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_500u_p95",
+              "label": "500 users: P95 ≤ 5000ms",
+              "pass": true,
+              "detail": "P95: 14ms (avg: 11ms, P99: 15ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_500u_err",
+              "label": "500 users: Error rate ≤ 10%",
+              "pass": false,
+              "detail": "500/500 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_500u_cpu",
+              "label": "500 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_500u_mem",
+              "label": "500 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            }
+          ],
+          "summary": [
+            "50 users: P95=15ms, err=100%, CPU=0%, mem=0MB",
+            "100 users: P95=15ms, err=100%, CPU=0%, mem=0MB",
+            "250 users: P95=17ms, err=100%, CPU=0%, mem=0MB",
+            "500 users: P95=14ms, err=100%, CPU=0%, mem=0MB"
+          ]
+        }
+      },
+      "summary": {
+        "vps": {
+          "score": 0,
+          "verdict": "CONDITIONAL GO"
+        },
+        "nginx": {
+          "score": 45,
+          "verdict": "CONDITIONAL GO"
+        },
+        "ssl": {
+          "score": 60,
+          "verdict": "GO"
+        },
+        "dns": {
+          "score": 30,
+          "verdict": "CONDITIONAL GO"
+        },
+        "domains": {
+          "score": 73,
+          "verdict": "GO"
+        },
+        "deployment": {
+          "score": 63,
+          "verdict": "CONDITIONAL GO"
+        },
+        "backup": {
+          "score": 70,
+          "verdict": "GO"
+        },
+        "monitoring": {
+          "score": 43,
+          "verdict": "CONDITIONAL GO"
+        },
+        "security": {
+          "score": 71,
+          "verdict": "GO"
+        },
+        "stress": {
+          "score": 75,
+          "verdict": "CONDITIONAL GO"
+        }
+      }
+    },
+    {
+      "id": "dop1-1782075473699",
+      "runAt": "2026-06-21T20:57:53.699Z",
+      "durationMs": 3172,
+      "productionScore": 53,
+      "verdict": "CONDITIONAL GO",
+      "totalChecks": 96,
+      "totalPassing": 51,
+      "criticalFails": 28,
+      "modules": {
+        "vps": {
+          "module": "vps",
+          "label": "VPS Validation",
+          "checks": [
+            {
+              "id": "vps_ubuntu",
+              "label": "Ubuntu 22.04+",
+              "pass": false,
+              "detail": "Ubuntu ",
+              "fix": "Upgrade to Ubuntu 22.04 LTS: do-release-upgrade",
+              "severity": "critical"
+            },
+            {
+              "id": "vps_cpu",
+              "label": "CPU ≥ 2 cores",
+              "pass": false,
+              "detail": "0 core(s) detected",
+              "fix": "Resize VPS to at least 2 vCPUs",
+              "severity": "warning"
+            },
+            {
+              "id": "vps_ram",
+              "label": "RAM ≥ 1GB",
+              "pass": false,
+              "detail": "0MB RAM detected",
+              "fix": "Resize VPS to at least 2GB RAM",
+              "severity": "warning"
+            },
+            {
+              "id": "vps_disk",
+              "label": "Disk ≥ 5GB free",
+              "pass": false,
+              "detail": "0GB free on /",
+              "fix": "Free disk space or expand volume",
+              "severity": "warning"
+            },
+            {
+              "id": "vps_swap",
+              "label": "Swap configured",
+              "pass": false,
+              "detail": "No swap configured",
+              "fix": "sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile",
+              "severity": "warning"
+            },
+            {
+              "id": "vps_timezone",
+              "label": "Timezone (UTC preferred)",
+              "pass": false,
+              "detail": "Timezone: IST",
+              "fix": "sudo timedatectl set-timezone UTC",
+              "severity": "warning"
+            },
+            {
+              "id": "vps_ssh",
+              "label": "SSH service running",
+              "pass": false,
+              "detail": "SSH: Command failed: systemctl is-active ssh 2>/dev/null || systemctl is-active sshd 2>/dev/null",
+              "fix": "sudo systemctl enable --now ssh",
+              "severity": "critical"
+            },
+            {
+              "id": "vps_ufw",
+              "label": "UFW firewall active",
+              "pass": false,
+              "detail": "",
+              "fix": "sudo ufw allow 22 && sudo ufw allow 80 && sudo ufw allow 443 && sudo ufw --force enable",
+              "severity": "critical"
+            },
+            {
+              "id": "vps_fail2ban",
+              "label": "Fail2Ban active",
+              "pass": false,
+              "detail": "Fail2Ban: Command failed: systemctl is-active fail2ban 2>/dev/null",
+              "fix": "sudo apt install fail2ban -y && sudo systemctl enable --now fail2ban",
+              "severity": "critical"
+            },
+            {
+              "id": "vps_cron",
+              "label": "Cron daemon active",
+              "pass": false,
+              "detail": "Cron: Command failed: systemctl is-active cron 2>/dev/null || systemctl is-active crond 2>/dev/null",
+              "fix": "sudo systemctl enable --now cron",
+              "severity": "warning"
+            },
+            {
+              "id": "vps_pm2",
+              "label": "PM2 running (≥1 online process)",
+              "pass": false,
+              "detail": "0 process(es) online",
+              "fix": "pm2 start ecosystem.config.cjs --env production",
+              "severity": "critical"
+            }
+          ],
+          "passing": 0,
+          "total": 11,
+          "score": 0
+        },
+        "nginx": {
+          "module": "nginx",
+          "label": "Nginx",
+          "checks": [
+            {
+              "id": "nginx_installed",
+              "label": "Nginx installed",
+              "pass": true,
+              "detail": "/bin/sh: nginx: command not found",
+              "fix": "sudo apt install nginx -y && sudo systemctl enable --now nginx",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_running",
+              "label": "Nginx service running",
+              "pass": false,
+              "detail": "nginx: Command failed: systemctl is-active nginx 2>/dev/null",
+              "fix": "sudo systemctl start nginx && sudo systemctl enable nginx",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_config",
+              "label": "Nginx config valid (nginx -t)",
+              "pass": false,
+              "detail": "/bin/sh: nginx: command not found",
+              "fix": "Edit /etc/nginx/sites-available/ooplix — fix the reported syntax error and sudo nginx -t",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_conf_file",
+              "label": "Ooplix nginx site config exists",
+              "pass": false,
+              "detail": "nginx config not at /etc/nginx/sites-enabled/ooplix",
+              "fix": "sudo cp nginx.conf /etc/nginx/sites-available/ooplix && sudo ln -s /etc/nginx/sites-available/ooplix /etc/nginx/sites-enabled/ && sudo nginx -t && sudo systemctl reload nginx",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_https",
+              "label": "HTTPS (port 443) listening",
+              "pass": false,
+              "detail": "Port 443 not responding",
+              "fix": "Ensure SSL cert is installed and nginx is configured for HTTPS",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_http_redirect",
+              "label": "HTTP → HTTPS redirect",
+              "pass": false,
+              "detail": "Cannot probe (no domain configured)",
+              "fix": "Add 'return 301 https://$host$request_uri;' in the :80 server block",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_gzip",
+              "label": "Gzip compression enabled",
+              "pass": true,
+              "detail": "gzip on found in nginx.conf",
+              "fix": "Add 'gzip on; gzip_types text/plain text/css application/json application/javascript;' to nginx.conf",
+              "severity": "warning"
+            },
+            {
+              "id": "nginx_caching",
+              "label": "Static asset caching configured",
+              "pass": true,
+              "detail": "Cache-Control: set in nginx.conf",
+              "fix": "Add 'expires 1y; add_header Cache-Control \"public, immutable\";' for /static/ location in nginx.conf",
+              "severity": "warning"
+            },
+            {
+              "id": "nginx_sec_headers",
+              "label": "Security headers (HSTS/X-Frame/X-Content-Type)",
+              "pass": true,
+              "detail": "HSTS: false, X-Frame: false, X-Content-Type: false",
+              "fix": "Add HSTS, X-Frame-Options, X-Content-Type-Options, X-XSS-Protection in nginx.conf server block",
+              "severity": "critical"
+            },
+            {
+              "id": "nginx_upload",
+              "label": "Large upload (client_max_body_size) set",
+              "pass": true,
+              "detail": "client_max_body_size configured in nginx.conf",
+              "fix": "Add 'client_max_body_size 50m;' to the server block in nginx.conf",
+              "severity": "warning"
+            },
+            {
+              "id": "nginx_websocket",
+              "label": "WebSocket proxying configured",
+              "pass": false,
+              "detail": "WebSocket headers not found in nginx.conf",
+              "fix": "Add: proxy_http_version 1.1; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection 'upgrade';",
+              "severity": "warning"
+            }
+          ],
+          "passing": 5,
+          "total": 11,
+          "score": 45
+        },
+        "ssl": {
+          "module": "ssl",
+          "label": "SSL / TLS",
+          "checks": [
+            {
+              "id": "ssl_cert",
+              "label": "SSL certificate file exists",
+              "pass": false,
+              "detail": "No cert found at /etc/letsencrypt/live/",
+              "fix": "sudo certbot certonly --nginx -d app.ooplix.com -d www.ooplix.com -d ooplix.com",
+              "severity": "critical"
+            },
+            {
+              "id": "ssl_expiry",
+              "label": "SSL cert valid for ≥ 30 days",
+              "pass": true,
+              "detail": "79 days remaining",
+              "fix": "sudo certbot renew --force-renewal",
+              "severity": "critical"
+            },
+            {
+              "id": "ssl_autorenew",
+              "label": "Certbot auto-renew active",
+              "pass": false,
+              "detail": "Auto-renew not detected",
+              "fix": "sudo systemctl enable certbot.timer && sudo systemctl start certbot.timer  OR  add: 0 12 * * * /usr/bin/certbot renew --quiet",
+              "severity": "critical"
+            },
+            {
+              "id": "ssl_ocsp",
+              "label": "OCSP stapling enabled",
+              "pass": true,
+              "detail": "ssl_stapling on in nginx.conf",
+              "fix": "Add 'ssl_stapling on; ssl_stapling_verify on;' to nginx.conf HTTPS server block",
+              "severity": "warning"
+            },
+            {
+              "id": "ssl_tls_version",
+              "label": "TLS 1.0/1.1 disabled (TLS 1.2+ only)",
+              "pass": true,
+              "detail": "ssl_protocols TLSv1.2 TLSv1.3 in nginx.conf",
+              "fix": "Set 'ssl_protocols TLSv1.2 TLSv1.3;' in nginx.conf",
+              "severity": "critical"
+            }
+          ],
+          "passing": 3,
+          "total": 5,
+          "score": 60
+        },
+        "dns": {
+          "module": "dns",
+          "label": "DNS",
+          "checks": [
+            {
+              "id": "dns_a",
+              "label": "A record for ooplix.com",
+              "pass": true,
+              "detail": "ooplix.com → 82.29.162.93",
+              "fix": "Add A record: ooplix.com → <VPS_IP> in your DNS provider",
+              "severity": "critical"
+            },
+            {
+              "id": "dns_aaaa",
+              "label": "AAAA record for ooplix.com",
+              "pass": false,
+              "detail": "No AAAA record (IPv6)",
+              "fix": "Add AAAA record pointing to your VPS IPv6 address",
+              "severity": "warning"
+            },
+            {
+              "id": "dns_cname_www",
+              "label": "www.ooplix.com resolves",
+              "pass": true,
+              "detail": "www.ooplix.com → 82.29.162.93 (A)",
+              "fix": "Add CNAME: www → ooplix.com OR A record for www",
+              "severity": "warning"
+            },
+            {
+              "id": "dns_mx",
+              "label": "MX record for ooplix.com",
+              "pass": false,
+              "detail": "No MX records",
+              "fix": "Add MX records via your email provider (e.g., Google Workspace, Resend)",
+              "severity": "critical"
+            },
+            {
+              "id": "dns_txt",
+              "label": "TXT records for ooplix.com",
+              "pass": false,
+              "detail": "No TXT records",
+              "fix": "Add domain verification TXT records for your services",
+              "severity": "warning"
+            },
+            {
+              "id": "dns_spf",
+              "label": "SPF record",
+              "pass": false,
+              "detail": "No SPF record",
+              "fix": "Add TXT: v=spf1 include:_spf.resend.com include:sendgrid.net ~all (match your email provider)",
+              "severity": "critical"
+            },
+            {
+              "id": "dns_dkim",
+              "label": "DKIM record",
+              "pass": false,
+              "detail": "No DKIM record at resend._domainkey.ooplix.com: ENOTFOUND",
+              "fix": "Configure DKIM via your email provider (Resend: resend._domainkey.ooplix.com → provided TXT)",
+              "severity": "critical"
+            },
+            {
+              "id": "dns_dmarc",
+              "label": "DMARC record",
+              "pass": false,
+              "detail": "No DMARC record (_dmarc.ooplix.com)",
+              "fix": "Add TXT _dmarc.ooplix.com: v=DMARC1; p=quarantine; rua=mailto:dmarc@ooplix.com",
+              "severity": "critical"
+            },
+            {
+              "id": "dns_caa",
+              "label": "CAA record",
+              "pass": false,
+              "detail": "No CAA record for ooplix.com",
+              "fix": "Add CAA record: 0 issue \"letsencrypt.org\" for ooplix.com",
+              "severity": "warning"
+            },
+            {
+              "id": "dns_propagation",
+              "label": "DNS propagated (3/3 resolvers)",
+              "pass": true,
+              "detail": "3/3 public resolvers return A record",
+              "fix": "DNS propagation takes up to 48h. Verify at whatsmydns.net",
+              "severity": "warning"
+            }
+          ],
+          "passing": 3,
+          "total": 10,
+          "score": 30
+        },
+        "domains": {
+          "module": "domains",
+          "label": "Domain Audit",
+          "checks": [
+            {
+              "id": "domain_root",
+              "label": "ooplix.com resolves",
+              "pass": true,
+              "detail": "→ 82.29.162.93 | HTTPS 200",
+              "fix": "Add DNS A/CNAME for ooplix.com → VPS IP",
+              "severity": "critical"
+            },
+            {
+              "id": "domain_https_root",
+              "label": "ooplix.com HTTPS responds",
+              "pass": true,
+              "detail": "HTTPS accessible",
+              "fix": "Ensure nginx SSL config covers this subdomain",
+              "severity": "critical"
+            },
+            {
+              "id": "domain_www",
+              "label": "www.ooplix.com resolves",
+              "pass": true,
+              "detail": "→ 82.29.162.93 | HTTPS 200",
+              "fix": "Add DNS A/CNAME for www.ooplix.com → VPS IP",
+              "severity": "warning"
+            },
+            {
+              "id": "domain_https_www",
+              "label": "www.ooplix.com HTTPS responds",
+              "pass": true,
+              "detail": "HTTPS accessible",
+              "fix": "Ensure nginx SSL config covers this subdomain",
+              "severity": "warning"
+            },
+            {
+              "id": "domain_app",
+              "label": "app.ooplix.com resolves",
+              "pass": true,
+              "detail": "→ 82.29.162.93 | HTTPS 200",
+              "fix": "Add DNS A/CNAME for app.ooplix.com → VPS IP",
+              "severity": "critical"
+            },
+            {
+              "id": "domain_https_app",
+              "label": "app.ooplix.com HTTPS responds",
+              "pass": true,
+              "detail": "HTTPS accessible",
+              "fix": "Ensure nginx SSL config covers this subdomain",
+              "severity": "critical"
+            },
+            {
+              "id": "domain_api",
+              "label": "api.ooplix.com resolves",
+              "pass": true,
+              "detail": "→ 82.29.162.93 | HTTPS 401",
+              "fix": "Add DNS A/CNAME for api.ooplix.com → VPS IP",
+              "severity": "warning"
+            },
+            {
+              "id": "domain_https_api",
+              "label": "api.ooplix.com HTTPS responds",
+              "pass": true,
+              "detail": "HTTPS accessible",
+              "fix": "Ensure nginx SSL config covers this subdomain",
+              "severity": "warning"
+            },
+            {
+              "id": "domain_docs",
+              "label": "docs.ooplix.com resolves",
+              "pass": false,
+              "detail": "DNS: NXDOMAIN / ENOTFOUND",
+              "fix": "Add DNS A/CNAME for docs.ooplix.com → VPS IP",
+              "severity": "warning"
+            },
+            {
+              "id": "domain_status",
+              "label": "status.ooplix.com resolves",
+              "pass": false,
+              "detail": "DNS: NXDOMAIN / ENOTFOUND",
+              "fix": "Add DNS A/CNAME for status.ooplix.com → VPS IP",
+              "severity": "warning"
+            },
+            {
+              "id": "domain_cdn",
+              "label": "cdn.ooplix.com resolves",
+              "pass": false,
+              "detail": "DNS: NXDOMAIN / ENOTFOUND",
+              "fix": "Add DNS A/CNAME for cdn.ooplix.com → VPS IP",
+              "severity": "warning"
+            }
+          ],
+          "passing": 8,
+          "total": 11,
+          "score": 73
+        },
+        "deployment": {
+          "module": "deployment",
+          "label": "Deployment Validation",
+          "checks": [
+            {
+              "id": "deploy_frontend",
+              "label": "Frontend build artifacts present",
+              "pass": true,
+              "detail": "frontend/build/index.html + 161 JS chunks",
+              "fix": "cd frontend && npm ci && npm run build",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_backend",
+              "label": "Backend entry point (backend/server.js)",
+              "pass": true,
+              "detail": "backend/server.js present",
+              "fix": "Ensure backend/server.js exists and is the PM2 entry point",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_pm2_config",
+              "label": "PM2 ecosystem config (ecosystem.config.cjs)",
+              "pass": true,
+              "detail": "ecosystem.config.cjs present",
+              "fix": "PM2 ecosystem config required: pm2 start ecosystem.config.cjs --env production",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_pm2_running",
+              "label": "PM2 jarvis-os process online",
+              "pass": false,
+              "detail": "jarvis-os not running in PM2",
+              "fix": "pm2 start ecosystem.config.cjs --env production && pm2 save",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_health",
+              "label": "Health endpoint /api/health responds 200",
+              "pass": false,
+              "detail": "HTTP 0 from /api/health",
+              "fix": "Ensure backend is running: pm2 restart jarvis-os && pm2 logs jarvis-os --lines 20",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_electron_updater",
+              "label": "Electron auto-updater configured",
+              "pass": true,
+              "detail": "electron-builder publish config or GH_TOKEN found",
+              "fix": "Set GH_TOKEN and add publish: {provider: github} to package.json build config",
+              "severity": "warning"
+            },
+            {
+              "id": "deploy_restart",
+              "label": "PM2 restart capability",
+              "pass": false,
+              "detail": "PM2 process not registered",
+              "fix": "pm2 start ecosystem.config.cjs --env production && pm2 save && pm2 startup",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_rollback",
+              "label": "Git rollback capability (git log reachable)",
+              "pass": true,
+              "detail": "Last commits: fc5c775 feat(pcs-2): Production Credentials Sprint 2 — External Platform Matrix (8 ecosystems, 39 platforms)",
+              "fix": "Ensure repo is initialized and commits are present for rollback",
+              "severity": "warning"
+            }
+          ],
+          "passing": 5,
+          "total": 8,
+          "score": 63
+        },
+        "backup": {
+          "module": "backup",
+          "label": "Backup Validation",
+          "checks": [
+            {
+              "id": "backup_script",
+              "label": "Backup script present (backup.sh / safe-backup.cjs)",
+              "pass": true,
+              "detail": "backup.sh scripts/safe-backup.cjs",
+              "fix": "Create backup.sh that tarballs data/ and uploads to S3/R2",
+              "severity": "critical"
+            },
+            {
+              "id": "backup_dir",
+              "label": "Backups directory exists",
+              "pass": true,
+              "detail": "/Users/ehtsm/jarvis-os/backups",
+              "fix": "mkdir -p backups && chmod 700 backups",
+              "severity": "warning"
+            },
+            {
+              "id": "backup_recent",
+              "label": "Backup exists (< 25h old)",
+              "pass": false,
+              "detail": "4 backup(s), newest: 458h ago",
+              "fix": "Run: ./backup.sh   OR add to cron: 0 2 * * * cd /opt/jarvis-os && ./backup.sh >> logs/backup.log 2>&1",
+              "severity": "critical"
+            },
+            {
+              "id": "backup_database",
+              "label": "data/ directory has files (flat-file DB)",
+              "pass": true,
+              "detail": "282 data files in data/",
+              "fix": "Ensure data/ is included in backup: tar -czf backup.tar.gz data/",
+              "severity": "critical"
+            },
+            {
+              "id": "backup_config",
+              "label": ".env (config) backup awareness",
+              "pass": true,
+              "detail": ".env file present — ensure it's backed up securely off-site (NOT in git)",
+              "fix": "Back up .env to a secrets manager (Doppler, AWS Secrets Manager, Vault) — NEVER commit to git",
+              "severity": "warning"
+            },
+            {
+              "id": "backup_assets",
+              "label": "Assets (frontend build / uploads) exist",
+              "pass": true,
+              "detail": "frontend/build present",
+              "fix": "Include frontend/build and uploads/ in your backup script",
+              "severity": "warning"
+            },
+            {
+              "id": "backup_restore",
+              "label": "Restore test script present",
+              "pass": true,
+              "detail": "test-restore.cjs found",
+              "fix": "Create scripts/test-restore.cjs to validate backup integrity on every backup run",
+              "severity": "warning"
+            },
+            {
+              "id": "backup_integrity",
+              "label": "Latest backup file is readable",
+              "pass": true,
+              "detail": "Latest backup: jarvis_full_2026-06-02T18-32-27-889Z.tar.gz — 29 files",
+              "fix": "Re-run ./backup.sh and verify tar -tzf backups/latest.tar.gz completes without errors",
+              "severity": "critical"
+            },
+            {
+              "id": "backup_retention",
+              "label": "Backup retention ≥ 7 copies",
+              "pass": false,
+              "detail": "4 backup(s) retained",
+              "fix": "Update backup.sh retention: keep last 14 backups with: ls -t backups/*.tar.gz | tail -n +15 | xargs rm -f",
+              "severity": "warning"
+            },
+            {
+              "id": "backup_offsite",
+              "label": "Off-site backup configured (S3/R2/rsync)",
+              "pass": false,
+              "detail": "No S3/R2 credentials — backups are local only",
+              "fix": "Set AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY (or R2 keys) and upload: aws s3 cp backups/ s3://your-bucket/ --recursive",
+              "severity": "warning"
+            }
+          ],
+          "passing": 7,
+          "total": 10,
+          "score": 70
+        },
+        "monitoring": {
+          "module": "monitoring",
+          "label": "Monitoring",
+          "checks": [
+            {
+              "id": "monitor_pm2",
+              "label": "PM2 process monitoring",
+              "pass": false,
+              "detail": "PM2 not available",
+              "fix": "pm2 start ecosystem.config.cjs --env production && pm2 monit",
+              "severity": "critical"
+            },
+            {
+              "id": "monitor_memory",
+              "label": "Memory usage < 90%",
+              "pass": true,
+              "detail": "Memory: 0% used",
+              "fix": "Investigate memory leak: pm2 logs jarvis-os --lines 50 && pm2 monit",
+              "severity": "warning"
+            },
+            {
+              "id": "monitor_cpu",
+              "label": "CPU usage < 80%",
+              "pass": true,
+              "detail": "CPU: 0% used",
+              "fix": "Scale VPS or optimize hot code paths",
+              "severity": "warning"
+            },
+            {
+              "id": "monitor_disk",
+              "label": "Disk usage < 85%",
+              "pass": true,
+              "detail": "Disk: 32% used",
+              "fix": "Clean old logs: pm2 flush && find logs/ -mtime +7 -delete && df -h /",
+              "severity": "warning"
+            },
+            {
+              "id": "monitor_telegram",
+              "label": "Telegram alerts configured",
+              "pass": false,
+              "detail": "TELEGRAM_TOKEN or TELEGRAM_OPERATOR_CHAT_ID not set",
+              "fix": "Set TELEGRAM_TOKEN (from @BotFather) and TELEGRAM_OPERATOR_CHAT_ID in .env",
+              "severity": "warning"
+            },
+            {
+              "id": "monitor_logrotate",
+              "label": "Log rotation configured",
+              "pass": false,
+              "detail": "No log rotation detected",
+              "fix": "pm2 install pm2-logrotate && pm2 set pm2-logrotate:max_size 50M && pm2 set pm2-logrotate:retain 7",
+              "severity": "warning"
+            },
+            {
+              "id": "monitor_health_endpoint",
+              "label": "Health endpoint accessible",
+              "pass": false,
+              "detail": "HTTP 0 from localhost:5050/api/health",
+              "fix": "Ensure the backend is running: pm2 restart jarvis-os",
+              "severity": "critical"
+            }
+          ],
+          "passing": 3,
+          "total": 7,
+          "score": 43
+        },
+        "security": {
+          "module": "security",
+          "label": "Security",
+          "checks": [
+            {
+              "id": "sec_headers",
+              "label": "Security headers (HSTS, X-Frame, X-Content-Type, CSP, Referrer-Policy)",
+              "pass": false,
+              "detail": "X-Frame: false, X-Content-Type: false, HSTS: false, CSP: false, Referrer: false",
+              "fix": "Set security headers in nginx.conf: HSTS, X-Frame-Options DENY, X-Content-Type-Options nosniff, CSP",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_jwt",
+              "label": "JWT_SECRET ≥ 32 characters",
+              "pass": false,
+              "detail": "JWT_SECRET not set",
+              "fix": "Generate: openssl rand -hex 32  then set JWT_SECRET in .env",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_secrets",
+              "label": ".env excluded from git (.gitignore)",
+              "pass": true,
+              "detail": ".env in .gitignore",
+              "fix": "echo '.env' >> .gitignore && git rm --cached .env 2>/dev/null || true",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_permissions",
+              "label": ".env permissions 600 (owner read/write only)",
+              "pass": true,
+              "detail": ".env permissions: 600",
+              "fix": "chmod 600 .env",
+              "severity": "warning"
+            },
+            {
+              "id": "sec_ssh",
+              "label": "SSH password authentication disabled",
+              "pass": true,
+              "detail": "Cannot probe sshd config (may be OK in local dev)",
+              "fix": "Set PasswordAuthentication no in /etc/ssh/sshd_config then: sudo systemctl reload sshd",
+              "severity": "warning"
+            },
+            {
+              "id": "sec_ports",
+              "label": "No unexpected ports open",
+              "pass": true,
+              "detail": "Open ports: ",
+              "fix": "Close unexpected ports: sudo ufw deny ",
+              "severity": "warning"
+            },
+            {
+              "id": "sec_rate_limit",
+              "label": "Nginx rate limiting configured",
+              "pass": true,
+              "detail": "limit_req_zone + limit_req found in nginx.conf",
+              "fix": "Add limit_req_zone and limit_req directives to nginx.conf (see project nginx.conf for reference)",
+              "severity": "critical"
+            }
+          ],
+          "passing": 5,
+          "total": 7,
+          "score": 71
+        },
+        "stress": {
+          "module": "stress",
+          "label": "Stress Test",
+          "checks": [
+            {
+              "id": "stress_50u_p95",
+              "label": "50 users: P95 ≤ 800ms",
+              "pass": true,
+              "detail": "P95: 24ms (avg: 19ms, P99: 25ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_50u_err",
+              "label": "50 users: Error rate ≤ 1%",
+              "pass": false,
+              "detail": "50/50 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_50u_cpu",
+              "label": "50 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_50u_mem",
+              "label": "50 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_100u_p95",
+              "label": "100 users: P95 ≤ 1500ms",
+              "pass": true,
+              "detail": "P95: 15ms (avg: 11ms, P99: 16ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_100u_err",
+              "label": "100 users: Error rate ≤ 2%",
+              "pass": false,
+              "detail": "100/100 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_100u_cpu",
+              "label": "100 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_100u_mem",
+              "label": "100 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_250u_p95",
+              "label": "250 users: P95 ≤ 3000ms",
+              "pass": true,
+              "detail": "P95: 15ms (avg: 12ms, P99: 15ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_250u_err",
+              "label": "250 users: Error rate ≤ 5%",
+              "pass": false,
+              "detail": "250/250 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_250u_cpu",
+              "label": "250 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_250u_mem",
+              "label": "250 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_500u_p95",
+              "label": "500 users: P95 ≤ 5000ms",
+              "pass": true,
+              "detail": "P95: 13ms (avg: 10ms, P99: 14ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_500u_err",
+              "label": "500 users: Error rate ≤ 10%",
+              "pass": false,
+              "detail": "500/500 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_500u_cpu",
+              "label": "500 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_500u_mem",
+              "label": "500 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            }
+          ],
+          "passing": 12,
+          "total": 16,
+          "score": 75,
+          "results": [
+            {
+              "users": 50,
+              "p50": 18,
+              "p95": 24,
+              "p99": 25,
+              "avg": 19,
+              "errors": 50,
+              "total": 50,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            },
+            {
+              "users": 100,
+              "p50": 11,
+              "p95": 15,
+              "p99": 16,
+              "avg": 11,
+              "errors": 100,
+              "total": 100,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            },
+            {
+              "users": 250,
+              "p50": 12,
+              "p95": 15,
+              "p99": 15,
+              "avg": 12,
+              "errors": 250,
+              "total": 250,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            },
+            {
+              "users": 500,
+              "p50": 10,
+              "p95": 13,
+              "p99": 14,
+              "avg": 10,
+              "errors": 500,
+              "total": 500,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            }
+          ]
+        }
+      },
+      "reports": {
+        "infrastructure": {
+          "type": "Infrastructure Report",
+          "score": 53,
+          "verdict": "CONDITIONAL GO",
+          "totalChecks": 96,
+          "passing": 51,
+          "failing": 45,
+          "criticalFails": 28,
+          "failingChecks": [
+            {
+              "id": "vps_ubuntu",
+              "label": "Ubuntu 22.04+",
+              "pass": false,
+              "detail": "Ubuntu ",
+              "fix": "Upgrade to Ubuntu 22.04 LTS: do-release-upgrade",
+              "severity": "critical",
+              "module": "vps"
+            },
+            {
+              "id": "vps_cpu",
+              "label": "CPU ≥ 2 cores",
+              "pass": false,
+              "detail": "0 core(s) detected",
+              "fix": "Resize VPS to at least 2 vCPUs",
+              "severity": "warning",
+              "module": "vps"
+            },
+            {
+              "id": "vps_ram",
+              "label": "RAM ≥ 1GB",
+              "pass": false,
+              "detail": "0MB RAM detected",
+              "fix": "Resize VPS to at least 2GB RAM",
+              "severity": "warning",
+              "module": "vps"
+            },
+            {
+              "id": "vps_disk",
+              "label": "Disk ≥ 5GB free",
+              "pass": false,
+              "detail": "0GB free on /",
+              "fix": "Free disk space or expand volume",
+              "severity": "warning",
+              "module": "vps"
+            },
+            {
+              "id": "vps_swap",
+              "label": "Swap configured",
+              "pass": false,
+              "detail": "No swap configured",
+              "fix": "sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile",
+              "severity": "warning",
+              "module": "vps"
+            },
+            {
+              "id": "vps_timezone",
+              "label": "Timezone (UTC preferred)",
+              "pass": false,
+              "detail": "Timezone: IST",
+              "fix": "sudo timedatectl set-timezone UTC",
+              "severity": "warning",
+              "module": "vps"
+            },
+            {
+              "id": "vps_ssh",
+              "label": "SSH service running",
+              "pass": false,
+              "detail": "SSH: Command failed: systemctl is-active ssh 2>/dev/null || systemctl is-active sshd 2>/dev/null",
+              "fix": "sudo systemctl enable --now ssh",
+              "severity": "critical",
+              "module": "vps"
+            },
+            {
+              "id": "vps_ufw",
+              "label": "UFW firewall active",
+              "pass": false,
+              "detail": "",
+              "fix": "sudo ufw allow 22 && sudo ufw allow 80 && sudo ufw allow 443 && sudo ufw --force enable",
+              "severity": "critical",
+              "module": "vps"
+            },
+            {
+              "id": "vps_fail2ban",
+              "label": "Fail2Ban active",
+              "pass": false,
+              "detail": "Fail2Ban: Command failed: systemctl is-active fail2ban 2>/dev/null",
+              "fix": "sudo apt install fail2ban -y && sudo systemctl enable --now fail2ban",
+              "severity": "critical",
+              "module": "vps"
+            },
+            {
+              "id": "vps_cron",
+              "label": "Cron daemon active",
+              "pass": false,
+              "detail": "Cron: Command failed: systemctl is-active cron 2>/dev/null || systemctl is-active crond 2>/dev/null",
+              "fix": "sudo systemctl enable --now cron",
+              "severity": "warning",
+              "module": "vps"
+            },
+            {
+              "id": "vps_pm2",
+              "label": "PM2 running (≥1 online process)",
+              "pass": false,
+              "detail": "0 process(es) online",
+              "fix": "pm2 start ecosystem.config.cjs --env production",
+              "severity": "critical",
+              "module": "vps"
+            },
+            {
+              "id": "nginx_running",
+              "label": "Nginx service running",
+              "pass": false,
+              "detail": "nginx: Command failed: systemctl is-active nginx 2>/dev/null",
+              "fix": "sudo systemctl start nginx && sudo systemctl enable nginx",
+              "severity": "critical",
+              "module": "nginx"
+            },
+            {
+              "id": "nginx_config",
+              "label": "Nginx config valid (nginx -t)",
+              "pass": false,
+              "detail": "/bin/sh: nginx: command not found",
+              "fix": "Edit /etc/nginx/sites-available/ooplix — fix the reported syntax error and sudo nginx -t",
+              "severity": "critical",
+              "module": "nginx"
+            },
+            {
+              "id": "nginx_conf_file",
+              "label": "Ooplix nginx site config exists",
+              "pass": false,
+              "detail": "nginx config not at /etc/nginx/sites-enabled/ooplix",
+              "fix": "sudo cp nginx.conf /etc/nginx/sites-available/ooplix && sudo ln -s /etc/nginx/sites-available/ooplix /etc/nginx/sites-enabled/ && sudo nginx -t && sudo systemctl reload nginx",
+              "severity": "critical",
+              "module": "nginx"
+            },
+            {
+              "id": "nginx_https",
+              "label": "HTTPS (port 443) listening",
+              "pass": false,
+              "detail": "Port 443 not responding",
+              "fix": "Ensure SSL cert is installed and nginx is configured for HTTPS",
+              "severity": "critical",
+              "module": "nginx"
+            },
+            {
+              "id": "nginx_http_redirect",
+              "label": "HTTP → HTTPS redirect",
+              "pass": false,
+              "detail": "Cannot probe (no domain configured)",
+              "fix": "Add 'return 301 https://$host$request_uri;' in the :80 server block",
+              "severity": "critical",
+              "module": "nginx"
+            },
+            {
+              "id": "nginx_websocket",
+              "label": "WebSocket proxying configured",
+              "pass": false,
+              "detail": "WebSocket headers not found in nginx.conf",
+              "fix": "Add: proxy_http_version 1.1; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection 'upgrade';",
+              "severity": "warning",
+              "module": "nginx"
+            },
+            {
+              "id": "ssl_cert",
+              "label": "SSL certificate file exists",
+              "pass": false,
+              "detail": "No cert found at /etc/letsencrypt/live/",
+              "fix": "sudo certbot certonly --nginx -d app.ooplix.com -d www.ooplix.com -d ooplix.com",
+              "severity": "critical",
+              "module": "ssl"
+            },
+            {
+              "id": "ssl_autorenew",
+              "label": "Certbot auto-renew active",
+              "pass": false,
+              "detail": "Auto-renew not detected",
+              "fix": "sudo systemctl enable certbot.timer && sudo systemctl start certbot.timer  OR  add: 0 12 * * * /usr/bin/certbot renew --quiet",
+              "severity": "critical",
+              "module": "ssl"
+            },
+            {
+              "id": "dns_aaaa",
+              "label": "AAAA record for ooplix.com",
+              "pass": false,
+              "detail": "No AAAA record (IPv6)",
+              "fix": "Add AAAA record pointing to your VPS IPv6 address",
+              "severity": "warning",
+              "module": "dns"
+            }
+          ],
+          "moduleScores": [
+            {
+              "module": "vps",
+              "label": "VPS Validation",
+              "score": 0,
+              "passing": 0,
+              "total": 11
+            },
+            {
+              "module": "nginx",
+              "label": "Nginx",
+              "score": 45,
+              "passing": 5,
+              "total": 11
+            },
+            {
+              "module": "ssl",
+              "label": "SSL / TLS",
+              "score": 60,
+              "passing": 3,
+              "total": 5
+            },
+            {
+              "module": "dns",
+              "label": "DNS",
+              "score": 30,
+              "passing": 3,
+              "total": 10
+            },
+            {
+              "module": "domains",
+              "label": "Domain Audit",
+              "score": 73,
+              "passing": 8,
+              "total": 11
+            },
+            {
+              "module": "deployment",
+              "label": "Deployment Validation",
+              "score": 63,
+              "passing": 5,
+              "total": 8
+            },
+            {
+              "module": "backup",
+              "label": "Backup Validation",
+              "score": 70,
+              "passing": 7,
+              "total": 10
+            },
+            {
+              "module": "monitoring",
+              "label": "Monitoring",
+              "score": 43,
+              "passing": 3,
+              "total": 7
+            },
+            {
+              "module": "security",
+              "label": "Security",
+              "score": 71,
+              "passing": 5,
+              "total": 7
+            },
+            {
+              "module": "stress",
+              "label": "Stress Test",
+              "score": 75,
+              "passing": 12,
+              "total": 16
+            }
+          ]
+        },
+        "deployment": {
+          "type": "Deployment Report",
+          "score": 63,
+          "verdict": "CONDITIONAL GO",
+          "checks": [
+            {
+              "id": "deploy_frontend",
+              "label": "Frontend build artifacts present",
+              "pass": true,
+              "detail": "frontend/build/index.html + 161 JS chunks",
+              "fix": "cd frontend && npm ci && npm run build",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_backend",
+              "label": "Backend entry point (backend/server.js)",
+              "pass": true,
+              "detail": "backend/server.js present",
+              "fix": "Ensure backend/server.js exists and is the PM2 entry point",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_pm2_config",
+              "label": "PM2 ecosystem config (ecosystem.config.cjs)",
+              "pass": true,
+              "detail": "ecosystem.config.cjs present",
+              "fix": "PM2 ecosystem config required: pm2 start ecosystem.config.cjs --env production",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_pm2_running",
+              "label": "PM2 jarvis-os process online",
+              "pass": false,
+              "detail": "jarvis-os not running in PM2",
+              "fix": "pm2 start ecosystem.config.cjs --env production && pm2 save",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_health",
+              "label": "Health endpoint /api/health responds 200",
+              "pass": false,
+              "detail": "HTTP 0 from /api/health",
+              "fix": "Ensure backend is running: pm2 restart jarvis-os && pm2 logs jarvis-os --lines 20",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_electron_updater",
+              "label": "Electron auto-updater configured",
+              "pass": true,
+              "detail": "electron-builder publish config or GH_TOKEN found",
+              "fix": "Set GH_TOKEN and add publish: {provider: github} to package.json build config",
+              "severity": "warning"
+            },
+            {
+              "id": "deploy_restart",
+              "label": "PM2 restart capability",
+              "pass": false,
+              "detail": "PM2 process not registered",
+              "fix": "pm2 start ecosystem.config.cjs --env production && pm2 save && pm2 startup",
+              "severity": "critical"
+            },
+            {
+              "id": "deploy_rollback",
+              "label": "Git rollback capability (git log reachable)",
+              "pass": true,
+              "detail": "Last commits: fc5c775 feat(pcs-2): Production Credentials Sprint 2 — External Platform Matrix (8 ecosystems, 39 platforms)",
+              "fix": "Ensure repo is initialized and commits are present for rollback",
+              "severity": "warning"
+            }
+          ],
+          "healthEndpointOk": false
+        },
+        "security": {
+          "type": "Security Report",
+          "score": 71,
+          "verdict": "CONDITIONAL GO",
+          "checks": [
+            {
+              "id": "sec_headers",
+              "label": "Security headers (HSTS, X-Frame, X-Content-Type, CSP, Referrer-Policy)",
+              "pass": false,
+              "detail": "X-Frame: false, X-Content-Type: false, HSTS: false, CSP: false, Referrer: false",
+              "fix": "Set security headers in nginx.conf: HSTS, X-Frame-Options DENY, X-Content-Type-Options nosniff, CSP",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_jwt",
+              "label": "JWT_SECRET ≥ 32 characters",
+              "pass": false,
+              "detail": "JWT_SECRET not set",
+              "fix": "Generate: openssl rand -hex 32  then set JWT_SECRET in .env",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_secrets",
+              "label": ".env excluded from git (.gitignore)",
+              "pass": true,
+              "detail": ".env in .gitignore",
+              "fix": "echo '.env' >> .gitignore && git rm --cached .env 2>/dev/null || true",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_permissions",
+              "label": ".env permissions 600 (owner read/write only)",
+              "pass": true,
+              "detail": ".env permissions: 600",
+              "fix": "chmod 600 .env",
+              "severity": "warning"
+            },
+            {
+              "id": "sec_ssh",
+              "label": "SSH password authentication disabled",
+              "pass": true,
+              "detail": "Cannot probe sshd config (may be OK in local dev)",
+              "fix": "Set PasswordAuthentication no in /etc/ssh/sshd_config then: sudo systemctl reload sshd",
+              "severity": "warning"
+            },
+            {
+              "id": "sec_ports",
+              "label": "No unexpected ports open",
+              "pass": true,
+              "detail": "Open ports: ",
+              "fix": "Close unexpected ports: sudo ufw deny ",
+              "severity": "warning"
+            },
+            {
+              "id": "sec_rate_limit",
+              "label": "Nginx rate limiting configured",
+              "pass": true,
+              "detail": "limit_req_zone + limit_req found in nginx.conf",
+              "fix": "Add limit_req_zone and limit_req directives to nginx.conf (see project nginx.conf for reference)",
+              "severity": "critical"
+            }
+          ],
+          "criticalIssues": [
+            {
+              "id": "sec_headers",
+              "label": "Security headers (HSTS, X-Frame, X-Content-Type, CSP, Referrer-Policy)",
+              "pass": false,
+              "detail": "X-Frame: false, X-Content-Type: false, HSTS: false, CSP: false, Referrer: false",
+              "fix": "Set security headers in nginx.conf: HSTS, X-Frame-Options DENY, X-Content-Type-Options nosniff, CSP",
+              "severity": "critical"
+            },
+            {
+              "id": "sec_jwt",
+              "label": "JWT_SECRET ≥ 32 characters",
+              "pass": false,
+              "detail": "JWT_SECRET not set",
+              "fix": "Generate: openssl rand -hex 32  then set JWT_SECRET in .env",
+              "severity": "critical"
+            }
+          ],
+          "warnings": []
+        },
+        "performance": {
+          "type": "Performance Report",
+          "score": 75,
+          "verdict": "CONDITIONAL GO",
+          "results": [
+            {
+              "users": 50,
+              "p50": 18,
+              "p95": 24,
+              "p99": 25,
+              "avg": 19,
+              "errors": 50,
+              "total": 50,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            },
+            {
+              "users": 100,
+              "p50": 11,
+              "p95": 15,
+              "p99": 16,
+              "avg": 11,
+              "errors": 100,
+              "total": 100,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            },
+            {
+              "users": 250,
+              "p50": 12,
+              "p95": 15,
+              "p99": 15,
+              "avg": 12,
+              "errors": 250,
+              "total": 250,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            },
+            {
+              "users": 500,
+              "p50": 10,
+              "p95": 13,
+              "p99": 14,
+              "avg": 10,
+              "errors": 500,
+              "total": 500,
+              "errPct": 100,
+              "memUsedMB": 0,
+              "cpuPct": 0,
+              "p95Pass": true,
+              "errPass": false
+            }
+          ],
+          "checks": [
+            {
+              "id": "stress_50u_p95",
+              "label": "50 users: P95 ≤ 800ms",
+              "pass": true,
+              "detail": "P95: 24ms (avg: 19ms, P99: 25ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_50u_err",
+              "label": "50 users: Error rate ≤ 1%",
+              "pass": false,
+              "detail": "50/50 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_50u_cpu",
+              "label": "50 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_50u_mem",
+              "label": "50 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_100u_p95",
+              "label": "100 users: P95 ≤ 1500ms",
+              "pass": true,
+              "detail": "P95: 15ms (avg: 11ms, P99: 16ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_100u_err",
+              "label": "100 users: Error rate ≤ 2%",
+              "pass": false,
+              "detail": "100/100 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_100u_cpu",
+              "label": "100 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_100u_mem",
+              "label": "100 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_250u_p95",
+              "label": "250 users: P95 ≤ 3000ms",
+              "pass": true,
+              "detail": "P95: 15ms (avg: 12ms, P99: 15ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_250u_err",
+              "label": "250 users: Error rate ≤ 5%",
+              "pass": false,
+              "detail": "250/250 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_250u_cpu",
+              "label": "250 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_250u_mem",
+              "label": "250 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_500u_p95",
+              "label": "500 users: P95 ≤ 5000ms",
+              "pass": true,
+              "detail": "P95: 13ms (avg: 10ms, P99: 14ms)",
+              "fix": "Optimize hot path: check PM2 logs, nginx proxy timeouts, and in-memory ops",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_500u_err",
+              "label": "500 users: Error rate ≤ 10%",
+              "pass": false,
+              "detail": "500/500 errors (100%)",
+              "fix": "Check backend logs: pm2 logs jarvis-os --lines 50",
+              "severity": "critical"
+            },
+            {
+              "id": "stress_500u_cpu",
+              "label": "500 users: CPU < 90%",
+              "pass": true,
+              "detail": "CPU: 0%",
+              "fix": "Optimize CPU-heavy code paths or scale VPS",
+              "severity": "warning"
+            },
+            {
+              "id": "stress_500u_mem",
+              "label": "500 users: Memory < 1.5GB",
+              "pass": true,
+              "detail": "Memory: 0MB",
+              "fix": "Investigate memory usage: pm2 monit && heap profiling",
+              "severity": "warning"
+            }
+          ],
+          "summary": [
+            "50 users: P95=24ms, err=100%, CPU=0%, mem=0MB",
+            "100 users: P95=15ms, err=100%, CPU=0%, mem=0MB",
+            "250 users: P95=15ms, err=100%, CPU=0%, mem=0MB",
+            "500 users: P95=13ms, err=100%, CPU=0%, mem=0MB"
+          ]
+        }
+      },
+      "summary": {
+        "vps": {
+          "score": 0,
+          "verdict": "CONDITIONAL GO"
+        },
+        "nginx": {
+          "score": 45,
+          "verdict": "CONDITIONAL GO"
+        },
+        "ssl": {
+          "score": 60,
+          "verdict": "GO"
+        },
+        "dns": {
+          "score": 30,
+          "verdict": "CONDITIONAL GO"
+        },
+        "domains": {
+          "score": 73,
+          "verdict": "GO"
+        },
+        "deployment": {
+          "score": 63,
+          "verdict": "CONDITIONAL GO"
+        },
+        "backup": {
+          "score": 70,
+          "verdict": "GO"
+        },
+        "monitoring": {
+          "score": 43,
+          "verdict": "CONDITIONAL GO"
+        },
+        "security": {
+          "score": 71,
+          "verdict": "GO"
+        },
+        "stress": {
+          "score": 75,
+          "verdict": "CONDITIONAL GO"
+        }
+      }
+    }
+  ],
+  "lastRun": "2026-06-21T20:58:07.922Z"
+}
