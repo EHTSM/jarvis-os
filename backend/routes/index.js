@@ -100,6 +100,7 @@ router.use(require("./founderJournal")); // /fop/* — FOP-1: Journal, Escape, C
 router.use(require("./growthOS"));        // /growth/* — G1: Email, SMS, WhatsApp, Push, Automation, Audience, Analytics, Templates, Dashboard, Benchmark
 router.use(require("./contentSEO"));      // /content/* — G2: Blog Studio, SEO, Repurposing, Landing Pages, Docs, Calendar, Keywords, Brand Voice, Dashboard, Benchmark
 router.use(require("./distribution"));    // /distrib/* — G3: Publisher, Orchestrator, Influencer, Community, Referral, Launch, Analytics, Performance AI, Executive, Benchmark
+router.use(require("./revenueOS"));       // /revenue/* — G4: Revenue Dashboard, Subscriptions, Upgrade Intelligence, Customer Success, Churn, Forecasting, Affiliates, Finance, Executive, Benchmark
 router.use(require("./plan-management")); // /plan/* — current plan, upgrade
 
 module.exports = router;

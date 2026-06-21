@@ -1,0 +1,1880 @@
+{
+  "customerHealth": {
+    "bench-cs-001": {
+      "accountId": "bench-cs-001",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [
+        {
+          "text": "Benchmark health note",
+          "addedAt": "2026-06-20T19:51:54.400Z"
+        }
+      ],
+      "updatedAt": "2026-06-20T19:51:54.407Z"
+    },
+    "0f6261c6d5f1be70851f51b3": {
+      "accountId": "0f6261c6d5f1be70851f51b3",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.401Z"
+    },
+    "4f388cd491bb6ad10d487785": {
+      "accountId": "4f388cd491bb6ad10d487785",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.402Z"
+    },
+    "cfb5371d05089656446a51f1": {
+      "accountId": "cfb5371d05089656446a51f1",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.402Z"
+    },
+    "3be3eacb69aae016c87149e7": {
+      "accountId": "3be3eacb69aae016c87149e7",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.402Z"
+    },
+    "7a217c74881271d4f47ec0fe": {
+      "accountId": "7a217c74881271d4f47ec0fe",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.403Z"
+    },
+    "e663aec55ab9e90978aa95ac": {
+      "accountId": "e663aec55ab9e90978aa95ac",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.403Z"
+    },
+    "8e9bef3af00e4f7c0bafb4cb": {
+      "accountId": "8e9bef3af00e4f7c0bafb4cb",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.404Z"
+    },
+    "e5d97b2d12d49672c324ccb0": {
+      "accountId": "e5d97b2d12d49672c324ccb0",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.404Z"
+    },
+    "c717d112b120f37018f5bfec": {
+      "accountId": "c717d112b120f37018f5bfec",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.404Z"
+    },
+    "7b0ec48b627f93096a25fb4e": {
+      "accountId": "7b0ec48b627f93096a25fb4e",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.405Z"
+    },
+    "5b10a57a22dbf3ef057aaa8b": {
+      "accountId": "5b10a57a22dbf3ef057aaa8b",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.405Z"
+    },
+    "3de4f158b5eecb25d125efbd": {
+      "accountId": "3de4f158b5eecb25d125efbd",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.406Z"
+    },
+    "b27c822abfecb157094a5229": {
+      "accountId": "b27c822abfecb157094a5229",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.406Z"
+    },
+    "c15c7dd28f2d8600d1c566d6": {
+      "accountId": "c15c7dd28f2d8600d1c566d6",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.406Z"
+    },
+    "acc-test": {
+      "accountId": "acc-test",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.406Z"
+    },
+    "bench-sub-001": {
+      "accountId": "bench-sub-001",
+      "healthScore": 51,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 40,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "starter",
+      "status": "active",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": "2026-07-20",
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.407Z"
+    },
+    "bench-ui-001": {
+      "accountId": "bench-ui-001",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.407Z"
+    },
+    "bench-cp-001": {
+      "accountId": "bench-cp-001",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.408Z"
+    },
+    "bench-fin-001": {
+      "accountId": "bench-fin-001",
+      "healthScore": 41,
+      "grade": "C",
+      "breakdown": {
+        "credit_usage": null,
+        "plan_tier": 0,
+        "login_recency": 85,
+        "mission_count": 70,
+        "feature_breadth": 65
+      },
+      "plan": "trial",
+      "status": "trialing",
+      "activePlaybook": {
+        "id": "at_risk",
+        "label": "At Risk",
+        "steps": [
+          "Send health score alert",
+          "Schedule emergency check-in",
+          "Identify blockers",
+          "Offer concierge onboarding",
+          "Provide temporary credit top-up"
+        ]
+      },
+      "risks": [
+        "Low feature adoption",
+        "Below-average credit usage",
+        "Trial expiry risk"
+      ],
+      "renewalDate": null,
+      "notes": [],
+      "updatedAt": "2026-06-20T19:51:54.408Z"
+    }
+  },
+  "churnRisk": {
+    "bench-cp-001": {
+      "accountId": "bench-cp-001",
+      "riskScore": 95,
+      "riskLevel": "critical",
+      "signals": [
+        {
+          "id": "cancel_flow_visited",
+          "label": "Visited cancellation flow",
+          "score": 50
+        },
+        {
+          "id": "negative_nps",
+          "label": "NPS score < 6",
+          "score": 45
+        }
+      ],
+      "winbackRecommendation": {
+        "id": "wbt_3",
+        "type": "in_app",
+        "subject": "Pause instead of cancel",
+        "body": "Did you know you can pause your subscription for up to 3 months and keep all your data?",
+        "discount": "pause"
+      },
+      "detectedAt": "2026-06-20T19:51:54.408Z"
+    }
+  },
+  "affiliates": {
+    "aff-1781985114410-emdud": {
+      "id": "aff-1781985114410-emdud",
+      "name": "Test Partner",
+      "email": "partner@test.com",
+      "code": "10-EMDUD",
+      "tier": "ambassador",
+      "commissionRate": 0.2,
+      "referrals": 3,
+      "conversions": 3,
+      "pendingPayout": 1625,
+      "paidOut": 0,
+      "status": "active",
+      "payoutHistory": [],
+      "createdAt": "2026-06-20T19:51:54.410Z",
+      "updatedAt": "2026-06-20T19:51:54.412Z"
+    }
+  },
+  "commissions": {
+    "com-1781985114411-adnkv": {
+      "id": "com-1781985114411-adnkv",
+      "affiliateId": "aff-1781985114410-emdud",
+      "accountId": "bench-aff-conv-0",
+      "plan": "growth",
+      "mrr": 2499,
+      "commission": 625,
+      "status": "pending",
+      "recordedAt": "2026-06-20T19:51:54.411Z"
+    },
+    "com-1781985114411-0kok9": {
+      "id": "com-1781985114411-0kok9",
+      "affiliateId": "aff-1781985114410-emdud",
+      "accountId": "bench-aff-conv-1",
+      "plan": "growth",
+      "mrr": 2499,
+      "commission": 500,
+      "status": "pending",
+      "recordedAt": "2026-06-20T19:51:54.411Z"
+    },
+    "com-1781985114412-u9ryh": {
+      "id": "com-1781985114412-u9ryh",
+      "affiliateId": "aff-1781985114410-emdud",
+      "accountId": "bench-aff-conv-2",
+      "plan": "growth",
+      "mrr": 2499,
+      "commission": 500,
+      "status": "pending",
+      "recordedAt": "2026-06-20T19:51:54.412Z"
+    }
+  },
+  "invoices": {
+    "inv-1781985114412-i6m24": {
+      "id": "inv-1781985114412-i6m24",
+      "invoiceNumber": "INV-2026-0001",
+      "accountId": "bench-fin-001",
+      "plan": "trial",
+      "items": [
+        {
+          "description": "Trial Plan — Monthly",
+          "quantity": 1,
+          "unitPrice": 0,
+          "amount": 0
+        }
+      ],
+      "subtotal": 0,
+      "taxRate": 18,
+      "taxAmount": 0,
+      "total": 0,
+      "currency": "INR",
+      "country": "IN",
+      "status": "paid",
+      "dueDate": "2026-07-05",
+      "paidAt": "2026-06-20T19:51:54.412Z",
+      "issuedAt": "2026-06-20T19:51:54.412Z"
+    }
+  },
+  "creditNotes": {
+    "cn-1781985114413-52227": {
+      "id": "cn-1781985114413-52227",
+      "creditNoteNumber": "CN-2026-0001",
+      "accountId": "bench-fin-001",
+      "invoiceId": "inv-1781985114412-i6m24",
+      "reason": "duplicate",
+      "amount": 500,
+      "status": "issued",
+      "issuedAt": "2026-06-20T19:51:54.413Z"
+    }
+  },
+  "forecasts": {
+    "fct-1781985114409-6h2ny": {
+      "id": "fct-1781985114409-6h2ny",
+      "scenario": "optimistic",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "currentSubs": 22,
+      "projections": {
+        "30d": {
+          "mrr": 1179,
+          "arr": 14148,
+          "subs": 26
+        },
+        "90d": {
+          "mrr": 1641,
+          "arr": 19692,
+          "subs": 37
+        },
+        "365d": {
+          "mrr": 7274,
+          "arr": 87288,
+          "subs": 172
+        }
+      },
+      "timeline": {
+        "30d": [
+          {
+            "month": 1,
+            "mrr": 1179,
+            "arr": 14148,
+            "subs": 26,
+            "newSubs": 4,
+            "churnedSubs": 0
+          }
+        ],
+        "90d": [
+          {
+            "month": 1,
+            "mrr": 1179,
+            "arr": 14148,
+            "subs": 26,
+            "newSubs": 4,
+            "churnedSubs": 0
+          },
+          {
+            "month": 2,
+            "mrr": 1391,
+            "arr": 16692,
+            "subs": 31,
+            "newSubs": 5,
+            "churnedSubs": 0
+          },
+          {
+            "month": 3,
+            "mrr": 1641,
+            "arr": 19692,
+            "subs": 37,
+            "newSubs": 6,
+            "churnedSubs": 0
+          }
+        ],
+        "365d": [
+          {
+            "month": 1,
+            "mrr": 1179,
+            "arr": 14148,
+            "subs": 26,
+            "newSubs": 4,
+            "churnedSubs": 0
+          },
+          {
+            "month": 2,
+            "mrr": 1391,
+            "arr": 16692,
+            "subs": 31,
+            "newSubs": 5,
+            "churnedSubs": 0
+          },
+          {
+            "month": 3,
+            "mrr": 1641,
+            "arr": 19692,
+            "subs": 37,
+            "newSubs": 6,
+            "churnedSubs": 0
+          },
+          {
+            "month": 4,
+            "mrr": 1936,
+            "arr": 23232,
+            "subs": 44,
+            "newSubs": 7,
+            "churnedSubs": 0
+          },
+          {
+            "month": 5,
+            "mrr": 2284,
+            "arr": 27408,
+            "subs": 53,
+            "newSubs": 9,
+            "churnedSubs": 0
+          },
+          {
+            "month": 6,
+            "mrr": 2695,
+            "arr": 32340,
+            "subs": 62,
+            "newSubs": 10,
+            "churnedSubs": 1
+          },
+          {
+            "month": 7,
+            "mrr": 3180,
+            "arr": 38160,
+            "subs": 73,
+            "newSubs": 12,
+            "churnedSubs": 1
+          },
+          {
+            "month": 8,
+            "mrr": 3752,
+            "arr": 45024,
+            "subs": 86,
+            "newSubs": 14,
+            "churnedSubs": 1
+          },
+          {
+            "month": 9,
+            "mrr": 4427,
+            "arr": 53124,
+            "subs": 102,
+            "newSubs": 17,
+            "churnedSubs": 1
+          },
+          {
+            "month": 10,
+            "mrr": 5224,
+            "arr": 62688,
+            "subs": 121,
+            "newSubs": 20,
+            "churnedSubs": 1
+          },
+          {
+            "month": 11,
+            "mrr": 6164,
+            "arr": 73968,
+            "subs": 144,
+            "newSubs": 24,
+            "churnedSubs": 1
+          },
+          {
+            "month": 12,
+            "mrr": 7274,
+            "arr": 87288,
+            "subs": 172,
+            "newSubs": 29,
+            "churnedSubs": 1
+          }
+        ]
+      },
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18
+      },
+      "createdAt": "2026-06-20T19:51:54.409Z"
+    },
+    "fct-1781985114409-3259p": {
+      "id": "fct-1781985114409-3259p",
+      "scenario": "conservative",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "currentSubs": 22,
+      "projections": {
+        "30d": {
+          "mrr": 1049,
+          "arr": 12588,
+          "subs": 23
+        },
+        "90d": {
+          "mrr": 1156,
+          "arr": 13872,
+          "subs": 25
+        },
+        "365d": {
+          "mrr": 1794,
+          "arr": 21528,
+          "subs": 39
+        }
+      },
+      "timeline": {
+        "30d": [
+          {
+            "month": 1,
+            "mrr": 1049,
+            "arr": 12588,
+            "subs": 23,
+            "newSubs": 2,
+            "churnedSubs": 1
+          }
+        ],
+        "90d": [
+          {
+            "month": 1,
+            "mrr": 1049,
+            "arr": 12588,
+            "subs": 23,
+            "newSubs": 2,
+            "churnedSubs": 1
+          },
+          {
+            "month": 2,
+            "mrr": 1101,
+            "arr": 13212,
+            "subs": 24,
+            "newSubs": 2,
+            "churnedSubs": 1
+          },
+          {
+            "month": 3,
+            "mrr": 1156,
+            "arr": 13872,
+            "subs": 25,
+            "newSubs": 2,
+            "churnedSubs": 1
+          }
+        ],
+        "365d": [
+          {
+            "month": 1,
+            "mrr": 1049,
+            "arr": 12588,
+            "subs": 23,
+            "newSubs": 2,
+            "churnedSubs": 1
+          },
+          {
+            "month": 2,
+            "mrr": 1101,
+            "arr": 13212,
+            "subs": 24,
+            "newSubs": 2,
+            "churnedSubs": 1
+          },
+          {
+            "month": 3,
+            "mrr": 1156,
+            "arr": 13872,
+            "subs": 25,
+            "newSubs": 2,
+            "churnedSubs": 1
+          },
+          {
+            "month": 4,
+            "mrr": 1214,
+            "arr": 14568,
+            "subs": 26,
+            "newSubs": 2,
+            "churnedSubs": 1
+          },
+          {
+            "month": 5,
+            "mrr": 1275,
+            "arr": 15300,
+            "subs": 27,
+            "newSubs": 2,
+            "churnedSubs": 1
+          },
+          {
+            "month": 6,
+            "mrr": 1339,
+            "arr": 16068,
+            "subs": 28,
+            "newSubs": 2,
+            "churnedSubs": 1
+          },
+          {
+            "month": 7,
+            "mrr": 1406,
+            "arr": 16872,
+            "subs": 29,
+            "newSubs": 2,
+            "churnedSubs": 1
+          },
+          {
+            "month": 8,
+            "mrr": 1476,
+            "arr": 17712,
+            "subs": 31,
+            "newSubs": 3,
+            "churnedSubs": 1
+          },
+          {
+            "month": 9,
+            "mrr": 1550,
+            "arr": 18600,
+            "subs": 33,
+            "newSubs": 3,
+            "churnedSubs": 1
+          },
+          {
+            "month": 10,
+            "mrr": 1628,
+            "arr": 19536,
+            "subs": 35,
+            "newSubs": 3,
+            "churnedSubs": 1
+          },
+          {
+            "month": 11,
+            "mrr": 1709,
+            "arr": 20508,
+            "subs": 37,
+            "newSubs": 3,
+            "churnedSubs": 1
+          },
+          {
+            "month": 12,
+            "mrr": 1794,
+            "arr": 21528,
+            "subs": 39,
+            "newSubs": 3,
+            "churnedSubs": 1
+          }
+        ]
+      },
+      "assumptions": {
+        "growthRate": 0.05,
+        "churnRate": 0.03,
+        "conversionRate": 0.08
+      },
+      "createdAt": "2026-06-20T19:51:54.409Z"
+    },
+    "fct-1781985114410-xxm2m": {
+      "id": "fct-1781985114410-xxm2m",
+      "scenario": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "currentSubs": 22,
+      "projections": {
+        "30d": {
+          "mrr": 1099,
+          "arr": 13188,
+          "subs": 25
+        },
+        "90d": {
+          "mrr": 1330,
+          "arr": 15960,
+          "subs": 30
+        },
+        "365d": {
+          "mrr": 3136,
+          "arr": 37632,
+          "subs": 75
+        }
+      },
+      "timeline": {
+        "30d": [
+          {
+            "month": 1,
+            "mrr": 1099,
+            "arr": 13188,
+            "subs": 25,
+            "newSubs": 3,
+            "churnedSubs": 0
+          }
+        ],
+        "90d": [
+          {
+            "month": 1,
+            "mrr": 1099,
+            "arr": 13188,
+            "subs": 25,
+            "newSubs": 3,
+            "churnedSubs": 0
+          },
+          {
+            "month": 2,
+            "mrr": 1209,
+            "arr": 14508,
+            "subs": 27,
+            "newSubs": 3,
+            "churnedSubs": 1
+          },
+          {
+            "month": 3,
+            "mrr": 1330,
+            "arr": 15960,
+            "subs": 30,
+            "newSubs": 4,
+            "churnedSubs": 1
+          }
+        ],
+        "365d": [
+          {
+            "month": 1,
+            "mrr": 1099,
+            "arr": 13188,
+            "subs": 25,
+            "newSubs": 3,
+            "churnedSubs": 0
+          },
+          {
+            "month": 2,
+            "mrr": 1209,
+            "arr": 14508,
+            "subs": 27,
+            "newSubs": 3,
+            "churnedSubs": 1
+          },
+          {
+            "month": 3,
+            "mrr": 1330,
+            "arr": 15960,
+            "subs": 30,
+            "newSubs": 4,
+            "churnedSubs": 1
+          },
+          {
+            "month": 4,
+            "mrr": 1463,
+            "arr": 17556,
+            "subs": 33,
+            "newSubs": 4,
+            "churnedSubs": 1
+          },
+          {
+            "month": 5,
+            "mrr": 1609,
+            "arr": 19308,
+            "subs": 36,
+            "newSubs": 4,
+            "churnedSubs": 1
+          },
+          {
+            "month": 6,
+            "mrr": 1770,
+            "arr": 21240,
+            "subs": 40,
+            "newSubs": 5,
+            "churnedSubs": 1
+          },
+          {
+            "month": 7,
+            "mrr": 1947,
+            "arr": 23364,
+            "subs": 44,
+            "newSubs": 5,
+            "churnedSubs": 1
+          },
+          {
+            "month": 8,
+            "mrr": 2142,
+            "arr": 25704,
+            "subs": 49,
+            "newSubs": 6,
+            "churnedSubs": 1
+          },
+          {
+            "month": 9,
+            "mrr": 2356,
+            "arr": 28272,
+            "subs": 54,
+            "newSubs": 6,
+            "churnedSubs": 1
+          },
+          {
+            "month": 10,
+            "mrr": 2592,
+            "arr": 31104,
+            "subs": 60,
+            "newSubs": 7,
+            "churnedSubs": 1
+          },
+          {
+            "month": 11,
+            "mrr": 2851,
+            "arr": 34212,
+            "subs": 67,
+            "newSubs": 8,
+            "churnedSubs": 1
+          },
+          {
+            "month": 12,
+            "mrr": 3136,
+            "arr": 37632,
+            "subs": 75,
+            "newSubs": 9,
+            "churnedSubs": 1
+          }
+        ]
+      },
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12
+      },
+      "createdAt": "2026-06-20T19:51:54.410Z"
+    },
+    "fct-1781985114410-bwinp": {
+      "id": "fct-1781985114410-bwinp",
+      "scenario": "optimistic",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "currentSubs": 22,
+      "projections": {
+        "30d": {
+          "mrr": 1179,
+          "arr": 14148,
+          "subs": 26
+        },
+        "90d": {
+          "mrr": 1641,
+          "arr": 19692,
+          "subs": 37
+        },
+        "365d": {
+          "mrr": 7274,
+          "arr": 87288,
+          "subs": 172
+        }
+      },
+      "timeline": {
+        "30d": [
+          {
+            "month": 1,
+            "mrr": 1179,
+            "arr": 14148,
+            "subs": 26,
+            "newSubs": 4,
+            "churnedSubs": 0
+          }
+        ],
+        "90d": [
+          {
+            "month": 1,
+            "mrr": 1179,
+            "arr": 14148,
+            "subs": 26,
+            "newSubs": 4,
+            "churnedSubs": 0
+          },
+          {
+            "month": 2,
+            "mrr": 1391,
+            "arr": 16692,
+            "subs": 31,
+            "newSubs": 5,
+            "churnedSubs": 0
+          },
+          {
+            "month": 3,
+            "mrr": 1641,
+            "arr": 19692,
+            "subs": 37,
+            "newSubs": 6,
+            "churnedSubs": 0
+          }
+        ],
+        "365d": [
+          {
+            "month": 1,
+            "mrr": 1179,
+            "arr": 14148,
+            "subs": 26,
+            "newSubs": 4,
+            "churnedSubs": 0
+          },
+          {
+            "month": 2,
+            "mrr": 1391,
+            "arr": 16692,
+            "subs": 31,
+            "newSubs": 5,
+            "churnedSubs": 0
+          },
+          {
+            "month": 3,
+            "mrr": 1641,
+            "arr": 19692,
+            "subs": 37,
+            "newSubs": 6,
+            "churnedSubs": 0
+          },
+          {
+            "month": 4,
+            "mrr": 1936,
+            "arr": 23232,
+            "subs": 44,
+            "newSubs": 7,
+            "churnedSubs": 0
+          },
+          {
+            "month": 5,
+            "mrr": 2284,
+            "arr": 27408,
+            "subs": 53,
+            "newSubs": 9,
+            "churnedSubs": 0
+          },
+          {
+            "month": 6,
+            "mrr": 2695,
+            "arr": 32340,
+            "subs": 62,
+            "newSubs": 10,
+            "churnedSubs": 1
+          },
+          {
+            "month": 7,
+            "mrr": 3180,
+            "arr": 38160,
+            "subs": 73,
+            "newSubs": 12,
+            "churnedSubs": 1
+          },
+          {
+            "month": 8,
+            "mrr": 3752,
+            "arr": 45024,
+            "subs": 86,
+            "newSubs": 14,
+            "churnedSubs": 1
+          },
+          {
+            "month": 9,
+            "mrr": 4427,
+            "arr": 53124,
+            "subs": 102,
+            "newSubs": 17,
+            "churnedSubs": 1
+          },
+          {
+            "month": 10,
+            "mrr": 5224,
+            "arr": 62688,
+            "subs": 121,
+            "newSubs": 20,
+            "churnedSubs": 1
+          },
+          {
+            "month": 11,
+            "mrr": 6164,
+            "arr": 73968,
+            "subs": 144,
+            "newSubs": 24,
+            "churnedSubs": 1
+          },
+          {
+            "month": 12,
+            "mrr": 7274,
+            "arr": 87288,
+            "subs": 172,
+            "newSubs": 29,
+            "churnedSubs": 1
+          }
+        ]
+      },
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18
+      },
+      "createdAt": "2026-06-20T19:51:54.410Z"
+    },
+    "fct-1781985114414-9ch57": {
+      "id": "fct-1781985114414-9ch57",
+      "scenario": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "currentSubs": 22,
+      "projections": {
+        "30d": {
+          "mrr": 1099,
+          "arr": 13188,
+          "subs": 25
+        },
+        "90d": {
+          "mrr": 1330,
+          "arr": 15960,
+          "subs": 30
+        },
+        "365d": {
+          "mrr": 3136,
+          "arr": 37632,
+          "subs": 75
+        }
+      },
+      "timeline": {
+        "30d": [
+          {
+            "month": 1,
+            "mrr": 1099,
+            "arr": 13188,
+            "subs": 25,
+            "newSubs": 3,
+            "churnedSubs": 0
+          }
+        ],
+        "90d": [
+          {
+            "month": 1,
+            "mrr": 1099,
+            "arr": 13188,
+            "subs": 25,
+            "newSubs": 3,
+            "churnedSubs": 0
+          },
+          {
+            "month": 2,
+            "mrr": 1209,
+            "arr": 14508,
+            "subs": 27,
+            "newSubs": 3,
+            "churnedSubs": 1
+          },
+          {
+            "month": 3,
+            "mrr": 1330,
+            "arr": 15960,
+            "subs": 30,
+            "newSubs": 4,
+            "churnedSubs": 1
+          }
+        ],
+        "365d": [
+          {
+            "month": 1,
+            "mrr": 1099,
+            "arr": 13188,
+            "subs": 25,
+            "newSubs": 3,
+            "churnedSubs": 0
+          },
+          {
+            "month": 2,
+            "mrr": 1209,
+            "arr": 14508,
+            "subs": 27,
+            "newSubs": 3,
+            "churnedSubs": 1
+          },
+          {
+            "month": 3,
+            "mrr": 1330,
+            "arr": 15960,
+            "subs": 30,
+            "newSubs": 4,
+            "churnedSubs": 1
+          },
+          {
+            "month": 4,
+            "mrr": 1463,
+            "arr": 17556,
+            "subs": 33,
+            "newSubs": 4,
+            "churnedSubs": 1
+          },
+          {
+            "month": 5,
+            "mrr": 1609,
+            "arr": 19308,
+            "subs": 36,
+            "newSubs": 4,
+            "churnedSubs": 1
+          },
+          {
+            "month": 6,
+            "mrr": 1770,
+            "arr": 21240,
+            "subs": 40,
+            "newSubs": 5,
+            "churnedSubs": 1
+          },
+          {
+            "month": 7,
+            "mrr": 1947,
+            "arr": 23364,
+            "subs": 44,
+            "newSubs": 5,
+            "churnedSubs": 1
+          },
+          {
+            "month": 8,
+            "mrr": 2142,
+            "arr": 25704,
+            "subs": 49,
+            "newSubs": 6,
+            "churnedSubs": 1
+          },
+          {
+            "month": 9,
+            "mrr": 2356,
+            "arr": 28272,
+            "subs": 54,
+            "newSubs": 6,
+            "churnedSubs": 1
+          },
+          {
+            "month": 10,
+            "mrr": 2592,
+            "arr": 31104,
+            "subs": 60,
+            "newSubs": 7,
+            "churnedSubs": 1
+          },
+          {
+            "month": 11,
+            "mrr": 2851,
+            "arr": 34212,
+            "subs": 67,
+            "newSubs": 8,
+            "churnedSubs": 1
+          },
+          {
+            "month": 12,
+            "mrr": 3136,
+            "arr": 37632,
+            "subs": 75,
+            "newSubs": 9,
+            "churnedSubs": 1
+          }
+        ]
+      },
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12
+      },
+      "createdAt": "2026-06-20T19:51:54.414Z"
+    },
+    "fct-1781985114416-tte2j": {
+      "id": "fct-1781985114416-tte2j",
+      "scenario": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "currentSubs": 22,
+      "projections": {
+        "30d": {
+          "mrr": 1099,
+          "arr": 13188,
+          "subs": 25
+        },
+        "90d": {
+          "mrr": 1330,
+          "arr": 15960,
+          "subs": 30
+        },
+        "365d": {
+          "mrr": 3136,
+          "arr": 37632,
+          "subs": 75
+        }
+      },
+      "timeline": {
+        "30d": [
+          {
+            "month": 1,
+            "mrr": 1099,
+            "arr": 13188,
+            "subs": 25,
+            "newSubs": 3,
+            "churnedSubs": 0
+          }
+        ],
+        "90d": [
+          {
+            "month": 1,
+            "mrr": 1099,
+            "arr": 13188,
+            "subs": 25,
+            "newSubs": 3,
+            "churnedSubs": 0
+          },
+          {
+            "month": 2,
+            "mrr": 1209,
+            "arr": 14508,
+            "subs": 27,
+            "newSubs": 3,
+            "churnedSubs": 1
+          },
+          {
+            "month": 3,
+            "mrr": 1330,
+            "arr": 15960,
+            "subs": 30,
+            "newSubs": 4,
+            "churnedSubs": 1
+          }
+        ],
+        "365d": [
+          {
+            "month": 1,
+            "mrr": 1099,
+            "arr": 13188,
+            "subs": 25,
+            "newSubs": 3,
+            "churnedSubs": 0
+          },
+          {
+            "month": 2,
+            "mrr": 1209,
+            "arr": 14508,
+            "subs": 27,
+            "newSubs": 3,
+            "churnedSubs": 1
+          },
+          {
+            "month": 3,
+            "mrr": 1330,
+            "arr": 15960,
+            "subs": 30,
+            "newSubs": 4,
+            "churnedSubs": 1
+          },
+          {
+            "month": 4,
+            "mrr": 1463,
+            "arr": 17556,
+            "subs": 33,
+            "newSubs": 4,
+            "churnedSubs": 1
+          },
+          {
+            "month": 5,
+            "mrr": 1609,
+            "arr": 19308,
+            "subs": 36,
+            "newSubs": 4,
+            "churnedSubs": 1
+          },
+          {
+            "month": 6,
+            "mrr": 1770,
+            "arr": 21240,
+            "subs": 40,
+            "newSubs": 5,
+            "churnedSubs": 1
+          },
+          {
+            "month": 7,
+            "mrr": 1947,
+            "arr": 23364,
+            "subs": 44,
+            "newSubs": 5,
+            "churnedSubs": 1
+          },
+          {
+            "month": 8,
+            "mrr": 2142,
+            "arr": 25704,
+            "subs": 49,
+            "newSubs": 6,
+            "churnedSubs": 1
+          },
+          {
+            "month": 9,
+            "mrr": 2356,
+            "arr": 28272,
+            "subs": 54,
+            "newSubs": 6,
+            "churnedSubs": 1
+          },
+          {
+            "month": 10,
+            "mrr": 2592,
+            "arr": 31104,
+            "subs": 60,
+            "newSubs": 7,
+            "churnedSubs": 1
+          },
+          {
+            "month": 11,
+            "mrr": 2851,
+            "arr": 34212,
+            "subs": 67,
+            "newSubs": 8,
+            "churnedSubs": 1
+          },
+          {
+            "month": 12,
+            "mrr": 3136,
+            "arr": 37632,
+            "subs": 75,
+            "newSubs": 9,
+            "churnedSubs": 1
+          }
+        ]
+      },
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12
+      },
+      "createdAt": "2026-06-20T19:51:54.416Z"
+    }
+  },
+  "exitSurveys": {
+    "es-1781985114409-q5cwy": {
+      "id": "es-1781985114409-q5cwy",
+      "accountId": "bench-cp-001",
+      "reason": "price",
+      "comment": "Too expensive",
+      "npsScore": 5,
+      "competitor": null,
+      "wouldReturn": true,
+      "submittedAt": "2026-06-20T19:51:54.409Z"
+    }
+  },
+  "lifecycleEvents": [
+    {
+      "id": "lce-1781985114398-fuc1k",
+      "accountId": "bench-sub-001",
+      "event": "upgrade",
+      "fromPlan": "starter",
+      "toPlan": "growth",
+      "mrrDelta": 1500,
+      "occurredAt": "2026-06-20T19:51:54.398Z"
+    },
+    {
+      "id": "lce-1781985114399-dkvfh",
+      "accountId": "bench-sub-001",
+      "event": "downgrade",
+      "fromPlan": "growth",
+      "toPlan": "starter",
+      "mrrDelta": -1500,
+      "occurredAt": "2026-06-20T19:51:54.399Z"
+    },
+    {
+      "id": "lce-1781985114399-qxjec",
+      "accountId": "bench-sub-001",
+      "event": "pause",
+      "fromPlan": "starter",
+      "toPlan": "paused",
+      "pauseUntil": "2026-09-01",
+      "occurredAt": "2026-06-20T19:51:54.399Z"
+    },
+    {
+      "id": "lce-1781985114399-srpwy",
+      "accountId": "bench-sub-001",
+      "event": "cancellation",
+      "reason": "benchmark test",
+      "occurredAt": "2026-06-20T19:51:54.399Z"
+    },
+    {
+      "id": "lce-1781985114399-ffbfj",
+      "accountId": "bench-sub-001",
+      "event": "reactivation",
+      "toPlan": "starter",
+      "occurredAt": "2026-06-20T19:51:54.399Z"
+    }
+  ],
+  "upgradeSignals": [
+    {
+      "id": "sig-1781985114399-2zcwg",
+      "accountId": "bench-ui-001",
+      "signalId": "feature_gate_hit",
+      "meta": {
+        "feature": "ai_chat"
+      },
+      "recordedAt": "2026-06-20T19:51:54.399Z"
+    },
+    {
+      "id": "sig-1781985114400-48jv2",
+      "accountId": "bench-ui-001",
+      "signalId": "team_invite_attempt",
+      "meta": {},
+      "recordedAt": "2026-06-20T19:51:54.400Z"
+    }
+  ],
+  "renewalReminders": [
+    {
+      "id": "ren-1781985114401-otaip",
+      "accountId": "bench-cs-001",
+      "plan": "trial",
+      "daysOut": 30,
+      "sentAt": "2026-06-20T19:51:54.401Z",
+      "status": "sent"
+    }
+  ],
+  "winBackCampaigns": [
+    {
+      "id": "wbc-1781985114409-sxd79",
+      "accountId": "bench-cp-001",
+      "template": {
+        "id": "wbt_1",
+        "type": "email",
+        "subject": "We miss you — here's 100 bonus credits",
+        "body": "We noticed you haven't logged in recently. Come back and get 100 free credits on us.",
+        "discount": "100 credits"
+      },
+      "status": "sent",
+      "sentAt": "2026-06-20T19:51:54.409Z"
+    }
+  ]
+}
