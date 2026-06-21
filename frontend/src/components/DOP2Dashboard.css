@@ -1,0 +1,124 @@
+/* ── DOP-2 Real Production Deployment Dashboard ──────────────────── */
+:root { --dop2-accent: #a78bfa; } /* violet */
+
+.dop2-root     { display: flex; flex-direction: column; height: 100%; background: #0f172a; color: #e2e8f0; font-family: system-ui, sans-serif; overflow: hidden; }
+.dop2-header   { padding: 10px 16px 6px; border-bottom: 1px solid #1e293b; }
+.dop2-title    { font-size: 14px; font-weight: 700; color: var(--dop2-accent); }
+.dop2-subtitle { font-size: 10px; color: #64748b; margin-top: 2px; }
+.dop2-msg      { font-size: 11px; color: #fbbf24; margin-top: 4px; }
+
+.dop2-tabs     { display: flex; gap: 2px; padding: 6px 10px; background: #0f172a; border-bottom: 1px solid #1e293b; overflow-x: auto; flex-shrink: 0; }
+.dop2-tab      { background: none; border: 1px solid transparent; border-radius: 5px; padding: 4px 9px; font-size: 10px; color: #94a3b8; cursor: pointer; white-space: nowrap; }
+.dop2-tab:hover { background: #1e293b; color: #e2e8f0; }
+.dop2-tab.active{ background: #1e293b; border-color: var(--dop2-accent); color: var(--dop2-accent); }
+
+.dop2-body     { flex: 1; overflow-y: auto; padding: 12px; }
+
+/* ── Hero ──────────────────────────────────────────────────────── */
+.dop2-hero     { display: flex; align-items: center; gap: 16px; background: #1e293b; border-radius: 10px; padding: 14px 18px; margin-bottom: 12px; flex-wrap: wrap; }
+.dop2-hero-info { flex: 1; min-width: 0; }
+.dop2-hero-verdict { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.dop2-hero-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+.dop2-hero-run { font-size: 10px; color: #475569; margin-top: 6px; }
+
+.dop2-stat     { display: flex; flex-direction: column; align-items: center; min-width: 40px; }
+.dop2-stat-v   { font-size: 18px; font-weight: 700; }
+.dop2-stat-l   { font-size: 10px; color: #64748b; }
+.dop2-green    { color: #34d399; }
+.dop2-red      { color: #f87171; }
+.dop2-yellow   { color: #fbbf24; }
+.dop2-violet   { color: var(--dop2-accent); }
+
+/* ── Verdict badge ─────────────────────────────────────────────── */
+.dop2-verdict  { font-size: 11px; font-weight: 700; border: 1px solid; border-radius: 5px; padding: 3px 10px; }
+
+/* ── Phase grid ────────────────────────────────────────────────── */
+.dop2-phase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; margin-bottom: 12px; }
+.dop2-phase-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 8px; text-align: center; cursor: pointer; transition: border-color 0.15s; }
+.dop2-phase-card:hover { border-color: var(--dop2-accent); }
+.dop2-phase-icon  { font-size: 18px; margin-bottom: 4px; }
+.dop2-phase-score { font-size: 18px; font-weight: 700; }
+.dop2-phase-label { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+.dop2-phase-verdict{ font-size: 9px; font-weight: 600; margin-top: 2px; }
+
+/* ── Phase panel ───────────────────────────────────────────────── */
+.dop2-phase-panel  { display: flex; flex-direction: column; gap: 8px; }
+.dop2-phase-header { display: flex; align-items: center; gap: 12px; background: #1e293b; border-radius: 8px; padding: 10px 14px; flex-wrap: wrap; }
+.dop2-phase-title  { font-size: 14px; font-weight: 700; }
+.dop2-phase-sub    { font-size: 11px; color: #64748b; }
+
+/* ── Check rows ────────────────────────────────────────────────── */
+.dop2-checks   { display: flex; flex-direction: column; gap: 3px; }
+.dop2-check    { display: flex; align-items: flex-start; gap: 8px; background: #1e293b; border-radius: 5px; padding: 7px 10px; border-left: 3px solid transparent; cursor: pointer; }
+.dop2-check.pass { border-left-color: #34d399; }
+.dop2-check.warn { border-left-color: #fbbf24; }
+.dop2-check.fail { border-left-color: #f87171; }
+.dop2-check:hover { background: #263347; }
+.dop2-check-icon  { font-size: 12px; flex-shrink: 0; padding-top: 1px; }
+.dop2-check-body  { flex: 1; min-width: 0; }
+.dop2-check-label { font-size: 11px; font-weight: 600; }
+.dop2-check-detail{ margin-top: 4px; }
+.dop2-check-detail-text { font-size: 10px; color: #94a3b8; }
+.dop2-check-fix   { font-size: 10px; color: #fbbf24; background: rgba(251,191,36,0.07); border-radius: 3px; padding: 2px 6px; margin-top: 3px; display: inline-block; font-family: monospace; }
+.dop2-check-expand{ font-size: 9px; color: #475569; flex-shrink: 0; }
+
+/* ── Failing / warning blocks ──────────────────────────────────── */
+.dop2-failing-block { background: rgba(248,113,113,0.05); border: 1px solid rgba(248,113,113,0.18); border-radius: 8px; padding: 10px 12px; }
+.dop2-warn-block    { background: rgba(251,191,36,0.05); border: 1px solid rgba(251,191,36,0.18); border-radius: 8px; padding: 10px 12px; }
+.dop2-pass-block    { background: rgba(52,211,153,0.04); border: 1px solid rgba(52,211,153,0.15); border-radius: 8px; padding: 10px 12px; }
+.dop2-block-title   { font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 6px; }
+
+.dop2-fail-row  { display: flex; align-items: flex-start; gap: 6px; padding: 4px 0; border-bottom: 1px solid #1e293b; font-size: 11px; }
+.dop2-crit      { font-size: 9px; font-weight: 700; background: rgba(248,113,113,0.15); color: #f87171; border-radius: 3px; padding: 1px 5px; white-space: nowrap; flex-shrink: 0; }
+.dop2-warn      { font-size: 9px; font-weight: 700; background: rgba(251,191,36,0.12); color: #fbbf24; border-radius: 3px; padding: 1px 5px; white-space: nowrap; flex-shrink: 0; }
+.dop2-fail-label{ flex: 1; }
+.dop2-fail-fix  { font-size: 10px; color: #64748b; }
+
+/* ── Reports panel ─────────────────────────────────────────────── */
+.dop2-reports       { display: flex; flex-direction: column; gap: 8px; }
+.dop2-report-tabs   { display: flex; gap: 4px; flex-wrap: wrap; }
+.dop2-rep-tab       { background: #1e293b; border: 1px solid #334155; border-radius: 5px; padding: 5px 12px; font-size: 11px; color: #94a3b8; cursor: pointer; }
+.dop2-rep-tab.active{ border-color: var(--dop2-accent); color: var(--dop2-accent); background: rgba(167,139,250,0.07); }
+.dop2-report-body   { background: #1e293b; border-radius: 8px; padding: 12px; }
+.dop2-report-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.dop2-report-type   { font-size: 13px; font-weight: 700; }
+
+/* ── Phase scores bar ──────────────────────────────────────────── */
+.dop2-phase-scores { display: flex; flex-direction: column; gap: 4px; }
+.dop2-ps-row       { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+.dop2-ps-label     { width: 120px; flex-shrink: 0; color: #94a3b8; }
+.dop2-ps-bar-wrap  { flex: 1; background: #0f172a; border-radius: 3px; height: 6px; overflow: hidden; }
+.dop2-ps-bar       { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+.dop2-ps-score     { width: 35px; text-align: right; font-weight: 600; color: #e2e8f0; }
+
+/* ── Live URL list ─────────────────────────────────────────────── */
+.dop2-url-list { display: flex; flex-direction: column; gap: 4px; }
+.dop2-url-row  { display: flex; align-items: center; gap: 8px; background: #0f172a; border-radius: 5px; padding: 6px 10px; font-size: 11px; }
+.dop2-url-label{ font-weight: 600; min-width: 120px; flex-shrink: 0; color: #94a3b8; }
+.dop2-url-link { font-family: monospace; font-size: 10px; color: var(--dop2-accent); word-break: break-all; }
+.dop2-url-purpose { font-size: 10px; color: #475569; }
+
+/* ── Overview ──────────────────────────────────────────────────── */
+.dop2-overview { display: flex; flex-direction: column; gap: 10px; }
+
+/* ── Benchmark ─────────────────────────────────────────────────── */
+.dop2-bench    { display: flex; flex-direction: column; gap: 10px; }
+.dop2-run-at   { font-size: 10px; color: #475569; text-align: right; margin-top: 4px; }
+
+/* ── Ring ──────────────────────────────────────────────────────── */
+.dop2-ring { flex-shrink: 0; }
+
+/* ── Buttons ───────────────────────────────────────────────────── */
+.dop2-btn-primary { background: var(--dop2-accent); color: #0f172a; border: none; border-radius: 7px; padding: 8px 18px; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+.dop2-btn-primary:hover:not(:disabled) { opacity: 0.9; }
+.dop2-btn-primary:disabled             { opacity: 0.5; cursor: not-allowed; }
+.dop2-btn-sm      { background: #334155; border: none; border-radius: 5px; padding: 5px 12px; font-size: 11px; color: #e2e8f0; cursor: pointer; flex-shrink: 0; }
+.dop2-btn-sm:hover:not(:disabled) { background: #475569; }
+.dop2-btn-sm:disabled             { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Empty / loading ───────────────────────────────────────────── */
+.dop2-empty       { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 40px 20px; text-align: center; }
+.dop2-empty-icon  { font-size: 36px; }
+.dop2-empty-title { font-size: 14px; font-weight: 700; }
+.dop2-empty-sub   { font-size: 12px; color: #64748b; }
+.dop2-loading     { color: #64748b; font-size: 12px; padding: 20px; text-align: center; }
