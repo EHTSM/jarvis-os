@@ -61,6 +61,7 @@ const ProductionOps               = lazy(() => import('./ProductionOps'));
 const FounderOps                  = lazy(() => import('./FounderOps'));
 const UserSuccess                 = lazy(() => import('./UserSuccess'));
 const PublicLaunch                = lazy(() => import('./PublicLaunch'));
+const ProductionWiring            = lazy(() => import('./ProductionWiring'));
 
 // ── Generic resize hook ───────────────────────────────────────────────
 function useResize(initial, min, max, axis = 'y') {
@@ -199,6 +200,7 @@ const BOTTOM_TABS = {
   'founder-ops': { label: 'Founder Ops', icon: '◇' },
   'user-success':  { label: 'User Success', icon: '◈' },
   'public-launch': { label: 'OP-1 Launch',  icon: '🚀' },
+  'prod-wiring':   { label: 'Wiring',        icon: '⚡' },
 };
 
 const api        = () => window.electronAPI;
@@ -1185,6 +1187,9 @@ export default function ElectronWorkspace({ children }) {
                   </LazyPane>
                   <LazyPane active={bottomTab === 'public-launch'}>
                     <ErrorBoundary label="OP-1 Launch"><PublicLaunch /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'prod-wiring'}>
+                    <ErrorBoundary label="Production Wiring"><ProductionWiring /></ErrorBoundary>
                   </LazyPane>
                 </div>
               </div>

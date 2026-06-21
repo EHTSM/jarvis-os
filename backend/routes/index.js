@@ -105,6 +105,7 @@ router.use(require("./productionInfra")); // /ops/infra/* — CO1: GitHub, VPS, 
 router.use(require("./co2FounderOps"));  // /co2/* — CO2: Deploy, AI Providers, Billing, Email, Dogfood, QA, Bugs, Perf, Readiness, Alpha Report
 router.use(require("./co3UserSuccess")); // /co3/* — CO3: Invites, Feedback, Analytics, CS Inbox, KB, Releases, Crashes, Usage, Beta Ops, Launch Benchmark
 router.use(require("./op1PublicLaunch")); // /op1/* — OP-1: Public Launch — 6-week program, KPIs, escapes, blockers, releases, log
+router.use(require("./productionWiring")); // /wiring/* — Production Wiring Sprint 1: AI/Payments/Email/OAuth/WhatsApp/Browser audit
 router.use(require("./plan-management")); // /plan/* — current plan, upgrade
 
 module.exports = router;
