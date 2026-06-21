@@ -1,0 +1,391 @@
+{
+  "invites": {
+    "9ANKZ5VF": {
+      "code": "9ANKZ5VF",
+      "tier": "alpha",
+      "createdBy": "founder",
+      "email": null,
+      "maxUses": 5,
+      "uses": 0,
+      "activations": [],
+      "note": "benchmark",
+      "expiresAt": null,
+      "status": "active",
+      "createdAt": "2026-06-21T06:26:31.448Z"
+    },
+    "wl-1782023191448-y6ue": {
+      "id": "wl-1782023191448-y6ue",
+      "email": "test@benchmark.com",
+      "name": "Bench",
+      "company": "",
+      "useCase": "testing",
+      "referredBy": null,
+      "tier": "standard",
+      "status": "pending",
+      "position": 1,
+      "notes": "",
+      "addedAt": "2026-06-21T06:26:31.448Z",
+      "invitedAt": null,
+      "activatedAt": null,
+      "isWaitlist": true
+    }
+  },
+  "feedbackItems": {
+    "fb-1782023191448-ujon": {
+      "id": "fb-1782023191448-ujon",
+      "type": "bug",
+      "title": "Benchmark test bug",
+      "body": "",
+      "severity": "low",
+      "accountId": null,
+      "module": "benchmark",
+      "url": null,
+      "screenshot": {
+        "url": "/tmp/screen.png",
+        "capturedAt": "2026-06-21T06:26:31.448Z"
+      },
+      "videoRef": null,
+      "sessionRef": null,
+      "browserInfo": null,
+      "tags": [],
+      "status": "open",
+      "votes": 0,
+      "response": null,
+      "resolvedAt": null,
+      "createdAt": "2026-06-21T06:26:31.448Z",
+      "updatedAt": "2026-06-21T06:26:31.448Z"
+    }
+  },
+  "sessionEvents": [
+    {
+      "id": "ev-1782023191450-ajh6",
+      "type": "feature_use",
+      "accountId": "bench-acc",
+      "feature": "ai_chat",
+      "stage": "first_action",
+      "duration": 45,
+      "meta": {},
+      "recordedAt": "2026-06-21T06:26:31.450Z"
+    },
+    {
+      "id": "ev-1782023191517-gcka",
+      "type": "feature_use",
+      "accountId": "bench-2",
+      "feature": "crm",
+      "stage": "signup",
+      "duration": 120,
+      "meta": {},
+      "recordedAt": "2026-06-21T06:26:31.517Z"
+    },
+    {
+      "id": "ev-1782023191518-mo20",
+      "type": "feature_use",
+      "accountId": "bench-2",
+      "feature": "ai_chat",
+      "stage": "ai_request",
+      "duration": 90,
+      "meta": {},
+      "recordedAt": "2026-06-21T06:26:31.518Z"
+    },
+    {
+      "id": "ev-1782023191518-ayma",
+      "type": "feature_use",
+      "accountId": "bench-3",
+      "feature": "missions",
+      "stage": "first_action",
+      "duration": null,
+      "meta": {},
+      "recordedAt": "2026-06-21T06:26:31.518Z"
+    }
+  ],
+  "csInbox": {
+    "cst-1782023191509-3q50": {
+      "id": "cst-1782023191509-3q50",
+      "accountId": null,
+      "userEmail": "user@test.com",
+      "userName": "",
+      "channel": "in_app",
+      "subject": "Benchmark ticket",
+      "body": "Test",
+      "priority": "normal",
+      "status": "open",
+      "assignee": "founder",
+      "tags": [],
+      "feedbackRef": null,
+      "thread": [
+        {
+          "role": "user",
+          "body": "Test",
+          "ts": "2026-06-21T06:26:31.509Z"
+        },
+        {
+          "role": "support",
+          "body": "Thanks, looking into it!",
+          "ts": "2026-06-21T06:26:31.509Z"
+        }
+      ],
+      "resolvedAt": null,
+      "sla_target": "2026-06-23T06:26:31.509Z",
+      "createdAt": "2026-06-21T06:26:31.509Z",
+      "updatedAt": "2026-06-21T06:26:31.509Z"
+    }
+  },
+  "kbArticles": {
+    "kb-1782023191445-yvsk": {
+      "id": "kb-1782023191445-yvsk",
+      "type": "faq",
+      "category": "getting-started",
+      "title": "How do I get started with Ooplix?",
+      "body": "1. Log in with your invite code.\n2. Complete the onboarding flow (5 min).\n3. Connect your WhatsApp or Telegram.\n4. Create your first mission.\n5. Ask the AI assistant anything.\n\nTip: Start with the CRM module to import your contacts.",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [],
+      "relatedIds": [],
+      "views": 1,
+      "helpful": 1,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "how-do-i-get-started-with-ooplix-",
+      "createdAt": "2026-06-21T06:26:31.445Z",
+      "updatedAt": "2026-06-21T06:26:31.446Z"
+    },
+    "kb-1782023191447-s74p": {
+      "id": "kb-1782023191447-s74p",
+      "type": "faq",
+      "category": "billing",
+      "title": "What is included in the 7-day trial?",
+      "body": "During your 7-day trial you get full access to all features — CRM, AI chat, WhatsApp automation, mission system, analytics, and more. No credit card required to start.\n\nAfter 7 days, you can continue on the Free plan (limited) or upgrade to Starter (₹999/month) for full access.",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "what-is-included-in-the-7-day-trial-",
+      "createdAt": "2026-06-21T06:26:31.447Z",
+      "updatedAt": "2026-06-21T06:26:31.447Z"
+    },
+    "kb-1782023191447-qbqf": {
+      "id": "kb-1782023191447-qbqf",
+      "type": "article",
+      "category": "features",
+      "title": "Understanding Missions",
+      "body": "Missions are AI-powered goal-execution pipelines. You define a goal, and the Mission System breaks it into steps, assigns them to AI agents, and tracks progress.\n\nTo create a mission:\n1. Click 'New Mission' in the sidebar.\n2. Describe your goal in plain English.\n3. Review the generated steps.\n4. Click 'Execute'.\n\nMissions can be paused, rolled back, and replayed from any point in their timeline.",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "understanding-missions",
+      "createdAt": "2026-06-21T06:26:31.447Z",
+      "updatedAt": "2026-06-21T06:26:31.447Z"
+    },
+    "kb-1782023191447-wx59": {
+      "id": "kb-1782023191447-wx59",
+      "type": "article",
+      "category": "integrations",
+      "title": "Setting up WhatsApp Business",
+      "body": "Ooplix uses the Meta Business API for WhatsApp. You need:\n1. A Meta Business Manager account\n2. A verified WhatsApp Business number\n3. Your WhatsApp API access token\n\nSetup steps:\n1. Go to Settings → WhatsApp.\n2. Enter your WA_TOKEN, PHONE_NUMBER_ID, and WA_VERIFY_TOKEN.\n3. Set the webhook URL in Meta Developer Console: https://your-domain.com/webhook/whatsapp\n4. Send a test message to verify.",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "setting-up-whatsapp-business",
+      "createdAt": "2026-06-21T06:26:31.447Z",
+      "updatedAt": "2026-06-21T06:26:31.447Z"
+    },
+    "kb-1782023191447-917h": {
+      "id": "kb-1782023191447-917h",
+      "type": "faq",
+      "category": "troubleshooting",
+      "title": "AI is not responding — what do I do?",
+      "body": "If the AI assistant is not responding:\n1. Check that your GROQ_API_KEY is set correctly in .env.\n2. Verify your Groq API key has remaining quota at console.groq.com.\n3. Try switching the AI provider in Settings → AI.\n4. Check the error logs: pm2 logs jarvis-os --err\n\nIf the issue persists, submit a bug report using the feedback button.",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "ai-is-not-responding-what-do-i-do-",
+      "createdAt": "2026-06-21T06:26:31.447Z",
+      "updatedAt": "2026-06-21T06:26:31.447Z"
+    },
+    "kb-1782023191447-xzpx": {
+      "id": "kb-1782023191447-xzpx",
+      "type": "tutorial",
+      "category": "getting-started",
+      "title": "Quick Start: First Automation in 5 Minutes",
+      "body": "Step 1: Create a CRM contact\n- Go to CRM → Add Lead\n- Enter name, email, phone\n\nStep 2: Set up a WhatsApp message\n- Go to WhatsApp → Send Message\n- Select your contact\n- Write your message\n\nStep 3: Create a Mission\n- Click New Mission\n- Type: 'Follow up with [contact name] about our offer'\n- Execute\n\nYou've just automated your first customer touchpoint. 🎉",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "quick-start-first-automation-in-5-minutes",
+      "createdAt": "2026-06-21T06:26:31.447Z",
+      "updatedAt": "2026-06-21T06:26:31.447Z"
+    },
+    "kb-1782023191447-hnb7": {
+      "id": "kb-1782023191447-hnb7",
+      "type": "faq",
+      "category": "billing",
+      "title": "How do I upgrade my plan?",
+      "body": "To upgrade:\n1. Click your account avatar in the top-right.\n2. Select 'Upgrade Plan'.\n3. Choose Starter (₹999/month) or Growth (₹2,499/month).\n4. Complete payment via Razorpay.\n\nYour account is upgraded instantly after payment. You'll receive a receipt by email.",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "how-do-i-upgrade-my-plan-",
+      "createdAt": "2026-06-21T06:26:31.447Z",
+      "updatedAt": "2026-06-21T06:26:31.447Z"
+    },
+    "kb-1782023191447-o4b7": {
+      "id": "kb-1782023191447-o4b7",
+      "type": "article",
+      "category": "api",
+      "title": "REST API Overview",
+      "body": "Ooplix exposes a full REST API at your domain: https://app.ooplix.com/\n\nAuthentication: Cookie-based (jarvis_auth) or Bearer token via /security/tokens\n\nKey endpoints:\n- POST /auth/login — authenticate\n- GET  /health — server health\n- POST /jarvis — AI assistant\n- GET  /crm — contact list\n- GET  /analytics/executive — KPI dashboard\n\nSee the full API reference at: https://app.ooplix.com/docs/api",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "rest-api-overview",
+      "createdAt": "2026-06-21T06:26:31.447Z",
+      "updatedAt": "2026-06-21T06:26:31.447Z"
+    }
+  },
+  "crashGroups": {
+    "TypeError:at app.js:42:10": {
+      "fingerprint": "TypeError:at app.js:42:10",
+      "type": "js_error",
+      "title": "TypeError: Cannot read properties of undefined",
+      "stack": "TypeError\n    at app.js:42:10",
+      "module": "benchmark",
+      "url": null,
+      "impact": "minor",
+      "occurrences": 2,
+      "affectedUsers": [
+        "acc-2"
+      ],
+      "recentEvents": [
+        {
+          "accountId": "acc-2",
+          "ts": "2026-06-21T06:26:31.517Z"
+        },
+        {
+          "ts": "2026-06-21T06:26:31.517Z"
+        }
+      ],
+      "status": "open",
+      "resolvedAt": null,
+      "isRegression": null,
+      "firstSeenAt": "2026-06-21T06:26:31.517Z",
+      "lastOccurredAt": "2026-06-21T06:26:31.517Z"
+    }
+  },
+  "usageSnapshots": [
+    {
+      "id": "us-1782023191518-o9pc",
+      "date": "2026-06-21",
+      "mostUsed": [
+        {
+          "feature": "ai_chat",
+          "count": 2
+        },
+        {
+          "feature": "crm",
+          "count": 1
+        },
+        {
+          "feature": "missions",
+          "count": 1
+        }
+      ],
+      "leastUsed": [
+        {
+          "feature": "ai_chat",
+          "count": 2
+        },
+        {
+          "feature": "crm",
+          "count": 1
+        },
+        {
+          "feature": "missions",
+          "count": 1
+        }
+      ],
+      "featureFreq": {
+        "ai_chat": 2,
+        "crm": 1,
+        "missions": 1
+      },
+      "avgTimeToValueMin": 0,
+      "totalEvents": 4,
+      "uniqueAccounts": 3,
+      "snappedAt": "2026-06-21T06:26:31.518Z"
+    }
+  ],
+  "betaUsers": {
+    "beta-1782023191518-cmj4": {
+      "id": "beta-1782023191518-cmj4",
+      "accountId": "beta-1782023191518-cmj4",
+      "email": "alpha1@test.com",
+      "name": "Alpha User 1",
+      "cohort": "alpha_10",
+      "status": "invited",
+      "inviteCode": null,
+      "invitedAt": "2026-06-21T06:26:31.518Z",
+      "onboardedAt": null,
+      "lastActiveAt": null,
+      "npsScore": null,
+      "feedback": [],
+      "bugs": [],
+      "csTickets": [],
+      "features": [],
+      "activationScore": 0,
+      "notes": ""
+    },
+    "beta-1782023191519-b2uv": {
+      "id": "beta-1782023191519-b2uv",
+      "accountId": "beta-1782023191519-b2uv",
+      "email": "beta1@test.com",
+      "name": "Beta User 1",
+      "cohort": "beta_50",
+      "status": "invited",
+      "inviteCode": null,
+      "invitedAt": "2026-06-21T06:26:31.519Z",
+      "onboardedAt": null,
+      "lastActiveAt": null,
+      "npsScore": null,
+      "feedback": [],
+      "bugs": [],
+      "csTickets": [],
+      "features": [],
+      "activationScore": 0,
+      "notes": ""
+    }
+  }
+}

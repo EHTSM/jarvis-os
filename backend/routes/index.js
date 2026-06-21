@@ -103,6 +103,7 @@ router.use(require("./distribution"));    // /distrib/* — G3: Publisher, Orche
 router.use(require("./revenueOS"));       // /revenue/* — G4: Revenue Dashboard, Subscriptions, Upgrade Intelligence, Customer Success, Churn, Forecasting, Affiliates, Finance, Executive, Benchmark
 router.use(require("./productionInfra")); // /ops/infra/* — CO1: GitHub, VPS, Environment, Database, Monitoring, Security, Deployment, Docs, Launch, Benchmark
 router.use(require("./co2FounderOps"));  // /co2/* — CO2: Deploy, AI Providers, Billing, Email, Dogfood, QA, Bugs, Perf, Readiness, Alpha Report
+router.use(require("./co3UserSuccess")); // /co3/* — CO3: Invites, Feedback, Analytics, CS Inbox, KB, Releases, Crashes, Usage, Beta Ops, Launch Benchmark
 router.use(require("./plan-management")); // /plan/* — current plan, upgrade
 
 module.exports = router;
