@@ -57,6 +57,7 @@ const GrowthOS                    = lazy(() => import('./GrowthOS'));
 const ContentSEO                  = lazy(() => import('./ContentSEO'));
 const DistributionOS              = lazy(() => import('./DistributionOS'));
 const RevenueOS                   = lazy(() => import('./RevenueOS'));
+const ProductionOps               = lazy(() => import('./ProductionOps'));
 
 // ── Generic resize hook ───────────────────────────────────────────────
 function useResize(initial, min, max, axis = 'y') {
@@ -191,6 +192,7 @@ const BOTTOM_TABS = {
   'content-seo': { label: 'Content',  icon: '✦' },
   'distrib':     { label: 'Distribute', icon: '◎' },
   'revenue':     { label: 'Revenue',    icon: '◉' },
+  'prod-ops':    { label: 'Prod Ops',   icon: '⬡' },
 };
 
 const api        = () => window.electronAPI;
@@ -1165,6 +1167,9 @@ export default function ElectronWorkspace({ children }) {
                   </LazyPane>
                   <LazyPane active={bottomTab === 'revenue'}>
                     <ErrorBoundary label="Revenue OS"><RevenueOS /></ErrorBoundary>
+                  </LazyPane>
+                  <LazyPane active={bottomTab === 'prod-ops'}>
+                    <ErrorBoundary label="Production Ops"><ProductionOps /></ErrorBoundary>
                   </LazyPane>
                 </div>
               </div>

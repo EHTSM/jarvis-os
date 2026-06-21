@@ -1,0 +1,47 @@
+# CODEOWNERS — Ooplix
+# Automatically requests reviews from these owners for matching files.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything
+*                                    @EHTSM
+
+# Backend core
+backend/                             @EHTSM
+backend/server.js                    @EHTSM
+backend/routes/index.js              @EHTSM
+backend/middleware/                  @EHTSM
+
+# Auth and security — require extra review
+backend/middleware/authMiddleware.js @EHTSM
+backend/services/securityLayer.cjs   @EHTSM
+backend/routes/auth.js               @EHTSM
+backend/routes/billing.js            @EHTSM
+backend/routes/payment.js            @EHTSM
+
+# Production infrastructure
+backend/services/productionInfra.cjs @EHTSM
+backend/routes/productionInfra.js    @EHTSM
+deploy/                              @EHTSM
+ecosystem.config.cjs                 @EHTSM
+nginx.conf                           @EHTSM
+deploy.sh                            @EHTSM
+
+# Environment and secrets (never commit secrets — this watches for accidental changes)
+.env.example                         @EHTSM
+.gitignore                           @EHTSM
+
+# GitHub Actions CI/CD — require explicit approval
+.github/                             @EHTSM
+.github/workflows/                   @EHTSM
+
+# Billing and commercial engine — high impact
+backend/services/billingService.js   @EHTSM
+backend/services/creditEngine.cjs    @EHTSM
+backend/services/featureGate.cjs     @EHTSM
+
+# Frontend build output — auto-generated, approve quickly
+frontend/build/                      @EHTSM
+
+# Documentation changes
+*.md                                 @EHTSM
+docs/                                @EHTSM
