@@ -1,0 +1,1410 @@
+{
+  "reports": [
+    {
+      "id": "wiring2-1782041152403",
+      "sprint": 2,
+      "runAt": "2026-06-21T11:25:52.403Z",
+      "overallScore": 67,
+      "totalChecks": 76,
+      "totalPassing": 51,
+      "criticalFailures": 2,
+      "warnings": [
+        {
+          "id": "smtp_host",
+          "label": "SMTP: host configured",
+          "integration": "SMTP / Email Delivery",
+          "detail": "SMTP_HOST not set",
+          "fix": "Set SMTP_HOST=smtp.gmail.com (or your provider) in .env"
+        },
+        {
+          "id": "sendgrid_key",
+          "label": "SendGrid: API key",
+          "integration": "SMTP / Email Delivery",
+          "detail": "SENDGRID_API_KEY not set (optional)",
+          "fix": "Set SENDGRID_API_KEY if using SendGrid"
+        },
+        {
+          "id": "resend_key",
+          "label": "Resend: API key",
+          "integration": "SMTP / Email Delivery",
+          "detail": "RESEND_API_KEY not set (optional)",
+          "fix": "Set RESEND_API_KEY if using Resend"
+        },
+        {
+          "id": "postmark_key",
+          "label": "Postmark: server token",
+          "integration": "SMTP / Email Delivery",
+          "detail": "POSTMARK_API_KEY not set (optional)",
+          "fix": "Set POSTMARK_API_KEY if using Postmark"
+        },
+        {
+          "id": "ses_keys",
+          "label": "SES: credentials",
+          "integration": "SMTP / Email Delivery",
+          "detail": "AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY not set (optional)",
+          "fix": "Set AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY + AWS_SES_REGION if using SES"
+        },
+        {
+          "id": "anth_key",
+          "label": "Anthropic: ANTHROPIC_API_KEY present",
+          "integration": "AI Providers (Extended)",
+          "detail": "ANTHROPIC_API_KEY missing",
+          "fix": "Get from console.anthropic.com → API Keys"
+        },
+        {
+          "id": "anth_call",
+          "label": "Anthropic: live call succeeds",
+          "integration": "AI Providers (Extended)",
+          "detail": "Skipped — key missing",
+          "fix": "Set ANTHROPIC_API_KEY"
+        },
+        {
+          "id": "anth_streaming",
+          "label": "Anthropic: streaming endpoint",
+          "integration": "AI Providers (Extended)",
+          "detail": "Skipped — key missing",
+          "fix": null
+        },
+        {
+          "id": "gem_key",
+          "label": "Gemini: GEMINI_API_KEY present",
+          "integration": "AI Providers (Extended)",
+          "detail": "GEMINI_API_KEY missing",
+          "fix": "Get from aistudio.google.com → API Keys"
+        },
+        {
+          "id": "gem_call",
+          "label": "Gemini: live call succeeds",
+          "integration": "AI Providers (Extended)",
+          "detail": "Skipped — key missing",
+          "fix": "Set GEMINI_API_KEY"
+        },
+        {
+          "id": "or_key",
+          "label": "OpenRouter: OPENROUTER_API_KEY present",
+          "integration": "AI Providers (Extended)",
+          "detail": "OPENROUTER_API_KEY missing",
+          "fix": "Get from openrouter.ai → Keys"
+        },
+        {
+          "id": "or_call",
+          "label": "OpenRouter: live call succeeds",
+          "integration": "AI Providers (Extended)",
+          "detail": "Skipped — key missing",
+          "fix": "Set OPENROUTER_API_KEY"
+        },
+        {
+          "id": "google_client_id",
+          "label": "Google OAuth: client ID present",
+          "integration": "OAuth (Extended)",
+          "detail": "GOOGLE_CLIENT_ID missing",
+          "fix": "Create at console.cloud.google.com → Credentials → OAuth 2.0"
+        },
+        {
+          "id": "google_secret",
+          "label": "Google OAuth: client secret present",
+          "integration": "OAuth (Extended)",
+          "detail": "GOOGLE_CLIENT_SECRET missing",
+          "fix": "Get from console.cloud.google.com"
+        },
+        {
+          "id": "ms_client_id",
+          "label": "Microsoft OAuth: client ID present",
+          "integration": "OAuth (Extended)",
+          "detail": "MICROSOFT_CLIENT_ID missing",
+          "fix": "Register app at portal.azure.com → App registrations"
+        },
+        {
+          "id": "ms_secret",
+          "label": "Microsoft OAuth: client secret present",
+          "integration": "OAuth (Extended)",
+          "detail": "MICROSOFT_CLIENT_SECRET missing",
+          "fix": "Create secret at portal.azure.com → App registrations → Certificates & secrets"
+        },
+        {
+          "id": "li_client_id",
+          "label": "LinkedIn OAuth: client ID present",
+          "integration": "OAuth (Extended)",
+          "detail": "LINKEDIN_CLIENT_ID missing",
+          "fix": "Create app at linkedin.com/developers/apps"
+        },
+        {
+          "id": "li_secret",
+          "label": "LinkedIn OAuth: client secret present",
+          "integration": "OAuth (Extended)",
+          "detail": "LINKEDIN_CLIENT_SECRET missing",
+          "fix": "Get secret at linkedin.com/developers/apps → Auth tab"
+        },
+        {
+          "id": "pm2_running",
+          "label": "PM2: jarvis-os process online",
+          "integration": "Monitoring",
+          "detail": "pm2 output: []",
+          "fix": "Run: pm2 start ecosystem.config.cjs --env production && pm2 save"
+        },
+        {
+          "id": "sentry_dsn",
+          "label": "Crash: SENTRY_DSN configured",
+          "integration": "Monitoring",
+          "detail": "SENTRY_DSN not set",
+          "fix": "Create project at sentry.io and set SENTRY_DSN in .env"
+        },
+        {
+          "id": "backup_age",
+          "label": "Storage: latest backup is recent (age: 18d)",
+          "integration": "Storage",
+          "detail": "Backup is 18 days old — stale",
+          "fix": "Run backup script to create a fresh backup"
+        },
+        {
+          "id": "s3_configured",
+          "label": "Storage: S3 / object store configured",
+          "integration": "Storage",
+          "detail": "S3 not configured (optional — for off-site backups)",
+          "fix": "Set S3_BUCKET + S3_ACCESS_KEY + S3_SECRET_KEY in .env"
+        },
+        {
+          "id": "disk_space",
+          "label": "Storage: disk space OK (89% used, 22640MB free)",
+          "integration": "Storage",
+          "detail": "89% used, 22640MB available",
+          "fix": "Free up disk space — data/ partition is filling up"
+        }
+      ],
+      "gates": {
+        "email_provider_live": false,
+        "ai_anthropic_live": false,
+        "ai_gemini_live": false,
+        "ai_openrouter_live": false,
+        "ai_routing_verified": true,
+        "ai_fallback_verified": true,
+        "ai_credits_wired": true,
+        "google_oauth_ready": true,
+        "ms_oauth_ready": true,
+        "linkedin_oauth_ready": true,
+        "health_endpoint_live": true,
+        "pm2_configured": true,
+        "storage_writable": true,
+        "backup_valid": true,
+        "e2e_server_up": true,
+        "e2e_https": true
+      },
+      "integrations": [
+        {
+          "integration": "smtp_email",
+          "label": "SMTP / Email Delivery",
+          "score": 33,
+          "passing": 3,
+          "total": 9
+        },
+        {
+          "integration": "ai_extended",
+          "label": "AI Providers (Extended)",
+          "score": 46,
+          "passing": 6,
+          "total": 13
+        },
+        {
+          "integration": "oauth_extended",
+          "label": "OAuth (Extended)",
+          "score": 65,
+          "passing": 11,
+          "total": 17
+        },
+        {
+          "integration": "monitoring",
+          "label": "Monitoring",
+          "score": 89,
+          "passing": 16,
+          "total": 18
+        },
+        {
+          "integration": "storage",
+          "label": "Storage",
+          "score": 67,
+          "passing": 6,
+          "total": 9
+        },
+        {
+          "integration": "e2e_smoke",
+          "label": "End-to-End Smoke Test",
+          "score": 90,
+          "passing": 9,
+          "total": 10
+        }
+      ],
+      "details": [
+        {
+          "integration": "smtp_email",
+          "label": "SMTP / Email Delivery",
+          "checks": [
+            {
+              "id": "email_any",
+              "label": "Email: at least one provider configured",
+              "pass": false,
+              "warning": false,
+              "detail": "No email provider configured",
+              "fix": "Set one of: SMTP_HOST, SENDGRID_API_KEY, RESEND_API_KEY, POSTMARK_API_KEY, AWS_ACCESS_KEY_ID"
+            },
+            {
+              "id": "smtp_host",
+              "label": "SMTP: host configured",
+              "pass": false,
+              "warning": true,
+              "detail": "SMTP_HOST not set",
+              "fix": "Set SMTP_HOST=smtp.gmail.com (or your provider) in .env"
+            },
+            {
+              "id": "sendgrid_key",
+              "label": "SendGrid: API key",
+              "pass": false,
+              "warning": true,
+              "detail": "SENDGRID_API_KEY not set (optional)",
+              "fix": "Set SENDGRID_API_KEY if using SendGrid"
+            },
+            {
+              "id": "resend_key",
+              "label": "Resend: API key",
+              "pass": false,
+              "warning": true,
+              "detail": "RESEND_API_KEY not set (optional)",
+              "fix": "Set RESEND_API_KEY if using Resend"
+            },
+            {
+              "id": "postmark_key",
+              "label": "Postmark: server token",
+              "pass": false,
+              "warning": true,
+              "detail": "POSTMARK_API_KEY not set (optional)",
+              "fix": "Set POSTMARK_API_KEY if using Postmark"
+            },
+            {
+              "id": "ses_keys",
+              "label": "SES: credentials",
+              "pass": false,
+              "warning": true,
+              "detail": "AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY not set (optional)",
+              "fix": "Set AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY + AWS_SES_REGION if using SES"
+            },
+            {
+              "id": "email_tpl_welcome",
+              "label": "Email template: welcome — subject and body valid",
+              "pass": true,
+              "warning": false,
+              "detail": "welcome: subject=\"Welcome to Ooplix!\" (18 chars), body=40 chars",
+              "fix": null
+            },
+            {
+              "id": "email_tpl_otp",
+              "label": "Email template: otp — subject and body valid",
+              "pass": true,
+              "warning": false,
+              "detail": "otp: subject=\"Your OTP: {{otp}}\" (17 chars), body=58 chars",
+              "fix": null
+            },
+            {
+              "id": "email_tpl_password_reset",
+              "label": "Email template: password_reset — subject and body valid",
+              "pass": true,
+              "warning": false,
+              "detail": "password_reset: subject=\"Reset your Ooplix password\" (26 chars), body=43 chars",
+              "fix": null
+            }
+          ],
+          "passing": 3,
+          "total": 9,
+          "score": 33
+        },
+        {
+          "integration": "ai_extended",
+          "label": "AI Providers (Extended)",
+          "checks": [
+            {
+              "id": "anth_key",
+              "label": "Anthropic: ANTHROPIC_API_KEY present",
+              "pass": false,
+              "warning": true,
+              "detail": "ANTHROPIC_API_KEY missing",
+              "fix": "Get from console.anthropic.com → API Keys"
+            },
+            {
+              "id": "anth_call",
+              "label": "Anthropic: live call succeeds",
+              "pass": false,
+              "warning": true,
+              "detail": "Skipped — key missing",
+              "fix": "Set ANTHROPIC_API_KEY"
+            },
+            {
+              "id": "anth_streaming",
+              "label": "Anthropic: streaming endpoint",
+              "pass": false,
+              "warning": true,
+              "detail": "Skipped — key missing",
+              "fix": null
+            },
+            {
+              "id": "gem_key",
+              "label": "Gemini: GEMINI_API_KEY present",
+              "pass": false,
+              "warning": true,
+              "detail": "GEMINI_API_KEY missing",
+              "fix": "Get from aistudio.google.com → API Keys"
+            },
+            {
+              "id": "gem_call",
+              "label": "Gemini: live call succeeds",
+              "pass": false,
+              "warning": true,
+              "detail": "Skipped — key missing",
+              "fix": "Set GEMINI_API_KEY"
+            },
+            {
+              "id": "or_key",
+              "label": "OpenRouter: OPENROUTER_API_KEY present",
+              "pass": false,
+              "warning": true,
+              "detail": "OPENROUTER_API_KEY missing",
+              "fix": "Get from openrouter.ai → Keys"
+            },
+            {
+              "id": "or_call",
+              "label": "OpenRouter: live call succeeds",
+              "pass": false,
+              "warning": true,
+              "detail": "Skipped — key missing",
+              "fix": "Set OPENROUTER_API_KEY"
+            },
+            {
+              "id": "ai_routing",
+              "label": "AI: capability-based routing present",
+              "pass": true,
+              "warning": false,
+              "detail": "routeByCapability() found with ROUTING table (reasoning/coding/fast/cheap/creative/analysis)",
+              "fix": null
+            },
+            {
+              "id": "ai_provider_order",
+              "label": "AI: LLM_PROVIDER env respected in routing",
+              "pass": true,
+              "warning": false,
+              "detail": "_providerOrder() reads LLM_PROVIDER (currently: \"groq\")",
+              "fix": null
+            },
+            {
+              "id": "ai_fallback",
+              "label": "AI: multi-provider fallback chain present",
+              "pass": true,
+              "warning": false,
+              "detail": "Provider loop with lastFailures tracking confirmed in callAI()",
+              "fix": null
+            },
+            {
+              "id": "ai_streaming",
+              "label": "AI: streaming response supported",
+              "pass": true,
+              "warning": false,
+              "detail": "Streaming pattern found in AI route/service",
+              "fix": null
+            },
+            {
+              "id": "ai_credit_engine",
+              "label": "AI: credit accounting service present",
+              "pass": true,
+              "warning": false,
+              "detail": "creditEngine.cjs + usageMetering.cjs both exist",
+              "fix": null
+            },
+            {
+              "id": "ai_cost_table",
+              "label": "AI: provider cost table in usage metering",
+              "pass": true,
+              "warning": false,
+              "detail": "PROVIDER_COSTS table covers groq/claude/openai/gemini/openrouter/ollama",
+              "fix": null
+            }
+          ],
+          "passing": 6,
+          "total": 13,
+          "score": 46
+        },
+        {
+          "integration": "oauth_extended",
+          "label": "OAuth (Extended)",
+          "checks": [
+            {
+              "id": "jwt_secret",
+              "label": "OAuth: JWT_SECRET configured (token encryption)",
+              "pass": true,
+              "warning": false,
+              "detail": "JWT_SECRET set — AES-256-GCM token encryption active",
+              "fix": null
+            },
+            {
+              "id": "oauth_service",
+              "label": "OAuth: integration service exists",
+              "pass": true,
+              "warning": false,
+              "detail": "oauthIntegrationLayer.cjs found",
+              "fix": null
+            },
+            {
+              "id": "oauth_csrf",
+              "label": "OAuth: CSRF protection (state + nonce)",
+              "pass": true,
+              "warning": false,
+              "detail": "CSRF nonce with 5-min TTL found in OAuth layer",
+              "fix": null
+            },
+            {
+              "id": "oauth_token_enc",
+              "label": "OAuth: tokens encrypted at rest",
+              "pass": true,
+              "warning": false,
+              "detail": "AES-256-GCM token encryption confirmed in OAuth service",
+              "fix": null
+            },
+            {
+              "id": "google_client_id",
+              "label": "Google OAuth: client ID present",
+              "pass": false,
+              "warning": true,
+              "detail": "GOOGLE_CLIENT_ID missing",
+              "fix": "Create at console.cloud.google.com → Credentials → OAuth 2.0"
+            },
+            {
+              "id": "google_secret",
+              "label": "Google OAuth: client secret present",
+              "pass": false,
+              "warning": true,
+              "detail": "GOOGLE_CLIENT_SECRET missing",
+              "fix": "Get from console.cloud.google.com"
+            },
+            {
+              "id": "google_redirect",
+              "label": "Google OAuth: redirect URI uses public domain",
+              "pass": true,
+              "warning": false,
+              "detail": "https://app.ooplix.com/oauth/google/callback",
+              "fix": null
+            },
+            {
+              "id": "google_endpoint",
+              "label": "Google OAuth: token endpoint reachable",
+              "pass": true,
+              "warning": false,
+              "detail": "google oauth2 endpoint: HTTP 404 (405 expected for GET)",
+              "fix": null
+            },
+            {
+              "id": "ms_client_id",
+              "label": "Microsoft OAuth: client ID present",
+              "pass": false,
+              "warning": true,
+              "detail": "MICROSOFT_CLIENT_ID missing",
+              "fix": "Register app at portal.azure.com → App registrations"
+            },
+            {
+              "id": "ms_secret",
+              "label": "Microsoft OAuth: client secret present",
+              "pass": false,
+              "warning": true,
+              "detail": "MICROSOFT_CLIENT_SECRET missing",
+              "fix": "Create secret at portal.azure.com → App registrations → Certificates & secrets"
+            },
+            {
+              "id": "ms_redirect",
+              "label": "Microsoft OAuth: redirect URI configured",
+              "pass": true,
+              "warning": false,
+              "detail": "https://app.ooplix.com/oauth/microsoft/callback",
+              "fix": null
+            },
+            {
+              "id": "ms_endpoint",
+              "label": "Microsoft OAuth: OIDC discovery reachable",
+              "pass": true,
+              "warning": false,
+              "detail": "HTTP 200",
+              "fix": null
+            },
+            {
+              "id": "li_client_id",
+              "label": "LinkedIn OAuth: client ID present",
+              "pass": false,
+              "warning": true,
+              "detail": "LINKEDIN_CLIENT_ID missing",
+              "fix": "Create app at linkedin.com/developers/apps"
+            },
+            {
+              "id": "li_secret",
+              "label": "LinkedIn OAuth: client secret present",
+              "pass": false,
+              "warning": true,
+              "detail": "LINKEDIN_CLIENT_SECRET missing",
+              "fix": "Get secret at linkedin.com/developers/apps → Auth tab"
+            },
+            {
+              "id": "li_redirect",
+              "label": "LinkedIn OAuth: redirect URI configured",
+              "pass": true,
+              "warning": false,
+              "detail": "https://app.ooplix.com/oauth/linkedin/callback",
+              "fix": null
+            },
+            {
+              "id": "li_endpoint",
+              "label": "LinkedIn OAuth: API endpoint reachable",
+              "pass": true,
+              "warning": false,
+              "detail": "HTTP 401 — endpoint live (401 expected without token)",
+              "fix": null
+            },
+            {
+              "id": "oauth_callbacks",
+              "label": "OAuth: callback routes registered",
+              "pass": true,
+              "warning": false,
+              "detail": "/oauth/* callback routes found",
+              "fix": null
+            }
+          ],
+          "passing": 11,
+          "total": 17,
+          "score": 65
+        },
+        {
+          "integration": "monitoring",
+          "label": "Monitoring",
+          "checks": [
+            {
+              "id": "pm2_ecosystem",
+              "label": "PM2: ecosystem config exists",
+              "pass": true,
+              "warning": false,
+              "detail": "ecosystem.config.cjs found",
+              "fix": null
+            },
+            {
+              "id": "pm2_app_name",
+              "label": "PM2: app name configured",
+              "pass": true,
+              "warning": false,
+              "detail": "App: jarvis-os",
+              "fix": null
+            },
+            {
+              "id": "pm2_logs",
+              "label": "PM2: log file paths configured",
+              "pass": true,
+              "warning": false,
+              "detail": "out_file/error_file or log_date_format set",
+              "fix": null
+            },
+            {
+              "id": "pm2_mem_restart",
+              "label": "PM2: memory restart threshold set",
+              "pass": true,
+              "warning": false,
+              "detail": "max_memory_restart configured",
+              "fix": null
+            },
+            {
+              "id": "pm2_env_prod",
+              "label": "PM2: production env profile present",
+              "pass": true,
+              "warning": false,
+              "detail": "env_production block found",
+              "fix": null
+            },
+            {
+              "id": "pm2_running",
+              "label": "PM2: jarvis-os process online",
+              "pass": false,
+              "warning": true,
+              "detail": "pm2 output: []",
+              "fix": "Run: pm2 start ecosystem.config.cjs --env production && pm2 save"
+            },
+            {
+              "id": "pm2_saved",
+              "label": "PM2: process list saved (startup persistence)",
+              "pass": true,
+              "warning": false,
+              "detail": "pm2 save state — run 'pm2 save && pm2 startup' on VPS to persist across reboots",
+              "fix": null
+            },
+            {
+              "id": "health_route",
+              "label": "Health: /health endpoint route exists",
+              "pass": true,
+              "warning": false,
+              "detail": "backend/routes/ops.js found",
+              "fix": null
+            },
+            {
+              "id": "health_handler",
+              "label": "Health: /health handler implemented",
+              "pass": true,
+              "warning": false,
+              "detail": "/health handler found",
+              "fix": null
+            },
+            {
+              "id": "health_live",
+              "label": "Health: GET /health returns 200",
+              "pass": true,
+              "warning": false,
+              "detail": "HTTP 200 — health endpoint responding",
+              "fix": null
+            },
+            {
+              "id": "logger_exists",
+              "label": "Logs: structured logger exists",
+              "pass": true,
+              "warning": false,
+              "detail": "backend/utils/logger.js found",
+              "fix": null
+            },
+            {
+              "id": "log_dir",
+              "label": "Logs: data/logs directory exists",
+              "pass": true,
+              "warning": false,
+              "detail": "data/logs present",
+              "fix": null
+            },
+            {
+              "id": "log_files",
+              "label": "Logs: log files present (5 found)",
+              "pass": true,
+              "warning": false,
+              "detail": "Found: audit.ndjson, execution.ndjson, operator-audit.ndjson, ops-alerts.ndjson, struct",
+              "fix": null
+            },
+            {
+              "id": "alerts_service",
+              "label": "Alerts: alerting service exists",
+              "pass": true,
+              "warning": false,
+              "detail": "operationsAlertingLayer.cjs or observabilityEngine.cjs found",
+              "fix": null
+            },
+            {
+              "id": "alerts_telegram",
+              "label": "Alerts: Telegram alert channel configured",
+              "pass": true,
+              "warning": false,
+              "detail": "TELEGRAM_TOKEN + TELEGRAM_CHAT_ID set — alert channel ready",
+              "fix": null
+            },
+            {
+              "id": "sentry_dsn",
+              "label": "Crash: SENTRY_DSN configured",
+              "pass": false,
+              "warning": true,
+              "detail": "SENTRY_DSN not set",
+              "fix": "Create project at sentry.io and set SENTRY_DSN in .env"
+            },
+            {
+              "id": "crash_internal",
+              "label": "Crash: internal grouping service (CO3)",
+              "pass": true,
+              "warning": false,
+              "detail": "co3UserSuccess.cjs crash intelligence available",
+              "fix": null
+            },
+            {
+              "id": "error_log",
+              "label": "Crash: error log file present",
+              "pass": true,
+              "warning": false,
+              "detail": "Error log in logs/ dir",
+              "fix": null
+            }
+          ],
+          "passing": 16,
+          "total": 18,
+          "score": 89
+        },
+        {
+          "integration": "storage",
+          "label": "Storage",
+          "checks": [
+            {
+              "id": "local_data_dir",
+              "label": "Storage: data/ directory exists",
+              "pass": true,
+              "warning": false,
+              "detail": "data/ directory present",
+              "fix": null
+            },
+            {
+              "id": "local_json_count",
+              "label": "Storage: flat-file store has 256 JSON files",
+              "pass": true,
+              "warning": false,
+              "detail": "256 .json data files in data/",
+              "fix": null
+            },
+            {
+              "id": "local_write",
+              "label": "Storage: data/ directory is writable",
+              "pass": true,
+              "warning": false,
+              "detail": "Write + delete test passed",
+              "fix": null
+            },
+            {
+              "id": "backup_dir",
+              "label": "Storage: backups/ directory exists",
+              "pass": true,
+              "warning": false,
+              "detail": "backups/ directory present",
+              "fix": null
+            },
+            {
+              "id": "backup_files",
+              "label": "Storage: backup archives present (4 found)",
+              "pass": true,
+              "warning": false,
+              "detail": "Latest: jarvis_full_2026-06-02T18-32-27-889Z.tar.gz — 4 total backup(s)",
+              "fix": null
+            },
+            {
+              "id": "backup_restore_test",
+              "label": "Storage: latest backup archive is valid (not corrupted)",
+              "pass": true,
+              "warning": false,
+              "detail": "Archive valid — first entries: snapshot_2026-06-02T18-32-27-889Z/, snapshot_2026-06-02T18-32-27-889Z/business-leads.json, snapshot_",
+              "fix": null
+            },
+            {
+              "id": "backup_age",
+              "label": "Storage: latest backup is recent (age: 18d)",
+              "pass": false,
+              "warning": true,
+              "detail": "Backup is 18 days old — stale",
+              "fix": "Run backup script to create a fresh backup"
+            },
+            {
+              "id": "s3_configured",
+              "label": "Storage: S3 / object store configured",
+              "pass": false,
+              "warning": true,
+              "detail": "S3 not configured (optional — for off-site backups)",
+              "fix": "Set S3_BUCKET + S3_ACCESS_KEY + S3_SECRET_KEY in .env"
+            },
+            {
+              "id": "disk_space",
+              "label": "Storage: disk space OK (89% used, 22640MB free)",
+              "pass": false,
+              "warning": true,
+              "detail": "89% used, 22640MB available",
+              "fix": "Free up disk space — data/ partition is filling up"
+            }
+          ],
+          "passing": 6,
+          "total": 9,
+          "score": 67
+        },
+        {
+          "integration": "e2e_smoke",
+          "label": "End-to-End Smoke Test",
+          "checks": [
+            {
+              "id": "e2e_server",
+              "label": "E2E: backend server is up (/health)",
+              "pass": true,
+              "warning": false,
+              "detail": "Server responding at port 5050",
+              "fix": null
+            },
+            {
+              "id": "e2e_auth_route",
+              "label": "E2E: /api/auth/login route exists",
+              "pass": true,
+              "warning": false,
+              "detail": "Route found — HTTP 401 (401/400 expected for bad creds)",
+              "fix": null
+            },
+            {
+              "id": "e2e_ai_route",
+              "label": "E2E: /api/ai/status route exists",
+              "pass": true,
+              "warning": false,
+              "detail": "HTTP 401 — AI route live",
+              "fix": null
+            },
+            {
+              "id": "e2e_payment_route",
+              "label": "E2E: /api/payment/link route exists",
+              "pass": true,
+              "warning": false,
+              "detail": "HTTP 401 — payment route live",
+              "fix": null
+            },
+            {
+              "id": "e2e_wa_webhook",
+              "label": "E2E: WhatsApp webhook route exists",
+              "pass": false,
+              "warning": false,
+              "detail": "HTTP 401",
+              "fix": "Check backend/routes/whatsapp.js /whatsapp/webhook GET handler"
+            },
+            {
+              "id": "e2e_rzp_webhook",
+              "label": "E2E: Razorpay webhook route exists",
+              "pass": true,
+              "warning": false,
+              "detail": "HTTP 401 — webhook route live",
+              "fix": null
+            },
+            {
+              "id": "e2e_frontend_build",
+              "label": "E2E: frontend build exists",
+              "pass": true,
+              "warning": false,
+              "detail": "frontend/build/index.html present",
+              "fix": null
+            },
+            {
+              "id": "e2e_frontend_assets",
+              "label": "E2E: frontend JS bundles present (157)",
+              "pass": true,
+              "warning": false,
+              "detail": "157 JS chunks in frontend/build/static/js/",
+              "fix": null
+            },
+            {
+              "id": "e2e_https",
+              "label": "E2E: BASE_URL uses HTTPS",
+              "pass": true,
+              "warning": false,
+              "detail": "BASE_URL=https://app.ooplix.com",
+              "fix": null
+            },
+            {
+              "id": "e2e_public_health",
+              "label": "E2E: https://app.ooplix.com/health responds",
+              "pass": true,
+              "warning": false,
+              "detail": "Public health endpoint: HTTP 200",
+              "fix": null
+            }
+          ],
+          "passing": 9,
+          "total": 10,
+          "score": 90
+        }
+      ],
+      "configured": [
+        {
+          "id": "email_tpl_welcome",
+          "label": "Email template: welcome — subject and body valid",
+          "integration": "SMTP / Email Delivery",
+          "detail": "welcome: subject=\"Welcome to Ooplix!\" (18 chars), body=40 chars"
+        },
+        {
+          "id": "email_tpl_otp",
+          "label": "Email template: otp — subject and body valid",
+          "integration": "SMTP / Email Delivery",
+          "detail": "otp: subject=\"Your OTP: {{otp}}\" (17 chars), body=58 chars"
+        },
+        {
+          "id": "email_tpl_password_reset",
+          "label": "Email template: password_reset — subject and body valid",
+          "integration": "SMTP / Email Delivery",
+          "detail": "password_reset: subject=\"Reset your Ooplix password\" (26 chars), body=43 chars"
+        },
+        {
+          "id": "ai_routing",
+          "label": "AI: capability-based routing present",
+          "integration": "AI Providers (Extended)",
+          "detail": "routeByCapability() found with ROUTING table (reasoning/coding/fast/cheap/creative/analysis)"
+        },
+        {
+          "id": "ai_provider_order",
+          "label": "AI: LLM_PROVIDER env respected in routing",
+          "integration": "AI Providers (Extended)",
+          "detail": "_providerOrder() reads LLM_PROVIDER (currently: \"groq\")"
+        },
+        {
+          "id": "ai_fallback",
+          "label": "AI: multi-provider fallback chain present",
+          "integration": "AI Providers (Extended)",
+          "detail": "Provider loop with lastFailures tracking confirmed in callAI()"
+        },
+        {
+          "id": "ai_streaming",
+          "label": "AI: streaming response supported",
+          "integration": "AI Providers (Extended)",
+          "detail": "Streaming pattern found in AI route/service"
+        },
+        {
+          "id": "ai_credit_engine",
+          "label": "AI: credit accounting service present",
+          "integration": "AI Providers (Extended)",
+          "detail": "creditEngine.cjs + usageMetering.cjs both exist"
+        },
+        {
+          "id": "ai_cost_table",
+          "label": "AI: provider cost table in usage metering",
+          "integration": "AI Providers (Extended)",
+          "detail": "PROVIDER_COSTS table covers groq/claude/openai/gemini/openrouter/ollama"
+        },
+        {
+          "id": "jwt_secret",
+          "label": "OAuth: JWT_SECRET configured (token encryption)",
+          "integration": "OAuth (Extended)",
+          "detail": "JWT_SECRET set — AES-256-GCM token encryption active"
+        },
+        {
+          "id": "oauth_service",
+          "label": "OAuth: integration service exists",
+          "integration": "OAuth (Extended)",
+          "detail": "oauthIntegrationLayer.cjs found"
+        },
+        {
+          "id": "oauth_csrf",
+          "label": "OAuth: CSRF protection (state + nonce)",
+          "integration": "OAuth (Extended)",
+          "detail": "CSRF nonce with 5-min TTL found in OAuth layer"
+        },
+        {
+          "id": "oauth_token_enc",
+          "label": "OAuth: tokens encrypted at rest",
+          "integration": "OAuth (Extended)",
+          "detail": "AES-256-GCM token encryption confirmed in OAuth service"
+        },
+        {
+          "id": "google_redirect",
+          "label": "Google OAuth: redirect URI uses public domain",
+          "integration": "OAuth (Extended)",
+          "detail": "https://app.ooplix.com/oauth/google/callback"
+        },
+        {
+          "id": "google_endpoint",
+          "label": "Google OAuth: token endpoint reachable",
+          "integration": "OAuth (Extended)",
+          "detail": "google oauth2 endpoint: HTTP 404 (405 expected for GET)"
+        },
+        {
+          "id": "ms_redirect",
+          "label": "Microsoft OAuth: redirect URI configured",
+          "integration": "OAuth (Extended)",
+          "detail": "https://app.ooplix.com/oauth/microsoft/callback"
+        },
+        {
+          "id": "ms_endpoint",
+          "label": "Microsoft OAuth: OIDC discovery reachable",
+          "integration": "OAuth (Extended)",
+          "detail": "HTTP 200"
+        },
+        {
+          "id": "li_redirect",
+          "label": "LinkedIn OAuth: redirect URI configured",
+          "integration": "OAuth (Extended)",
+          "detail": "https://app.ooplix.com/oauth/linkedin/callback"
+        },
+        {
+          "id": "li_endpoint",
+          "label": "LinkedIn OAuth: API endpoint reachable",
+          "integration": "OAuth (Extended)",
+          "detail": "HTTP 401 — endpoint live (401 expected without token)"
+        },
+        {
+          "id": "oauth_callbacks",
+          "label": "OAuth: callback routes registered",
+          "integration": "OAuth (Extended)",
+          "detail": "/oauth/* callback routes found"
+        },
+        {
+          "id": "pm2_ecosystem",
+          "label": "PM2: ecosystem config exists",
+          "integration": "Monitoring",
+          "detail": "ecosystem.config.cjs found"
+        },
+        {
+          "id": "pm2_app_name",
+          "label": "PM2: app name configured",
+          "integration": "Monitoring",
+          "detail": "App: jarvis-os"
+        },
+        {
+          "id": "pm2_logs",
+          "label": "PM2: log file paths configured",
+          "integration": "Monitoring",
+          "detail": "out_file/error_file or log_date_format set"
+        },
+        {
+          "id": "pm2_mem_restart",
+          "label": "PM2: memory restart threshold set",
+          "integration": "Monitoring",
+          "detail": "max_memory_restart configured"
+        },
+        {
+          "id": "pm2_env_prod",
+          "label": "PM2: production env profile present",
+          "integration": "Monitoring",
+          "detail": "env_production block found"
+        },
+        {
+          "id": "pm2_saved",
+          "label": "PM2: process list saved (startup persistence)",
+          "integration": "Monitoring",
+          "detail": "pm2 save state — run 'pm2 save && pm2 startup' on VPS to persist across reboots"
+        },
+        {
+          "id": "health_route",
+          "label": "Health: /health endpoint route exists",
+          "integration": "Monitoring",
+          "detail": "backend/routes/ops.js found"
+        },
+        {
+          "id": "health_handler",
+          "label": "Health: /health handler implemented",
+          "integration": "Monitoring",
+          "detail": "/health handler found"
+        },
+        {
+          "id": "health_live",
+          "label": "Health: GET /health returns 200",
+          "integration": "Monitoring",
+          "detail": "HTTP 200 — health endpoint responding"
+        },
+        {
+          "id": "logger_exists",
+          "label": "Logs: structured logger exists",
+          "integration": "Monitoring",
+          "detail": "backend/utils/logger.js found"
+        },
+        {
+          "id": "log_dir",
+          "label": "Logs: data/logs directory exists",
+          "integration": "Monitoring",
+          "detail": "data/logs present"
+        },
+        {
+          "id": "log_files",
+          "label": "Logs: log files present (5 found)",
+          "integration": "Monitoring",
+          "detail": "Found: audit.ndjson, execution.ndjson, operator-audit.ndjson, ops-alerts.ndjson, struct"
+        },
+        {
+          "id": "alerts_service",
+          "label": "Alerts: alerting service exists",
+          "integration": "Monitoring",
+          "detail": "operationsAlertingLayer.cjs or observabilityEngine.cjs found"
+        },
+        {
+          "id": "alerts_telegram",
+          "label": "Alerts: Telegram alert channel configured",
+          "integration": "Monitoring",
+          "detail": "TELEGRAM_TOKEN + TELEGRAM_CHAT_ID set — alert channel ready"
+        },
+        {
+          "id": "crash_internal",
+          "label": "Crash: internal grouping service (CO3)",
+          "integration": "Monitoring",
+          "detail": "co3UserSuccess.cjs crash intelligence available"
+        },
+        {
+          "id": "error_log",
+          "label": "Crash: error log file present",
+          "integration": "Monitoring",
+          "detail": "Error log in logs/ dir"
+        },
+        {
+          "id": "local_data_dir",
+          "label": "Storage: data/ directory exists",
+          "integration": "Storage",
+          "detail": "data/ directory present"
+        },
+        {
+          "id": "local_json_count",
+          "label": "Storage: flat-file store has 256 JSON files",
+          "integration": "Storage",
+          "detail": "256 .json data files in data/"
+        },
+        {
+          "id": "local_write",
+          "label": "Storage: data/ directory is writable",
+          "integration": "Storage",
+          "detail": "Write + delete test passed"
+        },
+        {
+          "id": "backup_dir",
+          "label": "Storage: backups/ directory exists",
+          "integration": "Storage",
+          "detail": "backups/ directory present"
+        },
+        {
+          "id": "backup_files",
+          "label": "Storage: backup archives present (4 found)",
+          "integration": "Storage",
+          "detail": "Latest: jarvis_full_2026-06-02T18-32-27-889Z.tar.gz — 4 total backup(s)"
+        },
+        {
+          "id": "backup_restore_test",
+          "label": "Storage: latest backup archive is valid (not corrupted)",
+          "integration": "Storage",
+          "detail": "Archive valid — first entries: snapshot_2026-06-02T18-32-27-889Z/, snapshot_2026-06-02T18-32-27-889Z/business-leads.json, snapshot_"
+        },
+        {
+          "id": "e2e_server",
+          "label": "E2E: backend server is up (/health)",
+          "integration": "End-to-End Smoke Test",
+          "detail": "Server responding at port 5050"
+        },
+        {
+          "id": "e2e_auth_route",
+          "label": "E2E: /api/auth/login route exists",
+          "integration": "End-to-End Smoke Test",
+          "detail": "Route found — HTTP 401 (401/400 expected for bad creds)"
+        },
+        {
+          "id": "e2e_ai_route",
+          "label": "E2E: /api/ai/status route exists",
+          "integration": "End-to-End Smoke Test",
+          "detail": "HTTP 401 — AI route live"
+        },
+        {
+          "id": "e2e_payment_route",
+          "label": "E2E: /api/payment/link route exists",
+          "integration": "End-to-End Smoke Test",
+          "detail": "HTTP 401 — payment route live"
+        },
+        {
+          "id": "e2e_rzp_webhook",
+          "label": "E2E: Razorpay webhook route exists",
+          "integration": "End-to-End Smoke Test",
+          "detail": "HTTP 401 — webhook route live"
+        },
+        {
+          "id": "e2e_frontend_build",
+          "label": "E2E: frontend build exists",
+          "integration": "End-to-End Smoke Test",
+          "detail": "frontend/build/index.html present"
+        },
+        {
+          "id": "e2e_frontend_assets",
+          "label": "E2E: frontend JS bundles present (157)",
+          "integration": "End-to-End Smoke Test",
+          "detail": "157 JS chunks in frontend/build/static/js/"
+        },
+        {
+          "id": "e2e_https",
+          "label": "E2E: BASE_URL uses HTTPS",
+          "integration": "End-to-End Smoke Test",
+          "detail": "BASE_URL=https://app.ooplix.com"
+        },
+        {
+          "id": "e2e_public_health",
+          "label": "E2E: https://app.ooplix.com/health responds",
+          "integration": "End-to-End Smoke Test",
+          "detail": "Public health endpoint: HTTP 200"
+        }
+      ],
+      "failures": [
+        {
+          "id": "email_any",
+          "label": "Email: at least one provider configured",
+          "integration": "SMTP / Email Delivery",
+          "detail": "No email provider configured",
+          "fix": "Set one of: SMTP_HOST, SENDGRID_API_KEY, RESEND_API_KEY, POSTMARK_API_KEY, AWS_ACCESS_KEY_ID"
+        },
+        {
+          "id": "e2e_wa_webhook",
+          "label": "E2E: WhatsApp webhook route exists",
+          "integration": "End-to-End Smoke Test",
+          "detail": "HTTP 401",
+          "fix": "Check backend/routes/whatsapp.js /whatsapp/webhook GET handler"
+        }
+      ],
+      "env": {
+        "missing": [
+          {
+            "key": "SMTP_HOST",
+            "desc": "SMTP server hostname (e.g. smtp.gmail.com)",
+            "group": "SMTP"
+          },
+          {
+            "key": "SMTP_USER",
+            "desc": "SMTP auth username / email",
+            "group": "SMTP"
+          },
+          {
+            "key": "SMTP_PASS",
+            "desc": "SMTP auth password or app password",
+            "group": "SMTP"
+          },
+          {
+            "key": "SMTP_PORT",
+            "desc": "SMTP port (587=STARTTLS, 465=SSL)",
+            "group": "SMTP"
+          },
+          {
+            "key": "SMTP_FROM",
+            "desc": "Sender email address (noreply@ooplix.com)",
+            "group": "SMTP"
+          },
+          {
+            "key": "SENDGRID_API_KEY",
+            "desc": "SendGrid API key (alternative to SMTP)",
+            "group": "SendGrid"
+          },
+          {
+            "key": "RESEND_API_KEY",
+            "desc": "Resend API key (alternative to SMTP)",
+            "group": "Resend"
+          },
+          {
+            "key": "POSTMARK_API_KEY",
+            "desc": "Postmark server token (alternative to SMTP)",
+            "group": "Postmark"
+          },
+          {
+            "key": "AWS_ACCESS_KEY_ID",
+            "desc": "AWS access key (for SES)",
+            "group": "SES"
+          },
+          {
+            "key": "AWS_SECRET_ACCESS_KEY",
+            "desc": "AWS secret key (for SES)",
+            "group": "SES"
+          },
+          {
+            "key": "AWS_SES_REGION",
+            "desc": "SES region (e.g. us-east-1)",
+            "group": "SES"
+          },
+          {
+            "key": "ANTHROPIC_API_KEY",
+            "desc": "Claude / Anthropic API key (sk-ant-...)",
+            "group": "Anthropic"
+          },
+          {
+            "key": "GEMINI_API_KEY",
+            "desc": "Google Gemini API key (AIza...)",
+            "group": "Gemini"
+          },
+          {
+            "key": "OPENROUTER_API_KEY",
+            "desc": "OpenRouter API key (sk-or-...)",
+            "group": "OpenRouter"
+          },
+          {
+            "key": "GEMINI_MODEL",
+            "desc": "Gemini model override (default: gemini-2.0-flash)",
+            "group": "Gemini"
+          },
+          {
+            "key": "GOOGLE_CLIENT_ID",
+            "desc": "Google OAuth client ID",
+            "group": "Google"
+          },
+          {
+            "key": "GOOGLE_CLIENT_SECRET",
+            "desc": "Google OAuth client secret",
+            "group": "Google"
+          },
+          {
+            "key": "GOOGLE_REDIRECT_URI",
+            "desc": "https://app.ooplix.com/oauth/google/callback",
+            "group": "Google"
+          },
+          {
+            "key": "MICROSOFT_CLIENT_ID",
+            "desc": "Azure AD app client ID",
+            "group": "Microsoft"
+          },
+          {
+            "key": "MICROSOFT_CLIENT_SECRET",
+            "desc": "Azure AD app client secret",
+            "group": "Microsoft"
+          },
+          {
+            "key": "MICROSOFT_REDIRECT_URI",
+            "desc": "https://app.ooplix.com/oauth/microsoft/callback",
+            "group": "Microsoft"
+          },
+          {
+            "key": "LINKEDIN_CLIENT_ID",
+            "desc": "LinkedIn app client ID",
+            "group": "LinkedIn"
+          },
+          {
+            "key": "LINKEDIN_CLIENT_SECRET",
+            "desc": "LinkedIn app client secret",
+            "group": "LinkedIn"
+          },
+          {
+            "key": "LINKEDIN_REDIRECT_URL",
+            "desc": "https://app.ooplix.com/oauth/linkedin/callback",
+            "group": "LinkedIn"
+          },
+          {
+            "key": "SENTRY_DSN",
+            "desc": "Sentry DSN for crash reporting",
+            "group": "Crash"
+          },
+          {
+            "key": "LOG_FILE",
+            "desc": "Path for server log file (optional, PM2 manages logs)",
+            "group": "Logging"
+          },
+          {
+            "key": "S3_BUCKET",
+            "desc": "S3 / object-store bucket name (for off-site backups)",
+            "group": "S3"
+          },
+          {
+            "key": "S3_ACCESS_KEY",
+            "desc": "S3 access key (or AWS_ACCESS_KEY_ID)",
+            "group": "S3"
+          },
+          {
+            "key": "S3_SECRET_KEY",
+            "desc": "S3 secret key (or AWS_SECRET_ACCESS_KEY)",
+            "group": "S3"
+          },
+          {
+            "key": "S3_REGION",
+            "desc": "S3 region (e.g. ap-south-1 for India)",
+            "group": "S3"
+          },
+          {
+            "key": "S3_ENDPOINT",
+            "desc": "Custom S3 endpoint (DO Spaces, Backblaze, Cloudflare)",
+            "group": "S3"
+          },
+          {
+            "key": "BACKUP_PATH",
+            "desc": "Local backup script path (default: scripts/backup.sh)",
+            "group": "Backup"
+          }
+        ],
+        "present": [
+          {
+            "key": "LLM_PROVIDER",
+            "desc": "Primary AI provider (groq|openai|claude|gemini|openrouter)",
+            "group": "Routing"
+          },
+          {
+            "key": "TELEGRAM_TOKEN",
+            "desc": "Telegram bot token (for production alerts)",
+            "group": "Alerts"
+          },
+          {
+            "key": "TELEGRAM_CHAT_ID",
+            "desc": "Telegram chat ID for alert delivery",
+            "group": "Alerts"
+          }
+        ],
+        "missingCount": 32,
+        "presentCount": 3
+      }
+    }
+  ],
+  "lastRun": "2026-06-21T11:25:52.403Z"
+}

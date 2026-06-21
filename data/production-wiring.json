@@ -1,0 +1,710 @@
+{
+  "reports": [
+    {
+      "id": "wiring-1782028109472",
+      "runAt": "2026-06-21T07:48:29.472Z",
+      "overallScore": 62,
+      "totalChecks": 53,
+      "totalPassing": 33,
+      "criticalFailures": 3,
+      "warnings": [
+        {
+          "id": "anthropic_key",
+          "label": "Anthropic: API key present",
+          "pass": false,
+          "warning": true,
+          "detail": "ANTHROPIC_API_KEY missing",
+          "fix": "Add ANTHROPIC_API_KEY=sk-ant-... to .env — console.anthropic.com"
+        },
+        {
+          "id": "anthropic_live",
+          "label": "Anthropic: live API call succeeds",
+          "pass": false,
+          "warning": true,
+          "detail": "Skipped — key missing",
+          "fix": "Set ANTHROPIC_API_KEY"
+        },
+        {
+          "id": "gemini_key",
+          "label": "Gemini: API key present",
+          "pass": false,
+          "warning": true,
+          "detail": "GEMINI_API_KEY missing",
+          "fix": "Add GEMINI_API_KEY=AIza... to .env — aistudio.google.com"
+        },
+        {
+          "id": "gemini_live",
+          "label": "Gemini: live API call succeeds",
+          "pass": false,
+          "warning": true,
+          "detail": "Skipped — key missing",
+          "fix": "Set GEMINI_API_KEY"
+        },
+        {
+          "id": "openrouter_key",
+          "label": "OpenRouter: API key present",
+          "pass": false,
+          "warning": true,
+          "detail": "OPENROUTER_API_KEY missing",
+          "fix": "Add OPENROUTER_API_KEY=sk-or-... to .env — openrouter.ai"
+        },
+        {
+          "id": "smtp_host",
+          "label": "SMTP: host configured",
+          "pass": false,
+          "warning": true,
+          "detail": "SMTP_HOST not set",
+          "fix": "Set SMTP_HOST=smtp.gmail.com (or similar) in .env"
+        },
+        {
+          "id": "sendgrid_key",
+          "label": "SendGrid: API key configured",
+          "pass": false,
+          "warning": true,
+          "detail": "Not configured (optional)",
+          "fix": "Set SENDGRID_API_KEY if using SendGrid"
+        },
+        {
+          "id": "google_client_id",
+          "label": "OAuth/google: client ID configured",
+          "pass": false,
+          "warning": true,
+          "detail": "GOOGLE_CLIENT_ID missing",
+          "fix": "Get from console.cloud.google.com → Credentials → OAuth 2.0 Client IDs"
+        },
+        {
+          "id": "google_client_secret",
+          "label": "OAuth/google: client secret configured",
+          "pass": false,
+          "warning": true,
+          "detail": "GOOGLE_CLIENT_SECRET missing",
+          "fix": "Get from console.cloud.google.com → Credentials → OAuth 2.0 Client IDs"
+        },
+        {
+          "id": "github_client_id",
+          "label": "OAuth/github: client ID configured",
+          "pass": false,
+          "warning": true,
+          "detail": "GITHUB_CLIENT_ID missing",
+          "fix": "Get from github.com/settings/developers → OAuth Apps"
+        },
+        {
+          "id": "github_client_secret",
+          "label": "OAuth/github: client secret configured",
+          "pass": false,
+          "warning": true,
+          "detail": "GITHUB_CLIENT_SECRET missing",
+          "fix": "Get from github.com/settings/developers → OAuth Apps"
+        },
+        {
+          "id": "slack_client_id",
+          "label": "OAuth/slack: client ID configured",
+          "pass": false,
+          "warning": true,
+          "detail": "SLACK_CLIENT_ID missing",
+          "fix": "Get from api.slack.com/apps → OAuth & Permissions"
+        },
+        {
+          "id": "slack_client_secret",
+          "label": "OAuth/slack: client secret configured",
+          "pass": false,
+          "warning": true,
+          "detail": "SLACK_CLIENT_SECRET missing",
+          "fix": "Get from api.slack.com/apps → OAuth & Permissions"
+        },
+        {
+          "id": "notion_client_id",
+          "label": "OAuth/notion: client ID configured",
+          "pass": false,
+          "warning": true,
+          "detail": "NOTION_CLIENT_ID missing",
+          "fix": "Get from notion.so/my-integrations → OAuth settings"
+        },
+        {
+          "id": "notion_client_secret",
+          "label": "OAuth/notion: client secret configured",
+          "pass": false,
+          "warning": true,
+          "detail": "NOTION_CLIENT_SECRET missing",
+          "fix": "Get from notion.so/my-integrations → OAuth settings"
+        },
+        {
+          "id": "linkedin_client_id",
+          "label": "OAuth/linkedin: client ID configured",
+          "pass": false,
+          "warning": true,
+          "detail": "LINKEDIN_CLIENT_ID missing",
+          "fix": "Get from linkedin.com/developers/apps → Auth tab"
+        },
+        {
+          "id": "linkedin_client_secret",
+          "label": "OAuth/linkedin: client secret configured",
+          "pass": false,
+          "warning": true,
+          "detail": "LINKEDIN_CLIENT_SECRET missing",
+          "fix": "Get from linkedin.com/developers/apps → Auth tab"
+        }
+      ],
+      "productionReady": true,
+      "gates": {
+        "ai_provider_live": true,
+        "payments_wired": true,
+        "whatsapp_verified": true,
+        "browser_headless": true,
+        "email_configured": false,
+        "oauth_jwt_ready": true
+      },
+      "integrations": [
+        {
+          "integration": "ai_providers",
+          "label": "AI Providers",
+          "score": 45,
+          "passing": 5,
+          "total": 11
+        },
+        {
+          "integration": "payments",
+          "label": "Payments (Razorpay)",
+          "score": 100,
+          "passing": 7,
+          "total": 7
+        },
+        {
+          "integration": "email",
+          "label": "Email",
+          "score": 0,
+          "passing": 0,
+          "total": 3
+        },
+        {
+          "integration": "oauth",
+          "label": "OAuth",
+          "score": 44,
+          "passing": 8,
+          "total": 18
+        },
+        {
+          "integration": "whatsapp",
+          "label": "WhatsApp",
+          "score": 86,
+          "passing": 6,
+          "total": 7
+        },
+        {
+          "integration": "browser_automation",
+          "label": "Browser Automation",
+          "score": 100,
+          "passing": 7,
+          "total": 7
+        }
+      ],
+      "failures": [
+        {
+          "id": "openai_live",
+          "label": "OpenAI: live API call succeeds",
+          "pass": false,
+          "warning": false,
+          "detail": "HTTP 429 — {\n    \"error\": {\n        \"message\": \"You exceeded your current quota, please check your plan and billing details. For mo",
+          "fix": "Check OPENAI_API_KEY is valid and has quota"
+        },
+        {
+          "id": "email_provider_configured",
+          "label": "Email: at least one provider configured",
+          "pass": false,
+          "warning": false,
+          "detail": "No email provider configured",
+          "fix": "Set SMTP_HOST + SMTP_USER + SMTP_PASS, or SENDGRID_API_KEY, or RESEND_API_KEY in .env"
+        },
+        {
+          "id": "wa_webhook_route",
+          "label": "WhatsApp: webhook receive route exists in codebase",
+          "pass": false,
+          "warning": false,
+          "detail": "Webhook route not found",
+          "fix": "Check backend/routes/whatsapp.js for /whatsapp/webhook handler"
+        }
+      ],
+      "details": [
+        {
+          "integration": "ai_providers",
+          "label": "AI Providers",
+          "checks": [
+            {
+              "id": "groq_key",
+              "label": "Groq: API key present",
+              "pass": true,
+              "warning": false,
+              "detail": "GROQ_API_KEY is set",
+              "fix": null
+            },
+            {
+              "id": "groq_live",
+              "label": "Groq: live API call succeeds",
+              "pass": true,
+              "warning": false,
+              "detail": "HTTP 200 — model responded",
+              "fix": null
+            },
+            {
+              "id": "openai_key",
+              "label": "OpenAI: API key present",
+              "pass": true,
+              "warning": false,
+              "detail": "OPENAI_API_KEY is set",
+              "fix": null
+            },
+            {
+              "id": "openai_live",
+              "label": "OpenAI: live API call succeeds",
+              "pass": false,
+              "warning": false,
+              "detail": "HTTP 429 — {\n    \"error\": {\n        \"message\": \"You exceeded your current quota, please check your plan and billing details. For mo",
+              "fix": "Check OPENAI_API_KEY is valid and has quota"
+            },
+            {
+              "id": "anthropic_key",
+              "label": "Anthropic: API key present",
+              "pass": false,
+              "warning": true,
+              "detail": "ANTHROPIC_API_KEY missing",
+              "fix": "Add ANTHROPIC_API_KEY=sk-ant-... to .env — console.anthropic.com"
+            },
+            {
+              "id": "anthropic_live",
+              "label": "Anthropic: live API call succeeds",
+              "pass": false,
+              "warning": true,
+              "detail": "Skipped — key missing",
+              "fix": "Set ANTHROPIC_API_KEY"
+            },
+            {
+              "id": "gemini_key",
+              "label": "Gemini: API key present",
+              "pass": false,
+              "warning": true,
+              "detail": "GEMINI_API_KEY missing",
+              "fix": "Add GEMINI_API_KEY=AIza... to .env — aistudio.google.com"
+            },
+            {
+              "id": "gemini_live",
+              "label": "Gemini: live API call succeeds",
+              "pass": false,
+              "warning": true,
+              "detail": "Skipped — key missing",
+              "fix": "Set GEMINI_API_KEY"
+            },
+            {
+              "id": "openrouter_key",
+              "label": "OpenRouter: API key present",
+              "pass": false,
+              "warning": true,
+              "detail": "OPENROUTER_API_KEY missing",
+              "fix": "Add OPENROUTER_API_KEY=sk-or-... to .env — openrouter.ai"
+            },
+            {
+              "id": "ollama_local",
+              "label": "Ollama: local server reachable",
+              "pass": true,
+              "warning": false,
+              "detail": "Ollama at http://localhost:11434 — HTTP 200",
+              "fix": null
+            },
+            {
+              "id": "llm_provider_set",
+              "label": "LLM_PROVIDER env var set",
+              "pass": true,
+              "warning": false,
+              "detail": "LLM_PROVIDER=groq",
+              "fix": null
+            }
+          ],
+          "passing": 5,
+          "total": 11,
+          "score": 45
+        },
+        {
+          "integration": "payments",
+          "label": "Payments (Razorpay)",
+          "checks": [
+            {
+              "id": "rzp_key_id",
+              "label": "Razorpay: RAZORPAY_KEY_ID present",
+              "pass": true,
+              "warning": false,
+              "detail": "Key ID set (rzp_live_Sxy...)",
+              "fix": null
+            },
+            {
+              "id": "rzp_secret",
+              "label": "Razorpay: RAZORPAY_KEY_SECRET present",
+              "pass": true,
+              "warning": false,
+              "detail": "Key secret is set",
+              "fix": null
+            },
+            {
+              "id": "rzp_webhook_secret",
+              "label": "Razorpay: webhook secret present",
+              "pass": true,
+              "warning": false,
+              "detail": "RAZORPAY_WEBHOOK_SECRET is set",
+              "fix": null
+            },
+            {
+              "id": "rzp_base_url",
+              "label": "BASE_URL is a public domain (not localhost)",
+              "pass": true,
+              "warning": false,
+              "detail": "BASE_URL=https://app.ooplix.com",
+              "fix": null
+            },
+            {
+              "id": "rzp_webhook_url",
+              "label": "Razorpay webhook URL is configured",
+              "pass": true,
+              "warning": false,
+              "detail": "Webhook URL: https://app.ooplix.com/webhook/razorpay",
+              "fix": null
+            },
+            {
+              "id": "rzp_api_reachable",
+              "label": "Razorpay: API endpoint reachable",
+              "pass": true,
+              "warning": false,
+              "detail": "HTTP 200 — authenticated",
+              "fix": null
+            },
+            {
+              "id": "rzp_live_mode",
+              "label": "Razorpay: using live keys (not test)",
+              "pass": true,
+              "warning": false,
+              "detail": "rzp_live_ prefix confirmed",
+              "fix": null
+            }
+          ],
+          "passing": 7,
+          "total": 7,
+          "score": 100
+        },
+        {
+          "integration": "email",
+          "label": "Email",
+          "checks": [
+            {
+              "id": "email_provider_configured",
+              "label": "Email: at least one provider configured",
+              "pass": false,
+              "warning": false,
+              "detail": "No email provider configured",
+              "fix": "Set SMTP_HOST + SMTP_USER + SMTP_PASS, or SENDGRID_API_KEY, or RESEND_API_KEY in .env"
+            },
+            {
+              "id": "smtp_host",
+              "label": "SMTP: host configured",
+              "pass": false,
+              "warning": true,
+              "detail": "SMTP_HOST not set",
+              "fix": "Set SMTP_HOST=smtp.gmail.com (or similar) in .env"
+            },
+            {
+              "id": "sendgrid_key",
+              "label": "SendGrid: API key configured",
+              "pass": false,
+              "warning": true,
+              "detail": "Not configured (optional)",
+              "fix": "Set SENDGRID_API_KEY if using SendGrid"
+            }
+          ],
+          "passing": 0,
+          "total": 3,
+          "score": 0
+        },
+        {
+          "integration": "oauth",
+          "label": "OAuth",
+          "checks": [
+            {
+              "id": "oauth_jwt_secret",
+              "label": "OAuth: JWT_SECRET set (required for token encryption)",
+              "pass": true,
+              "warning": false,
+              "detail": "JWT_SECRET is set — OAuth tokens can be encrypted",
+              "fix": null
+            },
+            {
+              "id": "google_client_id",
+              "label": "OAuth/google: client ID configured",
+              "pass": false,
+              "warning": true,
+              "detail": "GOOGLE_CLIENT_ID missing",
+              "fix": "Get from console.cloud.google.com → Credentials → OAuth 2.0 Client IDs"
+            },
+            {
+              "id": "google_client_secret",
+              "label": "OAuth/google: client secret configured",
+              "pass": false,
+              "warning": true,
+              "detail": "GOOGLE_CLIENT_SECRET missing",
+              "fix": "Get from console.cloud.google.com → Credentials → OAuth 2.0 Client IDs"
+            },
+            {
+              "id": "google_redirect",
+              "label": "OAuth/google: redirect URI points to https://app.ooplix.com",
+              "pass": true,
+              "warning": false,
+              "detail": "Redirect: https://app.ooplix.com/oauth/google/callback",
+              "fix": null
+            },
+            {
+              "id": "github_client_id",
+              "label": "OAuth/github: client ID configured",
+              "pass": false,
+              "warning": true,
+              "detail": "GITHUB_CLIENT_ID missing",
+              "fix": "Get from github.com/settings/developers → OAuth Apps"
+            },
+            {
+              "id": "github_client_secret",
+              "label": "OAuth/github: client secret configured",
+              "pass": false,
+              "warning": true,
+              "detail": "GITHUB_CLIENT_SECRET missing",
+              "fix": "Get from github.com/settings/developers → OAuth Apps"
+            },
+            {
+              "id": "github_redirect",
+              "label": "OAuth/github: redirect URI points to https://app.ooplix.com",
+              "pass": true,
+              "warning": false,
+              "detail": "Redirect: https://app.ooplix.com/oauth/github/callback",
+              "fix": null
+            },
+            {
+              "id": "slack_client_id",
+              "label": "OAuth/slack: client ID configured",
+              "pass": false,
+              "warning": true,
+              "detail": "SLACK_CLIENT_ID missing",
+              "fix": "Get from api.slack.com/apps → OAuth & Permissions"
+            },
+            {
+              "id": "slack_client_secret",
+              "label": "OAuth/slack: client secret configured",
+              "pass": false,
+              "warning": true,
+              "detail": "SLACK_CLIENT_SECRET missing",
+              "fix": "Get from api.slack.com/apps → OAuth & Permissions"
+            },
+            {
+              "id": "slack_redirect",
+              "label": "OAuth/slack: redirect URI points to https://app.ooplix.com",
+              "pass": true,
+              "warning": false,
+              "detail": "Redirect: https://app.ooplix.com/oauth/slack/callback",
+              "fix": null
+            },
+            {
+              "id": "notion_client_id",
+              "label": "OAuth/notion: client ID configured",
+              "pass": false,
+              "warning": true,
+              "detail": "NOTION_CLIENT_ID missing",
+              "fix": "Get from notion.so/my-integrations → OAuth settings"
+            },
+            {
+              "id": "notion_client_secret",
+              "label": "OAuth/notion: client secret configured",
+              "pass": false,
+              "warning": true,
+              "detail": "NOTION_CLIENT_SECRET missing",
+              "fix": "Get from notion.so/my-integrations → OAuth settings"
+            },
+            {
+              "id": "notion_redirect",
+              "label": "OAuth/notion: redirect URI points to https://app.ooplix.com",
+              "pass": true,
+              "warning": false,
+              "detail": "Redirect: https://app.ooplix.com/oauth/notion/callback",
+              "fix": null
+            },
+            {
+              "id": "linkedin_client_id",
+              "label": "OAuth/linkedin: client ID configured",
+              "pass": false,
+              "warning": true,
+              "detail": "LINKEDIN_CLIENT_ID missing",
+              "fix": "Get from linkedin.com/developers/apps → Auth tab"
+            },
+            {
+              "id": "linkedin_client_secret",
+              "label": "OAuth/linkedin: client secret configured",
+              "pass": false,
+              "warning": true,
+              "detail": "LINKEDIN_CLIENT_SECRET missing",
+              "fix": "Get from linkedin.com/developers/apps → Auth tab"
+            },
+            {
+              "id": "linkedin_redirect",
+              "label": "OAuth/linkedin: redirect URI points to https://app.ooplix.com",
+              "pass": true,
+              "warning": false,
+              "detail": "Redirect: https://app.ooplix.com/oauth/linkedin/callback",
+              "fix": null
+            },
+            {
+              "id": "google_oidc_reachable",
+              "label": "Google OIDC: discovery endpoint reachable",
+              "pass": true,
+              "warning": false,
+              "detail": "HTTP 200",
+              "fix": null
+            },
+            {
+              "id": "github_api_reachable",
+              "label": "GitHub API: reachable",
+              "pass": true,
+              "warning": false,
+              "detail": "HTTP 200",
+              "fix": null
+            }
+          ],
+          "passing": 8,
+          "total": 18,
+          "score": 44
+        },
+        {
+          "integration": "whatsapp",
+          "label": "WhatsApp",
+          "checks": [
+            {
+              "id": "wa_token",
+              "label": "WhatsApp: WA_TOKEN present",
+              "pass": true,
+              "warning": false,
+              "detail": "WA_TOKEN is set (EAATP7PM2mqkBRdRIoeH...)",
+              "fix": null
+            },
+            {
+              "id": "wa_phone_id",
+              "label": "WhatsApp: WA_PHONE_ID present",
+              "pass": true,
+              "warning": false,
+              "detail": "WA_PHONE_ID=935026979311321",
+              "fix": null
+            },
+            {
+              "id": "wa_verify_token",
+              "label": "WhatsApp: WA_VERIFY_TOKEN present",
+              "pass": true,
+              "warning": false,
+              "detail": "WA_VERIFY_TOKEN is set",
+              "fix": null
+            },
+            {
+              "id": "wa_version",
+              "label": "WhatsApp: API version configured",
+              "pass": true,
+              "warning": false,
+              "detail": "WA_API_VERSION=v19.0",
+              "fix": null
+            },
+            {
+              "id": "wa_webhook_url",
+              "label": "WhatsApp: webhook URL uses public domain",
+              "pass": true,
+              "warning": false,
+              "detail": "Webhook URL: https://app.ooplix.com/whatsapp/webhook",
+              "fix": null
+            },
+            {
+              "id": "wa_token_valid",
+              "label": "WhatsApp: token validates against Meta API",
+              "pass": true,
+              "warning": false,
+              "detail": "Phone ID verified: 935026979311321",
+              "fix": null
+            },
+            {
+              "id": "wa_webhook_route",
+              "label": "WhatsApp: webhook receive route exists in codebase",
+              "pass": false,
+              "warning": false,
+              "detail": "Webhook route not found",
+              "fix": "Check backend/routes/whatsapp.js for /whatsapp/webhook handler"
+            }
+          ],
+          "passing": 6,
+          "total": 7,
+          "score": 86
+        },
+        {
+          "integration": "browser_automation",
+          "label": "Browser Automation",
+          "checks": [
+            {
+              "id": "playwright_installed",
+              "label": "Browser: Playwright package installed",
+              "pass": true,
+              "warning": false,
+              "detail": "playwright package found in node_modules",
+              "fix": null
+            },
+            {
+              "id": "chromium_binary",
+              "label": "Browser: Chromium binary present",
+              "pass": true,
+              "warning": false,
+              "detail": "Chromium at: /Users/ehtsm/Library/Caches/ms-playwright/chromium-1223/chrome-mac-arm64/Google ",
+              "fix": null
+            },
+            {
+              "id": "browser_launch",
+              "label": "Browser: headless Chromium launches successfully",
+              "pass": true,
+              "warning": false,
+              "detail": "Launched, navigated to about:blank, title='', closed cleanly",
+              "fix": null
+            },
+            {
+              "id": "browser_session_service",
+              "label": "Browser: session manager service exists",
+              "pass": true,
+              "warning": false,
+              "detail": "Found: agents/browser/browserSession.cjs",
+              "fix": null
+            },
+            {
+              "id": "browser_routes",
+              "label": "Browser: API routes file exists",
+              "pass": true,
+              "warning": false,
+              "detail": "backend/routes/browser.js found",
+              "fix": null
+            },
+            {
+              "id": "browser_status_route",
+              "label": "Browser: /browser/status health route present",
+              "pass": true,
+              "warning": false,
+              "detail": "/browser/status route found",
+              "fix": null
+            },
+            {
+              "id": "browser_run_route",
+              "label": "Browser: /browser/run automation route present",
+              "pass": true,
+              "warning": false,
+              "detail": "/browser/run route found",
+              "fix": null
+            }
+          ],
+          "passing": 7,
+          "total": 7,
+          "score": 100
+        }
+      ]
+    }
+  ],
+  "lastRun": "2026-06-21T07:48:29.472Z"
+}

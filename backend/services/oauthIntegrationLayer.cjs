@@ -139,6 +139,26 @@ function _cfg(provider) {
             redirectUri:  E.NOTION_REDIRECT_URI || `${E.APP_URL || "http://localhost:5050"}/oauth/notion/callback`,
             defaultScopes: ["read_content","update_content","insert_content"],
         },
+        microsoft: {
+            authUrl:    "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+            tokenUrl:   "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+            revokeUrl:  null,
+            userUrl:    "https://graph.microsoft.com/v1.0/me",
+            clientId:   E.MICROSOFT_CLIENT_ID,
+            clientSecret: E.MICROSOFT_CLIENT_SECRET,
+            redirectUri:  E.MICROSOFT_REDIRECT_URI || `${E.APP_URL || E.BASE_URL || "http://localhost:5050"}/oauth/microsoft/callback`,
+            defaultScopes: ["openid","email","profile","User.Read","offline_access"],
+        },
+        linkedin: {
+            authUrl:    "https://www.linkedin.com/oauth/v2/authorization",
+            tokenUrl:   "https://www.linkedin.com/oauth/v2/accessToken",
+            revokeUrl:  null,
+            userUrl:    "https://api.linkedin.com/v2/userinfo",
+            clientId:   E.LINKEDIN_CLIENT_ID,
+            clientSecret: E.LINKEDIN_CLIENT_SECRET,
+            redirectUri:  E.LINKEDIN_REDIRECT_URL || E.LINKEDIN_REDIRECT_URI || `${E.APP_URL || E.BASE_URL || "http://localhost:5050"}/oauth/linkedin/callback`,
+            defaultScopes: ["openid","email","profile"],
+        },
     };
     if (!configs[provider]) throw new Error(`Unknown OAuth provider: ${provider}`);
     return configs[provider];
@@ -355,10 +375,12 @@ function listConnections(userId) {
 function getProviderStatus() {
     const E = process.env;
     return {
-        google: { configured: !!(E.GOOGLE_CLIENT_ID && E.GOOGLE_CLIENT_SECRET), clientId: E.GOOGLE_CLIENT_ID ? "set" : "missing" },
-        github: { configured: !!(E.GITHUB_CLIENT_ID && E.GITHUB_CLIENT_SECRET), clientId: E.GITHUB_CLIENT_ID ? "set" : "missing" },
-        slack:  { configured: !!(E.SLACK_CLIENT_ID  && E.SLACK_CLIENT_SECRET),  clientId: E.SLACK_CLIENT_ID  ? "set" : "missing" },
-        notion: { configured: !!(E.NOTION_CLIENT_ID && E.NOTION_CLIENT_SECRET), clientId: E.NOTION_CLIENT_ID ? "set" : "missing" },
+        google:    { configured: !!(E.GOOGLE_CLIENT_ID    && E.GOOGLE_CLIENT_SECRET),    clientId: E.GOOGLE_CLIENT_ID    ? "set" : "missing" },
+        github:    { configured: !!(E.GITHUB_CLIENT_ID    && E.GITHUB_CLIENT_SECRET),    clientId: E.GITHUB_CLIENT_ID    ? "set" : "missing" },
+        slack:     { configured: !!(E.SLACK_CLIENT_ID     && E.SLACK_CLIENT_SECRET),     clientId: E.SLACK_CLIENT_ID     ? "set" : "missing" },
+        notion:    { configured: !!(E.NOTION_CLIENT_ID    && E.NOTION_CLIENT_SECRET),    clientId: E.NOTION_CLIENT_ID    ? "set" : "missing" },
+        microsoft: { configured: !!(E.MICROSOFT_CLIENT_ID && E.MICROSOFT_CLIENT_SECRET), clientId: E.MICROSOFT_CLIENT_ID ? "set" : "missing" },
+        linkedin:  { configured: !!(E.LINKEDIN_CLIENT_ID  && E.LINKEDIN_CLIENT_SECRET),  clientId: E.LINKEDIN_CLIENT_ID  ? "set" : "missing" },
     };
 }
 
