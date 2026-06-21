@@ -102,6 +102,7 @@ router.use(require("./contentSEO"));      // /content/* — G2: Blog Studio, SEO
 router.use(require("./distribution"));    // /distrib/* — G3: Publisher, Orchestrator, Influencer, Community, Referral, Launch, Analytics, Performance AI, Executive, Benchmark
 router.use(require("./revenueOS"));       // /revenue/* — G4: Revenue Dashboard, Subscriptions, Upgrade Intelligence, Customer Success, Churn, Forecasting, Affiliates, Finance, Executive, Benchmark
 router.use(require("./productionInfra")); // /ops/infra/* — CO1: GitHub, VPS, Environment, Database, Monitoring, Security, Deployment, Docs, Launch, Benchmark
+router.use(require("./co2FounderOps"));  // /co2/* — CO2: Deploy, AI Providers, Billing, Email, Dogfood, QA, Bugs, Perf, Readiness, Alpha Report
 router.use(require("./plan-management")); // /plan/* — current plan, upgrade
 
 module.exports = router;
