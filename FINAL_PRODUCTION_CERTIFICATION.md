@@ -279,7 +279,7 @@
   - Webhook HMAC: `RAZORPAY_WEBHOOK_SECRET` — leading-space bug fixed (Phase 49A), now `jarvis_ooplix_2026_live_webhook_secret_987654`
   - In production, missing webhook secret → rejects webhook (correct)
 - `backend/routes/payment.js` — `POST /payment/link` (requireAuth), `POST /webhook/razorpay` + alias
-- Live Razorpay keys present: `rzp_live_Sxy6LoCiIKxSid` / `ypodMiAGj40jYFzqlR3bG9KV`
+- Live Razorpay keys present: `rzp_live_REDACTED_ROTATE_NOW` / `RAZORPAY_SECRET_REDACTED`
 - `PaymentsV2.jsx` — fully wired payment link UI
 
 **Issues found:**
@@ -310,11 +310,11 @@
 
 | Secret | Key | Risk |
 |--------|-----|------|
-| `OPENAI_API_KEY` | `sk-proj-_0bkSeG8KV...` | Billing abuse if leaked |
-| `GROQ_API_KEY` | `gsk_rOvL2Cl8...` | Rate-limit abuse |
-| `WA_TOKEN` | `EAATP7PM2mqk...` | WhatsApp account takeover |
-| `TELEGRAM_TOKEN` | `8331241020:AAE4...` | Bot hijack |
-| `RAZORPAY_KEY_ID` + `KEY_SECRET` | `rzp_live_Sxy6...` | Payment fraud |
+| `OPENAI_API_KEY` | `sk-proj-REDACTED_ROTATE_NOW...` | Billing abuse if leaked |
+| `GROQ_API_KEY` | `gsk_REDACTED_ROTATE_NOW...` | Rate-limit abuse |
+| `WA_TOKEN` | `EAATP7_REDACTED_ROTATE_NOW...` | WhatsApp account takeover |
+| `TELEGRAM_TOKEN` | `TELEGRAM_ID_REDACTED...` | Bot hijack |
+| `RAZORPAY_KEY_ID` + `KEY_SECRET` | `rzp_live_REDACTED_ROTATE_NOW...` | Payment fraud |
 | `JWT_SECRET` | `5028b288...` | Session forgery |
 | `OPERATOR_PASSWORD_HASH` | `2104a14b...` | Full operator access |
 

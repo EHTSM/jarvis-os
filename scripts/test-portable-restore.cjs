@@ -36,8 +36,12 @@ async function validatePortability() {
     execSync(`tar -xzf "${latest}" -C "${tmpRestore}"`);
     const snapDir = path.join(tmpRestore, fs.readdirSync(tmpRestore)[0]);
     
-    // Copy only essential data/config
-    fs.copyFileSync(path.join(snapDir, '.env.bak'), path.join(FRESH_VPS_DIR, '.env'));
+    // Copy only data — .env is never in the archive (secrets excluded by design).
+    // Restore: provision .env separately via secrets manager before starting the process.
+    const envBakPath = path.join(snapDir, '.env.bak');
+    if (fs.existsSync(envBakPath)) {
+        throw new Error('SECURITY: .env.bak found in backup archive — backup script must not include secrets. Regenerate backup with fixed safe-backup.cjs.');
+    }
     fs.copyFileSync(path.join(snapDir, 'task-queue.json'), path.join(FRESH_VPS_DIR, 'data/task-queue.json'));
     fs.copyFileSync(path.join(snapDir, 'jarvis.db'), path.join(FRESH_VPS_DIR, 'data/jarvis.db'));
 

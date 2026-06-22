@@ -91,7 +91,7 @@ ALLOWED_ORIGINS=https://app.ooplix.com
 
 **Code is correct — verified:**
 - `paymentService.js` — Razorpay dual key support confirmed (`RAZORPAY_KEY_ID` + `RAZORPAY_KEY_SECRET`)
-- Live keys present: `rzp_live_Sxy6LoCiIKxSid` / `ypodMiAGj40jYFzqlR3bG9KV`
+- Live keys present: `rzp_live_REDACTED_ROTATE_NOW` / `RAZORPAY_SECRET_REDACTED`
 - `POST /payment/link` route exists, behind `requireAuth`
 - `PaymentsV2.jsx` correctly calls `generatePaymentLink()`
 - Webhook callback URL correctly uses validated `_baseUrl`
@@ -223,7 +223,7 @@ GET http://localhost:5050/health
 
 **AI Router implementation verified:**
 - Provider order: `groq → openrouter → openai → ollama` (LLM_PROVIDER=groq in .env)
-- `GROQ_API_KEY=gsk_rOvL2Cl8...` — set
+- `GROQ_API_KEY=gsk_REDACTED_ROTATE_NOW...` — set
 - Retry logic: 1 retry on ECONNRESET, ECONNREFUSED, ETIMEDOUT, ENOTFOUND, 429, 503
 - Per-provider timeouts: Groq 20s, OpenRouter 25s, OpenAI 20s, Ollama 30s
 - `getAIStatus()` — parallel health probes with 6s race cap

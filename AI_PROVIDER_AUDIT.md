@@ -38,7 +38,7 @@ async function _groq(messages, model) {
 **Configuration** — `.env`:
 ```
 LLM_PROVIDER=groq
-GROQ_API_KEY=gsk_rOvL2Cl8... (live key, present)
+GROQ_API_KEY=gsk_REDACTED_ROTATE_NOW... (live key, present)
 ```
 
 **Config module** — `backend/config/index.js`:
@@ -91,7 +91,7 @@ async function _openai(messages, model) {
 
 **Configuration** — `.env`:
 ```
-OPENAI_API_KEY=sk-proj-_0bkSeG8... (live key, present)
+OPENAI_API_KEY=sk-proj-REDACTED_ROTATE_NOW... (live key, present)
 ```
 
 **Role in router** — index 1 in waterfall; fallback if Groq fails.

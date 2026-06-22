@@ -45,7 +45,7 @@ Method: Live server validation at localhost:5050 + direct API tests + /oauth/sta
 | Variable | Status | Live Test Result |
 |---|---|---|
 | `LLM_PROVIDER` | `groq` | Route: Groq → OpenAI fallback → Ollama |
-| `GROQ_API_KEY` | `gsk_rOv…` (set) | Live test: `POST /jarvis {"input":"respond with exactly: GROQ_OK"}` → `{"reply":"GROQ_OK","success":true}` |
+| `GROQ_API_KEY` | `gsk_REDACTED…` (set) | Live test: `POST /jarvis {"input":"respond with exactly: GROQ_OK"}` → `{"reply":"GROQ_OK","success":true}` |
 | `OPENAI_API_KEY` | Set (fallback only) | Used if Groq fails |
 | `OPENROUTER_API_KEY` | **NOT SET** | Tool execution via OpenRouter unavailable. Set to enable /p19/tools/openrouter/execute |
 
@@ -98,7 +98,7 @@ Method: Live server validation at localhost:5050 + direct API tests + /oauth/sta
 
 | Variable | Status | Verified |
 |---|---|---|
-| `TELEGRAM_TOKEN` | Set (8331241020:AAE4…) | `/health` → `services.telegram: true` |
+| `TELEGRAM_TOKEN` | Set (TELEGRAM_ID_REDACTED…) | `/health` → `services.telegram: true` |
 | `TELEGRAM_CHAT_ID` | `@Alwaliy_Technologies_Jarvis_Bot` | Set |
 | `TELEGRAM_OPERATOR_CHAT_ID` | **NOT SET** | Bot alerts work; personal DM alerts disabled |
 

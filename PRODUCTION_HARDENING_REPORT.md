@@ -173,13 +173,13 @@ const inElectron = isElectronShell();
 
 | Secret | Current Value (prefix) | Where to Rotate | Risk if Not Rotated |
 |--------|------------------------|-----------------|---------------------|
-| `RAZORPAY_KEY_ID` | `rzp_live_Sxy6...` | Razorpay Dashboard → Settings → API Keys → Regenerate | Attacker can read payment data |
-| `RAZORPAY_KEY_SECRET` | `ypodMiAGj40j...` | Same as above (regenerate both together) | Attacker can create payment links charged to your account |
+| `RAZORPAY_KEY_ID` | `rzp_live_REDACTED_ROTATE_NOW...` | Razorpay Dashboard → Settings → API Keys → Regenerate | Attacker can read payment data |
+| `RAZORPAY_KEY_SECRET` | `RAZORPAY_SECRET_REDACTED...` | Same as above (regenerate both together) | Attacker can create payment links charged to your account |
 | `RAZORPAY_WEBHOOK_SECRET` | `jarvis_ooplix_2026...` | Razorpay Dashboard → Webhooks → Update secret | Attacker can forge payment webhooks |
-| `WA_TOKEN` | `EAATP7PM2mqk...` | Meta Business Suite → WhatsApp → System Users → Regenerate | Attacker can send WhatsApp messages from your number |
-| `OPENAI_API_KEY` | `sk-proj-_0bkSe...` | platform.openai.com → API Keys → Revoke + New | Attacker can run API calls billed to your account |
-| `GROQ_API_KEY` | `gsk_rOvL2Cl8...` | console.groq.com → API Keys → Revoke + New | Attacker can run inference billed to your account |
-| `TELEGRAM_TOKEN` | `8331241020:AAE4...` | Telegram @BotFather → /revoke → /token | Attacker can impersonate your Telegram bot |
+| `WA_TOKEN` | `EAATP7_REDACTED_ROTATE_NOW...` | Meta Business Suite → WhatsApp → System Users → Regenerate | Attacker can send WhatsApp messages from your number |
+| `OPENAI_API_KEY` | `sk-proj-REDACTED_ROTATE_NOW...` | platform.openai.com → API Keys → Revoke + New | Attacker can run API calls billed to your account |
+| `GROQ_API_KEY` | `gsk_REDACTED_ROTATE_NOW...` | console.groq.com → API Keys → Revoke + New | Attacker can run inference billed to your account |
+| `TELEGRAM_TOKEN` | `TELEGRAM_ID_REDACTED...` | Telegram @BotFather → /revoke → /token | Attacker can impersonate your Telegram bot |
 
 ### Priority 2 — ROTATE BEFORE LAUNCH (auth + session integrity)
 

@@ -19,10 +19,22 @@ async function runBackup() {
     if (!fs.existsSync(BACKUP_DIR)) fs.mkdirSync(BACKUP_DIR);
     fs.mkdirSync(SNAP_DIR);
 
-    // 1. Snapshot .env (Critical Config)
-    if (fs.existsSync(path.join(APP_DIR, '.env'))) {
-        fs.copyFileSync(path.join(APP_DIR, '.env'), path.join(SNAP_DIR, '.env.bak'));
-        console.log('[+] .env snapshot: OK');
+    // 1. .env is intentionally NOT backed up — it contains live secrets.
+    // Restore procedure: provision .env separately via secrets manager / secure channel.
+    // Only non-secret config keys are recorded for reference.
+    const envPath = path.join(APP_DIR, '.env');
+    if (fs.existsSync(envPath)) {
+        const NON_SECRET_KEYS = ['PORT','NODE_ENV','BASE_URL','APP_URL','ALLOWED_ORIGINS',
+            'LLM_PROVIDER','WA_API_VERSION','WA_BUSINESS_ACCOUNT_ID','REACT_APP_API_URL',
+            'DISABLE_X_POWERED_BY','COOKIE_DOMAIN','N8N_URL','LOG_LEVEL'];
+        const lines = fs.readFileSync(envPath, 'utf8').split('\n');
+        const safe  = lines.filter(l => {
+            const key = l.split('=')[0].replace(/^#\s*/, '');
+            return l.startsWith('#') || l.trim() === '' || NON_SECRET_KEYS.includes(key);
+        });
+        fs.writeFileSync(path.join(SNAP_DIR, 'env-config-nonsecret.txt'),
+            '# Non-secret config keys only — secrets intentionally excluded\n' + safe.join('\n'));
+        console.log('[+] env config (non-secret only): OK');
     }
 
     // 2. Snapshot JSON Task Queue (Authority)
