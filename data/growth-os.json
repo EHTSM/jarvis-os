@@ -1,0 +1,566 @@
+{
+  "campaigns": {
+    "ecm-1781938783535-po84l": {
+      "name": "Benchmark Email",
+      "subject": "Test",
+      "fromName": "Ooplix",
+      "fromEmail": "test@ooplix.com",
+      "replyTo": "",
+      "templateId": "tpl-1781938783536-9upod",
+      "audienceId": null,
+      "scheduledAt": null,
+      "status": "sent",
+      "abTest": false,
+      "variantB": null,
+      "stats": {
+        "sent": 8,
+        "delivered": 8,
+        "opened": 2,
+        "clicked": 0,
+        "bounced": 0,
+        "unsubscribed": 0,
+        "converted": 0,
+        "revenue": 0
+      },
+      "id": "ecm-1781938783535-po84l",
+      "type": "email",
+      "createdAt": "2026-06-20T06:59:43.535Z",
+      "updatedAt": "2026-06-20T06:59:43.536Z",
+      "sentAt": "2026-06-20T06:59:43.536Z"
+    },
+    "sms-1781938783537-kh1q8": {
+      "id": "sms-1781938783537-kh1q8",
+      "type": "sms",
+      "name": "Benchmark SMS",
+      "body": "Test message",
+      "senderId": "OOPLIX",
+      "audienceId": null,
+      "scheduledAt": null,
+      "otp": false,
+      "bulk": true,
+      "templateId": null,
+      "status": "sent",
+      "stats": {
+        "sent": 8,
+        "delivered": 8,
+        "failed": 0,
+        "replies": 0
+      },
+      "createdAt": "2026-06-20T06:59:43.537Z",
+      "updatedAt": "2026-06-20T06:59:43.537Z",
+      "sentAt": "2026-06-20T06:59:43.537Z"
+    },
+    "wa-1781938783537-rlhk8": {
+      "id": "wa-1781938783537-rlhk8",
+      "type": "whatsapp",
+      "name": "Benchmark WA",
+      "templateId": null,
+      "body": "Hello {{name}}",
+      "media": null,
+      "audienceId": null,
+      "flow": false,
+      "catalogId": null,
+      "scheduledAt": null,
+      "autoReply": null,
+      "leadQualification": null,
+      "status": "sent",
+      "stats": {
+        "sent": 8,
+        "delivered": 8,
+        "read": 6,
+        "replied": 1,
+        "leads": 0
+      },
+      "createdAt": "2026-06-20T06:59:43.537Z",
+      "updatedAt": "2026-06-20T06:59:43.537Z",
+      "sentAt": "2026-06-20T06:59:43.537Z"
+    },
+    "push-1781938783537-7jbg2": {
+      "id": "push-1781938783537-7jbg2",
+      "type": "push",
+      "title": "Test",
+      "body": "Bench push",
+      "icon": null,
+      "url": null,
+      "audienceId": null,
+      "trigger": "benchmark",
+      "data": {},
+      "status": "sent",
+      "sentAt": "2026-06-20T06:59:43.537Z",
+      "stats": {
+        "targeted": 0,
+        "sent": 0,
+        "clicked": 0
+      },
+      "createdAt": "2026-06-20T06:59:43.537Z"
+    },
+    "ecm-1781938783538-k3ghf": {
+      "name": "Analytics Bench",
+      "subject": "",
+      "fromName": "",
+      "fromEmail": "",
+      "replyTo": "",
+      "templateId": null,
+      "audienceId": null,
+      "scheduledAt": null,
+      "status": "sent",
+      "abTest": false,
+      "variantB": null,
+      "stats": {
+        "sent": 8,
+        "delivered": 8,
+        "opened": 2,
+        "clicked": 0,
+        "bounced": 0,
+        "unsubscribed": 0,
+        "converted": 1,
+        "revenue": 999
+      },
+      "id": "ecm-1781938783538-k3ghf",
+      "type": "email",
+      "createdAt": "2026-06-20T06:59:43.538Z",
+      "updatedAt": "2026-06-20T06:59:43.538Z",
+      "sentAt": "2026-06-20T06:59:43.538Z"
+    },
+    "ecm-1781976204596-qkvrt": {
+      "name": "Benchmark Email",
+      "subject": "Test",
+      "fromName": "Ooplix",
+      "fromEmail": "test@ooplix.com",
+      "replyTo": "",
+      "templateId": "tpl-1781976204602-6ku3u",
+      "audienceId": null,
+      "scheduledAt": null,
+      "status": "sent",
+      "abTest": true,
+      "variantB": {
+        "subject": "Test B"
+      },
+      "segmentation": null,
+      "stats": {
+        "sent": 4,
+        "delivered": 8,
+        "opened": 2,
+        "clicked": 0,
+        "bounced": 0,
+        "unsubscribed": 0,
+        "converted": 0,
+        "revenue": 0
+      },
+      "variantBStats": {
+        "sent": 4,
+        "opened": 1,
+        "clicked": 0
+      },
+      "id": "ecm-1781976204596-qkvrt",
+      "type": "email",
+      "createdAt": "2026-06-20T17:23:24.596Z",
+      "updatedAt": "2026-06-20T17:23:24.602Z",
+      "sentAt": "2026-06-20T17:23:24.602Z"
+    },
+    "sms-1781976204603-6kbau": {
+      "id": "sms-1781976204603-6kbau",
+      "type": "sms",
+      "name": "Benchmark SMS",
+      "body": "Test message",
+      "senderId": "OOPLIX",
+      "audienceId": null,
+      "scheduledAt": "2026-06-21T17:23:24.603Z",
+      "otp": false,
+      "bulk": true,
+      "templateId": null,
+      "unicode": false,
+      "status": "sent",
+      "stats": {
+        "sent": 8,
+        "delivered": 8,
+        "failed": 0,
+        "replies": 0
+      },
+      "createdAt": "2026-06-20T17:23:24.603Z",
+      "updatedAt": "2026-06-20T17:23:24.603Z",
+      "sentAt": "2026-06-20T17:23:24.603Z"
+    },
+    "wa-1781976204604-7t8g3": {
+      "id": "wa-1781976204604-7t8g3",
+      "type": "whatsapp",
+      "name": "Benchmark WA",
+      "templateId": null,
+      "body": "Hello {{name}}",
+      "media": null,
+      "audienceId": null,
+      "flowId": null,
+      "catalogId": null,
+      "scheduledAt": null,
+      "autoReply": {},
+      "leadQualification": null,
+      "status": "sent",
+      "stats": {
+        "sent": 8,
+        "delivered": 8,
+        "read": 6,
+        "replied": 1,
+        "leads": 0,
+        "optOut": 0
+      },
+      "createdAt": "2026-06-20T17:23:24.604Z",
+      "updatedAt": "2026-06-20T17:23:24.604Z",
+      "sentAt": "2026-06-20T17:23:24.604Z"
+    },
+    "push-1781976204605-2ndoi": {
+      "id": "push-1781976204605-2ndoi",
+      "type": "push",
+      "title": "Test",
+      "body": "Bench push",
+      "icon": null,
+      "url": null,
+      "audienceId": null,
+      "trigger": "benchmark",
+      "automationId": null,
+      "data": {},
+      "status": "sent",
+      "sentAt": "2026-06-20T17:23:24.605Z",
+      "stats": {
+        "targeted": 0,
+        "sent": 0,
+        "clicked": 0,
+        "dismissed": 0
+      },
+      "createdAt": "2026-06-20T17:23:24.605Z"
+    },
+    "ecm-1781976204608-1yple": {
+      "name": "Analytics Bench",
+      "subject": "",
+      "fromName": "",
+      "fromEmail": "",
+      "replyTo": "",
+      "templateId": null,
+      "audienceId": null,
+      "scheduledAt": null,
+      "status": "sent",
+      "abTest": false,
+      "variantB": null,
+      "segmentation": null,
+      "stats": {
+        "sent": 8,
+        "delivered": 8,
+        "opened": 2,
+        "clicked": 0,
+        "bounced": 0,
+        "unsubscribed": 0,
+        "converted": 1,
+        "revenue": 999
+      },
+      "variantBStats": {
+        "sent": 0,
+        "opened": 0,
+        "clicked": 0
+      },
+      "id": "ecm-1781976204608-1yple",
+      "type": "email",
+      "createdAt": "2026-06-20T17:23:24.608Z",
+      "updatedAt": "2026-06-20T17:23:24.608Z",
+      "sentAt": "2026-06-20T17:23:24.608Z"
+    }
+  },
+  "sequences": {
+    "seq-1781976204603-3i74d": {
+      "id": "seq-1781976204603-3i74d",
+      "name": "Bench Seq",
+      "description": "",
+      "steps": [
+        {
+          "delayDays": 1,
+          "subject": "Follow up"
+        },
+        {
+          "delayDays": 3,
+          "subject": "Final push"
+        }
+      ],
+      "audienceId": null,
+      "triggerEvent": "contact_created",
+      "status": "active",
+      "stats": {
+        "enrolled": 0,
+        "completed": 0,
+        "dropped": 0
+      },
+      "createdAt": "2026-06-20T17:23:24.603Z",
+      "updatedAt": "2026-06-20T17:23:24.603Z"
+    }
+  },
+  "templates": {
+    "tpl-1781938783536-9upod": {
+      "id": "tpl-1781938783536-9upod",
+      "builtin": false,
+      "type": "email",
+      "category": "Test",
+      "name": "Bench Tpl",
+      "subject": "",
+      "body": "Hi {{name}}",
+      "variables": [],
+      "createdAt": "2026-06-20T06:59:43.536Z"
+    },
+    "tpl-1781976204602-6ku3u": {
+      "id": "tpl-1781976204602-6ku3u",
+      "builtin": false,
+      "type": "email",
+      "category": "Test",
+      "name": "Bench Tpl",
+      "subject": "",
+      "body": "Hi {{name}}",
+      "variables": [],
+      "createdAt": "2026-06-20T17:23:24.602Z"
+    }
+  },
+  "audiences": {
+    "aud-1781938783538-6x4kd": {
+      "id": "aud-1781938783538-6x4kd",
+      "name": "Bench List",
+      "description": "",
+      "type": "list",
+      "tags": [],
+      "memberIds": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "memberCount": 3,
+      "filters": [],
+      "syncFromCRM": false,
+      "createdAt": "2026-06-20T06:59:43.538Z",
+      "updatedAt": "2026-06-20T06:59:43.538Z"
+    },
+    "aud-1781938783539-dm7l4": {
+      "id": "aud-1781938783539-dm7l4",
+      "name": "CRM Sync Bench",
+      "description": "",
+      "type": "list",
+      "tags": [],
+      "memberIds": [],
+      "memberCount": 0,
+      "filters": [],
+      "syncFromCRM": true,
+      "createdAt": "2026-06-20T06:59:43.539Z",
+      "updatedAt": "2026-06-20T06:59:43.539Z"
+    },
+    "aud-1781976204606-tl44r": {
+      "id": "aud-1781976204606-tl44r",
+      "name": "Bench List",
+      "description": "",
+      "type": "list",
+      "tags": [],
+      "memberIds": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "memberCount": 3,
+      "filters": [],
+      "syncFromCRM": false,
+      "createdAt": "2026-06-20T17:23:24.606Z",
+      "updatedAt": "2026-06-20T17:23:24.608Z"
+    },
+    "aud-1781976204607-4c80h": {
+      "id": "aud-1781976204607-4c80h",
+      "name": "Bench Segment",
+      "description": "",
+      "type": "segment",
+      "tags": [],
+      "memberIds": [],
+      "memberCount": 0,
+      "filters": [
+        {
+          "field": "status",
+          "op": "equals",
+          "value": "new"
+        }
+      ],
+      "syncFromCRM": false,
+      "createdAt": "2026-06-20T17:23:24.607Z",
+      "updatedAt": "2026-06-20T17:23:24.607Z"
+    },
+    "aud-1781976204607-8sukc": {
+      "id": "aud-1781976204607-8sukc",
+      "name": "Bench Dynamic",
+      "description": "",
+      "type": "dynamic",
+      "tags": [],
+      "memberIds": [],
+      "memberCount": 0,
+      "filters": [
+        {
+          "field": "source",
+          "op": "equals",
+          "value": "web"
+        }
+      ],
+      "syncFromCRM": false,
+      "createdAt": "2026-06-20T17:23:24.607Z",
+      "updatedAt": "2026-06-20T17:23:24.607Z"
+    }
+  },
+  "automations": {
+    "auto-1781938783538-26zrv": {
+      "id": "auto-1781938783538-26zrv",
+      "name": "Benchmark Auto",
+      "description": "",
+      "trigger": {
+        "type": "contact_created"
+      },
+      "steps": [
+        {
+          "type": "send_email",
+          "config": {
+            "templateId": null
+          }
+        },
+        {
+          "type": "wait",
+          "config": {
+            "days": 1
+          }
+        }
+      ],
+      "status": "active",
+      "stats": {
+        "enrolled": 1,
+        "completed": 0,
+        "inProgress": 1,
+        "errors": 0
+      },
+      "createdAt": "2026-06-20T06:59:43.538Z",
+      "updatedAt": "2026-06-20T06:59:43.538Z"
+    },
+    "auto-1781976204606-e3z21": {
+      "id": "auto-1781976204606-e3z21",
+      "name": "Benchmark Auto",
+      "description": "",
+      "trigger": {
+        "type": "contact_created"
+      },
+      "steps": [
+        {
+          "type": "send_email",
+          "config": {
+            "templateId": null
+          }
+        },
+        {
+          "type": "wait",
+          "config": {
+            "days": 1
+          }
+        },
+        {
+          "type": "condition",
+          "config": {
+            "field": "opened",
+            "op": "equals",
+            "value": true
+          }
+        },
+        {
+          "type": "add_tag",
+          "config": {
+            "tag": "engaged"
+          }
+        }
+      ],
+      "status": "active",
+      "stats": {
+        "enrolled": 1,
+        "completed": 0,
+        "inProgress": 1,
+        "errors": 0
+      },
+      "createdAt": "2026-06-20T17:23:24.606Z",
+      "updatedAt": "2026-06-20T17:23:24.606Z"
+    }
+  },
+  "events": [
+    {
+      "type": "conversion",
+      "campaignId": "ecm-1781938783538-k3ghf",
+      "revenue": 999,
+      "contactId": "c1",
+      "ts": "2026-06-20T06:59:43.539Z"
+    },
+    {
+      "type": "otp_sent",
+      "to": "+911234567890",
+      "otp": "****",
+      "ts": "2026-06-20T17:23:24.604Z"
+    },
+    {
+      "type": "conversion",
+      "campaignId": "ecm-1781976204608-1yple",
+      "revenue": 999,
+      "contactId": "c1",
+      "ts": "2026-06-20T17:23:24.608Z"
+    }
+  ],
+  "pushTokens": {},
+  "waFlows": {
+    "waf-1781976204604-okiuh": {
+      "id": "waf-1781976204604-okiuh",
+      "name": "Bench Flow",
+      "steps": [
+        {
+          "type": "text",
+          "content": "Welcome!"
+        }
+      ],
+      "trigger": "keyword",
+      "keyword": "START",
+      "active": true,
+      "stats": {
+        "initiated": 0,
+        "completed": 0,
+        "dropped": 0
+      },
+      "createdAt": "2026-06-20T17:23:24.604Z",
+      "updatedAt": "2026-06-20T17:23:24.604Z"
+    }
+  },
+  "autoReplies": {
+    "ar-1781976204605-tjiaf": {
+      "id": "ar-1781976204605-tjiaf",
+      "keyword": "HELP",
+      "matchType": "exact",
+      "reply": "Here to help!",
+      "active": true,
+      "stats": {
+        "triggered": 0
+      },
+      "createdAt": "2026-06-20T17:23:24.605Z"
+    }
+  },
+  "pushTriggers": {
+    "pt-1781976204605-zouvr": {
+      "id": "pt-1781976204605-zouvr",
+      "name": "Page Visit",
+      "event": "page_visit",
+      "conditions": [],
+      "template": {
+        "title": "You visited!",
+        "body": "Come back!"
+      },
+      "active": true,
+      "stats": {
+        "fired": 0
+      },
+      "createdAt": "2026-06-20T17:23:24.605Z"
+    }
+  },
+  "tags": {
+    "tag-vip": {
+      "id": "tag-vip",
+      "name": "vip",
+      "color": "#22c55e",
+      "count": 0,
+      "createdAt": "2026-06-20T17:23:24.608Z"
+    }
+  }
+}

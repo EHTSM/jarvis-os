@@ -1,0 +1,33 @@
+{
+  "id": "sess-mqjnyckh-5j8",
+  "goal": "deploy and validate backend api",
+  "label": "deploy and validate backend api",
+  "state": "abandoned",
+  "createdAt": 1781797041953,
+  "updatedAt": 1781797041955,
+  "heartbeat": 1781797041953,
+  "workflows": [],
+  "validationLog": [],
+  "recoveryLog": [],
+  "timeline": [
+    {
+      "type": "session-created",
+      "ts": 1781797041953,
+      "goal": "deploy and validate backend api"
+    },
+    {
+      "type": "state-abandoned",
+      "ts": 1781797041955,
+      "reason": "test cleanup"
+    }
+  ],
+  "runtimeState": null,
+  "blockedAt": null,
+  "executionConfidence": 100,
+  "degradationState": "healthy",
+  "activeChain": null,
+  "meta": {
+    "tags": [],
+    "triggeredBy": "operator"
+  }
+}

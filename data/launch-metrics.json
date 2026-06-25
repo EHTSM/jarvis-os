@@ -1,0 +1,84 @@
+{
+  "snapshots": [
+    {
+      "ts": "2026-06-21T07:18:40.128Z",
+      "users": {
+        "total": 15,
+        "beta": 0,
+        "activeWeek": 0,
+        "activeMonth": 0
+      },
+      "revenue": {
+        "mrrInr": 999,
+        "mrrUsd": 12,
+        "arrUsd": 144,
+        "byPlan": {
+          "trial": 21,
+          "starter": 1,
+          "growth": 0,
+          "scale": 0
+        }
+      },
+      "ai": {
+        "totalCreditsUsed": 0,
+        "totalAiRequests": 0
+      },
+      "retention": {
+        "day7": 0,
+        "day30": 0
+      },
+      "activation": {
+        "activated": 0,
+        "total": 4,
+        "rate": 0
+      },
+      "nps": {
+        "score": null,
+        "promoters": 0,
+        "detractors": 0,
+        "passives": 0,
+        "responses": 0
+      }
+    },
+    {
+      "ts": "2026-06-21T06:26:31.509Z",
+      "users": {
+        "total": 15,
+        "beta": 0,
+        "activeWeek": 0,
+        "activeMonth": 0
+      },
+      "revenue": {
+        "mrrInr": 999,
+        "mrrUsd": 12,
+        "arrUsd": 144,
+        "byPlan": {
+          "trial": 21,
+          "starter": 1,
+          "growth": 0,
+          "scale": 0
+        }
+      },
+      "ai": {
+        "totalCreditsUsed": 0,
+        "totalAiRequests": 0
+      },
+      "retention": {
+        "day7": 0,
+        "day30": 0
+      },
+      "activation": {
+        "activated": 0,
+        "total": 4,
+        "rate": 0
+      },
+      "nps": {
+        "score": null,
+        "promoters": 0,
+        "detractors": 0,
+        "passives": 0,
+        "responses": 0
+      }
+    }
+  ]
+}

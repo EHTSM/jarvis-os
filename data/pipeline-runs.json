@@ -1,73 +1,5 @@
 [
   {
-    "id": "run-mpfvdh9b-ecb",
-    "pipeline": "standard-deploy",
-    "operatorId": null,
-    "sessionId": null,
-    "approved": false,
-    "dryRun": false,
-    "state": "rolled-back",
-    "createdAt": 1779390858143,
-    "startedAt": null,
-    "completedAt": 1779390858144,
-    "stages": [
-      {
-        "name": "preflight",
-        "chain": "deployment-readiness",
-        "state": "pending",
-        "result": null
-      },
-      {
-        "name": "deploy",
-        "chain": "deploy-update",
-        "state": "pending",
-        "result": null
-      },
-      {
-        "name": "verify",
-        "chain": "health-check",
-        "state": "pending",
-        "result": null
-      }
-    ],
-    "rollbackTriggered": true,
-    "auditLog": [
-      {
-        "ts": 1779390858144,
-        "event": "rollback",
-        "reason": "simulated interruption"
-      }
-    ]
-  },
-  {
-    "id": "run-mpfvdlbe-3gj",
-    "pipeline": "safe-update",
-    "operatorId": null,
-    "sessionId": null,
-    "approved": false,
-    "dryRun": false,
-    "state": "pending",
-    "createdAt": 1779390863402,
-    "startedAt": null,
-    "completedAt": null,
-    "stages": [
-      {
-        "name": "git-update",
-        "chain": "git-safe-update",
-        "state": "pending",
-        "result": null
-      },
-      {
-        "name": "health-check",
-        "chain": "health-check",
-        "state": "pending",
-        "result": null
-      }
-    ],
-    "rollbackTriggered": false,
-    "auditLog": []
-  },
-  {
     "id": "run-mpfvdlbf-qns",
     "pipeline": "standard-deploy",
     "operatorId": null,
@@ -648,5 +580,73 @@
     ],
     "rollbackTriggered": false,
     "auditLog": []
+  },
+  {
+    "id": "run-mqjnyckm-j98",
+    "pipeline": "safe-update",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "pending",
+    "createdAt": 1781797041958,
+    "startedAt": null,
+    "completedAt": null,
+    "stages": [
+      {
+        "name": "git-update",
+        "chain": "git-safe-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "health-check",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": false,
+    "auditLog": []
+  },
+  {
+    "id": "run-mqjnycko-8ht",
+    "pipeline": "standard-deploy",
+    "operatorId": null,
+    "sessionId": null,
+    "approved": false,
+    "dryRun": false,
+    "state": "rolled-back",
+    "createdAt": 1781797041960,
+    "startedAt": null,
+    "completedAt": 1781797041960,
+    "stages": [
+      {
+        "name": "preflight",
+        "chain": "deployment-readiness",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "deploy",
+        "chain": "deploy-update",
+        "state": "pending",
+        "result": null
+      },
+      {
+        "name": "verify",
+        "chain": "health-check",
+        "state": "pending",
+        "result": null
+      }
+    ],
+    "rollbackTriggered": true,
+    "auditLog": [
+      {
+        "ts": 1781797041960,
+        "event": "rollback",
+        "reason": "simulated interruption"
+      }
+    ]
   }
 ]

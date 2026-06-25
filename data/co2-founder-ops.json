@@ -20,6 +20,23 @@
       "notes": "benchmark run",
       "fixRequired": false,
       "loggedAt": "2026-06-21T06:13:07.246Z"
+    },
+    {
+      "id": "dogfood-1782022903496-urj7",
+      "date": "2026-06-21",
+      "module": "Production Ops",
+      "duration": 30,
+      "escapes": [],
+      "tasks": [
+        "benchmark_test"
+      ],
+      "completions": [
+        "benchmark_test"
+      ],
+      "rating": 5,
+      "notes": "benchmark run",
+      "fixRequired": false,
+      "loggedAt": "2026-06-21T06:21:43.496Z"
     }
   ],
   "qaRuns": [
@@ -835,6 +852,819 @@
       "coveragePct": 4,
       "notes": {},
       "runAt": "2026-06-21T06:13:07.247Z"
+    },
+    {
+      "id": "qa-1782022903497-iwvk",
+      "results": [
+        {
+          "id": "auth",
+          "label": "Authentication & Sessions",
+          "checks": [
+            "login",
+            "logout",
+            "session_expiry",
+            "password_change",
+            "concurrent_sessions"
+          ],
+          "checkResults": [
+            {
+              "check": "login",
+              "pass": true,
+              "tested": true,
+              "note": ""
+            },
+            {
+              "check": "logout",
+              "pass": true,
+              "tested": true,
+              "note": ""
+            },
+            {
+              "check": "session_expiry",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "password_change",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "concurrent_sessions",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 5,
+          "tested": 2,
+          "passed": 2,
+          "score": 100,
+          "done": false
+        },
+        {
+          "id": "crm",
+          "label": "CRM & Lead Management",
+          "checks": [
+            "add_lead",
+            "edit_lead",
+            "delete_lead",
+            "lead_search",
+            "export"
+          ],
+          "checkResults": [
+            {
+              "check": "add_lead",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "edit_lead",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "delete_lead",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "lead_search",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "export",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 5,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "whatsapp",
+          "label": "WhatsApp Integration",
+          "checks": [
+            "send_message",
+            "receive_webhook",
+            "template_send",
+            "media_send",
+            "bot_reply"
+          ],
+          "checkResults": [
+            {
+              "check": "send_message",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "receive_webhook",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "template_send",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "media_send",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "bot_reply",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 5,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "telegram",
+          "label": "Telegram Integration",
+          "checks": [
+            "send_message",
+            "bot_webhook",
+            "commands",
+            "inline_keyboard"
+          ],
+          "checkResults": [
+            {
+              "check": "send_message",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "bot_webhook",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "commands",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "inline_keyboard",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 4,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "ai_chat",
+          "label": "AI Chat & Agent",
+          "checks": [
+            "basic_chat",
+            "context_memory",
+            "tool_use",
+            "code_execution",
+            "error_recovery"
+          ],
+          "checkResults": [
+            {
+              "check": "basic_chat",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "context_memory",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "tool_use",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "code_execution",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "error_recovery",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 5,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "missions",
+          "label": "Mission System",
+          "checks": [
+            "create_mission",
+            "execute_mission",
+            "pause_resume",
+            "timeline",
+            "rollback"
+          ],
+          "checkResults": [
+            {
+              "check": "create_mission",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "execute_mission",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "pause_resume",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "timeline",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "rollback",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 5,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "billing",
+          "label": "Billing & Subscriptions",
+          "checks": [
+            "trial_start",
+            "upgrade",
+            "downgrade",
+            "cancel",
+            "razorpay_webhook"
+          ],
+          "checkResults": [
+            {
+              "check": "trial_start",
+              "pass": true,
+              "tested": true,
+              "note": ""
+            },
+            {
+              "check": "upgrade",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "downgrade",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "cancel",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "razorpay_webhook",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 5,
+          "tested": 1,
+          "passed": 1,
+          "score": 100,
+          "done": false
+        },
+        {
+          "id": "analytics",
+          "label": "Analytics & Observability",
+          "checks": [
+            "dashboard_load",
+            "metrics_accuracy",
+            "export_report",
+            "real_time_update"
+          ],
+          "checkResults": [
+            {
+              "check": "dashboard_load",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "metrics_accuracy",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "export_report",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "real_time_update",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 4,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "workspace",
+          "label": "Code Workspace",
+          "checks": [
+            "file_explorer",
+            "editor_load",
+            "ai_assist",
+            "project_search",
+            "git_ops"
+          ],
+          "checkResults": [
+            {
+              "check": "file_explorer",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "editor_load",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "ai_assist",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "project_search",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "git_ops",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 5,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "browser_auto",
+          "label": "Browser Automation",
+          "checks": [
+            "launch_browser",
+            "navigate",
+            "scrape",
+            "form_fill",
+            "screenshot"
+          ],
+          "checkResults": [
+            {
+              "check": "launch_browser",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "navigate",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "scrape",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "form_fill",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "screenshot",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 5,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "creative",
+          "label": "Creative Studio",
+          "checks": [
+            "image_gen",
+            "content_gen",
+            "brand_voice",
+            "social_export"
+          ],
+          "checkResults": [
+            {
+              "check": "image_gen",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "content_gen",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "brand_voice",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "social_export",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 4,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "distribution",
+          "label": "Distribution Engine",
+          "checks": [
+            "create_campaign",
+            "publish_job",
+            "analytics",
+            "influencer"
+          ],
+          "checkResults": [
+            {
+              "check": "create_campaign",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "publish_job",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "analytics",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "influencer",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 4,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "revenue",
+          "label": "Revenue OS",
+          "checks": [
+            "dashboard",
+            "forecasting",
+            "churn_detection",
+            "affiliate"
+          ],
+          "checkResults": [
+            {
+              "check": "dashboard",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "forecasting",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "churn_detection",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "affiliate",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 4,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "ai_coding",
+          "label": "AI Coding Platform",
+          "checks": [
+            "ask_ai",
+            "patch_preview",
+            "apply_patch",
+            "repo_viz",
+            "evolution"
+          ],
+          "checkResults": [
+            {
+              "check": "ask_ai",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "patch_preview",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "apply_patch",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "repo_viz",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "evolution",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 5,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "security",
+          "label": "Security Layer",
+          "checks": [
+            "rate_limiting",
+            "auth_bypass_attempt",
+            "injection_attempt",
+            "session_revoke"
+          ],
+          "checkResults": [
+            {
+              "check": "rate_limiting",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "auth_bypass_attempt",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "injection_attempt",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "session_revoke",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 4,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "org_os",
+          "label": "Org OS & Team Management",
+          "checks": [
+            "create_org",
+            "add_member",
+            "rbac",
+            "mission_ownership"
+          ],
+          "checkResults": [
+            {
+              "check": "create_org",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "add_member",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "rbac",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "mission_ownership",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 4,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "knowledge_graph",
+          "label": "Knowledge Graph",
+          "checks": [
+            "add_node",
+            "traverse",
+            "impact_analysis",
+            "reasoning"
+          ],
+          "checkResults": [
+            {
+              "check": "add_node",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "traverse",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "impact_analysis",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "reasoning",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 4,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        },
+        {
+          "id": "prod_ops",
+          "label": "Production Ops Dashboard",
+          "checks": [
+            "github_audit",
+            "security_audit",
+            "launch_checklist",
+            "benchmark"
+          ],
+          "checkResults": [
+            {
+              "check": "github_audit",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "security_audit",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "launch_checklist",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            },
+            {
+              "check": "benchmark",
+              "pass": true,
+              "tested": false,
+              "note": ""
+            }
+          ],
+          "total": 4,
+          "tested": 0,
+          "passed": 0,
+          "score": null,
+          "done": false
+        }
+      ],
+      "total": 81,
+      "tested": 3,
+      "passed": 3,
+      "score": 100,
+      "coveragePct": 4,
+      "notes": {},
+      "runAt": "2026-06-21T06:21:43.497Z"
     }
   ],
   "bugRegistry": {
@@ -853,6 +1683,22 @@
       "fixNote": "benchmark verified",
       "reportedAt": "2026-06-21T06:13:07.247Z",
       "updatedAt": "2026-06-21T06:13:07.247Z"
+    },
+    "bug-1782022903497-xbzn": {
+      "id": "bug-1782022903497-xbzn",
+      "title": "Benchmark test bug",
+      "description": "",
+      "severity": "low",
+      "module": "benchmark",
+      "steps": [],
+      "expected": "",
+      "actual": "",
+      "source": "dogfood",
+      "status": "fixed",
+      "fixedAt": "2026-06-21T06:21:43.498Z",
+      "fixNote": "benchmark verified",
+      "reportedAt": "2026-06-21T06:21:43.497Z",
+      "updatedAt": "2026-06-21T06:21:43.498Z"
     }
   },
   "perfMeasurements": [
@@ -866,12 +1712,23 @@
       "conditions": "",
       "notes": "",
       "measuredAt": "2026-06-21T06:13:07.248Z"
+    },
+    {
+      "id": "perf-1782022903498-w1st",
+      "metric": "memory_idle",
+      "value": 48,
+      "unit": "mb",
+      "target": 400,
+      "pass": true,
+      "conditions": "",
+      "notes": "",
+      "measuredAt": "2026-06-21T06:21:43.498Z"
     }
   ],
   "readinessReport": {
-    "id": "rr-1782022387582-j0y8",
+    "id": "rr-1782022903825-qxdh",
     "version": "1.0",
-    "generatedAt": "2026-06-21T06:13:07.582Z",
+    "generatedAt": "2026-06-21T06:21:43.825Z",
     "overall": 38,
     "grade": "D",
     "dimensions": {
@@ -931,7 +1788,7 @@
         "smtpReady": false
       },
       "dogfood": {
-        "sessions": 1,
+        "sessions": 2,
         "days": 1,
         "escapes": 0
       },
@@ -940,13 +1797,13 @@
         "coverage": 4
       },
       "bugs": {
-        "total": 1,
+        "total": 2,
         "open": 0,
         "critical": 0,
         "fixRate": 100
       },
       "performance": {
-        "live_memory_mb": 46
+        "live_memory_mb": 48
       }
     },
     "recommendations": [
@@ -957,9 +1814,9 @@
     ]
   },
   "alphaReport": {
-    "id": "alpha-1782022387583-ja2y",
+    "id": "alpha-1782022903827-6ggu",
     "version": "1.0",
-    "generatedAt": "2026-06-21T06:13:07.583Z",
+    "generatedAt": "2026-06-21T06:21:43.827Z",
     "weightedScore": 45,
     "criteriaMet": 4,
     "criteriaTotal": 8,
@@ -1012,7 +1869,7 @@
         "label": "Memory <400MB at idle",
         "weight": 5,
         "met": true,
-        "value": "302MB RSS"
+        "value": "322MB RSS"
       },
       {
         "id": "security_grade_b",
@@ -1085,12 +1942,12 @@
       "billingLive": true,
       "dogfoodDays": 1,
       "totalEscapes": 0,
-      "totalBugs": 1,
+      "totalBugs": 2,
       "openBugs": 0,
       "criticalBugs": 0,
       "fixRate": 100,
       "qaCoverage": 4,
-      "memoryMB": 302,
+      "memoryMB": 322,
       "securityScore": 100
     },
     "blockers": [

@@ -1,1 +1,16 @@
-{}
+{
+  "default": {
+    "id": "default",
+    "name": "Default Workspace",
+    "description": "Primary workspace",
+    "createdAt": 1781549652870,
+    "updatedAt": 1781549652870,
+    "members": [],
+    "invitations": [],
+    "activity": [],
+    "settings": {
+      "visibility": "private",
+      "defaultRole": "Operator"
+    }
+  }
+}

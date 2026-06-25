@@ -1,1 +1,46 @@
-{}
+{
+  "test-k4b": {
+    "departments": [],
+    "profile": {
+      "workspaceId": "test-k4b",
+      "displayName": "",
+      "industry": "",
+      "size": "",
+      "website": "",
+      "description": "",
+      "country": "",
+      "timezone": "UTC",
+      "updatedAt": null
+    },
+    "quotas": {
+      "maxMembers": 50,
+      "maxDepartments": 20,
+      "maxApiTokens": 25,
+      "maxActiveSessions": 200,
+      "storageGb": 10
+    },
+    "memberMeta": {}
+  },
+  "default": {
+    "departments": [],
+    "profile": {
+      "workspaceId": "default",
+      "displayName": "",
+      "industry": "",
+      "size": "",
+      "website": "",
+      "description": "",
+      "country": "",
+      "timezone": "UTC",
+      "updatedAt": null
+    },
+    "quotas": {
+      "maxMembers": 50,
+      "maxDepartments": 20,
+      "maxApiTokens": 25,
+      "maxActiveSessions": 200,
+      "storageGb": 10
+    },
+    "memberMeta": {}
+  }
+}

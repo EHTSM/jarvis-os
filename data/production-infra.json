@@ -131,6 +131,1346 @@
       },
       "grade": "A",
       "ready": true,
+      "checkedAt": "2026-06-21T07:21:04.177Z",
+      "id": "sec-1782026464177-2v3b"
+    },
+    {
+      "score": 100,
+      "checks": [
+        {
+          "id": "no_secrets_in_git",
+          "label": "No secrets committed to git",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "env_gitignored",
+          "label": ".env in .gitignore",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_md",
+          "label": "SECURITY.md present",
+          "category": "policy",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "rate_limiting",
+          "label": "Rate limiting configured",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_headers",
+          "label": "Security headers in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "jwt_secret_strength",
+          "label": "JWT secret ≥32 chars",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "cors_configured",
+          "label": "CORS origin restriction",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "npm_audit_clean",
+          "label": "No critical npm vulnerabilities",
+          "category": "deps",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "auth_middleware",
+          "label": "requireAuth middleware exists",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "session_expiry",
+          "label": "Session expiry configured",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "csp_header",
+          "label": "CSP header configured",
+          "category": "headers",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "hsts_header",
+          "label": "HSTS header in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "injection_protection",
+          "label": "Input sanitization present",
+          "category": "injection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "no_eval_usage",
+          "label": "No eval() in source code",
+          "category": "code",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "dependency_lockfile",
+          "label": "package-lock.json committed",
+          "category": "deps",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        }
+      ],
+      "critical": {
+        "total": 11,
+        "passing": 11,
+        "failing": []
+      },
+      "grade": "A",
+      "ready": true,
+      "checkedAt": "2026-06-21T07:21:04.173Z",
+      "id": "sec-1782026464175-lye7"
+    },
+    {
+      "score": 100,
+      "checks": [
+        {
+          "id": "no_secrets_in_git",
+          "label": "No secrets committed to git",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "env_gitignored",
+          "label": ".env in .gitignore",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_md",
+          "label": "SECURITY.md present",
+          "category": "policy",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "rate_limiting",
+          "label": "Rate limiting configured",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_headers",
+          "label": "Security headers in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "jwt_secret_strength",
+          "label": "JWT secret ≥32 chars",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "cors_configured",
+          "label": "CORS origin restriction",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "npm_audit_clean",
+          "label": "No critical npm vulnerabilities",
+          "category": "deps",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "auth_middleware",
+          "label": "requireAuth middleware exists",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "session_expiry",
+          "label": "Session expiry configured",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "csp_header",
+          "label": "CSP header configured",
+          "category": "headers",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "hsts_header",
+          "label": "HSTS header in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "injection_protection",
+          "label": "Input sanitization present",
+          "category": "injection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "no_eval_usage",
+          "label": "No eval() in source code",
+          "category": "code",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "dependency_lockfile",
+          "label": "package-lock.json committed",
+          "category": "deps",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        }
+      ],
+      "critical": {
+        "total": 11,
+        "passing": 11,
+        "failing": []
+      },
+      "grade": "A",
+      "ready": true,
+      "checkedAt": "2026-06-21T06:21:43.827Z",
+      "id": "sec-1782022903827-wp4c"
+    },
+    {
+      "score": 100,
+      "checks": [
+        {
+          "id": "no_secrets_in_git",
+          "label": "No secrets committed to git",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "env_gitignored",
+          "label": ".env in .gitignore",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_md",
+          "label": "SECURITY.md present",
+          "category": "policy",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "rate_limiting",
+          "label": "Rate limiting configured",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_headers",
+          "label": "Security headers in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "jwt_secret_strength",
+          "label": "JWT secret ≥32 chars",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "cors_configured",
+          "label": "CORS origin restriction",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "npm_audit_clean",
+          "label": "No critical npm vulnerabilities",
+          "category": "deps",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "auth_middleware",
+          "label": "requireAuth middleware exists",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "session_expiry",
+          "label": "Session expiry configured",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "csp_header",
+          "label": "CSP header configured",
+          "category": "headers",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "hsts_header",
+          "label": "HSTS header in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "injection_protection",
+          "label": "Input sanitization present",
+          "category": "injection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "no_eval_usage",
+          "label": "No eval() in source code",
+          "category": "code",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "dependency_lockfile",
+          "label": "package-lock.json committed",
+          "category": "deps",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        }
+      ],
+      "critical": {
+        "total": 11,
+        "passing": 11,
+        "failing": []
+      },
+      "grade": "A",
+      "ready": true,
+      "checkedAt": "2026-06-21T06:21:43.824Z",
+      "id": "sec-1782022903824-f77x"
+    },
+    {
+      "score": 100,
+      "checks": [
+        {
+          "id": "no_secrets_in_git",
+          "label": "No secrets committed to git",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "env_gitignored",
+          "label": ".env in .gitignore",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_md",
+          "label": "SECURITY.md present",
+          "category": "policy",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "rate_limiting",
+          "label": "Rate limiting configured",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_headers",
+          "label": "Security headers in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "jwt_secret_strength",
+          "label": "JWT secret ≥32 chars",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "cors_configured",
+          "label": "CORS origin restriction",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "npm_audit_clean",
+          "label": "No critical npm vulnerabilities",
+          "category": "deps",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "auth_middleware",
+          "label": "requireAuth middleware exists",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "session_expiry",
+          "label": "Session expiry configured",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "csp_header",
+          "label": "CSP header configured",
+          "category": "headers",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "hsts_header",
+          "label": "HSTS header in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "injection_protection",
+          "label": "Input sanitization present",
+          "category": "injection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "no_eval_usage",
+          "label": "No eval() in source code",
+          "category": "code",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "dependency_lockfile",
+          "label": "package-lock.json committed",
+          "category": "deps",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        }
+      ],
+      "critical": {
+        "total": 11,
+        "passing": 11,
+        "failing": []
+      },
+      "grade": "A",
+      "ready": true,
+      "checkedAt": "2026-06-21T06:21:43.822Z",
+      "id": "sec-1782022903822-c98j"
+    },
+    {
+      "score": 100,
+      "checks": [
+        {
+          "id": "no_secrets_in_git",
+          "label": "No secrets committed to git",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "env_gitignored",
+          "label": ".env in .gitignore",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_md",
+          "label": "SECURITY.md present",
+          "category": "policy",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "rate_limiting",
+          "label": "Rate limiting configured",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_headers",
+          "label": "Security headers in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "jwt_secret_strength",
+          "label": "JWT secret ≥32 chars",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "cors_configured",
+          "label": "CORS origin restriction",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "npm_audit_clean",
+          "label": "No critical npm vulnerabilities",
+          "category": "deps",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "auth_middleware",
+          "label": "requireAuth middleware exists",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "session_expiry",
+          "label": "Session expiry configured",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "csp_header",
+          "label": "CSP header configured",
+          "category": "headers",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "hsts_header",
+          "label": "HSTS header in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "injection_protection",
+          "label": "Input sanitization present",
+          "category": "injection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "no_eval_usage",
+          "label": "No eval() in source code",
+          "category": "code",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "dependency_lockfile",
+          "label": "package-lock.json committed",
+          "category": "deps",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        }
+      ],
+      "critical": {
+        "total": 11,
+        "passing": 11,
+        "failing": []
+      },
+      "grade": "A",
+      "ready": true,
+      "checkedAt": "2026-06-21T06:13:07.583Z",
+      "id": "sec-1782022387583-cj86"
+    },
+    {
+      "score": 100,
+      "checks": [
+        {
+          "id": "no_secrets_in_git",
+          "label": "No secrets committed to git",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "env_gitignored",
+          "label": ".env in .gitignore",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_md",
+          "label": "SECURITY.md present",
+          "category": "policy",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "rate_limiting",
+          "label": "Rate limiting configured",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_headers",
+          "label": "Security headers in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "jwt_secret_strength",
+          "label": "JWT secret ≥32 chars",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "cors_configured",
+          "label": "CORS origin restriction",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "npm_audit_clean",
+          "label": "No critical npm vulnerabilities",
+          "category": "deps",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "auth_middleware",
+          "label": "requireAuth middleware exists",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "session_expiry",
+          "label": "Session expiry configured",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "csp_header",
+          "label": "CSP header configured",
+          "category": "headers",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "hsts_header",
+          "label": "HSTS header in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "injection_protection",
+          "label": "Input sanitization present",
+          "category": "injection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "no_eval_usage",
+          "label": "No eval() in source code",
+          "category": "code",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "dependency_lockfile",
+          "label": "package-lock.json committed",
+          "category": "deps",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        }
+      ],
+      "critical": {
+        "total": 11,
+        "passing": 11,
+        "failing": []
+      },
+      "grade": "A",
+      "ready": true,
+      "checkedAt": "2026-06-21T06:13:07.581Z",
+      "id": "sec-1782022387582-0l69"
+    },
+    {
+      "score": 100,
+      "checks": [
+        {
+          "id": "no_secrets_in_git",
+          "label": "No secrets committed to git",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "env_gitignored",
+          "label": ".env in .gitignore",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_md",
+          "label": "SECURITY.md present",
+          "category": "policy",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "rate_limiting",
+          "label": "Rate limiting configured",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_headers",
+          "label": "Security headers in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "jwt_secret_strength",
+          "label": "JWT secret ≥32 chars",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "cors_configured",
+          "label": "CORS origin restriction",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "npm_audit_clean",
+          "label": "No critical npm vulnerabilities",
+          "category": "deps",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "auth_middleware",
+          "label": "requireAuth middleware exists",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "session_expiry",
+          "label": "Session expiry configured",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "csp_header",
+          "label": "CSP header configured",
+          "category": "headers",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "hsts_header",
+          "label": "HSTS header in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "injection_protection",
+          "label": "Input sanitization present",
+          "category": "injection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "no_eval_usage",
+          "label": "No eval() in source code",
+          "category": "code",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "dependency_lockfile",
+          "label": "package-lock.json committed",
+          "category": "deps",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        }
+      ],
+      "critical": {
+        "total": 11,
+        "passing": 11,
+        "failing": []
+      },
+      "grade": "A",
+      "ready": true,
+      "checkedAt": "2026-06-21T06:13:07.580Z",
+      "id": "sec-1782022387580-dzjz"
+    },
+    {
+      "score": 100,
+      "checks": [
+        {
+          "id": "no_secrets_in_git",
+          "label": "No secrets committed to git",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "env_gitignored",
+          "label": ".env in .gitignore",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_md",
+          "label": "SECURITY.md present",
+          "category": "policy",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "rate_limiting",
+          "label": "Rate limiting configured",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_headers",
+          "label": "Security headers in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "jwt_secret_strength",
+          "label": "JWT secret ≥32 chars",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "cors_configured",
+          "label": "CORS origin restriction",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "npm_audit_clean",
+          "label": "No critical npm vulnerabilities",
+          "category": "deps",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "auth_middleware",
+          "label": "requireAuth middleware exists",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "session_expiry",
+          "label": "Session expiry configured",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "csp_header",
+          "label": "CSP header configured",
+          "category": "headers",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "hsts_header",
+          "label": "HSTS header in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "injection_protection",
+          "label": "Input sanitization present",
+          "category": "injection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "no_eval_usage",
+          "label": "No eval() in source code",
+          "category": "code",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "dependency_lockfile",
+          "label": "package-lock.json committed",
+          "category": "deps",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        }
+      ],
+      "critical": {
+        "total": 11,
+        "passing": 11,
+        "failing": []
+      },
+      "grade": "A",
+      "ready": true,
+      "checkedAt": "2026-06-21T06:08:49.613Z",
+      "id": "sec-1782022129613-kiex"
+    },
+    {
+      "score": 100,
+      "checks": [
+        {
+          "id": "no_secrets_in_git",
+          "label": "No secrets committed to git",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "env_gitignored",
+          "label": ".env in .gitignore",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_md",
+          "label": "SECURITY.md present",
+          "category": "policy",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "rate_limiting",
+          "label": "Rate limiting configured",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_headers",
+          "label": "Security headers in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "jwt_secret_strength",
+          "label": "JWT secret ≥32 chars",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "cors_configured",
+          "label": "CORS origin restriction",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "npm_audit_clean",
+          "label": "No critical npm vulnerabilities",
+          "category": "deps",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "auth_middleware",
+          "label": "requireAuth middleware exists",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "session_expiry",
+          "label": "Session expiry configured",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "csp_header",
+          "label": "CSP header configured",
+          "category": "headers",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "hsts_header",
+          "label": "HSTS header in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "injection_protection",
+          "label": "Input sanitization present",
+          "category": "injection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "no_eval_usage",
+          "label": "No eval() in source code",
+          "category": "code",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "dependency_lockfile",
+          "label": "package-lock.json committed",
+          "category": "deps",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        }
+      ],
+      "critical": {
+        "total": 11,
+        "passing": 11,
+        "failing": []
+      },
+      "grade": "A",
+      "ready": true,
+      "checkedAt": "2026-06-21T06:08:49.611Z",
+      "id": "sec-1782022129611-qjml"
+    },
+    {
+      "score": 100,
+      "checks": [
+        {
+          "id": "no_secrets_in_git",
+          "label": "No secrets committed to git",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "env_gitignored",
+          "label": ".env in .gitignore",
+          "category": "secrets",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_md",
+          "label": "SECURITY.md present",
+          "category": "policy",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "rate_limiting",
+          "label": "Rate limiting configured",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "security_headers",
+          "label": "Security headers in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "jwt_secret_strength",
+          "label": "JWT secret ≥32 chars",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "cors_configured",
+          "label": "CORS origin restriction",
+          "category": "protection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "npm_audit_clean",
+          "label": "No critical npm vulnerabilities",
+          "category": "deps",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "auth_middleware",
+          "label": "requireAuth middleware exists",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "session_expiry",
+          "label": "Session expiry configured",
+          "category": "auth",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "csp_header",
+          "label": "CSP header configured",
+          "category": "headers",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "hsts_header",
+          "label": "HSTS header in nginx.conf",
+          "category": "headers",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "injection_protection",
+          "label": "Input sanitization present",
+          "category": "injection",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "no_eval_usage",
+          "label": "No eval() in source code",
+          "category": "code",
+          "critical": false,
+          "pass": true,
+          "status": "pass"
+        },
+        {
+          "id": "dependency_lockfile",
+          "label": "package-lock.json committed",
+          "category": "deps",
+          "critical": true,
+          "pass": true,
+          "status": "pass"
+        }
+      ],
+      "critical": {
+        "total": 11,
+        "passing": 11,
+        "failing": []
+      },
+      "grade": "A",
+      "ready": true,
       "checkedAt": "2026-06-21T05:59:00.634Z",
       "id": "sec-1782021540634-3tna"
     },
@@ -539,6 +1879,50 @@
   ],
   "deployments": [
     {
+      "id": "dep-1782026464176-1glc",
+      "version": "benchmark",
+      "environment": "production",
+      "method": "benchmark",
+      "status": "test",
+      "commitHash": null,
+      "duration": null,
+      "notes": "",
+      "deployedAt": "2026-06-21T07:21:04.176Z"
+    },
+    {
+      "id": "dep-1782022903823-fq23",
+      "version": "benchmark",
+      "environment": "production",
+      "method": "benchmark",
+      "status": "test",
+      "commitHash": null,
+      "duration": null,
+      "notes": "",
+      "deployedAt": "2026-06-21T06:21:43.823Z"
+    },
+    {
+      "id": "dep-1782022387580-q4d0",
+      "version": "benchmark",
+      "environment": "production",
+      "method": "benchmark",
+      "status": "test",
+      "commitHash": null,
+      "duration": null,
+      "notes": "",
+      "deployedAt": "2026-06-21T06:13:07.580Z"
+    },
+    {
+      "id": "dep-1782022129612-9k8v",
+      "version": "benchmark",
+      "environment": "production",
+      "method": "benchmark",
+      "status": "test",
+      "commitHash": null,
+      "duration": null,
+      "notes": "",
+      "deployedAt": "2026-06-21T06:08:49.612Z"
+    },
+    {
       "id": "dep-1782021540633-paju",
       "version": "benchmark",
       "environment": "production",
@@ -603,6 +1987,90 @@
       },
       "secScore": 100,
       "runAt": "2026-06-21T05:59:00.635Z"
+    },
+    "lt-1782022129613-nv21": {
+      "stress": {
+        "maxSafeRPS": 100
+      },
+      "load": {
+        "rps": 20,
+        "requests": 10,
+        "errors": 0,
+        "errorRate": 0,
+        "latency": {
+          "avg": 26,
+          "p50": 27,
+          "p95": 34,
+          "p99": 34
+        },
+        "duration": 0,
+        "pass": true
+      },
+      "secScore": 100,
+      "runAt": "2026-06-21T06:08:49.613Z"
+    },
+    "lt-1782022387582-puxe": {
+      "stress": {
+        "maxSafeRPS": 100
+      },
+      "load": {
+        "rps": 20,
+        "requests": 10,
+        "errors": 0,
+        "errorRate": 0,
+        "latency": {
+          "avg": 24,
+          "p50": 25,
+          "p95": 33,
+          "p99": 33
+        },
+        "duration": 0,
+        "pass": true
+      },
+      "secScore": 100,
+      "runAt": "2026-06-21T06:13:07.582Z"
+    },
+    "lt-1782022903825-ibyp": {
+      "stress": {
+        "maxSafeRPS": 100
+      },
+      "load": {
+        "rps": 20,
+        "requests": 10,
+        "errors": 0,
+        "errorRate": 0,
+        "latency": {
+          "avg": 25,
+          "p50": 24,
+          "p95": 35,
+          "p99": 35
+        },
+        "duration": 0,
+        "pass": true
+      },
+      "secScore": 100,
+      "runAt": "2026-06-21T06:21:43.825Z"
+    },
+    "lt-1782026464178-hhbi": {
+      "stress": {
+        "maxSafeRPS": 100
+      },
+      "load": {
+        "rps": 20,
+        "requests": 10,
+        "errors": 0,
+        "errorRate": 0,
+        "latency": {
+          "avg": 30,
+          "p50": 31,
+          "p95": 35,
+          "p99": 35
+        },
+        "duration": 0,
+        "pass": true
+      },
+      "secScore": 100,
+      "runAt": "2026-06-21T07:21:04.178Z"
     }
   },
   "launchChecklist": {},

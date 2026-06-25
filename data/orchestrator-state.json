@@ -1,0 +1,122 @@
+{
+  "records": [
+    {
+      "missionId": "msn_5434f04e743c4cdb94b5f9a8812892a7",
+      "orchId": "orch_1782073889061_6",
+      "goal": "V1 validation: end-to-end mission scenario",
+      "originDecisionId": null,
+      "priority": "high",
+      "orchStatus": "cancelled",
+      "currentStage": null,
+      "stages": [
+        {
+          "id": "stg_1782073889051_1",
+          "index": 0,
+          "description": "Decompose goal: \"V1 validation: end-to-end mission scenario\"",
+          "capability": "goal_decompose",
+          "assignedAgent": null,
+          "dependsOn": [],
+          "status": "pending",
+          "loopTaskId": null,
+          "retries": 0,
+          "maxRetries": 2,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null,
+          "error": null
+        },
+        {
+          "id": "stg_1782073889051_2",
+          "index": 1,
+          "description": "Plan execution tasks for: \"V1 validation: end-to-end mission scenario\"",
+          "capability": "task_plan",
+          "assignedAgent": null,
+          "dependsOn": [
+            "stg_1782073889051_1"
+          ],
+          "status": "pending",
+          "loopTaskId": null,
+          "retries": 0,
+          "maxRetries": 2,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null,
+          "error": null
+        },
+        {
+          "id": "stg_1782073889051_3",
+          "index": 2,
+          "description": "Validate plan for: \"V1 validation: end-to-end mission scenario\"",
+          "capability": "validation",
+          "assignedAgent": null,
+          "dependsOn": [
+            "stg_1782073889051_2"
+          ],
+          "status": "pending",
+          "loopTaskId": null,
+          "retries": 0,
+          "maxRetries": 2,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null,
+          "error": null
+        },
+        {
+          "id": "stg_1782073889051_4",
+          "index": 3,
+          "description": "Execute plan for: \"V1 validation: end-to-end mission scenario\"",
+          "capability": "execution",
+          "assignedAgent": null,
+          "dependsOn": [
+            "stg_1782073889051_2",
+            "stg_1782073889051_3"
+          ],
+          "status": "pending",
+          "loopTaskId": null,
+          "retries": 0,
+          "maxRetries": 2,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null,
+          "error": null
+        },
+        {
+          "id": "stg_1782073889051_5",
+          "index": 4,
+          "description": "Report completion for: \"V1 validation: end-to-end mission scenario\"",
+          "capability": "reporting",
+          "assignedAgent": null,
+          "dependsOn": [
+            "stg_1782073889051_4"
+          ],
+          "status": "pending",
+          "loopTaskId": null,
+          "retries": 0,
+          "maxRetries": 2,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null,
+          "error": null
+        }
+      ],
+      "progress": {
+        "total": 5,
+        "completed": 0,
+        "failed": 0,
+        "pending": 5
+      },
+      "requiresApproval": false,
+      "rollbackPlan": "Revert changes made by mission msn_5434f04e743c4cdb94b5f9a8812892a7",
+      "verificationStatus": "pending",
+      "createdAt": "2026-06-21T20:31:29.061Z",
+      "updatedAt": "2026-06-21T20:31:29.072Z",
+      "estimatedCompletion": null,
+      "startedAt": null,
+      "completedAt": "2026-06-21T20:31:29.072Z",
+      "error": null,
+      "pauseReason": "v1 validation pause",
+      "cancelReason": "v1 validation teardown"
+    }
+  ],
+  "savedAt": "2026-06-21T20:31:29.088Z"
+}

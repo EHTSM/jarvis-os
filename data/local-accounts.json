@@ -129,5 +129,25 @@
     "createdAt": "2026-06-11T16:08:57.898Z",
     "lastLoginAt": "2026-06-11T16:08:57.991Z",
     "active": true
+  },
+  "b27c822abfecb157094a5229": {
+    "id": "b27c822abfecb157094a5229",
+    "email": "admin@jarvis.local",
+    "passwordHash": "41a1e3a8ffd4b90a3d41dc10885d9835:504a1c34fc33af308893538c4b91f36deec110179faf215cb1304f416df4a14ad2b513d31b5c683888f64b0ec69c71c17e4356ad767b3b54c89ac6051ae0b065",
+    "name": "Admin",
+    "role": "user",
+    "createdAt": "2026-06-15T07:42:21.378Z",
+    "lastLoginAt": "2026-06-15T07:42:36.864Z",
+    "active": true
+  },
+  "c15c7dd28f2d8600d1c566d6": {
+    "id": "c15c7dd28f2d8600d1c566d6",
+    "email": "beta-user@test.local",
+    "passwordHash": "e398a27c80c0c52d5bfe20de61f091ec:6b696237139638314b13393e5718bad47de98ba5daed24102d175fec15ab3b5fe80814e6bb2b042b1f963c135656bb06b4425f9cccf8d078f8ac3b16ee2ff7d2",
+    "name": "Beta User",
+    "role": "user",
+    "createdAt": "2026-06-15T08:37:39.284Z",
+    "lastLoginAt": "2026-06-15T08:37:39.368Z",
+    "active": true
   }
 }

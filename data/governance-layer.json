@@ -84,5 +84,61 @@
         "updatedAt": null
       }
     ]
+  },
+  "default": {
+    "policies": [],
+    "templates": [],
+    "compliance": {
+      "frameworks": [],
+      "dataClassification": "internal",
+      "retentionDays": 365,
+      "riskTolerance": "medium",
+      "reviewCycleDays": 90,
+      "lastReviewAt": null,
+      "nextReviewAt": null,
+      "notes": ""
+    },
+    "riskMatrix": [
+      {
+        "category": "access",
+        "likelihood": "unlikely",
+        "impact": "moderate",
+        "score": 2,
+        "mitigation": "",
+        "updatedAt": null
+      },
+      {
+        "category": "data",
+        "likelihood": "unlikely",
+        "impact": "moderate",
+        "score": 2,
+        "mitigation": "",
+        "updatedAt": null
+      },
+      {
+        "category": "deployment",
+        "likelihood": "unlikely",
+        "impact": "moderate",
+        "score": 2,
+        "mitigation": "",
+        "updatedAt": null
+      },
+      {
+        "category": "compliance",
+        "likelihood": "unlikely",
+        "impact": "moderate",
+        "score": 2,
+        "mitigation": "",
+        "updatedAt": null
+      },
+      {
+        "category": "operational",
+        "likelihood": "unlikely",
+        "impact": "moderate",
+        "score": 2,
+        "mitigation": "",
+        "updatedAt": null
+      }
+    ]
   }
 }

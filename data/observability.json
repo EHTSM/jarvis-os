@@ -24,6 +24,32 @@
         "p95": 142,
         "p99": 142,
         "lastUpdated": 1780600416409
+      },
+      "latency:{\"endpoint\":\"/test\"}": {
+        "type": "histogram",
+        "name": "latency",
+        "labels": {
+          "endpoint": "/test"
+        },
+        "samples": [
+          42
+        ],
+        "count": 1,
+        "sum": 42,
+        "min": 42,
+        "max": 42,
+        "avg": 42,
+        "p50": 42,
+        "p95": 42,
+        "p99": 42,
+        "lastUpdated": 1781559404336
+      },
+      "req_count": {
+        "type": "counter",
+        "name": "req_count",
+        "labels": {},
+        "value": 5,
+        "lastUpdated": 1781559412683
       }
     }
   },

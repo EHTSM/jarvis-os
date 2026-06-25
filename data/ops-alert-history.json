@@ -1,0 +1,19 @@
+[
+  {
+    "alertId": "oal_1781786982189_2",
+    "title": "High task failure count",
+    "detail": "11 failed tasks in queue",
+    "severity": "warning",
+    "source": "probe",
+    "category": "runtime",
+    "dedupeKey": "task_failures",
+    "status": "resolved",
+    "count": 35,
+    "firedAt": "2026-06-18T12:49:42.189Z",
+    "resolvedAt": "2026-06-18T17:36:58.683Z",
+    "lastSeenAt": "2026-06-18T17:31:58.686Z",
+    "suppressedUntil": null,
+    "escalated": false,
+    "notifications": []
+  }
+]

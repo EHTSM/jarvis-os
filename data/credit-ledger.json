@@ -1,0 +1,442 @@
+{
+  "bench-sub-001": {
+    "accountId": "bench-sub-001",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.719Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "bench-ui-001": {
+    "accountId": "bench-ui-001",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.720Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "bench-cs-001": {
+    "accountId": "bench-cs-001",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.722Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "0f6261c6d5f1be70851f51b3": {
+    "accountId": "0f6261c6d5f1be70851f51b3",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.723Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "4f388cd491bb6ad10d487785": {
+    "accountId": "4f388cd491bb6ad10d487785",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.724Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "cfb5371d05089656446a51f1": {
+    "accountId": "cfb5371d05089656446a51f1",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.724Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "3be3eacb69aae016c87149e7": {
+    "accountId": "3be3eacb69aae016c87149e7",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.724Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "7a217c74881271d4f47ec0fe": {
+    "accountId": "7a217c74881271d4f47ec0fe",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.724Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "e663aec55ab9e90978aa95ac": {
+    "accountId": "e663aec55ab9e90978aa95ac",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.725Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "8e9bef3af00e4f7c0bafb4cb": {
+    "accountId": "8e9bef3af00e4f7c0bafb4cb",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.725Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "e5d97b2d12d49672c324ccb0": {
+    "accountId": "e5d97b2d12d49672c324ccb0",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.725Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "c717d112b120f37018f5bfec": {
+    "accountId": "c717d112b120f37018f5bfec",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.726Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "7b0ec48b627f93096a25fb4e": {
+    "accountId": "7b0ec48b627f93096a25fb4e",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.726Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "5b10a57a22dbf3ef057aaa8b": {
+    "accountId": "5b10a57a22dbf3ef057aaa8b",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.726Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "3de4f158b5eecb25d125efbd": {
+    "accountId": "3de4f158b5eecb25d125efbd",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.727Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "b27c822abfecb157094a5229": {
+    "accountId": "b27c822abfecb157094a5229",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.727Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "c15c7dd28f2d8600d1c566d6": {
+    "accountId": "c15c7dd28f2d8600d1c566d6",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.728Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "acc-test": {
+    "accountId": "acc-test",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.728Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "bench-cp-001": {
+    "accountId": "bench-cp-001",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.730Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "bench-cv-001": {
+    "accountId": "bench-cv-001",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:22.739Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "bench-cs-002": {
+    "accountId": "bench-cs-002",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:32.639Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  },
+  "bench-fin-001": {
+    "accountId": "bench-fin-001",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-20T19:51:32.654Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": []
+  }
+}

@@ -28,6 +28,35 @@
       "invitedAt": null,
       "activatedAt": null,
       "isWaitlist": true
+    },
+    "3MCU2Z4Z": {
+      "code": "3MCU2Z4Z",
+      "tier": "alpha",
+      "createdBy": "founder",
+      "email": null,
+      "maxUses": 5,
+      "uses": 0,
+      "activations": [],
+      "note": "benchmark",
+      "expiresAt": null,
+      "status": "active",
+      "createdAt": "2026-06-21T07:18:40.045Z"
+    },
+    "wl-1782026320052-ij1y": {
+      "id": "wl-1782026320052-ij1y",
+      "email": "test@benchmark.com",
+      "name": "Bench",
+      "company": "",
+      "useCase": "testing",
+      "referredBy": null,
+      "tier": "standard",
+      "status": "pending",
+      "position": 2,
+      "notes": "",
+      "addedAt": "2026-06-21T07:18:40.052Z",
+      "invitedAt": null,
+      "activatedAt": null,
+      "isWaitlist": true
     }
   },
   "feedbackItems": {
@@ -54,6 +83,30 @@
       "resolvedAt": null,
       "createdAt": "2026-06-21T06:26:31.448Z",
       "updatedAt": "2026-06-21T06:26:31.448Z"
+    },
+    "fb-1782026320052-esdl": {
+      "id": "fb-1782026320052-esdl",
+      "type": "bug",
+      "title": "Benchmark test bug",
+      "body": "",
+      "severity": "low",
+      "accountId": null,
+      "module": "benchmark",
+      "url": null,
+      "screenshot": {
+        "url": "/tmp/screen.png",
+        "capturedAt": "2026-06-21T07:18:40.052Z"
+      },
+      "videoRef": null,
+      "sessionRef": null,
+      "browserInfo": null,
+      "tags": [],
+      "status": "open",
+      "votes": 0,
+      "response": null,
+      "resolvedAt": null,
+      "createdAt": "2026-06-21T07:18:40.052Z",
+      "updatedAt": "2026-06-21T07:18:40.052Z"
     }
   },
   "sessionEvents": [
@@ -96,6 +149,46 @@
       "duration": null,
       "meta": {},
       "recordedAt": "2026-06-21T06:26:31.518Z"
+    },
+    {
+      "id": "ev-1782026320053-epap",
+      "type": "feature_use",
+      "accountId": "bench-acc",
+      "feature": "ai_chat",
+      "stage": "first_action",
+      "duration": 45,
+      "meta": {},
+      "recordedAt": "2026-06-21T07:18:40.053Z"
+    },
+    {
+      "id": "ev-1782026320140-buby",
+      "type": "feature_use",
+      "accountId": "bench-2",
+      "feature": "crm",
+      "stage": "signup",
+      "duration": 120,
+      "meta": {},
+      "recordedAt": "2026-06-21T07:18:40.140Z"
+    },
+    {
+      "id": "ev-1782026320140-u6r9",
+      "type": "feature_use",
+      "accountId": "bench-2",
+      "feature": "ai_chat",
+      "stage": "ai_request",
+      "duration": 90,
+      "meta": {},
+      "recordedAt": "2026-06-21T07:18:40.140Z"
+    },
+    {
+      "id": "ev-1782026320140-lso6",
+      "type": "feature_use",
+      "accountId": "bench-3",
+      "feature": "missions",
+      "stage": "first_action",
+      "duration": null,
+      "meta": {},
+      "recordedAt": "2026-06-21T07:18:40.140Z"
     }
   ],
   "csInbox": {
@@ -128,6 +221,36 @@
       "sla_target": "2026-06-23T06:26:31.509Z",
       "createdAt": "2026-06-21T06:26:31.509Z",
       "updatedAt": "2026-06-21T06:26:31.509Z"
+    },
+    "cst-1782026320129-n1fo": {
+      "id": "cst-1782026320129-n1fo",
+      "accountId": null,
+      "userEmail": "user@test.com",
+      "userName": "",
+      "channel": "in_app",
+      "subject": "Benchmark ticket",
+      "body": "Test",
+      "priority": "normal",
+      "status": "open",
+      "assignee": "founder",
+      "tags": [],
+      "feedbackRef": null,
+      "thread": [
+        {
+          "role": "user",
+          "body": "Test",
+          "ts": "2026-06-21T07:18:40.129Z"
+        },
+        {
+          "role": "support",
+          "body": "Thanks, looking into it!",
+          "ts": "2026-06-21T07:18:40.129Z"
+        }
+      ],
+      "resolvedAt": null,
+      "sla_target": "2026-06-23T07:18:40.129Z",
+      "createdAt": "2026-06-21T07:18:40.129Z",
+      "updatedAt": "2026-06-21T07:18:40.129Z"
     }
   },
   "kbArticles": {
@@ -141,8 +264,8 @@
       "videoThumb": null,
       "tags": [],
       "relatedIds": [],
-      "views": 1,
-      "helpful": 1,
+      "views": 2,
+      "helpful": 2,
       "notHelpful": 0,
       "published": true,
       "slug": "how-do-i-get-started-with-ooplix-",
@@ -285,11 +408,18 @@
       "module": "benchmark",
       "url": null,
       "impact": "minor",
-      "occurrences": 2,
+      "occurrences": 4,
       "affectedUsers": [
         "acc-2"
       ],
       "recentEvents": [
+        {
+          "accountId": "acc-2",
+          "ts": "2026-06-21T07:18:40.139Z"
+        },
+        {
+          "ts": "2026-06-21T07:18:40.139Z"
+        },
         {
           "accountId": "acc-2",
           "ts": "2026-06-21T06:26:31.517Z"
@@ -302,7 +432,7 @@
       "resolvedAt": null,
       "isRegression": null,
       "firstSeenAt": "2026-06-21T06:26:31.517Z",
-      "lastOccurredAt": "2026-06-21T06:26:31.517Z"
+      "lastOccurredAt": "2026-06-21T07:18:40.139Z"
     }
   },
   "usageSnapshots": [
@@ -346,6 +476,47 @@
       "totalEvents": 4,
       "uniqueAccounts": 3,
       "snappedAt": "2026-06-21T06:26:31.518Z"
+    },
+    {
+      "id": "us-1782026320141-8j90",
+      "date": "2026-06-21",
+      "mostUsed": [
+        {
+          "feature": "ai_chat",
+          "count": 4
+        },
+        {
+          "feature": "crm",
+          "count": 2
+        },
+        {
+          "feature": "missions",
+          "count": 2
+        }
+      ],
+      "leastUsed": [
+        {
+          "feature": "ai_chat",
+          "count": 4
+        },
+        {
+          "feature": "crm",
+          "count": 2
+        },
+        {
+          "feature": "missions",
+          "count": 2
+        }
+      ],
+      "featureFreq": {
+        "ai_chat": 4,
+        "crm": 2,
+        "missions": 2
+      },
+      "avgTimeToValueMin": 0,
+      "totalEvents": 8,
+      "uniqueAccounts": 3,
+      "snappedAt": "2026-06-21T07:18:40.141Z"
     }
   ],
   "betaUsers": {
@@ -377,6 +548,44 @@
       "status": "invited",
       "inviteCode": null,
       "invitedAt": "2026-06-21T06:26:31.519Z",
+      "onboardedAt": null,
+      "lastActiveAt": null,
+      "npsScore": null,
+      "feedback": [],
+      "bugs": [],
+      "csTickets": [],
+      "features": [],
+      "activationScore": 0,
+      "notes": ""
+    },
+    "beta-1782026320141-zl28": {
+      "id": "beta-1782026320141-zl28",
+      "accountId": "beta-1782026320141-zl28",
+      "email": "alpha1@test.com",
+      "name": "Alpha User 1",
+      "cohort": "alpha_10",
+      "status": "invited",
+      "inviteCode": null,
+      "invitedAt": "2026-06-21T07:18:40.141Z",
+      "onboardedAt": null,
+      "lastActiveAt": null,
+      "npsScore": null,
+      "feedback": [],
+      "bugs": [],
+      "csTickets": [],
+      "features": [],
+      "activationScore": 0,
+      "notes": ""
+    },
+    "beta-1782026320141-gxhg": {
+      "id": "beta-1782026320141-gxhg",
+      "accountId": "beta-1782026320141-gxhg",
+      "email": "beta1@test.com",
+      "name": "Beta User 1",
+      "cohort": "beta_50",
+      "status": "invited",
+      "inviteCode": null,
+      "invitedAt": "2026-06-21T07:18:40.141Z",
       "onboardedAt": null,
       "lastActiveAt": null,
       "npsScore": null,
