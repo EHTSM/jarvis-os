@@ -221,7 +221,12 @@ export async function _fetch(path, options = {}) {
         _recordExecutionError(executionId, e);
         _logExecution({ executionId, action: path, status: "failed", error: msg });
       }
-      if (res.status === 401) _on401?.();
+      // Only fire the global 401 handler for authenticated-API paths.
+      // Auth endpoints (/auth/login, /auth/firebase-session) return 401 on bad
+      // credentials — that must not broadcast "expired" and log out other tabs.
+      const isAuthEndpoint = path === "/auth/login" || path === "/api/auth/login"
+        || path === "/auth/firebase-session" || path === "/api/auth/firebase-session";
+      if (res.status === 401 && !isAuthEndpoint) _on401?.();
       throw e;
     }
 

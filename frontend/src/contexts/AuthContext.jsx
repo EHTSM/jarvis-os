@@ -56,9 +56,17 @@ export function AuthProvider({ children }) {
     return () => clearTimeout(expiryWarnRef.current);
   }, [user]);
 
-  // Global 401 interceptor
+  // Global 401 interceptor — only fires for authenticated-API paths (auth endpoints excluded in _client.js).
+  // Use a ref so the handler always sees the current user value without re-registering on every user change.
+  const userRef = useRef(null);
+  useEffect(() => { userRef.current = user; }, [user]);
   useEffect(() => {
-    setOn401(() => { _setUserAndBroadcast(null, "expired"); });
+    setOn401(() => {
+      // Only broadcast "expired" if user was actually logged in — avoids spurious
+      // "expired" messages during initial unauthenticated /auth/me checks.
+      if (userRef.current) _setUserAndBroadcast(null, "expired");
+      else setUser(null);
+    });
     return () => setOn401(null);
   }, [_setUserAndBroadcast]);
 
