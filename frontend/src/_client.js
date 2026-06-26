@@ -202,11 +202,12 @@ export async function _fetch(path, options = {}) {
   try {
     if (executionId) _updateExecutionStatus(executionId, "running");
 
+    const { headers: callerHeaders, ...restOptions } = options;
     const res = await fetch(`${BASE_URL}${path}`, {
-      headers: { "Content-Type": "application/json" },
       credentials: "include",
       signal: ctrl.signal,
-      ...options,
+      ...restOptions,
+      headers: { "Content-Type": "application/json", ...callerHeaders },
     });
 
     clearTimeout(timer);
