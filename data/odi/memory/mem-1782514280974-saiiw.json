@@ -1,0 +1,23 @@
+{
+  "id": "mem-1782514280974-saiiw",
+  "finding": {
+    "type": "test_finding",
+    "severity": "warning",
+    "message": "test"
+  },
+  "patchSpec": [
+    {
+      "patchTarget": "foo",
+      "patchReplacement": "bar"
+    }
+  ],
+  "targetFile": null,
+  "strategy": "test",
+  "scoreBefore": null,
+  "scoreAfter": null,
+  "improvement": null,
+  "outcome": "applied",
+  "usageCount": 3,
+  "createdAt": "2026-06-26T22:51:20.975Z",
+  "lastUsedAt": "2026-06-26T22:52:24.417Z"
+}

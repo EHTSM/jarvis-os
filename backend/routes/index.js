@@ -112,6 +112,6 @@ router.use(require("./pcs2ExternalPlatforms")); // /ext/* — PCS-2: Meta/Google
 router.use(require("./dop1")); // /dop/* — DOP-1: Production Infrastructure Validation (10 modules: VPS/Nginx/SSL/DNS/Domains/Deploy/Backup/Monitor/Security/Stress)
 router.use(require("./dop2")); // /dop2/* — DOP-2: Real Production Deployment (10 phases: Connect/Deps/Repo/Env/Nginx/SSL/PM2/Health/Smoke/Reports)
 router.use(require("./plan-management")); // /plan/* — current plan, upgrade
-router.use(require("./odi"));            // /odi/screenshots, /odi/capture — ODI-1 Visual Capture Engine
+router.use(require("./odi"));            // ODI-1..10: /odi/screenshots /odi/capture /odi/dom /odi/layout /odi/components /odi/analyze /odi/tokens /odi/accessibility /odi/responsive /odi/patches /odi/runs /odi/run
 
 module.exports = router;

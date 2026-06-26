@@ -1,0 +1,23 @@
+{
+  "id": "mem-1782514338585-8uxcp",
+  "finding": {
+    "type": "test_finding",
+    "severity": "warning",
+    "message": "test"
+  },
+  "patchSpec": [
+    {
+      "patchTarget": "foo",
+      "patchReplacement": "bar"
+    }
+  ],
+  "targetFile": null,
+  "strategy": "test",
+  "scoreBefore": null,
+  "scoreAfter": null,
+  "improvement": null,
+  "outcome": "applied",
+  "usageCount": 2,
+  "createdAt": "2026-06-26T22:52:18.585Z",
+  "lastUsedAt": "2026-06-26T22:52:24.416Z"
+}

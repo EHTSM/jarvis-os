@@ -1,0 +1,17 @@
+{
+  "id": "reg-2026-06-26T22-50-05-595Z",
+  "url": "https://example.com",
+  "label": "example-baseline",
+  "baselineFilename": "after-2026-06-26T22-50-05-595Z.png",
+  "afterFilename": "after-2026-06-26T22-50-05-595Z.png",
+  "diff": {
+    "ok": true,
+    "changedPixels": 0,
+    "changedPct": 0,
+    "passed": true,
+    "totalPixels": 1296000,
+    "changedRegion": null,
+    "note": "First run — saved as baseline"
+  },
+  "timestamp": "2026-06-26T22:50:05.595Z"
+}

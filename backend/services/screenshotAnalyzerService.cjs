@@ -24,6 +24,9 @@ const axios = require("axios");
 const { generateLayoutGraph }    = require("./layoutGraphService.cjs");
 const { generateComponentGraph } = require("./componentGraphService.cjs");
 
+const ANALYSES_DIR = path.join(__dirname, "../../data/odi/analyses");
+function _ensureDir() { if (!fs.existsSync(ANALYSES_DIR)) fs.mkdirSync(ANALYSES_DIR, { recursive: true }); }
+
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const ANTHROPIC_VER = "2023-06-01";
 
@@ -184,10 +187,29 @@ Analyze the screenshot and structured data. Return ONLY valid JSON in this exact
     layoutFindings:    layoutGraph.findings.length,
     componentStats:    componentGraph.stats,
     analysis:          parsed,
-    rawAiResponse:     typeof parsed.raw === "string" ? undefined : undefined,
   };
+
+  // Persist to disk
+  _ensureDir();
+  const slug = new Date().toISOString().replace(/[:.]/g, "-");
+  const filename = `analysis-${slug}.json`;
+  fs.writeFileSync(path.join(ANALYSES_DIR, filename), JSON.stringify(result, null, 2));
+  result.filename = filename;
+  result.path     = `data/odi/analyses/${filename}`;
 
   return result;
 }
 
-module.exports = { analyzeScreenshot };
+function listAnalyses({ limit = 50 } = {}) {
+  _ensureDir();
+  return fs.readdirSync(ANALYSES_DIR)
+    .filter(f => f.endsWith(".json")).sort().reverse().slice(0, limit)
+    .map(f => {
+      try {
+        const d = JSON.parse(fs.readFileSync(path.join(ANALYSES_DIR, f), "utf8"));
+        return { filename: f, url: d.url, aiUsed: d.aiUsed, score: d.analysis?.score, timestamp: d.timestamp };
+      } catch { return null; }
+    }).filter(Boolean);
+}
+
+module.exports = { analyzeScreenshot, listAnalyses };
