@@ -1,2 +1,4 @@
-// [AutoFixPlanner patch] undefined
-// Replace this placeholder with the actual fix.
+"use strict";
+const router = require("express").Router();
+// /plan/* — plan management routes (stub)
+module.exports = router;

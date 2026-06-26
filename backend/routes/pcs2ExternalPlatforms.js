@@ -1,6 +1,6 @@
 "use strict";
 const router = require("express").Router();
-const { requireAuth } = require("./middleware");
+const { requireAuth } = require("../middleware/authMiddleware");
 const pcs2 = require("../services/pcs2ExternalPlatforms.cjs");
 
 function _ok(res, data)        { res.json({ ok: true, ...data }); }
