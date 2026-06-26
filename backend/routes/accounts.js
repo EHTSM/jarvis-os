@@ -74,4 +74,42 @@ router.get("/accounts", requireAuth, (req, res) => {
   res.json({ success: true, accounts: accounts.listAccounts() });
 });
 
+// ── /api/* aliases — respond before ops.js requireAuth gate ─────────────────
+const _registerRL = rateLimiter(5, 15 * 60_000);
+
+function _handleRegister(req, res) {
+  const { email, password, name } = req.body || {};
+  if (!email || !password) {
+    return res.status(400).json({ error: "email and password are required" });
+  }
+  const result = accounts.createAccount({ email, password, name, role: "user" });
+  if (!result.success) {
+    return res.status(409).json({ error: result.error });
+  }
+  auditLog.recordAuth({ action: "register", operator: result.account.id, method: "email" });
+  res.status(201).json({
+    success: true,
+    account: result.account,
+    message: "Account created. Your 7-day free trial starts now.",
+  });
+}
+
+router.post("/api/accounts/register", _registerRL, _handleRegister);
+
+router.get("/api/accounts/me", requireAuth, (req, res) => {
+  const accountId = req.user.sub || req.user.id || "operator";
+  const account   = accounts.getById(accountId);
+  const access    = billing.checkAccess(accountId);
+  res.json({
+    success: true,
+    account: account || { id: accountId, role: req.user.role },
+    billing: {
+      plan:        access.status === "active" ? billing.getRecord(accountId).plan : "trial",
+      status:      access.status,
+      daysLeft:    access.daysLeft,
+      graceActive: access.graceActive,
+    },
+  });
+});
+
 module.exports = router;
