@@ -1,6 +1,6 @@
 "use strict";
 /**
- * ODI — Ooplix Design Intelligence routes (ODI-1 through ODI-20)
+ * ODI — Ooplix Design Intelligence routes (ODI-1 through ODI-30)
  *
  * ODI-1  Screenshots:       GET /odi/screenshots        POST /odi/capture
  * ODI-2  DOM Analysis:      GET /odi/dom                POST /odi/dom/analyze
@@ -27,6 +27,24 @@
  *                           DELETE /odi/memory/:id
  * ODI-20 Design Loop:       GET /odi/loops              POST /odi/loop
  *                           GET /odi/loops/:id
+ * ODI-21 Design Planner:    GET /odi/plans              POST /odi/plans/create
+ *                           GET /odi/plans/:id          PATCH /odi/plans/:id
+ * ODI-22 Page Builder:      GET /odi/pages              POST /odi/pages/build
+ *                           POST /odi/pages/build-all   GET /odi/pages/:id
+ * ODI-23 Global Refactor:   GET /odi/refactor           POST /odi/refactor/run
+ * ODI-24 Theme Engine:      GET /odi/themes             POST /odi/themes/generate
+ *                           POST /odi/themes/generate-all  GET /odi/themes/:id
+ * ODI-25 Design Inspector:  GET /odi/inspector          POST /odi/inspector/inspect
+ *                           POST /odi/inspector/inspect-multi
+ * ODI-26 Design Editor:     GET /odi/editor             POST /odi/editor/start
+ *                           POST /odi/editor/:id/apply  POST /odi/editor/:id/commit
+ *                           POST /odi/editor/:id/close
+ * ODI-27 Animation Engine:  GET /odi/animations         POST /odi/animations/analyze
+ * ODI-28 Enterprise Review: GET /odi/reviews            POST /odi/reviews/run
+ * ODI-29 Design Observer:   GET /odi/observer           POST /odi/observer/start
+ *                           POST /odi/observer/stop     POST /odi/observer/cycle
+ * ODI-30 Self-Op DS:        GET /odi/sods               POST /odi/sods/run
+ *                           GET /odi/sods/:id
  */
 
 const router      = require("express").Router();
@@ -56,6 +74,17 @@ const svc = {
   brand:       () => require("../services/brandIntelligence.cjs"),
   memory:      () => require("../services/designMemory.cjs"),
   loop:        () => require("../services/autonomousDesignLoop.cjs"),
+  // ODI V3
+  planner:     () => require("../services/aiDesignPlanner.cjs"),
+  pageBuilder: () => require("../services/autonomousPageBuilder.cjs"),
+  refactor:    () => require("../services/globalDesignRefactor.cjs"),
+  themes:      () => require("../services/aiThemeEngine.cjs"),
+  inspector:   () => require("../services/liveDesignInspector.cjs"),
+  editor:      () => require("../services/liveDesignEditor.cjs"),
+  animations:  () => require("../services/animationEngine.cjs"),
+  review:      () => require("../services/enterpriseDesignReview.cjs"),
+  observer:    () => require("../services/continuousDesignObserver.cjs"),
+  sods:        () => require("../services/selfOperatingDesignSystem.cjs"),
 };
 
 router.use("/odi", requireAuth);
@@ -524,7 +553,7 @@ router.delete("/odi/memory/:id", (req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// ODI-20 — Autonomous Design Loop
+// ODI-20 — Autonomous Design Loop  (kept in place — see below)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 router.get("/odi/loops", (req, res) => {
@@ -547,6 +576,333 @@ router.post("/odi/loop", rateLimiter(2, 120_000), async (req, res) => {
   if (!url) return res.status(400).json({ success: false, error: "url required" });
   try {
     const result = await svc.loop().run({ url, targetFile, autoCommit: !!autoCommit, brandConfig, maxPatches, runLabel });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ODI-21 — AI Design Planner
+// ═══════════════════════════════════════════════════════════════════════════════
+
+router.get("/odi/plans", (req, res) => {
+  try {
+    const list = svc.planner().listPlans({ limit: parseInt(req.query.limit) || 50 });
+    return res.json({ success: true, count: list.length, plans: list });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/plans/create", rateLimiter(5, 60_000), async (req, res) => {
+  const { featureRequest, context } = req.body || {};
+  if (!featureRequest) return res.status(400).json({ success: false, error: "featureRequest required" });
+  try {
+    const result = await svc.planner().createPlan({ featureRequest, context });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.get("/odi/plans/:id", (req, res) => {
+  try {
+    const plan = svc.planner().getPlan(req.params.id);
+    if (!plan) return res.status(404).json({ success: false, error: "Plan not found" });
+    return res.json({ success: true, ...plan });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.patch("/odi/plans/:id", (req, res) => {
+  try {
+    const result = svc.planner().updatePlan(req.params.id, req.body);
+    if (!result.ok) return res.status(404).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ODI-22 — Autonomous Page Builder
+// ═══════════════════════════════════════════════════════════════════════════════
+
+router.get("/odi/pages", (req, res) => {
+  try {
+    const list = svc.pageBuilder().listPages({ limit: parseInt(req.query.limit) || 50 });
+    return res.json({ success: true, count: list.length, pages: list });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/pages/build", rateLimiter(3, 60_000), async (req, res) => {
+  const { planId, pageSpec, writeToFile } = req.body || {};
+  if (!planId && !pageSpec) return res.status(400).json({ success: false, error: "planId or pageSpec required" });
+  try {
+    const result = await svc.pageBuilder().buildPage({ planId, pageSpec, writeToFile: !!writeToFile });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/pages/build-all", rateLimiter(2, 120_000), async (req, res) => {
+  const { planId, writeToFile } = req.body || {};
+  if (!planId) return res.status(400).json({ success: false, error: "planId required" });
+  try {
+    const result = await svc.pageBuilder().buildAllPages({ planId, writeToFile: !!writeToFile });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.get("/odi/pages/:id", (req, res) => {
+  try {
+    const page = svc.pageBuilder().getPage(req.params.id);
+    if (!page) return res.status(404).json({ success: false, error: "Page not found" });
+    return res.json({ success: true, ...page });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ODI-23 — Global Design Refactor
+// ═══════════════════════════════════════════════════════════════════════════════
+
+router.get("/odi/refactor", (req, res) => {
+  try {
+    const list = svc.refactor().listRefactors({ limit: parseInt(req.query.limit) || 20 });
+    return res.json({ success: true, count: list.length, refactors: list });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/refactor/run", rateLimiter(3, 120_000), async (req, res) => {
+  const { generatePatches } = req.body || {};
+  try {
+    const result = await svc.refactor().runGlobalRefactor({ generatePatches: !!generatePatches });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ODI-24 — AI Theme Engine
+// ═══════════════════════════════════════════════════════════════════════════════
+
+router.get("/odi/themes", (req, res) => {
+  try {
+    const list       = svc.themes().listThemes({ limit: parseInt(req.query.limit) || 50 });
+    const available  = Object.keys(svc.themes().THEME_DEFINITIONS);
+    return res.json({ success: true, count: list.length, themes: list, available });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/themes/generate", (req, res) => {
+  const { themeName, baseTokens } = req.body || {};
+  if (!themeName) return res.status(400).json({ success: false, error: "themeName required (light|dark|glass|enterprise|minimal|luxury)" });
+  try {
+    const result = svc.themes().generateTheme({ themeName, baseTokens });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/themes/generate-all", (req, res) => {
+  const { baseTokens } = req.body || {};
+  try {
+    const result = svc.themes().generateAllThemes({ baseTokens });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.get("/odi/themes/:id", (req, res) => {
+  try {
+    const theme = svc.themes().getTheme(req.params.id);
+    if (!theme) return res.status(404).json({ success: false, error: "Theme not found" });
+    return res.json({ success: true, ...theme });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ODI-25 — Live Design Inspector
+// ═══════════════════════════════════════════════════════════════════════════════
+
+router.get("/odi/inspector", (req, res) => {
+  try {
+    const list = svc.inspector().listInspections({ limit: parseInt(req.query.limit) || 50 });
+    return res.json({ success: true, count: list.length, inspections: list });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/inspector/inspect", rateLimiter(10, 60_000), async (req, res) => {
+  const { url, pageId, selector } = req.body || {};
+  if (!selector) return res.status(400).json({ success: false, error: "selector required" });
+  if (!url && !pageId) return res.status(400).json({ success: false, error: "url or pageId required" });
+  try {
+    const result = await svc.inspector().inspectElement({ url, pageId, selector });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/inspector/inspect-multi", rateLimiter(5, 60_000), async (req, res) => {
+  const { url, selectors } = req.body || {};
+  if (!url || !Array.isArray(selectors) || !selectors.length) return res.status(400).json({ success: false, error: "url and selectors[] required" });
+  try {
+    const result = await svc.inspector().inspectMultiple({ url, selectors });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ODI-26 — Live Design Editor
+// ═══════════════════════════════════════════════════════════════════════════════
+
+router.get("/odi/editor", (req, res) => {
+  try {
+    const sessions = svc.editor().listSessions();
+    const edits    = svc.editor().listEdits({ limit: parseInt(req.query.limit) || 20 });
+    return res.json({ success: true, activeSessions: sessions.length, sessions, recentCommits: edits });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/editor/start", rateLimiter(5, 60_000), async (req, res) => {
+  const { url } = req.body || {};
+  if (!url) return res.status(400).json({ success: false, error: "url required" });
+  try {
+    const result = await svc.editor().startSession({ url });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/editor/:id/apply", rateLimiter(10, 60_000), async (req, res) => {
+  const { selector, changes } = req.body || {};
+  if (!selector || !changes) return res.status(400).json({ success: false, error: "selector and changes required" });
+  try {
+    const result = await svc.editor().applyChange({ sessionId: req.params.id, selector, changes });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/editor/:id/commit", (req, res) => {
+  const { targetFile } = req.body || {};
+  try {
+    const result = svc.editor().commitSession(req.params.id, targetFile);
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/editor/:id/close", async (req, res) => {
+  try {
+    const result = await svc.editor().closeSession(req.params.id);
+    if (!result.ok) return res.status(404).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ODI-27 — Autonomous Animation Engine
+// ═══════════════════════════════════════════════════════════════════════════════
+
+router.get("/odi/animations", (req, res) => {
+  try {
+    const list    = svc.animations().listReports({ limit: parseInt(req.query.limit) || 50 });
+    const catalog = svc.animations().ANIMATION_CATALOG;
+    return res.json({ success: true, count: list.length, reports: list, catalog });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/animations/analyze", rateLimiter(5, 60_000), async (req, res) => {
+  const { domFilename } = req.body || {};
+  if (!domFilename) return res.status(400).json({ success: false, error: "domFilename required" });
+  try {
+    const result = await svc.animations().analyzeAnimations({ domFilename });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ODI-28 — Enterprise Design Review
+// ═══════════════════════════════════════════════════════════════════════════════
+
+router.get("/odi/reviews", (req, res) => {
+  try {
+    const list = svc.review().listReviews({ limit: parseInt(req.query.limit) || 20 });
+    return res.json({ success: true, count: list.length, reviews: list });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/reviews/run", rateLimiter(2, 120_000), async (req, res) => {
+  const { url, urls } = req.body || {};
+  if (!url && !urls) return res.status(400).json({ success: false, error: "url or urls[] required" });
+  try {
+    const result = urls
+      ? await svc.review().reviewPages({ urls })
+      : await svc.review().reviewPage({ url });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ODI-29 — Continuous Design Observer
+// ═══════════════════════════════════════════════════════════════════════════════
+
+router.get("/odi/observer", (req, res) => {
+  try {
+    const status = svc.observer().getStatus();
+    const cycles = svc.observer().listCycles({ limit: parseInt(req.query.limit) || 10 });
+    return res.json({ success: true, ...status, recentCycles: cycles });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/observer/start", (req, res) => {
+  const { url, watchDir } = req.body || {};
+  try {
+    const result = svc.observer().start({ url, watchDir });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/observer/stop", (req, res) => {
+  try {
+    const result = svc.observer().stop();
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/observer/cycle", rateLimiter(5, 60_000), async (req, res) => {
+  const { url } = req.body || {};
+  try {
+    const result = await svc.observer().runManualCycle({ url });
+    if (!result.ok) return res.status(422).json({ success: false, error: result.error });
+    return res.json({ success: true, ...result });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ODI-30 — Self-Operating Design System
+// ═══════════════════════════════════════════════════════════════════════════════
+
+router.get("/odi/sods", (req, res) => {
+  try {
+    const list = svc.sods().listRuns({ limit: parseInt(req.query.limit) || 20 });
+    return res.json({ success: true, count: list.length, runs: list });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.get("/odi/sods/:id", (req, res) => {
+  try {
+    const run = svc.sods().getRun(req.params.id);
+    if (!run) return res.status(404).json({ success: false, error: "Run not found" });
+    return res.json({ success: true, ...run });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/odi/sods/run", rateLimiter(1, 120_000), async (req, res) => {
+  const { featureRequest, themeName, targetUrl, writeToFile, autoCommit, context } = req.body || {};
+  if (!featureRequest) return res.status(400).json({ success: false, error: "featureRequest required" });
+  try {
+    const result = await svc.sods().run({ featureRequest, themeName, targetUrl, writeToFile: !!writeToFile, autoCommit: !!autoCommit, context });
     if (!result.ok) return res.status(422).json({ success: false, error: result.error });
     return res.json({ success: true, ...result });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
