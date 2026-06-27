@@ -781,6 +781,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[EngineeringOrg] failed to register (non-fatal):", orgErr.message);
     }
 
+    // ── Level 3: Business Organization (20 Autonomous Departments) ──────────
+    try {
+        const bizOrg = require("./services/businessOrg.cjs");
+        const bizResult = bizOrg.register();
+        logger.info(`[BusinessOrg] Level 3 registered — ${bizResult.registered}/${bizResult.count} business departments active`);
+    } catch (bizErr) {
+        logger.warn("[BusinessOrg] failed to register (non-fatal):", bizErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;
