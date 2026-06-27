@@ -826,6 +826,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[ENT] failed to register (non-fatal):", entErr.message);
     }
 
+    // ── Level 8: Ecosystem Platform (20 Ecosystem Domains) ──────────────────
+    try {
+        const ecoOrg = require('./services/ecosystemOrg.cjs');
+        const ecoResult = ecoOrg.register();
+        logger.info('[ECO] Level 8 registered — ' + ecoResult.registered + '/' + ecoResult.count + ' ecosystem domains active');
+    } catch (ecoErr) {
+        logger.warn('[ECO] failed to register (non-fatal):', ecoErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;

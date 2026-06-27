@@ -119,5 +119,6 @@ router.use(require("./autonomousKnowledgeOrg")); // Level 4: /ako/status /ako/su
 router.use(require("./autonomousEvolutionOrg")); // Level 5: /aeo/status /aeo/summary /aeo/agents/:id /aeo/v5/*
 router.use(require("./executiveOrg"));           // Level 6: /eos/status /eos/summary /eos/agents/:id /eos/v6/*
 router.use(require("./enterpriseOrg"));          // Level 7: /ent/status /ent/summary /ent/agents/:id /ent/v7/*
+router.use(require("./ecosystemOrg"));           // Level 8: /eco/status /eco/summary /eco/agents/:id /eco/v8/*
 
 module.exports = router;
