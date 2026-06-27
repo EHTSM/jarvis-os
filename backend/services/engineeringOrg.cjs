@@ -57,6 +57,9 @@ function _pipe()   { try { return require("./engineeringPipelineCoordinator.cjs"
 function _deploy() { try { return require("./deploymentCoordinator.cjs");        } catch { return null; } }
 function _repo()   { try { return require("./repoIntelligenceEngine.cjs");       } catch { return null; } }
 function _mem()    { try { return require("./engineeringMemoryEngine.cjs");      } catch { return null; } }
+// V2 workflow
+function _wf()     { try { return require("./engineeringOrgWorkflow.cjs");       } catch { return null; } }
+function _st()     { try { return require("./engineeringOrgState.cjs");          } catch { return null; } }
 
 // ── Shared helpers (mirrors patterns in agentRuntimeSupervisor) ───────────────
 
@@ -98,7 +101,7 @@ function _setObj(s, objective) {
 
 // ── TICK IMPLEMENTATIONS ──────────────────────────────────────────────────────
 
-// 1. CTO — strategic health, cross-domain escalation, engineering velocity
+// 1. CTO — strategic health, cross-domain escalation, engineering velocity, V2 quarterly objectives
 async function _ctoTick(s) {
   _setObj(s, "Reviewing system health and engineering velocity");
   let created = 0;
@@ -138,6 +141,23 @@ async function _ctoTick(s) {
       _lesson(s.id, { type: "executive_review", severity: "info", title: `CTO Review: health ${exec.healthScore}/100`, detail: exec.summary, tags: ["cto", "executive"] });
       s.lessonsRegistered = (s.lessonsRegistered || 0) + 1;
     }
+  } catch {}
+
+  // V2: create/refresh quarterly objective (triggers cascade: EM → Arch → Engineers)
+  try {
+    const quarter = _st()?.currentQuarter();
+    const existing = _st()?.listObjectives({ quarter, status: "active" }) || [];
+    if (existing.length === 0) {
+      _wf()?.ctoCreateObjective({
+        title: `Continuous improvement — ${quarter}`,
+        description: "Ongoing engineering excellence objectives for the quarter",
+        kpis: ["reliability", "velocity", "quality", "security"],
+      });
+      s.v2Objectives = (s.v2Objectives || 0) + 1;
+    }
+    // Report V2 org state
+    const orgDash = _st()?.getDashboard?.() || {};
+    s.v2Dashboard = { workItems: orgDash.workItems?.total, done: orgDash.workItems?.done, velocity: orgDash.velocity };
   } catch {}
 
   _setObj(s, created > 0 ? `Escalated ${created} strategic issue(s)` : "Engineering org healthy");
@@ -998,12 +1018,20 @@ async function _engCoordinatorTick(s) {
     // Create catch-up missions for unhealthy agents
     const failed = engAgents.filter(a => a.status === "failed");
     for (const agent of failed.slice(0, 2)) {
-      const m = _mission(s.id, {
+      _mission(s.id, {
         objective: `Engineering Org: agent ${agent.id} has failed — investigate and recover`,
         priority: "high",
         subtasks: [{ description: `Agent ${agent.id} (${agent.role}) status: failed` }, { description: "Check error logs and re-enable agent" }],
         metadata: { autoCreatedBy: s.id, domain: "management", failedAgentId: agent.id },
       }, s);
+    }
+  } catch {}
+
+  // V2: run coordinator sync (claim ready work, alert on blockers, broadcast health)
+  try {
+    const sync = _wf()?.coordinatorSync?.();
+    if (sync?.ok) {
+      s.v2Sync = { readyWork: sync.dashboard?.workItems?.ready, blockers: sync.dashboard?.blockers?.active, velocity: sync.avgVelocity };
     }
   } catch {}
 
@@ -1192,6 +1220,8 @@ function register() {
     results.push(r);
   }
   _registered = true;
+  // V2: wire event-driven workflow subscriptions
+  try { _wf()?.subscribeWorkflowEvents?.(); } catch {}
   try { _bus()?.emit("engorg:registered", { count: ENGINEERING_ORG.length, ids: ENGINEERING_ORG.map(e => e.id) }); } catch {}
   return { ok: true, count: ENGINEERING_ORG.length, registered: results.filter(r => r.ok).length };
 }
