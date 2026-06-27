@@ -835,6 +835,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn('[ECO] failed to register (non-fatal):', ecoErr.message);
     }
 
+    // ── Level 9: Civilization Platform (20 Civilization Domains) ───────────
+    try {
+        const civOrg = require('./services/civilizationOrg.cjs');
+        const civResult = civOrg.register();
+        logger.info('[CIV] Level 9 registered — ' + civResult.registered + '/' + civResult.count + ' civilization domains active');
+    } catch (civErr) {
+        logger.warn('[CIV] failed to register (non-fatal):', civErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;
