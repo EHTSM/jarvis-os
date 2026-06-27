@@ -808,6 +808,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[AEO] failed to register (non-fatal):", aeoErr.message);
     }
 
+    // ── Level 6: Executive Operating System (20 Executive Departments) ────────
+    try {
+        const eosOrg = require("./services/executiveOrg.cjs");
+        const eosResult = eosOrg.register();
+        logger.info(`[EOS] Level 6 registered — ${eosResult.registered}/${eosResult.count} executive departments active`);
+    } catch (eosErr) {
+        logger.warn("[EOS] failed to register (non-fatal):", eosErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;
