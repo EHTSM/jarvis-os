@@ -116,5 +116,6 @@ router.use(require("./odi"));            // ODI-1..10: /odi/screenshots /odi/cap
 router.use(require("./engineeringOrg")); // Level 2: /engorg/status /engorg/summary /engorg/agents/:id /engorg/missions
 router.use(require("./businessOrg"));              // Level 3: /bizorg/status /bizorg/summary /bizorg/agents/:id /bizorg/v3/*
 router.use(require("./autonomousKnowledgeOrg")); // Level 4: /ako/status /ako/summary /ako/agents/:id /ako/v4/*
+router.use(require("./autonomousEvolutionOrg")); // Level 5: /aeo/status /aeo/summary /aeo/agents/:id /aeo/v5/*
 
 module.exports = router;

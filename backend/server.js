@@ -799,6 +799,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[AKO] failed to register (non-fatal):", akoErr.message);
     }
 
+    // ── Level 5: Autonomous Evolution Organization (20 Evolution Departments) ─
+    try {
+        const aeoOrg = require("./services/autonomousEvolutionOrg.cjs");
+        const aeoResult = aeoOrg.register();
+        logger.info(`[AEO] Level 5 registered — ${aeoResult.registered}/${aeoResult.count} evolution departments active`);
+    } catch (aeoErr) {
+        logger.warn("[AEO] failed to register (non-fatal):", aeoErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;
