@@ -817,6 +817,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[EOS] failed to register (non-fatal):", eosErr.message);
     }
 
+    // ── Level 7: Enterprise Operating System (20 Enterprise Divisions) ────────
+    try {
+        const entOrg = require("./services/enterpriseOrg.cjs");
+        const entResult = entOrg.register();
+        logger.info(`[ENT] Level 7 registered — ${entResult.registered}/${entResult.count} enterprise divisions active`);
+    } catch (entErr) {
+        logger.warn("[ENT] failed to register (non-fatal):", entErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;
