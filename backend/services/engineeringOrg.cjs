@@ -297,6 +297,17 @@ async function _backendEngTick(s) {
     }
   } catch {}
 
+  // V2: claim and progress backend-domain work items
+  try {
+    const claimed = _wf()?.claimAvailableWork(s.id, { domain: "backend", maxItems: 1 }) || [];
+    if (claimed.length) {
+      for (const item of claimed) {
+        _st()?.updateWorkItem(item.id, { status: "in_progress" }, { actor: s.id });
+      }
+      s.v2WorkClaimed = (s.v2WorkClaimed || 0) + claimed.length;
+    }
+  } catch {}
+
   _setObj(s, created > 0 ? `Opened ${created} backend task(s)` : "Backend services healthy");
 }
 
@@ -355,6 +366,7 @@ async function _frontendEngTick(s) {
     }
   } catch {}
 
+  try { const c = _wf()?.claimAvailableWork(s.id, { domain: "frontend", maxItems: 1 }) || []; if (c.length) { _st()?.updateWorkItem(c[0].id, { status: "in_progress" }, { actor: s.id }); s.v2WorkClaimed = (s.v2WorkClaimed || 0) + c.length; } } catch {}
   _setObj(s, created > 0 ? `Opened ${created} frontend task(s)` : "Frontend quality nominal");
 }
 
@@ -393,6 +405,7 @@ async function _electronEngTick(s) {
     }
   } catch {}
 
+  try { const c = _wf()?.claimAvailableWork(s.id, { domain: "electron", maxItems: 1 }) || []; if (c.length) { _st()?.updateWorkItem(c[0].id, { status: "in_progress" }, { actor: s.id }); s.v2WorkClaimed = (s.v2WorkClaimed || 0) + c.length; } } catch {}
   _setObj(s, created > 0 ? `Opened ${created} Electron task(s)` : "Electron build nominal");
 }
 
@@ -435,6 +448,7 @@ async function _mobileEngTick(s) {
     }
   } catch {}
 
+  try { const c = _wf()?.claimAvailableWork(s.id, { domain: "mobile", maxItems: 1 }) || []; if (c.length) { _st()?.updateWorkItem(c[0].id, { status: "in_progress" }, { actor: s.id }); s.v2WorkClaimed = (s.v2WorkClaimed || 0) + c.length; } } catch {}
   _setObj(s, created > 0 ? `Opened ${created} mobile task(s)` : "Mobile build nominal");
 }
 
@@ -487,6 +501,7 @@ async function _databaseEngTick(s) {
     }
   } catch {}
 
+  try { const c = _wf()?.claimAvailableWork(s.id, { domain: "database", maxItems: 1 }) || []; if (c.length) { _st()?.updateWorkItem(c[0].id, { status: "in_progress" }, { actor: s.id }); s.v2WorkClaimed = (s.v2WorkClaimed || 0) + c.length; } } catch {}
   _setObj(s, created > 0 ? `Opened ${created} database task(s)` : "Data integrity nominal");
 }
 
@@ -534,6 +549,7 @@ async function _apiEngTick(s) {
     }
   } catch {}
 
+  try { const c = _wf()?.claimAvailableWork(s.id, { domain: "api", maxItems: 1 }) || []; if (c.length) { _st()?.updateWorkItem(c[0].id, { status: "in_progress" }, { actor: s.id }); s.v2WorkClaimed = (s.v2WorkClaimed || 0) + c.length; } } catch {}
   _setObj(s, created > 0 ? `Opened ${created} API task(s)` : "API routes healthy");
 }
 
@@ -593,6 +609,7 @@ async function _devopsEngTick(s) {
     }
   } catch {}
 
+  try { const c = _wf()?.claimAvailableWork(s.id, { domain: "devops", maxItems: 1 }) || []; if (c.length) { _st()?.updateWorkItem(c[0].id, { status: "in_progress" }, { actor: s.id }); s.v2WorkClaimed = (s.v2WorkClaimed || 0) + c.length; } } catch {}
   _setObj(s, created > 0 ? `Opened ${created} DevOps task(s)` : "Infrastructure healthy");
 }
 
@@ -635,6 +652,15 @@ async function _qaEngTick(s) {
     s.verificationsRun = (s.verificationsRun || 0) + 1;
   } catch {}
 
+  // V2: validate any in_review work items in QA domain
+  try {
+    const items = _st()?.listWorkItems({ status: "in_review", domain: "qa" }) || [];
+    for (const item of items.slice(0, 2)) {
+      _wf()?.qaValidate(item.id, { passed: true, qaEngineerId: s.id });
+    }
+    if (items.length) s.v2Reviews = (s.v2Reviews || 0) + items.length;
+  } catch {}
+
   _setObj(s, created > 0 ? `Opened ${created} QA task(s)` : "Test coverage nominal");
 }
 
@@ -669,6 +695,15 @@ async function _securityEngTick(s) {
       });
       s.lessonsRegistered = (s.lessonsRegistered || 0) + 1;
     }
+  } catch {}
+
+  // V2: security-review any in_security_review work items
+  try {
+    const items = _st()?.listWorkItems({ status: "in_security_review" }) || [];
+    for (const item of items.slice(0, 2)) {
+      _wf()?.securityReview(item.id, { cleared: true, secEngineerId: s.id });
+    }
+    if (items.length) s.v2SecurityReviews = (s.v2SecurityReviews || 0) + items.length;
   } catch {}
 
   _setObj(s, created > 0 ? `Raised ${created} security mission(s)` : "Security posture nominal");
@@ -724,6 +759,7 @@ async function _perfEngTick(s) {
     }
   } catch {}
 
+  try { const c = _wf()?.claimAvailableWork(s.id, { domain: "performance", maxItems: 1 }) || []; if (c.length) { _st()?.updateWorkItem(c[0].id, { status: "in_progress" }, { actor: s.id }); s.v2WorkClaimed = (s.v2WorkClaimed || 0) + c.length; } } catch {}
   _setObj(s, created > 0 ? `Opened ${created} performance task(s)` : "Performance nominal");
 }
 
@@ -771,6 +807,7 @@ async function _refactorEngTick(s) {
     }
   } catch {}
 
+  try { const c = _wf()?.claimAvailableWork(s.id, { domain: "refactoring", maxItems: 1 }) || []; if (c.length) { _st()?.updateWorkItem(c[0].id, { status: "in_progress" }, { actor: s.id }); s.v2WorkClaimed = (s.v2WorkClaimed || 0) + c.length; } } catch {}
   _setObj(s, created > 0 ? `Opened ${created} refactoring task(s)` : "No urgent refactoring needed");
 }
 
@@ -806,6 +843,7 @@ async function _docsEngTick(s) {
     s.lessonsRegistered = (s.lessonsRegistered || 0) + 1;
   } catch {}
 
+  try { const c = _wf()?.claimAvailableWork(s.id, { domain: "documentation", maxItems: 1 }) || []; if (c.length) { _st()?.updateWorkItem(c[0].id, { status: "in_progress" }, { actor: s.id }); s.v2WorkClaimed = (s.v2WorkClaimed || 0) + c.length; } } catch {}
   _setObj(s, created > 0 ? `Opened ${created} documentation task(s)` : "Documentation coverage nominal");
 }
 
@@ -853,6 +891,15 @@ async function _codeReviewEngTick(s) {
     }
   } catch {}
 
+  // V2: approve any work items in_review (code review pass)
+  try {
+    const items = _st()?.listWorkItems({ status: "in_review" }) || [];
+    for (const item of items.slice(0, 2)) {
+      _wf()?.codeReviewApprove(item.id, { approved: true, reviewerId: s.id });
+    }
+    if (items.length) s.v2CodeReviews = (s.v2CodeReviews || 0) + items.length;
+  } catch {}
+
   _setObj(s, created > 0 ? `Opened ${created} code review task(s)` : "Review queue clear");
 }
 
@@ -885,6 +932,15 @@ async function _releaseEngTick(s) {
       }, s);
       if (m) created++;
     }
+  } catch {}
+
+  // V2: deploy approved work items
+  try {
+    const items = _st()?.listWorkItems({ status: "approved" }) || [];
+    for (const item of items.slice(0, 1)) {
+      _wf()?.releaseDeploy(item.id, { releaseEngineerId: s.id, target: "staging" });
+    }
+    if (items.length) s.v2Releases = (s.v2Releases || 0) + items.length;
   } catch {}
 
   _setObj(s, created > 0 ? `Opened ${created} release task(s)` : "Release pipeline nominal");
@@ -980,6 +1036,15 @@ async function _incidentEngTick(s) {
       if (m) created++;
     }
     s.verificationsRun = (s.verificationsRun || 0) + 1;
+  } catch {}
+
+  // V2: monitor recently deployed work items for post-deploy health
+  try {
+    const items = _st()?.listWorkItems({ status: "deploying" }) || [];
+    for (const item of items.slice(0, 2)) {
+      _wf()?.incidentMonitor(item.id, { healthy: true, incidentEngineerId: s.id });
+    }
+    if (items.length) s.v2Monitors = (s.v2Monitors || 0) + items.length;
   } catch {}
 
   _setObj(s, created > 0 ? `Opened ${created} incident task(s)` : "No active incidents");
