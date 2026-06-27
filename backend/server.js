@@ -772,6 +772,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[EngCapabilities] failed to register (non-fatal):", capErr.message);
     }
 
+    // ── Level 2: Engineering Organization (20 AI Engineer Personas) ───────
+    try {
+        const engOrg = require("./services/engineeringOrg.cjs");
+        const orgResult = engOrg.register();
+        logger.info(`[EngineeringOrg] Level 2 registered — ${orgResult.registered}/${orgResult.count} engineer personas active`);
+    } catch (orgErr) {
+        logger.warn("[EngineeringOrg] failed to register (non-fatal):", orgErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;

@@ -113,5 +113,6 @@ router.use(require("./dop1")); // /dop/* — DOP-1: Production Infrastructure Va
 router.use(require("./dop2")); // /dop2/* — DOP-2: Real Production Deployment (10 phases: Connect/Deps/Repo/Env/Nginx/SSL/PM2/Health/Smoke/Reports)
 router.use(require("./plan-management")); // /plan/* — current plan, upgrade
 router.use(require("./odi"));            // ODI-1..10: /odi/screenshots /odi/capture /odi/dom /odi/layout /odi/components /odi/analyze /odi/tokens /odi/accessibility /odi/responsive /odi/patches /odi/runs /odi/run
+router.use(require("./engineeringOrg")); // Level 2: /engorg/status /engorg/summary /engorg/agents/:id /engorg/missions
 
 module.exports = router;
