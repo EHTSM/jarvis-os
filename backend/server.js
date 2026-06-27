@@ -790,6 +790,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn("[BusinessOrg] failed to register (non-fatal):", bizErr.message);
     }
 
+    // ── Level 4: Autonomous Knowledge Organization (20 Knowledge Departments) ─
+    try {
+        const akoOrg = require("./services/autonomousKnowledgeOrg.cjs");
+        const akoResult = akoOrg.register();
+        logger.info(`[AKO] Level 4 registered — ${akoResult.registered}/${akoResult.count} knowledge departments active`);
+    } catch (akoErr) {
+        logger.warn("[AKO] failed to register (non-fatal):", akoErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;

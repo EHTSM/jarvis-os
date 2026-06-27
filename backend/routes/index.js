@@ -114,6 +114,7 @@ router.use(require("./dop2")); // /dop2/* — DOP-2: Real Production Deployment 
 router.use(require("./plan-management")); // /plan/* — current plan, upgrade
 router.use(require("./odi"));            // ODI-1..10: /odi/screenshots /odi/capture /odi/dom /odi/layout /odi/components /odi/analyze /odi/tokens /odi/accessibility /odi/responsive /odi/patches /odi/runs /odi/run
 router.use(require("./engineeringOrg")); // Level 2: /engorg/status /engorg/summary /engorg/agents/:id /engorg/missions
-router.use(require("./businessOrg"));   // Level 3: /bizorg/status /bizorg/summary /bizorg/agents/:id /bizorg/v3/*
+router.use(require("./businessOrg"));              // Level 3: /bizorg/status /bizorg/summary /bizorg/agents/:id /bizorg/v3/*
+router.use(require("./autonomousKnowledgeOrg")); // Level 4: /ako/status /ako/summary /ako/agents/:id /ako/v4/*
 
 module.exports = router;
