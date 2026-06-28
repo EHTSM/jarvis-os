@@ -1,147 +1,5 @@
 [
   {
-    "ts": "2026-06-27T20:47:22.177Z",
-    "recId": "heal_1782593242176_2yz",
-    "strategy": "dead_letter",
-    "targetType": "cycle",
-    "targetId": "cyc_1781791570144_ed",
-    "success": false,
-    "reason": "non-retriable: unknown",
-    "strategyReason": "Max retries (3) exhausted with no matching rule. Archiving to dead-letter queue for operator review.",
-    "alternativesRejected": [
-      {
-        "strategy": "retry_with_backoff",
-        "reason": "Max retries reached"
-      },
-      {
-        "strategy": "fail_fast",
-        "reason": "Error class is unknown; cannot confirm deterministic"
-      }
-    ],
-    "expectedRecoveryProb": 0,
-    "ruleId": null,
-    "rcaClass": null,
-    "count": 4
-  },
-  {
-    "ts": "2026-06-27T20:47:22.180Z",
-    "recId": "heal_1782593242180_2z0",
-    "strategy": "dead_letter",
-    "targetType": "cycle",
-    "targetId": "cyc_1781791570112_ec",
-    "success": false,
-    "reason": "non-retriable: unknown",
-    "strategyReason": "Max retries (3) exhausted with no matching rule. Archiving to dead-letter queue for operator review.",
-    "alternativesRejected": [
-      {
-        "strategy": "retry_with_backoff",
-        "reason": "Max retries reached"
-      },
-      {
-        "strategy": "fail_fast",
-        "reason": "Error class is unknown; cannot confirm deterministic"
-      }
-    ],
-    "expectedRecoveryProb": 0,
-    "ruleId": null,
-    "rcaClass": null,
-    "count": 4
-  },
-  {
-    "ts": "2026-06-27T20:57:36.998Z",
-    "recId": "heal_1782593856800_2z1",
-    "strategy": "dead_letter",
-    "targetType": "task",
-    "targetId": "tq_1782514192213",
-    "success": false,
-    "reason": "all strategies exhausted",
-    "strategyReason": "Max retries (3) exhausted with no matching rule. Archiving to dead-letter queue for operator review.",
-    "alternativesRejected": [
-      {
-        "strategy": "retry_with_backoff",
-        "reason": "Max retries reached"
-      },
-      {
-        "strategy": "fail_fast",
-        "reason": "Error class is unknown; cannot confirm deterministic"
-      }
-    ],
-    "expectedRecoveryProb": 0,
-    "count": 4
-  },
-  {
-    "ts": "2026-06-27T20:57:37.015Z",
-    "recId": "heal_1782593857014_2z2",
-    "strategy": "dead_letter",
-    "targetType": "cycle",
-    "targetId": "cyc_1781791570212_eg",
-    "success": false,
-    "reason": "non-retriable: unknown",
-    "strategyReason": "Max retries (3) exhausted with no matching rule. Archiving to dead-letter queue for operator review.",
-    "alternativesRejected": [
-      {
-        "strategy": "retry_with_backoff",
-        "reason": "Max retries reached"
-      },
-      {
-        "strategy": "fail_fast",
-        "reason": "Error class is unknown; cannot confirm deterministic"
-      }
-    ],
-    "expectedRecoveryProb": 0,
-    "ruleId": null,
-    "rcaClass": null,
-    "count": 4
-  },
-  {
-    "ts": "2026-06-27T20:57:37.022Z",
-    "recId": "heal_1782593857020_2z3",
-    "strategy": "dead_letter",
-    "targetType": "cycle",
-    "targetId": "cyc_1781791570190_ef",
-    "success": false,
-    "reason": "non-retriable: unknown",
-    "strategyReason": "Max retries (3) exhausted with no matching rule. Archiving to dead-letter queue for operator review.",
-    "alternativesRejected": [
-      {
-        "strategy": "retry_with_backoff",
-        "reason": "Max retries reached"
-      },
-      {
-        "strategy": "fail_fast",
-        "reason": "Error class is unknown; cannot confirm deterministic"
-      }
-    ],
-    "expectedRecoveryProb": 0,
-    "ruleId": null,
-    "rcaClass": null,
-    "count": 4
-  },
-  {
-    "ts": "2026-06-27T20:57:37.027Z",
-    "recId": "heal_1782593857026_2z4",
-    "strategy": "dead_letter",
-    "targetType": "cycle",
-    "targetId": "cyc_1781791570168_ee",
-    "success": false,
-    "reason": "non-retriable: unknown",
-    "strategyReason": "Max retries (3) exhausted with no matching rule. Archiving to dead-letter queue for operator review.",
-    "alternativesRejected": [
-      {
-        "strategy": "retry_with_backoff",
-        "reason": "Max retries reached"
-      },
-      {
-        "strategy": "fail_fast",
-        "reason": "Error class is unknown; cannot confirm deterministic"
-      }
-    ],
-    "expectedRecoveryProb": 0,
-    "ruleId": null,
-    "rcaClass": null,
-    "count": 4
-  },
-  {
     "ts": "2026-06-27T20:57:37.033Z",
     "recId": "heal_1782593857032_2z5",
     "strategy": "dead_letter",
@@ -47180,6 +47038,128 @@
     "targetType": "cycle",
     "targetId": "cyc_1782675323805_em",
     "newCycleId": "cyc_1782675383895_ev",
+    "success": true,
+    "attempt": 1,
+    "strategyReason": "Error 'unknown' has no matching rule. Defaulting to retry_with_backoff; if it recurs 3×, RCA will classify it.",
+    "alternativesRejected": [
+      {
+        "strategy": "fail_fast",
+        "reason": "Cannot confirm deterministic without a matching rule"
+      }
+    ],
+    "expectedRecoveryProb": 70,
+    "ruleId": null,
+    "rcaClass": null
+  },
+  {
+    "ts": "2026-06-28T19:37:23.792Z",
+    "recId": "heal_1782675443634_1kr",
+    "strategy": "dead_letter",
+    "targetType": "task",
+    "targetId": "tq_1782514192213",
+    "success": false,
+    "reason": "all strategies exhausted",
+    "strategyReason": "Max retries (3) exhausted with no matching rule. Archiving to dead-letter queue for operator review.",
+    "alternativesRejected": [
+      {
+        "strategy": "retry_with_backoff",
+        "reason": "Max retries reached"
+      },
+      {
+        "strategy": "fail_fast",
+        "reason": "Error class is unknown; cannot confirm deterministic"
+      }
+    ],
+    "expectedRecoveryProb": 0,
+    "count": 4
+  },
+  {
+    "ts": "2026-06-28T19:37:23.832Z",
+    "recId": "heal_1782675443798_1ks",
+    "strategy": "retry_with_backoff",
+    "targetType": "cycle",
+    "targetId": "cyc_1782675383895_ev",
+    "newCycleId": "cyc_1782675443799_ew",
+    "success": true,
+    "attempt": 1,
+    "strategyReason": "Error 'unknown' has no matching rule. Defaulting to retry_with_backoff; if it recurs 3×, RCA will classify it.",
+    "alternativesRejected": [
+      {
+        "strategy": "fail_fast",
+        "reason": "Cannot confirm deterministic without a matching rule"
+      }
+    ],
+    "expectedRecoveryProb": 70,
+    "ruleId": null,
+    "rcaClass": null
+  },
+  {
+    "ts": "2026-06-28T19:37:23.871Z",
+    "recId": "heal_1782675443835_1kt",
+    "strategy": "retry_with_backoff",
+    "targetType": "cycle",
+    "targetId": "cyc_1782675383868_eu",
+    "newCycleId": "cyc_1782675443837_ex",
+    "success": true,
+    "attempt": 1,
+    "strategyReason": "Error 'unknown' has no matching rule. Defaulting to retry_with_backoff; if it recurs 3×, RCA will classify it.",
+    "alternativesRejected": [
+      {
+        "strategy": "fail_fast",
+        "reason": "Cannot confirm deterministic without a matching rule"
+      }
+    ],
+    "expectedRecoveryProb": 70,
+    "ruleId": null,
+    "rcaClass": null
+  },
+  {
+    "ts": "2026-06-28T19:37:23.933Z",
+    "recId": "heal_1782675443876_1ku",
+    "strategy": "retry_with_backoff",
+    "targetType": "cycle",
+    "targetId": "cyc_1782675383820_et",
+    "newCycleId": "cyc_1782675443908_ey",
+    "success": true,
+    "attempt": 1,
+    "strategyReason": "Error 'unknown' has no matching rule. Defaulting to retry_with_backoff; if it recurs 3×, RCA will classify it.",
+    "alternativesRejected": [
+      {
+        "strategy": "fail_fast",
+        "reason": "Cannot confirm deterministic without a matching rule"
+      }
+    ],
+    "expectedRecoveryProb": 70,
+    "ruleId": null,
+    "rcaClass": null
+  },
+  {
+    "ts": "2026-06-28T19:37:23.960Z",
+    "recId": "heal_1782675443936_1kv",
+    "strategy": "retry_with_backoff",
+    "targetType": "cycle",
+    "targetId": "cyc_1782675383794_es",
+    "newCycleId": "cyc_1782675443938_ez",
+    "success": true,
+    "attempt": 1,
+    "strategyReason": "Error 'unknown' has no matching rule. Defaulting to retry_with_backoff; if it recurs 3×, RCA will classify it.",
+    "alternativesRejected": [
+      {
+        "strategy": "fail_fast",
+        "reason": "Cannot confirm deterministic without a matching rule"
+      }
+    ],
+    "expectedRecoveryProb": 70,
+    "ruleId": null,
+    "rcaClass": null
+  },
+  {
+    "ts": "2026-06-28T19:37:23.987Z",
+    "recId": "heal_1782675443963_1kw",
+    "strategy": "retry_with_backoff",
+    "targetType": "cycle",
+    "targetId": "cyc_1782675383762_er",
+    "newCycleId": "cyc_1782675443965_f0",
     "success": true,
     "attempt": 1,
     "strategyReason": "Error 'unknown' has no matching rule. Defaulting to retry_with_backoff; if it recurs 3×, RCA will classify it.",
