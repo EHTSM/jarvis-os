@@ -124,5 +124,6 @@ router.use(require("./civilizationOrg"));        // Level 9: /civ/status /civ/su
 router.use(require("./autonomousOrg"));          // Level 10: /auto/status /auto/summary /auto/agents/:id /auto/v10/*
 router.use(require("./platformOrg"));           // Level Ω:  /platform/status /platform/summary /platform/v1/*
 router.use(require("./postOmega"));             // POST-Ω:   /pomena/status /pomena/review /pomena/audit /pomena/dashboard
+router.use(require("./founderAutomation"));     // POST-Ω P2: /founder/* /bible/*
 
 module.exports = router;
