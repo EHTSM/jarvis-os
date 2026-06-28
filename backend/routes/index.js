@@ -135,5 +135,6 @@ router.use(require("./workspaceMesh"));       // POST-Ω P9: /workspace-mesh/* r
 router.use(require("./researchInstitute"));  // POST-Ω P10: /research/* planner+knowledge+benchmark+experiments+publications+dashboard
 router.use(require("./odi-x"));             // ODI X V1:   /odi/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 router.use(require("./oai-x"));             // OAI X V1:   /engineering/x/* reasoning+quality+benchmark+predict+evolution+dashboard
+router.use(require("./obi-x"));             // OBI X V1:   /business/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 
 module.exports = router;
