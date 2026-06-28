@@ -133,5 +133,6 @@ router.use(require("./workforceOS"));          // POST-Ω P7: /workforce-os/* ag
 router.use(require("./companyFactory"));       // POST-Ω P8: /company-factory/* create+blueprints+workspace+lifecycle+dashboard
 router.use(require("./workspaceMesh"));       // POST-Ω P9: /workspace-mesh/* registry+coordinator+sync+health+dashboard
 router.use(require("./researchInstitute"));  // POST-Ω P10: /research/* planner+knowledge+benchmark+experiments+publications+dashboard
+router.use(require("./odi-x"));             // ODI X V1:   /odi/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 
 module.exports = router;
