@@ -4185,11 +4185,53 @@
           "stepsRun": 4,
           "outcome": "success",
           "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:13:30.972Z",
+          "triggeredBy": "approvalEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:13:31.776Z",
+          "triggeredBy": "executionEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:13:32.066Z",
+          "triggeredBy": "executionEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:13:38.090Z",
+          "triggeredBy": "approvalEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:13:38.807Z",
+          "triggeredBy": "executionEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:13:39.097Z",
+          "triggeredBy": "executionEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
         }
       ],
-      "lastExecutedAt": "2026-06-28T19:12:38.874Z",
+      "lastExecutedAt": "2026-06-28T19:13:39.097Z",
       "createdAt": "2026-06-28T19:11:34.553Z",
-      "updatedAt": "2026-06-28T19:12:38.874Z"
+      "updatedAt": "2026-06-28T19:13:39.097Z"
     },
     {
       "id": "pbw_fwr_wf_mkt_blog_post",
@@ -4374,11 +4416,39 @@
           "stepsRun": 4,
           "outcome": "success",
           "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:13:31.923Z",
+          "triggeredBy": "executionEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:13:32.209Z",
+          "triggeredBy": "executionEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:13:38.952Z",
+          "triggeredBy": "executionEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:13:39.244Z",
+          "triggeredBy": "executionEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
         }
       ],
-      "lastExecutedAt": "2026-06-28T19:12:39.023Z",
+      "lastExecutedAt": "2026-06-28T19:13:39.244Z",
       "createdAt": "2026-06-28T19:11:34.553Z",
-      "updatedAt": "2026-06-28T19:12:39.023Z"
+      "updatedAt": "2026-06-28T19:13:39.244Z"
     },
     {
       "id": "pbw_fwr_wf_eng_deploy_release",

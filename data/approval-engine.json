@@ -497,14 +497,122 @@
       "workflowId": "wf_eng_code_review",
       "status": "approved",
       "createdAt": "2026-06-28T19:12:38.393Z"
+    },
+    "aq_1782674010986_wxt8": {
+      "reqId": "aq_1782674010986_wxt8",
+      "workflowId": "wf_mkt_email_campaign",
+      "status": "pending",
+      "createdAt": "2026-06-28T19:13:31.016Z"
+    },
+    "aq_1782674011020_kixg": {
+      "reqId": "aq_1782674011020_kixg",
+      "workflowId": "wf_biz_churn_detect",
+      "status": "rejected",
+      "createdAt": "2026-06-28T19:13:31.047Z"
+    },
+    "aq_1782674011188_m47e": {
+      "reqId": "aq_1782674011188_m47e",
+      "workflowId": "wf_mkt_social_post",
+      "status": "approved",
+      "createdAt": "2026-06-28T19:13:31.212Z"
+    },
+    "aq_1782674011270_utji": {
+      "reqId": "aq_1782674011270_utji",
+      "workflowId": "wf_eng_code_review",
+      "status": "approved",
+      "createdAt": "2026-06-28T19:13:31.296Z"
+    },
+    "aq_1782674011343_ad7o": {
+      "reqId": "aq_1782674011343_ad7o",
+      "workflowId": "wf_ops_error_triage",
+      "status": "auto_approved",
+      "createdAt": "2026-06-28T19:13:31.362Z"
+    },
+    "aq_1782674011365_y703": {
+      "reqId": "aq_1782674011365_y703",
+      "workflowId": "wf_deploy_backend_health",
+      "status": "auto_approved",
+      "createdAt": "2026-06-28T19:13:31.416Z"
+    },
+    "aq_1782674011417_sqk2": {
+      "reqId": "aq_1782674011417_sqk2",
+      "workflowId": "wf_mkt_email_campaign",
+      "status": "rejected",
+      "createdAt": "2026-06-28T19:13:31.440Z"
+    },
+    "aq_1782674011464_gkmc": {
+      "reqId": "aq_1782674011464_gkmc",
+      "workflowId": "wf_mkt_social_post",
+      "status": "approved",
+      "createdAt": "2026-06-28T19:13:31.487Z"
+    },
+    "aq_1782674011537_vp3b": {
+      "reqId": "aq_1782674011537_vp3b",
+      "workflowId": "wf_eng_code_review",
+      "status": "approved",
+      "createdAt": "2026-06-28T19:13:31.560Z"
+    },
+    "aq_1782674018097_w5wn": {
+      "reqId": "aq_1782674018097_w5wn",
+      "workflowId": "wf_mkt_email_campaign",
+      "status": "pending",
+      "createdAt": "2026-06-28T19:13:38.119Z"
+    },
+    "aq_1782674018121_ix8h": {
+      "reqId": "aq_1782674018121_ix8h",
+      "workflowId": "wf_biz_churn_detect",
+      "status": "rejected",
+      "createdAt": "2026-06-28T19:13:38.143Z"
+    },
+    "aq_1782674018288_c8lm": {
+      "reqId": "aq_1782674018288_c8lm",
+      "workflowId": "wf_mkt_social_post",
+      "status": "approved",
+      "createdAt": "2026-06-28T19:13:38.312Z"
+    },
+    "aq_1782674018367_hfbm": {
+      "reqId": "aq_1782674018367_hfbm",
+      "workflowId": "wf_eng_code_review",
+      "status": "approved",
+      "createdAt": "2026-06-28T19:13:38.389Z"
+    },
+    "aq_1782674018440_o656": {
+      "reqId": "aq_1782674018440_o656",
+      "workflowId": "wf_ops_error_triage",
+      "status": "auto_approved",
+      "createdAt": "2026-06-28T19:13:38.462Z"
+    },
+    "aq_1782674018464_u3ec": {
+      "reqId": "aq_1782674018464_u3ec",
+      "workflowId": "wf_deploy_backend_health",
+      "status": "auto_approved",
+      "createdAt": "2026-06-28T19:13:38.484Z"
+    },
+    "aq_1782674018484_4rlv": {
+      "reqId": "aq_1782674018484_4rlv",
+      "workflowId": "wf_mkt_email_campaign",
+      "status": "rejected",
+      "createdAt": "2026-06-28T19:13:38.507Z"
+    },
+    "aq_1782674018534_lxkk": {
+      "reqId": "aq_1782674018534_lxkk",
+      "workflowId": "wf_mkt_social_post",
+      "status": "approved",
+      "createdAt": "2026-06-28T19:13:38.556Z"
+    },
+    "aq_1782674018605_oi5g": {
+      "reqId": "aq_1782674018605_oi5g",
+      "workflowId": "wf_eng_code_review",
+      "status": "approved",
+      "createdAt": "2026-06-28T19:13:38.627Z"
     }
   },
   "stats": {
-    "requested": 83,
-    "approved": 37,
-    "rejected": 18,
-    "autoApproved": 18,
-    "resumed": 37,
+    "requested": 101,
+    "approved": 45,
+    "rejected": 22,
+    "autoApproved": 22,
+    "resumed": 45,
     "verified": 0,
     "minutesSaved": 0
   }
