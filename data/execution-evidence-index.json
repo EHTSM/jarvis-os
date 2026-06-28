@@ -2644,5 +2644,194 @@
     "outcome": "success",
     "minutesSaved": 2,
     "domain": "editor"
+  },
+  {
+    "evidenceId": "ev_1782673771024_thsp",
+    "workflowId": "cee_editor",
+    "executionId": "cee_1782673766499_rmp",
+    "ts": "2026-06-28T19:09:31.024Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "editor"
+  },
+  {
+    "evidenceId": "ev_1782673776297_a171",
+    "workflowId": "cee_editor",
+    "executionId": "cee_1782673769302_oe3",
+    "ts": "2026-06-28T19:09:36.297Z",
+    "outcome": "success",
+    "minutesSaved": 2,
+    "domain": "editor"
+  },
+  {
+    "evidenceId": "ev_1782673777470_5wvk",
+    "workflowId": "cee_deployment",
+    "executionId": "cee_1782673769327_mku",
+    "ts": "2026-06-28T19:09:37.470Z",
+    "outcome": "success",
+    "minutesSaved": 10,
+    "domain": "deployment"
+  },
+  {
+    "evidenceId": "ev_1782673781688_ro1e",
+    "workflowId": "cee_engineering",
+    "executionId": "cee_1782673766511_2o2",
+    "ts": "2026-06-28T19:09:41.688Z",
+    "outcome": "partial",
+    "minutesSaved": 15,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673781855_zgmh",
+    "workflowId": "cee_engineering",
+    "executionId": "cee_1782673766516_0ze",
+    "ts": "2026-06-28T19:09:41.855Z",
+    "outcome": "success",
+    "minutesSaved": 30,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673782014_tpye",
+    "workflowId": "cee_engineering",
+    "executionId": "cee_1782673769313_yg1",
+    "ts": "2026-06-28T19:09:42.014Z",
+    "outcome": "partial",
+    "minutesSaved": 15,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673782150_amxz",
+    "workflowId": "cee_engineering",
+    "executionId": "cee_1782673769333_ja7",
+    "ts": "2026-06-28T19:09:42.150Z",
+    "outcome": "success",
+    "minutesSaved": 30,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673782287_7bk1",
+    "workflowId": "cee_deployment",
+    "executionId": "cee_1782673769341_obb",
+    "ts": "2026-06-28T19:09:42.287Z",
+    "outcome": "partial",
+    "minutesSaved": 25,
+    "domain": "deployment"
+  },
+  {
+    "evidenceId": "ev_1782673782424_1v61",
+    "workflowId": "cee_browser",
+    "executionId": "cee_1782673766505_vkk",
+    "ts": "2026-06-28T19:09:42.424Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "browser"
+  },
+  {
+    "evidenceId": "ev_1782673782553_612r",
+    "workflowId": "cee_browser",
+    "executionId": "cee_1782673769320_dfh",
+    "ts": "2026-06-28T19:09:42.553Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "browser"
+  },
+  {
+    "evidenceId": "ev_1782673815380_tzwu",
+    "workflowId": "wf_test_p3",
+    "executionId": "exec_1782673815069",
+    "ts": "2026-06-28T19:10:15.380Z",
+    "outcome": "success",
+    "minutesSaved": 10,
+    "domain": "self_improvement"
+  },
+  {
+    "evidenceId": "ev_1782673815471_lfxr",
+    "workflowId": "wf_p3_1782673815069",
+    "executionId": "exec_1782673815069",
+    "ts": "2026-06-28T19:10:15.471Z",
+    "outcome": "success",
+    "minutesSaved": 30,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673815561_6b2n",
+    "workflowId": "wf_git_test",
+    "executionId": "e1782673815069",
+    "ts": "2026-06-28T19:10:15.561Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "docs"
+  },
+  {
+    "evidenceId": "ev_1782673815655_dh05",
+    "workflowId": "wf_health_test",
+    "executionId": "e1782673815069",
+    "ts": "2026-06-28T19:10:15.655Z",
+    "outcome": "success",
+    "minutesSaved": 10,
+    "domain": "daily_ops"
+  },
+  {
+    "evidenceId": "ev_1782673815750_8oiz",
+    "workflowId": "wf_get_1782673815069",
+    "executionId": "e1782673815069",
+    "ts": "2026-06-28T19:10:15.750Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "docs"
+  },
+  {
+    "evidenceId": "ev_1782673822030_b9by",
+    "workflowId": "wf_mkt_social_post",
+    "executionId": "aee_1782673821632_xmxw",
+    "ts": "2026-06-28T19:10:22.030Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "marketing"
+  },
+  {
+    "evidenceId": "ev_1782673822174_jyod",
+    "workflowId": "wf_eng_code_review",
+    "executionId": "aee_1782673821697_5uy4",
+    "ts": "2026-06-28T19:10:22.174Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673822318_36dq",
+    "workflowId": "wf_mkt_social_post",
+    "executionId": "aee_1782673821842_h2l5",
+    "ts": "2026-06-28T19:10:22.318Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "marketing"
+  },
+  {
+    "evidenceId": "ev_1782673822463_l4vj",
+    "workflowId": "wf_eng_code_review",
+    "executionId": "aee_1782673821906_033m",
+    "ts": "2026-06-28T19:10:22.463Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673840884_yt1f",
+    "workflowId": "cee_deployment",
+    "executionId": "cee_1782673837255_la2",
+    "ts": "2026-06-28T19:10:40.885Z",
+    "outcome": "success",
+    "minutesSaved": 10,
+    "domain": "deployment"
+  },
+  {
+    "evidenceId": "ev_1782673841424_6tlv",
+    "workflowId": "cee_editor",
+    "executionId": "cee_1782673837541_kmu",
+    "ts": "2026-06-28T19:10:41.424Z",
+    "outcome": "success",
+    "minutesSaved": 2,
+    "domain": "editor"
   }
 ]
