@@ -241,6 +241,22 @@
       "votesAgainst": 0,
       "proposedAt": "2026-06-28T20:17:43.950Z",
       "implementedAt": null
+    },
+    {
+      "id": "cevo_1782680424602_s3gv",
+      "title": "Enhance autonomous decision quality — cycle 25",
+      "description": "Success rate 100% — propose confidence threshold reduction",
+      "proposerId": "autonomous_system",
+      "targetDomain": "autonomous",
+      "change": "Reduce confidence threshold from 0.6 to 0.58",
+      "rationale": "High success rate (100%) indicates system can act with slightly lower confidence",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-28T21:00:24.602Z",
+      "implementedAt": null
     }
   ],
   "adoptions": [

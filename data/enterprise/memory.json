@@ -1519,5 +1519,689 @@
     "detail": "",
     "tags": [],
     "at": "2026-06-28T20:19:53.496Z"
+  },
+  {
+    "id": "emem_1782678115783_3z6k",
+    "divId": "ent_customer",
+    "type": "tick",
+    "title": "Customers: 0 active, ARR $0, 0 high-churn-risk",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:21:55.783Z"
+  },
+  {
+    "id": "emem_1782678115784_y1uh",
+    "divId": "ent_operations",
+    "type": "tick",
+    "title": "Operations: 90 active missions, 0 failed",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:21:55.784Z"
+  },
+  {
+    "id": "emem_1782678207548_8l4h",
+    "divId": "ent_risk",
+    "type": "tick",
+    "title": "Enterprise risk: high (score=53)",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:23:27.548Z"
+  },
+  {
+    "id": "emem_1782678208623_zows",
+    "divId": "ent_security",
+    "type": "tick",
+    "title": "Security: 37 controls, 0 high-risk vendors, 0 critical audit events",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:23:28.623Z"
+  },
+  {
+    "id": "emem_1782678210648_u7a4",
+    "divId": "ent_director",
+    "type": "tick",
+    "title": "Director: health=87 risk=high",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:23:30.648Z"
+  },
+  {
+    "id": "emem_1782678268276_s1mn",
+    "divId": "ent_portfolio",
+    "type": "tick",
+    "title": "Portfolio sync: 7 portfolios",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:24:28.276Z"
+  },
+  {
+    "id": "emem_1782678392394_czkm",
+    "divId": "ent_product",
+    "type": "tick",
+    "title": "Products: 2 GA, 1 in development of 4 total",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:26:32.394Z"
+  },
+  {
+    "id": "emem_1782678393532_c1h4",
+    "divId": "ent_finance",
+    "type": "tick",
+    "title": "Finance: $1,010,500 budget, 0% utilized",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:26:33.532Z"
+  },
+  {
+    "id": "emem_1782678393532_hwdv",
+    "divId": "ent_infrastructure",
+    "type": "tick",
+    "title": "Infrastructure: 3 active workspaces",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:26:33.532Z"
+  },
+  {
+    "id": "emem_1782678393533_0jpj",
+    "divId": "ent_audit",
+    "type": "tick",
+    "title": "Audit: 50 recent entries, 0 critical",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:26:33.533Z"
+  },
+  {
+    "id": "emem_1782678396933_15b0",
+    "divId": "ent_customer",
+    "type": "tick",
+    "title": "Customers: 0 active, ARR $0, 0 high-churn-risk",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:26:36.933Z"
+  },
+  {
+    "id": "emem_1782678396934_2uwl",
+    "divId": "ent_operations",
+    "type": "tick",
+    "title": "Operations: 90 active missions, 0 failed",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:26:36.934Z"
+  },
+  {
+    "id": "emem_1782678405949_agg6",
+    "divId": "ent_director",
+    "type": "tick",
+    "title": "Director: health=87 risk=high",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:26:45.949Z"
+  },
+  {
+    "id": "emem_1782678526326_oazx",
+    "divId": "ent_partner",
+    "type": "tick",
+    "title": "Partners: 1 active, 1 active contracts",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:28:46.326Z"
+  },
+  {
+    "id": "emem_1782678526327_du6x",
+    "divId": "ent_legal",
+    "type": "tick",
+    "title": "Legal: 1 active contracts, 0 expiring in 30d",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:28:46.327Z"
+  },
+  {
+    "id": "emem_1782678526337_gik1",
+    "divId": "ent_compliance",
+    "type": "tick",
+    "title": "Compliance scan: score=100 violations=0",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:28:46.337Z"
+  },
+  {
+    "id": "emem_1782678526345_me3k",
+    "divId": "ent_analytics",
+    "type": "tick",
+    "title": "Analytics: enterprise health 87, 20 division KPIs tracked",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:28:46.345Z"
+  },
+  {
+    "id": "emem_1782678527526_ros7",
+    "divId": "ent_procurement",
+    "type": "tick",
+    "title": "Procurement: 2 vendors, 1 contracts, $0 annual spend",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:28:47.526Z"
+  },
+  {
+    "id": "emem_1782678527526_dvot",
+    "divId": "ent_vendor",
+    "type": "tick",
+    "title": "Vendors: 2 total, risk: L=2 M=0 H=0",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:28:47.526Z"
+  },
+  {
+    "id": "emem_1782678527527_hnm4",
+    "divId": "ent_hr",
+    "type": "tick",
+    "title": "HR: 2 active headcount — FT=2 Contract=0",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:28:47.527Z"
+  },
+  {
+    "id": "emem_1782678527527_jvd6",
+    "divId": "ent_strategy",
+    "type": "tick",
+    "title": "Strategy: 7 portfolios, 4 initiatives, 0 at-risk",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:28:47.527Z"
+  },
+  {
+    "id": "emem_1782678527539_gaqv",
+    "divId": "ent_board",
+    "type": "tick",
+    "title": "Board: enterprise health 87, 1 pending approvals",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:28:47.539Z"
+  },
+  {
+    "id": "emem_1782678562582_n0vm",
+    "divId": "ent_risk",
+    "type": "tick",
+    "title": "Enterprise risk: high (score=53)",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:29:22.582Z"
+  },
+  {
+    "id": "emem_1782678563808_2ipm",
+    "divId": "ent_security",
+    "type": "tick",
+    "title": "Security: 37 controls, 0 high-risk vendors, 0 critical audit events",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:29:23.808Z"
+  },
+  {
+    "id": "emem_1782679352996_drku",
+    "divId": "ent_director",
+    "type": "tick",
+    "title": "Director: health=87 risk=high",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:42:32.996Z"
+  },
+  {
+    "id": "emem_1782679362809_bejm",
+    "divId": "ent_portfolio",
+    "type": "tick",
+    "title": "Portfolio sync: 7 portfolios",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:42:42.809Z"
+  },
+  {
+    "id": "emem_1782679371567_1n27",
+    "divId": "ent_customer",
+    "type": "tick",
+    "title": "Customers: 0 active, ARR $0, 0 high-churn-risk",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:42:51.567Z"
+  },
+  {
+    "id": "emem_1782679371568_pucv",
+    "divId": "ent_operations",
+    "type": "tick",
+    "title": "Operations: 90 active missions, 0 failed",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:42:51.568Z"
+  },
+  {
+    "id": "emem_1782679414449_pec2",
+    "divId": "ent_risk",
+    "type": "tick",
+    "title": "Enterprise risk: high (score=53)",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:34.449Z"
+  },
+  {
+    "id": "emem_1782679415672_nhfq",
+    "divId": "ent_security",
+    "type": "tick",
+    "title": "Security: 37 controls, 0 high-risk vendors, 0 critical audit events",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:35.672Z"
+  },
+  {
+    "id": "emem_1782679415674_d6bv",
+    "divId": "ent_product",
+    "type": "tick",
+    "title": "Products: 2 GA, 1 in development of 4 total",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:35.674Z"
+  },
+  {
+    "id": "emem_1782679416907_n6cj",
+    "divId": "ent_finance",
+    "type": "tick",
+    "title": "Finance: $1,010,500 budget, 0% utilized",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:36.907Z"
+  },
+  {
+    "id": "emem_1782679416907_d7xj",
+    "divId": "ent_infrastructure",
+    "type": "tick",
+    "title": "Infrastructure: 3 active workspaces",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:36.907Z"
+  },
+  {
+    "id": "emem_1782679416908_0drs",
+    "divId": "ent_audit",
+    "type": "tick",
+    "title": "Audit: 50 recent entries, 0 critical",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:36.908Z"
+  },
+  {
+    "id": "emem_1782679416908_ptw5",
+    "divId": "ent_partner",
+    "type": "tick",
+    "title": "Partners: 1 active, 1 active contracts",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:36.908Z"
+  },
+  {
+    "id": "emem_1782679416908_khub",
+    "divId": "ent_legal",
+    "type": "tick",
+    "title": "Legal: 1 active contracts, 0 expiring in 30d",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:36.908Z"
+  },
+  {
+    "id": "emem_1782679416918_a8mt",
+    "divId": "ent_compliance",
+    "type": "tick",
+    "title": "Compliance scan: score=100 violations=0",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:36.918Z"
+  },
+  {
+    "id": "emem_1782679416923_mg18",
+    "divId": "ent_analytics",
+    "type": "tick",
+    "title": "Analytics: enterprise health 87, 20 division KPIs tracked",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:36.923Z"
+  },
+  {
+    "id": "emem_1782679418185_ehyi",
+    "divId": "ent_procurement",
+    "type": "tick",
+    "title": "Procurement: 2 vendors, 1 contracts, $0 annual spend",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:38.185Z"
+  },
+  {
+    "id": "emem_1782679418186_2w12",
+    "divId": "ent_vendor",
+    "type": "tick",
+    "title": "Vendors: 2 total, risk: L=2 M=0 H=0",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:38.186Z"
+  },
+  {
+    "id": "emem_1782679418186_5wkf",
+    "divId": "ent_hr",
+    "type": "tick",
+    "title": "HR: 2 active headcount — FT=2 Contract=0",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:38.186Z"
+  },
+  {
+    "id": "emem_1782679418187_gv2z",
+    "divId": "ent_strategy",
+    "type": "tick",
+    "title": "Strategy: 7 portfolios, 4 initiatives, 0 at-risk",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:38.187Z"
+  },
+  {
+    "id": "emem_1782679418197_c1qh",
+    "divId": "ent_board",
+    "type": "tick",
+    "title": "Board: enterprise health 87, 1 pending approvals",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:43:38.197Z"
+  },
+  {
+    "id": "emem_1782679654018_l44i",
+    "divId": "ent_director",
+    "type": "tick",
+    "title": "Director: health=87 risk=high",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:47:34.018Z"
+  },
+  {
+    "id": "emem_1782679684841_984p",
+    "divId": "ent_customer",
+    "type": "tick",
+    "title": "Customers: 0 active, ARR $0, 0 high-churn-risk",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:48:04.841Z"
+  },
+  {
+    "id": "emem_1782679684842_6nlp",
+    "divId": "ent_operations",
+    "type": "tick",
+    "title": "Operations: 90 active missions, 0 failed",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:48:04.842Z"
+  },
+  {
+    "id": "emem_1782679804427_lxdz",
+    "divId": "ent_risk",
+    "type": "tick",
+    "title": "Enterprise risk: high (score=53)",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:50:04.427Z"
+  },
+  {
+    "id": "emem_1782679805858_ztm3",
+    "divId": "ent_security",
+    "type": "tick",
+    "title": "Security: 37 controls, 0 high-risk vendors, 0 critical audit events",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:50:05.858Z"
+  },
+  {
+    "id": "emem_1782679805862_4zdi",
+    "divId": "ent_portfolio",
+    "type": "tick",
+    "title": "Portfolio sync: 7 portfolios",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:50:05.862Z"
+  },
+  {
+    "id": "emem_1782679888521_qfdi",
+    "divId": "ent_director",
+    "type": "tick",
+    "title": "Director: health=87 risk=high",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:51:28.521Z"
+  },
+  {
+    "id": "emem_1782680065227_njh6",
+    "divId": "ent_product",
+    "type": "tick",
+    "title": "Products: 2 GA, 1 in development of 4 total",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:25.227Z"
+  },
+  {
+    "id": "emem_1782680066804_wxbh",
+    "divId": "ent_finance",
+    "type": "tick",
+    "title": "Finance: $1,010,500 budget, 0% utilized",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:26.804Z"
+  },
+  {
+    "id": "emem_1782680066804_1gpo",
+    "divId": "ent_infrastructure",
+    "type": "tick",
+    "title": "Infrastructure: 3 active workspaces",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:26.804Z"
+  },
+  {
+    "id": "emem_1782680066805_55tt",
+    "divId": "ent_audit",
+    "type": "tick",
+    "title": "Audit: 50 recent entries, 0 critical",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:26.805Z"
+  },
+  {
+    "id": "emem_1782680071521_uhyt",
+    "divId": "ent_customer",
+    "type": "tick",
+    "title": "Customers: 0 active, ARR $0, 0 high-churn-risk",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:31.521Z"
+  },
+  {
+    "id": "emem_1782680071522_ms1s",
+    "divId": "ent_operations",
+    "type": "tick",
+    "title": "Operations: 90 active missions, 0 failed",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:31.522Z"
+  },
+  {
+    "id": "emem_1782680093037_55m5",
+    "divId": "ent_partner",
+    "type": "tick",
+    "title": "Partners: 1 active, 1 active contracts",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:53.037Z"
+  },
+  {
+    "id": "emem_1782680093037_axwd",
+    "divId": "ent_legal",
+    "type": "tick",
+    "title": "Legal: 1 active contracts, 0 expiring in 30d",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:53.037Z"
+  },
+  {
+    "id": "emem_1782680093048_yxvr",
+    "divId": "ent_compliance",
+    "type": "tick",
+    "title": "Compliance scan: score=100 violations=0",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:53.048Z"
+  },
+  {
+    "id": "emem_1782680093054_w837",
+    "divId": "ent_analytics",
+    "type": "tick",
+    "title": "Analytics: enterprise health 87, 20 division KPIs tracked",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:53.054Z"
+  },
+  {
+    "id": "emem_1782680094663_aj4v",
+    "divId": "ent_procurement",
+    "type": "tick",
+    "title": "Procurement: 2 vendors, 1 contracts, $0 annual spend",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:54.663Z"
+  },
+  {
+    "id": "emem_1782680094664_a0l9",
+    "divId": "ent_vendor",
+    "type": "tick",
+    "title": "Vendors: 2 total, risk: L=2 M=0 H=0",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:54.664Z"
+  },
+  {
+    "id": "emem_1782680094664_eyx4",
+    "divId": "ent_hr",
+    "type": "tick",
+    "title": "HR: 2 active headcount — FT=2 Contract=0",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:54.664Z"
+  },
+  {
+    "id": "emem_1782680094665_bsrv",
+    "divId": "ent_strategy",
+    "type": "tick",
+    "title": "Strategy: 7 portfolios, 4 initiatives, 0 at-risk",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:54.665Z"
+  },
+  {
+    "id": "emem_1782680094677_2d39",
+    "divId": "ent_board",
+    "type": "tick",
+    "title": "Board: enterprise health 87, 1 pending approvals",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T20:54:54.677Z"
+  },
+  {
+    "id": "emem_1782680431078_xo5b",
+    "divId": "ent_risk",
+    "type": "tick",
+    "title": "Enterprise risk: high (score=53)",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T21:00:31.078Z"
+  },
+  {
+    "id": "emem_1782680432635_ab3m",
+    "divId": "ent_security",
+    "type": "tick",
+    "title": "Security: 37 controls, 0 high-risk vendors, 0 critical audit events",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T21:00:32.635Z"
+  },
+  {
+    "id": "emem_1782680432656_16ao",
+    "divId": "ent_director",
+    "type": "tick",
+    "title": "Director: health=87 risk=high",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T21:00:32.656Z"
+  },
+  {
+    "id": "emem_1782680523936_kv5k",
+    "divId": "ent_portfolio",
+    "type": "tick",
+    "title": "Portfolio sync: 7 portfolios",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T21:02:03.936Z"
+  },
+  {
+    "id": "emem_1782680542060_nmt9",
+    "divId": "ent_customer",
+    "type": "tick",
+    "title": "Customers: 0 active, ARR $0, 0 high-churn-risk",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T21:02:22.060Z"
+  },
+  {
+    "id": "emem_1782680542061_95nf",
+    "divId": "ent_operations",
+    "type": "tick",
+    "title": "Operations: 90 active missions, 0 failed",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T21:02:22.061Z"
+  },
+  {
+    "id": "emem_1782680619872_62b4",
+    "divId": "ent_product",
+    "type": "tick",
+    "title": "Products: 2 GA, 1 in development of 4 total",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T21:03:39.872Z"
+  },
+  {
+    "id": "emem_1782680621596_ol16",
+    "divId": "ent_finance",
+    "type": "tick",
+    "title": "Finance: $1,010,500 budget, 0% utilized",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T21:03:41.596Z"
+  },
+  {
+    "id": "emem_1782680621597_mphv",
+    "divId": "ent_infrastructure",
+    "type": "tick",
+    "title": "Infrastructure: 3 active workspaces",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T21:03:41.597Z"
+  },
+  {
+    "id": "emem_1782680621597_q5je",
+    "divId": "ent_audit",
+    "type": "tick",
+    "title": "Audit: 50 recent entries, 0 critical",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T21:03:41.597Z"
+  },
+  {
+    "id": "emem_1782680701036_k0pc",
+    "divId": "ent_director",
+    "type": "tick",
+    "title": "Director: health=87 risk=high",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T21:05:01.036Z"
   }
 ]

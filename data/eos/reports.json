@@ -12785,7 +12785,7 @@
         ],
         "orgTasks": {},
         "createdAt": "2026-06-28T05:36:00.488Z",
-        "updatedAt": "2026-06-28T20:19:53.511Z",
+        "updatedAt": "2026-06-28T21:05:01.050Z",
         "completedAt": null,
         "progress": 0
       },
@@ -14350,7 +14350,7 @@
         ],
         "orgTasks": {},
         "createdAt": "2026-06-28T05:36:00.488Z",
-        "updatedAt": "2026-06-28T20:19:53.511Z",
+        "updatedAt": "2026-06-28T21:05:01.050Z",
         "completedAt": null,
         "progress": 0
       },
@@ -16220,7 +16220,7 @@
         ],
         "orgTasks": {},
         "createdAt": "2026-06-28T05:36:00.488Z",
-        "updatedAt": "2026-06-28T20:19:53.511Z",
+        "updatedAt": "2026-06-28T21:05:01.050Z",
         "completedAt": null,
         "progress": 0
       },
@@ -17175,7 +17175,7 @@
         ],
         "orgTasks": {},
         "createdAt": "2026-06-28T05:36:00.488Z",
-        "updatedAt": "2026-06-28T20:19:53.511Z",
+        "updatedAt": "2026-06-28T21:05:01.050Z",
         "completedAt": null,
         "progress": 0
       },
@@ -17792,5 +17792,5695 @@
     },
     "summary": "Health: 100/100. Active goals: 81. Active missions: 152.",
     "createdAt": "2026-06-28T20:19:54.566Z"
+  },
+  {
+    "id": "erpt_1782678115818_57ms",
+    "title": "Coordinator Sync — 2026-06-28T20:21",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 130,
+          "failed": 2026
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 54
+        },
+        "missions": {
+          "total": 154,
+          "active": 152,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 130,
+            "failed": 2026
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 62
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T20:21:55.816Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 152.",
+    "createdAt": "2026-06-28T20:21:55.818Z"
+  },
+  {
+    "id": "erpt_1782678211704_6wl9",
+    "title": "Coordinator Sync — 2026-06-28T20:23",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 135,
+          "failed": 2027
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 54
+        },
+        "missions": {
+          "total": 156,
+          "active": 154,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 135,
+            "failed": 2027
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 63
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T20:23:31.701Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 154.",
+    "createdAt": "2026-06-28T20:23:31.704Z"
+  },
+  {
+    "id": "erpt_1782678396974_ta9t",
+    "title": "Coordinator Sync — 2026-06-28T20:26",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 150,
+          "failed": 2030
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 56
+        },
+        "missions": {
+          "total": 156,
+          "active": 154,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 150,
+            "failed": 2030
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 64
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T20:26:36.971Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 154.",
+    "createdAt": "2026-06-28T20:26:36.974Z"
+  },
+  {
+    "id": "erpt_1782678398104_oiie",
+    "title": "Executive Report: Autonomous recovery: restore all systems — 2026-06-28",
+    "deptId": "eos_orchestrator",
+    "type": "executive",
+    "data": {
+      "goal": {
+        "id": "egoal_1782624960488_cmqa",
+        "title": "Autonomous recovery: restore all systems",
+        "description": "Executive goal created from command: \"Autonomous recovery: restore all systems\"",
+        "priority": "critical",
+        "kpis": [],
+        "deadline": null,
+        "tags": [
+          "command",
+          "executive"
+        ],
+        "sourceCommand": "Autonomous recovery: restore all systems",
+        "status": "active",
+        "quarter": "2026-Q2",
+        "strategyIds": [
+          "estrat_1782624960489_p21b"
+        ],
+        "missionIds": [
+          "emiss_1782624960499_0ayz",
+          "emiss_1782624960509_skoy",
+          "emiss_1782624960525_psra",
+          "emiss_1782624960529_217z",
+          "emiss_1782624960530_zd7t"
+        ],
+        "orgTasks": {},
+        "createdAt": "2026-06-28T05:36:00.488Z",
+        "updatedAt": "2026-06-28T21:05:01.050Z",
+        "completedAt": null,
+        "progress": 0
+      },
+      "missions": [
+        {
+          "id": "emiss_1782624960530_zd7t",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[ODI] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "odi"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Capture UX and design state for goal"
+            },
+            {
+              "description": "Apply design improvements if UX score below threshold"
+            },
+            {
+              "description": "Generate visual regression report"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.530Z",
+          "updatedAt": "2026-06-28T05:36:00.530Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960529_217z",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Evolution] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "evolution"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Detect improvements unlocked by goal execution"
+            },
+            {
+              "description": "Apply and measure validated evolutions"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.529Z",
+          "updatedAt": "2026-06-28T05:36:00.529Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960525_psra",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Knowledge] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "knowledge"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Capture all org outputs as knowledge items"
+            },
+            {
+              "description": "Generate playbook from goal execution"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.525Z",
+          "updatedAt": "2026-06-28T05:36:00.525Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960509_skoy",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Business] Autonomous recovery: restore all systems",
+          "description": "Business phase of: Autonomous recovery: restore all systems",
+          "orgTargets": [
+            "business"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Identify revenue and growth opportunities"
+            },
+            {
+              "description": "Launch campaigns aligned to goal"
+            },
+            {
+              "description": "Qualify and advance pipeline"
+            },
+            {
+              "description": "Close deals and update MRR"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.509Z",
+          "updatedAt": "2026-06-28T05:36:00.509Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960499_0ayz",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Engineering] Autonomous recovery: restore all systems",
+          "description": "Engineering phase of: Autonomous recovery: restore all systems",
+          "orgTargets": [
+            "engineering"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Define technical approach and architecture"
+            },
+            {
+              "description": "Break into epics and work items"
+            },
+            {
+              "description": "Implement and test"
+            },
+            {
+              "description": "Code review and merge"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.499Z",
+          "updatedAt": "2026-06-28T05:36:00.499Z",
+          "completedAt": null
+        }
+      ],
+      "decisions": [
+        {
+          "id": "edec_1782624960540_98qp",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "Outcome validation: Autonomous recovery: restore all systems",
+          "description": "",
+          "deptId": "eos_decision",
+          "type": "validation",
+          "chosen": "accept",
+          "alternatives": [
+            "accept",
+            "escalate",
+            "rollback"
+          ],
+          "rationale": "Global health score: 100. Passed: true",
+          "status": "resolved",
+          "resolvedAt": "2026-06-28T05:36:00.540Z",
+          "createdAt": "2026-06-28T05:36:00.540Z"
+        }
+      ],
+      "risks": [
+        {
+          "id": "erisk_1782626818050_gn3r",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "High engineering blocker count: 14",
+          "description": "",
+          "severity": "high",
+          "source": "engineering_blockers",
+          "mitigations": [
+            "Resolve blockers",
+            "Re-assign work items"
+          ],
+          "status": "active",
+          "createdAt": "2026-06-28T06:06:58.050Z",
+          "resolvedAt": null
+        }
+      ],
+      "approvals": [
+        {
+          "id": "eappr_1782624960534_ea8d",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "Deploy: Autonomous recovery: restore all systems",
+          "requiredBy": "eos_orchestrator",
+          "status": "approved",
+          "autoApprove": true,
+          "threshold": 0.8,
+          "createdAt": "2026-06-28T05:36:00.534Z",
+          "resolvedAt": "2026-06-28T05:36:00.534Z",
+          "resolvedBy": "auto"
+        }
+      ],
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgSummary": {
+        "engineering": 1,
+        "business": 1,
+        "knowledge": 1,
+        "evolution": 1,
+        "odi": 1
+      }
+    },
+    "summary": "Goal \"Autonomous recovery: restore all systems\" executed across 5 organizations. 5 missions, 1 decisions, 1 risks. Global health: 100/100.",
+    "createdAt": "2026-06-28T20:26:38.104Z"
+  },
+  {
+    "id": "erpt_1782678407094_qwj8",
+    "title": "Coordinator Sync — 2026-06-28T20:26",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 150,
+          "failed": 2030
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 56
+        },
+        "missions": {
+          "total": 156,
+          "active": 154,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 150,
+            "failed": 2030
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 66
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T20:26:47.091Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 154.",
+    "createdAt": "2026-06-28T20:26:47.094Z"
+  },
+  {
+    "id": "erpt_1782679354219_onfn",
+    "title": "Coordinator Sync — 2026-06-28T20:42",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 165,
+          "failed": 2033
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 56
+        },
+        "missions": {
+          "total": 158,
+          "active": 156,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 165,
+            "failed": 2033
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 67
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T20:42:34.216Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 156.",
+    "createdAt": "2026-06-28T20:42:34.219Z"
+  },
+  {
+    "id": "erpt_1782679371595_smct",
+    "title": "Coordinator Sync — 2026-06-28T20:42",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 165,
+          "failed": 2033
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 58
+        },
+        "missions": {
+          "total": 158,
+          "active": 156,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 165,
+            "failed": 2033
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 68
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T20:42:51.592Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 156.",
+    "createdAt": "2026-06-28T20:42:51.595Z"
+  },
+  {
+    "id": "erpt_1782679372881_dfjd",
+    "title": "Executive Report: Autonomous recovery: restore all systems — 2026-06-28",
+    "deptId": "eos_orchestrator",
+    "type": "executive",
+    "data": {
+      "goal": {
+        "id": "egoal_1782624960488_cmqa",
+        "title": "Autonomous recovery: restore all systems",
+        "description": "Executive goal created from command: \"Autonomous recovery: restore all systems\"",
+        "priority": "critical",
+        "kpis": [],
+        "deadline": null,
+        "tags": [
+          "command",
+          "executive"
+        ],
+        "sourceCommand": "Autonomous recovery: restore all systems",
+        "status": "active",
+        "quarter": "2026-Q2",
+        "strategyIds": [
+          "estrat_1782624960489_p21b"
+        ],
+        "missionIds": [
+          "emiss_1782624960499_0ayz",
+          "emiss_1782624960509_skoy",
+          "emiss_1782624960525_psra",
+          "emiss_1782624960529_217z",
+          "emiss_1782624960530_zd7t"
+        ],
+        "orgTasks": {},
+        "createdAt": "2026-06-28T05:36:00.488Z",
+        "updatedAt": "2026-06-28T21:05:01.050Z",
+        "completedAt": null,
+        "progress": 0
+      },
+      "missions": [
+        {
+          "id": "emiss_1782624960530_zd7t",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[ODI] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "odi"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Capture UX and design state for goal"
+            },
+            {
+              "description": "Apply design improvements if UX score below threshold"
+            },
+            {
+              "description": "Generate visual regression report"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.530Z",
+          "updatedAt": "2026-06-28T05:36:00.530Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960529_217z",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Evolution] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "evolution"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Detect improvements unlocked by goal execution"
+            },
+            {
+              "description": "Apply and measure validated evolutions"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.529Z",
+          "updatedAt": "2026-06-28T05:36:00.529Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960525_psra",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Knowledge] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "knowledge"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Capture all org outputs as knowledge items"
+            },
+            {
+              "description": "Generate playbook from goal execution"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.525Z",
+          "updatedAt": "2026-06-28T05:36:00.525Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960509_skoy",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Business] Autonomous recovery: restore all systems",
+          "description": "Business phase of: Autonomous recovery: restore all systems",
+          "orgTargets": [
+            "business"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Identify revenue and growth opportunities"
+            },
+            {
+              "description": "Launch campaigns aligned to goal"
+            },
+            {
+              "description": "Qualify and advance pipeline"
+            },
+            {
+              "description": "Close deals and update MRR"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.509Z",
+          "updatedAt": "2026-06-28T05:36:00.509Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960499_0ayz",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Engineering] Autonomous recovery: restore all systems",
+          "description": "Engineering phase of: Autonomous recovery: restore all systems",
+          "orgTargets": [
+            "engineering"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Define technical approach and architecture"
+            },
+            {
+              "description": "Break into epics and work items"
+            },
+            {
+              "description": "Implement and test"
+            },
+            {
+              "description": "Code review and merge"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.499Z",
+          "updatedAt": "2026-06-28T05:36:00.499Z",
+          "completedAt": null
+        }
+      ],
+      "decisions": [
+        {
+          "id": "edec_1782624960540_98qp",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "Outcome validation: Autonomous recovery: restore all systems",
+          "description": "",
+          "deptId": "eos_decision",
+          "type": "validation",
+          "chosen": "accept",
+          "alternatives": [
+            "accept",
+            "escalate",
+            "rollback"
+          ],
+          "rationale": "Global health score: 100. Passed: true",
+          "status": "resolved",
+          "resolvedAt": "2026-06-28T05:36:00.540Z",
+          "createdAt": "2026-06-28T05:36:00.540Z"
+        }
+      ],
+      "risks": [
+        {
+          "id": "erisk_1782626818050_gn3r",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "High engineering blocker count: 14",
+          "description": "",
+          "severity": "high",
+          "source": "engineering_blockers",
+          "mitigations": [
+            "Resolve blockers",
+            "Re-assign work items"
+          ],
+          "status": "active",
+          "createdAt": "2026-06-28T06:06:58.050Z",
+          "resolvedAt": null
+        }
+      ],
+      "approvals": [
+        {
+          "id": "eappr_1782624960534_ea8d",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "Deploy: Autonomous recovery: restore all systems",
+          "requiredBy": "eos_orchestrator",
+          "status": "approved",
+          "autoApprove": true,
+          "threshold": 0.8,
+          "createdAt": "2026-06-28T05:36:00.534Z",
+          "resolvedAt": "2026-06-28T05:36:00.534Z",
+          "resolvedBy": "auto"
+        }
+      ],
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgSummary": {
+        "engineering": 1,
+        "business": 1,
+        "knowledge": 1,
+        "evolution": 1,
+        "odi": 1
+      }
+    },
+    "summary": "Goal \"Autonomous recovery: restore all systems\" executed across 5 organizations. 5 missions, 1 decisions, 1 risks. Global health: 100/100.",
+    "createdAt": "2026-06-28T20:42:52.881Z"
+  },
+  {
+    "id": "erpt_1782679655331_ckyw",
+    "title": "Coordinator Sync — 2026-06-28T20:47",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 180,
+          "failed": 2036
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 58
+        },
+        "missions": {
+          "total": 160,
+          "active": 158,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 180,
+            "failed": 2036
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 70
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T20:47:35.328Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 158.",
+    "createdAt": "2026-06-28T20:47:35.331Z"
+  },
+  {
+    "id": "erpt_1782679684867_lgwa",
+    "title": "Coordinator Sync — 2026-06-28T20:48",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 180,
+          "failed": 2036
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 58
+        },
+        "missions": {
+          "total": 160,
+          "active": 158,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 180,
+            "failed": 2036
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 71
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T20:48:04.864Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 158.",
+    "createdAt": "2026-06-28T20:48:04.867Z"
+  },
+  {
+    "id": "erpt_1782679686242_028b",
+    "title": "Executive Report: Autonomous recovery: restore all systems — 2026-06-28",
+    "deptId": "eos_orchestrator",
+    "type": "executive",
+    "data": {
+      "goal": {
+        "id": "egoal_1782624960488_cmqa",
+        "title": "Autonomous recovery: restore all systems",
+        "description": "Executive goal created from command: \"Autonomous recovery: restore all systems\"",
+        "priority": "critical",
+        "kpis": [],
+        "deadline": null,
+        "tags": [
+          "command",
+          "executive"
+        ],
+        "sourceCommand": "Autonomous recovery: restore all systems",
+        "status": "active",
+        "quarter": "2026-Q2",
+        "strategyIds": [
+          "estrat_1782624960489_p21b"
+        ],
+        "missionIds": [
+          "emiss_1782624960499_0ayz",
+          "emiss_1782624960509_skoy",
+          "emiss_1782624960525_psra",
+          "emiss_1782624960529_217z",
+          "emiss_1782624960530_zd7t"
+        ],
+        "orgTasks": {},
+        "createdAt": "2026-06-28T05:36:00.488Z",
+        "updatedAt": "2026-06-28T21:05:01.050Z",
+        "completedAt": null,
+        "progress": 0
+      },
+      "missions": [
+        {
+          "id": "emiss_1782624960530_zd7t",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[ODI] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "odi"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Capture UX and design state for goal"
+            },
+            {
+              "description": "Apply design improvements if UX score below threshold"
+            },
+            {
+              "description": "Generate visual regression report"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.530Z",
+          "updatedAt": "2026-06-28T05:36:00.530Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960529_217z",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Evolution] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "evolution"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Detect improvements unlocked by goal execution"
+            },
+            {
+              "description": "Apply and measure validated evolutions"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.529Z",
+          "updatedAt": "2026-06-28T05:36:00.529Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960525_psra",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Knowledge] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "knowledge"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Capture all org outputs as knowledge items"
+            },
+            {
+              "description": "Generate playbook from goal execution"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.525Z",
+          "updatedAt": "2026-06-28T05:36:00.525Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960509_skoy",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Business] Autonomous recovery: restore all systems",
+          "description": "Business phase of: Autonomous recovery: restore all systems",
+          "orgTargets": [
+            "business"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Identify revenue and growth opportunities"
+            },
+            {
+              "description": "Launch campaigns aligned to goal"
+            },
+            {
+              "description": "Qualify and advance pipeline"
+            },
+            {
+              "description": "Close deals and update MRR"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.509Z",
+          "updatedAt": "2026-06-28T05:36:00.509Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960499_0ayz",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Engineering] Autonomous recovery: restore all systems",
+          "description": "Engineering phase of: Autonomous recovery: restore all systems",
+          "orgTargets": [
+            "engineering"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Define technical approach and architecture"
+            },
+            {
+              "description": "Break into epics and work items"
+            },
+            {
+              "description": "Implement and test"
+            },
+            {
+              "description": "Code review and merge"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.499Z",
+          "updatedAt": "2026-06-28T05:36:00.499Z",
+          "completedAt": null
+        }
+      ],
+      "decisions": [
+        {
+          "id": "edec_1782624960540_98qp",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "Outcome validation: Autonomous recovery: restore all systems",
+          "description": "",
+          "deptId": "eos_decision",
+          "type": "validation",
+          "chosen": "accept",
+          "alternatives": [
+            "accept",
+            "escalate",
+            "rollback"
+          ],
+          "rationale": "Global health score: 100. Passed: true",
+          "status": "resolved",
+          "resolvedAt": "2026-06-28T05:36:00.540Z",
+          "createdAt": "2026-06-28T05:36:00.540Z"
+        }
+      ],
+      "risks": [
+        {
+          "id": "erisk_1782626818050_gn3r",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "High engineering blocker count: 14",
+          "description": "",
+          "severity": "high",
+          "source": "engineering_blockers",
+          "mitigations": [
+            "Resolve blockers",
+            "Re-assign work items"
+          ],
+          "status": "active",
+          "createdAt": "2026-06-28T06:06:58.050Z",
+          "resolvedAt": null
+        }
+      ],
+      "approvals": [
+        {
+          "id": "eappr_1782624960534_ea8d",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "Deploy: Autonomous recovery: restore all systems",
+          "requiredBy": "eos_orchestrator",
+          "status": "approved",
+          "autoApprove": true,
+          "threshold": 0.8,
+          "createdAt": "2026-06-28T05:36:00.534Z",
+          "resolvedAt": "2026-06-28T05:36:00.534Z",
+          "resolvedBy": "auto"
+        }
+      ],
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgSummary": {
+        "engineering": 1,
+        "business": 1,
+        "knowledge": 1,
+        "evolution": 1,
+        "odi": 1
+      }
+    },
+    "summary": "Goal \"Autonomous recovery: restore all systems\" executed across 5 organizations. 5 missions, 1 decisions, 1 risks. Global health: 100/100.",
+    "createdAt": "2026-06-28T20:48:06.242Z"
+  },
+  {
+    "id": "erpt_1782679890123_9uj4",
+    "title": "Coordinator Sync — 2026-06-28T20:51",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 190,
+          "failed": 2038
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 59
+        },
+        "missions": {
+          "total": 162,
+          "active": 160,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 190,
+            "failed": 2038
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 73
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T20:51:30.120Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 160.",
+    "createdAt": "2026-06-28T20:51:30.123Z"
+  },
+  {
+    "id": "erpt_1782680071562_g1ks",
+    "title": "Coordinator Sync — 2026-06-28T20:54",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 195,
+          "failed": 2039
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 59
+        },
+        "missions": {
+          "total": 162,
+          "active": 160,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 195,
+            "failed": 2039
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 74
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T20:54:31.559Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 160.",
+    "createdAt": "2026-06-28T20:54:31.562Z"
+  },
+  {
+    "id": "erpt_1782680073069_hwtw",
+    "title": "Executive Report: Autonomous recovery: restore all systems — 2026-06-28",
+    "deptId": "eos_orchestrator",
+    "type": "executive",
+    "data": {
+      "goal": {
+        "id": "egoal_1782624960488_cmqa",
+        "title": "Autonomous recovery: restore all systems",
+        "description": "Executive goal created from command: \"Autonomous recovery: restore all systems\"",
+        "priority": "critical",
+        "kpis": [],
+        "deadline": null,
+        "tags": [
+          "command",
+          "executive"
+        ],
+        "sourceCommand": "Autonomous recovery: restore all systems",
+        "status": "active",
+        "quarter": "2026-Q2",
+        "strategyIds": [
+          "estrat_1782624960489_p21b"
+        ],
+        "missionIds": [
+          "emiss_1782624960499_0ayz",
+          "emiss_1782624960509_skoy",
+          "emiss_1782624960525_psra",
+          "emiss_1782624960529_217z",
+          "emiss_1782624960530_zd7t"
+        ],
+        "orgTasks": {},
+        "createdAt": "2026-06-28T05:36:00.488Z",
+        "updatedAt": "2026-06-28T21:05:01.050Z",
+        "completedAt": null,
+        "progress": 0
+      },
+      "missions": [
+        {
+          "id": "emiss_1782624960530_zd7t",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[ODI] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "odi"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Capture UX and design state for goal"
+            },
+            {
+              "description": "Apply design improvements if UX score below threshold"
+            },
+            {
+              "description": "Generate visual regression report"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.530Z",
+          "updatedAt": "2026-06-28T05:36:00.530Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960529_217z",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Evolution] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "evolution"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Detect improvements unlocked by goal execution"
+            },
+            {
+              "description": "Apply and measure validated evolutions"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.529Z",
+          "updatedAt": "2026-06-28T05:36:00.529Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960525_psra",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Knowledge] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "knowledge"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Capture all org outputs as knowledge items"
+            },
+            {
+              "description": "Generate playbook from goal execution"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.525Z",
+          "updatedAt": "2026-06-28T05:36:00.525Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960509_skoy",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Business] Autonomous recovery: restore all systems",
+          "description": "Business phase of: Autonomous recovery: restore all systems",
+          "orgTargets": [
+            "business"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Identify revenue and growth opportunities"
+            },
+            {
+              "description": "Launch campaigns aligned to goal"
+            },
+            {
+              "description": "Qualify and advance pipeline"
+            },
+            {
+              "description": "Close deals and update MRR"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.509Z",
+          "updatedAt": "2026-06-28T05:36:00.509Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960499_0ayz",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Engineering] Autonomous recovery: restore all systems",
+          "description": "Engineering phase of: Autonomous recovery: restore all systems",
+          "orgTargets": [
+            "engineering"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Define technical approach and architecture"
+            },
+            {
+              "description": "Break into epics and work items"
+            },
+            {
+              "description": "Implement and test"
+            },
+            {
+              "description": "Code review and merge"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.499Z",
+          "updatedAt": "2026-06-28T05:36:00.499Z",
+          "completedAt": null
+        }
+      ],
+      "decisions": [
+        {
+          "id": "edec_1782624960540_98qp",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "Outcome validation: Autonomous recovery: restore all systems",
+          "description": "",
+          "deptId": "eos_decision",
+          "type": "validation",
+          "chosen": "accept",
+          "alternatives": [
+            "accept",
+            "escalate",
+            "rollback"
+          ],
+          "rationale": "Global health score: 100. Passed: true",
+          "status": "resolved",
+          "resolvedAt": "2026-06-28T05:36:00.540Z",
+          "createdAt": "2026-06-28T05:36:00.540Z"
+        }
+      ],
+      "risks": [
+        {
+          "id": "erisk_1782626818050_gn3r",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "High engineering blocker count: 14",
+          "description": "",
+          "severity": "high",
+          "source": "engineering_blockers",
+          "mitigations": [
+            "Resolve blockers",
+            "Re-assign work items"
+          ],
+          "status": "active",
+          "createdAt": "2026-06-28T06:06:58.050Z",
+          "resolvedAt": null
+        }
+      ],
+      "approvals": [
+        {
+          "id": "eappr_1782624960534_ea8d",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "Deploy: Autonomous recovery: restore all systems",
+          "requiredBy": "eos_orchestrator",
+          "status": "approved",
+          "autoApprove": true,
+          "threshold": 0.8,
+          "createdAt": "2026-06-28T05:36:00.534Z",
+          "resolvedAt": "2026-06-28T05:36:00.534Z",
+          "resolvedBy": "auto"
+        }
+      ],
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgSummary": {
+        "engineering": 1,
+        "business": 1,
+        "knowledge": 1,
+        "evolution": 1,
+        "odi": 1
+      }
+    },
+    "summary": "Goal \"Autonomous recovery: restore all systems\" executed across 5 organizations. 5 missions, 1 decisions, 1 risks. Global health: 100/100.",
+    "createdAt": "2026-06-28T20:54:33.069Z"
+  },
+  {
+    "id": "erpt_1782680434236_u2xq",
+    "title": "Coordinator Sync — 2026-06-28T21:00",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 200,
+          "failed": 2040
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 59
+        },
+        "missions": {
+          "total": 164,
+          "active": 162,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 200,
+            "failed": 2040
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 76
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T21:00:34.232Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 162.",
+    "createdAt": "2026-06-28T21:00:34.236Z"
+  },
+  {
+    "id": "erpt_1782680542087_n8dh",
+    "title": "Coordinator Sync — 2026-06-28T21:02",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 205,
+          "failed": 2041
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 59
+        },
+        "missions": {
+          "total": 164,
+          "active": 162,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 205,
+            "failed": 2041
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 77
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T21:02:22.084Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 162.",
+    "createdAt": "2026-06-28T21:02:22.087Z"
+  },
+  {
+    "id": "erpt_1782680543675_5epi",
+    "title": "Executive Report: Autonomous recovery: restore all systems — 2026-06-28",
+    "deptId": "eos_orchestrator",
+    "type": "executive",
+    "data": {
+      "goal": {
+        "id": "egoal_1782624960488_cmqa",
+        "title": "Autonomous recovery: restore all systems",
+        "description": "Executive goal created from command: \"Autonomous recovery: restore all systems\"",
+        "priority": "critical",
+        "kpis": [],
+        "deadline": null,
+        "tags": [
+          "command",
+          "executive"
+        ],
+        "sourceCommand": "Autonomous recovery: restore all systems",
+        "status": "active",
+        "quarter": "2026-Q2",
+        "strategyIds": [
+          "estrat_1782624960489_p21b"
+        ],
+        "missionIds": [
+          "emiss_1782624960499_0ayz",
+          "emiss_1782624960509_skoy",
+          "emiss_1782624960525_psra",
+          "emiss_1782624960529_217z",
+          "emiss_1782624960530_zd7t"
+        ],
+        "orgTasks": {},
+        "createdAt": "2026-06-28T05:36:00.488Z",
+        "updatedAt": "2026-06-28T21:05:01.050Z",
+        "completedAt": null,
+        "progress": 0
+      },
+      "missions": [
+        {
+          "id": "emiss_1782624960530_zd7t",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[ODI] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "odi"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Capture UX and design state for goal"
+            },
+            {
+              "description": "Apply design improvements if UX score below threshold"
+            },
+            {
+              "description": "Generate visual regression report"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.530Z",
+          "updatedAt": "2026-06-28T05:36:00.530Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960529_217z",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Evolution] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "evolution"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Detect improvements unlocked by goal execution"
+            },
+            {
+              "description": "Apply and measure validated evolutions"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.529Z",
+          "updatedAt": "2026-06-28T05:36:00.529Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960525_psra",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Knowledge] Autonomous recovery: restore all systems",
+          "description": "",
+          "orgTargets": [
+            "knowledge"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Capture all org outputs as knowledge items"
+            },
+            {
+              "description": "Generate playbook from goal execution"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.525Z",
+          "updatedAt": "2026-06-28T05:36:00.525Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960509_skoy",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Business] Autonomous recovery: restore all systems",
+          "description": "Business phase of: Autonomous recovery: restore all systems",
+          "orgTargets": [
+            "business"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Identify revenue and growth opportunities"
+            },
+            {
+              "description": "Launch campaigns aligned to goal"
+            },
+            {
+              "description": "Qualify and advance pipeline"
+            },
+            {
+              "description": "Close deals and update MRR"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.509Z",
+          "updatedAt": "2026-06-28T05:36:00.509Z",
+          "completedAt": null
+        },
+        {
+          "id": "emiss_1782624960499_0ayz",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "[Engineering] Autonomous recovery: restore all systems",
+          "description": "Engineering phase of: Autonomous recovery: restore all systems",
+          "orgTargets": [
+            "engineering"
+          ],
+          "priority": "critical",
+          "subtasks": [
+            {
+              "description": "Define technical approach and architecture"
+            },
+            {
+              "description": "Break into epics and work items"
+            },
+            {
+              "description": "Implement and test"
+            },
+            {
+              "description": "Code review and merge"
+            }
+          ],
+          "status": "active",
+          "orchMissionId": null,
+          "orgResults": {},
+          "completedOrgs": [],
+          "failedOrgs": [],
+          "createdAt": "2026-06-28T05:36:00.499Z",
+          "updatedAt": "2026-06-28T05:36:00.499Z",
+          "completedAt": null
+        }
+      ],
+      "decisions": [
+        {
+          "id": "edec_1782624960540_98qp",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "Outcome validation: Autonomous recovery: restore all systems",
+          "description": "",
+          "deptId": "eos_decision",
+          "type": "validation",
+          "chosen": "accept",
+          "alternatives": [
+            "accept",
+            "escalate",
+            "rollback"
+          ],
+          "rationale": "Global health score: 100. Passed: true",
+          "status": "resolved",
+          "resolvedAt": "2026-06-28T05:36:00.540Z",
+          "createdAt": "2026-06-28T05:36:00.540Z"
+        }
+      ],
+      "risks": [
+        {
+          "id": "erisk_1782626818050_gn3r",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "High engineering blocker count: 14",
+          "description": "",
+          "severity": "high",
+          "source": "engineering_blockers",
+          "mitigations": [
+            "Resolve blockers",
+            "Re-assign work items"
+          ],
+          "status": "active",
+          "createdAt": "2026-06-28T06:06:58.050Z",
+          "resolvedAt": null
+        }
+      ],
+      "approvals": [
+        {
+          "id": "eappr_1782624960534_ea8d",
+          "goalId": "egoal_1782624960488_cmqa",
+          "title": "Deploy: Autonomous recovery: restore all systems",
+          "requiredBy": "eos_orchestrator",
+          "status": "approved",
+          "autoApprove": true,
+          "threshold": 0.8,
+          "createdAt": "2026-06-28T05:36:00.534Z",
+          "resolvedAt": "2026-06-28T05:36:00.534Z",
+          "resolvedBy": "auto"
+        }
+      ],
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgSummary": {
+        "engineering": 1,
+        "business": 1,
+        "knowledge": 1,
+        "evolution": 1,
+        "odi": 1
+      }
+    },
+    "summary": "Goal \"Autonomous recovery: restore all systems\" executed across 5 organizations. 5 missions, 1 decisions, 1 risks. Global health: 100/100.",
+    "createdAt": "2026-06-28T21:02:23.675Z"
+  },
+  {
+    "id": "erpt_1782680702745_kv1l",
+    "title": "Coordinator Sync — 2026-06-28T21:05",
+    "deptId": "eos_coordinator",
+    "type": "sync",
+    "data": {
+      "health": {
+        "score": 100,
+        "orgs": {
+          "engineering": {
+            "blockers": 14,
+            "velocity": 0,
+            "score": 0
+          },
+          "business": {
+            "winRate": 98,
+            "mrr": 91826749,
+            "score": 9800
+          },
+          "knowledge": {
+            "ratio": 0.8804347826086957,
+            "total": 368,
+            "score": 88
+          },
+          "evolution": {
+            "keepRate": 0.46774193548387094,
+            "total": 62,
+            "score": 47
+          }
+        },
+        "risks": [
+          {
+            "id": "erisk_1782599502820_nvky",
+            "title": "RiskA 1782599502788",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:42.820Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599508571_wf2b",
+            "goalId": "egoal_1782599503303_ot27",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:31:48.571Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599535139_2erp",
+            "title": "RiskA 1782599535116",
+            "description": "",
+            "severity": "high",
+            "source": "test",
+            "mitigations": [],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:15.139Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782599540423_dqn1",
+            "goalId": "egoal_1782599535585_un8s",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-27T22:32:20.423Z",
+            "resolvedAt": null
+          },
+          {
+            "id": "erisk_1782626818050_gn3r",
+            "goalId": "egoal_1782624960488_cmqa",
+            "title": "High engineering blocker count: 14",
+            "description": "",
+            "severity": "high",
+            "source": "engineering_blockers",
+            "mitigations": [
+              "Resolve blockers",
+              "Re-assign work items"
+            ],
+            "status": "active",
+            "createdAt": "2026-06-28T06:06:58.050Z",
+            "resolvedAt": null
+          }
+        ],
+        "agents": {
+          "total": 70,
+          "running": 70,
+          "score": 100
+        },
+        "runtime": {}
+      },
+      "orgStatus": {
+        "engineering": {
+          "workItems": 167,
+          "velocity": 0
+        },
+        "business": {
+          "mrr": 91826749,
+          "winRate": 98,
+          "deals": 80
+        },
+        "knowledge": {
+          "items": 368,
+          "validated": 324,
+          "playbooks": 12
+        },
+        "evolution": {
+          "evolutions": 62,
+          "kept": 29,
+          "avgImpact": -3
+        },
+        "runtime": {
+          "healed": 215,
+          "failed": 2043
+        },
+        "agents": {
+          "total": 70,
+          "running": 70
+        }
+      },
+      "dashboard": {
+        "quarter": "2026-Q2",
+        "goals": {
+          "total": 81,
+          "active": 81,
+          "completed": 0
+        },
+        "strategies": {
+          "total": 59
+        },
+        "missions": {
+          "total": 164,
+          "active": 162,
+          "completed": 2
+        },
+        "decisions": {
+          "total": 23
+        },
+        "approvals": {
+          "pending": 0,
+          "approved": 27
+        },
+        "risks": {
+          "active": 5,
+          "critical": 0
+        },
+        "allocations": {
+          "active": 19
+        },
+        "health": {
+          "score": 100,
+          "orgs": {
+            "engineering": {
+              "blockers": 14,
+              "velocity": 0,
+              "score": 0
+            },
+            "business": {
+              "winRate": 98,
+              "mrr": 91826749,
+              "score": 9800
+            },
+            "knowledge": {
+              "ratio": 0.8804347826086957,
+              "total": 368,
+              "score": 88
+            },
+            "evolution": {
+              "keepRate": 0.46774193548387094,
+              "total": 62,
+              "score": 47
+            }
+          },
+          "risks": [
+            {
+              "id": "erisk_1782599502820_nvky",
+              "title": "RiskA 1782599502788",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:42.820Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599508571_wf2b",
+              "goalId": "egoal_1782599503303_ot27",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:31:48.571Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599535139_2erp",
+              "title": "RiskA 1782599535116",
+              "description": "",
+              "severity": "high",
+              "source": "test",
+              "mitigations": [],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:15.139Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782599540423_dqn1",
+              "goalId": "egoal_1782599535585_un8s",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-27T22:32:20.423Z",
+              "resolvedAt": null
+            },
+            {
+              "id": "erisk_1782626818050_gn3r",
+              "goalId": "egoal_1782624960488_cmqa",
+              "title": "High engineering blocker count: 14",
+              "description": "",
+              "severity": "high",
+              "source": "engineering_blockers",
+              "mitigations": [
+                "Resolve blockers",
+                "Re-assign work items"
+              ],
+              "status": "active",
+              "createdAt": "2026-06-28T06:06:58.050Z",
+              "resolvedAt": null
+            }
+          ],
+          "agents": {
+            "total": 70,
+            "running": 70,
+            "score": 100
+          },
+          "runtime": {}
+        },
+        "orgStatus": {
+          "engineering": {
+            "workItems": 167,
+            "velocity": 0
+          },
+          "business": {
+            "mrr": 91826749,
+            "winRate": 98,
+            "deals": 80
+          },
+          "knowledge": {
+            "items": 368,
+            "validated": 324,
+            "playbooks": 12
+          },
+          "evolution": {
+            "evolutions": 62,
+            "kept": 29,
+            "avgImpact": -3
+          },
+          "runtime": {
+            "healed": 215,
+            "failed": 2043
+          },
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "reports": {
+          "total": 79
+        },
+        "context": {
+          "globalObjective": "Autonomous recovery: restore all systems",
+          "lastSync": "2026-06-28T21:05:02.742Z"
+        }
+      }
+    },
+    "summary": "Health: 100/100. Active goals: 81. Active missions: 162.",
+    "createdAt": "2026-06-28T21:05:02.745Z"
   }
 ]

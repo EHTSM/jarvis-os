@@ -1,0 +1,429 @@
+{
+  "publications": [
+    {
+      "id": "pub_1782680600847_wzr5",
+      "planId": "rp_1782680600452_4jqv",
+      "type": "benchmark_report",
+      "title": "Benchmark Report: execution_pipeline, workspace_mesh, approval_engine",
+      "targets": [
+        "execution_pipeline",
+        "workspace_mesh",
+        "approval_engine"
+      ],
+      "results": {
+        "execution_pipeline": [],
+        "workspace_mesh": [],
+        "approval_engine": []
+      },
+      "publishedAt": "2026-06-28T21:03:20.847Z",
+      "minutesSaved": 30
+    },
+    {
+      "id": "pub_1782680600847_qw11",
+      "planId": "rp_1782680600452_4jqv",
+      "type": "evolution_proposal",
+      "title": "Evolution Proposal: deployment_strategy",
+      "domain": "deployment_strategy",
+      "recommendation": "Migrate all production deployments to blue/green strategy — benchmarks show 23% lower rollback rate",
+      "confidence": 0.87,
+      "effort": "medium",
+      "impact": "high",
+      "status": "proposed",
+      "publishedAt": "2026-06-28T21:03:20.847Z",
+      "minutesSaved": 60
+    },
+    {
+      "id": "pub_1782680600851_g3au",
+      "type": "weekly_digest",
+      "title": "Weekly Research Digest — Mon Jun 29 2026",
+      "period": {
+        "from": "2026-06-21T21:03:20.850Z",
+        "to": "2026-06-28T21:03:20.851Z"
+      },
+      "publications": 2,
+      "experiments": 0,
+      "evolutionProposals": 1,
+      "highlights": [
+        {
+          "title": "Benchmark Report: execution_pipeline, workspace_mesh, approval_engine",
+          "type": "benchmark_report"
+        },
+        {
+          "title": "Evolution Proposal: deployment_strategy",
+          "type": "evolution_proposal"
+        }
+      ],
+      "publishedAt": "2026-06-28T21:03:20.851Z",
+      "minutesSaved": 20
+    },
+    {
+      "id": "pub_1782680600965_lreh",
+      "planId": null,
+      "type": "benchmark_report",
+      "title": "Benchmark Report: execution_pipeline",
+      "targets": [
+        "execution_pipeline"
+      ],
+      "results": {
+        "execution_pipeline": [
+          {
+            "id": "bm_1782680600895_c8ql",
+            "metrics": {
+              "throughput": 0,
+              "latency_ms": 132,
+              "success_rate": 0.85,
+              "error_rate": 0.15
+            },
+            "ts": "2026-06-28T21:03:20.965Z"
+          }
+        ]
+      },
+      "publishedAt": "2026-06-28T21:03:20.965Z",
+      "minutesSaved": 30
+    },
+    {
+      "id": "pub_1782680707487_m32r",
+      "planId": "rp_1782680707102_mhi1",
+      "type": "research_paper",
+      "title": "Optimizing Deployment Strategies in Autonomous Platforms",
+      "domain": "deployment_strategy",
+      "abstract": "Investigation into deployment strategy performance across the Ooplix platform.",
+      "sections": [
+        {
+          "heading": "Abstract",
+          "content": "Investigation into deployment strategy performance across the Ooplix platform."
+        },
+        {
+          "heading": "Methodology",
+          "content": "16-step autonomous research pipeline: Observe → Identify → Research → Benchmark → Hypothesize → Experiment → Validate → Publish."
+        },
+        {
+          "heading": "Findings",
+          "content": "Experiment \"Deployment Strategy A/B Test (replay)\": treatment did not improve over control (confidence=0.85). Benchmark Deployment Strategy: {\"deploy_success_rate\":0.897,\"rollback_rate\":0.82,\"time_to_deploy_ms\":0.79}. Improvement detected. Experiment \"Blue/Green vs Rolling Comparison\": treatment did not improve over control (confidence=0.89). Blue/green did not outperform rolling deployment. Benchmark Deployment Strategy: {\"deploy_success_rate\":0.825,\"rollback_rate\":0.93,\"time_to_deploy_ms\":0.835}. No significant improvement."
+        },
+        {
+          "heading": "Experiments",
+          "content": "No experiments executed in this research cycle."
+        },
+        {
+          "heading": "Recommendations",
+          "content": "Based on 16 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency. Investigate further Investigate further"
+        },
+        {
+          "heading": "Conclusion",
+          "content": "Research cycle complete. 5 findings indexed. 0 experiments run."
+        }
+      ],
+      "findings": [
+        "Experiment \"Deployment Strategy A/B Test (replay)\": treatment did not improve over control (confidence=0.85).",
+        "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.897,\"rollback_rate\":0.82,\"time_to_deploy_ms\":0.79}. Improvement detected.",
+        "Experiment \"Blue/Green vs Rolling Comparison\": treatment did not improve over control (confidence=0.89).",
+        "Blue/green did not outperform rolling deployment.",
+        "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.825,\"rollback_rate\":0.93,\"time_to_deploy_ms\":0.835}. No significant improvement."
+      ],
+      "experiments": [],
+      "wordCount": 107,
+      "publishedAt": "2026-06-28T21:05:07.487Z",
+      "minutesSaved": 45
+    },
+    {
+      "id": "pub_1782680707491_04nu",
+      "planId": "rp_1782680707103_9h2i",
+      "type": "research_paper",
+      "title": "Workspace Mesh Reliability Research",
+      "domain": "workspace_mesh",
+      "abstract": "Research investigation into workspace_mesh.",
+      "sections": [
+        {
+          "heading": "Abstract",
+          "content": "Research investigation into workspace_mesh."
+        },
+        {
+          "heading": "Methodology",
+          "content": "16-step autonomous research pipeline: Observe → Identify → Research → Benchmark → Hypothesize → Experiment → Validate → Publish."
+        },
+        {
+          "heading": "Findings",
+          "content": "Mesh P90 latency: 180ms Recovery rate: 94% Performance analysis of workspace_mesh shows consistent behavior within expected bounds. Benchmark Workspace Mesh: {\"dispatch_latency\":57,\"sync_accuracy\":0.93,\"recovery_rate\":0.915,\"workspace_coverage\":12}. No significant improvement. Benchmark Workspace Mesh: {\"dispatch_latency\":144.5,\"sync_accuracy\":0.925,\"recovery_rate\":0.955,\"workspace_coverage\":12}. No significant improvement. Benchmark Workspace Mesh: {\"dispatch_latency\":169,\"sync_accuracy\":0.945,\"recovery_rate\":0.9,\"workspace_coverage\":12}. No significant improvement. Workspace mesh P90 latency reduced by 18% after coordinator optimization."
+        },
+        {
+          "heading": "Experiments",
+          "content": "No experiments executed in this research cycle."
+        },
+        {
+          "heading": "Recommendations",
+          "content": "Based on 6 findings in workspace_mesh: consider targeted improvements to increase reliability and reduce latency. Investigate further Investigate further"
+        },
+        {
+          "heading": "Conclusion",
+          "content": "Research cycle complete. 7 findings indexed. 0 experiments run."
+        }
+      ],
+      "findings": [
+        "Mesh P90 latency: 180ms",
+        "Recovery rate: 94%",
+        "Performance analysis of workspace_mesh shows consistent behavior within expected bounds.",
+        "Benchmark Workspace Mesh: {\"dispatch_latency\":57,\"sync_accuracy\":0.93,\"recovery_rate\":0.915,\"workspace_coverage\":12}. No significant improvement.",
+        "Benchmark Workspace Mesh: {\"dispatch_latency\":144.5,\"sync_accuracy\":0.925,\"recovery_rate\":0.955,\"workspace_coverage\":12}. No significant improvement.",
+        "Benchmark Workspace Mesh: {\"dispatch_latency\":169,\"sync_accuracy\":0.945,\"recovery_rate\":0.9,\"workspace_coverage\":12}. No significant improvement.",
+        "Workspace mesh P90 latency reduced by 18% after coordinator optimization."
+      ],
+      "experiments": [],
+      "wordCount": 106,
+      "publishedAt": "2026-06-28T21:05:07.491Z",
+      "minutesSaved": 45
+    },
+    {
+      "id": "pub_1782680707494_rpr4",
+      "planId": "rp_1782680707102_mhi1",
+      "type": "benchmark_report",
+      "title": "Benchmark Report: execution_pipeline, workspace_mesh, approval_engine",
+      "targets": [
+        "execution_pipeline",
+        "workspace_mesh",
+        "approval_engine"
+      ],
+      "results": {
+        "execution_pipeline": [
+          {
+            "id": "bm_1782680600843_87sx",
+            "metrics": {
+              "throughput": 0,
+              "latency_ms": 295,
+              "success_rate": 0.85,
+              "error_rate": 0.15
+            },
+            "ts": "2026-06-28T21:03:20.952Z"
+          }
+        ],
+        "workspace_mesh": [
+          {
+            "id": "bm_1782680600952_k0vu",
+            "metrics": {
+              "dispatch_latency": 169,
+              "sync_accuracy": 0.945,
+              "recovery_rate": 0.9,
+              "workspace_coverage": 12
+            },
+            "ts": "2026-06-28T21:03:20.974Z"
+          }
+        ],
+        "approval_engine": [
+          {
+            "id": "bm_1782680600975_2f3i",
+            "metrics": {
+              "auto_approval_rate": 0.645,
+              "approval_latency": 194.5,
+              "false_positive_rate": 0.015
+            },
+            "ts": "2026-06-28T21:03:21.016Z"
+          }
+        ]
+      },
+      "publishedAt": "2026-06-28T21:05:07.494Z",
+      "minutesSaved": 30
+    },
+    {
+      "id": "pub_1782680707495_gqke",
+      "planId": "rp_1782680707102_mhi1",
+      "type": "evolution_proposal",
+      "title": "Evolution Proposal: deployment_strategy",
+      "domain": "deployment_strategy",
+      "recommendation": "Migrate all production deployments to blue/green strategy — benchmarks show 23% lower rollback rate",
+      "confidence": 0.87,
+      "effort": "medium",
+      "impact": "high",
+      "status": "proposed",
+      "publishedAt": "2026-06-28T21:05:07.495Z",
+      "minutesSaved": 60
+    },
+    {
+      "id": "pub_1782680707499_0hhx",
+      "type": "weekly_digest",
+      "title": "Weekly Research Digest — Mon Jun 29 2026",
+      "period": {
+        "from": "2026-06-21T21:05:07.498Z",
+        "to": "2026-06-28T21:05:07.499Z"
+      },
+      "publications": 8,
+      "experiments": 3,
+      "evolutionProposals": 2,
+      "highlights": [
+        {
+          "title": "Workspace Mesh Reliability Research",
+          "type": "research_paper"
+        },
+        {
+          "title": "Benchmark Report: execution_pipeline, workspace_mesh, approval_engine",
+          "type": "benchmark_report"
+        },
+        {
+          "title": "Evolution Proposal: deployment_strategy",
+          "type": "evolution_proposal"
+        }
+      ],
+      "publishedAt": "2026-06-28T21:05:07.499Z",
+      "minutesSaved": 20
+    },
+    {
+      "id": "pub_1782680707560_bibu",
+      "type": "weekly_digest",
+      "title": "Weekly Research Digest — Mon Jun 29 2026",
+      "period": {
+        "from": "2026-06-21T21:05:07.560Z",
+        "to": "2026-06-28T21:05:07.560Z"
+      },
+      "publications": 9,
+      "experiments": 3,
+      "evolutionProposals": 2,
+      "highlights": [
+        {
+          "title": "Benchmark Report: execution_pipeline, workspace_mesh, approval_engine",
+          "type": "benchmark_report"
+        },
+        {
+          "title": "Evolution Proposal: deployment_strategy",
+          "type": "evolution_proposal"
+        },
+        {
+          "title": "Weekly Research Digest — Mon Jun 29 2026",
+          "type": "weekly_digest"
+        }
+      ],
+      "publishedAt": "2026-06-28T21:05:07.560Z",
+      "minutesSaved": 20
+    },
+    {
+      "id": "pub_1782680707678_w19u",
+      "planId": null,
+      "type": "benchmark_report",
+      "title": "Benchmark Report: execution_pipeline",
+      "targets": [
+        "execution_pipeline"
+      ],
+      "results": {
+        "execution_pipeline": [
+          {
+            "id": "bm_1782680600843_87sx",
+            "metrics": {
+              "throughput": 0,
+              "latency_ms": 295,
+              "success_rate": 0.85,
+              "error_rate": 0.15
+            },
+            "ts": "2026-06-28T21:03:20.952Z"
+          },
+          {
+            "id": "bm_1782680707553_9ci7",
+            "metrics": {
+              "throughput": 0,
+              "latency_ms": 367,
+              "success_rate": 0.85,
+              "error_rate": 0.15
+            },
+            "ts": "2026-06-28T21:05:07.678Z"
+          }
+        ]
+      },
+      "publishedAt": "2026-06-28T21:05:07.678Z",
+      "minutesSaved": 30
+    },
+    {
+      "id": "pub_1782680707753_f14l",
+      "planId": "rp_1782680707552_spep",
+      "type": "research_paper",
+      "title": "Deployment Strategy Comparison",
+      "domain": "deployment_strategy",
+      "abstract": "A/B comparison of blue/green vs rolling deployment.",
+      "sections": [
+        {
+          "heading": "Abstract",
+          "content": "A/B comparison of blue/green vs rolling deployment."
+        },
+        {
+          "heading": "Methodology",
+          "content": "16-step autonomous research pipeline: Observe → Identify → Research → Benchmark → Hypothesize → Experiment → Validate → Publish."
+        },
+        {
+          "heading": "Findings",
+          "content": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.877,\"rollback_rate\":0.817,\"time_to_deploy_ms\":0.85}. Improvement detected. Experiment \"Deployment Strategy A/B Test (replay)\": treatment did not improve over control (confidence=0.83). Benchmark Deployment Strategy: {\"deploy_success_rate\":0.82,\"rollback_rate\":0.92,\"time_to_deploy_ms\":0.893}. No significant improvement. Experiment \"Blue/Green vs Rolling Comparison\": treatment improved over control (confidence=0.86). Blue/green outperformed rolling deployment."
+        },
+        {
+          "heading": "Experiments",
+          "content": "[Blue/Green vs Rolling Comparison] Improvement validated (confidence=0.86)"
+        },
+        {
+          "heading": "Recommendations",
+          "content": "Based on 31 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency. Investigate further Investigate further"
+        },
+        {
+          "heading": "Conclusion",
+          "content": "Research cycle complete. 5 findings indexed. 1 experiments run."
+        }
+      ],
+      "findings": [
+        "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.877,\"rollback_rate\":0.817,\"time_to_deploy_ms\":0.85}. Improvement detected.",
+        "Experiment \"Deployment Strategy A/B Test (replay)\": treatment did not improve over control (confidence=0.83).",
+        "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.82,\"rollback_rate\":0.92,\"time_to_deploy_ms\":0.893}. No significant improvement.",
+        "Experiment \"Blue/Green vs Rolling Comparison\": treatment improved over control (confidence=0.86).",
+        "Blue/green outperformed rolling deployment."
+      ],
+      "experiments": [
+        "exp_1782680707665_rxyj"
+      ],
+      "wordCount": 101,
+      "publishedAt": "2026-06-28T21:05:07.753Z",
+      "minutesSaved": 45
+    },
+    {
+      "id": "pub_1782680707756_tm52",
+      "planId": "rp_1782680707552_spep",
+      "type": "evolution_proposal",
+      "title": "Evolution Proposal: deployment_strategy",
+      "domain": "deployment_strategy",
+      "recommendation": "Migrate to blue/green deployment based on validated experiment results.",
+      "confidence": 0.85,
+      "effort": "medium",
+      "impact": "high",
+      "status": "proposed",
+      "publishedAt": "2026-06-28T21:05:07.756Z",
+      "minutesSaved": 60
+    }
+  ],
+  "evolutionQueue": [
+    {
+      "proposalId": "pub_1782680600847_qw11",
+      "domain": "deployment_strategy",
+      "recommendation": "Migrate all production deployments to blue/green strategy — benchmarks show 23% lower rollback rate",
+      "confidence": 0.87,
+      "effort": "medium",
+      "impact": "high",
+      "ts": "2026-06-28T21:03:20.847Z"
+    },
+    {
+      "proposalId": "pub_1782680707495_gqke",
+      "domain": "deployment_strategy",
+      "recommendation": "Migrate all production deployments to blue/green strategy — benchmarks show 23% lower rollback rate",
+      "confidence": 0.87,
+      "effort": "medium",
+      "impact": "high",
+      "ts": "2026-06-28T21:05:07.495Z"
+    },
+    {
+      "proposalId": "pub_1782680707756_tm52",
+      "domain": "deployment_strategy",
+      "recommendation": "Migrate to blue/green deployment based on validated experiment results.",
+      "confidence": 0.85,
+      "effort": "medium",
+      "impact": "high",
+      "ts": "2026-06-28T21:05:07.756Z"
+    }
+  ],
+  "stats": {
+    "totalPublished": 13,
+    "papersGenerated": 3,
+    "evolutionProposals": 3,
+    "minutesSaved": 435
+  },
+  "updatedAt": "2026-06-28T21:05:07.756Z"
+}

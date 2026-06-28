@@ -18141,7 +18141,122 @@
       },
       "confidence": 0.8,
       "createdAt": "2026-06-28T20:17:46.290Z"
+    },
+    {
+      "id": "arpt_1782678205438_40bw",
+      "title": "Autonomous Cycle 21 Report",
+      "type": "cycle",
+      "cycle": 21,
+      "summary": "Cycle 21: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T20:23:25.438Z"
+    },
+    {
+      "id": "arpt_1782678560109_uvha",
+      "title": "Autonomous Cycle 22 Report",
+      "type": "cycle",
+      "cycle": 22,
+      "summary": "Cycle 22: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T20:29:20.109Z"
+    },
+    {
+      "id": "arpt_1782679411904_l14v",
+      "title": "Autonomous Cycle 23 Report",
+      "type": "cycle",
+      "cycle": 23,
+      "summary": "Cycle 23: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T20:43:31.904Z"
+    },
+    {
+      "id": "arpt_1782679801645_pebu",
+      "title": "Autonomous Cycle 24 Report",
+      "type": "cycle",
+      "cycle": 24,
+      "summary": "Cycle 24: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T20:50:01.645Z"
+    },
+    {
+      "id": "arpt_1782680427811_b7rw",
+      "title": "Autonomous Cycle 25 Report",
+      "type": "cycle",
+      "cycle": 25,
+      "summary": "Cycle 25: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T21:00:27.811Z"
     }
   ],
-  "totalReports": 803
+  "totalReports": 808
 }

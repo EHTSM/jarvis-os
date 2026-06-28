@@ -1,7 +1,7 @@
 {
   "running": false,
-  "cycle": 20,
-  "lastCycleAt": "2026-06-28T20:17:22.799Z",
+  "cycle": 25,
+  "lastCycleAt": "2026-06-28T20:59:48.325Z",
   "history": [
     {
       "cycle": 1,
@@ -182,6 +182,56 @@
       "threatsFound": 0,
       "error": null,
       "at": "2026-06-28T20:17:46.295Z"
+    },
+    {
+      "cycle": 21,
+      "summary": "Cycle 21: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "health": 93,
+      "decisionsThisCycle": 2,
+      "opportunitiesFound": 2,
+      "threatsFound": 0,
+      "error": null,
+      "at": "2026-06-28T20:23:25.442Z"
+    },
+    {
+      "cycle": 22,
+      "summary": "Cycle 22: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "health": 93,
+      "decisionsThisCycle": 2,
+      "opportunitiesFound": 2,
+      "threatsFound": 0,
+      "error": null,
+      "at": "2026-06-28T20:29:20.113Z"
+    },
+    {
+      "cycle": 23,
+      "summary": "Cycle 23: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "health": 93,
+      "decisionsThisCycle": 2,
+      "opportunitiesFound": 2,
+      "threatsFound": 0,
+      "error": null,
+      "at": "2026-06-28T20:43:31.908Z"
+    },
+    {
+      "cycle": 24,
+      "summary": "Cycle 24: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "health": 93,
+      "decisionsThisCycle": 2,
+      "opportunitiesFound": 2,
+      "threatsFound": 0,
+      "error": null,
+      "at": "2026-06-28T20:50:01.649Z"
+    },
+    {
+      "cycle": 25,
+      "summary": "Cycle 25: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
+      "health": 93,
+      "decisionsThisCycle": 2,
+      "opportunitiesFound": 2,
+      "threatsFound": 0,
+      "error": null,
+      "at": "2026-06-28T21:00:27.817Z"
     }
   ],
   "errors": []

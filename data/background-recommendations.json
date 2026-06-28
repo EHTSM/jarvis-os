@@ -1,238 +1,5 @@
 [
   {
-    "recId": "bgrec_1782439320318_2jm",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "6 file(s) have uncommitted changes. Recent log: 6c8edd6 fix(ops): operatorAudit crash — TypeError: Cannot read properties of undefined (reading 'on')",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/dead-letter.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-26T02:02:00.318Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782440277530_2jn",
-    "source": "incidentObserver",
-    "title": "10 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 10,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-26T02:17:57.508Z",
-          "recId": "heal_1782440277508_kkl",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T02:17:57.512Z",
-          "recId": "heal_1782440277512_kkm",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T02:17:57.520Z",
-          "recId": "heal_1782440277520_kkn",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-26T02:17:57.530Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782440277682_2jo",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "6 file(s) have uncommitted changes. Recent log: 6c8edd6 fix(ops): operatorAudit crash — TypeError: Cannot read properties of undefined (reading 'on')",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/dead-letter.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-26T02:17:57.682Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782440914535_2jp",
-    "source": "incidentObserver",
-    "title": "15 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 15,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-26T02:28:34.517Z",
-          "recId": "heal_1782440914517_kkq",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T02:28:34.523Z",
-          "recId": "heal_1782440914523_kkr",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T02:28:34.528Z",
-          "recId": "heal_1782440914528_kks",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-26T02:28:34.535Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782440914695_2jq",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "6 file(s) have uncommitted changes. Recent log: 6c8edd6 fix(ops): operatorAudit crash — TypeError: Cannot read properties of undefined (reading 'on')",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/dead-letter.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-26T02:28:34.695Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782441912150_2jr",
-    "source": "incidentObserver",
-    "title": "15 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 15,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-26T02:45:12.121Z",
-          "recId": "heal_1782441912121_kkv",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T02:45:12.125Z",
-          "recId": "heal_1782441912125_kkw",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T02:45:12.130Z",
-          "recId": "heal_1782441912130_kkx",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-26T02:45:12.150Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782441912294_2js",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "6 file(s) have uncommitted changes. Recent log: 6c8edd6 fix(ops): operatorAudit crash — TypeError: Cannot read properties of undefined (reading 'on')",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/dead-letter.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-26T02:45:12.294Z",
-    "acknowledged": false
-  },
-  {
     "recId": "bgrec_1782442831827_2jt",
     "source": "incidentObserver",
     "title": "10 escalated incident(s) in the last 30 minutes",
@@ -15877,6 +15644,174 @@
       ]
     },
     "createdAt": "2026-06-28T20:16:26.218Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782678086151_76",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "26 file(s) have uncommitted changes. Recent log: 8f70b2c feat(post-omega-p9): Autonomous Workspace Mesh — 6 services, 52 routes, 77/77 tests",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/agent-runs.json",
+        " M data/autonomous-cycles.json",
+        " M data/autonomous/control.json",
+        " M data/civilization/context.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/ecosystem/context.json",
+        " M data/enterprise/context.json",
+        " M data/enterprise/governance.json"
+      ]
+    },
+    "createdAt": "2026-06-28T20:21:26.151Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782678386153_77",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "42 file(s) have uncommitted changes. Recent log: 8f70b2c feat(post-omega-p9): Autonomous Workspace Mesh — 6 services, 52 routes, 77/77 tests",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/agent-runs.json",
+        " M data/autonomous-cycles.json",
+        " M data/autonomous/control.json",
+        " M data/autonomous/decisions.json",
+        " M data/autonomous/loop.json",
+        " M data/autonomous/opportunities.json",
+        " M data/autonomous/optimizations.json",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json"
+      ]
+    },
+    "createdAt": "2026-06-28T20:26:26.153Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782679290195_78",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "40 file(s) have uncommitted changes. Recent log: 8f70b2c feat(post-omega-p9): Autonomous Workspace Mesh — 6 services, 52 routes, 77/77 tests",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/agent-runs.json",
+        " M data/autonomous-cycles.json",
+        " M data/autonomous/control.json",
+        " M data/autonomous/decisions.json",
+        " M data/autonomous/loop.json",
+        " M data/autonomous/opportunities.json",
+        " M data/autonomous/optimizations.json",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json"
+      ]
+    },
+    "createdAt": "2026-06-28T20:41:30.195Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782679590185_79",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "41 file(s) have uncommitted changes. Recent log: 8f70b2c feat(post-omega-p9): Autonomous Workspace Mesh — 6 services, 52 routes, 77/77 tests",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/agent-runs.json",
+        " M data/autonomous-cycles.json",
+        " M data/autonomous/control.json",
+        " M data/autonomous/decisions.json",
+        " M data/autonomous/loop.json",
+        " M data/autonomous/opportunities.json",
+        " M data/autonomous/optimizations.json",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json"
+      ]
+    },
+    "createdAt": "2026-06-28T20:46:30.185Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782679890234_7a",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "42 file(s) have uncommitted changes. Recent log: 8f70b2c feat(post-omega-p9): Autonomous Workspace Mesh — 6 services, 52 routes, 77/77 tests",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/agent-runs.json",
+        " M data/autonomous-cycles.json",
+        " M data/autonomous/control.json",
+        " M data/autonomous/decisions.json",
+        " M data/autonomous/loop.json",
+        " M data/autonomous/opportunities.json",
+        " M data/autonomous/optimizations.json",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json"
+      ]
+    },
+    "createdAt": "2026-06-28T20:51:30.234Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782680349584_7b",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "48 file(s) have uncommitted changes. Recent log: 8f70b2c feat(post-omega-p9): Autonomous Workspace Mesh — 6 services, 52 routes, 77/77 tests",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/agent-runs.json",
+        " M data/autonomous-cycles.json",
+        " M data/autonomous/control.json",
+        " M data/autonomous/decisions.json",
+        " M data/autonomous/loop.json",
+        " M data/autonomous/opportunities.json",
+        " M data/autonomous/optimizations.json",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json"
+      ]
+    },
+    "createdAt": "2026-06-28T20:59:09.584Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782680649547_7c",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "58 file(s) have uncommitted changes. Recent log: 8f70b2c feat(post-omega-p9): Autonomous Workspace Mesh — 6 services, 52 routes, 77/77 tests",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/agent-runs.json",
+        " M data/autonomous-cycles.json",
+        " M data/autonomous/control.json",
+        " M data/autonomous/decisions.json",
+        " M data/autonomous/evolution.json",
+        " M data/autonomous/loop.json",
+        " M data/autonomous/opportunities.json",
+        " M data/autonomous/optimizations.json"
+      ]
+    },
+    "createdAt": "2026-06-28T21:04:09.547Z",
     "acknowledged": false
   }
 ]

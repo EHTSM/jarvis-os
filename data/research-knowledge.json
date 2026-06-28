@@ -1,0 +1,1575 @@
+{
+  "findings": [
+    {
+      "id": "rk_1782680600821_spt8",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_latency",
+      "domain": "workspace_mesh",
+      "finding": "Workspace mesh P90 latency reduced by 18% after coordinator optimization.",
+      "confidence": 0.87,
+      "tags": [
+        "performance",
+        "mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.821Z"
+    },
+    {
+      "id": "rk_1782680600897_uxwf",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_perf",
+      "domain": "execution_pipeline",
+      "finding": "Performance analysis of execution_pipeline shows consistent behavior within expected bounds.",
+      "confidence": 0.82,
+      "tags": [
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.897Z"
+    },
+    {
+      "id": "rk_1782680600897_mudd",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_perf",
+      "domain": "workspace_mesh",
+      "finding": "Performance analysis of workspace_mesh shows consistent behavior within expected bounds.",
+      "confidence": 0.82,
+      "tags": [
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.897Z"
+    },
+    {
+      "id": "rk_1782680600897_k5up",
+      "planId": null,
+      "experimentId": null,
+      "topic": "approval_engine_perf",
+      "domain": "approval_engine",
+      "finding": "Performance analysis of approval_engine shows consistent behavior within expected bounds.",
+      "confidence": 0.82,
+      "tags": [
+        "approval_engine",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.897Z"
+    },
+    {
+      "id": "rk_1782680600945_et9i",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":341.5,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.945Z"
+    },
+    {
+      "id": "rk_1782680600945_840h",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_benchmark",
+      "domain": "workspace_mesh",
+      "finding": "Benchmark Workspace Mesh: {\"dispatch_latency\":57,\"sync_accuracy\":0.93,\"recovery_rate\":0.915,\"workspace_coverage\":12}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workspace_mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.945Z"
+    },
+    {
+      "id": "rk_1782680600949_r308",
+      "planId": null,
+      "experimentId": null,
+      "topic": "approval_engine_benchmark",
+      "domain": "approval_engine",
+      "finding": "Benchmark Approval Engine: {\"auto_approval_rate\":0.655,\"approval_latency\":259,\"false_positive_rate\":0.032}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "approval_engine",
+        "approval_engine",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.949Z"
+    },
+    {
+      "id": "rk_1782680600951_nzqq",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workforce_allocation_benchmark",
+      "domain": "workforce_allocation",
+      "finding": "Benchmark Workforce Allocation: {\"agent_utilization\":0.775,\"mission_success_rate\":0.825,\"avg_mission_duration_ms\":1134.5}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workforce_allocation",
+        "workforce_allocation",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.951Z"
+    },
+    {
+      "id": "rk_1782680600951_sx69",
+      "planId": null,
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.925,\"rollback_rate\":0.86,\"time_to_deploy_ms\":0.975}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.951Z"
+    },
+    {
+      "id": "rk_1782680600952_eh8m",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":295,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.952Z"
+    },
+    {
+      "id": "rk_1782680600952_mcp6",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_benchmark",
+      "domain": "workspace_mesh",
+      "finding": "Benchmark Workspace Mesh: {\"dispatch_latency\":144.5,\"sync_accuracy\":0.925,\"recovery_rate\":0.955,\"workspace_coverage\":12}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workspace_mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.952Z"
+    },
+    {
+      "id": "rk_1782680600953_mfbw",
+      "planId": "rp_1782680600895_pe22",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.82,\"rollback_rate\":0.725,\"time_to_deploy_ms\":0.815}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.953Z"
+    },
+    {
+      "id": "rk_1782680600954_ruci",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workforce_allocation_benchmark",
+      "domain": "workforce_allocation",
+      "finding": "Benchmark Workforce Allocation: {\"agent_utilization\":0.66,\"mission_success_rate\":0.81,\"avg_mission_duration_ms\":1870.5}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workforce_allocation",
+        "workforce_allocation",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.954Z"
+    },
+    {
+      "id": "rk_1782680600954_s6jp",
+      "planId": null,
+      "experimentId": null,
+      "topic": "autonomous_systems_benchmark",
+      "domain": "autonomous_systems",
+      "finding": "Benchmark Autonomous Systems: {\"autonomy_rate\":0.89,\"human_interventions\":0.85,\"tasks_per_hour\":0.96}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "autonomous_systems",
+        "autonomous_systems",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.954Z"
+    },
+    {
+      "id": "rk_1782680600964_74gh",
+      "planId": "rp_1782680600452_4jqv",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.933,\"rollback_rate\":0.817,\"time_to_deploy_ms\":0.82}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.964Z"
+    },
+    {
+      "id": "rk_1782680600964_f1h8",
+      "planId": "rp_1782680600452_4jqv",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.887,\"rollback_rate\":0.863,\"time_to_deploy_ms\":0.797}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.964Z"
+    },
+    {
+      "id": "rk_1782680600965_4d11",
+      "planId": "rp_1782680600452_4jqv",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.763,\"rollback_rate\":0.803,\"time_to_deploy_ms\":0.883}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.965Z"
+    },
+    {
+      "id": "rk_1782680600965_35th",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":132,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.965Z"
+    },
+    {
+      "id": "rk_1782680600975_orbp",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_benchmark",
+      "domain": "workspace_mesh",
+      "finding": "Benchmark Workspace Mesh: {\"dispatch_latency\":169,\"sync_accuracy\":0.945,\"recovery_rate\":0.9,\"workspace_coverage\":12}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workspace_mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:20.975Z"
+    },
+    {
+      "id": "rk_1782680601004_2h7s",
+      "planId": "rp_1782680600895_pe22",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.813,\"rollback_rate\":0.97,\"time_to_deploy_ms\":0.913}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.004Z"
+    },
+    {
+      "id": "rk_1782680601016_k4pq",
+      "planId": null,
+      "experimentId": null,
+      "topic": "approval_engine_benchmark",
+      "domain": "approval_engine",
+      "finding": "Benchmark Approval Engine: {\"auto_approval_rate\":0.645,\"approval_latency\":194.5,\"false_positive_rate\":0.015}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "approval_engine",
+        "approval_engine",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.016Z"
+    },
+    {
+      "id": "rk_1782680601018_t5kr",
+      "planId": "rp_1782680600452_4jqv",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.823,\"rollback_rate\":0.773,\"time_to_deploy_ms\":0.897}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.018Z"
+    },
+    {
+      "id": "rk_1782680601018_q6nd",
+      "planId": "rp_1782680600452_4jqv",
+      "experimentId": null,
+      "topic": "Deployment Strategy A/B Test",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Deployment Strategy A/B Test\": treatment did not improve over control (confidence=0.83).",
+      "confidence": 0.83,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        "rp_1782680600452_4jqv",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.018Z"
+    },
+    {
+      "id": "rk_1782680601019_juo8",
+      "planId": "rp_1782680600452_4jqv",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.86,\"rollback_rate\":0.813,\"time_to_deploy_ms\":0.82}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.019Z"
+    },
+    {
+      "id": "rk_1782680601020_r107",
+      "planId": "rp_1782680600452_4jqv",
+      "experimentId": null,
+      "topic": "Deployment Strategy A/B Test",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Deployment Strategy A/B Test\": treatment did not improve over control (confidence=0.85).",
+      "confidence": 0.85,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        "rp_1782680600452_4jqv",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.020Z"
+    },
+    {
+      "id": "rk_1782680601022_rpi1",
+      "planId": "rp_1782680600452_4jqv",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.777,\"rollback_rate\":0.8,\"time_to_deploy_ms\":0.817}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.022Z"
+    },
+    {
+      "id": "rk_1782680601023_dljq",
+      "planId": "rp_1782680600452_4jqv",
+      "experimentId": null,
+      "topic": "Deployment Strategy A/B Test (replay)",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Deployment Strategy A/B Test (replay)\": treatment did not improve over control (confidence=0.85).",
+      "confidence": 0.85,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        "rp_1782680600452_4jqv",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.023Z"
+    },
+    {
+      "id": "rk_1782680601040_eukv",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workforce_allocation_benchmark",
+      "domain": "workforce_allocation",
+      "finding": "Benchmark Workforce Allocation: {\"agent_utilization\":0.785,\"mission_success_rate\":0.855,\"avg_mission_duration_ms\":1482.5}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workforce_allocation",
+        "workforce_allocation",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.040Z"
+    },
+    {
+      "id": "rk_1782680601044_nbza",
+      "planId": "rp_1782680600895_pe22",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.897,\"rollback_rate\":0.82,\"time_to_deploy_ms\":0.79}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.044Z"
+    },
+    {
+      "id": "rk_1782680601044_6yj2",
+      "planId": "rp_1782680600895_pe22",
+      "experimentId": null,
+      "topic": "Blue/Green vs Rolling Comparison",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Blue/Green vs Rolling Comparison\": treatment did not improve over control (confidence=0.89).",
+      "confidence": 0.89,
+      "tags": [
+        "experiment",
+        "strategy_compare",
+        "rp_1782680600895_pe22",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.044Z"
+    },
+    {
+      "id": "rk_1782680601044_pz0p",
+      "planId": "rp_1782680600895_pe22",
+      "experimentId": null,
+      "topic": "deployment_strategy_comparison",
+      "domain": "deployment_strategy",
+      "finding": "Blue/green did not outperform rolling deployment.",
+      "confidence": 0.89,
+      "tags": [
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.044Z"
+    },
+    {
+      "id": "rk_1782680601063_quvm",
+      "planId": null,
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.825,\"rollback_rate\":0.93,\"time_to_deploy_ms\":0.835}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.063Z"
+    },
+    {
+      "id": "rk_1782680601093_haos",
+      "planId": null,
+      "experimentId": null,
+      "topic": "knowledge_recall_benchmark",
+      "domain": "knowledge_recall",
+      "finding": "Benchmark Knowledge Recall: {\"recall_precision\":0.82,\"recall_latency_ms\":34.5,\"knowledge_coverage\":0}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "knowledge_recall",
+        "knowledge_recall",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.093Z"
+    },
+    {
+      "id": "rk_1782680601115_zxhm",
+      "planId": null,
+      "experimentId": null,
+      "topic": "autonomous_systems_benchmark",
+      "domain": "autonomous_systems",
+      "finding": "Benchmark Autonomous Systems: {\"autonomy_rate\":0.86,\"human_interventions\":0.865,\"tasks_per_hour\":0.875}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "autonomous_systems",
+        "autonomous_systems",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:03:21.115Z"
+    },
+    {
+      "id": "rk_1782680707458_v0v6",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_latency",
+      "domain": "workspace_mesh",
+      "finding": "Workspace mesh P90 latency reduced by 18% after coordinator optimization.",
+      "confidence": 0.87,
+      "tags": [
+        "performance",
+        "mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.458Z"
+    },
+    {
+      "id": "rk_1782680707559_znwp",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_perf",
+      "domain": "execution_pipeline",
+      "finding": "Performance analysis of execution_pipeline shows consistent behavior within expected bounds.",
+      "confidence": 0.82,
+      "tags": [
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707559_i5uv",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_perf",
+      "domain": "workspace_mesh",
+      "finding": "Performance analysis of workspace_mesh shows consistent behavior within expected bounds.",
+      "confidence": 0.82,
+      "tags": [
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707559_tmkx",
+      "planId": null,
+      "experimentId": null,
+      "topic": "approval_engine_perf",
+      "domain": "approval_engine",
+      "finding": "Performance analysis of approval_engine shows consistent behavior within expected bounds.",
+      "confidence": 0.82,
+      "tags": [
+        "approval_engine",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707609_5pby",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":391,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.609Z"
+    },
+    {
+      "id": "rk_1782680707612_7lhm",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":245,\"success_rate\":0.85,\"error_rate\":0.15}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.612Z"
+    },
+    {
+      "id": "rk_1782680707613_rv09",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":148,\"success_rate\":0.85,\"error_rate\":0.15}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.613Z"
+    },
+    {
+      "id": "rk_1782680707661_ejxd",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":249.5,\"success_rate\":0.85,\"error_rate\":0.15}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.661Z"
+    },
+    {
+      "id": "rk_1782680707661_9cla",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_benchmark",
+      "domain": "workspace_mesh",
+      "finding": "Benchmark Workspace Mesh: {\"dispatch_latency\":184,\"sync_accuracy\":0.93,\"recovery_rate\":0.82,\"workspace_coverage\":12}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workspace_mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.661Z"
+    },
+    {
+      "id": "rk_1782680707661_vchi",
+      "planId": null,
+      "experimentId": null,
+      "topic": "approval_engine_benchmark",
+      "domain": "approval_engine",
+      "finding": "Benchmark Approval Engine: {\"auto_approval_rate\":0.785,\"approval_latency\":97,\"false_positive_rate\":0.022}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "approval_engine",
+        "approval_engine",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.661Z"
+    },
+    {
+      "id": "rk_1782680707662_yenv",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workforce_allocation_benchmark",
+      "domain": "workforce_allocation",
+      "finding": "Benchmark Workforce Allocation: {\"agent_utilization\":0.875,\"mission_success_rate\":0.83,\"avg_mission_duration_ms\":1420.5}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workforce_allocation",
+        "workforce_allocation",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.662Z"
+    },
+    {
+      "id": "rk_1782680707662_s22i",
+      "planId": null,
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.83,\"rollback_rate\":0.905,\"time_to_deploy_ms\":0.85}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.662Z"
+    },
+    {
+      "id": "rk_1782680707663_d1lk",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":319.5,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.663Z"
+    },
+    {
+      "id": "rk_1782680707663_9e1e",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_benchmark",
+      "domain": "workspace_mesh",
+      "finding": "Benchmark Workspace Mesh: {\"dispatch_latency\":215.5,\"sync_accuracy\":0.94,\"recovery_rate\":0.95,\"workspace_coverage\":12}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workspace_mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.663Z"
+    },
+    {
+      "id": "rk_1782680707664_8a5a",
+      "planId": "rp_1782680707552_spep",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.985,\"rollback_rate\":0.845,\"time_to_deploy_ms\":0.92}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.664Z"
+    },
+    {
+      "id": "rk_1782680707666_b9pr",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workforce_allocation_benchmark",
+      "domain": "workforce_allocation",
+      "finding": "Benchmark Workforce Allocation: {\"agent_utilization\":0.7,\"mission_success_rate\":0.825,\"avg_mission_duration_ms\":1232.5}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workforce_allocation",
+        "workforce_allocation",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.666Z"
+    },
+    {
+      "id": "rk_1782680707667_6d5e",
+      "planId": null,
+      "experimentId": null,
+      "topic": "autonomous_systems_benchmark",
+      "domain": "autonomous_systems",
+      "finding": "Benchmark Autonomous Systems: {\"autonomy_rate\":0.845,\"human_interventions\":0.87,\"tasks_per_hour\":0.875}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "autonomous_systems",
+        "autonomous_systems",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.667Z"
+    },
+    {
+      "id": "rk_1782680707673_dywb",
+      "planId": "rp_1782680707102_mhi1",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.81,\"rollback_rate\":0.803,\"time_to_deploy_ms\":0.883}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.673Z"
+    },
+    {
+      "id": "rk_1782680707675_ht26",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":335,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.675Z"
+    },
+    {
+      "id": "rk_1782680707676_jd0l",
+      "planId": "rp_1782680707102_mhi1",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.89,\"rollback_rate\":0.9,\"time_to_deploy_ms\":0.75}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.676Z"
+    },
+    {
+      "id": "rk_1782680707677_53v7",
+      "planId": "rp_1782680707102_mhi1",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.85,\"rollback_rate\":0.927,\"time_to_deploy_ms\":0.843}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.677Z"
+    },
+    {
+      "id": "rk_1782680707678_nci1",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":367,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.678Z"
+    },
+    {
+      "id": "rk_1782680707684_bu7p",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_benchmark",
+      "domain": "workspace_mesh",
+      "finding": "Benchmark Workspace Mesh: {\"dispatch_latency\":150,\"sync_accuracy\":0.96,\"recovery_rate\":0.915,\"workspace_coverage\":12}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workspace_mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.684Z"
+    },
+    {
+      "id": "rk_1782680707709_s89h",
+      "planId": "rp_1782680707552_spep",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.75,\"rollback_rate\":0.847,\"time_to_deploy_ms\":0.877}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.709Z"
+    },
+    {
+      "id": "rk_1782680707717_qvui",
+      "planId": null,
+      "experimentId": null,
+      "topic": "approval_engine_benchmark",
+      "domain": "approval_engine",
+      "finding": "Benchmark Approval Engine: {\"auto_approval_rate\":0.755,\"approval_latency\":243,\"false_positive_rate\":0.022}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "approval_engine",
+        "approval_engine",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.717Z"
+    },
+    {
+      "id": "rk_1782680707718_eipm",
+      "planId": "rp_1782680707102_mhi1",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.913,\"rollback_rate\":0.873,\"time_to_deploy_ms\":0.84}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.718Z"
+    },
+    {
+      "id": "rk_1782680707719_cyzi",
+      "planId": "rp_1782680707102_mhi1",
+      "experimentId": null,
+      "topic": "Deployment Strategy A/B Test",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Deployment Strategy A/B Test\": treatment improved over control (confidence=0.77).",
+      "confidence": 0.77,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        "rp_1782680707102_mhi1",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.719Z"
+    },
+    {
+      "id": "rk_1782680707720_1428",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":337.333,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.720Z"
+    },
+    {
+      "id": "rk_1782680707720_383k",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Duplicate run test",
+      "domain": "execution_pipeline",
+      "finding": "Experiment \"Duplicate run test\": treatment did not improve over control (confidence=0.86).",
+      "confidence": 0.86,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        null,
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.720Z"
+    },
+    {
+      "id": "rk_1782680707721_mptr",
+      "planId": "rp_1782680707102_mhi1",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.887,\"rollback_rate\":0.907,\"time_to_deploy_ms\":0.777}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.721Z"
+    },
+    {
+      "id": "rk_1782680707722_haag",
+      "planId": "rp_1782680707102_mhi1",
+      "experimentId": null,
+      "topic": "Deployment Strategy A/B Test",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Deployment Strategy A/B Test\": treatment improved over control (confidence=0.84).",
+      "confidence": 0.84,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        "rp_1782680707102_mhi1",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.722Z"
+    },
+    {
+      "id": "rk_1782680707727_boxf",
+      "planId": "rp_1782680707102_mhi1",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.877,\"rollback_rate\":0.817,\"time_to_deploy_ms\":0.85}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.727Z"
+    },
+    {
+      "id": "rk_1782680707727_11xl",
+      "planId": "rp_1782680707102_mhi1",
+      "experimentId": null,
+      "topic": "Deployment Strategy A/B Test (replay)",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Deployment Strategy A/B Test (replay)\": treatment did not improve over control (confidence=0.83).",
+      "confidence": 0.83,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        "rp_1782680707102_mhi1",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.727Z"
+    },
+    {
+      "id": "rk_1782680707739_1tmy",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workforce_allocation_benchmark",
+      "domain": "workforce_allocation",
+      "finding": "Benchmark Workforce Allocation: {\"agent_utilization\":0.695,\"mission_success_rate\":0.865,\"avg_mission_duration_ms\":1409}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workforce_allocation",
+        "workforce_allocation",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.739Z"
+    },
+    {
+      "id": "rk_1782680707748_oppn",
+      "planId": "rp_1782680707552_spep",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.82,\"rollback_rate\":0.92,\"time_to_deploy_ms\":0.893}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.748Z"
+    },
+    {
+      "id": "rk_1782680707749_gh2u",
+      "planId": "rp_1782680707552_spep",
+      "experimentId": null,
+      "topic": "Blue/Green vs Rolling Comparison",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Blue/Green vs Rolling Comparison\": treatment improved over control (confidence=0.86).",
+      "confidence": 0.86,
+      "tags": [
+        "experiment",
+        "strategy_compare",
+        "rp_1782680707552_spep",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.749Z"
+    },
+    {
+      "id": "rk_1782680707752_5op9",
+      "planId": "rp_1782680707552_spep",
+      "experimentId": null,
+      "topic": "deployment_strategy_comparison",
+      "domain": "deployment_strategy",
+      "finding": "Blue/green outperformed rolling deployment.",
+      "confidence": 0.86,
+      "tags": [
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.752Z"
+    },
+    {
+      "id": "rk_1782680707771_p98s",
+      "planId": null,
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.775,\"rollback_rate\":0.81,\"time_to_deploy_ms\":0.945}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.771Z"
+    },
+    {
+      "id": "rk_1782680707800_dk61",
+      "planId": null,
+      "experimentId": null,
+      "topic": "knowledge_recall_benchmark",
+      "domain": "knowledge_recall",
+      "finding": "Benchmark Knowledge Recall: {\"recall_precision\":0.865,\"recall_latency_ms\":10.5,\"knowledge_coverage\":0}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "knowledge_recall",
+        "knowledge_recall",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.800Z"
+    },
+    {
+      "id": "rk_1782680707821_rlaz",
+      "planId": null,
+      "experimentId": null,
+      "topic": "autonomous_systems_benchmark",
+      "domain": "autonomous_systems",
+      "finding": "Benchmark Autonomous Systems: {\"autonomy_rate\":0.92,\"human_interventions\":0.875,\"tasks_per_hour\":0.915}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "autonomous_systems",
+        "autonomous_systems",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T21:05:07.821Z"
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "rk_1782680707459_ubbt",
+      "domain": "workspace_mesh",
+      "recommendation": "Based on 6 findings in workspace_mesh: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 6,
+      "ts": "2026-06-28T21:05:07.459Z"
+    },
+    {
+      "id": "rk_1782680707459_fjf9",
+      "domain": "execution_pipeline",
+      "recommendation": "Based on 4 findings in execution_pipeline: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 4,
+      "ts": "2026-06-28T21:05:07.459Z"
+    },
+    {
+      "id": "rk_1782680707459_4lly",
+      "domain": "approval_engine",
+      "recommendation": "Based on 3 findings in approval_engine: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.87,
+      "findingCount": 3,
+      "ts": "2026-06-28T21:05:07.459Z"
+    },
+    {
+      "id": "rk_1782680707459_7tyk",
+      "domain": "workforce_allocation",
+      "recommendation": "Based on 3 findings in workforce_allocation: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 3,
+      "ts": "2026-06-28T21:05:07.459Z"
+    },
+    {
+      "id": "rk_1782680707459_8aa5",
+      "domain": "deployment_strategy",
+      "recommendation": "Based on 16 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.89,
+      "findingCount": 16,
+      "ts": "2026-06-28T21:05:07.459Z"
+    },
+    {
+      "id": "rk_1782680707459_hg24",
+      "domain": "autonomous_systems",
+      "recommendation": "Based on 2 findings in autonomous_systems: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 2,
+      "ts": "2026-06-28T21:05:07.459Z"
+    },
+    {
+      "id": "rk_1782680707459_ke6s",
+      "domain": "knowledge_recall",
+      "recommendation": "Based on 1 findings in knowledge_recall: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 1,
+      "ts": "2026-06-28T21:05:07.459Z"
+    },
+    {
+      "id": "rk_1782680707459_yht2",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.459Z"
+    },
+    {
+      "id": "rk_1782680707459_5r3k",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.459Z"
+    },
+    {
+      "id": "rk_1782680707459_nas4",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.459Z"
+    },
+    {
+      "id": "rk_1782680707486_z92b",
+      "domain": "deployment_strategy",
+      "recommendation": "Based on 16 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.89,
+      "findingCount": 16,
+      "ts": "2026-06-28T21:05:07.486Z"
+    },
+    {
+      "id": "rk_1782680707486_2kec",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.486Z"
+    },
+    {
+      "id": "rk_1782680707486_9vmb",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.486Z"
+    },
+    {
+      "id": "rk_1782680707486_l97c",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.486Z"
+    },
+    {
+      "id": "rk_1782680707490_4bzk",
+      "domain": "workspace_mesh",
+      "recommendation": "Based on 6 findings in workspace_mesh: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 6,
+      "ts": "2026-06-28T21:05:07.490Z"
+    },
+    {
+      "id": "rk_1782680707490_3s0s",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.490Z"
+    },
+    {
+      "id": "rk_1782680707490_dfre",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.490Z"
+    },
+    {
+      "id": "rk_1782680707490_nkd4",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.490Z"
+    },
+    {
+      "id": "rk_1782680707559_2h22",
+      "domain": "workspace_mesh",
+      "recommendation": "Based on 7 findings in workspace_mesh: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.87,
+      "findingCount": 7,
+      "ts": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707559_o46m",
+      "domain": "execution_pipeline",
+      "recommendation": "Based on 5 findings in execution_pipeline: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.87,
+      "findingCount": 5,
+      "ts": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707559_4pkk",
+      "domain": "approval_engine",
+      "recommendation": "Based on 4 findings in approval_engine: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.86,
+      "findingCount": 4,
+      "ts": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707559_wyak",
+      "domain": "workforce_allocation",
+      "recommendation": "Based on 3 findings in workforce_allocation: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 3,
+      "ts": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707559_6hvn",
+      "domain": "deployment_strategy",
+      "recommendation": "Based on 16 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.89,
+      "findingCount": 16,
+      "ts": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707559_g4g4",
+      "domain": "autonomous_systems",
+      "recommendation": "Based on 2 findings in autonomous_systems: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 2,
+      "ts": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707559_q42t",
+      "domain": "knowledge_recall",
+      "recommendation": "Based on 1 findings in knowledge_recall: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 1,
+      "ts": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707559_1hvt",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707559_trjx",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707559_lrlc",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.559Z"
+    },
+    {
+      "id": "rk_1782680707753_nf1p",
+      "domain": "deployment_strategy",
+      "recommendation": "Based on 31 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 31,
+      "ts": "2026-06-28T21:05:07.753Z"
+    },
+    {
+      "id": "rk_1782680707753_bf4f",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.753Z"
+    },
+    {
+      "id": "rk_1782680707753_udzp",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.753Z"
+    },
+    {
+      "id": "rk_1782680707753_p8yl",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T21:05:07.753Z"
+    }
+  ],
+  "radar": [
+    {
+      "name": "Autonomous Execution Engine",
+      "quadrant": "techniques",
+      "ring": "adopt",
+      "blip": "Production-proven orchestration layer"
+    },
+    {
+      "name": "Workspace Mesh",
+      "quadrant": "techniques",
+      "ring": "adopt",
+      "blip": "Distributed workspace coordination"
+    },
+    {
+      "name": "Workspace Health Monitoring",
+      "quadrant": "techniques",
+      "ring": "adopt",
+      "blip": "Real-time health scoring for 12 workspace types"
+    },
+    {
+      "name": "Continuous Learning Engine",
+      "quadrant": "techniques",
+      "ring": "adopt",
+      "blip": "Pattern-based self-improvement"
+    },
+    {
+      "name": "Engineering Memory",
+      "quadrant": "tools",
+      "ring": "adopt",
+      "blip": "TF-IDF knowledge recall and failure prediction",
+      "updatedAt": "2026-06-28T21:05:07.560Z"
+    },
+    {
+      "name": "Knowledge Graph",
+      "quadrant": "tools",
+      "ring": "adopt",
+      "blip": "15-node type graph reasoning"
+    },
+    {
+      "name": "Founder Digital Twin",
+      "quadrant": "techniques",
+      "ring": "trial",
+      "blip": "Approval prediction and preference modeling"
+    },
+    {
+      "name": "Company Factory",
+      "quadrant": "techniques",
+      "ring": "trial",
+      "blip": "13-step autonomous company creation"
+    },
+    {
+      "name": "Multi-Agent Collaboration",
+      "quadrant": "techniques",
+      "ring": "trial",
+      "blip": "Handoff chains and parallel agent groups"
+    },
+    {
+      "name": "Supabase",
+      "quadrant": "platforms",
+      "ring": "adopt",
+      "blip": "Postgres+Auth+Realtime"
+    },
+    {
+      "name": "Cloudflare Workers",
+      "quadrant": "platforms",
+      "ring": "trial",
+      "blip": "Edge compute for lightweight APIs"
+    },
+    {
+      "name": "Docker Compose",
+      "quadrant": "tools",
+      "ring": "adopt",
+      "blip": "Local dev + staging environment"
+    },
+    {
+      "name": "AI-Driven Code Review",
+      "quadrant": "techniques",
+      "ring": "assess",
+      "blip": "Auto-patch generation from memory patterns"
+    },
+    {
+      "name": "React + Vite",
+      "quadrant": "languages_frameworks",
+      "ring": "adopt",
+      "blip": "Frontend stack"
+    },
+    {
+      "name": "Node.js CJS Services",
+      "quadrant": "languages_frameworks",
+      "ring": "adopt",
+      "blip": "Backend service layer"
+    },
+    {
+      "name": "WebAssembly",
+      "quadrant": "languages_frameworks",
+      "ring": "assess",
+      "blip": "Potential for compute-intensive tools"
+    },
+    {
+      "name": "Research Institute P10",
+      "quadrant": "techniques",
+      "ring": "trial",
+      "blip": "Autonomous research pipeline",
+      "addedAt": "2026-06-28T21:03:20.822Z",
+      "updatedAt": "2026-06-28T21:05:07.459Z"
+    },
+    {
+      "name": "TestTech P10",
+      "quadrant": "tools",
+      "ring": "trial",
+      "blip": "Updated",
+      "addedAt": "2026-06-28T21:03:20.822Z",
+      "updatedAt": "2026-06-28T21:05:07.459Z"
+    }
+  ],
+  "stats": {
+    "findingsIndexed": 74,
+    "recommendationsGenerated": 32,
+    "knowledgePublished": 2
+  },
+  "updatedAt": "2026-06-28T21:05:07.821Z"
+}
