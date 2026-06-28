@@ -394,13 +394,49 @@
       "ts": "2026-06-28T19:38:09.889Z",
       "actualOutcome": "approved",
       "wasCorrect": true
+    },
+    {
+      "id": "ap_1782677926218_42x",
+      "workflowId": "wf_doc_update",
+      "ok": true,
+      "predictedOutcome": "approved",
+      "approveProbability": 0.83,
+      "rejectProbability": 0.17,
+      "confidence": 0.43,
+      "shouldAutoApprove": false,
+      "autoApproveThreshold": 0.88,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "features": {
+        "risk": "low",
+        "domain": "documentation",
+        "workflowId": "wf_doc_update",
+        "riskTolerance": 1,
+        "automationPref": 0.8,
+        "trustScore": 67,
+        "domainApprovalRate": 0.7,
+        "highRiskRate": 0.2727272727272727,
+        "correctionFreq": 0.25,
+        "avgSpeedMs": 7050,
+        "policyRisk": "medium",
+        "policyThreshold": null,
+        "historicApproveRate": 0.34324324324324323,
+        "hasContext": false
+      },
+      "routed": "founder_required",
+      "resolvedAt": "2026-06-28T20:18:46.219Z",
+      "ts": "2026-06-28T20:18:46.218Z",
+      "actualOutcome": "approved",
+      "wasCorrect": true
     }
   ],
   "stats": {
-    "total": 11,
-    "correct": 11,
+    "total": 12,
+    "correct": 12,
     "autoApproved": 0,
-    "manualRequired": 11
+    "manualRequired": 12
   },
-  "updatedAt": "2026-06-28T19:38:09.889Z"
+  "updatedAt": "2026-06-28T20:18:46.219Z"
 }

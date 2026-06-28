@@ -1,51 +1,51 @@
 {
   "patterns": {
     "high_risk_approval_rate": {
-      "rate": 0.2619047619047619,
-      "sampleSize": 42,
+      "rate": 0.2608695652173913,
+      "sampleSize": 46,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:39:56.305Z"
+      "updatedAt": "2026-06-28T20:20:18.186Z"
     },
     "deployment_approval_rate": {
       "rate": 1,
-      "sampleSize": 62,
+      "sampleSize": 68,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:39:56.305Z"
+      "updatedAt": "2026-06-28T20:20:18.186Z"
     },
     "ui_approval_rate": {
       "rate": 1,
-      "sampleSize": 11,
+      "sampleSize": 12,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:39:56.305Z"
+      "updatedAt": "2026-06-28T20:20:18.186Z"
     },
     "security_approval_rate": {
       "rate": 0,
-      "sampleSize": 31,
+      "sampleSize": 34,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:39:56.305Z"
+      "updatedAt": "2026-06-28T20:20:18.186Z"
     },
     "avg_decision_speed_ms": {
-      "avgMs": 7073,
-      "sampleSize": 91,
+      "avgMs": 7029,
+      "sampleSize": 100,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:39:56.305Z"
+      "updatedAt": "2026-06-28T20:20:18.186Z"
     },
     "weekend_decision_rate": {
-      "rate": 0.22123893805309736,
+      "rate": 0.20161290322580644,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:39:56.305Z"
+      "updatedAt": "2026-06-28T20:20:18.186Z"
     },
     "after_hours_decision_rate": {
-      "rate": 0.8761061946902655,
+      "rate": 0.8870967741935484,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:39:56.305Z"
+      "updatedAt": "2026-06-28T20:20:18.186Z"
     },
     "correction_frequency": {
-      "rate": 0.24778761061946902,
-      "sampleSize": 113,
+      "rate": 0.25,
+      "sampleSize": 124,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:39:56.305Z"
+      "updatedAt": "2026-06-28T20:20:18.186Z"
     }
   },
-  "updatedAt": "2026-06-28T19:39:56.305Z"
+  "updatedAt": "2026-06-28T20:20:18.186Z"
 }

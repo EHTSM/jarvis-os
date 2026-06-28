@@ -9,7 +9,7 @@
       "enforcement": "mandatory",
       "enabled": true,
       "violationCount": 0,
-      "lastEvaluatedAt": "2026-06-28T20:17:57.274Z",
+      "lastEvaluatedAt": "2026-06-28T20:19:53.486Z",
       "createdAt": "2026-06-27T22:43:43.602Z",
       "updatedAt": "2026-06-27T22:43:43.602Z"
     },
@@ -22,7 +22,7 @@
       "enforcement": "mandatory",
       "enabled": true,
       "violationCount": 0,
-      "lastEvaluatedAt": "2026-06-28T20:17:57.274Z",
+      "lastEvaluatedAt": "2026-06-28T20:19:53.486Z",
       "createdAt": "2026-06-27T22:43:43.602Z",
       "updatedAt": "2026-06-27T22:43:43.602Z"
     },
@@ -45,7 +45,7 @@
       "enforcement": "mandatory",
       "enabled": true,
       "violationCount": 0,
-      "lastEvaluatedAt": "2026-06-28T20:17:57.274Z",
+      "lastEvaluatedAt": "2026-06-28T20:19:53.486Z",
       "createdAt": "2026-06-27T22:43:44.427Z",
       "updatedAt": "2026-06-27T22:43:44.427Z"
     },
@@ -63,7 +63,7 @@
       "enforcement": "advisory",
       "enabled": true,
       "violationCount": 0,
-      "lastEvaluatedAt": "2026-06-28T20:17:57.274Z",
+      "lastEvaluatedAt": "2026-06-28T20:19:53.486Z",
       "createdAt": "2026-06-27T22:43:44.427Z",
       "updatedAt": "2026-06-27T22:43:44.427Z"
     },
@@ -81,7 +81,7 @@
       "enforcement": "advisory",
       "enabled": true,
       "violationCount": 0,
-      "lastEvaluatedAt": "2026-06-28T20:17:57.274Z",
+      "lastEvaluatedAt": "2026-06-28T20:19:53.486Z",
       "createdAt": "2026-06-27T22:43:44.427Z",
       "updatedAt": "2026-06-27T22:43:44.427Z"
     },
@@ -101,7 +101,7 @@
       "enforcement": "mandatory",
       "enabled": true,
       "violationCount": 0,
-      "lastEvaluatedAt": "2026-06-28T20:17:57.274Z",
+      "lastEvaluatedAt": "2026-06-28T20:19:53.486Z",
       "createdAt": "2026-06-27T22:43:44.428Z",
       "updatedAt": "2026-06-27T22:43:44.428Z"
     }
@@ -811,96 +811,6 @@
     }
   ],
   "auditTrail": [
-    {
-      "id": "eaud_1782600223605_uznn",
-      "entityId": "egappr_1782600223605_sl6j",
-      "entityType": "approval",
-      "action": "approved",
-      "actor": "ceo",
-      "detail": "",
-      "severity": "info",
-      "at": "2026-06-27T22:43:43.605Z"
-    },
-    {
-      "id": "eaud_1782600223606_brbq",
-      "entityId": "test",
-      "entityType": "test",
-      "action": "created",
-      "actor": "jest",
-      "detail": "",
-      "severity": "info",
-      "at": "2026-06-27T22:43:43.606Z"
-    },
-    {
-      "id": "eaud_1782600224431_vtuk",
-      "entityId": "egoal_1782600224429_c62h",
-      "entityType": "enterprise_goal",
-      "action": "created",
-      "actor": "ent_director",
-      "detail": "",
-      "severity": "info",
-      "at": "2026-06-27T22:43:44.431Z"
-    },
-    {
-      "id": "eaud_1782600224433_sajp",
-      "entityId": "egoal_1782600224432_c9aw",
-      "entityType": "enterprise_goal",
-      "action": "created",
-      "actor": "ent_director",
-      "detail": "",
-      "severity": "info",
-      "at": "2026-06-27T22:43:44.433Z"
-    },
-    {
-      "id": "eaud_1782600224434_442k",
-      "entityId": "egoal_1782600224434_4b58",
-      "entityType": "enterprise_goal",
-      "action": "created",
-      "actor": "ent_director",
-      "detail": "",
-      "severity": "info",
-      "at": "2026-06-27T22:43:44.434Z"
-    },
-    {
-      "id": "eaud_1782600224436_scgg",
-      "entityId": "egoal_1782600224435_ie2g",
-      "entityType": "enterprise_goal",
-      "action": "created",
-      "actor": "ent_director",
-      "detail": "",
-      "severity": "info",
-      "at": "2026-06-27T22:43:44.436Z"
-    },
-    {
-      "id": "eaud_1782600224436_8f45",
-      "entityId": "egoal_1782600224435_ie2g",
-      "entityType": "governance_gate",
-      "action": "evaluated",
-      "actor": "ent_governance",
-      "detail": "0 violations, 0 blockers",
-      "severity": "info",
-      "at": "2026-06-27T22:43:44.436Z"
-    },
-    {
-      "id": "eaud_1782600224437_f8sd",
-      "entityId": "egoal_1782600224436_k40p",
-      "entityType": "enterprise_goal",
-      "action": "created",
-      "actor": "ent_director",
-      "detail": "",
-      "severity": "info",
-      "at": "2026-06-27T22:43:44.437Z"
-    },
-    {
-      "id": "eaud_1782600224437_yxbi",
-      "entityId": "global",
-      "entityType": "compliance_scan",
-      "action": "completed",
-      "actor": "ent_compliance",
-      "detail": "score=100 framework=SOC2",
-      "severity": "info",
-      "at": "2026-06-27T22:43:44.437Z"
-    },
     {
       "id": "eaud_1782600224441_gp8v",
       "entityId": "global",
@@ -42657,6 +42567,3337 @@
       "detail": "",
       "severity": "info",
       "at": "2026-06-28T20:18:04.824Z"
+    },
+    {
+      "id": "eaud_1782677885731_z8hv",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:05.731Z"
+    },
+    {
+      "id": "eaud_1782677885736_e7g8",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:05.736Z"
+    },
+    {
+      "id": "eaud_1782677885740_wx26",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:05.740Z"
+    },
+    {
+      "id": "eaud_1782677887487_g9j0",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:07.487Z"
+    },
+    {
+      "id": "eaud_1782677887492_d9mi",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:07.492Z"
+    },
+    {
+      "id": "eaud_1782677887497_w9wc",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:07.497Z"
+    },
+    {
+      "id": "eaud_1782677888451_zy6i",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:08.451Z"
+    },
+    {
+      "id": "eaud_1782677888456_q66y",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:08.456Z"
+    },
+    {
+      "id": "eaud_1782677888462_jw6c",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:08.462Z"
+    },
+    {
+      "id": "eaud_1782677889444_xpct",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:09.444Z"
+    },
+    {
+      "id": "eaud_1782677889449_3qxk",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:09.449Z"
+    },
+    {
+      "id": "eaud_1782677889453_qmts",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:09.453Z"
+    },
+    {
+      "id": "eaud_1782677890362_h14b",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:10.362Z"
+    },
+    {
+      "id": "eaud_1782677890366_v4m4",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:10.366Z"
+    },
+    {
+      "id": "eaud_1782677890371_dwlq",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:10.371Z"
+    },
+    {
+      "id": "eaud_1782677891239_n35j",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:11.239Z"
+    },
+    {
+      "id": "eaud_1782677891243_eqaw",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:11.243Z"
+    },
+    {
+      "id": "eaud_1782677891247_ismo",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:11.247Z"
+    },
+    {
+      "id": "eaud_1782677892174_gcin",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:12.174Z"
+    },
+    {
+      "id": "eaud_1782677892194_7zme",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:12.194Z"
+    },
+    {
+      "id": "eaud_1782677892198_1okq",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:12.198Z"
+    },
+    {
+      "id": "eaud_1782677893471_ktmp",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:13.471Z"
+    },
+    {
+      "id": "eaud_1782677893476_pldp",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:13.476Z"
+    },
+    {
+      "id": "eaud_1782677893480_k1qf",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:13.480Z"
+    },
+    {
+      "id": "eaud_1782677894491_9uba",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:14.491Z"
+    },
+    {
+      "id": "eaud_1782677894497_43ln",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:14.497Z"
+    },
+    {
+      "id": "eaud_1782677894502_qc8w",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:14.502Z"
+    },
+    {
+      "id": "eaud_1782677895436_ke3s",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:15.436Z"
+    },
+    {
+      "id": "eaud_1782677895440_nnp4",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:15.440Z"
+    },
+    {
+      "id": "eaud_1782677895445_hzoj",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:15.445Z"
+    },
+    {
+      "id": "eaud_1782677897230_znuy",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:17.230Z"
+    },
+    {
+      "id": "eaud_1782677897235_eonr",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:17.235Z"
+    },
+    {
+      "id": "eaud_1782677897239_7rub",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:17.239Z"
+    },
+    {
+      "id": "eaud_1782677898154_ulzy",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:18.154Z"
+    },
+    {
+      "id": "eaud_1782677898158_vfb7",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:18.158Z"
+    },
+    {
+      "id": "eaud_1782677898163_k7x2",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:18.163Z"
+    },
+    {
+      "id": "eaud_1782677899385_yqwv",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:19.385Z"
+    },
+    {
+      "id": "eaud_1782677899394_sy06",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:19.394Z"
+    },
+    {
+      "id": "eaud_1782677899401_agtv",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:19.401Z"
+    },
+    {
+      "id": "eaud_1782677900547_k3f0",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:20.547Z"
+    },
+    {
+      "id": "eaud_1782677900551_ukw6",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:20.551Z"
+    },
+    {
+      "id": "eaud_1782677900556_fo8g",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:20.556Z"
+    },
+    {
+      "id": "eaud_1782677901831_xb2e",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:21.831Z"
+    },
+    {
+      "id": "eaud_1782677901841_2m7u",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:21.841Z"
+    },
+    {
+      "id": "eaud_1782677901847_n06w",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:21.847Z"
+    },
+    {
+      "id": "eaud_1782677902862_rx77",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:22.862Z"
+    },
+    {
+      "id": "eaud_1782677902867_x3bv",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:22.867Z"
+    },
+    {
+      "id": "eaud_1782677902872_zd73",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:22.872Z"
+    },
+    {
+      "id": "eaud_1782677904160_5bfc",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:24.160Z"
+    },
+    {
+      "id": "eaud_1782677904166_srd1",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:24.166Z"
+    },
+    {
+      "id": "eaud_1782677904172_1kzg",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:24.172Z"
+    },
+    {
+      "id": "eaud_1782677905608_zy7r",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:25.608Z"
+    },
+    {
+      "id": "eaud_1782677905617_hgil",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:25.617Z"
+    },
+    {
+      "id": "eaud_1782677905622_z8hj",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:25.622Z"
+    },
+    {
+      "id": "eaud_1782677907085_if12",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:27.085Z"
+    },
+    {
+      "id": "eaud_1782677907090_fe22",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:27.090Z"
+    },
+    {
+      "id": "eaud_1782677907094_gmvl",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:27.094Z"
+    },
+    {
+      "id": "eaud_1782677908370_b2vh",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:28.370Z"
+    },
+    {
+      "id": "eaud_1782677908375_qrgs",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:28.375Z"
+    },
+    {
+      "id": "eaud_1782677908380_j3ml",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:28.380Z"
+    },
+    {
+      "id": "eaud_1782677909769_bn8q",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:29.769Z"
+    },
+    {
+      "id": "eaud_1782677909774_v4b3",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:29.774Z"
+    },
+    {
+      "id": "eaud_1782677909780_h1uy",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:29.780Z"
+    },
+    {
+      "id": "eaud_1782677911092_4uuo",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:31.092Z"
+    },
+    {
+      "id": "eaud_1782677911096_7nsh",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:31.096Z"
+    },
+    {
+      "id": "eaud_1782677911101_e5je",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:31.101Z"
+    },
+    {
+      "id": "eaud_1782677912306_l4k1",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:32.306Z"
+    },
+    {
+      "id": "eaud_1782677912312_ftl7",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:32.312Z"
+    },
+    {
+      "id": "eaud_1782677912319_mu38",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:32.319Z"
+    },
+    {
+      "id": "eaud_1782677913320_0lh0",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:33.320Z"
+    },
+    {
+      "id": "eaud_1782677913325_zozp",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:33.325Z"
+    },
+    {
+      "id": "eaud_1782677913334_pe19",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:33.334Z"
+    },
+    {
+      "id": "eaud_1782677914544_aq9a",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:34.544Z"
+    },
+    {
+      "id": "eaud_1782677914549_1z67",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:34.549Z"
+    },
+    {
+      "id": "eaud_1782677914556_891i",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:34.556Z"
+    },
+    {
+      "id": "eaud_1782677915796_jjiy",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:35.796Z"
+    },
+    {
+      "id": "eaud_1782677915801_wjwz",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:35.801Z"
+    },
+    {
+      "id": "eaud_1782677915805_bai9",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:35.805Z"
+    },
+    {
+      "id": "eaud_1782677916758_sgi9",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:36.758Z"
+    },
+    {
+      "id": "eaud_1782677916766_eunt",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:36.766Z"
+    },
+    {
+      "id": "eaud_1782677916773_qnxi",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:36.773Z"
+    },
+    {
+      "id": "eaud_1782677917926_jqsp",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:37.926Z"
+    },
+    {
+      "id": "eaud_1782677917931_gkiu",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:37.931Z"
+    },
+    {
+      "id": "eaud_1782677917935_2ann",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:37.935Z"
+    },
+    {
+      "id": "eaud_1782677919144_cadh",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:39.144Z"
+    },
+    {
+      "id": "eaud_1782677919148_30bk",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:39.148Z"
+    },
+    {
+      "id": "eaud_1782677919155_ppes",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:39.155Z"
+    },
+    {
+      "id": "eaud_1782677920387_c67r",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:40.387Z"
+    },
+    {
+      "id": "eaud_1782677920392_6iit",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:40.392Z"
+    },
+    {
+      "id": "eaud_1782677920396_mfr7",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:40.396Z"
+    },
+    {
+      "id": "eaud_1782677921528_1zcl",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:41.528Z"
+    },
+    {
+      "id": "eaud_1782677921533_gje9",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:41.533Z"
+    },
+    {
+      "id": "eaud_1782677921538_qkd9",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:41.538Z"
+    },
+    {
+      "id": "eaud_1782677922524_8uev",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:42.524Z"
+    },
+    {
+      "id": "eaud_1782677922534_4l1t",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:42.534Z"
+    },
+    {
+      "id": "eaud_1782677922538_ht8t",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:42.538Z"
+    },
+    {
+      "id": "eaud_1782677923842_hi5h",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:43.842Z"
+    },
+    {
+      "id": "eaud_1782677923852_5ygs",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:43.852Z"
+    },
+    {
+      "id": "eaud_1782677923861_11u9",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:43.861Z"
+    },
+    {
+      "id": "eaud_1782677925089_87a0",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:45.089Z"
+    },
+    {
+      "id": "eaud_1782677925096_9e55",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:45.096Z"
+    },
+    {
+      "id": "eaud_1782677925103_ejcl",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:45.103Z"
+    },
+    {
+      "id": "eaud_1782677926274_oozh",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:46.274Z"
+    },
+    {
+      "id": "eaud_1782677926279_3idj",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:46.279Z"
+    },
+    {
+      "id": "eaud_1782677926283_jqwk",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:46.283Z"
+    },
+    {
+      "id": "eaud_1782677927402_nkqm",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:47.402Z"
+    },
+    {
+      "id": "eaud_1782677927411_rl53",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:47.411Z"
+    },
+    {
+      "id": "eaud_1782677927418_hrio",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:47.418Z"
+    },
+    {
+      "id": "eaud_1782677928527_9p0f",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:48.527Z"
+    },
+    {
+      "id": "eaud_1782677928532_ldch",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:48.532Z"
+    },
+    {
+      "id": "eaud_1782677928536_mhkh",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:48.536Z"
+    },
+    {
+      "id": "eaud_1782677929889_ygce",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:49.889Z"
+    },
+    {
+      "id": "eaud_1782677929894_wt5g",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:49.894Z"
+    },
+    {
+      "id": "eaud_1782677929899_coej",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:49.899Z"
+    },
+    {
+      "id": "eaud_1782677931222_z55h",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:51.222Z"
+    },
+    {
+      "id": "eaud_1782677931226_hgbk",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:51.226Z"
+    },
+    {
+      "id": "eaud_1782677931231_oqak",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:51.231Z"
+    },
+    {
+      "id": "eaud_1782677932468_t33q",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:52.468Z"
+    },
+    {
+      "id": "eaud_1782677932474_5q1k",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:52.474Z"
+    },
+    {
+      "id": "eaud_1782677932484_jnfl",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:52.484Z"
+    },
+    {
+      "id": "eaud_1782677933731_umvf",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:53.731Z"
+    },
+    {
+      "id": "eaud_1782677933736_hqw3",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:53.736Z"
+    },
+    {
+      "id": "eaud_1782677933740_127l",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:53.740Z"
+    },
+    {
+      "id": "eaud_1782677935158_w5j3",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:55.158Z"
+    },
+    {
+      "id": "eaud_1782677935169_qorl",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:55.169Z"
+    },
+    {
+      "id": "eaud_1782677935200_5ee4",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:55.200Z"
+    },
+    {
+      "id": "eaud_1782677936344_37ds",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:56.344Z"
+    },
+    {
+      "id": "eaud_1782677936348_jfdk",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:56.348Z"
+    },
+    {
+      "id": "eaud_1782677936352_xusd",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:56.352Z"
+    },
+    {
+      "id": "eaud_1782677937518_t4ct",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:57.518Z"
+    },
+    {
+      "id": "eaud_1782677937530_trzy",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:57.530Z"
+    },
+    {
+      "id": "eaud_1782677937535_a1fn",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:57.535Z"
+    },
+    {
+      "id": "eaud_1782677938501_grxn",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:58.501Z"
+    },
+    {
+      "id": "eaud_1782677938509_6l81",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:58.509Z"
+    },
+    {
+      "id": "eaud_1782677938517_6i8m",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:58.517Z"
+    },
+    {
+      "id": "eaud_1782677939492_dv92",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:18:59.492Z"
+    },
+    {
+      "id": "eaud_1782677939497_a0gc",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:59.497Z"
+    },
+    {
+      "id": "eaud_1782677939502_4qqh",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:18:59.502Z"
+    },
+    {
+      "id": "eaud_1782677940601_4y37",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:00.601Z"
+    },
+    {
+      "id": "eaud_1782677940607_ufd4",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:00.607Z"
+    },
+    {
+      "id": "eaud_1782677940611_2hur",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:00.611Z"
+    },
+    {
+      "id": "eaud_1782677941526_yvpn",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:01.526Z"
+    },
+    {
+      "id": "eaud_1782677941531_jiuu",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:01.531Z"
+    },
+    {
+      "id": "eaud_1782677941535_bbij",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:01.535Z"
+    },
+    {
+      "id": "eaud_1782677942703_9ndp",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:02.703Z"
+    },
+    {
+      "id": "eaud_1782677942708_ew9y",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:02.708Z"
+    },
+    {
+      "id": "eaud_1782677942713_kwbw",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:02.713Z"
+    },
+    {
+      "id": "eaud_1782677943716_16in",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:03.716Z"
+    },
+    {
+      "id": "eaud_1782677943722_736z",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:03.722Z"
+    },
+    {
+      "id": "eaud_1782677943729_lys9",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:03.729Z"
+    },
+    {
+      "id": "eaud_1782677944740_7u03",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:04.740Z"
+    },
+    {
+      "id": "eaud_1782677944745_o42f",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:04.745Z"
+    },
+    {
+      "id": "eaud_1782677944750_9asz",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:04.750Z"
+    },
+    {
+      "id": "eaud_1782677945764_7uun",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:05.764Z"
+    },
+    {
+      "id": "eaud_1782677945770_avb7",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:05.770Z"
+    },
+    {
+      "id": "eaud_1782677945775_u5e2",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:05.775Z"
+    },
+    {
+      "id": "eaud_1782677946734_vn33",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:06.734Z"
+    },
+    {
+      "id": "eaud_1782677946739_ilru",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:06.739Z"
+    },
+    {
+      "id": "eaud_1782677946744_35lt",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:06.744Z"
+    },
+    {
+      "id": "eaud_1782677947719_pwne",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:07.719Z"
+    },
+    {
+      "id": "eaud_1782677947726_i2db",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:07.726Z"
+    },
+    {
+      "id": "eaud_1782677947730_2wtf",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:07.730Z"
+    },
+    {
+      "id": "eaud_1782677948787_xfcu",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:08.787Z"
+    },
+    {
+      "id": "eaud_1782677948792_5q2h",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:08.792Z"
+    },
+    {
+      "id": "eaud_1782677948796_yuyp",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:08.796Z"
+    },
+    {
+      "id": "eaud_1782677950548_97tu",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:10.548Z"
+    },
+    {
+      "id": "eaud_1782677950552_zv80",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:10.552Z"
+    },
+    {
+      "id": "eaud_1782677950556_7viu",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:10.556Z"
+    },
+    {
+      "id": "eaud_1782677951568_3i8a",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:11.568Z"
+    },
+    {
+      "id": "eaud_1782677951574_w5fd",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:11.574Z"
+    },
+    {
+      "id": "eaud_1782677951578_wl0l",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:11.578Z"
+    },
+    {
+      "id": "eaud_1782677952714_a993",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:12.714Z"
+    },
+    {
+      "id": "eaud_1782677952719_7uxq",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:12.719Z"
+    },
+    {
+      "id": "eaud_1782677952724_uzc0",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:12.724Z"
+    },
+    {
+      "id": "eaud_1782677953765_fyc3",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:13.765Z"
+    },
+    {
+      "id": "eaud_1782677953770_8n0b",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:13.770Z"
+    },
+    {
+      "id": "eaud_1782677953774_xc21",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:13.774Z"
+    },
+    {
+      "id": "eaud_1782677954703_x7jr",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:14.703Z"
+    },
+    {
+      "id": "eaud_1782677954774_h5zo",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:14.774Z"
+    },
+    {
+      "id": "eaud_1782677954779_5lq2",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:14.779Z"
+    },
+    {
+      "id": "eaud_1782677955834_17jk",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:15.834Z"
+    },
+    {
+      "id": "eaud_1782677955839_t86z",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:15.839Z"
+    },
+    {
+      "id": "eaud_1782677955844_umoy",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:15.844Z"
+    },
+    {
+      "id": "eaud_1782677956793_vst8",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:16.793Z"
+    },
+    {
+      "id": "eaud_1782677956798_2wue",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:16.798Z"
+    },
+    {
+      "id": "eaud_1782677956803_l7tv",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:16.803Z"
+    },
+    {
+      "id": "eaud_1782677957789_qff4",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:17.789Z"
+    },
+    {
+      "id": "eaud_1782677957794_i1xw",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:17.794Z"
+    },
+    {
+      "id": "eaud_1782677957799_z27z",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:17.799Z"
+    },
+    {
+      "id": "eaud_1782677958797_izfn",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:18.797Z"
+    },
+    {
+      "id": "eaud_1782677958802_po6l",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:18.802Z"
+    },
+    {
+      "id": "eaud_1782677958806_tpys",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:18.806Z"
+    },
+    {
+      "id": "eaud_1782677959765_t5i9",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:19.765Z"
+    },
+    {
+      "id": "eaud_1782677959770_t4v5",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:19.770Z"
+    },
+    {
+      "id": "eaud_1782677959774_grpw",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:19.774Z"
+    },
+    {
+      "id": "eaud_1782677960804_pwca",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:20.804Z"
+    },
+    {
+      "id": "eaud_1782677960809_tujd",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:20.809Z"
+    },
+    {
+      "id": "eaud_1782677960813_mx4w",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:20.813Z"
+    },
+    {
+      "id": "eaud_1782677961738_46x7",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:21.738Z"
+    },
+    {
+      "id": "eaud_1782677961743_8im9",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:21.743Z"
+    },
+    {
+      "id": "eaud_1782677961748_8htn",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:21.748Z"
+    },
+    {
+      "id": "eaud_1782677962732_ypqf",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:22.732Z"
+    },
+    {
+      "id": "eaud_1782677962736_u9ft",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:22.736Z"
+    },
+    {
+      "id": "eaud_1782677962741_mbbf",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:22.741Z"
+    },
+    {
+      "id": "eaud_1782677963701_nn7r",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:23.701Z"
+    },
+    {
+      "id": "eaud_1782677963706_kjq7",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:23.706Z"
+    },
+    {
+      "id": "eaud_1782677963711_k7xc",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:23.711Z"
+    },
+    {
+      "id": "eaud_1782677964710_49gq",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:24.710Z"
+    },
+    {
+      "id": "eaud_1782677964715_6abk",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:24.715Z"
+    },
+    {
+      "id": "eaud_1782677964719_jkqr",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:24.719Z"
+    },
+    {
+      "id": "eaud_1782677965672_fl9q",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:25.672Z"
+    },
+    {
+      "id": "eaud_1782677965688_u5st",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:25.688Z"
+    },
+    {
+      "id": "eaud_1782677965697_4cqj",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:25.697Z"
+    },
+    {
+      "id": "eaud_1782677966702_cs4g",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:26.702Z"
+    },
+    {
+      "id": "eaud_1782677966707_yfqm",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:26.707Z"
+    },
+    {
+      "id": "eaud_1782677966711_k9st",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:26.711Z"
+    },
+    {
+      "id": "eaud_1782677967703_7cut",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:27.703Z"
+    },
+    {
+      "id": "eaud_1782677967708_geiu",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:27.708Z"
+    },
+    {
+      "id": "eaud_1782677967712_1qwv",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:27.712Z"
+    },
+    {
+      "id": "eaud_1782677968766_wka5",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:28.766Z"
+    },
+    {
+      "id": "eaud_1782677968771_2q24",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:28.771Z"
+    },
+    {
+      "id": "eaud_1782677968775_ag7h",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:28.775Z"
+    },
+    {
+      "id": "eaud_1782677969746_zs9z",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:29.746Z"
+    },
+    {
+      "id": "eaud_1782677969751_9yaf",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:29.751Z"
+    },
+    {
+      "id": "eaud_1782677969756_mtdw",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:29.756Z"
+    },
+    {
+      "id": "eaud_1782677970880_xedp",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:30.880Z"
+    },
+    {
+      "id": "eaud_1782677970885_xmpd",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:30.885Z"
+    },
+    {
+      "id": "eaud_1782677970890_8e75",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:30.890Z"
+    },
+    {
+      "id": "eaud_1782677971886_zg0t",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:31.886Z"
+    },
+    {
+      "id": "eaud_1782677971893_uiob",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:31.893Z"
+    },
+    {
+      "id": "eaud_1782677971899_9o72",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:31.899Z"
+    },
+    {
+      "id": "eaud_1782677972900_0u0r",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:32.900Z"
+    },
+    {
+      "id": "eaud_1782677972905_j9he",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:32.905Z"
+    },
+    {
+      "id": "eaud_1782677972910_nmev",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:32.910Z"
+    },
+    {
+      "id": "eaud_1782677973931_te5n",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:33.931Z"
+    },
+    {
+      "id": "eaud_1782677973936_s9az",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:33.936Z"
+    },
+    {
+      "id": "eaud_1782677973941_mjmb",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:33.941Z"
+    },
+    {
+      "id": "eaud_1782677974906_v0cf",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:34.906Z"
+    },
+    {
+      "id": "eaud_1782677974911_gvr5",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:34.911Z"
+    },
+    {
+      "id": "eaud_1782677974916_h9bf",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:34.916Z"
+    },
+    {
+      "id": "eaud_1782677975851_ycnt",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:35.851Z"
+    },
+    {
+      "id": "eaud_1782677975856_5kck",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:35.856Z"
+    },
+    {
+      "id": "eaud_1782677975860_5aqm",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:35.860Z"
+    },
+    {
+      "id": "eaud_1782677976826_uzkc",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:36.826Z"
+    },
+    {
+      "id": "eaud_1782677976831_1m6d",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:36.831Z"
+    },
+    {
+      "id": "eaud_1782677976836_81mn",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:36.836Z"
+    },
+    {
+      "id": "eaud_1782677977841_sjer",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:37.841Z"
+    },
+    {
+      "id": "eaud_1782677977846_5rs1",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:37.846Z"
+    },
+    {
+      "id": "eaud_1782677977850_uah3",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:37.850Z"
+    },
+    {
+      "id": "eaud_1782677979023_zm5p",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:39.023Z"
+    },
+    {
+      "id": "eaud_1782677979029_01xv",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:39.029Z"
+    },
+    {
+      "id": "eaud_1782677979036_33uo",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:39.036Z"
+    },
+    {
+      "id": "eaud_1782677980193_73j3",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:40.193Z"
+    },
+    {
+      "id": "eaud_1782677980198_om15",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:40.198Z"
+    },
+    {
+      "id": "eaud_1782677980202_k41a",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:40.202Z"
+    },
+    {
+      "id": "eaud_1782677981182_u17u",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:41.182Z"
+    },
+    {
+      "id": "eaud_1782677981188_fgxa",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:41.188Z"
+    },
+    {
+      "id": "eaud_1782677981192_x2g5",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:41.192Z"
+    },
+    {
+      "id": "eaud_1782677982176_tf4t",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:42.176Z"
+    },
+    {
+      "id": "eaud_1782677982182_5c7e",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:42.182Z"
+    },
+    {
+      "id": "eaud_1782677982187_gf8k",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:42.187Z"
+    },
+    {
+      "id": "eaud_1782677983143_ua2i",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:43.143Z"
+    },
+    {
+      "id": "eaud_1782677983148_msvn",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:43.148Z"
+    },
+    {
+      "id": "eaud_1782677983152_z2vd",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:43.152Z"
+    },
+    {
+      "id": "eaud_1782677984119_ozz7",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:44.119Z"
+    },
+    {
+      "id": "eaud_1782677984123_lpx5",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:44.123Z"
+    },
+    {
+      "id": "eaud_1782677984128_x4ss",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:44.128Z"
+    },
+    {
+      "id": "eaud_1782677985095_n9ov",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:45.095Z"
+    },
+    {
+      "id": "eaud_1782677985100_zfhw",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:45.100Z"
+    },
+    {
+      "id": "eaud_1782677985104_e0j6",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:45.104Z"
+    },
+    {
+      "id": "eaud_1782677986038_zoza",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:46.038Z"
+    },
+    {
+      "id": "eaud_1782677986042_yxjt",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:46.042Z"
+    },
+    {
+      "id": "eaud_1782677986047_gvk1",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:46.047Z"
+    },
+    {
+      "id": "eaud_1782677987075_p86r",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:47.075Z"
+    },
+    {
+      "id": "eaud_1782677987080_b1tc",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:47.080Z"
+    },
+    {
+      "id": "eaud_1782677987085_vgim",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:47.085Z"
+    },
+    {
+      "id": "eaud_1782677988099_xbxg",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:48.099Z"
+    },
+    {
+      "id": "eaud_1782677988105_3fuu",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:48.105Z"
+    },
+    {
+      "id": "eaud_1782677988110_diq6",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:48.110Z"
+    },
+    {
+      "id": "eaud_1782677989182_68y6",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:49.182Z"
+    },
+    {
+      "id": "eaud_1782677989186_8h77",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:49.186Z"
+    },
+    {
+      "id": "eaud_1782677989191_prxv",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:49.191Z"
+    },
+    {
+      "id": "eaud_1782677990283_l8hy",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:50.283Z"
+    },
+    {
+      "id": "eaud_1782677990288_dxow",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:50.288Z"
+    },
+    {
+      "id": "eaud_1782677990293_axaq",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:50.293Z"
+    },
+    {
+      "id": "eaud_1782677991319_8trx",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:51.319Z"
+    },
+    {
+      "id": "eaud_1782677991324_ke73",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:51.324Z"
+    },
+    {
+      "id": "eaud_1782677991328_yd8l",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:51.328Z"
+    },
+    {
+      "id": "eaud_1782677992479_qsvq",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:52.479Z"
+    },
+    {
+      "id": "eaud_1782677992485_01o4",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:52.485Z"
+    },
+    {
+      "id": "eaud_1782677992490_dess",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:52.490Z"
+    },
+    {
+      "id": "eaud_1782677993491_sdmk",
+      "entityId": "global",
+      "entityType": "risk_score",
+      "action": "computed",
+      "actor": "ent_risk",
+      "detail": "score=53 level=high",
+      "severity": "info",
+      "at": "2026-06-28T20:19:53.491Z"
+    },
+    {
+      "id": "eaud_1782677993496_hhu2",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:53.496Z"
+    },
+    {
+      "id": "eaud_1782677993501_snfu",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:53.501Z"
+    },
+    {
+      "id": "eaud_1782677993507_ozf7",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:53.507Z"
+    },
+    {
+      "id": "eaud_1782677994569_tg03",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:19:54.569Z"
+    },
+    {
+      "id": "eaud_1782677994575_0kd0",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:54.575Z"
+    },
+    {
+      "id": "eaud_1782677994581_umi3",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:19:54.581Z"
+    },
+    {
+      "id": "eaud_1782678007726_08ud",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:07.726Z"
+    },
+    {
+      "id": "eaud_1782678007747_e6ke",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:07.747Z"
+    },
+    {
+      "id": "eaud_1782678007757_1lpi",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:07.757Z"
+    },
+    {
+      "id": "eaud_1782678008827_12cj",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:08.827Z"
+    },
+    {
+      "id": "eaud_1782678008832_ow57",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:08.832Z"
+    },
+    {
+      "id": "eaud_1782678008836_rnj4",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:08.836Z"
+    },
+    {
+      "id": "eaud_1782678010510_pkig",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:10.510Z"
+    },
+    {
+      "id": "eaud_1782678010515_nqt8",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:10.515Z"
+    },
+    {
+      "id": "eaud_1782678010519_tkvt",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:10.519Z"
+    },
+    {
+      "id": "eaud_1782678011533_cc8t",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:11.533Z"
+    },
+    {
+      "id": "eaud_1782678011538_xlaz",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:11.538Z"
+    },
+    {
+      "id": "eaud_1782678011542_mp84",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:11.542Z"
+    },
+    {
+      "id": "eaud_1782678012542_yj8z",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:12.542Z"
+    },
+    {
+      "id": "eaud_1782678012547_yhvp",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:12.547Z"
+    },
+    {
+      "id": "eaud_1782678012551_1jlk",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:12.551Z"
+    },
+    {
+      "id": "eaud_1782678013564_2yoz",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:13.564Z"
+    },
+    {
+      "id": "eaud_1782678013569_fh4i",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:13.569Z"
+    },
+    {
+      "id": "eaud_1782678013574_dj7o",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:13.574Z"
+    },
+    {
+      "id": "eaud_1782678014520_p1ae",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:14.520Z"
+    },
+    {
+      "id": "eaud_1782678014525_e8e5",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:14.525Z"
+    },
+    {
+      "id": "eaud_1782678014530_ljy4",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:14.530Z"
+    },
+    {
+      "id": "eaud_1782678015558_oo6f",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:15.558Z"
+    },
+    {
+      "id": "eaud_1782678015562_nhk6",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:15.562Z"
+    },
+    {
+      "id": "eaud_1782678015567_pbz9",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:15.567Z"
+    },
+    {
+      "id": "eaud_1782678016502_vpv4",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:16.502Z"
+    },
+    {
+      "id": "eaud_1782678016506_pssq",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:16.506Z"
+    },
+    {
+      "id": "eaud_1782678016511_7u3z",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:16.511Z"
+    },
+    {
+      "id": "eaud_1782678017500_uvvb",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:17.500Z"
+    },
+    {
+      "id": "eaud_1782678017505_jehd",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:17.505Z"
+    },
+    {
+      "id": "eaud_1782678017510_cmi5",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:17.510Z"
+    },
+    {
+      "id": "eaud_1782678018570_jkpf",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:18.570Z"
+    },
+    {
+      "id": "eaud_1782678018575_f9qg",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:18.575Z"
+    },
+    {
+      "id": "eaud_1782678018579_gq0m",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:18.579Z"
+    },
+    {
+      "id": "eaud_1782678019529_siav",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:19.529Z"
+    },
+    {
+      "id": "eaud_1782678019534_qsnf",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:19.534Z"
+    },
+    {
+      "id": "eaud_1782678019538_dlpt",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:19.538Z"
+    },
+    {
+      "id": "eaud_1782678020502_yeti",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:20.502Z"
+    },
+    {
+      "id": "eaud_1782678020507_z3br",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:20.507Z"
+    },
+    {
+      "id": "eaud_1782678020511_xm8n",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:20.511Z"
+    },
+    {
+      "id": "eaud_1782678021422_ga5f",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:21.422Z"
+    },
+    {
+      "id": "eaud_1782678021426_slga",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:21.426Z"
+    },
+    {
+      "id": "eaud_1782678021431_g6lo",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:21.431Z"
+    },
+    {
+      "id": "eaud_1782678022398_tcmd",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:22.398Z"
+    },
+    {
+      "id": "eaud_1782678022403_xfii",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:22.403Z"
+    },
+    {
+      "id": "eaud_1782678022407_d6sf",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:22.407Z"
+    },
+    {
+      "id": "eaud_1782678023354_78ze",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:23.354Z"
+    },
+    {
+      "id": "eaud_1782678023358_ds82",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:23.359Z"
+    },
+    {
+      "id": "eaud_1782678023363_neh3",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:23.363Z"
+    },
+    {
+      "id": "eaud_1782678024371_yjqk",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:24.371Z"
+    },
+    {
+      "id": "eaud_1782678024376_bvi3",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:24.376Z"
+    },
+    {
+      "id": "eaud_1782678024381_03w1",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:24.381Z"
+    },
+    {
+      "id": "eaud_1782678025308_c160",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:25.308Z"
+    },
+    {
+      "id": "eaud_1782678025313_uj9l",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:25.313Z"
+    },
+    {
+      "id": "eaud_1782678025317_vxz3",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:25.317Z"
+    },
+    {
+      "id": "eaud_1782678026290_9l7n",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:26.290Z"
+    },
+    {
+      "id": "eaud_1782678026295_1fdq",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:26.295Z"
+    },
+    {
+      "id": "eaud_1782678026300_dql8",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:26.300Z"
+    },
+    {
+      "id": "eaud_1782678027247_1nju",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:27.247Z"
+    },
+    {
+      "id": "eaud_1782678027252_6rkz",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:27.252Z"
+    },
+    {
+      "id": "eaud_1782678027256_sg0a",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:27.256Z"
+    },
+    {
+      "id": "eaud_1782678028241_idf3",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:28.241Z"
+    },
+    {
+      "id": "eaud_1782678028246_e74f",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:28.246Z"
+    },
+    {
+      "id": "eaud_1782678028250_o9p8",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:28.250Z"
+    },
+    {
+      "id": "eaud_1782678029193_hukv",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:29.193Z"
+    },
+    {
+      "id": "eaud_1782678029198_hxde",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:29.198Z"
+    },
+    {
+      "id": "eaud_1782678029202_21c6",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:29.202Z"
+    },
+    {
+      "id": "eaud_1782678030151_z403",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:30.151Z"
+    },
+    {
+      "id": "eaud_1782678030155_71q8",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:30.155Z"
+    },
+    {
+      "id": "eaud_1782678030159_hrjc",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:30.159Z"
+    },
+    {
+      "id": "eaud_1782678031072_95kc",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-28T20:20:31.072Z"
+    },
+    {
+      "id": "eaud_1782678031077_h0bt",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:31.077Z"
+    },
+    {
+      "id": "eaud_1782678031082_gjo2",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-28T20:20:31.082Z"
     }
   ]
 }

@@ -4529,11 +4529,12 @@
       "cmdId": "tc_1782677879102_5o6",
       "cmd": "node --version",
       "cwd": "/Users/ehtsm/jarvis-os",
-      "status": "streaming",
+      "status": "success",
       "startedAt": "2026-06-28T20:17:59.103Z",
       "outputLines": [],
       "error": null,
-      "exitCode": null
+      "exitCode": 0,
+      "completedAt": "2026-06-28T20:18:43.675Z"
     },
     "tc_1782677882367_61u": {
       "cmdId": "tc_1782677882367_61u",
@@ -4546,81 +4547,117 @@
       "exitCode": 0,
       "durationMs": 3,
       "completedAt": "2026-06-28T20:18:02.372Z"
+    },
+    "tc_1782677886871_x4a": {
+      "cmdId": "tc_1782677886871_x4a",
+      "cmd": "npm test",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "failed",
+      "startedAt": "2026-06-28T20:18:06.871Z",
+      "output": "",
+      "error": "npm error Missing script: \"test\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: /Users/ehtsm/.npm/_logs/2026-06-28T20_18_06_931Z-debug-0.log\n",
+      "exitCode": 1,
+      "durationMs": 99,
+      "completedAt": "2026-06-28T20:18:06.972Z"
+    },
+    "tc_1782677887272_8mv": {
+      "cmdId": "tc_1782677887272_8mv",
+      "cmd": "git log --oneline -10",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "success",
+      "startedAt": "2026-06-28T20:18:07.272Z",
+      "output": "082c88c Commit changes.\nf253eff feat(post-omega-p8): Autonomous Company Factory — 6 services, 47 routes, 56/56 tests\n07b9e6a Commit changes.\n4885018 Commit changes.\nb359168 feat(post-omega-p7): Autonomous Workforce OS — 6 services, 45 routes, 76/76 tests\n9987664 Commit changes.\n977c003 Commit changes.\naca1ed0 Commit changes.\n91a5dc5 Commit changes.\na2d5323 Commit changes.\n",
+      "error": null,
+      "exitCode": 0,
+      "durationMs": 18,
+      "completedAt": "2026-06-28T20:18:07.292Z"
+    },
+    "tc_1782677887296_ct8": {
+      "cmdId": "tc_1782677887296_ct8",
+      "cmd": "find . -name '*.md' -not -path '*/node_modules/*' | head -10",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "failed",
+      "startedAt": "2026-06-28T20:18:07.296Z",
+      "output": "",
+      "error": "spawnSync /bin/sh ETIMEDOUT",
+      "exitCode": 1,
+      "durationMs": 15001,
+      "completedAt": "2026-06-28T20:18:22.299Z"
+    },
+    "tc_1782677902309_wg3": {
+      "cmdId": "tc_1782677902309_wg3",
+      "cmd": "ls backend/services/*.cjs | wc -l",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "success",
+      "startedAt": "2026-06-28T20:18:22.309Z",
+      "output": "     249\n",
+      "error": null,
+      "exitCode": 0,
+      "durationMs": 82,
+      "completedAt": "2026-06-28T20:18:22.394Z"
+    },
+    "tc_1782677904096_b3n": {
+      "cmdId": "tc_1782677904096_b3n",
+      "cmd": "npm test",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "failed",
+      "startedAt": "2026-06-28T20:18:24.096Z",
+      "output": "",
+      "error": "npm error Missing script: \"test\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: /Users/ehtsm/.npm/_logs/2026-06-28T20_18_24_400Z-debug-0.log\n",
+      "exitCode": 1,
+      "durationMs": 416,
+      "completedAt": "2026-06-28T20:18:24.515Z"
+    },
+    "tc_1782677905587_o6x": {
+      "cmdId": "tc_1782677905587_o6x",
+      "cmd": "git log --oneline -10",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "success",
+      "startedAt": "2026-06-28T20:18:25.587Z",
+      "output": "082c88c Commit changes.\nf253eff feat(post-omega-p8): Autonomous Company Factory — 6 services, 47 routes, 56/56 tests\n07b9e6a Commit changes.\n4885018 Commit changes.\nb359168 feat(post-omega-p7): Autonomous Workforce OS — 6 services, 45 routes, 76/76 tests\n9987664 Commit changes.\n977c003 Commit changes.\naca1ed0 Commit changes.\n91a5dc5 Commit changes.\na2d5323 Commit changes.\n",
+      "error": null,
+      "exitCode": 0,
+      "durationMs": 27,
+      "completedAt": "2026-06-28T20:18:25.617Z"
+    },
+    "tc_1782677905622_msb": {
+      "cmdId": "tc_1782677905622_msb",
+      "cmd": "find . -name '*.md' -not -path '*/node_modules/*' | head -10",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "failed",
+      "startedAt": "2026-06-28T20:18:25.622Z",
+      "output": "",
+      "error": "spawnSync /bin/sh ETIMEDOUT",
+      "exitCode": 1,
+      "durationMs": 15002,
+      "completedAt": "2026-06-28T20:18:40.627Z"
+    },
+    "tc_1782677920636_3ac": {
+      "cmdId": "tc_1782677920636_3ac",
+      "cmd": "ls backend/services/*.cjs | wc -l",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "success",
+      "startedAt": "2026-06-28T20:18:40.636Z",
+      "output": "     249\n",
+      "error": null,
+      "exitCode": 0,
+      "durationMs": 51,
+      "completedAt": "2026-06-28T20:18:40.690Z"
+    },
+    "tc_1782677921371_vnq": {
+      "cmdId": "tc_1782677921371_vnq",
+      "cmd": "npm test",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "failed",
+      "startedAt": "2026-06-28T20:18:41.371Z",
+      "output": "",
+      "error": "npm error Missing script: \"test\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: /Users/ehtsm/.npm/_logs/2026-06-28T20_18_41_846Z-debug-0.log\n",
+      "exitCode": 1,
+      "durationMs": 635,
+      "completedAt": "2026-06-28T20:18:42.019Z"
     }
   },
   "history": [
-    {
-      "event": "execute",
-      "cmdId": "tc_1782649063065_wfu",
-      "cmd": "npm test",
-      "status": "failed",
-      "error": "npm error Missing script: \"test\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: /Users/ehtsm/.npm/_logs/2026-06-28T12_17_4",
-      "ts": "2026-06-28T12:17:43.167Z"
-    },
-    {
-      "event": "execute",
-      "cmdId": "tc_1782649064295_6tx",
-      "cmd": "git log --oneline -10",
-      "status": "success",
-      "durationMs": 25,
-      "ts": "2026-06-28T12:17:44.320Z"
-    },
-    {
-      "event": "execute",
-      "cmdId": "tc_1782649064326_vr1",
-      "cmd": "find . -name '*.md' -not -path '*/node_modules/*' | head -10",
-      "status": "success",
-      "durationMs": 3377,
-      "ts": "2026-06-28T12:17:47.704Z"
-    },
-    {
-      "event": "execute",
-      "cmdId": "tc_1782649067708_kbs",
-      "cmd": "ls backend/services/*.cjs | wc -l",
-      "status": "success",
-      "durationMs": 14,
-      "ts": "2026-06-28T12:17:47.723Z"
-    },
-    {
-      "event": "execute",
-      "cmdId": "tc_1782649068078_1r0",
-      "cmd": "npm test",
-      "status": "failed",
-      "error": "npm error Missing script: \"test\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: /Users/ehtsm/.npm/_logs/2026-06-28T12_17_4",
-      "ts": "2026-06-28T12:17:48.175Z"
-    },
-    {
-      "event": "execute",
-      "cmdId": "tc_1782649147907_avb",
-      "cmd": "node --version",
-      "status": "success",
-      "durationMs": 15,
-      "ts": "2026-06-28T12:19:07.923Z"
-    },
-    {
-      "event": "execute",
-      "cmdId": "tc_1782649147927_u1l",
-      "cmd": "git log --oneline -3",
-      "status": "success",
-      "durationMs": 17,
-      "ts": "2026-06-28T12:19:07.944Z"
-    },
-    {
-      "event": "execute",
-      "cmdId": "tc_1782649147947_99m",
-      "cmd": "npm --version",
-      "status": "success",
-      "durationMs": 65,
-      "ts": "2026-06-28T12:19:08.013Z"
-    },
-    {
-      "event": "execute",
-      "cmdId": "tc_1782649148017_ddo",
-      "cmd": "ls package.json backend/",
-      "status": "success",
-      "durationMs": 6,
-      "ts": "2026-06-28T12:19:08.023Z"
-    },
     {
       "event": "execute",
       "cmdId": "tc_1782649148027_qmh",
@@ -6948,13 +6985,85 @@
       "status": "success",
       "durationMs": 3,
       "ts": "2026-06-28T20:18:02.372Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782677886871_x4a",
+      "cmd": "npm test",
+      "status": "failed",
+      "error": "npm error Missing script: \"test\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: /Users/ehtsm/.npm/_logs/2026-06-28T20_18_0",
+      "ts": "2026-06-28T20:18:06.972Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782677887272_8mv",
+      "cmd": "git log --oneline -10",
+      "status": "success",
+      "durationMs": 18,
+      "ts": "2026-06-28T20:18:07.292Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782677887296_ct8",
+      "cmd": "find . -name '*.md' -not -path '*/node_modules/*' | head -10",
+      "status": "failed",
+      "error": "spawnSync /bin/sh ETIMEDOUT",
+      "ts": "2026-06-28T20:18:22.299Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782677902309_wg3",
+      "cmd": "ls backend/services/*.cjs | wc -l",
+      "status": "success",
+      "durationMs": 82,
+      "ts": "2026-06-28T20:18:22.395Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782677904096_b3n",
+      "cmd": "npm test",
+      "status": "failed",
+      "error": "npm error Missing script: \"test\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: /Users/ehtsm/.npm/_logs/2026-06-28T20_18_2",
+      "ts": "2026-06-28T20:18:24.515Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782677905587_o6x",
+      "cmd": "git log --oneline -10",
+      "status": "success",
+      "durationMs": 27,
+      "ts": "2026-06-28T20:18:25.617Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782677905622_msb",
+      "cmd": "find . -name '*.md' -not -path '*/node_modules/*' | head -10",
+      "status": "failed",
+      "error": "spawnSync /bin/sh ETIMEDOUT",
+      "ts": "2026-06-28T20:18:40.627Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782677920636_3ac",
+      "cmd": "ls backend/services/*.cjs | wc -l",
+      "status": "success",
+      "durationMs": 51,
+      "ts": "2026-06-28T20:18:40.690Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782677921371_vnq",
+      "cmd": "npm test",
+      "status": "failed",
+      "error": "npm error Missing script: \"test\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: /Users/ehtsm/.npm/_logs/2026-06-28T20_18_4",
+      "ts": "2026-06-28T20:18:42.019Z"
     }
   ],
   "stats": {
-    "executed": 377,
-    "succeeded": 207,
-    "failed": 142,
+    "executed": 386,
+    "succeeded": 212,
+    "failed": 147,
     "recovered": 0,
-    "verified": 71
+    "verified": 72
   }
 }

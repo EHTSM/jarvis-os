@@ -2003,7 +2003,220 @@
         }
       },
       "createdAt": "2026-06-28T20:16:39.740Z"
+    },
+    {
+      "id": "rpt_1782677887175_o0yz",
+      "title": "Platform Analytics Tick — 2026-06-28T20:18:07.175Z",
+      "type": "analytics",
+      "summary": "53 orgs, 28 blueprints, 6 deployments",
+      "data": {
+        "orgs": {
+          "total": 53,
+          "active": 53,
+          "byType": {
+            "agency": 23,
+            "startup": 10,
+            "enterprise": 4,
+            "department": 2,
+            "team": 2,
+            "solo": 4,
+            "marketplace": 2,
+            "research": 2,
+            "service": 2,
+            "custom": 2
+          }
+        },
+        "blueprints": {
+          "total": 28,
+          "published": 28
+        },
+        "templates": {
+          "total": 4,
+          "public": 4,
+          "totalInstalls": 2
+        },
+        "deployments": {
+          "total": 6,
+          "completed": 6
+        },
+        "marketplace": {
+          "total": 4,
+          "totalPurchases": 2
+        },
+        "certifications": {
+          "total": 12
+        },
+        "clones": {
+          "total": 10
+        },
+        "packages": {
+          "total": 12
+        },
+        "events": {
+          "total": 155,
+          "byType": {
+            "org:registered": 53,
+            "blueprint:created": 28,
+            "template:published": 4,
+            "template:installed": 2,
+            "org:deployed": 6,
+            "org:cloned": 8,
+            "org:forked": 2,
+            "org:exported": 12,
+            "org:imported": 6,
+            "marketplace:listed": 4,
+            "marketplace:purchased": 2,
+            "org:certified": 12,
+            "org:upgraded": 4,
+            "org:migrated": 2,
+            "org:simulated": 10
+          }
+        }
+      },
+      "createdAt": "2026-06-28T20:18:07.175Z"
+    },
+    {
+      "id": "rpt_1782677950248_lp3s",
+      "title": "Platform Analytics Tick — 2026-06-28T20:19:10.248Z",
+      "type": "analytics",
+      "summary": "53 orgs, 28 blueprints, 6 deployments",
+      "data": {
+        "orgs": {
+          "total": 53,
+          "active": 53,
+          "byType": {
+            "agency": 23,
+            "startup": 10,
+            "enterprise": 4,
+            "department": 2,
+            "team": 2,
+            "solo": 4,
+            "marketplace": 2,
+            "research": 2,
+            "service": 2,
+            "custom": 2
+          }
+        },
+        "blueprints": {
+          "total": 28,
+          "published": 28
+        },
+        "templates": {
+          "total": 4,
+          "public": 4,
+          "totalInstalls": 2
+        },
+        "deployments": {
+          "total": 6,
+          "completed": 6
+        },
+        "marketplace": {
+          "total": 4,
+          "totalPurchases": 2
+        },
+        "certifications": {
+          "total": 12
+        },
+        "clones": {
+          "total": 10
+        },
+        "packages": {
+          "total": 12
+        },
+        "events": {
+          "total": 155,
+          "byType": {
+            "org:registered": 53,
+            "blueprint:created": 28,
+            "template:published": 4,
+            "template:installed": 2,
+            "org:deployed": 6,
+            "org:cloned": 8,
+            "org:forked": 2,
+            "org:exported": 12,
+            "org:imported": 6,
+            "marketplace:listed": 4,
+            "marketplace:purchased": 2,
+            "org:certified": 12,
+            "org:upgraded": 4,
+            "org:migrated": 2,
+            "org:simulated": 10
+          }
+        }
+      },
+      "createdAt": "2026-06-28T20:19:10.248Z"
+    },
+    {
+      "id": "rpt_1782678010249_op4n",
+      "title": "Platform Analytics Tick — 2026-06-28T20:20:10.249Z",
+      "type": "analytics",
+      "summary": "53 orgs, 28 blueprints, 6 deployments",
+      "data": {
+        "orgs": {
+          "total": 53,
+          "active": 53,
+          "byType": {
+            "agency": 23,
+            "startup": 10,
+            "enterprise": 4,
+            "department": 2,
+            "team": 2,
+            "solo": 4,
+            "marketplace": 2,
+            "research": 2,
+            "service": 2,
+            "custom": 2
+          }
+        },
+        "blueprints": {
+          "total": 28,
+          "published": 28
+        },
+        "templates": {
+          "total": 4,
+          "public": 4,
+          "totalInstalls": 2
+        },
+        "deployments": {
+          "total": 6,
+          "completed": 6
+        },
+        "marketplace": {
+          "total": 4,
+          "totalPurchases": 2
+        },
+        "certifications": {
+          "total": 12
+        },
+        "clones": {
+          "total": 10
+        },
+        "packages": {
+          "total": 12
+        },
+        "events": {
+          "total": 155,
+          "byType": {
+            "org:registered": 53,
+            "blueprint:created": 28,
+            "template:published": 4,
+            "template:installed": 2,
+            "org:deployed": 6,
+            "org:cloned": 8,
+            "org:forked": 2,
+            "org:exported": 12,
+            "org:imported": 6,
+            "marketplace:listed": 4,
+            "marketplace:purchased": 2,
+            "org:certified": 12,
+            "org:upgraded": 4,
+            "org:migrated": 2,
+            "org:simulated": 10
+          }
+        }
+      },
+      "createdAt": "2026-06-28T20:20:10.249Z"
     }
   ],
-  "total": 30
+  "total": 33
 }
