@@ -1,0 +1,51 @@
+{
+  "patterns": {
+    "high_risk_approval_rate": {
+      "rate": 0.3,
+      "sampleSize": 10,
+      "confidence": 1,
+      "updatedAt": "2026-06-28T17:47:11.803Z"
+    },
+    "deployment_approval_rate": {
+      "rate": 1,
+      "sampleSize": 14,
+      "confidence": 1,
+      "updatedAt": "2026-06-28T17:47:11.803Z"
+    },
+    "ui_approval_rate": {
+      "rate": 1,
+      "sampleSize": 3,
+      "confidence": 0.3,
+      "updatedAt": "2026-06-28T17:47:11.803Z"
+    },
+    "security_approval_rate": {
+      "rate": 0,
+      "sampleSize": 7,
+      "confidence": 0.7,
+      "updatedAt": "2026-06-28T17:47:11.803Z"
+    },
+    "avg_decision_speed_ms": {
+      "avgMs": 8437,
+      "sampleSize": 19,
+      "confidence": 0.95,
+      "updatedAt": "2026-06-28T17:47:11.803Z"
+    },
+    "weekend_decision_rate": {
+      "rate": 1,
+      "confidence": 0.8333333333333334,
+      "updatedAt": "2026-06-28T17:47:11.803Z"
+    },
+    "after_hours_decision_rate": {
+      "rate": 0.44,
+      "confidence": 0.8333333333333334,
+      "updatedAt": "2026-06-28T17:47:11.803Z"
+    },
+    "correction_frequency": {
+      "rate": 0.16,
+      "sampleSize": 25,
+      "confidence": 1,
+      "updatedAt": "2026-06-28T17:47:11.803Z"
+    }
+  },
+  "updatedAt": "2026-06-28T17:47:11.803Z"
+}

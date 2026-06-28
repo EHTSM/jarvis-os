@@ -1,0 +1,3805 @@
+{
+  "id": "founder_primary",
+  "createdAt": "2026-06-28T12:47:41.531Z",
+  "updatedAt": "2026-06-28T17:47:11.804Z",
+  "preferences": {
+    "ui_density": {
+      "score": 0.5,
+      "confidence": 0,
+      "observations": 0
+    },
+    "documentation_depth": {
+      "score": 0.5,
+      "confidence": 0,
+      "observations": 0
+    },
+    "risk_tolerance": {
+      "score": 0.52,
+      "confidence": 0.65,
+      "observations": 13
+    },
+    "automation_preference": {
+      "score": 1,
+      "confidence": 1,
+      "observations": 21
+    },
+    "security_preference": {
+      "score": 0.5,
+      "confidence": 0,
+      "observations": 0
+    },
+    "performance_preference": {
+      "score": 0.5,
+      "confidence": 0,
+      "observations": 0
+    },
+    "cost_preference": {
+      "score": 0.5,
+      "confidence": 0,
+      "observations": 0
+    },
+    "code_review_depth": {
+      "score": 1,
+      "confidence": 0.35,
+      "observations": 7
+    },
+    "release_cadence": {
+      "score": 0.5,
+      "confidence": 0,
+      "observations": 0
+    }
+  },
+  "actionCounts": {
+    "approval": {
+      "count": 31,
+      "lastSeen": "2026-06-28T17:47:11.792Z"
+    },
+    "rejection": {
+      "count": 3,
+      "lastSeen": "2026-06-28T17:47:00.053Z"
+    },
+    "code_edit": {
+      "count": 0,
+      "lastSeen": null
+    },
+    "architecture_decision": {
+      "count": 0,
+      "lastSeen": null
+    },
+    "ui_approval": {
+      "count": 3,
+      "lastSeen": "2026-06-28T17:47:00.076Z"
+    },
+    "deployment": {
+      "count": 14,
+      "lastSeen": "2026-06-28T17:47:11.773Z"
+    },
+    "documentation": {
+      "count": 0,
+      "lastSeen": null
+    },
+    "release": {
+      "count": 0,
+      "lastSeen": null
+    },
+    "business_decision": {
+      "count": 218,
+      "lastSeen": "2026-06-28T17:47:11.804Z"
+    },
+    "configuration": {
+      "count": 3,
+      "lastSeen": "2026-06-28T17:47:00.113Z"
+    },
+    "security_action": {
+      "count": 7,
+      "lastSeen": "2026-06-28T17:47:11.796Z"
+    },
+    "cost_decision": {
+      "count": 0,
+      "lastSeen": null
+    }
+  },
+  "observations": [
+    {
+      "id": "fp_1782650861531_w95",
+      "action": "approved deploy to production",
+      "category": "approval",
+      "context": {},
+      "signals": [
+        "approved_high_risk"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:41.531Z"
+    },
+    {
+      "id": "fp_1782650861544_1k8",
+      "action": "approved risky deploy",
+      "category": "approval",
+      "context": {},
+      "signals": [
+        "approved_high_risk"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:41.544Z"
+    },
+    {
+      "id": "fp_1782650861549_yat",
+      "action": "rejected auto-deploy",
+      "category": "rejection",
+      "context": {},
+      "signals": [
+        "rejected_auto"
+      ],
+      "outcome": "rejected",
+      "ts": "2026-06-28T12:47:41.549Z"
+    },
+    {
+      "id": "fp_1782650861556_6vm",
+      "action": "approved: wf_ops_deploy_backend",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_ops_deploy_backend",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.9,
+        "responseMs": 12000,
+        "risk": "high"
+      },
+      "signals": [
+        "approved_high_risk"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:41.556Z"
+    },
+    {
+      "id": "fp_1782650861561_e70",
+      "action": "approve: Deploy backend to production v1.2",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "high",
+        "confidence": 0.9
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:41.561Z"
+    },
+    {
+      "id": "fp_1782650861570_zi2",
+      "action": "approve: UI layout approval for dashboard",
+      "category": "ui_approval",
+      "context": {
+        "domain": "ui",
+        "risk": "medium"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:41.570Z"
+    },
+    {
+      "id": "fp_1782650861579_fu3",
+      "action": "reject: Skip security audit before release",
+      "category": "security_action",
+      "context": {
+        "domain": "security",
+        "risk": "high"
+      },
+      "signals": [],
+      "outcome": "rejected",
+      "ts": "2026-06-28T12:47:41.579Z"
+    },
+    {
+      "id": "fp_1782650861599_7y5",
+      "action": "Workflow executed: wf_deploy_backend",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "standard",
+        "outcome": "success"
+      },
+      "signals": [],
+      "outcome": "success",
+      "ts": "2026-06-28T12:47:41.599Z"
+    },
+    {
+      "id": "fp_1782650861604_smt",
+      "action": "Workflow executed: wf_code_review_pr",
+      "category": "business_decision",
+      "context": {
+        "category": "code_review",
+        "reviewDepth": "thorough",
+        "outcome": "success"
+      },
+      "signals": [
+        "deep_code_review"
+      ],
+      "outcome": "success",
+      "ts": "2026-06-28T12:47:41.604Z"
+    },
+    {
+      "id": "fp_1782650861608_z8i",
+      "action": "Workflow preference override: documentation.reviewDepth",
+      "category": "configuration",
+      "context": {
+        "category": "documentation",
+        "field": "reviewDepth",
+        "value": "thorough"
+      },
+      "signals": [],
+      "outcome": "success",
+      "ts": "2026-06-28T12:47:41.608Z"
+    },
+    {
+      "id": "fp_1782650861617_laz",
+      "action": "Workflow executed: pbw_deploy_vps_provisioned",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "success"
+      },
+      "signals": [],
+      "outcome": "success",
+      "ts": "2026-06-28T12:47:41.617Z"
+    },
+    {
+      "id": "fp_1782650861621_4de",
+      "action": "Workflow executed: pbw_deploy_node_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.621Z"
+    },
+    {
+      "id": "fp_1782650861626_rpn",
+      "action": "Workflow executed: pbw_deploy_repo_cloned",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.626Z"
+    },
+    {
+      "id": "fp_1782650861631_9n1",
+      "action": "Workflow executed: pbw_deploy_deps_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.631Z"
+    },
+    {
+      "id": "fp_1782650861636_tto",
+      "action": "Workflow executed: pbw_deploy_env_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.636Z"
+    },
+    {
+      "id": "fp_1782650861640_2ea",
+      "action": "Workflow executed: pbw_deploy_pm2_started",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.640Z"
+    },
+    {
+      "id": "fp_1782650861644_nn9",
+      "action": "Workflow executed: pbw_deploy_pm2_startup",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.644Z"
+    },
+    {
+      "id": "fp_1782650861649_tt9",
+      "action": "Workflow executed: pbw_deploy_backend_health",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.649Z"
+    },
+    {
+      "id": "fp_1782650861655_s8t",
+      "action": "Workflow executed: pbw_deploy_frontend_built",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.655Z"
+    },
+    {
+      "id": "fp_1782650861660_5d2",
+      "action": "Workflow executed: pbw_deploy_frontend_served",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.660Z"
+    },
+    {
+      "id": "fp_1782650861664_q78",
+      "action": "Workflow executed: pbw_deploy_nginx_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.664Z"
+    },
+    {
+      "id": "fp_1782650861669_dlj",
+      "action": "Workflow executed: pbw_deploy_nginx_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.669Z"
+    },
+    {
+      "id": "fp_1782650861675_uaq",
+      "action": "Workflow executed: pbw_deploy_nginx_proxying",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.675Z"
+    },
+    {
+      "id": "fp_1782650861679_61f",
+      "action": "Workflow executed: pbw_deploy_ssl_cert",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.679Z"
+    },
+    {
+      "id": "fp_1782650861684_t45",
+      "action": "Workflow executed: pbw_deploy_ssl_auto_renew",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.684Z"
+    },
+    {
+      "id": "fp_1782650861688_2uf",
+      "action": "Workflow executed: pbw_deploy_https_redirect",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.688Z"
+    },
+    {
+      "id": "fp_1782650861693_mfo",
+      "action": "Workflow executed: pbw_deploy_domain_a_record",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.693Z"
+    },
+    {
+      "id": "fp_1782650861697_hf5",
+      "action": "Workflow executed: pbw_deploy_domain_www",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.697Z"
+    },
+    {
+      "id": "fp_1782650861702_vil",
+      "action": "Workflow executed: pbw_deploy_domain_api",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.702Z"
+    },
+    {
+      "id": "fp_1782650861708_k7a",
+      "action": "Workflow executed: pbw_deploy_domain_verified",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.708Z"
+    },
+    {
+      "id": "fp_1782650861713_jyx",
+      "action": "Workflow executed: pbw_deploy_ufw_enabled",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.713Z"
+    },
+    {
+      "id": "fp_1782650861718_tsq",
+      "action": "Workflow executed: pbw_deploy_fail2ban_active",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.718Z"
+    },
+    {
+      "id": "fp_1782650861722_div",
+      "action": "Workflow executed: pbw_deploy_ssh_keys_only",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.722Z"
+    },
+    {
+      "id": "fp_1782650861726_1j4",
+      "action": "Workflow executed: pbw_deploy_backup_cron",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.726Z"
+    },
+    {
+      "id": "fp_1782650861731_w1v",
+      "action": "Workflow executed: pbw_sec_no_secrets_in_git",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.731Z"
+    },
+    {
+      "id": "fp_1782650861736_9s7",
+      "action": "Workflow executed: pbw_sec_env_gitignored",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.736Z"
+    },
+    {
+      "id": "fp_1782650861740_onz",
+      "action": "Workflow executed: pbw_sec_rate_limiting",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.740Z"
+    },
+    {
+      "id": "fp_1782650861745_guz",
+      "action": "Workflow executed: pbw_sec_security_headers",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.745Z"
+    },
+    {
+      "id": "fp_1782650861749_gsf",
+      "action": "Workflow executed: pbw_sec_jwt_secret_strength",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.749Z"
+    },
+    {
+      "id": "fp_1782650861754_t81",
+      "action": "Workflow executed: pbw_sec_cors_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.754Z"
+    },
+    {
+      "id": "fp_1782650861759_hbp",
+      "action": "Workflow executed: pbw_sec_auth_middleware",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.759Z"
+    },
+    {
+      "id": "fp_1782650861764_55t",
+      "action": "Workflow executed: pbw_sec_session_expiry",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.764Z"
+    },
+    {
+      "id": "fp_1782650861771_mfi",
+      "action": "Workflow executed: pbw_sec_hsts_header",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.771Z"
+    },
+    {
+      "id": "fp_1782650861775_thw",
+      "action": "Workflow executed: pbw_sec_injection_protection",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.775Z"
+    },
+    {
+      "id": "fp_1782650861780_yw2",
+      "action": "Workflow executed: pbw_sec_dependency_lockfile",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.780Z"
+    },
+    {
+      "id": "fp_1782650861784_e9l",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_vps_provision",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.784Z"
+    },
+    {
+      "id": "fp_1782650861788_vxv",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_env_config",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.788Z"
+    },
+    {
+      "id": "fp_1782650861793_y9y",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_nginx",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.793Z"
+    },
+    {
+      "id": "fp_1782650861798_6rb",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_pm2",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.798Z"
+    },
+    {
+      "id": "fp_1782650861802_6iu",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_backup_cron",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.802Z"
+    },
+    {
+      "id": "fp_1782650861807_rq0",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_security_harden",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.807Z"
+    },
+    {
+      "id": "fp_1782650861811_gzu",
+      "action": "Workflow executed: pbw_fwr_wf_biz_plan_upgrade",
+      "category": "business_decision",
+      "context": {
+        "category": "business",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.811Z"
+    },
+    {
+      "id": "fp_1782650861815_j7u",
+      "action": "Workflow executed: pbw_fwr_wf_biz_invoice_send",
+      "category": "business_decision",
+      "context": {
+        "category": "business",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.815Z"
+    },
+    {
+      "id": "fp_1782650861819_vz7",
+      "action": "Workflow executed: pbw_fwr_wf_biz_churn_detect",
+      "category": "business_decision",
+      "context": {
+        "category": "business",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.819Z"
+    },
+    {
+      "id": "fp_1782650861824_kba",
+      "action": "Workflow executed: pbw_fwr_wf_biz_revenue_report",
+      "category": "business_decision",
+      "context": {
+        "category": "business",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.824Z"
+    },
+    {
+      "id": "fp_1782650861828_f40",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_vps_provisioned",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.828Z"
+    },
+    {
+      "id": "fp_1782650861833_tpe",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_node_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.833Z"
+    },
+    {
+      "id": "fp_1782650861837_yuq",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_repo_cloned",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.837Z"
+    },
+    {
+      "id": "fp_1782650861841_0yd",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_deps_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.841Z"
+    },
+    {
+      "id": "fp_1782650861846_8xq",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_env_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.846Z"
+    },
+    {
+      "id": "fp_1782650861850_7ld",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_pm2_started",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.850Z"
+    },
+    {
+      "id": "fp_1782650861854_glz",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_pm2_startup",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.854Z"
+    },
+    {
+      "id": "fp_1782650861858_us2",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_backend_health",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.858Z"
+    },
+    {
+      "id": "fp_1782650861862_ii5",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_frontend_built",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.862Z"
+    },
+    {
+      "id": "fp_1782650861866_mke",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_frontend_served",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.866Z"
+    },
+    {
+      "id": "fp_1782650861871_pgt",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_nginx_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.871Z"
+    },
+    {
+      "id": "fp_1782650861876_xf3",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_nginx_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.876Z"
+    },
+    {
+      "id": "fp_1782650861881_6zj",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_nginx_proxying",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.881Z"
+    },
+    {
+      "id": "fp_1782650861885_pin",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_ssl_cert",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.885Z"
+    },
+    {
+      "id": "fp_1782650861890_40w",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_ssl_auto_renew",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.890Z"
+    },
+    {
+      "id": "fp_1782650861894_okg",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_https_redirect",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.894Z"
+    },
+    {
+      "id": "fp_1782650861898_52j",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_domain_a_record",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.898Z"
+    },
+    {
+      "id": "fp_1782650861903_jya",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_domain_www",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.903Z"
+    },
+    {
+      "id": "fp_1782650861907_idk",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_domain_api",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.907Z"
+    },
+    {
+      "id": "fp_1782650861911_ptq",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_domain_verified",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.911Z"
+    },
+    {
+      "id": "fp_1782650861916_0l3",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_ufw_enabled",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.916Z"
+    },
+    {
+      "id": "fp_1782650861920_c84",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_fail2ban_active",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.920Z"
+    },
+    {
+      "id": "fp_1782650861924_6ti",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_ssh_keys_only",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:47:41.924Z"
+    },
+    {
+      "id": "fp_1782650869551_b27",
+      "action": "approved: wf_deploy_test_0",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_0",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.85,
+        "responseMs": 10000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:49.551Z"
+    },
+    {
+      "id": "fp_1782650869556_c0z",
+      "action": "approved: wf_deploy_test_1",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_1",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.86,
+        "responseMs": 11000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:49.556Z"
+    },
+    {
+      "id": "fp_1782650869561_1v0",
+      "action": "approved: wf_deploy_test_2",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_2",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.87,
+        "responseMs": 12000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:49.561Z"
+    },
+    {
+      "id": "fp_1782650869566_k7v",
+      "action": "approved: wf_deploy_test_3",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_3",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.88,
+        "responseMs": 13000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:49.566Z"
+    },
+    {
+      "id": "fp_1782650869571_kjh",
+      "action": "approved: wf_deploy_test_4",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_4",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.89,
+        "responseMs": 14000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:49.571Z"
+    },
+    {
+      "id": "fp_1782650869577_6za",
+      "action": "approve: Release v1.0 to production",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:49.577Z"
+    },
+    {
+      "id": "fp_1782650869588_yaw",
+      "action": "approve: Release v1.1 to production",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:49.588Z"
+    },
+    {
+      "id": "fp_1782650869596_5zs",
+      "action": "approve: Release v1.2 to production",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:47:49.596Z"
+    },
+    {
+      "id": "fp_1782650870686_3t7",
+      "action": "rejected: undefined",
+      "category": "approval",
+      "context": {
+        "approvalType": "GENERIC",
+        "confidence": 0.58,
+        "responseMs": 402,
+        "risk": "high"
+      },
+      "signals": [
+        "rejected_high_risk"
+      ],
+      "outcome": "rejected",
+      "ts": "2026-06-28T12:47:50.686Z"
+    },
+    {
+      "id": "fp_1782650870692_crl",
+      "action": "reject: Skip QA for urgent hotfix.",
+      "category": "security_action",
+      "context": {
+        "domain": "security",
+        "risk": "high",
+        "confidence": 0.42
+      },
+      "signals": [],
+      "outcome": "rejected",
+      "ts": "2026-06-28T12:47:50.692Z"
+    },
+    {
+      "id": "fp_1782650870704_nwf",
+      "action": "Workflow executed: security",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "outcome": "rejected"
+      },
+      "signals": [
+        "deep_code_review"
+      ],
+      "outcome": "rejected",
+      "ts": "2026-06-28T12:47:50.704Z"
+    },
+    {
+      "id": "fp_1782650901394_1tl",
+      "action": "approved deploy to production",
+      "category": "approval",
+      "context": {},
+      "signals": [
+        "approved_high_risk"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:21.395Z"
+    },
+    {
+      "id": "fp_1782650901407_bkb",
+      "action": "approved risky deploy",
+      "category": "approval",
+      "context": {},
+      "signals": [
+        "approved_high_risk"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:21.407Z"
+    },
+    {
+      "id": "fp_1782650901412_x03",
+      "action": "rejected auto-deploy",
+      "category": "rejection",
+      "context": {},
+      "signals": [
+        "rejected_auto"
+      ],
+      "outcome": "rejected",
+      "ts": "2026-06-28T12:48:21.412Z"
+    },
+    {
+      "id": "fp_1782650901417_gnb",
+      "action": "approved: wf_ops_deploy_backend",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_ops_deploy_backend",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.9,
+        "responseMs": 12000,
+        "risk": "high"
+      },
+      "signals": [
+        "approved_high_risk"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:21.417Z"
+    },
+    {
+      "id": "fp_1782650901422_mrk",
+      "action": "approve: Deploy backend to production v1.2",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "high",
+        "confidence": 0.9
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:21.422Z"
+    },
+    {
+      "id": "fp_1782650901435_mgl",
+      "action": "approve: UI layout approval for dashboard",
+      "category": "ui_approval",
+      "context": {
+        "domain": "ui",
+        "risk": "medium"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:21.435Z"
+    },
+    {
+      "id": "fp_1782650901443_xkw",
+      "action": "reject: Skip security audit before release",
+      "category": "security_action",
+      "context": {
+        "domain": "security",
+        "risk": "high"
+      },
+      "signals": [],
+      "outcome": "rejected",
+      "ts": "2026-06-28T12:48:21.443Z"
+    },
+    {
+      "id": "fp_1782650901460_n3e",
+      "action": "Workflow executed: wf_deploy_backend",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "standard",
+        "outcome": "success"
+      },
+      "signals": [],
+      "outcome": "success",
+      "ts": "2026-06-28T12:48:21.460Z"
+    },
+    {
+      "id": "fp_1782650901464_ubf",
+      "action": "Workflow executed: wf_code_review_pr",
+      "category": "business_decision",
+      "context": {
+        "category": "code_review",
+        "reviewDepth": "thorough",
+        "outcome": "success"
+      },
+      "signals": [
+        "deep_code_review"
+      ],
+      "outcome": "success",
+      "ts": "2026-06-28T12:48:21.464Z"
+    },
+    {
+      "id": "fp_1782650901468_4nr",
+      "action": "Workflow preference override: documentation.reviewDepth",
+      "category": "configuration",
+      "context": {
+        "category": "documentation",
+        "field": "reviewDepth",
+        "value": "thorough"
+      },
+      "signals": [],
+      "outcome": "success",
+      "ts": "2026-06-28T12:48:21.468Z"
+    },
+    {
+      "id": "fp_1782650901475_yzy",
+      "action": "Workflow executed: pbw_deploy_vps_provisioned",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "success"
+      },
+      "signals": [],
+      "outcome": "success",
+      "ts": "2026-06-28T12:48:21.475Z"
+    },
+    {
+      "id": "fp_1782650901481_p2f",
+      "action": "Workflow executed: pbw_deploy_node_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.481Z"
+    },
+    {
+      "id": "fp_1782650901485_56c",
+      "action": "Workflow executed: pbw_deploy_repo_cloned",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.485Z"
+    },
+    {
+      "id": "fp_1782650901490_4fu",
+      "action": "Workflow executed: pbw_deploy_deps_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.490Z"
+    },
+    {
+      "id": "fp_1782650901494_h2f",
+      "action": "Workflow executed: pbw_deploy_env_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.494Z"
+    },
+    {
+      "id": "fp_1782650901498_vgq",
+      "action": "Workflow executed: pbw_deploy_pm2_started",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.498Z"
+    },
+    {
+      "id": "fp_1782650901502_qt7",
+      "action": "Workflow executed: pbw_deploy_pm2_startup",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.502Z"
+    },
+    {
+      "id": "fp_1782650901506_h6x",
+      "action": "Workflow executed: pbw_deploy_backend_health",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.506Z"
+    },
+    {
+      "id": "fp_1782650901511_oku",
+      "action": "Workflow executed: pbw_deploy_frontend_built",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.511Z"
+    },
+    {
+      "id": "fp_1782650901516_lor",
+      "action": "Workflow executed: pbw_deploy_frontend_served",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.516Z"
+    },
+    {
+      "id": "fp_1782650901520_hri",
+      "action": "Workflow executed: pbw_deploy_nginx_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.520Z"
+    },
+    {
+      "id": "fp_1782650901524_srs",
+      "action": "Workflow executed: pbw_deploy_nginx_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.524Z"
+    },
+    {
+      "id": "fp_1782650901528_ei9",
+      "action": "Workflow executed: pbw_deploy_nginx_proxying",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.528Z"
+    },
+    {
+      "id": "fp_1782650901532_5xo",
+      "action": "Workflow executed: pbw_deploy_ssl_cert",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.532Z"
+    },
+    {
+      "id": "fp_1782650901536_a65",
+      "action": "Workflow executed: pbw_deploy_ssl_auto_renew",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.536Z"
+    },
+    {
+      "id": "fp_1782650901540_yjm",
+      "action": "Workflow executed: pbw_deploy_https_redirect",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.540Z"
+    },
+    {
+      "id": "fp_1782650901547_0pi",
+      "action": "Workflow executed: pbw_deploy_domain_a_record",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.547Z"
+    },
+    {
+      "id": "fp_1782650901551_t0p",
+      "action": "Workflow executed: pbw_deploy_domain_www",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.551Z"
+    },
+    {
+      "id": "fp_1782650901556_d6b",
+      "action": "Workflow executed: pbw_deploy_domain_api",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.556Z"
+    },
+    {
+      "id": "fp_1782650901560_jl8",
+      "action": "Workflow executed: pbw_deploy_domain_verified",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.560Z"
+    },
+    {
+      "id": "fp_1782650901564_d67",
+      "action": "Workflow executed: pbw_deploy_ufw_enabled",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.564Z"
+    },
+    {
+      "id": "fp_1782650901570_2fk",
+      "action": "Workflow executed: pbw_deploy_fail2ban_active",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.570Z"
+    },
+    {
+      "id": "fp_1782650901574_8sr",
+      "action": "Workflow executed: pbw_deploy_ssh_keys_only",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.574Z"
+    },
+    {
+      "id": "fp_1782650901578_0g4",
+      "action": "Workflow executed: pbw_deploy_backup_cron",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.578Z"
+    },
+    {
+      "id": "fp_1782650901582_562",
+      "action": "Workflow executed: pbw_sec_no_secrets_in_git",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.582Z"
+    },
+    {
+      "id": "fp_1782650901586_ywx",
+      "action": "Workflow executed: pbw_sec_env_gitignored",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.586Z"
+    },
+    {
+      "id": "fp_1782650901590_x0m",
+      "action": "Workflow executed: pbw_sec_rate_limiting",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.590Z"
+    },
+    {
+      "id": "fp_1782650901595_e1w",
+      "action": "Workflow executed: pbw_sec_security_headers",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.595Z"
+    },
+    {
+      "id": "fp_1782650901599_q8o",
+      "action": "Workflow executed: pbw_sec_jwt_secret_strength",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.599Z"
+    },
+    {
+      "id": "fp_1782650901603_mqo",
+      "action": "Workflow executed: pbw_sec_cors_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.603Z"
+    },
+    {
+      "id": "fp_1782650901608_810",
+      "action": "Workflow executed: pbw_sec_auth_middleware",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.608Z"
+    },
+    {
+      "id": "fp_1782650901613_pd5",
+      "action": "Workflow executed: pbw_sec_session_expiry",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.613Z"
+    },
+    {
+      "id": "fp_1782650901617_2u6",
+      "action": "Workflow executed: pbw_sec_hsts_header",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.617Z"
+    },
+    {
+      "id": "fp_1782650901621_7b3",
+      "action": "Workflow executed: pbw_sec_injection_protection",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.621Z"
+    },
+    {
+      "id": "fp_1782650901627_ae9",
+      "action": "Workflow executed: pbw_sec_dependency_lockfile",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.627Z"
+    },
+    {
+      "id": "fp_1782650901631_ets",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_vps_provision",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.631Z"
+    },
+    {
+      "id": "fp_1782650901636_36b",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_env_config",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.636Z"
+    },
+    {
+      "id": "fp_1782650901643_b5c",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_nginx",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.643Z"
+    },
+    {
+      "id": "fp_1782650901647_5in",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_pm2",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.647Z"
+    },
+    {
+      "id": "fp_1782650901651_v55",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_backup_cron",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.651Z"
+    },
+    {
+      "id": "fp_1782650901657_i8f",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_security_harden",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.657Z"
+    },
+    {
+      "id": "fp_1782650901661_f18",
+      "action": "Workflow executed: pbw_fwr_wf_biz_plan_upgrade",
+      "category": "business_decision",
+      "context": {
+        "category": "business",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.661Z"
+    },
+    {
+      "id": "fp_1782650901665_d7i",
+      "action": "Workflow executed: pbw_fwr_wf_biz_invoice_send",
+      "category": "business_decision",
+      "context": {
+        "category": "business",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.665Z"
+    },
+    {
+      "id": "fp_1782650901669_43d",
+      "action": "Workflow executed: pbw_fwr_wf_biz_churn_detect",
+      "category": "business_decision",
+      "context": {
+        "category": "business",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.669Z"
+    },
+    {
+      "id": "fp_1782650901673_zys",
+      "action": "Workflow executed: pbw_fwr_wf_biz_revenue_report",
+      "category": "business_decision",
+      "context": {
+        "category": "business",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.673Z"
+    },
+    {
+      "id": "fp_1782650901678_2w4",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_vps_provisioned",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.678Z"
+    },
+    {
+      "id": "fp_1782650901682_bdr",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_node_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.682Z"
+    },
+    {
+      "id": "fp_1782650901686_gfd",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_repo_cloned",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.686Z"
+    },
+    {
+      "id": "fp_1782650901690_ntk",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_deps_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.690Z"
+    },
+    {
+      "id": "fp_1782650901694_dqw",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_env_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.694Z"
+    },
+    {
+      "id": "fp_1782650901698_xw1",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_pm2_started",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.698Z"
+    },
+    {
+      "id": "fp_1782650901702_6q6",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_pm2_startup",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.702Z"
+    },
+    {
+      "id": "fp_1782650901706_net",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_backend_health",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.706Z"
+    },
+    {
+      "id": "fp_1782650901710_q4a",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_frontend_built",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.710Z"
+    },
+    {
+      "id": "fp_1782650901715_mf9",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_frontend_served",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.715Z"
+    },
+    {
+      "id": "fp_1782650901719_6u6",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_nginx_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.719Z"
+    },
+    {
+      "id": "fp_1782650901725_xmt",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_nginx_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.725Z"
+    },
+    {
+      "id": "fp_1782650901729_j3t",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_nginx_proxying",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.729Z"
+    },
+    {
+      "id": "fp_1782650901734_n76",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_ssl_cert",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.734Z"
+    },
+    {
+      "id": "fp_1782650901738_9y5",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_ssl_auto_renew",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.738Z"
+    },
+    {
+      "id": "fp_1782650901743_usi",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_https_redirect",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.743Z"
+    },
+    {
+      "id": "fp_1782650901749_7fq",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_domain_a_record",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.749Z"
+    },
+    {
+      "id": "fp_1782650901753_6fm",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_domain_www",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.753Z"
+    },
+    {
+      "id": "fp_1782650901757_o2x",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_domain_api",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.757Z"
+    },
+    {
+      "id": "fp_1782650901762_0sm",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_domain_verified",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.762Z"
+    },
+    {
+      "id": "fp_1782650901766_f85",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_ufw_enabled",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.766Z"
+    },
+    {
+      "id": "fp_1782650901770_mkx",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_fail2ban_active",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.770Z"
+    },
+    {
+      "id": "fp_1782650901774_st2",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_ssh_keys_only",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T12:48:21.774Z"
+    },
+    {
+      "id": "fp_1782650909356_0ft",
+      "action": "approved: wf_deploy_test_0",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_0",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.85,
+        "responseMs": 10000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:29.356Z"
+    },
+    {
+      "id": "fp_1782650909362_j1a",
+      "action": "approved: wf_deploy_test_1",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_1",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.86,
+        "responseMs": 11000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:29.362Z"
+    },
+    {
+      "id": "fp_1782650909367_hho",
+      "action": "approved: wf_deploy_test_2",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_2",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.87,
+        "responseMs": 12000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:29.367Z"
+    },
+    {
+      "id": "fp_1782650909374_ixg",
+      "action": "approved: wf_deploy_test_3",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_3",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.88,
+        "responseMs": 13000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:29.374Z"
+    },
+    {
+      "id": "fp_1782650909379_jl3",
+      "action": "approved: wf_deploy_test_4",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_4",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.89,
+        "responseMs": 14000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:29.379Z"
+    },
+    {
+      "id": "fp_1782650909385_e5e",
+      "action": "approve: Release v1.0 to production",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:29.385Z"
+    },
+    {
+      "id": "fp_1782650909396_syo",
+      "action": "approve: Release v1.1 to production",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:29.396Z"
+    },
+    {
+      "id": "fp_1782650909406_9am",
+      "action": "approve: Release v1.2 to production",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T12:48:29.406Z"
+    },
+    {
+      "id": "fp_1782650910469_rxm",
+      "action": "rejected: undefined",
+      "category": "approval",
+      "context": {
+        "approvalType": "GENERIC",
+        "confidence": 0.58,
+        "responseMs": 397,
+        "risk": "high"
+      },
+      "signals": [
+        "rejected_high_risk"
+      ],
+      "outcome": "rejected",
+      "ts": "2026-06-28T12:48:30.469Z"
+    },
+    {
+      "id": "fp_1782650910475_0t5",
+      "action": "reject: Skip QA for urgent hotfix.",
+      "category": "security_action",
+      "context": {
+        "domain": "security",
+        "risk": "high",
+        "confidence": 0.52
+      },
+      "signals": [],
+      "outcome": "rejected",
+      "ts": "2026-06-28T12:48:30.475Z"
+    },
+    {
+      "id": "fp_1782650910486_o65",
+      "action": "Workflow executed: security",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "outcome": "rejected"
+      },
+      "signals": [
+        "deep_code_review"
+      ],
+      "outcome": "rejected",
+      "ts": "2026-06-28T12:48:30.486Z"
+    },
+    {
+      "id": "fp_1782668820033_fxx",
+      "action": "approved deploy to production",
+      "category": "approval",
+      "context": {},
+      "signals": [
+        "approved_high_risk"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:00.036Z"
+    },
+    {
+      "id": "fp_1782668820048_1lu",
+      "action": "approved risky deploy",
+      "category": "approval",
+      "context": {},
+      "signals": [
+        "approved_high_risk"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:00.048Z"
+    },
+    {
+      "id": "fp_1782668820053_h6r",
+      "action": "rejected auto-deploy",
+      "category": "rejection",
+      "context": {},
+      "signals": [
+        "rejected_auto"
+      ],
+      "outcome": "rejected",
+      "ts": "2026-06-28T17:47:00.053Z"
+    },
+    {
+      "id": "fp_1782668820057_dft",
+      "action": "approved: wf_ops_deploy_backend",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_ops_deploy_backend",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.9,
+        "responseMs": 12000,
+        "risk": "high"
+      },
+      "signals": [
+        "approved_high_risk"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:00.057Z"
+    },
+    {
+      "id": "fp_1782668820064_3x9",
+      "action": "approve: Deploy backend to production v1.2",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "high",
+        "confidence": 0.9
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:00.064Z"
+    },
+    {
+      "id": "fp_1782668820076_ysa",
+      "action": "approve: UI layout approval for dashboard",
+      "category": "ui_approval",
+      "context": {
+        "domain": "ui",
+        "risk": "medium"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:00.076Z"
+    },
+    {
+      "id": "fp_1782668820086_ju3",
+      "action": "reject: Skip security audit before release",
+      "category": "security_action",
+      "context": {
+        "domain": "security",
+        "risk": "high"
+      },
+      "signals": [],
+      "outcome": "rejected",
+      "ts": "2026-06-28T17:47:00.086Z"
+    },
+    {
+      "id": "fp_1782668820103_asu",
+      "action": "Workflow executed: wf_deploy_backend",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "standard",
+        "outcome": "success"
+      },
+      "signals": [],
+      "outcome": "success",
+      "ts": "2026-06-28T17:47:00.103Z"
+    },
+    {
+      "id": "fp_1782668820107_rgx",
+      "action": "Workflow executed: wf_code_review_pr",
+      "category": "business_decision",
+      "context": {
+        "category": "code_review",
+        "reviewDepth": "thorough",
+        "outcome": "success"
+      },
+      "signals": [
+        "deep_code_review"
+      ],
+      "outcome": "success",
+      "ts": "2026-06-28T17:47:00.107Z"
+    },
+    {
+      "id": "fp_1782668820113_y91",
+      "action": "Workflow preference override: documentation.reviewDepth",
+      "category": "configuration",
+      "context": {
+        "category": "documentation",
+        "field": "reviewDepth",
+        "value": "thorough"
+      },
+      "signals": [],
+      "outcome": "success",
+      "ts": "2026-06-28T17:47:00.113Z"
+    },
+    {
+      "id": "fp_1782668820121_r1p",
+      "action": "Workflow executed: pbw_deploy_vps_provisioned",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "success"
+      },
+      "signals": [],
+      "outcome": "success",
+      "ts": "2026-06-28T17:47:00.121Z"
+    },
+    {
+      "id": "fp_1782668820125_yix",
+      "action": "Workflow executed: pbw_deploy_node_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.125Z"
+    },
+    {
+      "id": "fp_1782668820129_1cg",
+      "action": "Workflow executed: pbw_deploy_repo_cloned",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.129Z"
+    },
+    {
+      "id": "fp_1782668820134_1e4",
+      "action": "Workflow executed: pbw_deploy_deps_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.134Z"
+    },
+    {
+      "id": "fp_1782668820138_oew",
+      "action": "Workflow executed: pbw_deploy_env_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.138Z"
+    },
+    {
+      "id": "fp_1782668820143_pt8",
+      "action": "Workflow executed: pbw_deploy_pm2_started",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.143Z"
+    },
+    {
+      "id": "fp_1782668820147_cr2",
+      "action": "Workflow executed: pbw_deploy_pm2_startup",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.147Z"
+    },
+    {
+      "id": "fp_1782668820151_i5h",
+      "action": "Workflow executed: pbw_deploy_backend_health",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.151Z"
+    },
+    {
+      "id": "fp_1782668820155_yom",
+      "action": "Workflow executed: pbw_deploy_frontend_built",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.155Z"
+    },
+    {
+      "id": "fp_1782668820159_fo0",
+      "action": "Workflow executed: pbw_deploy_frontend_served",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.159Z"
+    },
+    {
+      "id": "fp_1782668820164_c4i",
+      "action": "Workflow executed: pbw_deploy_nginx_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.164Z"
+    },
+    {
+      "id": "fp_1782668820168_jns",
+      "action": "Workflow executed: pbw_deploy_nginx_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.168Z"
+    },
+    {
+      "id": "fp_1782668820172_a2y",
+      "action": "Workflow executed: pbw_deploy_nginx_proxying",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.172Z"
+    },
+    {
+      "id": "fp_1782668820176_k79",
+      "action": "Workflow executed: pbw_deploy_ssl_cert",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.176Z"
+    },
+    {
+      "id": "fp_1782668820181_758",
+      "action": "Workflow executed: pbw_deploy_ssl_auto_renew",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.181Z"
+    },
+    {
+      "id": "fp_1782668820185_fcy",
+      "action": "Workflow executed: pbw_deploy_https_redirect",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.185Z"
+    },
+    {
+      "id": "fp_1782668820189_pbr",
+      "action": "Workflow executed: pbw_deploy_domain_a_record",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.189Z"
+    },
+    {
+      "id": "fp_1782668820195_tez",
+      "action": "Workflow executed: pbw_deploy_domain_www",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.195Z"
+    },
+    {
+      "id": "fp_1782668820199_cgr",
+      "action": "Workflow executed: pbw_deploy_domain_api",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.199Z"
+    },
+    {
+      "id": "fp_1782668820203_ddn",
+      "action": "Workflow executed: pbw_deploy_domain_verified",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.203Z"
+    },
+    {
+      "id": "fp_1782668820207_wyf",
+      "action": "Workflow executed: pbw_deploy_ufw_enabled",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.207Z"
+    },
+    {
+      "id": "fp_1782668820212_dcp",
+      "action": "Workflow executed: pbw_deploy_fail2ban_active",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.212Z"
+    },
+    {
+      "id": "fp_1782668820216_s28",
+      "action": "Workflow executed: pbw_deploy_ssh_keys_only",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.216Z"
+    },
+    {
+      "id": "fp_1782668820220_di5",
+      "action": "Workflow executed: pbw_deploy_backup_cron",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.220Z"
+    },
+    {
+      "id": "fp_1782668820224_s0e",
+      "action": "Workflow executed: pbw_sec_no_secrets_in_git",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.224Z"
+    },
+    {
+      "id": "fp_1782668820228_3nh",
+      "action": "Workflow executed: pbw_sec_env_gitignored",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.228Z"
+    },
+    {
+      "id": "fp_1782668820232_q3y",
+      "action": "Workflow executed: pbw_sec_rate_limiting",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.232Z"
+    },
+    {
+      "id": "fp_1782668820236_rgv",
+      "action": "Workflow executed: pbw_sec_security_headers",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.236Z"
+    },
+    {
+      "id": "fp_1782668820240_ryk",
+      "action": "Workflow executed: pbw_sec_jwt_secret_strength",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.240Z"
+    },
+    {
+      "id": "fp_1782668820244_rjm",
+      "action": "Workflow executed: pbw_sec_cors_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.244Z"
+    },
+    {
+      "id": "fp_1782668820248_pi2",
+      "action": "Workflow executed: pbw_sec_auth_middleware",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.248Z"
+    },
+    {
+      "id": "fp_1782668820253_pel",
+      "action": "Workflow executed: pbw_sec_session_expiry",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.253Z"
+    },
+    {
+      "id": "fp_1782668820257_ssv",
+      "action": "Workflow executed: pbw_sec_hsts_header",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.257Z"
+    },
+    {
+      "id": "fp_1782668820261_vjf",
+      "action": "Workflow executed: pbw_sec_injection_protection",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.261Z"
+    },
+    {
+      "id": "fp_1782668820265_tm0",
+      "action": "Workflow executed: pbw_sec_dependency_lockfile",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.265Z"
+    },
+    {
+      "id": "fp_1782668820269_nhr",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_vps_provision",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.269Z"
+    },
+    {
+      "id": "fp_1782668820273_0va",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_env_config",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.273Z"
+    },
+    {
+      "id": "fp_1782668820277_bnr",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_nginx",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.277Z"
+    },
+    {
+      "id": "fp_1782668820281_ga8",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_pm2",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.281Z"
+    },
+    {
+      "id": "fp_1782668820286_2wl",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_backup_cron",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.286Z"
+    },
+    {
+      "id": "fp_1782668820290_y77",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_security_harden",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.290Z"
+    },
+    {
+      "id": "fp_1782668820293_ogg",
+      "action": "Workflow executed: pbw_fwr_wf_biz_plan_upgrade",
+      "category": "business_decision",
+      "context": {
+        "category": "business",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.293Z"
+    },
+    {
+      "id": "fp_1782668820298_895",
+      "action": "Workflow executed: pbw_fwr_wf_biz_invoice_send",
+      "category": "business_decision",
+      "context": {
+        "category": "business",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.298Z"
+    },
+    {
+      "id": "fp_1782668820302_hsb",
+      "action": "Workflow executed: pbw_fwr_wf_biz_churn_detect",
+      "category": "business_decision",
+      "context": {
+        "category": "business",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.302Z"
+    },
+    {
+      "id": "fp_1782668820306_ez3",
+      "action": "Workflow executed: pbw_fwr_wf_biz_revenue_report",
+      "category": "business_decision",
+      "context": {
+        "category": "business",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.306Z"
+    },
+    {
+      "id": "fp_1782668820310_ux9",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_vps_provisioned",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.310Z"
+    },
+    {
+      "id": "fp_1782668820314_9ws",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_node_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.314Z"
+    },
+    {
+      "id": "fp_1782668820318_y6j",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_repo_cloned",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.318Z"
+    },
+    {
+      "id": "fp_1782668820322_dah",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_deps_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.322Z"
+    },
+    {
+      "id": "fp_1782668820326_wan",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_env_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.326Z"
+    },
+    {
+      "id": "fp_1782668820330_afp",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_pm2_started",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.330Z"
+    },
+    {
+      "id": "fp_1782668820335_w57",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_pm2_startup",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.335Z"
+    },
+    {
+      "id": "fp_1782668820338_hfs",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_backend_health",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.338Z"
+    },
+    {
+      "id": "fp_1782668820342_vnt",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_frontend_built",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.342Z"
+    },
+    {
+      "id": "fp_1782668820347_ori",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_frontend_served",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.347Z"
+    },
+    {
+      "id": "fp_1782668820351_zf1",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_nginx_installed",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.351Z"
+    },
+    {
+      "id": "fp_1782668820355_iyo",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_nginx_configured",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.355Z"
+    },
+    {
+      "id": "fp_1782668820358_jd1",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_nginx_proxying",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.358Z"
+    },
+    {
+      "id": "fp_1782668820362_t9e",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_ssl_cert",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.362Z"
+    },
+    {
+      "id": "fp_1782668820366_7ug",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_ssl_auto_renew",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.366Z"
+    },
+    {
+      "id": "fp_1782668820370_9jd",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_https_redirect",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.370Z"
+    },
+    {
+      "id": "fp_1782668820374_q92",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_domain_a_record",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.374Z"
+    },
+    {
+      "id": "fp_1782668820378_3cq",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_domain_www",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.378Z"
+    },
+    {
+      "id": "fp_1782668820382_pb6",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_domain_api",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.382Z"
+    },
+    {
+      "id": "fp_1782668820385_00q",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_domain_verified",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.385Z"
+    },
+    {
+      "id": "fp_1782668820390_zcw",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_ufw_enabled",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.390Z"
+    },
+    {
+      "id": "fp_1782668820394_zrz",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_fail2ban_active",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.394Z"
+    },
+    {
+      "id": "fp_1782668820398_l3e",
+      "action": "Workflow executed: pbw_fwr_wf_deploy_ssh_keys_only",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "reviewDepth": "skim",
+        "outcome": "pending"
+      },
+      "signals": [],
+      "outcome": "pending",
+      "ts": "2026-06-28T17:47:00.398Z"
+    },
+    {
+      "id": "fp_1782668828505_8om",
+      "action": "approved: wf_deploy_test_0",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_0",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.85,
+        "responseMs": 10000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:08.505Z"
+    },
+    {
+      "id": "fp_1782668828510_53a",
+      "action": "approved: wf_deploy_test_1",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_1",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.86,
+        "responseMs": 11000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:08.510Z"
+    },
+    {
+      "id": "fp_1782668828516_gz7",
+      "action": "approved: wf_deploy_test_2",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_2",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.87,
+        "responseMs": 12000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:08.516Z"
+    },
+    {
+      "id": "fp_1782668828521_tea",
+      "action": "approved: wf_deploy_test_3",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_3",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.88,
+        "responseMs": 13000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:08.521Z"
+    },
+    {
+      "id": "fp_1782668828526_xyb",
+      "action": "approved: wf_deploy_test_4",
+      "category": "approval",
+      "context": {
+        "workflowId": "wf_deploy_test_4",
+        "approvalType": "DEPLOY_CONFIRM",
+        "confidence": 0.89,
+        "responseMs": 14000,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:08.526Z"
+    },
+    {
+      "id": "fp_1782668828531_1lw",
+      "action": "approve: Release v1.0 to production",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:08.531Z"
+    },
+    {
+      "id": "fp_1782668828539_tm6",
+      "action": "approve: Release v1.1 to production",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:08.539Z"
+    },
+    {
+      "id": "fp_1782668828547_ds9",
+      "action": "approve: Release v1.2 to production",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:08.547Z"
+    },
+    {
+      "id": "fp_1782668829570_flg",
+      "action": "rejected: undefined",
+      "category": "approval",
+      "context": {
+        "approvalType": "GENERIC",
+        "confidence": 0.58,
+        "responseMs": 379,
+        "risk": "high"
+      },
+      "signals": [
+        "rejected_high_risk"
+      ],
+      "outcome": "rejected",
+      "ts": "2026-06-28T17:47:09.570Z"
+    },
+    {
+      "id": "fp_1782668829576_zt6",
+      "action": "reject: Skip QA for urgent hotfix.",
+      "category": "security_action",
+      "context": {
+        "domain": "security",
+        "risk": "high",
+        "confidence": 0.61
+      },
+      "signals": [],
+      "outcome": "rejected",
+      "ts": "2026-06-28T17:47:09.576Z"
+    },
+    {
+      "id": "fp_1782668829587_346",
+      "action": "Workflow executed: security",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "outcome": "rejected"
+      },
+      "signals": [
+        "deep_code_review"
+      ],
+      "outcome": "rejected",
+      "ts": "2026-06-28T17:47:09.587Z"
+    },
+    {
+      "id": "fp_1782668829919_dse",
+      "action": "approved: undefined",
+      "category": "approval",
+      "context": {
+        "approvalType": "GENERIC",
+        "confidence": 0.98,
+        "responseMs": 692,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:09.919Z"
+    },
+    {
+      "id": "fp_1782668829923_e2l",
+      "action": "approve: Deploy microservice update.",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "medium",
+        "confidence": 0.81
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:09.923Z"
+    },
+    {
+      "id": "fp_1782668829933_dd5",
+      "action": "Workflow executed: deployment",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "outcome": "approved"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:09.933Z"
+    },
+    {
+      "id": "fp_1782668830282_ew6",
+      "action": "approved: undefined",
+      "category": "approval",
+      "context": {
+        "approvalType": "GENERIC",
+        "confidence": 0.79,
+        "responseMs": 665,
+        "risk": "low"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:10.282Z"
+    },
+    {
+      "id": "fp_1782668830288_hya",
+      "action": "approve: Approve API docs.",
+      "category": "business_decision",
+      "context": {
+        "domain": "documentation",
+        "risk": "low",
+        "confidence": 0.42
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:10.288Z"
+    },
+    {
+      "id": "fp_1782668830298_jgy",
+      "action": "Workflow executed: documentation",
+      "category": "business_decision",
+      "context": {
+        "category": "documentation",
+        "outcome": "approved"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:10.298Z"
+    },
+    {
+      "id": "fp_1782668831768_4dj",
+      "action": "approved: undefined",
+      "category": "approval",
+      "context": {
+        "approvalType": "GENERIC",
+        "confidence": 0.98,
+        "responseMs": 4052,
+        "risk": "medium"
+      },
+      "signals": [
+        "approved_auto"
+      ],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:11.768Z"
+    },
+    {
+      "id": "fp_1782668831773_nac",
+      "action": "approve: Deploy backend service update.",
+      "category": "deployment",
+      "context": {
+        "domain": "deployment",
+        "risk": "medium",
+        "confidence": 0.81
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:11.773Z"
+    },
+    {
+      "id": "fp_1782668831783_4o8",
+      "action": "Workflow executed: deployment",
+      "category": "business_decision",
+      "context": {
+        "category": "deployment",
+        "outcome": "approved"
+      },
+      "signals": [],
+      "outcome": "approved",
+      "ts": "2026-06-28T17:47:11.783Z"
+    },
+    {
+      "id": "fp_1782668831792_nik",
+      "action": "rejected: undefined",
+      "category": "approval",
+      "context": {
+        "approvalType": "GENERIC",
+        "confidence": 0.58,
+        "responseMs": 3718,
+        "risk": "high"
+      },
+      "signals": [
+        "rejected_high_risk"
+      ],
+      "outcome": "rejected",
+      "ts": "2026-06-28T17:47:11.792Z"
+    },
+    {
+      "id": "fp_1782668831796_zd2",
+      "action": "reject: Run security audit before release.",
+      "category": "security_action",
+      "context": {
+        "domain": "security",
+        "risk": "high",
+        "confidence": 0.61
+      },
+      "signals": [],
+      "outcome": "rejected",
+      "ts": "2026-06-28T17:47:11.796Z"
+    },
+    {
+      "id": "fp_1782668831804_81f",
+      "action": "Workflow executed: security",
+      "category": "business_decision",
+      "context": {
+        "category": "security",
+        "outcome": "rejected"
+      },
+      "signals": [
+        "deep_code_review"
+      ],
+      "outcome": "rejected",
+      "ts": "2026-06-28T17:47:11.804Z"
+    }
+  ],
+  "trustScore": 65,
+  "totalActions": 279,
+  "correctionCount": 4,
+  "predictionAccuracy": {
+    "correct": 27,
+    "total": 31
+  }
+}

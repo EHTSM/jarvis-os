@@ -1,1006 +1,5 @@
 [
   {
-    "recId": "bgrec_1782426261502_2ig",
-    "source": "incidentObserver",
-    "title": "70 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 70,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T22:24:21.482Z",
-          "recId": "heal_1782426261482_ker",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T22:24:21.487Z",
-          "recId": "heal_1782426261487_kes",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T22:24:21.494Z",
-          "recId": "heal_1782426261494_ket",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T22:24:21.502Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782426381502_2ih",
-    "source": "incidentObserver",
-    "title": "80 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 80,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T22:26:21.486Z",
-          "recId": "heal_1782426381486_kf1",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T22:26:21.490Z",
-          "recId": "heal_1782426381490_kf2",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T22:26:21.493Z",
-          "recId": "heal_1782426381493_kf3",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T22:26:21.502Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782427441351_2ii",
-    "source": "incidentObserver",
-    "title": "75 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 75,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T22:44:01.339Z",
-          "recId": "heal_1782427441339_kfb",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T22:44:01.341Z",
-          "recId": "heal_1782427441341_kfc",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T22:44:01.342Z",
-          "recId": "heal_1782427441342_kfd",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T22:44:01.351Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782427441731_2ij",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "5 file(s) have uncommitted changes. Recent log: a791a29 Production Snapshot Before Launch",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-25T22:44:01.731Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782428404081_2ik",
-    "source": "incidentObserver",
-    "title": "10 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 10,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:00:04.075Z",
-          "recId": "heal_1782428404075_kfg",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:00:04.076Z",
-          "recId": "heal_1782428404076_kfh",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:00:04.077Z",
-          "recId": "heal_1782428404077_kfi",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:00:04.081Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782428404230_2il",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "5 file(s) have uncommitted changes. Recent log: a791a29 Production Snapshot Before Launch",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-25T23:00:04.230Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782428524111_2im",
-    "source": "incidentObserver",
-    "title": "20 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 20,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:02:04.098Z",
-          "recId": "heal_1782428524098_kfq",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:02:04.102Z",
-          "recId": "heal_1782428524102_kfr",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:02:04.103Z",
-          "recId": "heal_1782428524103_kfs",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:02:04.111Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782428644117_2in",
-    "source": "incidentObserver",
-    "title": "30 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 30,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:04:04.098Z",
-          "recId": "heal_1782428644098_kg0",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:04:04.103Z",
-          "recId": "heal_1782428644103_kg1",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:04:04.107Z",
-          "recId": "heal_1782428644107_kg2",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:04:04.117Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782428704348_2io",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "5 file(s) have uncommitted changes. Recent log: a791a29 Production Snapshot Before Launch",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-25T23:05:04.348Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782428764118_2ip",
-    "source": "incidentObserver",
-    "title": "40 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 40,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:06:04.100Z",
-          "recId": "heal_1782428764100_kga",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:06:04.106Z",
-          "recId": "heal_1782428764106_kgb",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:06:04.109Z",
-          "recId": "heal_1782428764109_kgc",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:06:04.118Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782428884120_2iq",
-    "source": "incidentObserver",
-    "title": "50 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 50,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:08:04.102Z",
-          "recId": "heal_1782428884101_kgk",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:08:04.108Z",
-          "recId": "heal_1782428884108_kgl",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:08:04.111Z",
-          "recId": "heal_1782428884111_kgm",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:08:04.120Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429004121_2ir",
-    "source": "incidentObserver",
-    "title": "60 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 60,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:10:04.099Z",
-          "recId": "heal_1782429004099_kgu",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:10:04.105Z",
-          "recId": "heal_1782429004105_kgv",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:10:04.108Z",
-          "recId": "heal_1782429004108_kgw",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:10:04.121Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429004412_2is",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "5 file(s) have uncommitted changes. Recent log: a791a29 Production Snapshot Before Launch",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-25T23:10:04.412Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429124125_2it",
-    "source": "incidentObserver",
-    "title": "70 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 70,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:12:04.106Z",
-          "recId": "heal_1782429124106_kh4",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:12:04.113Z",
-          "recId": "heal_1782429124113_kh5",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:12:04.116Z",
-          "recId": "heal_1782429124116_kh6",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:12:04.125Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429244127_2iu",
-    "source": "incidentObserver",
-    "title": "75 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 75,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:14:04.107Z",
-          "recId": "heal_1782429244107_khe",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:14:04.111Z",
-          "recId": "heal_1782429244111_khf",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:14:04.114Z",
-          "recId": "heal_1782429244114_khg",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:14:04.127Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429304423_2iv",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "5 file(s) have uncommitted changes. Recent log: a791a29 Production Snapshot Before Launch",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-25T23:15:04.423Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429364081_2iw",
-    "source": "incidentObserver",
-    "title": "85 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 85,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:16:04.063Z",
-          "recId": "heal_1782429364063_kho",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:16:04.067Z",
-          "recId": "heal_1782429364067_khp",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:16:04.071Z",
-          "recId": "heal_1782429364071_khq",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:16:04.081Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429484077_2ix",
-    "source": "incidentObserver",
-    "title": "95 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 95,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:18:04.060Z",
-          "recId": "heal_1782429484060_khy",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:18:04.066Z",
-          "recId": "heal_1782429484066_khz",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:18:04.069Z",
-          "recId": "heal_1782429484069_ki0",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:18:04.077Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429604085_2iy",
-    "source": "incidentObserver",
-    "title": "105 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 105,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:20:04.066Z",
-          "recId": "heal_1782429604066_ki8",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:20:04.074Z",
-          "recId": "heal_1782429604074_ki9",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:20:04.076Z",
-          "recId": "heal_1782429604076_kia",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:20:04.085Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429604368_2iz",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "5 file(s) have uncommitted changes. Recent log: a791a29 Production Snapshot Before Launch",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-25T23:20:04.368Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429724085_2j0",
-    "source": "incidentObserver",
-    "title": "115 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 115,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:22:04.064Z",
-          "recId": "heal_1782429724064_kii",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:22:04.068Z",
-          "recId": "heal_1782429724068_kij",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:22:04.073Z",
-          "recId": "heal_1782429724073_kik",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:22:04.085Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429844088_2j1",
-    "source": "incidentObserver",
-    "title": "125 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 125,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:24:04.070Z",
-          "recId": "heal_1782429844070_kis",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:24:04.074Z",
-          "recId": "heal_1782429844074_kit",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:24:04.078Z",
-          "recId": "heal_1782429844078_kiu",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:24:04.088Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429904367_2j2",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "6 file(s) have uncommitted changes. Recent log: 6c8edd6 fix(ops): operatorAudit crash — TypeError: Cannot read properties of undefined (reading 'on')",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/dead-letter.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-25T23:25:04.367Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782429964088_2j3",
-    "source": "incidentObserver",
-    "title": "135 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 135,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:26:04.062Z",
-          "recId": "heal_1782429964062_kj2",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:26:04.067Z",
-          "recId": "heal_1782429964067_kj3",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:26:04.072Z",
-          "recId": "heal_1782429964072_kj4",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:26:04.088Z",
-    "acknowledged": false
-  },
-  {
     "recId": "bgrec_1782431025927_2j4",
     "source": "incidentObserver",
     "title": "70 escalated incident(s) in the last 30 minutes",
@@ -16543,6 +15542,582 @@
       ]
     },
     "createdAt": "2026-06-28T12:24:52.309Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782649792310_60",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "16 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson",
+        " M data/healing-history.json",
+        " M data/lessons.json"
+      ]
+    },
+    "createdAt": "2026-06-28T12:29:52.310Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782650298176_61",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "19 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson",
+        " M data/healing-history.json"
+      ]
+    },
+    "createdAt": "2026-06-28T12:38:18.176Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782650652572_62",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "22 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson",
+        " M data/healing-history.json"
+      ]
+    },
+    "createdAt": "2026-06-28T12:44:12.572Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782650952614_63",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T12:49:12.614Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782651824644_64",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T13:03:44.644Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782652840383_65",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T13:20:40.383Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782653843311_66",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T13:37:23.311Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782654821348_67",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T13:53:41.348Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782655723510_68",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T14:08:43.510Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782656781475_69",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T14:26:21.475Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782657772403_6a",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T14:42:52.403Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782658759347_6b",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T14:59:19.347Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782659083286_6c",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T15:04:43.286Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782660045748_6d",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T15:20:45.748Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782660967740_6e",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T15:36:07.740Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782661959781_6f",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T15:52:39.781Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782662744732_6g",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T16:05:44.732Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782663720965_6h",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T16:22:00.965Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782664641228_6i",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "33 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T16:37:21.228Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782665653191_6j",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T16:54:13.191Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782666405213_6k",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T17:06:45.213Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782667437958_6l",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T17:23:57.958Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782668518978_6m",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T17:41:58.978Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782668819017_6n",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f23c86d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T17:46:59.017Z",
     "acknowledged": false
   }
 ]
