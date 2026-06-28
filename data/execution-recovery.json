@@ -389,11 +389,24 @@
       "outcome": "retry_queued",
       "notes": "Retrying failed step immediately",
       "completedAt": "2026-06-28T19:10:15.760Z"
+    },
+    {
+      "id": "rec_1782673889205_uya",
+      "executionId": "exec_1782673888422",
+      "workflowId": "wf_test",
+      "failedStep": "test step",
+      "error": "ETIMEDOUT",
+      "strategy": "RETRY_IMMEDIATE",
+      "attemptCount": 0,
+      "startedAt": "2026-06-28T19:11:29.205Z",
+      "outcome": "retry_queued",
+      "notes": "Retrying failed step immediately",
+      "completedAt": "2026-06-28T19:11:29.205Z"
     }
   ],
   "stats": {
-    "totalRecoveries": 30,
-    "successfulRecoveries": 30,
+    "totalRecoveries": 31,
+    "successfulRecoveries": 31,
     "escalations": 0
   }
 }

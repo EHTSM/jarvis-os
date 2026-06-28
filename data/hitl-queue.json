@@ -6614,5 +6614,928 @@
     "approvedAt": null,
     "rejectedReason": null,
     "expiresAt": "2026-06-28T19:40:21.909Z"
+  },
+  "hitl-1782673871997-6hf2": {
+    "id": "hitl-1782673871997-6hf2",
+    "ts": "2026-06-28T19:11:11.997Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_code_review",
+      "plan": "plan_wf_eng_code_review_1782673871995",
+      "steps": 7,
+      "minutesSaved": 30,
+      "teamId": "team_1782673871984_o09",
+      "missionId": "wf_1782673871659_s7m",
+      "members": [
+        {
+          "agentId": "engorg_code_review",
+          "role": "lead",
+          "skills": [
+            "code_review",
+            "standards",
+            "feedback"
+          ]
+        },
+        {
+          "agentId": "engorg_electron",
+          "role": "member",
+          "skills": [
+            "electron",
+            "desktop",
+            "packaging"
+          ]
+        }
+      ]
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:11.997Z"
+  },
+  "hitl-1782673872362-ltry": {
+    "id": "hitl-1782673872362-ltry",
+    "ts": "2026-06-28T19:11:12.362Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_deploy_release",
+      "plan": "plan_wf_eng_deploy_release_1782673872361",
+      "steps": 9,
+      "minutesSaved": 25,
+      "teamId": "team_1782673872348_uo7",
+      "missionId": "wf_1782673872000_341",
+      "members": [
+        {
+          "agentId": "engorg_devops",
+          "role": "lead",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        },
+        {
+          "agentId": "engorg_release",
+          "role": "member",
+          "skills": [
+            "release",
+            "versioning",
+            "changelog"
+          ]
+        }
+      ]
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:12.362Z"
+  },
+  "hitl-1782673872731-s8er": {
+    "id": "hitl-1782673872731-s8er",
+    "ts": "2026-06-28T19:11:12.731Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_deploy_release",
+      "plan": "plan_wf_eng_deploy_release_1782673872730",
+      "steps": 9,
+      "minutesSaved": 25,
+      "teamId": "team_1782673872721_47l",
+      "missionId": "wf_1782673872366_2om",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_devops",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        }
+      ]
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:12.731Z"
+  },
+  "hitl-1782673873064-d6c0": {
+    "id": "hitl-1782673873064-d6c0",
+    "ts": "2026-06-28T19:11:13.064Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_deploy_release",
+      "plan": "plan_wf_eng_deploy_release_1782673873063",
+      "steps": 9,
+      "minutesSaved": 25,
+      "teamId": "team_1782673873054_hnu",
+      "missionId": "wf_1782673872735_gmb",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_devops",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        }
+      ]
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:13.064Z"
+  },
+  "hitl-1782673895035-4s83": {
+    "id": "hitl-1782673895035-4s83",
+    "ts": "2026-06-28T19:11:35.035Z",
+    "sessionId": null,
+    "workflowId": "wf_mkt_social_post",
+    "intent": "Post social update",
+    "dangerLevel": "review",
+    "dangerReason": "Approved content ready",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalQueueId": "aq_1782673895033_ec29",
+      "approvalType": "CONTENT_APPROVE",
+      "confidence": 0.8,
+      "expectedOutcome": "Post published",
+      "rollbackPlan": "Delete post"
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.035Z"
+  },
+  "hitl-1782673895039-80jc": {
+    "id": "hitl-1782673895039-80jc",
+    "ts": "2026-06-28T19:11:35.039Z",
+    "sessionId": null,
+    "workflowId": "wf_eng_deploy_release",
+    "intent": "Deploy release",
+    "dangerLevel": "dangerous",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalQueueId": "aq_1782673895039_sq8r",
+      "approvalType": "RELEASE_APPROVE",
+      "confidence": 0.7
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.039Z"
+  },
+  "hitl-1782673895050-4pef": {
+    "id": "hitl-1782673895050-4pef",
+    "ts": "2026-06-28T19:11:35.050Z",
+    "sessionId": null,
+    "workflowId": "wf_mkt_blog_post",
+    "intent": "Publish blog",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalQueueId": "aq_1782673895049_vzrv",
+      "approvalType": "CONTENT_APPROVE",
+      "confidence": 0.7
+    },
+    "status": "approved",
+    "approvedBy": "founder",
+    "approvedAt": "2026-06-28T19:11:35.055Z",
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.050Z"
+  },
+  "hitl-1782673895057-26an": {
+    "id": "hitl-1782673895057-26an",
+    "ts": "2026-06-28T19:11:35.057Z",
+    "sessionId": null,
+    "workflowId": "wf_mkt_email_campaign",
+    "intent": "Send email",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalQueueId": "aq_1782673895056_y4od",
+      "approvalType": "CONTENT_APPROVE",
+      "confidence": 0.7
+    },
+    "status": "approved",
+    "approvedBy": "founder",
+    "approvedAt": "2026-06-28T19:11:35.062Z",
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.057Z"
+  },
+  "hitl-1782673895064-ohky": {
+    "id": "hitl-1782673895064-ohky",
+    "ts": "2026-06-28T19:11:35.064Z",
+    "sessionId": null,
+    "workflowId": "wf_biz_churn_detect",
+    "intent": "Outreach",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalQueueId": "aq_1782673895063_lvua",
+      "approvalType": "OUTREACH_APPROVE",
+      "confidence": 0.7
+    },
+    "status": "rejected",
+    "approvedBy": null,
+    "approvedAt": "2026-06-28T19:11:35.069Z",
+    "rejectedReason": "wrong_timing",
+    "expiresAt": "2026-06-28T19:41:35.064Z"
+  },
+  "hitl-1782673895072-eoh9": {
+    "id": "hitl-1782673895072-eoh9",
+    "ts": "2026-06-28T19:11:35.072Z",
+    "sessionId": null,
+    "workflowId": "wf_eng_code_review",
+    "intent": "Review code",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalQueueId": "aq_1782673895071_pz7w",
+      "approvalType": "CODE_APPROVE",
+      "confidence": 0.7
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.072Z"
+  },
+  "hitl-1782673895081-6bp5": {
+    "id": "hitl-1782673895081-6bp5",
+    "ts": "2026-06-28T19:11:35.081Z",
+    "sessionId": null,
+    "workflowId": "wf_ops_error_triage",
+    "intent": "Triage",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalQueueId": "aq_1782673895081_8r5r",
+      "approvalType": "SEVERITY_CONFIRM",
+      "confidence": 0.6
+    },
+    "status": "approved",
+    "approvedBy": "founder",
+    "approvedAt": "2026-06-28T19:11:35.087Z",
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.081Z"
+  },
+  "hitl-1782673895091-adzs": {
+    "id": "hitl-1782673895091-adzs",
+    "ts": "2026-06-28T19:11:35.091Z",
+    "sessionId": null,
+    "workflowId": "wf_mkt_social_post",
+    "intent": "Post",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalQueueId": "aq_1782673895091_m712",
+      "approvalType": "CONTENT_APPROVE",
+      "confidence": 0.7
+    },
+    "status": "approved",
+    "approvedBy": "founder",
+    "approvedAt": "2026-06-28T19:11:35.096Z",
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.091Z"
+  },
+  "hitl-1782673895186-5aaq": {
+    "id": "hitl-1782673895186-5aaq",
+    "ts": "2026-06-28T19:11:35.186Z",
+    "sessionId": null,
+    "workflowId": "wf_mkt_email_campaign",
+    "intent": "Send email newsletter / campaign",
+    "dangerLevel": "review",
+    "dangerReason": "The platform has prepared all steps for \"Send email newsletter / campaign\" and requires your authorization to proceed.",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalPackage": {
+        "workflowId": "wf_mkt_email_campaign",
+        "workflow": "Send email newsletter / campaign",
+        "domain": "marketing",
+        "approvalType": "CONTENT_APPROVE",
+        "risk": "medium",
+        "tier": "FOUNDER",
+        "reason": "The platform has prepared all steps for \"Send email newsletter / campaign\" and requires your authorization to proceed.",
+        "expectedOutcome": "Send email newsletter / campaign completes successfully. Estimated time: 60 minutes saved.",
+        "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation.",
+        "confidence": 0.8,
+        "estimatedMs": 3600000,
+        "blockers": [
+          "SMTP or SendGrid credentials required"
+        ],
+        "requiredApprovals": [
+          "founder_approves_content"
+        ],
+        "implementationPlan": "growthOS email engine drafts → founder approves → auto-send to segment",
+        "autoApprove": false,
+        "package": {
+          "title": "Approve: Send email newsletter / campaign",
+          "subtitle": "Risk: medium • Type: CONTENT_APPROVE • Confidence: 80%",
+          "body": "The autonomous execution engine has verified prerequisites and is ready to execute \"Send email newsletter / campaign\". This action requires founder authorization.",
+          "actions": [
+            {
+              "label": "Approve",
+              "value": "approve",
+              "primary": true
+            },
+            {
+              "label": "Reject",
+              "value": "reject",
+              "primary": false
+            }
+          ],
+          "callToAction": "One tap to approve. Execution resumes automatically."
+        },
+        "generatedAt": "2026-06-28T19:11:35.184Z"
+      },
+      "approvalQueueId": "aq_1782673895185_nclb",
+      "approvalType": "CONTENT_APPROVE",
+      "confidence": 0.8,
+      "expectedOutcome": "Send email newsletter / campaign completes successfully. Estimated time: 60 minutes saved.",
+      "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation."
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.186Z"
+  },
+  "hitl-1782673895216-918e": {
+    "id": "hitl-1782673895216-918e",
+    "ts": "2026-06-28T19:11:35.216Z",
+    "sessionId": null,
+    "workflowId": "wf_biz_churn_detect",
+    "intent": "Identify and respond to churning users",
+    "dangerLevel": "review",
+    "dangerReason": "The platform has prepared all steps for \"Identify and respond to churning users\" and requires your authorization to proceed.",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalPackage": {
+        "workflowId": "wf_biz_churn_detect",
+        "workflow": "Identify and respond to churning users",
+        "domain": "business",
+        "approvalType": "OUTREACH_APPROVE",
+        "risk": "medium",
+        "tier": "FOUNDER",
+        "reason": "The platform has prepared all steps for \"Identify and respond to churning users\" and requires your authorization to proceed.",
+        "expectedOutcome": "Identify and respond to churning users completes successfully. Estimated time: 30 minutes saved.",
+        "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation.",
+        "confidence": 0.7,
+        "estimatedMs": 1800000,
+        "blockers": [],
+        "requiredApprovals": [
+          "founder_approves_outreach_copy"
+        ],
+        "implementationPlan": "businessIntelligenceEngine detects churn signals → draft outreach → founder approves → auto-send",
+        "autoApprove": false,
+        "package": {
+          "title": "Approve: Identify and respond to churning users",
+          "subtitle": "Risk: medium • Type: OUTREACH_APPROVE • Confidence: 70%",
+          "body": "The autonomous execution engine has verified prerequisites and is ready to execute \"Identify and respond to churning users\". This action requires founder authorization.",
+          "actions": [
+            {
+              "label": "Approve",
+              "value": "approve",
+              "primary": true
+            },
+            {
+              "label": "Reject",
+              "value": "reject",
+              "primary": false
+            }
+          ],
+          "callToAction": "One tap to approve. Execution resumes automatically."
+        },
+        "generatedAt": "2026-06-28T19:11:35.215Z"
+      },
+      "approvalQueueId": "aq_1782673895215_7tzc",
+      "approvalType": "OUTREACH_APPROVE",
+      "confidence": 0.7,
+      "expectedOutcome": "Identify and respond to churning users completes successfully. Estimated time: 30 minutes saved.",
+      "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation."
+    },
+    "status": "rejected",
+    "approvedBy": null,
+    "approvedAt": "2026-06-28T19:11:35.242Z",
+    "rejectedReason": "wrong_content",
+    "expiresAt": "2026-06-28T19:41:35.216Z"
+  },
+  "hitl-1782673895335-u3rk": {
+    "id": "hitl-1782673895335-u3rk",
+    "ts": "2026-06-28T19:11:35.335Z",
+    "sessionId": null,
+    "workflowId": "wf_eng_dependency_update",
+    "intent": "Update deps",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalQueueId": "aq_1782673895334_qltd",
+      "approvalType": "CODE_APPROVE",
+      "confidence": 0.6
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.335Z"
+  },
+  "hitl-1782673895340-v7ze": {
+    "id": "hitl-1782673895340-v7ze",
+    "ts": "2026-06-28T19:11:35.340Z",
+    "sessionId": null,
+    "workflowId": "wf_eng_dependency_update",
+    "intent": "Update",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalQueueId": "aq_1782673895339_wpcz",
+      "approvalType": "CODE_APPROVE",
+      "confidence": 0.6
+    },
+    "status": "approved",
+    "approvedBy": "founder",
+    "approvedAt": "2026-06-28T19:11:35.347Z",
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.340Z"
+  },
+  "hitl-1782673895357-mqpi": {
+    "id": "hitl-1782673895357-mqpi",
+    "ts": "2026-06-28T19:11:35.357Z",
+    "sessionId": null,
+    "workflowId": "wf_mkt_social_post",
+    "intent": "Write and post weekly social media updates",
+    "dangerLevel": "review",
+    "dangerReason": "The platform has prepared all steps for \"Write and post weekly social media updates\" and requires your authorization to proceed.",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "test": true,
+      "approvalPackage": {
+        "workflowId": "wf_mkt_social_post",
+        "workflow": "Write and post weekly social media updates",
+        "domain": "marketing",
+        "approvalType": "CONTENT_APPROVE",
+        "risk": "medium",
+        "tier": "FOUNDER",
+        "reason": "The platform has prepared all steps for \"Write and post weekly social media updates\" and requires your authorization to proceed.",
+        "expectedOutcome": "Write and post weekly social media updates completes successfully. Estimated time: 45 minutes saved.",
+        "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation.",
+        "confidence": 0.75,
+        "estimatedMs": 2700000,
+        "blockers": [
+          "Requires social API access tokens"
+        ],
+        "requiredApprovals": [
+          "founder_approves_post_copy"
+        ],
+        "implementationPlan": "contentSEOEngine drafts post → founder approves → distributionEngine publishes",
+        "autoApprove": false,
+        "package": {
+          "title": "Approve: Write and post weekly social media updates",
+          "subtitle": "Risk: medium • Type: CONTENT_APPROVE • Confidence: 75%",
+          "body": "The autonomous execution engine has verified prerequisites and is ready to execute \"Write and post weekly social media updates\". This action requires founder authorization.",
+          "actions": [
+            {
+              "label": "Approve",
+              "value": "approve",
+              "primary": true
+            },
+            {
+              "label": "Reject",
+              "value": "reject",
+              "primary": false
+            }
+          ],
+          "callToAction": "One tap to approve. Execution resumes automatically."
+        },
+        "generatedAt": "2026-06-28T19:11:35.357Z"
+      },
+      "approvalQueueId": "aq_1782673895357_u591",
+      "approvalType": "CONTENT_APPROVE",
+      "confidence": 0.75,
+      "expectedOutcome": "Write and post weekly social media updates completes successfully. Estimated time: 45 minutes saved.",
+      "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation."
+    },
+    "status": "approved",
+    "approvedBy": "founder_test",
+    "approvedAt": "2026-06-28T19:11:35.386Z",
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.357Z"
+  },
+  "hitl-1782673895430-mrf7": {
+    "id": "hitl-1782673895430-mrf7",
+    "ts": "2026-06-28T19:11:35.430Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_mkt_social_post",
+      "plan": "plan_wf_mkt_social_post_1782673895429",
+      "steps": 8,
+      "minutesSaved": 45,
+      "approvalGranted": true,
+      "approvedBy": "founder_test"
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.430Z"
+  },
+  "hitl-1782673895434-rajd": {
+    "id": "hitl-1782673895434-rajd",
+    "ts": "2026-06-28T19:11:35.434Z",
+    "sessionId": null,
+    "workflowId": "wf_eng_code_review",
+    "intent": "Review and merge pull requests",
+    "dangerLevel": "review",
+    "dangerReason": "The platform has prepared all steps for \"Review and merge pull requests\" and requires your authorization to proceed.",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "test": true,
+      "approvalPackage": {
+        "workflowId": "wf_eng_code_review",
+        "workflow": "Review and merge pull requests",
+        "domain": "engineering",
+        "approvalType": "CODE_APPROVE",
+        "risk": "medium",
+        "tier": "FOUNDER",
+        "reason": "The platform has prepared all steps for \"Review and merge pull requests\" and requires your authorization to proceed.",
+        "expectedOutcome": "Review and merge pull requests completes successfully. Estimated time: 30 minutes saved.",
+        "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation.",
+        "confidence": 0.75,
+        "estimatedMs": 1800000,
+        "blockers": [],
+        "requiredApprovals": [
+          "founder_final_approve_on_prod_changes"
+        ],
+        "implementationPlan": "engineeringOrg code_review agent pre-reviews → scores risk → founder approves if risk > threshold",
+        "autoApprove": false,
+        "package": {
+          "title": "Approve: Review and merge pull requests",
+          "subtitle": "Risk: medium • Type: CODE_APPROVE • Confidence: 75%",
+          "body": "The autonomous execution engine has verified prerequisites and is ready to execute \"Review and merge pull requests\". This action requires founder authorization.",
+          "actions": [
+            {
+              "label": "Approve",
+              "value": "approve",
+              "primary": true
+            },
+            {
+              "label": "Reject",
+              "value": "reject",
+              "primary": false
+            }
+          ],
+          "callToAction": "One tap to approve. Execution resumes automatically."
+        },
+        "generatedAt": "2026-06-28T19:11:35.433Z"
+      },
+      "approvalQueueId": "aq_1782673895433_wa4d",
+      "approvalType": "CODE_APPROVE",
+      "confidence": 0.75,
+      "expectedOutcome": "Review and merge pull requests completes successfully. Estimated time: 30 minutes saved.",
+      "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation."
+    },
+    "status": "approved",
+    "approvedBy": "founder_test",
+    "approvedAt": "2026-06-28T19:11:35.463Z",
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.434Z"
+  },
+  "hitl-1782673895503-zmou": {
+    "id": "hitl-1782673895503-zmou",
+    "ts": "2026-06-28T19:11:35.503Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_code_review",
+      "plan": "plan_wf_eng_code_review_1782673895502",
+      "steps": 7,
+      "minutesSaved": 30,
+      "approvalGranted": true,
+      "approvedBy": "founder_test"
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.503Z"
+  },
+  "hitl-1782673895553-nsmr": {
+    "id": "hitl-1782673895553-nsmr",
+    "ts": "2026-06-28T19:11:35.553Z",
+    "sessionId": null,
+    "workflowId": "wf_mkt_email_campaign",
+    "intent": "Send email newsletter / campaign",
+    "dangerLevel": "review",
+    "dangerReason": "The platform has prepared all steps for \"Send email newsletter / campaign\" and requires your authorization to proceed.",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "approvalPackage": {
+        "workflowId": "wf_mkt_email_campaign",
+        "workflow": "Send email newsletter / campaign",
+        "domain": "marketing",
+        "approvalType": "CONTENT_APPROVE",
+        "risk": "medium",
+        "tier": "FOUNDER",
+        "reason": "The platform has prepared all steps for \"Send email newsletter / campaign\" and requires your authorization to proceed.",
+        "expectedOutcome": "Send email newsletter / campaign completes successfully. Estimated time: 60 minutes saved.",
+        "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation.",
+        "confidence": 0.7,
+        "estimatedMs": 3600000,
+        "blockers": [
+          "SMTP or SendGrid credentials required"
+        ],
+        "requiredApprovals": [
+          "founder_approves_content"
+        ],
+        "implementationPlan": "growthOS email engine drafts → founder approves → auto-send to segment",
+        "autoApprove": false,
+        "package": {
+          "title": "Approve: Send email newsletter / campaign",
+          "subtitle": "Risk: medium • Type: CONTENT_APPROVE • Confidence: 70%",
+          "body": "The autonomous execution engine has verified prerequisites and is ready to execute \"Send email newsletter / campaign\". This action requires founder authorization.",
+          "actions": [
+            {
+              "label": "Approve",
+              "value": "approve",
+              "primary": true
+            },
+            {
+              "label": "Reject",
+              "value": "reject",
+              "primary": false
+            }
+          ],
+          "callToAction": "One tap to approve. Execution resumes automatically."
+        },
+        "generatedAt": "2026-06-28T19:11:35.552Z"
+      },
+      "approvalQueueId": "aq_1782673895552_qw5g",
+      "approvalType": "CONTENT_APPROVE",
+      "confidence": 0.7,
+      "expectedOutcome": "Send email newsletter / campaign completes successfully. Estimated time: 60 minutes saved.",
+      "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation."
+    },
+    "status": "rejected",
+    "approvedBy": null,
+    "approvedAt": "2026-06-28T19:11:35.578Z",
+    "rejectedReason": "wrong_content",
+    "expiresAt": "2026-06-28T19:41:35.553Z"
+  },
+  "hitl-1782673895600-yskv": {
+    "id": "hitl-1782673895600-yskv",
+    "ts": "2026-06-28T19:11:35.600Z",
+    "sessionId": null,
+    "workflowId": "wf_mkt_social_post",
+    "intent": "Write and post weekly social media updates",
+    "dangerLevel": "review",
+    "dangerReason": "The platform has prepared all steps for \"Write and post weekly social media updates\" and requires your authorization to proceed.",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "test": true,
+      "approvalPackage": {
+        "workflowId": "wf_mkt_social_post",
+        "workflow": "Write and post weekly social media updates",
+        "domain": "marketing",
+        "approvalType": "CONTENT_APPROVE",
+        "risk": "medium",
+        "tier": "FOUNDER",
+        "reason": "The platform has prepared all steps for \"Write and post weekly social media updates\" and requires your authorization to proceed.",
+        "expectedOutcome": "Write and post weekly social media updates completes successfully. Estimated time: 45 minutes saved.",
+        "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation.",
+        "confidence": 0.75,
+        "estimatedMs": 2700000,
+        "blockers": [
+          "Requires social API access tokens"
+        ],
+        "requiredApprovals": [
+          "founder_approves_post_copy"
+        ],
+        "implementationPlan": "contentSEOEngine drafts post → founder approves → distributionEngine publishes",
+        "autoApprove": false,
+        "package": {
+          "title": "Approve: Write and post weekly social media updates",
+          "subtitle": "Risk: medium • Type: CONTENT_APPROVE • Confidence: 75%",
+          "body": "The autonomous execution engine has verified prerequisites and is ready to execute \"Write and post weekly social media updates\". This action requires founder authorization.",
+          "actions": [
+            {
+              "label": "Approve",
+              "value": "approve",
+              "primary": true
+            },
+            {
+              "label": "Reject",
+              "value": "reject",
+              "primary": false
+            }
+          ],
+          "callToAction": "One tap to approve. Execution resumes automatically."
+        },
+        "generatedAt": "2026-06-28T19:11:35.599Z"
+      },
+      "approvalQueueId": "aq_1782673895599_io9p",
+      "approvalType": "CONTENT_APPROVE",
+      "confidence": 0.75,
+      "expectedOutcome": "Write and post weekly social media updates completes successfully. Estimated time: 45 minutes saved.",
+      "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation."
+    },
+    "status": "approved",
+    "approvedBy": "founder_test",
+    "approvedAt": "2026-06-28T19:11:35.626Z",
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.600Z"
+  },
+  "hitl-1782673895666-mfv2": {
+    "id": "hitl-1782673895666-mfv2",
+    "ts": "2026-06-28T19:11:35.666Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_mkt_social_post",
+      "plan": "plan_wf_mkt_social_post_1782673895665",
+      "steps": 8,
+      "minutesSaved": 45,
+      "approvalGranted": true,
+      "approvedBy": "founder_test"
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.666Z"
+  },
+  "hitl-1782673895670-olpl": {
+    "id": "hitl-1782673895670-olpl",
+    "ts": "2026-06-28T19:11:35.670Z",
+    "sessionId": null,
+    "workflowId": "wf_eng_code_review",
+    "intent": "Review and merge pull requests",
+    "dangerLevel": "review",
+    "dangerReason": "The platform has prepared all steps for \"Review and merge pull requests\" and requires your authorization to proceed.",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "test": true,
+      "approvalPackage": {
+        "workflowId": "wf_eng_code_review",
+        "workflow": "Review and merge pull requests",
+        "domain": "engineering",
+        "approvalType": "CODE_APPROVE",
+        "risk": "medium",
+        "tier": "FOUNDER",
+        "reason": "The platform has prepared all steps for \"Review and merge pull requests\" and requires your authorization to proceed.",
+        "expectedOutcome": "Review and merge pull requests completes successfully. Estimated time: 30 minutes saved.",
+        "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation.",
+        "confidence": 0.75,
+        "estimatedMs": 1800000,
+        "blockers": [],
+        "requiredApprovals": [
+          "founder_final_approve_on_prod_changes"
+        ],
+        "implementationPlan": "engineeringOrg code_review agent pre-reviews → scores risk → founder approves if risk > threshold",
+        "autoApprove": false,
+        "package": {
+          "title": "Approve: Review and merge pull requests",
+          "subtitle": "Risk: medium • Type: CODE_APPROVE • Confidence: 75%",
+          "body": "The autonomous execution engine has verified prerequisites and is ready to execute \"Review and merge pull requests\". This action requires founder authorization.",
+          "actions": [
+            {
+              "label": "Approve",
+              "value": "approve",
+              "primary": true
+            },
+            {
+              "label": "Reject",
+              "value": "reject",
+              "primary": false
+            }
+          ],
+          "callToAction": "One tap to approve. Execution resumes automatically."
+        },
+        "generatedAt": "2026-06-28T19:11:35.669Z"
+      },
+      "approvalQueueId": "aq_1782673895669_e0m4",
+      "approvalType": "CODE_APPROVE",
+      "confidence": 0.75,
+      "expectedOutcome": "Review and merge pull requests completes successfully. Estimated time: 30 minutes saved.",
+      "rollbackPlan": "All executed steps will be reversed. No permanent changes without your confirmation."
+    },
+    "status": "approved",
+    "approvedBy": "founder_test",
+    "approvedAt": "2026-06-28T19:11:35.697Z",
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.670Z"
+  },
+  "hitl-1782673895736-w6wz": {
+    "id": "hitl-1782673895736-w6wz",
+    "ts": "2026-06-28T19:11:35.736Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_code_review",
+      "plan": "plan_wf_eng_code_review_1782673895735",
+      "steps": 7,
+      "minutesSaved": 30,
+      "approvalGranted": true,
+      "approvedBy": "founder_test"
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T19:41:35.736Z"
   }
 }
