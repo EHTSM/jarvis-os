@@ -123,5 +123,6 @@ router.use(require("./ecosystemOrg"));           // Level 8: /eco/status /eco/su
 router.use(require("./civilizationOrg"));        // Level 9: /civ/status /civ/summary /civ/agents/:id /civ/v9/*
 router.use(require("./autonomousOrg"));          // Level 10: /auto/status /auto/summary /auto/agents/:id /auto/v10/*
 router.use(require("./platformOrg"));           // Level Ω:  /platform/status /platform/summary /platform/v1/*
+router.use(require("./postOmega"));             // POST-Ω:   /pomena/status /pomena/review /pomena/audit /pomena/dashboard
 
 module.exports = router;

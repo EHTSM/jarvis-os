@@ -90,7 +90,10 @@ function _readDeployments() {
     try {
         const f = path.join(__dirname, "../../data/deployments.json");
         const d = JSON.parse(fs.readFileSync(f, "utf8"));
-        return Array.isArray(d) ? d : (d.deployments || []);
+        if (Array.isArray(d)) return d;
+        const raw = d.deployments || [];
+        // deployments.json stores an object map {id: deployment} — normalize to array
+        return Array.isArray(raw) ? raw : Object.values(raw);
     } catch { return []; }
 }
 
@@ -124,7 +127,11 @@ function _readRecommendations() {
 function _readLessons() {
     const cls = _getCLS();
     if (!cls) return [];
-    try { return cls.getLessons({ limit: 100 }); } catch { return []; }
+    try {
+        const r = cls.getLessons({ limit: 100 });
+        // getLessons returns { lessons: [...] } — normalize to array
+        return Array.isArray(r) ? r : (r?.lessons || []);
+    } catch { return []; }
 }
 
 function _readAgentRuns() {
