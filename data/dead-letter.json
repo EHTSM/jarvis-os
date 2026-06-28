@@ -1,239 +1,5 @@
 [
   {
-    "taskId": "tq_1781686892201",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T12:58:35.908Z"
-  },
-  {
-    "taskId": "tq_1781686892200",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T12:58:35.912Z"
-  },
-  {
-    "taskId": "tq_1781686892199",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T12:58:35.916Z"
-  },
-  {
-    "taskId": "tq_1781786838875",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T12:58:35.920Z"
-  },
-  {
-    "taskId": "tq_1781786838876",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T12:58:35.924Z"
-  },
-  {
-    "taskId": "tq_1781786838877",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T12:58:35.929Z"
-  },
-  {
-    "taskId": "tq_1778358225117",
-    "taskType": "auto",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 58,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:03:09.954Z"
-  },
-  {
-    "taskId": "tq_1781687112125",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:03:09.960Z"
-  },
-  {
-    "taskId": "tq_1781687112124",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:03:09.966Z"
-  },
-  {
-    "taskId": "tq_1781687112123",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:03:09.972Z"
-  },
-  {
-    "taskId": "tq_1781686892201",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:03:09.978Z"
-  },
-  {
-    "taskId": "tq_1781686892200",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:03:09.984Z"
-  },
-  {
-    "taskId": "tq_1781686892199",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:03:09.990Z"
-  },
-  {
-    "taskId": "tq_1781786838875",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:03:09.996Z"
-  },
-  {
-    "taskId": "tq_1781786838876",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:03:10.002Z"
-  },
-  {
-    "taskId": "tq_1781786838877",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:03:10.009Z"
-  },
-  {
-    "taskId": "tq_1778358225117",
-    "taskType": "auto",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 58,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:04:10.018Z"
-  },
-  {
-    "taskId": "tq_1781687112125",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:04:10.025Z"
-  },
-  {
-    "taskId": "tq_1781687112124",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:04:10.035Z"
-  },
-  {
-    "taskId": "tq_1781687112123",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:04:10.041Z"
-  },
-  {
-    "taskId": "tq_1781686892201",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:04:10.046Z"
-  },
-  {
-    "taskId": "tq_1781686892200",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:04:10.051Z"
-  },
-  {
-    "taskId": "tq_1781686892199",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:04:10.056Z"
-  },
-  {
-    "taskId": "tq_1781786838875",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:04:10.060Z"
-  },
-  {
-    "taskId": "tq_1781786838876",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:04:10.064Z"
-  },
-  {
-    "taskId": "tq_1781786838877",
-    "taskType": "orchestrator_stage_goal_decompose",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 7,
-    "agentId": null,
-    "deadAt": "2026-06-18T14:04:10.069Z"
-  },
-  {
     "taskId": "t-mqjknm6e",
     "taskType": "content",
     "input": "content gen",
@@ -8998,5 +8764,239 @@
     "attempts": 4,
     "agentId": null,
     "deadAt": "2026-06-28T17:47:49.523Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T17:48:49.486Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T17:49:49.543Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T17:50:49.543Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T17:51:49.583Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T17:52:49.515Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T17:53:49.555Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T17:54:49.521Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T18:02:57.377Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T18:03:57.424Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T18:04:57.425Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T18:05:57.435Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T18:06:57.454Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T18:07:57.400Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T18:26:14.174Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T18:43:40.163Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T18:58:06.175Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T18:59:06.094Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T19:00:06.148Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T19:01:06.155Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T19:02:06.110Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T19:03:06.122Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T19:04:06.112Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T19:05:06.113Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T19:06:06.140Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T19:07:06.146Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T19:08:06.154Z"
   }
 ]

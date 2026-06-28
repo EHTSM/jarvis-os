@@ -1,289 +1,5 @@
 [
   {
-    "recId": "bgrec_1782431025927_2j4",
-    "source": "incidentObserver",
-    "title": "70 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 70,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T23:43:45.906Z",
-          "recId": "heal_1782431025906_kj7",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:43:45.914Z",
-          "recId": "heal_1782431025914_kj8",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T23:43:45.917Z",
-          "recId": "heal_1782431025917_kj9",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T23:43:45.927Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782431026198_2j5",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "6 file(s) have uncommitted changes. Recent log: 6c8edd6 fix(ops): operatorAudit crash — TypeError: Cannot read properties of undefined (reading 'on')",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/dead-letter.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-25T23:43:46.198Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782432002645_2j6",
-    "source": "incidentObserver",
-    "title": "10 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 10,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-26T00:00:02.617Z",
-          "recId": "heal_1782432002617_kjc",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T00:00:02.624Z",
-          "recId": "heal_1782432002624_kjd",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T00:00:02.628Z",
-          "recId": "heal_1782432002628_kje",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-26T00:00:02.645Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782432002856_2j7",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "6 file(s) have uncommitted changes. Recent log: 6c8edd6 fix(ops): operatorAudit crash — TypeError: Cannot read properties of undefined (reading 'on')",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/dead-letter.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-26T00:00:02.856Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782432913288_2j8",
-    "source": "incidentObserver",
-    "title": "10 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 10,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-26T00:15:13.268Z",
-          "recId": "heal_1782432913268_kjh",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T00:15:13.274Z",
-          "recId": "heal_1782432913274_kji",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T00:15:13.277Z",
-          "recId": "heal_1782432913277_kjj",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-26T00:15:13.288Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782432913500_2j9",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "6 file(s) have uncommitted changes. Recent log: 6c8edd6 fix(ops): operatorAudit crash — TypeError: Cannot read properties of undefined (reading 'on')",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/dead-letter.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-26T00:15:13.500Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782433963725_2ja",
-    "source": "incidentObserver",
-    "title": "10 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 10,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-26T00:32:43.710Z",
-          "recId": "heal_1782433963710_kjm",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T00:32:43.715Z",
-          "recId": "heal_1782433963715_kjn",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T00:32:43.719Z",
-          "recId": "heal_1782433963719_kjo",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-26T00:32:43.725Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782433963881_2jb",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "6 file(s) have uncommitted changes. Recent log: 6c8edd6 fix(ops): operatorAudit crash — TypeError: Cannot read properties of undefined (reading 'on')",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/dead-letter.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-26T00:32:43.881Z",
-    "acknowledged": false
-  },
-  {
     "recId": "bgrec_1782435005449_2jc",
     "source": "incidentObserver",
     "title": "10 escalated incident(s) in the last 30 minutes",
@@ -16118,6 +15834,198 @@
       ]
     },
     "createdAt": "2026-06-28T17:46:59.017Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782669118992_6o",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "20 file(s) have uncommitted changes. Recent log: f8158f7 feat(post-omega-p6): Founder Digital Twin (FDT) — behavioral learning + approval prediction",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/autonomous/reports.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson",
+        " M data/founder-automation.json"
+      ]
+    },
+    "createdAt": "2026-06-28T17:51:58.992Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782669777492_6p",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "23 file(s) have uncommitted changes. Recent log: f8158f7 feat(post-omega-p6): Founder Digital Twin (FDT) — behavioral learning + approval prediction",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T18:02:57.492Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782670077516_6q",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "29 file(s) have uncommitted changes. Recent log: f8158f7 feat(post-omega-p6): Founder Digital Twin (FDT) — behavioral learning + approval prediction",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson"
+      ]
+    },
+    "createdAt": "2026-06-28T18:07:57.516Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782671174335_6r",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "30 file(s) have uncommitted changes. Recent log: f8158f7 feat(post-omega-p6): Founder Digital Twin (FDT) — behavioral learning + approval prediction",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json"
+      ]
+    },
+    "createdAt": "2026-06-28T18:26:14.335Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782672220264_6s",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f8158f7 feat(post-omega-p6): Founder Digital Twin (FDT) — behavioral learning + approval prediction",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json"
+      ]
+    },
+    "createdAt": "2026-06-28T18:43:40.264Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782673086304_6t",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f8158f7 feat(post-omega-p6): Founder Digital Twin (FDT) — behavioral learning + approval prediction",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json"
+      ]
+    },
+    "createdAt": "2026-06-28T18:58:06.304Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782673386309_6u",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "32 file(s) have uncommitted changes. Recent log: f8158f7 feat(post-omega-p6): Founder Digital Twin (FDT) — behavioral learning + approval prediction",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json"
+      ]
+    },
+    "createdAt": "2026-06-28T19:03:06.309Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782673686332_6v",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "57 file(s) have uncommitted changes. Recent log: f8158f7 feat(post-omega-p6): Founder Digital Twin (FDT) — behavioral learning + approval prediction",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/approval-engine.json",
+        " M data/approval-evidence-index.json",
+        " M data/approval-evidence.ndjson",
+        " M data/approval-queue.json",
+        " M data/autonomous-execution.json",
+        " M data/autonomous/control.json",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json"
+      ]
+    },
+    "createdAt": "2026-06-28T19:08:06.332Z",
     "acknowledged": false
   }
 ]

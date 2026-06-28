@@ -1,0 +1,383 @@
+{
+  "agentState": {
+    "engorg_backend": {
+      "successCount": 26,
+      "failCount": 2,
+      "workload": 2,
+      "activeTeams": [
+        "test_team",
+        "team_1782673524774_y6l",
+        "team_1782673531167_c2y",
+        "team_1782673603457_qv0",
+        "team_1782673609105_nwn",
+        "team_1782673609430_j34",
+        "team_1782673624886_pod",
+        "team_1782673630095_83e",
+        "team_1782673631206_jde",
+        "team_1782673637039_wy1",
+        "team_1782673637056_qrc",
+        "team_1782673641581_qnb",
+        "team_1782673642341_aa7",
+        "team_1782673643461_sun"
+      ],
+      "lastActive": "2026-06-28T19:07:23.936Z"
+    },
+    "engorg_frontend": {
+      "successCount": 16,
+      "failCount": 8,
+      "workload": 6,
+      "activeTeams": [
+        "team_1782673529395_8tq",
+        "team_1782673530139_cxi",
+        "team_1782673530482_37f",
+        "team_1782673607723_qrp",
+        "team_1782673607381_apn",
+        "team_1782673607711_ii0",
+        "team_1782673608433_8pc",
+        "team_1782673608770_j7j",
+        "team_1782673624869_eni",
+        "team_1782673624875_3rw",
+        "team_1782673628953_i0i",
+        "team_1782673629309_br4",
+        "team_1782673637039_wy1",
+        "team_1782673637045_i5z"
+      ],
+      "lastActive": "2026-06-28T19:07:17.185Z"
+    },
+    "engorg_architect": {
+      "successCount": 34,
+      "failCount": 0,
+      "workload": 2,
+      "activeTeams": [
+        "team_1782673525888_whv",
+        "team_1782673526914_gl0",
+        "team_1782673527255_xaf",
+        "team_1782673527604_qri",
+        "team_1782673530823_ib9",
+        "team_1782673604321_8wc",
+        "team_1782673605316_7py",
+        "team_1782673605639_qxi",
+        "team_1782673605976_t4j",
+        "team_1782673609105_nwn",
+        "team_1782673625808_741",
+        "team_1782673626831_aiw",
+        "team_1782673627175_6p9",
+        "team_1782673627484_le2",
+        "team_1782673628953_i0i",
+        "team_1782673630819_qh4",
+        "team_1782673637911_y6d",
+        "team_1782673638983_kqn",
+        "team_1782673639344_8hu",
+        "team_1782673639701_mgt",
+        "team_1782673641204_ym4",
+        "team_1782673641569_2vp",
+        "team_1782673643103_ng6"
+      ],
+      "lastActive": "2026-06-28T19:07:23.896Z"
+    },
+    "engorg_qa": {
+      "successCount": 8,
+      "failCount": 2,
+      "workload": 8,
+      "activeTeams": [
+        "team_1782673524761_1hq",
+        "team_1782673524765_i6f",
+        "team_1782673526567_sjr",
+        "team_1782673529028_74q",
+        "team_1782673530139_cxi",
+        "team_1782673603440_xgh"
+      ],
+      "lastActive": "2026-06-28T19:07:17.186Z"
+    },
+    "aeo_reliability": {
+      "successCount": 8,
+      "failCount": 2,
+      "workload": 6,
+      "activeTeams": [
+        "team_1782673524761_1hq",
+        "team_1782673526567_sjr",
+        "team_1782673527950_0dh",
+        "team_1782673529028_74q",
+        "team_1782673603440_xgh",
+        "team_1782673603446_kh4",
+        "team_1782673629324_p3q",
+        "team_1782673630095_83e",
+        "team_1782673631206_jde",
+        "team_1782673637039_wy1"
+      ],
+      "lastActive": "2026-06-28T19:07:21.589Z"
+    },
+    "bizorg_growth": {
+      "successCount": 12,
+      "failCount": 2,
+      "workload": 6,
+      "activeTeams": [
+        "team_1782673524761_1hq",
+        "team_1782673529395_8tq",
+        "team_1782673529028_74q",
+        "team_1782673530139_cxi",
+        "team_1782673531167_c2y",
+        "team_1782673603440_xgh",
+        "team_1782673607381_apn",
+        "team_1782673608433_8pc",
+        "team_1782673609430_j34",
+        "team_1782673624869_eni",
+        "team_1782673624875_3rw",
+        "team_1782673626484_f55"
+      ],
+      "lastActive": "2026-06-28T19:06:49.891Z"
+    },
+    "engorg_security": {
+      "successCount": 2,
+      "failCount": 0,
+      "workload": 7,
+      "activeTeams": [
+        "team_1782673524765_i6f",
+        "team_1782673526224_z8n",
+        "team_1782673529383_7zq",
+        "team_1782673603446_kh4",
+        "team_1782673604663_1ne",
+        "team_1782673626153_a8p",
+        "team_1782673637045_i5z",
+        "team_1782673638269_fm8"
+      ],
+      "lastActive": "2026-06-28T19:05:31.493Z"
+    },
+    "engorg_electron": {
+      "successCount": 8,
+      "failCount": 0,
+      "workload": 4,
+      "activeTeams": [
+        "team_1782673524769_l8u",
+        "team_1782673526567_sjr",
+        "team_1782673528336_axm",
+        "team_1782673529383_7zq",
+        "team_1782673603453_f4d",
+        "team_1782673604984_g29",
+        "team_1782673630456_4ug",
+        "team_1782673642719_c3w"
+      ],
+      "lastActive": "2026-06-28T19:07:23.850Z"
+    },
+    "bizorg_marketing": {
+      "successCount": 16,
+      "failCount": 0,
+      "workload": 8,
+      "activeTeams": [
+        "team_1782673524769_l8u",
+        "team_1782673526567_sjr",
+        "team_1782673528336_axm",
+        "team_1782673529383_7zq",
+        "team_1782673530482_37f",
+        "team_1782673604984_g29",
+        "team_1782673607723_qrp",
+        "team_1782673606696_9p9",
+        "team_1782673607711_ii0",
+        "team_1782673608770_j7j",
+        "team_1782673624881_rbv",
+        "team_1782673626484_f55",
+        "team_1782673628213_v2t",
+        "team_1782673629309_br4",
+        "team_1782673637050_853",
+        "team_1782673638634_tyy"
+      ],
+      "lastActive": "2026-06-28T19:07:11.520Z"
+    },
+    "engorg_devops": {
+      "successCount": 12,
+      "failCount": 0,
+      "workload": 5,
+      "activeTeams": [
+        "team_1782673525888_whv",
+        "team_1782673527950_0dh",
+        "team_1782673528682_a6l",
+        "team_1782673604321_8wc",
+        "team_1782673607041_vky",
+        "team_1782673628586_qop",
+        "team_1782673640832_274",
+        "team_1782673641204_ym4"
+      ],
+      "lastActive": "2026-06-28T19:07:23.717Z"
+    },
+    "engorg_release": {
+      "successCount": 10,
+      "failCount": 0,
+      "workload": 3,
+      "activeTeams": [
+        "team_1782673525888_whv",
+        "team_1782673528682_a6l",
+        "team_1782673529028_74q",
+        "team_1782673604321_8wc",
+        "team_1782673607041_vky",
+        "team_1782673625808_741",
+        "team_1782673628586_qop",
+        "team_1782673640832_274"
+      ],
+      "lastActive": "2026-06-28T19:07:23.677Z"
+    },
+    "engorg_docs": {
+      "successCount": 32,
+      "failCount": 0,
+      "workload": 8,
+      "activeTeams": [
+        "team_1782673525888_whv",
+        "team_1782673526914_gl0",
+        "team_1782673529740_ruq",
+        "team_1782673527255_xaf",
+        "team_1782673527604_qri",
+        "team_1782673529028_74q",
+        "team_1782673529383_7zq",
+        "team_1782673530823_ib9",
+        "team_1782673604321_8wc",
+        "team_1782673605316_7py",
+        "team_1782673605639_qxi",
+        "team_1782673605976_t4j",
+        "team_1782673607381_apn",
+        "team_1782673607711_ii0",
+        "team_1782673625808_741",
+        "team_1782673626831_aiw",
+        "team_1782673627175_6p9",
+        "team_1782673627484_le2",
+        "team_1782673630819_qh4",
+        "team_1782673637911_y6d",
+        "team_1782673638983_kqn",
+        "team_1782673639344_8hu",
+        "team_1782673639701_mgt",
+        "team_1782673643103_ng6"
+      ],
+      "lastActive": "2026-06-28T19:07:23.899Z"
+    },
+    "engorg_code_review": {
+      "successCount": 8,
+      "failCount": 0,
+      "workload": 5,
+      "activeTeams": [
+        "team_1782673526914_gl0",
+        "team_1782673529395_8tq",
+        "team_1782673528336_axm",
+        "team_1782673605316_7py",
+        "team_1782673606696_9p9",
+        "team_1782673626831_aiw",
+        "team_1782673628213_v2t",
+        "team_1782673638983_kqn",
+        "team_1782673640473_mex"
+      ],
+      "lastActive": "2026-06-28T19:07:23.631Z"
+    },
+    "engorg_refactor": {
+      "successCount": 8,
+      "failCount": 0,
+      "workload": 4,
+      "activeTeams": [
+        "team_1782673526914_gl0",
+        "team_1782673528336_axm",
+        "team_1782673605316_7py",
+        "team_1782673606696_9p9",
+        "team_1782673626831_aiw",
+        "team_1782673628213_v2t",
+        "team_1782673638983_kqn",
+        "team_1782673640473_mex"
+      ],
+      "lastActive": "2026-06-28T19:07:23.634Z"
+    },
+    "eos_health": {
+      "successCount": 8,
+      "failCount": 0,
+      "workload": 1,
+      "activeTeams": [
+        "team_1782673527950_0dh",
+        "team_1782673606319_xgq",
+        "team_1782673627841_uil",
+        "team_1782673641581_qnb",
+        "team_1782673640067_n59"
+      ],
+      "lastActive": "2026-06-28T19:07:23.591Z"
+    },
+    "aeo_performance": {
+      "successCount": 16,
+      "failCount": 0,
+      "workload": 0,
+      "activeTeams": [
+        "team_1782673529740_ruq",
+        "team_1782673527950_0dh",
+        "team_1782673608066_pu3",
+        "team_1782673606319_xgq",
+        "team_1782673629701_tfh",
+        "team_1782673627841_uil",
+        "team_1782673641947_3w7",
+        "team_1782673640067_n59"
+      ],
+      "lastActive": "2026-06-28T19:07:23.594Z"
+    },
+    "ako_learning": {
+      "successCount": 18,
+      "failCount": 0,
+      "workload": 4,
+      "activeTeams": [
+        "team_1782673529383_7zq",
+        "team_1782673530482_37f",
+        "team_1782673604984_g29",
+        "team_1782673607711_ii0",
+        "team_1782673608770_j7j",
+        "team_1782673626484_f55",
+        "team_1782673628213_v2t",
+        "team_1782673629309_br4",
+        "team_1782673630456_4ug",
+        "team_1782673637050_853",
+        "team_1782673638634_tyy",
+        "team_1782673640473_mex",
+        "team_1782673641569_2vp"
+      ],
+      "lastActive": "2026-06-28T19:07:23.760Z"
+    },
+    "engorg_perf": {
+      "successCount": 8,
+      "failCount": 0,
+      "workload": 0,
+      "activeTeams": [
+        "team_1782673529740_ruq",
+        "team_1782673608066_pu3",
+        "team_1782673629701_tfh",
+        "team_1782673641947_3w7"
+      ],
+      "lastActive": "2026-06-28T19:07:21.989Z"
+    },
+    "engorg_mobile": {
+      "successCount": 8,
+      "failCount": 0,
+      "workload": 4,
+      "activeTeams": [
+        "team_1782673530482_37f",
+        "team_1782673603453_f4d",
+        "team_1782673604984_g29",
+        "team_1782673606696_9p9",
+        "team_1782673607711_ii0",
+        "team_1782673624881_rbv",
+        "team_1782673626484_f55",
+        "team_1782673642719_c3w"
+      ],
+      "lastActive": "2026-06-28T19:07:23.857Z"
+    },
+    "engorg_api": {
+      "successCount": 4,
+      "failCount": 0,
+      "workload": 2,
+      "activeTeams": [
+        "team_1782673629324_p3q",
+        "team_1782673641581_qnb",
+        "team_1782673642341_aa7",
+        "team_1782673643461_sun"
+      ],
+      "lastActive": "2026-06-28T19:07:23.940Z"
+    },
+    "engorg_database": {
+      "successCount": 0,
+      "failCount": 0,
+      "workload": 1,
+      "activeTeams": [
+        "team_1782673629324_p3q"
+      ]
+    }
+  },
+  "updatedAt": "2026-06-28T19:07:23.940Z"
+}

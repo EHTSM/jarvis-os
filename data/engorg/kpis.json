@@ -448,5 +448,23 @@
     "approvalsDenied": 0,
     "avgCycleTimeMs": 0,
     "memoryEntries": 0
+  },
+  "engorg_perf": {
+    "engineerId": "engorg_perf",
+    "updatedAt": "2026-06-28T19:07:09.713Z",
+    "velocity": 0,
+    "qualityScore": 100,
+    "utilization": 30,
+    "missionsCreated": 0,
+    "missionsCompleted": 0,
+    "reviewsCompleted": 0,
+    "handoffsSent": 0,
+    "handoffsAccepted": 0,
+    "blockersRaised": 0,
+    "blockersResolved": 0,
+    "approvalsGranted": 0,
+    "approvalsDenied": 0,
+    "avgCycleTimeMs": 0,
+    "memoryEntries": 3
   }
 }

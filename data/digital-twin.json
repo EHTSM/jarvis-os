@@ -816,6 +816,98 @@
       "resolvedAt": "2026-06-28T17:47:11.791Z",
       "ts": "2026-06-28T17:47:09.241Z",
       "durationMs": 3718
+    },
+    {
+      "id": "fdt_1782673530830_0jt",
+      "command": "QA validation 3",
+      "domain": "qa",
+      "category": "qa",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.42,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Based on general founder approval patterns."
+      ],
+      "supportingHistory": [],
+      "trustScore": 65,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:05:31.669Z",
+      "durationMs": 839
+    },
+    {
+      "id": "fdt_1782673609111_w7k",
+      "command": "QA validation 3",
+      "domain": "qa",
+      "category": "qa",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.42,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Based on general founder approval patterns."
+      ],
+      "supportingHistory": [],
+      "trustScore": 65,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:06:49.926Z",
+      "durationMs": 815
+    },
+    {
+      "id": "fdt_1782673630827_ulo",
+      "command": "QA validation 3",
+      "domain": "qa",
+      "category": "qa",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.42,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Based on general founder approval patterns."
+      ],
+      "supportingHistory": [],
+      "trustScore": 65,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:07:11.790Z",
+      "durationMs": 963
+    },
+    {
+      "id": "fdt_1782673643111_gwa",
+      "command": "QA validation 3",
+      "domain": "qa",
+      "category": "qa",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.42,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Based on general founder approval patterns."
+      ],
+      "supportingHistory": [],
+      "trustScore": 65,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:07:23.981Z",
+      "durationMs": 870
     }
   ],
   "scenarios": [
@@ -1663,13 +1755,13 @@
     }
   ],
   "stats": {
-    "total": 21,
-    "approved": 19,
+    "total": 25,
+    "approved": 23,
     "rejected": 2,
     "modified": 0,
     "correct": 5,
     "autoResolved": 0,
-    "founderRequired": 21,
+    "founderRequired": 25,
     "minutesSaved": 0
   },
   "learningLoop": {
@@ -1678,5 +1770,5 @@
     "profileUpdates": 6,
     "lastLoopAt": "2026-06-28T17:47:11.810Z"
   },
-  "updatedAt": "2026-06-28T17:47:11.810Z"
+  "updatedAt": "2026-06-28T19:07:23.981Z"
 }

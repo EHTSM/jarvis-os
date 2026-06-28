@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-06-28T06:35:33.229Z",
+  "updatedAt": "2026-06-28T19:07:09.713Z",
   "objectives": [
     {
       "id": "obj_1782532055804_1",
@@ -7037,8 +7037,8 @@
       "epicId": null,
       "domain": "backend",
       "priority": "high",
-      "status": "ready",
-      "assignedTo": null,
+      "status": "claimed",
+      "assignedTo": "engorg_perf",
       "reviewerIds": [],
       "techPlan": null,
       "missionId": null,
@@ -7047,16 +7047,22 @@
       "blockerIds": [],
       "approvalId": null,
       "reviewId": null,
-      "claimedAt": null,
+      "claimedAt": "2026-06-28T19:05:29.749Z",
       "startedAt": null,
       "completedAt": null,
       "createdAt": "2026-06-27T20:33:47.300Z",
-      "updatedAt": "2026-06-27T20:33:47.301Z",
+      "updatedAt": "2026-06-28T19:05:29.749Z",
       "history": [
         {
           "ts": "2026-06-27T20:33:47.301Z",
           "actor": "system",
           "action": "status:planned→ready",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-28T19:05:29.749Z",
+          "actor": "engorg_perf",
+          "action": "claimed (was ready)",
           "note": ""
         }
       ]
@@ -7405,8 +7411,8 @@
       "epicId": "epic_1782592442140_3",
       "domain": "backend",
       "priority": "high",
-      "status": "ready",
-      "assignedTo": null,
+      "status": "claimed",
+      "assignedTo": "engorg_perf",
       "reviewerIds": [
         "engorg_code_review"
       ],
@@ -7417,16 +7423,22 @@
       "blockerIds": [],
       "approvalId": null,
       "reviewId": null,
-      "claimedAt": null,
+      "claimedAt": "2026-06-28T19:06:48.076Z",
       "startedAt": null,
       "completedAt": null,
       "createdAt": "2026-06-27T20:34:02.146Z",
-      "updatedAt": "2026-06-27T20:34:02.147Z",
+      "updatedAt": "2026-06-28T19:06:48.076Z",
       "history": [
         {
           "ts": "2026-06-27T20:34:02.147Z",
           "actor": "engorg_architect",
           "action": "status:planned→ready",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-28T19:06:48.076Z",
+          "actor": "engorg_perf",
+          "action": "claimed (was ready)",
           "note": ""
         }
       ]
@@ -7866,8 +7878,8 @@
       "epicId": null,
       "domain": "backend",
       "priority": "high",
-      "status": "ready",
-      "assignedTo": null,
+      "status": "claimed",
+      "assignedTo": "engorg_perf",
       "reviewerIds": [],
       "techPlan": null,
       "missionId": null,
@@ -7876,16 +7888,22 @@
       "blockerIds": [],
       "approvalId": null,
       "reviewId": null,
-      "claimedAt": null,
+      "claimedAt": "2026-06-28T19:07:09.711Z",
       "startedAt": null,
       "completedAt": null,
       "createdAt": "2026-06-27T20:34:02.879Z",
-      "updatedAt": "2026-06-27T20:34:02.880Z",
+      "updatedAt": "2026-06-28T19:07:09.711Z",
       "history": [
         {
           "ts": "2026-06-27T20:34:02.880Z",
           "actor": "system",
           "action": "status:planned→ready",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-28T19:07:09.711Z",
+          "actor": "engorg_perf",
+          "action": "claimed (was ready)",
           "note": ""
         }
       ]
@@ -8107,6 +8125,11 @@
       "wi_1782532055812_h",
       "wi_1782532409896_h",
       "wi_1782532638875_h"
+    ],
+    "engorg_perf": [
+      "wi_1782592427300_1",
+      "wi_1782592442146_5",
+      "wi_1782592442879_1"
     ]
   },
   "blockers": [
@@ -9299,7 +9322,10 @@
     "wi_1782592426575_5": "engorg_backend",
     "wi_1782532588043_2": "engorg_frontend",
     "wi_1782532638875_h": "engorg_devops",
-    "wi_1782532409890_7": "engorg_docs"
+    "wi_1782532409890_7": "engorg_docs",
+    "wi_1782592427300_1": "engorg_perf",
+    "wi_1782592442146_5": "engorg_perf",
+    "wi_1782592442879_1": "engorg_perf"
   },
   "reviews": [
     {

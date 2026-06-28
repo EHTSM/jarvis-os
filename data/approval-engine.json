@@ -227,14 +227,68 @@
       "workflowId": "wf_eng_code_review",
       "status": "approved",
       "createdAt": "2026-06-28T17:47:32.428Z"
+    },
+    "aq_1782673665003_vg42": {
+      "reqId": "aq_1782673665003_vg42",
+      "workflowId": "wf_mkt_email_campaign",
+      "status": "pending",
+      "createdAt": "2026-06-28T19:07:45.023Z"
+    },
+    "aq_1782673665024_404p": {
+      "reqId": "aq_1782673665024_404p",
+      "workflowId": "wf_biz_churn_detect",
+      "status": "rejected",
+      "createdAt": "2026-06-28T19:07:45.043Z"
+    },
+    "aq_1782673665118_je4r": {
+      "reqId": "aq_1782673665118_je4r",
+      "workflowId": "wf_mkt_social_post",
+      "status": "approved",
+      "createdAt": "2026-06-28T19:07:45.138Z"
+    },
+    "aq_1782673665182_g3tc": {
+      "reqId": "aq_1782673665182_g3tc",
+      "workflowId": "wf_eng_code_review",
+      "status": "approved",
+      "createdAt": "2026-06-28T19:07:45.201Z"
+    },
+    "aq_1782673665244_wbfc": {
+      "reqId": "aq_1782673665244_wbfc",
+      "workflowId": "wf_ops_error_triage",
+      "status": "auto_approved",
+      "createdAt": "2026-06-28T19:07:45.261Z"
+    },
+    "aq_1782673665263_lb7q": {
+      "reqId": "aq_1782673665263_lb7q",
+      "workflowId": "wf_deploy_backend_health",
+      "status": "auto_approved",
+      "createdAt": "2026-06-28T19:07:45.281Z"
+    },
+    "aq_1782673665281_bfwn": {
+      "reqId": "aq_1782673665281_bfwn",
+      "workflowId": "wf_mkt_email_campaign",
+      "status": "rejected",
+      "createdAt": "2026-06-28T19:07:45.300Z"
+    },
+    "aq_1782673665321_67sw": {
+      "reqId": "aq_1782673665321_67sw",
+      "workflowId": "wf_mkt_social_post",
+      "status": "approved",
+      "createdAt": "2026-06-28T19:07:45.340Z"
+    },
+    "aq_1782673665382_tmhj": {
+      "reqId": "aq_1782673665382_tmhj",
+      "workflowId": "wf_eng_code_review",
+      "status": "approved",
+      "createdAt": "2026-06-28T19:07:45.401Z"
     }
   },
   "stats": {
-    "requested": 38,
-    "approved": 17,
-    "rejected": 8,
-    "autoApproved": 8,
-    "resumed": 17,
+    "requested": 47,
+    "approved": 21,
+    "rejected": 10,
+    "autoApproved": 10,
+    "resumed": 21,
     "verified": 0,
     "minutesSaved": 0
   }

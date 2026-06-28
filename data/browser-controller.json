@@ -307,6 +307,39 @@
       "openedAt": "2026-06-28T17:47:50.256Z",
       "closedAt": null,
       "title": null
+    },
+    "bc_1782673669371_6fx": {
+      "tabId": "bc_1782673669371_6fx",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "browserName": "Google Chrome",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-06-28T19:07:49.371Z",
+      "closedAt": null,
+      "title": null
+    },
+    "bc_1782673669372_z7n": {
+      "tabId": "bc_1782673669372_z7n",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "closed",
+      "openedAt": "2026-06-28T19:07:49.372Z",
+      "closedAt": "2026-06-28T19:07:49.372Z",
+      "title": null
+    },
+    "bc_1782673686375_j37": {
+      "tabId": "bc_1782673686375_j37",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-06-28T19:08:06.375Z",
+      "closedAt": null,
+      "title": null
     }
   },
   "history": [
@@ -757,13 +790,62 @@
       "url": "https://facade.example.com",
       "browserId": "playwright_chromium",
       "ts": "2026-06-28T17:47:50.256Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782673669371_6fx",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "ts": "2026-06-28T19:07:49.371Z"
+    },
+    {
+      "event": "switch_tab",
+      "tabId": "bc_1782673669371_6fx",
+      "url": "https://example.com",
+      "ts": "2026-06-28T19:07:49.372Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782673669372_z7n",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-06-28T19:07:49.372Z"
+    },
+    {
+      "event": "close_tab",
+      "tabId": "bc_1782673669372_z7n",
+      "ts": "2026-06-28T19:07:49.372Z"
+    },
+    {
+      "event": "inspect_page",
+      "tabId": "bc_1782673669371_6fx",
+      "query": "test query",
+      "ts": "2026-06-28T19:07:49.373Z"
+    },
+    {
+      "event": "authenticate",
+      "service": "github",
+      "profileId": "default",
+      "ts": "2026-06-28T19:07:53.544Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": "Click Pay now and confirm payment",
+      "ts": "2026-06-28T19:07:53.548Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782673686375_j37",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-06-28T19:08:06.375Z"
     }
   ],
   "stats": {
-    "openTabs": 28,
-    "closedTabs": 9,
-    "screenshots": 48,
-    "workflows": 9,
-    "authentications": 9
+    "openTabs": 31,
+    "closedTabs": 10,
+    "screenshots": 54,
+    "workflows": 10,
+    "authentications": 10
   }
 }
