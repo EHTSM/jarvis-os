@@ -98,6 +98,39 @@
       "openedAt": "2026-06-28T12:18:59.387Z",
       "closedAt": "2026-06-28T12:18:59.387Z",
       "title": null
+    },
+    "bc_1782649161408_f1v": {
+      "tabId": "bc_1782649161408_f1v",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-06-28T12:19:21.408Z",
+      "closedAt": null,
+      "title": null
+    },
+    "bc_1782649175522_2ra": {
+      "tabId": "bc_1782649175522_2ra",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "browserName": "Google Chrome",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-06-28T12:19:35.522Z",
+      "closedAt": null,
+      "title": null
+    },
+    "bc_1782649175524_f54": {
+      "tabId": "bc_1782649175524_f54",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "closed",
+      "openedAt": "2026-06-28T12:19:35.524Z",
+      "closedAt": "2026-06-28T12:19:35.524Z",
+      "title": null
     }
   },
   "history": [
@@ -247,13 +280,62 @@
       "event": "execute_workflow",
       "intent": "Click Pay now and confirm payment",
       "ts": "2026-06-28T12:19:03.478Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782649161408_f1v",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-06-28T12:19:21.408Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782649175522_2ra",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "ts": "2026-06-28T12:19:35.523Z"
+    },
+    {
+      "event": "switch_tab",
+      "tabId": "bc_1782649175522_2ra",
+      "url": "https://example.com",
+      "ts": "2026-06-28T12:19:35.524Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782649175524_f54",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-06-28T12:19:35.524Z"
+    },
+    {
+      "event": "close_tab",
+      "tabId": "bc_1782649175524_f54",
+      "ts": "2026-06-28T12:19:35.524Z"
+    },
+    {
+      "event": "inspect_page",
+      "tabId": "bc_1782649175522_2ra",
+      "query": "test query",
+      "ts": "2026-06-28T12:19:35.525Z"
+    },
+    {
+      "event": "authenticate",
+      "service": "github",
+      "profileId": "default",
+      "ts": "2026-06-28T12:19:36.697Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": "Click Pay now and confirm payment",
+      "ts": "2026-06-28T12:19:36.701Z"
     }
   ],
   "stats": {
-    "openTabs": 9,
-    "closedTabs": 3,
-    "screenshots": 12,
-    "workflows": 3,
-    "authentications": 3
+    "openTabs": 12,
+    "closedTabs": 4,
+    "screenshots": 18,
+    "workflows": 4,
+    "authentications": 4
   }
 }
