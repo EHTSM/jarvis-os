@@ -68,7 +68,8 @@ test("getAgent returns null for unknown id", () => {
 });
 
 test("findBySkills returns scored agents", () => {
-  const agents = se.findBySkills(["backend", "testing"], { limit: 5 });
+  // available:false to include busy agents (previous test runs may have set workload > 0)
+  const agents = se.findBySkills(["backend", "testing"], { available: false, limit: 5 });
   assert(Array.isArray(agents), "not array");
   assert(agents.length > 0, "no agents found");
   assert(typeof agents[0].coverageScore === "number", "no coverageScore");

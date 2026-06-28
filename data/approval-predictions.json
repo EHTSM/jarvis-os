@@ -107,13 +107,48 @@
       "ts": "2026-06-28T17:47:00.101Z",
       "actualOutcome": "approved",
       "wasCorrect": true
+    },
+    {
+      "id": "ap_1782673703981_9jl",
+      "workflowId": "wf_doc_update",
+      "ok": true,
+      "predictedOutcome": "approved",
+      "approveProbability": 0.83,
+      "rejectProbability": 0.17,
+      "confidence": 0.42,
+      "shouldAutoApprove": false,
+      "autoApproveThreshold": 0.88,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance."
+      ],
+      "features": {
+        "risk": "low",
+        "domain": "documentation",
+        "workflowId": "wf_doc_update",
+        "riskTolerance": 1,
+        "automationPref": 0.8,
+        "trustScore": 65,
+        "domainApprovalRate": 0.7,
+        "highRiskRate": 0.3333333333333333,
+        "correctionFreq": 0.17857142857142858,
+        "avgSpeedMs": 8265,
+        "policyRisk": "medium",
+        "policyThreshold": null,
+        "historicApproveRate": 0.3382352941176471,
+        "hasContext": false
+      },
+      "routed": "founder_required",
+      "resolvedAt": "2026-06-28T19:08:23.982Z",
+      "ts": "2026-06-28T19:08:23.981Z",
+      "actualOutcome": "approved",
+      "wasCorrect": true
     }
   ],
   "stats": {
-    "total": 3,
-    "correct": 3,
+    "total": 4,
+    "correct": 4,
     "autoApproved": 0,
-    "manualRequired": 3
+    "manualRequired": 4
   },
-  "updatedAt": "2026-06-28T17:47:00.101Z"
+  "updatedAt": "2026-06-28T19:08:23.982Z"
 }

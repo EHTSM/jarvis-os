@@ -1,51 +1,51 @@
 {
   "patterns": {
     "high_risk_approval_rate": {
-      "rate": 0.3,
-      "sampleSize": 10,
+      "rate": 0.2857142857142857,
+      "sampleSize": 14,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:07:23.981Z"
+      "updatedAt": "2026-06-28T19:08:43.511Z"
     },
     "deployment_approval_rate": {
       "rate": 1,
-      "sampleSize": 14,
+      "sampleSize": 20,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:07:23.981Z"
+      "updatedAt": "2026-06-28T19:08:43.511Z"
     },
     "ui_approval_rate": {
       "rate": 1,
-      "sampleSize": 3,
-      "confidence": 0.3,
-      "updatedAt": "2026-06-28T19:07:23.981Z"
+      "sampleSize": 4,
+      "confidence": 0.4,
+      "updatedAt": "2026-06-28T19:08:43.511Z"
     },
     "security_approval_rate": {
       "rate": 0,
-      "sampleSize": 7,
-      "confidence": 0.7,
-      "updatedAt": "2026-06-28T19:07:23.981Z"
+      "sampleSize": 10,
+      "confidence": 1,
+      "updatedAt": "2026-06-28T19:08:43.511Z"
     },
     "avg_decision_speed_ms": {
-      "avgMs": 8437,
-      "sampleSize": 19,
-      "confidence": 0.95,
-      "updatedAt": "2026-06-28T19:07:23.981Z"
+      "avgMs": 7874,
+      "sampleSize": 28,
+      "confidence": 1,
+      "updatedAt": "2026-06-28T19:08:43.511Z"
     },
     "weekend_decision_rate": {
-      "rate": 1,
-      "confidence": 0.8333333333333334,
-      "updatedAt": "2026-06-28T19:07:23.981Z"
+      "rate": 0.6944444444444444,
+      "confidence": 1,
+      "updatedAt": "2026-06-28T19:08:43.511Z"
     },
     "after_hours_decision_rate": {
-      "rate": 0.44,
-      "confidence": 0.8333333333333334,
-      "updatedAt": "2026-06-28T19:07:23.981Z"
+      "rate": 0.6111111111111112,
+      "confidence": 1,
+      "updatedAt": "2026-06-28T19:08:43.511Z"
     },
     "correction_frequency": {
-      "rate": 0.16,
-      "sampleSize": 25,
+      "rate": 0.19444444444444445,
+      "sampleSize": 36,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:07:23.981Z"
+      "updatedAt": "2026-06-28T19:08:43.511Z"
     }
   },
-  "updatedAt": "2026-06-28T19:07:23.981Z"
+  "updatedAt": "2026-06-28T19:08:43.511Z"
 }
