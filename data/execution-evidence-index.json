@@ -1969,5 +1969,113 @@
     "outcome": "success",
     "minutesSaved": 2,
     "domain": "editor"
+  },
+  {
+    "evidenceId": "ev_1782649533565_44ji",
+    "workflowId": "cee_editor",
+    "executionId": "cee_1782649529039_wg0",
+    "ts": "2026-06-28T12:25:33.565Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "editor"
+  },
+  {
+    "evidenceId": "ev_1782649538494_tvw7",
+    "workflowId": "cee_editor",
+    "executionId": "cee_1782649531922_0uf",
+    "ts": "2026-06-28T12:25:38.494Z",
+    "outcome": "success",
+    "minutesSaved": 2,
+    "domain": "editor"
+  },
+  {
+    "evidenceId": "ev_1782649539714_dg3a",
+    "workflowId": "cee_deployment",
+    "executionId": "cee_1782649531943_yqw",
+    "ts": "2026-06-28T12:25:39.714Z",
+    "outcome": "success",
+    "minutesSaved": 10,
+    "domain": "deployment"
+  },
+  {
+    "evidenceId": "ev_1782649543775_eaqj",
+    "workflowId": "cee_engineering",
+    "executionId": "cee_1782649529049_p73",
+    "ts": "2026-06-28T12:25:43.775Z",
+    "outcome": "partial",
+    "minutesSaved": 15,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782649543894_7wys",
+    "workflowId": "cee_engineering",
+    "executionId": "cee_1782649529054_4br",
+    "ts": "2026-06-28T12:25:43.894Z",
+    "outcome": "success",
+    "minutesSaved": 30,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782649544014_lic1",
+    "workflowId": "cee_engineering",
+    "executionId": "cee_1782649531930_abi",
+    "ts": "2026-06-28T12:25:44.014Z",
+    "outcome": "partial",
+    "minutesSaved": 15,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782649544132_omnw",
+    "workflowId": "cee_engineering",
+    "executionId": "cee_1782649531949_1da",
+    "ts": "2026-06-28T12:25:44.132Z",
+    "outcome": "success",
+    "minutesSaved": 30,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782649544251_g9hl",
+    "workflowId": "cee_deployment",
+    "executionId": "cee_1782649531954_o5k",
+    "ts": "2026-06-28T12:25:44.251Z",
+    "outcome": "partial",
+    "minutesSaved": 25,
+    "domain": "deployment"
+  },
+  {
+    "evidenceId": "ev_1782649544379_ov1g",
+    "workflowId": "cee_browser",
+    "executionId": "cee_1782649529044_mkw",
+    "ts": "2026-06-28T12:25:44.379Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "browser"
+  },
+  {
+    "evidenceId": "ev_1782649544499_acx9",
+    "workflowId": "cee_browser",
+    "executionId": "cee_1782649531936_s8s",
+    "ts": "2026-06-28T12:25:44.499Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "browser"
+  },
+  {
+    "evidenceId": "ev_1782649570592_4l3y",
+    "workflowId": "cee_deployment",
+    "executionId": "cee_1782649566924_3e9",
+    "ts": "2026-06-28T12:26:10.592Z",
+    "outcome": "success",
+    "minutesSaved": 10,
+    "domain": "deployment"
+  },
+  {
+    "evidenceId": "ev_1782649571102_ou6n",
+    "workflowId": "cee_editor",
+    "executionId": "cee_1782649567215_p70",
+    "ts": "2026-06-28T12:26:11.102Z",
+    "outcome": "success",
+    "minutesSaved": 2,
+    "domain": "editor"
   }
 ]
