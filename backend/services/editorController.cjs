@@ -92,7 +92,7 @@ async function searchCode(query, opts = {}) {
 
   if (lcs) {
     try {
-      const results = await lcs.search?.(query, opts);
+      const results = await lcs.search?.(query);
       return { ok: true, query, results: results?.results || [], total: results?.total || 0 };
     } catch (e) {
       return { ok: false, error: e.message };

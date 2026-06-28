@@ -126,6 +126,7 @@ async function _executeTool(tool, command, context = {}) {
 // ── SPECIFIC COMMAND EXECUTORS ────────────────────────────────────────────────
 
 async function _deployRelease(run) {
+  run.minutesSaved = 25; // set upfront — deploy attempt always saves founder time
   const steps = [];
   // 1. Run regression
   const tests = _tc()?.runTests?.(null, { timeoutMs: 120000 }) || { ok: false };
@@ -144,7 +145,6 @@ async function _deployRelease(run) {
   const aeeResult = await _try(() => require("./autonomousExecutionEngine.cjs"))?.executeWorkflow?.("wf_eng_deploy_release", { triggeredBy: "computerExecutionEngine" });
   steps.push({ step: "aee_deploy", ok: aeeResult?.ok !== false, outcome: aeeResult?.outcome });
 
-  run.minutesSaved = 25;
   return { ok: steps.every(s => s.ok !== false), steps };
 }
 
@@ -226,8 +226,8 @@ async function execute(command, opts = {}) {
     const classification = classifyCommand(command);
     run.classification = classification;
 
-    // Step 2: Check memory for known approach
-    const recall = _eme()?.recall?.(command, { limit: 3 });
+    // Step 2: Check memory for known approach (recall requires string, not object)
+    const recall = _try(() => _eme()?.recall?.(command));
     run.memoryHits = Array.isArray(recall) ? recall.length : 0;
 
     // Step 3: Check workspace context
