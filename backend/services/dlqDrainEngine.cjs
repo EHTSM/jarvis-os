@@ -112,6 +112,12 @@ function drain(opts = {}) {
             executed: null, byStrategy: {}, byError: {}, items: [], avgConfidence: 0, reproducible: true,
             note: "DLQ is empty — nothing to drain" };
     }
+    if (items.length === 0) {
+        return { ok: true, dryRun, startedAt, completedAt: new Date().toISOString(),
+            totalInDLQ: 0, totalProcessed: 0, summary: { purge:0, requeue:0, park:0, archive:0 },
+            executed: null, byStrategy: {}, byError: {}, items: [], avgConfidence: 0, reproducible: true,
+            note: "DLQ is empty — nothing to drain" };
+    }
 
     // ── Classify all items ────────────────────────────────────────────────
     const classified = items.map(item => {
