@@ -18072,7 +18072,76 @@
       },
       "confidence": 0.8,
       "createdAt": "2026-06-28T19:39:54.981Z"
+    },
+    {
+      "id": "arpt_1782675906989_blo4",
+      "title": "Autonomous Cycle 18 Report",
+      "type": "cycle",
+      "cycle": 18,
+      "summary": "Cycle 18: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:45:06.989Z"
+    },
+    {
+      "id": "arpt_1782676223868_l958",
+      "title": "Autonomous Cycle 19 Report",
+      "type": "cycle",
+      "cycle": 19,
+      "summary": "Cycle 19: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:50:23.868Z"
+    },
+    {
+      "id": "arpt_1782677866290_j1ak",
+      "title": "Autonomous Cycle 20 Report",
+      "type": "cycle",
+      "cycle": 20,
+      "summary": "Cycle 20: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T20:17:46.290Z"
     }
   ],
-  "totalReports": 800
+  "totalReports": 803
 }

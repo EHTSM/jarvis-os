@@ -1,0 +1,49 @@
+{
+  "checks": [
+    {
+      "id": "health_1782676260747_o2ym",
+      "workspaceId": "ws_1782676260732_ccrh",
+      "workspaceType": "browser",
+      "score": 100,
+      "latencyMs": 120,
+      "ts": "2026-06-28T19:51:00.747Z"
+    },
+    {
+      "id": "health_1782676260748_gxeq",
+      "workspaceId": "ws_1782676260732_cv5o",
+      "workspaceType": "terminal",
+      "score": 53,
+      "latencyMs": 8000,
+      "ts": "2026-06-28T19:51:00.748Z"
+    }
+  ],
+  "alerts": [],
+  "metrics": {
+    "ws_1782676260732_ccrh": {
+      "latencies": [
+        120
+      ],
+      "errors": 0,
+      "pings": 1,
+      "avgLatencyMs": 120,
+      "errorRate": 0,
+      "lastPing": "2026-06-28T19:51:00.747Z"
+    },
+    "ws_1782676260732_cv5o": {
+      "latencies": [
+        8000
+      ],
+      "errors": 0,
+      "pings": 1,
+      "avgLatencyMs": 8000,
+      "errorRate": 0.9,
+      "lastPing": "2026-06-28T19:51:00.748Z"
+    }
+  },
+  "stats": {
+    "checksRun": 2,
+    "alertsGenerated": 0,
+    "recoveryTriggered": 0
+  },
+  "updatedAt": "2026-06-28T19:51:00.748Z"
+}

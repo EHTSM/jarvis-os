@@ -1,178 +1,5 @@
 [
   {
-    "recId": "bgrec_1782437253763_2ji",
-    "source": "incidentObserver",
-    "title": "15 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 15,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-26T01:27:33.741Z",
-          "recId": "heal_1782437253741_kk6",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T01:27:33.746Z",
-          "recId": "heal_1782437253746_kk7",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T01:27:33.749Z",
-          "recId": "heal_1782437253749_kk8",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-26T01:27:33.763Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782438249456_2jj",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "6 file(s) have uncommitted changes. Recent log: 6c8edd6 fix(ops): operatorAudit crash — TypeError: Cannot read properties of undefined (reading 'on')",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/dead-letter.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-26T01:44:09.456Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782438249549_2jk",
-    "source": "incidentObserver",
-    "title": "15 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 15,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-26T01:44:09.545Z",
-          "recId": "heal_1782438249545_kkb",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T01:44:09.546Z",
-          "recId": "heal_1782438249546_kkc",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T01:44:09.547Z",
-          "recId": "heal_1782438249547_kkd",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-26T01:44:09.549Z",
-    "acknowledged": false
-  },
-  {
-    "recId": "bgrec_1782439320104_2jl",
-    "source": "incidentObserver",
-    "title": "10 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 10,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-26T02:02:00.094Z",
-          "recId": "heal_1782439320094_kkg",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T02:02:00.097Z",
-          "recId": "heal_1782439320097_kkh",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-26T02:02:00.099Z",
-          "recId": "heal_1782439320099_kki",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-26T02:02:00.104Z",
-    "acknowledged": false
-  },
-  {
     "recId": "bgrec_1782439320318_2jm",
     "source": "repoObserver",
     "title": "Uncommitted changes in jarvis-os",
@@ -15954,6 +15781,102 @@
       ]
     },
     "createdAt": "2026-06-28T19:38:06.334Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782675786352_72",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "26 file(s) have uncommitted changes. Recent log: f253eff feat(post-omega-p8): Autonomous Company Factory — 6 services, 47 routes, 56/56 tests",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/agent-runs.json",
+        " M data/autonomous-cycles.json",
+        " M data/autonomous/control.json",
+        " M data/civilization/context.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/ecosystem/context.json",
+        " M data/enterprise/context.json",
+        " M data/enterprise/governance.json"
+      ]
+    },
+    "createdAt": "2026-06-28T19:43:06.352Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782676086350_73",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "41 file(s) have uncommitted changes. Recent log: f253eff feat(post-omega-p8): Autonomous Company Factory — 6 services, 47 routes, 56/56 tests",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/agent-runs.json",
+        " M data/autonomous-cycles.json",
+        " M data/autonomous/control.json",
+        " M data/autonomous/decisions.json",
+        " M data/autonomous/loop.json",
+        " M data/autonomous/opportunities.json",
+        " M data/autonomous/optimizations.json",
+        " M data/autonomous/reports.json",
+        " M data/background-recommendations.json"
+      ]
+    },
+    "createdAt": "2026-06-28T19:48:06.350Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782677247852_74",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "56 file(s) have uncommitted changes. Recent log: f253eff feat(post-omega-p8): Autonomous Company Factory — 6 services, 47 routes, 56/56 tests",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/agent-runs.json",
+        " M data/autonomous-cycles.json",
+        " M data/autonomous/control.json",
+        " M data/autonomous/decisions.json",
+        " M data/autonomous/loop.json",
+        " M data/autonomous/opportunities.json",
+        " M data/autonomous/optimizations.json",
+        " M data/autonomous/reports.json"
+      ]
+    },
+    "createdAt": "2026-06-28T20:07:27.852Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782677786218_75",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "56 file(s) have uncommitted changes. Recent log: f253eff feat(post-omega-p8): Autonomous Company Factory — 6 services, 47 routes, 56/56 tests",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M backend/routes/index.js",
+        " M data/agent-runs.json",
+        " M data/autonomous-cycles.json",
+        " M data/autonomous/control.json",
+        " M data/autonomous/decisions.json",
+        " M data/autonomous/loop.json",
+        " M data/autonomous/opportunities.json",
+        " M data/autonomous/optimizations.json",
+        " M data/autonomous/reports.json"
+      ]
+    },
+    "createdAt": "2026-06-28T20:16:26.218Z",
     "acknowledged": false
   }
 ]

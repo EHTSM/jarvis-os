@@ -1,0 +1,393 @@
+{
+  "workspaces": [
+    {
+      "id": "ws_1782676260729_ib2s",
+      "type": "local",
+      "label": "My Local P9",
+      "category": "local",
+      "capabilities": [
+        "files",
+        "editor",
+        "terminal",
+        "git",
+        "build"
+      ],
+      "config": {},
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.733Z",
+      "registeredAt": "2026-06-28T19:51:00.732Z",
+      "updatedAt": "2026-06-28T19:51:00.733Z"
+    },
+    {
+      "id": "ws_1782676260732_ccrh",
+      "type": "browser",
+      "label": "Chrome Browser P9",
+      "category": "remote",
+      "capabilities": [
+        "tabs",
+        "dom",
+        "screenshot",
+        "auth",
+        "forms"
+      ],
+      "config": {},
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [
+        "mission_test_p9"
+      ],
+      "lastSeen": "2026-06-28T19:51:00.747Z",
+      "registeredAt": "2026-06-28T19:51:00.732Z",
+      "updatedAt": "2026-06-28T19:51:00.747Z"
+    },
+    {
+      "id": "ws_1782676260732_cv5o",
+      "type": "terminal",
+      "label": "Zsh Terminal P9",
+      "category": "local",
+      "capabilities": [
+        "shell",
+        "scripts",
+        "processes",
+        "env",
+        "pipes"
+      ],
+      "config": {},
+      "metadata": {},
+      "status": "active",
+      "health": 53,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.748Z",
+      "registeredAt": "2026-06-28T19:51:00.732Z",
+      "updatedAt": "2026-06-28T19:51:00.748Z"
+    },
+    {
+      "id": "ws_1782676260733_0ty7",
+      "type": "docker",
+      "label": "Temp Docker P9",
+      "category": "local",
+      "capabilities": [
+        "containers",
+        "images",
+        "compose",
+        "registry",
+        "networks"
+      ],
+      "config": {},
+      "metadata": {},
+      "status": "offline",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.733Z",
+      "registeredAt": "2026-06-28T19:51:00.733Z",
+      "updatedAt": "2026-06-28T19:51:00.734Z"
+    },
+    {
+      "id": "ws_1782676260780_c661",
+      "type": "local",
+      "label": "Local Workspace",
+      "category": "local",
+      "capabilities": [
+        "files",
+        "editor",
+        "terminal",
+        "git",
+        "build"
+      ],
+      "config": {
+        "path": "/Users/ehtsm/jarvis-os"
+      },
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "registeredAt": "2026-06-28T19:51:00.780Z",
+      "updatedAt": "2026-06-28T19:51:00.780Z"
+    },
+    {
+      "id": "ws_1782676260780_0fzu",
+      "type": "electron",
+      "label": "Electron App",
+      "category": "local",
+      "capabilities": [
+        "desktop",
+        "ipc",
+        "native",
+        "menu",
+        "tray"
+      ],
+      "config": {
+        "port": 3000
+      },
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "registeredAt": "2026-06-28T19:51:00.780Z",
+      "updatedAt": "2026-06-28T19:51:00.780Z"
+    },
+    {
+      "id": "ws_1782676260780_dke3",
+      "type": "browser",
+      "label": "Browser",
+      "category": "remote",
+      "capabilities": [
+        "tabs",
+        "dom",
+        "screenshot",
+        "auth",
+        "forms"
+      ],
+      "config": {
+        "defaultBrowser": "chrome"
+      },
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "registeredAt": "2026-06-28T19:51:00.780Z",
+      "updatedAt": "2026-06-28T19:51:00.780Z"
+    },
+    {
+      "id": "ws_1782676260780_v564",
+      "type": "vscode",
+      "label": "VS Code",
+      "category": "local",
+      "capabilities": [
+        "editor",
+        "extensions",
+        "debugger",
+        "tasks",
+        "git"
+      ],
+      "config": {
+        "extensionHost": true
+      },
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "registeredAt": "2026-06-28T19:51:00.780Z",
+      "updatedAt": "2026-06-28T19:51:00.780Z"
+    },
+    {
+      "id": "ws_1782676260780_6nxd",
+      "type": "terminal",
+      "label": "Terminal",
+      "category": "local",
+      "capabilities": [
+        "shell",
+        "scripts",
+        "processes",
+        "env",
+        "pipes"
+      ],
+      "config": {
+        "shell": "/bin/zsh"
+      },
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "registeredAt": "2026-06-28T19:51:00.780Z",
+      "updatedAt": "2026-06-28T19:51:00.780Z"
+    },
+    {
+      "id": "ws_1782676260780_0drm",
+      "type": "github",
+      "label": "GitHub",
+      "category": "remote",
+      "capabilities": [
+        "repos",
+        "prs",
+        "issues",
+        "actions",
+        "releases"
+      ],
+      "config": {
+        "org": "ooplix"
+      },
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "registeredAt": "2026-06-28T19:51:00.780Z",
+      "updatedAt": "2026-06-28T19:51:00.780Z"
+    },
+    {
+      "id": "ws_1782676260780_bur4",
+      "type": "vps",
+      "label": "VPS / Server",
+      "category": "remote",
+      "capabilities": [
+        "ssh",
+        "deployment",
+        "nginx",
+        "processes",
+        "logs"
+      ],
+      "config": {
+        "provider": "hetzner"
+      },
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "registeredAt": "2026-06-28T19:51:00.780Z",
+      "updatedAt": "2026-06-28T19:51:00.780Z"
+    },
+    {
+      "id": "ws_1782676260781_ct43",
+      "type": "docker",
+      "label": "Docker",
+      "category": "local",
+      "capabilities": [
+        "containers",
+        "images",
+        "compose",
+        "registry",
+        "networks"
+      ],
+      "config": {
+        "socket": "/var/run/docker.sock"
+      },
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.781Z",
+      "registeredAt": "2026-06-28T19:51:00.781Z",
+      "updatedAt": "2026-06-28T19:51:00.781Z"
+    },
+    {
+      "id": "ws_1782676260781_iu9g",
+      "type": "firebase",
+      "label": "Firebase",
+      "category": "cloud",
+      "capabilities": [
+        "auth",
+        "firestore",
+        "storage",
+        "functions",
+        "hosting"
+      ],
+      "config": {
+        "project": "ooplix-prod"
+      },
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.781Z",
+      "registeredAt": "2026-06-28T19:51:00.781Z",
+      "updatedAt": "2026-06-28T19:51:00.781Z"
+    },
+    {
+      "id": "ws_1782676260781_39wf",
+      "type": "supabase",
+      "label": "Supabase",
+      "category": "cloud",
+      "capabilities": [
+        "postgres",
+        "auth",
+        "realtime",
+        "storage",
+        "edge_functions"
+      ],
+      "config": {
+        "project": "ooplix-db"
+      },
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.781Z",
+      "registeredAt": "2026-06-28T19:51:00.781Z",
+      "updatedAt": "2026-06-28T19:51:00.781Z"
+    },
+    {
+      "id": "ws_1782676260781_0lj1",
+      "type": "cloudflare",
+      "label": "Cloudflare",
+      "category": "cloud",
+      "capabilities": [
+        "workers",
+        "pages",
+        "kv",
+        "r2",
+        "dns"
+      ],
+      "config": {
+        "zone": "ooplix.app"
+      },
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.781Z",
+      "registeredAt": "2026-06-28T19:51:00.781Z",
+      "updatedAt": "2026-06-28T19:51:00.781Z"
+    },
+    {
+      "id": "ws_1782676260781_mmy1",
+      "type": "google_cloud",
+      "label": "Google Cloud",
+      "category": "cloud",
+      "capabilities": [
+        "gcs",
+        "run",
+        "functions",
+        "pub_sub",
+        "bigquery"
+      ],
+      "config": {
+        "project": "ooplix-gcp"
+      },
+      "metadata": {},
+      "status": "active",
+      "health": 100,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.781Z",
+      "registeredAt": "2026-06-28T19:51:00.781Z",
+      "updatedAt": "2026-06-28T19:51:00.781Z"
+    },
+    {
+      "id": "ws_1782676260821_ru06",
+      "type": "supabase",
+      "label": "Temp Supabase P9 Recovery",
+      "category": "cloud",
+      "capabilities": [
+        "postgres",
+        "auth",
+        "realtime",
+        "storage",
+        "edge_functions"
+      ],
+      "config": {},
+      "metadata": {},
+      "status": "active",
+      "health": 0,
+      "missions": [],
+      "lastSeen": "2026-06-28T19:51:00.822Z",
+      "registeredAt": "2026-06-28T19:51:00.821Z",
+      "updatedAt": "2026-06-28T19:51:00.822Z"
+    }
+  ],
+  "stats": {
+    "registered": 17,
+    "active": 15,
+    "failed": 1
+  },
+  "updatedAt": "2026-06-28T19:51:00.822Z"
+}

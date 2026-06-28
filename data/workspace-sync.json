@@ -1,0 +1,2799 @@
+{
+  "sessions": [
+    {
+      "id": "sync_1782676260734_nvwi",
+      "type": "context",
+      "missionId": "p9_test_mission",
+      "sourceWorkspaceId": null,
+      "targets": 3,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.735Z"
+    },
+    {
+      "id": "sync_1782676260735_van4",
+      "type": "artifact",
+      "missionId": "p9_artifact_mission",
+      "artifact": {
+        "name": "dist/app.js",
+        "path": "./dist/app.js",
+        "size": 1024
+      },
+      "targets": 3,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "artifact": "dist/app.js",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "artifact": "dist/app.js",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "artifact": "dist/app.js",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.735Z"
+    },
+    {
+      "id": "sync_1782676260736_va61",
+      "type": "env",
+      "missionId": "p9_env_mission",
+      "vars": [
+        "NODE_ENV",
+        "API_URL"
+      ],
+      "targets": 2,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "varsCount": 2,
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "varsCount": 2,
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.740Z"
+    },
+    {
+      "id": "sync_1782676260741_2f7n",
+      "type": "context",
+      "missionId": "p9_full_sync",
+      "sourceWorkspaceId": null,
+      "targets": 3,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.741Z"
+    },
+    {
+      "id": "sync_1782676260741_26wf",
+      "type": "artifact",
+      "missionId": "p9_full_sync",
+      "sourceWorkspaceId": null,
+      "artifact": {
+        "name": "app.js",
+        "path": "./dist/app.js"
+      },
+      "targets": 3,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "artifact": "app.js",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "artifact": "app.js",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "artifact": "app.js",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.741Z"
+    },
+    {
+      "id": "sync_1782676260741_77nd",
+      "type": "env",
+      "missionId": "p9_full_sync",
+      "vars": [
+        "VERSION"
+      ],
+      "targets": 2,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "varsCount": 1,
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "varsCount": 1,
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.743Z"
+    },
+    {
+      "id": "sync_1782676260749_67rv",
+      "type": "context",
+      "missionId": "p9_deploy_test",
+      "sourceWorkspaceId": null,
+      "targets": 3,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.749Z"
+    },
+    {
+      "id": "sync_1782676260761_4m7t",
+      "type": "context",
+      "missionId": "mesh_1782676260761",
+      "sourceWorkspaceId": null,
+      "targets": 3,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.761Z"
+    },
+    {
+      "id": "sync_1782676260768_v5gv",
+      "type": "context",
+      "missionId": "mesh_1782676260768",
+      "sourceWorkspaceId": null,
+      "targets": 3,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.768Z"
+    },
+    {
+      "id": "sync_1782676260784_s6g6",
+      "type": "context",
+      "missionId": "mesh_1782676260784_kflr",
+      "sourceWorkspaceId": null,
+      "targets": 15,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.785Z"
+    },
+    {
+      "id": "sync_1782676260792_4a5v",
+      "type": "context",
+      "missionId": "mesh_1782676260792_0865",
+      "sourceWorkspaceId": null,
+      "targets": 15,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.793Z"
+    },
+    {
+      "id": "sync_1782676260798_e0wd",
+      "type": "context",
+      "missionId": "mesh_1782676260797_ck3i",
+      "sourceWorkspaceId": null,
+      "targets": 15,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.798Z"
+    },
+    {
+      "id": "sync_1782676260805_lutw",
+      "type": "context",
+      "missionId": "mesh_1782676260805_x4ys",
+      "sourceWorkspaceId": null,
+      "targets": 15,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.806Z"
+    },
+    {
+      "id": "sync_1782676260818_hmme",
+      "type": "context",
+      "missionId": "mesh_1782676260818_9aui",
+      "sourceWorkspaceId": null,
+      "targets": 15,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.820Z"
+    },
+    {
+      "id": "sync_1782676260823_vrcq",
+      "type": "context",
+      "missionId": "recovery_ws_1782676260821_ru06",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.825Z"
+    },
+    {
+      "id": "sync_1782676260841_s7o5",
+      "type": "context",
+      "missionId": "mesh_1782676260841_0dtn",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.842Z"
+    },
+    {
+      "id": "sync_1782676260844_mq3a",
+      "type": "context",
+      "missionId": "mesh_1782676260844_kdet",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.845Z"
+    },
+    {
+      "id": "sync_1782676260852_1ilh",
+      "type": "context",
+      "missionId": "mesh_1782676260852_dsy0",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.854Z"
+    },
+    {
+      "id": "sync_1782676260857_un3w",
+      "type": "context",
+      "missionId": "e2e_sync_test",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.857Z"
+    },
+    {
+      "id": "sync_1782676260861_beby",
+      "type": "context",
+      "missionId": "mesh_1782676260861",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.863Z"
+    },
+    {
+      "id": "sync_1782676260864_w7lh",
+      "type": "context",
+      "missionId": "e2e_ctx_propagation",
+      "targets": 7,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.864Z"
+    },
+    {
+      "id": "sync_1782676260865_lbmp",
+      "type": "context",
+      "missionId": "mesh_1782676260865_kxc6",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:00.866Z"
+    },
+    {
+      "id": "sync_1782676263258_k6qp",
+      "type": "context",
+      "missionId": "mesh_1782676260761",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.259Z"
+    },
+    {
+      "id": "sync_1782676263260_do2z",
+      "type": "context",
+      "missionId": "mesh_1782676260792_0865",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.261Z"
+    },
+    {
+      "id": "sync_1782676263262_l0vt",
+      "type": "context",
+      "missionId": "mesh_1782676260818_9aui",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.262Z"
+    },
+    {
+      "id": "sync_1782676263263_sq82",
+      "type": "context",
+      "missionId": "mesh_1782676260841_0dtn",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.264Z"
+    },
+    {
+      "id": "sync_1782676263264_puii",
+      "type": "context",
+      "missionId": "mesh_1782676260852_dsy0",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.265Z"
+    },
+    {
+      "id": "sync_1782676263265_t831",
+      "type": "context",
+      "missionId": "mesh_1782676260861",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.266Z"
+    },
+    {
+      "id": "sync_1782676263267_j4t9",
+      "type": "context",
+      "missionId": "mesh_1782676260865_kxc6",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.267Z"
+    },
+    {
+      "id": "sync_1782676263268_6jrk",
+      "type": "context",
+      "missionId": "mesh_1782676260768",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.268Z"
+    },
+    {
+      "id": "sync_1782676263269_ppd2",
+      "type": "context",
+      "missionId": "mesh_1782676260797_ck3i",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.270Z"
+    },
+    {
+      "id": "sync_1782676263271_t8re",
+      "type": "context",
+      "missionId": "mesh_1782676260844_kdet",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.271Z"
+    },
+    {
+      "id": "sync_1782676263285_8s5g",
+      "type": "context",
+      "missionId": "p9_deploy_test",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.286Z"
+    },
+    {
+      "id": "sync_1782676263286_f3iq",
+      "type": "context",
+      "missionId": "mesh_1782676260784_kflr",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.287Z"
+    },
+    {
+      "id": "sync_1782676263287_mcpe",
+      "type": "context",
+      "missionId": "mesh_1782676260805_x4ys",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.288Z"
+    },
+    {
+      "id": "sync_1782676263288_jhln",
+      "type": "context",
+      "missionId": "e2e_sync_test",
+      "sourceWorkspaceId": null,
+      "targets": 16,
+      "results": [
+        {
+          "workspaceId": "ws_1782676260729_ib2s",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_ccrh",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260732_cv5o",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_c661",
+          "type": "local",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0fzu",
+          "type": "electron",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_dke3",
+          "type": "browser",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_v564",
+          "type": "vscode",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_6nxd",
+          "type": "terminal",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_0drm",
+          "type": "github",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260780_bur4",
+          "type": "vps",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_ct43",
+          "type": "docker",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_iu9g",
+          "type": "firebase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_39wf",
+          "type": "supabase",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_0lj1",
+          "type": "cloudflare",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260781_mmy1",
+          "type": "google_cloud",
+          "ok": true
+        },
+        {
+          "workspaceId": "ws_1782676260821_ru06",
+          "type": "supabase",
+          "ok": true
+        }
+      ],
+      "ts": "2026-06-28T19:51:03.289Z"
+    }
+  ],
+  "snapshots": {
+    "ws_1782676260729_ib2s": {
+      "activeFile": "src/index.ts",
+      "cursor": {
+        "line": 42
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z",
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      }
+    },
+    "ws_1782676260732_ccrh": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260732_cv5o": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260780_c661": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260780_0fzu": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260780_dke3": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260780_v564": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260780_6nxd": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260780_0drm": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260780_bur4": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260781_ct43": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260781_iu9g": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260781_39wf": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260781_0lj1": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260781_mmy1": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    },
+    "ws_1782676260821_ru06": {
+      "missionId": "e2e_sync_test",
+      "context": {
+        "title": "deploy to VPS",
+        "domain": "deployment",
+        "completed": true,
+        "taskCount": 1
+      },
+      "updatedAt": "2026-06-28T19:51:03.289Z"
+    }
+  },
+  "conflicts": [
+    {
+      "id": "sync_1782676260746_nmx6",
+      "missionId": "p9_conflict",
+      "type": "file",
+      "workspaceA": "vscode",
+      "workspaceB": "local",
+      "description": "conflicting edits to app.ts",
+      "status": "open",
+      "resolution": null,
+      "recordedAt": "2026-06-28T19:51:00.746Z"
+    },
+    {
+      "id": "sync_1782676260747_8cch",
+      "missionId": "p9_resolve",
+      "type": "env",
+      "workspaceA": "terminal",
+      "workspaceB": "vscode",
+      "description": "env var mismatch",
+      "status": "resolved",
+      "resolution": "use_vscode_value",
+      "recordedAt": "2026-06-28T19:51:00.747Z",
+      "winner": "vscode",
+      "resolvedAt": "2026-06-28T19:51:00.747Z"
+    }
+  ],
+  "stats": {
+    "syncsPerformed": 36,
+    "conflictsResolved": 1,
+    "failedSyncs": 0
+  },
+  "updatedAt": "2026-06-28T19:51:03.289Z"
+}

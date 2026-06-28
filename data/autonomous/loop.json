@@ -1,7 +1,7 @@
 {
   "running": false,
-  "cycle": 17,
-  "lastCycleAt": "2026-06-28T19:39:44.766Z",
+  "cycle": 20,
+  "lastCycleAt": "2026-06-28T20:17:22.799Z",
   "history": [
     {
       "cycle": 1,
@@ -152,6 +152,36 @@
       "threatsFound": 0,
       "error": null,
       "at": "2026-06-28T19:39:54.984Z"
+    },
+    {
+      "cycle": 18,
+      "summary": "Cycle 18: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "health": 93,
+      "decisionsThisCycle": 2,
+      "opportunitiesFound": 2,
+      "threatsFound": 0,
+      "error": null,
+      "at": "2026-06-28T19:45:06.992Z"
+    },
+    {
+      "cycle": 19,
+      "summary": "Cycle 19: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "health": 93,
+      "decisionsThisCycle": 2,
+      "opportunitiesFound": 2,
+      "threatsFound": 0,
+      "error": null,
+      "at": "2026-06-28T19:50:23.874Z"
+    },
+    {
+      "cycle": 20,
+      "summary": "Cycle 20: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
+      "health": 93,
+      "decisionsThisCycle": 2,
+      "opportunitiesFound": 2,
+      "threatsFound": 0,
+      "error": null,
+      "at": "2026-06-28T20:17:46.295Z"
     }
   ],
   "errors": []

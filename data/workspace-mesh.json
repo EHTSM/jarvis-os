@@ -1,0 +1,27 @@
+{
+  "bootstrapped": true,
+  "executions": [
+    {
+      "id": "mesh_1782676260857_fxue",
+      "command": "deploy to VPS",
+      "domain": "deployment",
+      "missionId": "e2e_sync_test",
+      "steps": 1,
+      "status": "completed",
+      "minutesSaved": 12,
+      "recoveries": 1,
+      "meshHealth": {
+        "healthy": 16,
+        "total": 17
+      },
+      "ts": "2026-06-28T19:51:03.290Z"
+    }
+  ],
+  "stats": {
+    "totalExecutions": 2,
+    "successfulExecutions": 1,
+    "totalMinutesSaved": 12,
+    "workspacesManaged": 16
+  },
+  "updatedAt": "2026-06-28T19:51:03.290Z"
+}
