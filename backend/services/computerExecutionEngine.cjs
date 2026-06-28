@@ -253,7 +253,8 @@ async function execute(command, opts = {}) {
       wc?.setActiveProject?.(projectPath);
       run.minutesSaved = 2;
     } else if (/commit.*changes|git.*commit/i.test(command)) {
-      result = _ec()?.commitChanges?.({ message: command, addAll: true });
+      result = _ec()?.commitChanges?.({ message: command, addAll: true }) || { ok: false };
+      if (!result.ok && result.error?.includes("Nothing to commit")) result.ok = true; // clean tree is not a failure
       run.minutesSaved = 5;
     } else if (/health.*check|verify.*env/i.test(command)) {
       result = _tc()?.verify?.("general") || { ok: true };

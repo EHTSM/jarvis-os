@@ -253,6 +253,9 @@ function commitChanges({ message, files = [], addAll = false } = {}) {
     } else if (files.length > 0) {
       execSync(`git add ${files.map(f => `"${f}"`).join(" ")}`, { cwd: ROOT, timeout: 10000, stdio: "ignore" });
     }
+    // Guard: abort if nothing staged to avoid empty commits
+    const staged = execSync("git diff --cached --name-only", { cwd: ROOT, timeout: 5000, stdio: ["ignore","pipe","pipe"] }).toString().trim();
+    if (!staged) return { ok: false, error: "Nothing to commit — working tree clean" };
     const result = execSync(`git commit -m "${message.replace(/"/g, '\\"')}"`, { cwd: ROOT, timeout: 15000, stdio: ["ignore","pipe","pipe"] }).toString().trim();
     const d = _load();
     d.stats.commits++;
