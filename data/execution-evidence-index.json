@@ -3022,5 +3022,149 @@
     "outcome": "success",
     "minutesSaved": 2,
     "domain": "editor"
+  },
+  {
+    "evidenceId": "ev_1782673916689_e4we",
+    "workflowId": "cee_editor",
+    "executionId": "cee_1782673911842_zg9",
+    "ts": "2026-06-28T19:11:56.689Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "editor"
+  },
+  {
+    "evidenceId": "ev_1782673921705_g7ty",
+    "workflowId": "cee_editor",
+    "executionId": "cee_1782673914775_ejx",
+    "ts": "2026-06-28T19:12:01.705Z",
+    "outcome": "success",
+    "minutesSaved": 2,
+    "domain": "editor"
+  },
+  {
+    "evidenceId": "ev_1782673922937_ejcm",
+    "workflowId": "cee_deployment",
+    "executionId": "cee_1782673914798_b1m",
+    "ts": "2026-06-28T19:12:02.937Z",
+    "outcome": "success",
+    "minutesSaved": 10,
+    "domain": "deployment"
+  },
+  {
+    "evidenceId": "ev_1782673927388_90yf",
+    "workflowId": "cee_engineering",
+    "executionId": "cee_1782673911852_42x",
+    "ts": "2026-06-28T19:12:07.388Z",
+    "outcome": "partial",
+    "minutesSaved": 15,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673927519_gm0y",
+    "workflowId": "cee_engineering",
+    "executionId": "cee_1782673911858_fq6",
+    "ts": "2026-06-28T19:12:07.519Z",
+    "outcome": "success",
+    "minutesSaved": 30,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673927646_37dr",
+    "workflowId": "cee_engineering",
+    "executionId": "cee_1782673914784_uf0",
+    "ts": "2026-06-28T19:12:07.646Z",
+    "outcome": "partial",
+    "minutesSaved": 15,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673927773_4lc6",
+    "workflowId": "cee_engineering",
+    "executionId": "cee_1782673914805_eqy",
+    "ts": "2026-06-28T19:12:07.773Z",
+    "outcome": "success",
+    "minutesSaved": 30,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673927901_lv30",
+    "workflowId": "cee_deployment",
+    "executionId": "cee_1782673914811_29a",
+    "ts": "2026-06-28T19:12:07.901Z",
+    "outcome": "partial",
+    "minutesSaved": 25,
+    "domain": "deployment"
+  },
+  {
+    "evidenceId": "ev_1782673928035_c629",
+    "workflowId": "cee_browser",
+    "executionId": "cee_1782673911847_5qb",
+    "ts": "2026-06-28T19:12:08.035Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "browser"
+  },
+  {
+    "evidenceId": "ev_1782673928160_v8hy",
+    "workflowId": "cee_browser",
+    "executionId": "cee_1782673914792_kww",
+    "ts": "2026-06-28T19:12:08.160Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "browser"
+  },
+  {
+    "evidenceId": "ev_1782673958568_5t3f",
+    "workflowId": "wf_mkt_social_post",
+    "executionId": "aee_1782673958128_p26y",
+    "ts": "2026-06-28T19:12:38.568Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "marketing"
+  },
+  {
+    "evidenceId": "ev_1782673958719_2v9n",
+    "workflowId": "wf_eng_code_review",
+    "executionId": "aee_1782673958199_ko9p",
+    "ts": "2026-06-28T19:12:38.719Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673958869_e00q",
+    "workflowId": "wf_mkt_social_post",
+    "executionId": "aee_1782673958364_8yy9",
+    "ts": "2026-06-28T19:12:38.869Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "marketing"
+  },
+  {
+    "evidenceId": "ev_1782673959018_sym3",
+    "workflowId": "wf_eng_code_review",
+    "executionId": "aee_1782673958434_ltt0",
+    "ts": "2026-06-28T19:12:39.018Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782673978563_tefx",
+    "workflowId": "cee_deployment",
+    "executionId": "cee_1782673974746_kjy",
+    "ts": "2026-06-28T19:12:58.563Z",
+    "outcome": "success",
+    "minutesSaved": 10,
+    "domain": "deployment"
+  },
+  {
+    "evidenceId": "ev_1782673979078_8w4u",
+    "workflowId": "cee_editor",
+    "executionId": "cee_1782673975150_pqk",
+    "ts": "2026-06-28T19:12:59.078Z",
+    "outcome": "success",
+    "minutesSaved": 2,
+    "domain": "editor"
   }
 ]

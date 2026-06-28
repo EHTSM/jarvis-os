@@ -1,51 +1,51 @@
 {
   "patterns": {
     "high_risk_approval_rate": {
-      "rate": 0.2727272727272727,
-      "sampleSize": 22,
+      "rate": 0.2692307692307692,
+      "sampleSize": 26,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:11:15.694Z"
+      "updatedAt": "2026-06-28T19:12:30.950Z"
     },
     "deployment_approval_rate": {
       "rate": 1,
-      "sampleSize": 32,
+      "sampleSize": 38,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:11:15.694Z"
+      "updatedAt": "2026-06-28T19:12:30.950Z"
     },
     "ui_approval_rate": {
       "rate": 1,
-      "sampleSize": 6,
-      "confidence": 0.6,
-      "updatedAt": "2026-06-28T19:11:15.694Z"
+      "sampleSize": 7,
+      "confidence": 0.7,
+      "updatedAt": "2026-06-28T19:12:30.950Z"
     },
     "security_approval_rate": {
       "rate": 0,
-      "sampleSize": 16,
+      "sampleSize": 19,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:11:15.694Z"
+      "updatedAt": "2026-06-28T19:12:30.950Z"
     },
     "avg_decision_speed_ms": {
-      "avgMs": 7409,
-      "sampleSize": 46,
+      "avgMs": 7302,
+      "sampleSize": 55,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:11:15.694Z"
+      "updatedAt": "2026-06-28T19:12:30.950Z"
     },
     "weekend_decision_rate": {
-      "rate": 0.43103448275862066,
+      "rate": 0.36231884057971014,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:11:15.694Z"
+      "updatedAt": "2026-06-28T19:12:30.950Z"
     },
     "after_hours_decision_rate": {
-      "rate": 0.7586206896551724,
+      "rate": 0.7971014492753623,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:11:15.694Z"
+      "updatedAt": "2026-06-28T19:12:30.950Z"
     },
     "correction_frequency": {
-      "rate": 0.22413793103448276,
-      "sampleSize": 58,
+      "rate": 0.2318840579710145,
+      "sampleSize": 69,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:11:15.694Z"
+      "updatedAt": "2026-06-28T19:12:30.950Z"
     }
   },
-  "updatedAt": "2026-06-28T19:11:15.694Z"
+  "updatedAt": "2026-06-28T19:12:30.950Z"
 }

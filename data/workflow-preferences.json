@@ -2,7 +2,7 @@
   "categories": {
     "deployment": {
       "reviewDepth": "standard",
-      "reviewDepthConf": 0.5499999999999999,
+      "reviewDepthConf": 0.65,
       "preferredTiming": [
         "evening",
         "weekend",
@@ -11,16 +11,16 @@
       ],
       "avoidTiming": [],
       "toolPreferences": {
-        "terminal": 6,
-        "browser": 6
+        "terminal": 7,
+        "browser": 7
       },
       "executionOrder": "system_default",
       "notifyOn": [
         "failure",
         "completion"
       ],
-      "observations": 332,
-      "lastUpdated": "2026-06-28T19:11:07.549Z"
+      "observations": 388,
+      "lastUpdated": "2026-06-28T19:12:22.730Z"
     },
     "code_review": {
       "reviewDepth": "thorough",
@@ -38,8 +38,8 @@
         "failure",
         "completion"
       ],
-      "observations": 6,
-      "lastUpdated": "2026-06-28T19:10:56.026Z"
+      "observations": 7,
+      "lastUpdated": "2026-06-28T19:12:10.871Z"
     },
     "testing": {
       "reviewDepth": "standard",
@@ -66,8 +66,8 @@
         "failure",
         "completion"
       ],
-      "observations": 4,
-      "lastUpdated": "2026-06-28T19:11:06.114Z"
+      "observations": 5,
+      "lastUpdated": "2026-06-28T19:12:21.269Z"
     },
     "ui_review": {
       "reviewDepth": "standard",
@@ -99,8 +99,8 @@
         "failure",
         "completion"
       ],
-      "observations": 76,
-      "lastUpdated": "2026-06-28T19:11:07.577Z"
+      "observations": 89,
+      "lastUpdated": "2026-06-28T19:12:22.760Z"
     },
     "performance": {
       "reviewDepth": "standard",
@@ -155,8 +155,8 @@
         "failure",
         "completion"
       ],
-      "observations": 24,
-      "lastUpdated": "2026-06-28T19:10:56.326Z"
+      "observations": 28,
+      "lastUpdated": "2026-06-28T19:12:11.147Z"
     },
     "monitoring": {
       "reviewDepth": "standard",
@@ -189,230 +189,6 @@
   },
   "globalOverrides": {},
   "observations": [
-    {
-      "category": "deployment",
-      "workflowId": "wf_deploy_backend",
-      "reviewDepth": "standard",
-      "tools": [
-        "terminal",
-        "browser"
-      ],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "success",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.599Z"
-    },
-    {
-      "category": "code_review",
-      "workflowId": "wf_code_review_pr",
-      "reviewDepth": "thorough",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "success",
-      "founderOverride": true,
-      "ts": "2026-06-28T12:47:41.604Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_vps_provisioned",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "success",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.617Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_node_installed",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.621Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_repo_cloned",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.626Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_deps_installed",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.631Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_env_configured",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.635Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_pm2_started",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.640Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_pm2_startup",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.644Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_backend_health",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.649Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_frontend_built",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.655Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_frontend_served",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.659Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_nginx_installed",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.664Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_nginx_configured",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.669Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_nginx_proxying",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.674Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_ssl_cert",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.679Z"
-    },
-    {
-      "category": "deployment",
-      "workflowId": "pbw_deploy_ssl_auto_renew",
-      "reviewDepth": "skim",
-      "tools": [],
-      "slots": [
-        "evening",
-        "weekend"
-      ],
-      "outcome": "pending",
-      "founderOverride": false,
-      "ts": "2026-06-28T12:47:41.684Z"
-    },
     {
       "category": "deployment",
       "workflowId": "pbw_deploy_https_redirect",
@@ -5908,7 +5684,975 @@
       "outcome": "rejected",
       "founderOverride": true,
       "ts": "2026-06-28T19:11:07.577Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "wf_deploy_backend",
+      "reviewDepth": "standard",
+      "tools": [
+        "terminal",
+        "browser"
+      ],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "success",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.867Z"
+    },
+    {
+      "category": "code_review",
+      "workflowId": "wf_code_review_pr",
+      "reviewDepth": "thorough",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "success",
+      "founderOverride": true,
+      "ts": "2026-06-28T19:12:10.871Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_vps_provisioned",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "success",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.886Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_node_installed",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.892Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_repo_cloned",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.899Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_deps_installed",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.907Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_env_configured",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.912Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_pm2_started",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.918Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_pm2_startup",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.922Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_backend_health",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.928Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_frontend_built",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.933Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_frontend_served",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.938Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_nginx_installed",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.946Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_nginx_configured",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.952Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_nginx_proxying",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.960Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_ssl_cert",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.964Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_ssl_auto_renew",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.973Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_https_redirect",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.978Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_domain_a_record",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.983Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_domain_www",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.988Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_domain_api",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.993Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_domain_verified",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:10.999Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_ufw_enabled",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.004Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_fail2ban_active",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.010Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_ssh_keys_only",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.015Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_deploy_backup_cron",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.019Z"
+    },
+    {
+      "category": "security",
+      "workflowId": "pbw_sec_no_secrets_in_git",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.026Z"
+    },
+    {
+      "category": "security",
+      "workflowId": "pbw_sec_env_gitignored",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.031Z"
+    },
+    {
+      "category": "security",
+      "workflowId": "pbw_sec_rate_limiting",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.040Z"
+    },
+    {
+      "category": "security",
+      "workflowId": "pbw_sec_security_headers",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.044Z"
+    },
+    {
+      "category": "security",
+      "workflowId": "pbw_sec_jwt_secret_strength",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.050Z"
+    },
+    {
+      "category": "security",
+      "workflowId": "pbw_sec_cors_configured",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.055Z"
+    },
+    {
+      "category": "security",
+      "workflowId": "pbw_sec_auth_middleware",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.060Z"
+    },
+    {
+      "category": "security",
+      "workflowId": "pbw_sec_session_expiry",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.068Z"
+    },
+    {
+      "category": "security",
+      "workflowId": "pbw_sec_hsts_header",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.074Z"
+    },
+    {
+      "category": "security",
+      "workflowId": "pbw_sec_injection_protection",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.078Z"
+    },
+    {
+      "category": "security",
+      "workflowId": "pbw_sec_dependency_lockfile",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.086Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_vps_provision",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.093Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_env_config",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.103Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_nginx",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.108Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_pm2",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.114Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_backup_cron",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.119Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_security_harden",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.125Z"
+    },
+    {
+      "category": "business",
+      "workflowId": "pbw_fwr_wf_biz_plan_upgrade",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.129Z"
+    },
+    {
+      "category": "business",
+      "workflowId": "pbw_fwr_wf_biz_invoice_send",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.136Z"
+    },
+    {
+      "category": "business",
+      "workflowId": "pbw_fwr_wf_biz_churn_detect",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.142Z"
+    },
+    {
+      "category": "business",
+      "workflowId": "pbw_fwr_wf_biz_revenue_report",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.147Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_vps_provisioned",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.154Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_node_installed",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.160Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_repo_cloned",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.165Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_deps_installed",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.169Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_env_configured",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.175Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_pm2_started",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.179Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_pm2_startup",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.185Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_backend_health",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.190Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_frontend_built",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.195Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_frontend_served",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.199Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_nginx_installed",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.204Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_nginx_configured",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.209Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_nginx_proxying",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.215Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_ssl_cert",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.221Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_ssl_auto_renew",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.225Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_https_redirect",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.230Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_domain_a_record",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.237Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_domain_www",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.245Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_domain_api",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.249Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_domain_verified",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.254Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_ufw_enabled",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.259Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_fail2ban_active",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.270Z"
+    },
+    {
+      "category": "deployment",
+      "workflowId": "pbw_fwr_wf_deploy_ssh_keys_only",
+      "reviewDepth": "skim",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "pending",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:11.274Z"
+    },
+    {
+      "category": "security",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "rejected",
+      "founderOverride": true,
+      "ts": "2026-06-28T19:12:20.476Z"
+    },
+    {
+      "category": "deployment",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "approved",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:20.886Z"
+    },
+    {
+      "category": "documentation",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "approved",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:21.269Z"
+    },
+    {
+      "category": "deployment",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "approved",
+      "founderOverride": false,
+      "ts": "2026-06-28T19:12:22.730Z"
+    },
+    {
+      "category": "security",
+      "tools": [],
+      "slots": [
+        "night",
+        "weekday"
+      ],
+      "outcome": "rejected",
+      "founderOverride": true,
+      "ts": "2026-06-28T19:12:22.760Z"
     }
   ],
-  "updatedAt": "2026-06-28T19:11:07.577Z"
+  "updatedAt": "2026-06-28T19:12:22.760Z"
 }

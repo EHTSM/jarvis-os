@@ -4164,11 +4164,32 @@
           "stepsRun": 4,
           "outcome": "success",
           "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:12:37.877Z",
+          "triggeredBy": "approvalEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:12:38.578Z",
+          "triggeredBy": "executionEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:12:38.874Z",
+          "triggeredBy": "executionEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
         }
       ],
-      "lastExecutedAt": "2026-06-28T19:11:36.172Z",
+      "lastExecutedAt": "2026-06-28T19:12:38.874Z",
       "createdAt": "2026-06-28T19:11:34.553Z",
-      "updatedAt": "2026-06-28T19:11:36.172Z"
+      "updatedAt": "2026-06-28T19:12:38.874Z"
     },
     {
       "id": "pbw_fwr_wf_mkt_blog_post",
@@ -4339,11 +4360,25 @@
           "stepsRun": 4,
           "outcome": "success",
           "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:12:38.723Z",
+          "triggeredBy": "executionEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
+        },
+        {
+          "ts": "2026-06-28T19:12:39.023Z",
+          "triggeredBy": "executionEvidence",
+          "stepsRun": 4,
+          "outcome": "success",
+          "durationMs": 20000
         }
       ],
-      "lastExecutedAt": "2026-06-28T19:11:36.321Z",
+      "lastExecutedAt": "2026-06-28T19:12:39.023Z",
       "createdAt": "2026-06-28T19:11:34.553Z",
-      "updatedAt": "2026-06-28T19:11:36.321Z"
+      "updatedAt": "2026-06-28T19:12:39.023Z"
     },
     {
       "id": "pbw_fwr_wf_eng_deploy_release",

@@ -4400,6 +4400,569 @@
       "createdAt": "2026-06-28T19:11:13.068Z",
       "updatedAt": "2026-06-28T19:11:13.068Z",
       "disbandedAt": null
+    },
+    {
+      "id": "team_1782673943647_gq7",
+      "missionId": "test_mission_001",
+      "missionTitle": "Fix critical backend bug",
+      "missionDomain": "backend",
+      "type": "engineering",
+      "members": [
+        {
+          "agentId": "engorg_api",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "api",
+            "rest",
+            "graphql",
+            "swagger",
+            "testing"
+          ],
+          "confidence": 0.87,
+          "workload": 14,
+          "joinedAt": "2026-06-28T19:12:23.647Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_backend",
+          "org": "engineering",
+          "role": "qa",
+          "skills": [
+            "backend",
+            "api",
+            "database",
+            "nodejs",
+            "testing"
+          ],
+          "confidence": 0.88,
+          "workload": 13,
+          "joinedAt": "2026-06-28T19:12:23.647Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_qa",
+          "org": "engineering",
+          "role": "qa",
+          "skills": [
+            "testing",
+            "automation",
+            "regression",
+            "bug_finding",
+            "quality"
+          ],
+          "confidence": 0.89,
+          "workload": 17,
+          "joinedAt": "2026-06-28T19:12:23.647Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "api",
+        "rest",
+        "graphql",
+        "swagger",
+        "testing",
+        "backend",
+        "database",
+        "nodejs",
+        "automation",
+        "regression",
+        "bug_finding",
+        "quality"
+      ],
+      "skillCoverage": 100,
+      "requiredSkills": [
+        "backend",
+        "testing"
+      ],
+      "leadId": "engorg_api",
+      "status": "active",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:23.647Z",
+      "updatedAt": "2026-06-28T19:12:23.647Z",
+      "disbandedAt": null
+    },
+    {
+      "id": "team_1782673943654_yxa",
+      "missionId": "test_mission_002",
+      "missionTitle": "Security audit",
+      "missionDomain": "security",
+      "type": "engineering",
+      "members": [
+        {
+          "agentId": "engorg_security",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "security",
+            "audit",
+            "compliance",
+            "encryption",
+            "auth"
+          ],
+          "confidence": 0.91,
+          "workload": 13,
+          "joinedAt": "2026-06-28T19:12:23.654Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_api",
+          "org": "engineering",
+          "role": "qa",
+          "skills": [
+            "api",
+            "rest",
+            "graphql",
+            "swagger",
+            "testing"
+          ],
+          "confidence": 0.87,
+          "workload": 15,
+          "joinedAt": "2026-06-28T19:12:23.654Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "security",
+        "audit",
+        "compliance",
+        "encryption",
+        "auth",
+        "api",
+        "rest",
+        "graphql",
+        "swagger",
+        "testing"
+      ],
+      "skillCoverage": 100,
+      "requiredSkills": [
+        "security",
+        "testing"
+      ],
+      "leadId": "engorg_security",
+      "status": "active",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:23.654Z",
+      "updatedAt": "2026-06-28T19:12:23.654Z",
+      "disbandedAt": null
+    },
+    {
+      "id": "team_1782673943659_5nk",
+      "missionId": "test_mission_003",
+      "missionTitle": "UI review",
+      "type": "design",
+      "members": [
+        {
+          "agentId": "engorg_electron",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "electron",
+            "desktop",
+            "packaging",
+            "ipc",
+            "native"
+          ],
+          "confidence": 0.85,
+          "workload": 9,
+          "joinedAt": "2026-06-28T19:12:23.659Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_mobile",
+          "org": "engineering",
+          "role": "member",
+          "skills": [
+            "mobile",
+            "android",
+            "capacitor",
+            "firebase",
+            "ios"
+          ],
+          "confidence": 0.84,
+          "workload": 6,
+          "joinedAt": "2026-06-28T19:12:23.659Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "electron",
+        "desktop",
+        "packaging",
+        "ipc",
+        "native",
+        "mobile",
+        "android",
+        "capacitor",
+        "firebase",
+        "ios"
+      ],
+      "skillCoverage": 0,
+      "requiredSkills": [
+        "frontend",
+        "ui"
+      ],
+      "leadId": "engorg_electron",
+      "status": "active",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:23.659Z",
+      "updatedAt": "2026-06-28T19:12:23.659Z",
+      "disbandedAt": null
+    },
+    {
+      "id": "team_1782673944531_lm9",
+      "missionId": "wf_1782673943915_4ec",
+      "missionTitle": "Deploy new API endpoint",
+      "missionDomain": "backend",
+      "type": "deployment",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning",
+            "review",
+            "documentation"
+          ],
+          "confidence": 0.92,
+          "workload": 0,
+          "joinedAt": "2026-06-28T19:12:24.531Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_devops",
+          "org": "engineering",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd",
+            "nginx",
+            "ssl",
+            "monitoring"
+          ],
+          "confidence": 0.9,
+          "workload": 8,
+          "joinedAt": "2026-06-28T19:12:24.531Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "architecture",
+        "design",
+        "planning",
+        "review",
+        "documentation",
+        "devops",
+        "deployment",
+        "ci_cd",
+        "nginx",
+        "ssl",
+        "monitoring"
+      ],
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "devops",
+        "deployment"
+      ],
+      "leadId": "engorg_architect",
+      "status": "active",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:24.531Z",
+      "updatedAt": "2026-06-28T19:12:24.531Z",
+      "disbandedAt": null
+    },
+    {
+      "id": "team_1782673944889_lab",
+      "missionId": "wf_1782673944536_0u7",
+      "missionTitle": "Security vulnerability scan",
+      "missionDomain": "security",
+      "type": "mixed",
+      "members": [
+        {
+          "agentId": "engorg_security",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "security",
+            "audit",
+            "compliance",
+            "encryption",
+            "auth"
+          ],
+          "confidence": 0.91,
+          "workload": 14,
+          "joinedAt": "2026-06-28T19:12:24.889Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "security",
+        "audit",
+        "compliance",
+        "encryption",
+        "auth"
+      ],
+      "skillCoverage": 100,
+      "requiredSkills": [
+        "security",
+        "audit"
+      ],
+      "leadId": "engorg_security",
+      "status": "active",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:24.889Z",
+      "updatedAt": "2026-06-28T19:12:24.889Z",
+      "disbandedAt": null
+    },
+    {
+      "id": "team_1782673945267_e7x",
+      "missionId": "wf_1782673944896_z2c",
+      "missionTitle": "Run full regression test suite",
+      "missionDomain": "qa",
+      "type": "design",
+      "members": [
+        {
+          "agentId": "engorg_api",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "api",
+            "rest",
+            "graphql",
+            "swagger",
+            "testing"
+          ],
+          "confidence": 0.87,
+          "workload": 16,
+          "joinedAt": "2026-06-28T19:12:25.267Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_backend",
+          "org": "engineering",
+          "role": "qa",
+          "skills": [
+            "backend",
+            "api",
+            "database",
+            "nodejs",
+            "testing"
+          ],
+          "confidence": 0.88,
+          "workload": 13,
+          "joinedAt": "2026-06-28T19:12:25.267Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "api",
+        "rest",
+        "graphql",
+        "swagger",
+        "testing",
+        "backend",
+        "database",
+        "nodejs"
+      ],
+      "skillCoverage": 25,
+      "requiredSkills": [
+        "frontend",
+        "ui",
+        "testing",
+        "qa"
+      ],
+      "leadId": "engorg_api",
+      "status": "active",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:25.267Z",
+      "updatedAt": "2026-06-28T19:12:25.267Z",
+      "disbandedAt": null
+    },
+    {
+      "id": "team_1782673945621_o9b",
+      "missionId": "wf_1782673945273_7mr",
+      "missionTitle": "Code review for PR #42",
+      "missionDomain": "backend",
+      "type": "mixed",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning",
+            "review",
+            "documentation"
+          ],
+          "confidence": 0.92,
+          "workload": 1,
+          "joinedAt": "2026-06-28T19:12:25.621Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_code_review",
+          "org": "engineering",
+          "role": "member",
+          "skills": [
+            "code_review",
+            "standards",
+            "feedback",
+            "mentoring",
+            "quality"
+          ],
+          "confidence": 0.9,
+          "workload": 8,
+          "joinedAt": "2026-06-28T19:12:25.621Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "architecture",
+        "design",
+        "planning",
+        "review",
+        "documentation",
+        "code_review",
+        "standards",
+        "feedback",
+        "mentoring",
+        "quality"
+      ],
+      "skillCoverage": 25,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "code_review",
+        "refactoring"
+      ],
+      "leadId": "engorg_architect",
+      "status": "active",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:25.621Z",
+      "updatedAt": "2026-06-28T19:12:25.621Z",
+      "disbandedAt": null
+    },
+    {
+      "id": "team_1782673948270_0or",
+      "missionId": "e2e_replace_test",
+      "missionTitle": "E2E replacement test",
+      "type": "engineering",
+      "members": [
+        {
+          "agentId": "engorg_api",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "api",
+            "rest",
+            "graphql",
+            "swagger",
+            "testing"
+          ],
+          "confidence": 0.87,
+          "workload": 19,
+          "joinedAt": "2026-06-28T19:12:28.270Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_backend",
+          "org": "engineering",
+          "role": "qa",
+          "skills": [
+            "backend",
+            "api",
+            "database",
+            "nodejs",
+            "testing"
+          ],
+          "confidence": 0.88,
+          "workload": 13,
+          "joinedAt": "2026-06-28T19:12:28.270Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_qa",
+          "org": "engineering",
+          "role": "qa",
+          "skills": [
+            "testing",
+            "automation",
+            "regression",
+            "bug_finding",
+            "quality"
+          ],
+          "confidence": 0.89,
+          "workload": 19,
+          "joinedAt": "2026-06-28T19:12:28.270Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "api",
+        "rest",
+        "graphql",
+        "swagger",
+        "testing",
+        "backend",
+        "database",
+        "nodejs",
+        "automation",
+        "regression",
+        "bug_finding",
+        "quality"
+      ],
+      "skillCoverage": 100,
+      "requiredSkills": [
+        "backend",
+        "testing"
+      ],
+      "leadId": "engorg_api",
+      "status": "active",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:28.270Z",
+      "updatedAt": "2026-06-28T19:12:28.270Z",
+      "disbandedAt": null
     }
   ],
   "disbanded": [
@@ -11133,13 +11696,902 @@
       "updatedAt": "2026-06-28T19:11:15.017Z",
       "disbandedAt": "2026-06-28T19:11:15.643Z",
       "outcome": "completed"
+    },
+    {
+      "id": "team_1782673943666_gs2",
+      "missionId": "test_disband_001",
+      "missionTitle": "temp",
+      "type": "engineering",
+      "members": [
+        {
+          "agentId": "engorg_backend",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "backend",
+            "api",
+            "database",
+            "nodejs",
+            "testing"
+          ],
+          "confidence": 0.88,
+          "workload": 13,
+          "joinedAt": "2026-06-28T19:12:23.666Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "backend",
+        "api",
+        "database",
+        "nodejs",
+        "testing"
+      ],
+      "skillCoverage": 100,
+      "requiredSkills": [
+        "backend"
+      ],
+      "leadId": "engorg_backend",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:23.666Z",
+      "updatedAt": "2026-06-28T19:12:23.666Z",
+      "disbandedAt": "2026-06-28T19:12:23.671Z",
+      "outcome": "completed"
+    },
+    {
+      "id": "team_1782673948676_6ar",
+      "missionId": "wf_1782673948322_n0h",
+      "missionTitle": "Performance tracking mission",
+      "missionDomain": "backend",
+      "type": "mixed",
+      "members": [
+        {
+          "agentId": "engorg_perf",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "performance",
+            "profiling",
+            "optimization",
+            "benchmarking",
+            "caching"
+          ],
+          "confidence": 0.87,
+          "workload": 0,
+          "joinedAt": "2026-06-28T19:12:28.676Z",
+          "status": "active"
+        },
+        {
+          "agentId": "aeo_performance",
+          "org": "evolution",
+          "role": "member",
+          "skills": [
+            "performance",
+            "benchmarking",
+            "optimization",
+            "tuning",
+            "monitoring"
+          ],
+          "confidence": 0.86,
+          "workload": 1,
+          "joinedAt": "2026-06-28T19:12:28.676Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "performance",
+        "profiling",
+        "optimization",
+        "benchmarking",
+        "caching",
+        "tuning",
+        "monitoring"
+      ],
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "performance",
+        "profiling"
+      ],
+      "leadId": "engorg_perf",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:28.676Z",
+      "updatedAt": "2026-06-28T19:12:28.676Z",
+      "disbandedAt": "2026-06-28T19:12:28.742Z",
+      "outcome": "completed"
+    },
+    {
+      "id": "team_1782673945989_kr0",
+      "missionId": "wf_1782673945628_52j",
+      "missionTitle": "Update documentation for API v2",
+      "missionDomain": "backend",
+      "type": "research",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning",
+            "review",
+            "documentation"
+          ],
+          "confidence": 0.92,
+          "workload": 2,
+          "joinedAt": "2026-06-28T19:12:25.989Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_api",
+          "org": "engineering",
+          "role": "qa",
+          "skills": [
+            "api",
+            "rest",
+            "graphql",
+            "swagger",
+            "testing"
+          ],
+          "confidence": 0.87,
+          "workload": 17,
+          "joinedAt": "2026-06-28T19:12:25.989Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "architecture",
+        "design",
+        "planning",
+        "review",
+        "documentation",
+        "api",
+        "rest",
+        "graphql",
+        "swagger",
+        "testing"
+      ],
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "documentation",
+        "writing"
+      ],
+      "leadId": "engorg_architect",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:25.989Z",
+      "updatedAt": "2026-06-28T19:12:25.989Z",
+      "disbandedAt": "2026-06-28T19:12:30.268Z",
+      "outcome": "completed"
+    },
+    {
+      "id": "team_1782673946357_e94",
+      "missionId": "wf_1782673945996_htx",
+      "missionTitle": "Fix critical production bug",
+      "missionDomain": "backend",
+      "type": "emergency",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning",
+            "review",
+            "documentation"
+          ],
+          "confidence": 0.92,
+          "workload": 3,
+          "joinedAt": "2026-06-28T19:12:26.357Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_api",
+          "org": "engineering",
+          "role": "qa",
+          "skills": [
+            "api",
+            "rest",
+            "graphql",
+            "swagger",
+            "testing"
+          ],
+          "confidence": 0.87,
+          "workload": 18,
+          "joinedAt": "2026-06-28T19:12:26.357Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "architecture",
+        "design",
+        "planning",
+        "review",
+        "documentation",
+        "api",
+        "rest",
+        "graphql",
+        "swagger",
+        "testing"
+      ],
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api"
+      ],
+      "leadId": "engorg_architect",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:26.357Z",
+      "updatedAt": "2026-06-28T19:12:26.357Z",
+      "disbandedAt": "2026-06-28T19:12:30.324Z",
+      "outcome": "completed"
+    },
+    {
+      "id": "team_1782673946712_v4k",
+      "missionId": "wf_1782673946365_p81",
+      "missionTitle": "Run health check monitoring",
+      "missionDomain": "ops",
+      "type": "mixed",
+      "members": [
+        {
+          "agentId": "eos_health",
+          "org": "executive",
+          "role": "lead",
+          "skills": [
+            "health",
+            "monitoring",
+            "alerting",
+            "diagnosis",
+            "recovery"
+          ],
+          "confidence": 0.88,
+          "workload": 1,
+          "joinedAt": "2026-06-28T19:12:26.712Z",
+          "status": "active"
+        },
+        {
+          "agentId": "aeo_performance",
+          "org": "evolution",
+          "role": "member",
+          "skills": [
+            "performance",
+            "benchmarking",
+            "optimization",
+            "tuning",
+            "monitoring"
+          ],
+          "confidence": 0.86,
+          "workload": 0,
+          "joinedAt": "2026-06-28T19:12:26.712Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "health",
+        "monitoring",
+        "alerting",
+        "diagnosis",
+        "recovery",
+        "performance",
+        "benchmarking",
+        "optimization",
+        "tuning"
+      ],
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "monitoring",
+        "reliability"
+      ],
+      "leadId": "eos_health",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:26.712Z",
+      "updatedAt": "2026-06-28T19:12:26.712Z",
+      "disbandedAt": "2026-06-28T19:12:30.375Z",
+      "outcome": "completed"
+    },
+    {
+      "id": "team_1782673947138_ylf",
+      "missionId": "wf_1782673946775_zpz",
+      "missionTitle": "Review UI components",
+      "missionDomain": "frontend",
+      "type": "design",
+      "members": [
+        {
+          "agentId": "engorg_code_review",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "code_review",
+            "standards",
+            "feedback",
+            "mentoring",
+            "quality"
+          ],
+          "confidence": 0.9,
+          "workload": 9,
+          "joinedAt": "2026-06-28T19:12:27.138Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_electron",
+          "org": "engineering",
+          "role": "member",
+          "skills": [
+            "electron",
+            "desktop",
+            "packaging",
+            "ipc",
+            "native"
+          ],
+          "confidence": 0.85,
+          "workload": 10,
+          "joinedAt": "2026-06-28T19:12:27.138Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "code_review",
+        "standards",
+        "feedback",
+        "mentoring",
+        "quality",
+        "electron",
+        "desktop",
+        "packaging",
+        "ipc",
+        "native"
+      ],
+      "skillCoverage": 25,
+      "requiredSkills": [
+        "frontend",
+        "ui",
+        "code_review",
+        "refactoring"
+      ],
+      "leadId": "engorg_code_review",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:27.138Z",
+      "updatedAt": "2026-06-28T19:12:27.138Z",
+      "disbandedAt": "2026-06-28T19:12:30.437Z",
+      "outcome": "completed"
+    },
+    {
+      "id": "team_1782673947501_5cm",
+      "missionId": "wf_1782673947155_40d",
+      "missionTitle": "Deploy release v2.0 to production",
+      "missionDomain": "devops",
+      "type": "deployment",
+      "members": [
+        {
+          "agentId": "engorg_devops",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd",
+            "nginx",
+            "ssl",
+            "monitoring"
+          ],
+          "confidence": 0.9,
+          "workload": 9,
+          "joinedAt": "2026-06-28T19:12:27.501Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_release",
+          "org": "engineering",
+          "role": "member",
+          "skills": [
+            "release",
+            "versioning",
+            "changelog",
+            "tagging",
+            "deployment"
+          ],
+          "confidence": 0.88,
+          "workload": 3,
+          "joinedAt": "2026-06-28T19:12:27.501Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "devops",
+        "deployment",
+        "ci_cd",
+        "nginx",
+        "ssl",
+        "monitoring",
+        "release",
+        "versioning",
+        "changelog",
+        "tagging"
+      ],
+      "skillCoverage": 100,
+      "requiredSkills": [
+        "devops",
+        "deployment",
+        "release",
+        "versioning"
+      ],
+      "leadId": "engorg_devops",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:27.501Z",
+      "updatedAt": "2026-06-28T19:12:27.501Z",
+      "disbandedAt": "2026-06-28T19:12:30.496Z",
+      "outcome": "completed"
+    },
+    {
+      "id": "team_1782673947871_lml",
+      "missionId": "wf_1782673947518_ofj",
+      "missionTitle": "Backend deploy test",
+      "missionDomain": "backend",
+      "type": "deployment",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning",
+            "review",
+            "documentation"
+          ],
+          "confidence": 0.92,
+          "workload": 4,
+          "joinedAt": "2026-06-28T19:12:27.871Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_devops",
+          "org": "engineering",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd",
+            "nginx",
+            "ssl",
+            "monitoring"
+          ],
+          "confidence": 0.9,
+          "workload": 10,
+          "joinedAt": "2026-06-28T19:12:27.871Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "architecture",
+        "design",
+        "planning",
+        "review",
+        "documentation",
+        "devops",
+        "deployment",
+        "ci_cd",
+        "nginx",
+        "ssl",
+        "monitoring"
+      ],
+      "skillCoverage": 33,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "devops",
+        "deployment",
+        "testing",
+        "qa"
+      ],
+      "leadId": "engorg_architect",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:27.871Z",
+      "updatedAt": "2026-06-28T19:12:27.871Z",
+      "disbandedAt": "2026-06-28T19:12:30.559Z",
+      "outcome": "completed"
+    },
+    {
+      "id": "team_1782673948255_8jh",
+      "missionId": "wf_1782673947885_kgw",
+      "missionTitle": "Build and deploy a new authentication feature",
+      "missionDomain": "backend",
+      "type": "deployment",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning",
+            "review",
+            "documentation"
+          ],
+          "confidence": 0.92,
+          "workload": 5,
+          "joinedAt": "2026-06-28T19:12:28.255Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_devops",
+          "org": "engineering",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd",
+            "nginx",
+            "ssl",
+            "monitoring"
+          ],
+          "confidence": 0.9,
+          "workload": 11,
+          "joinedAt": "2026-06-28T19:12:28.255Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "architecture",
+        "design",
+        "planning",
+        "review",
+        "documentation",
+        "devops",
+        "deployment",
+        "ci_cd",
+        "nginx",
+        "ssl",
+        "monitoring"
+      ],
+      "skillCoverage": 25,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "frontend",
+        "ui",
+        "devops",
+        "deployment",
+        "security",
+        "audit"
+      ],
+      "leadId": "engorg_architect",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:28.255Z",
+      "updatedAt": "2026-06-28T19:12:28.255Z",
+      "disbandedAt": "2026-06-28T19:12:30.619Z",
+      "outcome": "completed"
+    },
+    {
+      "id": "team_1782673949105_1xp",
+      "missionId": "wf_1782673948760_vkj",
+      "missionTitle": "Dashboard refresh test",
+      "missionDomain": "qa",
+      "type": "mixed",
+      "members": [
+        {
+          "agentId": "engorg_api",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "api",
+            "rest",
+            "graphql",
+            "swagger",
+            "testing"
+          ],
+          "confidence": 0.87,
+          "workload": 20,
+          "joinedAt": "2026-06-28T19:12:29.105Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_backend",
+          "org": "engineering",
+          "role": "qa",
+          "skills": [
+            "backend",
+            "api",
+            "database",
+            "nodejs",
+            "testing"
+          ],
+          "confidence": 0.88,
+          "workload": 13,
+          "joinedAt": "2026-06-28T19:12:29.105Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "api",
+        "rest",
+        "graphql",
+        "swagger",
+        "testing",
+        "backend",
+        "database",
+        "nodejs"
+      ],
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "testing",
+        "qa"
+      ],
+      "leadId": "engorg_api",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:29.105Z",
+      "updatedAt": "2026-06-28T19:12:29.105Z",
+      "disbandedAt": "2026-06-28T19:12:30.683Z",
+      "outcome": "completed"
+    },
+    {
+      "id": "team_1782673949455_fod",
+      "missionId": "wf_1782673949114_nsl",
+      "missionTitle": "Frontend fix 1",
+      "missionDomain": "frontend",
+      "type": "engineering",
+      "members": [
+        {
+          "agentId": "engorg_electron",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "electron",
+            "desktop",
+            "packaging",
+            "ipc",
+            "native"
+          ],
+          "confidence": 0.85,
+          "workload": 11,
+          "joinedAt": "2026-06-28T19:12:29.455Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_mobile",
+          "org": "engineering",
+          "role": "member",
+          "skills": [
+            "mobile",
+            "android",
+            "capacitor",
+            "firebase",
+            "ios"
+          ],
+          "confidence": 0.84,
+          "workload": 7,
+          "joinedAt": "2026-06-28T19:12:29.455Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "electron",
+        "desktop",
+        "packaging",
+        "ipc",
+        "native",
+        "mobile",
+        "android",
+        "capacitor",
+        "firebase",
+        "ios"
+      ],
+      "skillCoverage": 0,
+      "requiredSkills": [
+        "frontend",
+        "ui"
+      ],
+      "leadId": "engorg_electron",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:29.455Z",
+      "updatedAt": "2026-06-28T19:12:29.455Z",
+      "disbandedAt": "2026-06-28T19:12:30.743Z",
+      "outcome": "completed"
+    },
+    {
+      "id": "team_1782673949825_qu1",
+      "missionId": "wf_1782673949462_qbt",
+      "missionTitle": "Backend fix 2",
+      "missionDomain": "backend",
+      "type": "engineering",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning",
+            "review",
+            "documentation"
+          ],
+          "confidence": 0.92,
+          "workload": 6,
+          "joinedAt": "2026-06-28T19:12:29.825Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_api",
+          "org": "engineering",
+          "role": "qa",
+          "skills": [
+            "api",
+            "rest",
+            "graphql",
+            "swagger",
+            "testing"
+          ],
+          "confidence": 0.87,
+          "workload": 21,
+          "joinedAt": "2026-06-28T19:12:29.825Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "architecture",
+        "design",
+        "planning",
+        "review",
+        "documentation",
+        "api",
+        "rest",
+        "graphql",
+        "swagger",
+        "testing"
+      ],
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api"
+      ],
+      "leadId": "engorg_architect",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:29.825Z",
+      "updatedAt": "2026-06-28T19:12:29.825Z",
+      "disbandedAt": "2026-06-28T19:12:30.810Z",
+      "outcome": "completed"
+    },
+    {
+      "id": "team_1782673950200_t34",
+      "missionId": "wf_1782673949833_v81",
+      "missionTitle": "QA validation 3",
+      "missionDomain": "qa",
+      "type": "mixed",
+      "members": [
+        {
+          "agentId": "engorg_api",
+          "org": "engineering",
+          "role": "lead",
+          "skills": [
+            "api",
+            "rest",
+            "graphql",
+            "swagger",
+            "testing"
+          ],
+          "confidence": 0.87,
+          "workload": 22,
+          "joinedAt": "2026-06-28T19:12:30.200Z",
+          "status": "active"
+        },
+        {
+          "agentId": "engorg_backend",
+          "org": "engineering",
+          "role": "qa",
+          "skills": [
+            "backend",
+            "api",
+            "database",
+            "nodejs",
+            "testing"
+          ],
+          "confidence": 0.88,
+          "workload": 13,
+          "joinedAt": "2026-06-28T19:12:30.200Z",
+          "status": "active"
+        }
+      ],
+      "skillsCovered": [
+        "api",
+        "rest",
+        "graphql",
+        "swagger",
+        "testing",
+        "backend",
+        "database",
+        "nodejs"
+      ],
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "testing",
+        "qa"
+      ],
+      "leadId": "engorg_api",
+      "status": "disbanded",
+      "performance": {
+        "tasksCompleted": 0,
+        "tasksFailed": 0,
+        "avgDurationMs": 0
+      },
+      "createdAt": "2026-06-28T19:12:30.200Z",
+      "updatedAt": "2026-06-28T19:12:30.200Z",
+      "disbandedAt": "2026-06-28T19:12:30.890Z",
+      "outcome": "completed"
     }
   ],
   "stats": {
-    "built": 147,
-    "disbanded": 91,
+    "built": 168,
+    "disbanded": 104,
     "avgSize": 0,
     "successRate": 0
   },
-  "updatedAt": "2026-06-28T19:11:15.649Z"
+  "updatedAt": "2026-06-28T19:12:30.897Z"
 }

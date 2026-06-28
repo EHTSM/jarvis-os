@@ -9181,112 +9181,753 @@
     {
       "runId": "cee_1782673911842_zg9",
       "command": "Commit changes.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-28T19:11:51.842Z",
-      "classification": null,
+      "classification": {
+        "domain": "editor",
+        "tools": [
+          "editor"
+        ],
+        "matched": "commit|git.*commit"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "success",
+      "minutesSaved": 5,
       "error": null,
-      "durationMs": null
+      "durationMs": 4761,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "message": "Commit changes.",
+        "commit": "aca1ed0",
+        "output": "[main aca1ed0] Commit changes.\n 43 files changed, 33281 insertions(+), 13719 deletions(-)"
+      },
+      "completedAt": "2026-06-28T19:11:56.603Z"
     },
     {
       "runId": "cee_1782673911847_5qb",
       "command": "Take screenshots.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-28T19:11:51.847Z",
-      "classification": null,
+      "classification": {
+        "domain": "browser",
+        "tools": [
+          "browser",
+          "desktop"
+        ],
+        "matched": "review.*ui|ui.*review|screenshot"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "success",
+      "minutesSaved": 5,
       "error": null,
-      "durationMs": null
+      "durationMs": 16101,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "screenshots": [
+          {
+            "type": "desktop",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782673913268_kd8",
+            "url": "https://facade.example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782673899699_3tm",
+            "url": "https://example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782673838938_41e",
+            "url": "https://facade.example.com",
+            "ok": false
+          }
+        ]
+      },
+      "completedAt": "2026-06-28T19:12:07.948Z"
     },
     {
       "runId": "cee_1782673911852_42x",
       "command": "Run regression.",
-      "status": "running",
+      "status": "completed_with_errors",
       "startedAt": "2026-06-28T19:11:51.852Z",
-      "classification": null,
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "run.*regression|regression.*test"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "partial",
+      "minutesSaved": 15,
       "error": null,
-      "durationMs": null
+      "durationMs": 15450,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "cmdId": "tc_1782673917386_ml9",
+        "passed": 0,
+        "failed": 0,
+        "output": ""
+      },
+      "completedAt": "2026-06-28T19:12:07.302Z"
     },
     {
       "runId": "cee_1782673911858_fq6",
       "command": "Generate documentation.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-28T19:11:51.858Z",
-      "classification": null,
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal",
+          "editor"
+        ],
+        "matched": "generate.*doc|documentation"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "success",
+      "minutesSaved": 30,
       "error": null,
-      "durationMs": null
+      "durationMs": 15580,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "results": [
+          {
+            "ok": true,
+            "cmdId": "tc_1782673917849_pji",
+            "output": "aca1ed0 Commit changes.\n91a5dc5 Commit changes.\na2d5323 Commit changes.\n9a9e670 Commit changes.\nf8158f7 feat(post-omega-p6): Founder Digital Twin (FDT) — behavioral learning + approval prediction\n7769e33 Commit changes.\nf23c86d Commit changes.\nf892d3e Commit changes.\n9f7beb9 Commit changes.\n6fe313b feat(post-omega-p5): Universal Computer Controller (UCC) — NL command → computer operation\n",
+            "exitCode": 0,
+            "durationMs": 25
+          },
+          {
+            "ok": true,
+            "cmdId": "tc_1782673917882_fdb",
+            "output": "./V4_PHASE5_IMPLEMENTATION_REPORT.md\n./MEMORY_OS_V2_REPORT.md\n./DAILY_OPERATIONS_CHECKLIST.md\n./V5_PHASE3_CAPABILITY_MATRIX.md\n./V4_PHASE2_CAPABILITY_MATRIX.md\n./DEVELOPER_COPILOT_V2.md\n./V5_PHASE6_CAPABILITY_MATRIX.md\n./USER_JOURNEY_RETEST.md\n./USABILITY_AUDIT_REPORT.md\n./MISSION_CONTROL_V1_REPORT.md\n",
+            "exitCode": 0,
+            "durationMs": 3269
+          },
+          {
+            "ok": true,
+            "cmdId": "tc_1782673921158_p28",
+            "output": "     237\n",
+            "exitCode": 0,
+            "durationMs": 9
+          }
+        ]
+      },
+      "completedAt": "2026-06-28T19:12:07.438Z"
     },
     {
       "runId": "cee_1782673914775_ejx",
       "command": "Open the CRM project.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-28T19:11:54.775Z",
-      "classification": null,
+      "classification": {
+        "domain": "editor",
+        "tools": [
+          "editor"
+        ],
+        "matched": "open.*project|load.*project"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "success",
+      "minutesSaved": 2,
       "error": null,
-      "durationMs": null
+      "durationMs": 6853,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "projectId": "proj__Users_ehtsm_jarvis_os",
+        "path": "/Users/ehtsm/jarvis-os",
+        "name": "jarvis-os",
+        "branch": "main"
+      },
+      "completedAt": "2026-06-28T19:12:01.628Z"
     },
     {
       "runId": "cee_1782673914784_uf0",
       "command": "Run regression.",
-      "status": "running",
+      "status": "completed_with_errors",
       "startedAt": "2026-06-28T19:11:54.784Z",
-      "classification": null,
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "run.*regression|regression.*test"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "partial",
+      "minutesSaved": 15,
       "error": null,
-      "durationMs": null
+      "durationMs": 12779,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "cmdId": "tc_1782673922045_byh",
+        "passed": 0,
+        "failed": 0,
+        "output": ""
+      },
+      "completedAt": "2026-06-28T19:12:07.563Z"
     },
     {
       "runId": "cee_1782673914792_kww",
       "command": "Take screenshots.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-28T19:11:54.792Z",
-      "classification": null,
+      "classification": {
+        "domain": "browser",
+        "tools": [
+          "browser",
+          "desktop"
+        ],
+        "matched": "review.*ui|ui.*review|screenshot"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "success",
+      "minutesSaved": 5,
       "error": null,
-      "durationMs": null
+      "durationMs": 13287,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "screenshots": [
+          {
+            "type": "desktop",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782673913268_kd8",
+            "url": "https://facade.example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782673899699_3tm",
+            "url": "https://example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782673838938_41e",
+            "url": "https://facade.example.com",
+            "ok": false
+          }
+        ]
+      },
+      "completedAt": "2026-06-28T19:12:08.079Z"
     },
     {
       "runId": "cee_1782673914798_b1m",
       "command": "Verify environment health.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-28T19:11:54.798Z",
-      "classification": null,
+      "classification": {
+        "domain": "deployment",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "health.*check|verify.*env"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "success",
+      "minutesSaved": 10,
       "error": null,
-      "durationMs": null
+      "durationMs": 8055,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "category": "environment",
+        "score": 38,
+        "checks": [
+          {
+            "name": "NODE_ENV",
+            "status": "warn",
+            "detail": "NODE_ENV=unset — set to 'production'"
+          },
+          {
+            "name": "PORT",
+            "status": "warn",
+            "detail": "PORT not set — defaulting to 5050"
+          },
+          {
+            "name": "JWT_SECRET",
+            "status": "fail",
+            "detail": "JWT_SECRET missing — auth will fail"
+          },
+          {
+            "name": "OPERATOR_PASSWORD_HASH",
+            "status": "fail",
+            "detail": "Missing — operator login disabled"
+          },
+          {
+            "name": "env_file",
+            "status": "pass",
+            "detail": ".env file present"
+          },
+          {
+            "name": "APP_URL",
+            "status": "warn",
+            "detail": "APP_URL/BASE_URL not set — OAuth redirects may break"
+          },
+          {
+            "name": "node_version",
+            "status": "pass",
+            "detail": "Node v24.11.1"
+          },
+          {
+            "name": "data_writable",
+            "status": "pass",
+            "detail": "data/ writable"
+          }
+        ],
+        "context": "general"
+      },
+      "completedAt": "2026-06-28T19:12:02.853Z"
     },
     {
       "runId": "cee_1782673914805_eqy",
       "command": "Generate documentation.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-28T19:11:54.805Z",
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal",
+          "editor"
+        ],
+        "matched": "generate.*doc|documentation"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 30,
+      "error": null,
+      "durationMs": 12888,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "results": [
+          {
+            "ok": true,
+            "cmdId": "tc_1782673923267_tqf",
+            "output": "aca1ed0 Commit changes.\n91a5dc5 Commit changes.\na2d5323 Commit changes.\n9a9e670 Commit changes.\nf8158f7 feat(post-omega-p6): Founder Digital Twin (FDT) — behavioral learning + approval prediction\n7769e33 Commit changes.\nf23c86d Commit changes.\nf892d3e Commit changes.\n9f7beb9 Commit changes.\n6fe313b feat(post-omega-p5): Universal Computer Controller (UCC) — NL command → computer operation\n",
+            "exitCode": 0,
+            "durationMs": 26
+          },
+          {
+            "ok": true,
+            "cmdId": "tc_1782673923300_kn0",
+            "output": "./V4_PHASE5_IMPLEMENTATION_REPORT.md\n./MEMORY_OS_V2_REPORT.md\n./DAILY_OPERATIONS_CHECKLIST.md\n./V5_PHASE3_CAPABILITY_MATRIX.md\n./V4_PHASE2_CAPABILITY_MATRIX.md\n./DEVELOPER_COPILOT_V2.md\n./V5_PHASE6_CAPABILITY_MATRIX.md\n./USER_JOURNEY_RETEST.md\n./USABILITY_AUDIT_REPORT.md\n./MISSION_CONTROL_V1_REPORT.md\n",
+            "exitCode": 0,
+            "durationMs": 3473
+          },
+          {
+            "ok": true,
+            "cmdId": "tc_1782673926790_tw7",
+            "output": "     237\n",
+            "exitCode": 0,
+            "durationMs": 8
+          }
+        ]
+      },
+      "completedAt": "2026-06-28T19:12:07.693Z"
+    },
+    {
+      "runId": "cee_1782673914811_29a",
+      "command": "Deploy today release.",
+      "status": "completed_with_errors",
+      "startedAt": "2026-06-28T19:11:54.811Z",
+      "classification": {
+        "domain": "deployment",
+        "tools": [
+          "terminal",
+          "editor",
+          "browser"
+        ],
+        "matched": "deploy|release|push.*prod"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "partial",
+      "minutesSaved": 25,
+      "error": null,
+      "durationMs": 13006,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "steps": [
+          {
+            "step": "regression",
+            "ok": false,
+            "output": ""
+          }
+        ],
+        "error": "Regression failed — aborting deploy"
+      },
+      "completedAt": "2026-06-28T19:12:07.817Z"
+    },
+    {
+      "runId": "cee_1782673974746_kjy",
+      "command": "Verify environment health",
+      "status": "completed",
+      "startedAt": "2026-06-28T19:12:54.746Z",
+      "classification": {
+        "domain": "deployment",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "health.*check|verify.*env"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 10,
+      "error": null,
+      "durationMs": 3727,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "category": "environment",
+        "score": 38,
+        "checks": [
+          {
+            "name": "NODE_ENV",
+            "status": "warn",
+            "detail": "NODE_ENV=unset — set to 'production'"
+          },
+          {
+            "name": "PORT",
+            "status": "warn",
+            "detail": "PORT not set — defaulting to 5050"
+          },
+          {
+            "name": "JWT_SECRET",
+            "status": "fail",
+            "detail": "JWT_SECRET missing — auth will fail"
+          },
+          {
+            "name": "OPERATOR_PASSWORD_HASH",
+            "status": "fail",
+            "detail": "Missing — operator login disabled"
+          },
+          {
+            "name": "env_file",
+            "status": "pass",
+            "detail": ".env file present"
+          },
+          {
+            "name": "APP_URL",
+            "status": "warn",
+            "detail": "APP_URL/BASE_URL not set — OAuth redirects may break"
+          },
+          {
+            "name": "node_version",
+            "status": "pass",
+            "detail": "Node v24.11.1"
+          },
+          {
+            "name": "data_writable",
+            "status": "pass",
+            "detail": "data/ writable"
+          }
+        ],
+        "context": "general"
+      },
+      "completedAt": "2026-06-28T19:12:58.473Z"
+    },
+    {
+      "runId": "cee_1782673975150_pqk",
+      "command": "Open the CRM project.",
+      "status": "completed",
+      "startedAt": "2026-06-28T19:12:55.150Z",
+      "classification": {
+        "domain": "editor",
+        "tools": [
+          "editor"
+        ],
+        "matched": "open.*project|load.*project"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 2,
+      "error": null,
+      "durationMs": 3845,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "projectId": "proj__Users_ehtsm_jarvis_os",
+        "path": "/Users/ehtsm/jarvis-os",
+        "name": "jarvis-os",
+        "branch": "main"
+      },
+      "completedAt": "2026-06-28T19:12:58.995Z"
+    },
+    {
+      "runId": "cee_1782673975161_hvu",
+      "command": "Commit changes.",
+      "status": "running",
+      "startedAt": "2026-06-28T19:12:55.161Z",
       "classification": null,
       "toolsUsed": [],
       "steps": [],
@@ -9296,10 +9937,114 @@
       "durationMs": null
     },
     {
-      "runId": "cee_1782673914811_29a",
+      "runId": "cee_1782673975170_bju",
+      "command": "Take screenshots.",
+      "status": "running",
+      "startedAt": "2026-06-28T19:12:55.170Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782673975176_inm",
+      "command": "Run regression.",
+      "status": "running",
+      "startedAt": "2026-06-28T19:12:55.176Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782673975181_eae",
+      "command": "Generate documentation.",
+      "status": "running",
+      "startedAt": "2026-06-28T19:12:55.181Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782673978056_4rw",
+      "command": "Open the CRM project.",
+      "status": "running",
+      "startedAt": "2026-06-28T19:12:58.056Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782673978067_d19",
+      "command": "Run regression.",
+      "status": "running",
+      "startedAt": "2026-06-28T19:12:58.067Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782673978074_0dz",
+      "command": "Take screenshots.",
+      "status": "running",
+      "startedAt": "2026-06-28T19:12:58.074Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782673978081_myb",
+      "command": "Verify environment health.",
+      "status": "running",
+      "startedAt": "2026-06-28T19:12:58.081Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782673978087_6la",
+      "command": "Generate documentation.",
+      "status": "running",
+      "startedAt": "2026-06-28T19:12:58.087Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782673978093_aeb",
       "command": "Deploy today release.",
       "status": "running",
-      "startedAt": "2026-06-28T19:11:54.811Z",
+      "startedAt": "2026-06-28T19:12:58.093Z",
       "classification": null,
       "toolsUsed": [],
       "steps": [],
@@ -9310,10 +10055,10 @@
     }
   ],
   "stats": {
-    "total": 158,
-    "succeeded": 111,
-    "failed": 37,
-    "minutesSaved": 1840,
+    "total": 170,
+    "succeeded": 120,
+    "failed": 40,
+    "minutesSaved": 1994,
     "toolsUsed": {}
   }
 }
