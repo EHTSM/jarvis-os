@@ -126,5 +126,6 @@ router.use(require("./platformOrg"));           // Level Ω:  /platform/status /
 router.use(require("./postOmega"));             // POST-Ω:   /pomena/status /pomena/review /pomena/audit /pomena/dashboard
 router.use(require("./founderAutomation"));     // POST-Ω P2: /founder/* /bible/*
 router.use(require("./autonomousExecution"));   // POST-Ω P3: /execution/* dashboard+plan+execute+evidence+recovery+metrics
+router.use(require("./approvalRoutes"));        // POST-Ω P4: /approval/* queue+engine+evidence+analytics+dashboard+policy
 
 module.exports = router;
