@@ -65,6 +65,17 @@
       "openedAt": "2026-06-28T12:17:20.726Z",
       "closedAt": "2026-06-28T12:17:20.726Z",
       "title": null
+    },
+    "bc_1782649060965_ohj": {
+      "tabId": "bc_1782649060965_ohj",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-06-28T12:17:40.965Z",
+      "closedAt": null,
+      "title": null
     }
   },
   "history": [
@@ -165,12 +176,19 @@
       "event": "execute_workflow",
       "intent": "Click Pay now and confirm payment",
       "ts": "2026-06-28T12:17:23.070Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782649060965_ohj",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-06-28T12:17:40.965Z"
     }
   ],
   "stats": {
-    "openTabs": 6,
+    "openTabs": 7,
     "closedTabs": 2,
-    "screenshots": 6,
+    "screenshots": 12,
     "workflows": 2,
     "authentications": 2
   }
