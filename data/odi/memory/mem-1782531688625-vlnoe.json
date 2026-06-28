@@ -1,0 +1,23 @@
+{
+  "id": "mem-1782531688625-vlnoe",
+  "finding": {
+    "type": "test_finding",
+    "severity": "warning",
+    "message": "test"
+  },
+  "patchSpec": [
+    {
+      "patchTarget": "foo",
+      "patchReplacement": "bar"
+    }
+  ],
+  "targetFile": null,
+  "strategy": "test",
+  "scoreBefore": null,
+  "scoreAfter": null,
+  "improvement": null,
+  "outcome": "applied",
+  "usageCount": 5,
+  "createdAt": "2026-06-27T03:41:28.625Z",
+  "lastUsedAt": "2026-06-27T04:10:48.725Z"
+}

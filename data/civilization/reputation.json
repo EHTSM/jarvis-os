@@ -1,0 +1,502 @@
+{
+  "scores": {
+    "cmem_1782601786119_t5z3": {
+      "score": 92,
+      "events": [
+        {
+          "id": "crevt_1782601786158_tv4a",
+          "eventType": "mission_completed",
+          "score": 5,
+          "fromMemberId": "cmem_1782601786126_r6x6",
+          "detail": "Excellent work",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.158Z"
+        },
+        {
+          "id": "crevt_1782601786170_71aq",
+          "eventType": "endorsement",
+          "score": 2,
+          "fromMemberId": "cmem_1782601786126_r6x6",
+          "detail": "Outstanding contributor",
+          "domain": "engineering",
+          "at": "2026-06-27T23:09:46.170Z"
+        },
+        {
+          "id": "crevt_1782601786172_ap88",
+          "eventType": "innovation_adopted",
+          "score": 5,
+          "detail": "Adopted by cmem_1782601786126_r6x6",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.172Z"
+        },
+        {
+          "id": "crevt_1782601786173_ka36",
+          "eventType": "innovation_adopted",
+          "score": 5,
+          "detail": "Adopted by cmem_1782601786126_ft0d",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.173Z"
+        },
+        {
+          "id": "crevt_1782601786173_ktxx",
+          "eventType": "innovation_adopted",
+          "score": 5,
+          "detail": "Adopted by extra-1782601786114",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.173Z"
+        }
+      ],
+      "badges": [
+        "Pioneer"
+      ]
+    },
+    "cmem_1782601786126_r6x6": {
+      "score": 100,
+      "events": [
+        {
+          "id": "crevt_1782601786158_x656",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.158Z"
+        },
+        {
+          "id": "crevt_1782601786158_3t7d",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.158Z"
+        },
+        {
+          "id": "crevt_1782601786159_g8ut",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.159Z"
+        },
+        {
+          "id": "crevt_1782601786159_wk8c",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.159Z"
+        },
+        {
+          "id": "crevt_1782601786159_lixq",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.160Z"
+        },
+        {
+          "id": "crevt_1782601786160_wyhg",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.160Z"
+        },
+        {
+          "id": "crevt_1782601786160_ctwo",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.160Z"
+        },
+        {
+          "id": "crevt_1782601786161_mbry",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.161Z"
+        },
+        {
+          "id": "crevt_1782601786161_huzj",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.161Z"
+        },
+        {
+          "id": "crevt_1782601786161_azjl",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.161Z"
+        },
+        {
+          "id": "crevt_1782601786162_qnt7",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.162Z"
+        },
+        {
+          "id": "crevt_1782601786162_2omc",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.162Z"
+        },
+        {
+          "id": "crevt_1782601786162_3zqk",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.162Z"
+        },
+        {
+          "id": "crevt_1782601786163_ngwe",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.163Z"
+        },
+        {
+          "id": "crevt_1782601786163_tx2l",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.163Z"
+        },
+        {
+          "id": "crevt_1782601786163_p7ss",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.163Z"
+        },
+        {
+          "id": "crevt_1782601786164_lh7u",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.164Z"
+        },
+        {
+          "id": "crevt_1782601786164_nj5f",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.164Z"
+        },
+        {
+          "id": "crevt_1782601786164_6qm3",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.164Z"
+        },
+        {
+          "id": "crevt_1782601786165_3g2y",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.165Z"
+        },
+        {
+          "id": "crevt_1782601786165_s7r1",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.165Z"
+        },
+        {
+          "id": "crevt_1782601786165_q97y",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.165Z"
+        },
+        {
+          "id": "crevt_1782601786166_xlpu",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.166Z"
+        },
+        {
+          "id": "crevt_1782601786166_ibl7",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.166Z"
+        },
+        {
+          "id": "crevt_1782601786167_hwjc",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.167Z"
+        },
+        {
+          "id": "crevt_1782601786167_trzo",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.167Z"
+        },
+        {
+          "id": "crevt_1782601786168_fs6p",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.168Z"
+        },
+        {
+          "id": "crevt_1782601786168_ib95",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.168Z"
+        },
+        {
+          "id": "crevt_1782601786169_mjat",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.169Z"
+        },
+        {
+          "id": "crevt_1782601786169_clo6",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.169Z"
+        }
+      ],
+      "badges": []
+    },
+    "cmem_1782601786596_7epr": {
+      "score": 0,
+      "events": [
+        {
+          "id": "crevt_1782601786596_t3wa",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.596Z"
+        },
+        {
+          "id": "crevt_1782601786597_u3tg",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.597Z"
+        },
+        {
+          "id": "crevt_1782601786597_48zz",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.597Z"
+        },
+        {
+          "id": "crevt_1782601786598_dvys",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.598Z"
+        },
+        {
+          "id": "crevt_1782601786598_czpx",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.598Z"
+        },
+        {
+          "id": "crevt_1782601786598_jgza",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.598Z"
+        },
+        {
+          "id": "crevt_1782601786599_u6ip",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.599Z"
+        },
+        {
+          "id": "crevt_1782601786599_laur",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.599Z"
+        },
+        {
+          "id": "crevt_1782601786599_cyw3",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.599Z"
+        },
+        {
+          "id": "crevt_1782601786599_vi9t",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "domain": "general",
+          "at": "2026-06-27T23:09:46.599Z"
+        }
+      ],
+      "badges": []
+    }
+  },
+  "endorsements": [
+    {
+      "id": "cend_1782601786170_n48o",
+      "fromMemberId": "cmem_1782601786126_r6x6",
+      "toMemberId": "cmem_1782601786119_t5z3",
+      "domain": "engineering",
+      "message": "Outstanding contributor",
+      "at": "2026-06-27T23:09:46.170Z"
+    }
+  ],
+  "badges": [
+    {
+      "id": "cbadge_1782601786170_zno9",
+      "memberId": "cmem_1782601786119_t5z3",
+      "badge": "Pioneer",
+      "reason": "First to adopt innovation",
+      "fromMemberId": "civilization",
+      "awardedAt": "2026-06-27T23:09:46.170Z"
+    },
+    {
+      "id": "cbadge_1782626818121_f8jr",
+      "memberId": "cmem_1782625904201_34cb",
+      "badge": "Certified-bronze",
+      "reason": "Org certified at bronze level",
+      "fromMemberId": "platform",
+      "awardedAt": "2026-06-28T06:06:58.121Z"
+    },
+    {
+      "id": "cbadge_1782626818122_7w3b",
+      "memberId": "cmem_1782626818121_hte7",
+      "badge": "Certified-bronze",
+      "reason": "Org certified at bronze level",
+      "fromMemberId": "platform",
+      "awardedAt": "2026-06-28T06:06:58.122Z"
+    },
+    {
+      "id": "cbadge_1782626818124_76xv",
+      "memberId": "cmem_1782626818123_h9kr",
+      "badge": "Certified-silver",
+      "reason": "Org certified at silver level",
+      "fromMemberId": "platform",
+      "awardedAt": "2026-06-28T06:06:58.124Z"
+    },
+    {
+      "id": "cbadge_1782626818125_s8je",
+      "memberId": "cmem_1782626818124_6md1",
+      "badge": "Certified-gold",
+      "reason": "Org certified at gold level",
+      "fromMemberId": "platform",
+      "awardedAt": "2026-06-28T06:06:58.125Z"
+    },
+    {
+      "id": "cbadge_1782626818126_oiu2",
+      "memberId": "cmem_1782626818125_oppr",
+      "badge": "Certified-platinum",
+      "reason": "Org certified at platinum level",
+      "fromMemberId": "platform",
+      "awardedAt": "2026-06-28T06:06:58.126Z"
+    },
+    {
+      "id": "cbadge_1782626818800_p3rf",
+      "memberId": "cmem_1782625904201_34cb",
+      "badge": "Certified-silver",
+      "reason": "Org certified at silver level",
+      "fromMemberId": "platform",
+      "awardedAt": "2026-06-28T06:06:58.800Z"
+    },
+    {
+      "id": "cbadge_1782627037036_ktly",
+      "memberId": "cmem_1782626883742_it8o",
+      "badge": "Certified-bronze",
+      "reason": "Org certified at bronze level",
+      "fromMemberId": "platform",
+      "awardedAt": "2026-06-28T06:10:37.036Z"
+    },
+    {
+      "id": "cbadge_1782627037037_scvl",
+      "memberId": "cmem_1782627037036_kkq1",
+      "badge": "Certified-bronze",
+      "reason": "Org certified at bronze level",
+      "fromMemberId": "platform",
+      "awardedAt": "2026-06-28T06:10:37.037Z"
+    },
+    {
+      "id": "cbadge_1782627037039_x79j",
+      "memberId": "cmem_1782627037038_07sh",
+      "badge": "Certified-silver",
+      "reason": "Org certified at silver level",
+      "fromMemberId": "platform",
+      "awardedAt": "2026-06-28T06:10:37.039Z"
+    },
+    {
+      "id": "cbadge_1782627037040_vco6",
+      "memberId": "cmem_1782627037039_s46a",
+      "badge": "Certified-gold",
+      "reason": "Org certified at gold level",
+      "fromMemberId": "platform",
+      "awardedAt": "2026-06-28T06:10:37.040Z"
+    },
+    {
+      "id": "cbadge_1782627037042_mm49",
+      "memberId": "cmem_1782627037041_8914",
+      "badge": "Certified-platinum",
+      "reason": "Org certified at platinum level",
+      "fromMemberId": "platform",
+      "awardedAt": "2026-06-28T06:10:37.042Z"
+    },
+    {
+      "id": "cbadge_1782627037731_k9l1",
+      "memberId": "cmem_1782626883742_it8o",
+      "badge": "Certified-silver",
+      "reason": "Org certified at silver level",
+      "fromMemberId": "platform",
+      "awardedAt": "2026-06-28T06:10:37.731Z"
+    }
+  ]
+}

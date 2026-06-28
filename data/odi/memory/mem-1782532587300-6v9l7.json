@@ -1,0 +1,23 @@
+{
+  "id": "mem-1782532587300-6v9l7",
+  "finding": {
+    "type": "test_finding",
+    "severity": "warning",
+    "message": "test"
+  },
+  "patchSpec": [
+    {
+      "patchTarget": "foo",
+      "patchReplacement": "bar"
+    }
+  ],
+  "targetFile": null,
+  "strategy": "test",
+  "scoreBefore": null,
+  "scoreAfter": null,
+  "improvement": null,
+  "outcome": "applied",
+  "usageCount": 3,
+  "createdAt": "2026-06-27T03:56:27.300Z",
+  "lastUsedAt": "2026-06-27T10:54:03.458Z"
+}

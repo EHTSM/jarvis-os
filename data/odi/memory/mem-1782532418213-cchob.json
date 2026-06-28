@@ -1,0 +1,23 @@
+{
+  "id": "mem-1782532418213-cchob",
+  "finding": {
+    "type": "test_finding",
+    "severity": "warning",
+    "message": "test"
+  },
+  "patchSpec": [
+    {
+      "patchTarget": "foo",
+      "patchReplacement": "bar"
+    }
+  ],
+  "targetFile": null,
+  "strategy": "test",
+  "scoreBefore": null,
+  "scoreAfter": null,
+  "improvement": null,
+  "outcome": "applied",
+  "usageCount": 4,
+  "createdAt": "2026-06-27T03:53:38.213Z",
+  "lastUsedAt": "2026-06-27T10:54:03.458Z"
+}

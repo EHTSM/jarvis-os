@@ -1,0 +1,3902 @@
+[
+  {
+    "id": "mem_1782532055804_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: Platform Reliability Q3-2026",
+    "detail": "Ensure 99.9% uptime",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:47:35.804Z"
+  },
+  {
+    "id": "mem_1782532055805_4",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Platform Reliability Q3-2026 — Backend & API",
+    "detail": "Obj: obj_1782532055804_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:47:35.805Z"
+  },
+  {
+    "id": "mem_1782532055808_8",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532055805_3",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:47:35.808Z"
+  },
+  {
+    "id": "mem_1782532055809_a",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Platform Reliability Q3-2026 — Frontend & UX",
+    "detail": "Obj: obj_1782532055804_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:47:35.809Z"
+  },
+  {
+    "id": "mem_1782532055811_e",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532055808_9",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:47:35.811Z"
+  },
+  {
+    "id": "mem_1782532055812_g",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Platform Reliability Q3-2026 — DevOps & Release",
+    "detail": "Obj: obj_1782532055804_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:47:35.812Z"
+  },
+  {
+    "id": "mem_1782532055815_k",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532055811_f",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:47:35.815Z"
+  },
+  {
+    "id": "mem_1782532056125_l",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Auto-claimed from coordinator: Implement core logic — Platform Reliability Q3-2026 — Backend & API",
+    "detail": "Domain: backend",
+    "workItemId": "wi_1782532055806_5",
+    "tags": [],
+    "timestamp": "2026-06-27T03:47:36.125Z"
+  },
+  {
+    "id": "mem_1782532056128_m",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Auto-claimed from coordinator: Write tests — Platform Reliability Q3-2026 — Backend & API",
+    "detail": "Domain: qa",
+    "workItemId": "wi_1782532055807_6",
+    "tags": [],
+    "timestamp": "2026-06-27T03:47:36.128Z"
+  },
+  {
+    "id": "mem_1782532056131_n",
+    "engineerId": "engorg_docs",
+    "type": "claim",
+    "title": "Auto-claimed from coordinator: Update docs — Platform Reliability Q3-2026 — Backend & API",
+    "detail": "Domain: documentation",
+    "workItemId": "wi_1782532055807_7",
+    "tags": [],
+    "timestamp": "2026-06-27T03:47:36.131Z"
+  },
+  {
+    "id": "mem_1782532409878_1",
+    "engineerId": "engorg_cto",
+    "type": "lesson",
+    "title": "Platform reliability insight",
+    "detail": "Uptime improved after fixing retry logic",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:29.878Z"
+  },
+  {
+    "id": "mem_1782532409882_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: Q3-Test-Obj",
+    "detail": "Test",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:29.882Z"
+  },
+  {
+    "id": "mem_1782532409885_4",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj — Backend & API",
+    "detail": "Obj: obj_1782532409882_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:29.885Z"
+  },
+  {
+    "id": "mem_1782532409890_8",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532409883_3",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:29.890Z"
+  },
+  {
+    "id": "mem_1782532409891_a",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj — Frontend & UX",
+    "detail": "Obj: obj_1782532409882_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:29.891Z"
+  },
+  {
+    "id": "mem_1782532409895_e",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532409891_9",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:29.895Z"
+  },
+  {
+    "id": "mem_1782532409895_g",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj — DevOps & Release",
+    "detail": "Obj: obj_1782532409882_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:29.895Z"
+  },
+  {
+    "id": "mem_1782532409900_k",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532409895_f",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:29.900Z"
+  },
+  {
+    "id": "mem_1782532410516_4",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532410508_1",
+    "detail": "2 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.516Z"
+  },
+  {
+    "id": "mem_1782532410519_5",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Claimed: Implement core logic — Q3-Test-Obj — Backend & API",
+    "detail": "Epic: epic_1782532409883_3",
+    "workItemId": "wi_1782532409889_5",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.519Z"
+  },
+  {
+    "id": "mem_1782532410522_6",
+    "engineerId": "engorg_backend",
+    "type": "completion",
+    "title": "Completed: Backend task",
+    "detail": "Done",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.522Z"
+  },
+  {
+    "id": "mem_1782532410525_8",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.525Z"
+  },
+  {
+    "id": "mem_1782532410527_9",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.527Z"
+  },
+  {
+    "id": "mem_1782532410529_a",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.529Z"
+  },
+  {
+    "id": "mem_1782532410530_b",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.530Z"
+  },
+  {
+    "id": "mem_1782532410533_c",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.533Z"
+  },
+  {
+    "id": "mem_1782532410537_e",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.537Z"
+  },
+  {
+    "id": "mem_1782532410539_f",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.539Z"
+  },
+  {
+    "id": "mem_1782532410539_g",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.539Z"
+  },
+  {
+    "id": "mem_1782532410541_h",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.541Z"
+  },
+  {
+    "id": "mem_1782532410543_i",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.543Z"
+  },
+  {
+    "id": "mem_1782532410546_k",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.546Z"
+  },
+  {
+    "id": "mem_1782532410547_l",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.547Z"
+  },
+  {
+    "id": "mem_1782532410547_m",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.547Z"
+  },
+  {
+    "id": "mem_1782532410550_n",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.550Z"
+  },
+  {
+    "id": "mem_1782532410552_p",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.552Z"
+  },
+  {
+    "id": "mem_1782532410552_q",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.552Z"
+  },
+  {
+    "id": "mem_1782532410554_r",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.554Z"
+  },
+  {
+    "id": "mem_1782532410556_t",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs updated",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.556Z"
+  },
+  {
+    "id": "mem_1782532410560_u",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.560Z"
+  },
+  {
+    "id": "mem_1782532410569_2",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA failed: QA fail item",
+    "detail": "Test coverage < 80%; Missing edge case",
+    "workItemId": "wi_1782532410565_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.569Z"
+  },
+  {
+    "id": "mem_1782532410571_4",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security flagged: QA fail item",
+    "detail": "SQL injection risk",
+    "workItemId": "wi_1782532410565_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.571Z"
+  },
+  {
+    "id": "mem_1782532410574_2",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532410573_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.574Z"
+  },
+  {
+    "id": "mem_1782532410574_3",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Issues: High error rate; Latency spike",
+    "workItemId": "wi_1782532410573_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:30.574Z"
+  },
+  {
+    "id": "mem_1782532411536_5",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:31.536Z"
+  },
+  {
+    "id": "mem_1782532411545_6",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:31.545Z"
+  },
+  {
+    "id": "mem_1782532411551_7",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:31.551Z"
+  },
+  {
+    "id": "mem_1782532411555_8",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:31.555Z"
+  },
+  {
+    "id": "mem_1782532412540_9",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:32.540Z"
+  },
+  {
+    "id": "mem_1782532412545_a",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:32.545Z"
+  },
+  {
+    "id": "mem_1782532412553_b",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:32.553Z"
+  },
+  {
+    "id": "mem_1782532412556_c",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:32.556Z"
+  },
+  {
+    "id": "mem_1782532412562_d",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532410511_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:53:32.562Z"
+  },
+  {
+    "id": "mem_1782532587370_1",
+    "engineerId": "engorg_cto",
+    "type": "lesson",
+    "title": "Platform reliability insight",
+    "detail": "Uptime improved after fixing retry logic",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:27.370Z"
+  },
+  {
+    "id": "mem_1782532587995_4",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532587984_1",
+    "detail": "2 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:27.995Z"
+  },
+  {
+    "id": "mem_1782532587998_5",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Claimed: Ready item",
+    "detail": "Epic: null",
+    "workItemId": "wi_1782532410561_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:27.998Z"
+  },
+  {
+    "id": "mem_1782532588000_6",
+    "engineerId": "engorg_backend",
+    "type": "completion",
+    "title": "Completed: Backend task",
+    "detail": "Done",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.000Z"
+  },
+  {
+    "id": "mem_1782532588005_8",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.005Z"
+  },
+  {
+    "id": "mem_1782532588008_9",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.008Z"
+  },
+  {
+    "id": "mem_1782532588010_a",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.010Z"
+  },
+  {
+    "id": "mem_1782532588010_b",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.010Z"
+  },
+  {
+    "id": "mem_1782532588015_c",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.015Z"
+  },
+  {
+    "id": "mem_1782532588021_e",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.021Z"
+  },
+  {
+    "id": "mem_1782532588022_f",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.022Z"
+  },
+  {
+    "id": "mem_1782532588023_g",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.023Z"
+  },
+  {
+    "id": "mem_1782532588024_h",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.024Z"
+  },
+  {
+    "id": "mem_1782532588025_i",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.025Z"
+  },
+  {
+    "id": "mem_1782532588028_k",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.028Z"
+  },
+  {
+    "id": "mem_1782532588029_l",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.029Z"
+  },
+  {
+    "id": "mem_1782532588029_m",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.029Z"
+  },
+  {
+    "id": "mem_1782532588031_n",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.031Z"
+  },
+  {
+    "id": "mem_1782532588033_p",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.033Z"
+  },
+  {
+    "id": "mem_1782532588034_q",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.034Z"
+  },
+  {
+    "id": "mem_1782532588035_r",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.035Z"
+  },
+  {
+    "id": "mem_1782532588037_t",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs updated",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.037Z"
+  },
+  {
+    "id": "mem_1782532588039_u",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.039Z"
+  },
+  {
+    "id": "mem_1782532588040_v",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.040Z"
+  },
+  {
+    "id": "mem_1782532588045_3",
+    "engineerId": "engorg_frontend",
+    "type": "claim",
+    "title": "Auto-claimed from coordinator: Implement core logic — Platform Reliability Q3-2026 — Frontend & UX",
+    "detail": "Domain: frontend",
+    "workItemId": "wi_1782532055810_b",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.045Z"
+  },
+  {
+    "id": "mem_1782532588053_2",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA failed: QA fail item",
+    "detail": "Test coverage < 80%; Missing edge case",
+    "workItemId": "wi_1782532588047_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.053Z"
+  },
+  {
+    "id": "mem_1782532588057_4",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security flagged: QA fail item",
+    "detail": "SQL injection risk",
+    "workItemId": "wi_1782532588047_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.057Z"
+  },
+  {
+    "id": "mem_1782532588060_2",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532588059_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.060Z"
+  },
+  {
+    "id": "mem_1782532588061_3",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Issues: High error rate; Latency spike",
+    "workItemId": "wi_1782532588059_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:28.061Z"
+  },
+  {
+    "id": "mem_1782532589019_5",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:29.019Z"
+  },
+  {
+    "id": "mem_1782532589027_6",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:29.027Z"
+  },
+  {
+    "id": "mem_1782532589032_7",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:29.032Z"
+  },
+  {
+    "id": "mem_1782532589036_8",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:29.036Z"
+  },
+  {
+    "id": "mem_1782532589039_9",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:29.039Z"
+  },
+  {
+    "id": "mem_1782532589041_a",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:29.041Z"
+  },
+  {
+    "id": "mem_1782532590024_b",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:30.024Z"
+  },
+  {
+    "id": "mem_1782532590029_c",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:30.029Z"
+  },
+  {
+    "id": "mem_1782532590035_d",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:30.035Z"
+  },
+  {
+    "id": "mem_1782532590038_e",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:30.038Z"
+  },
+  {
+    "id": "mem_1782532590041_f",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:30.041Z"
+  },
+  {
+    "id": "mem_1782532590045_g",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532587989_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:30.045Z"
+  },
+  {
+    "id": "mem_1782532594349_1",
+    "engineerId": "engorg_cto",
+    "type": "lesson",
+    "title": "Platform reliability insight",
+    "detail": "Uptime improved after fixing retry logic",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:34.349Z"
+  },
+  {
+    "id": "mem_1782532594974_4",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532594965_1",
+    "detail": "2 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:34.974Z"
+  },
+  {
+    "id": "mem_1782532594977_5",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Claimed: Ready item",
+    "detail": "Epic: null",
+    "workItemId": "wi_1782532588041_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:34.977Z"
+  },
+  {
+    "id": "mem_1782532594979_6",
+    "engineerId": "engorg_backend",
+    "type": "completion",
+    "title": "Completed: Backend task",
+    "detail": "Done",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:34.979Z"
+  },
+  {
+    "id": "mem_1782532594983_8",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:34.983Z"
+  },
+  {
+    "id": "mem_1782532594985_9",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:34.985Z"
+  },
+  {
+    "id": "mem_1782532594990_a",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:34.990Z"
+  },
+  {
+    "id": "mem_1782532594991_b",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:34.991Z"
+  },
+  {
+    "id": "mem_1782532594993_c",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:34.993Z"
+  },
+  {
+    "id": "mem_1782532594998_e",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:34.998Z"
+  },
+  {
+    "id": "mem_1782532594999_f",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:34.999Z"
+  },
+  {
+    "id": "mem_1782532595000_g",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.000Z"
+  },
+  {
+    "id": "mem_1782532595001_h",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.001Z"
+  },
+  {
+    "id": "mem_1782532595003_i",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.003Z"
+  },
+  {
+    "id": "mem_1782532595006_k",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.006Z"
+  },
+  {
+    "id": "mem_1782532595007_l",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.007Z"
+  },
+  {
+    "id": "mem_1782532595008_m",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.008Z"
+  },
+  {
+    "id": "mem_1782532595012_n",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.012Z"
+  },
+  {
+    "id": "mem_1782532595014_p",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.014Z"
+  },
+  {
+    "id": "mem_1782532595014_q",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.014Z"
+  },
+  {
+    "id": "mem_1782532595017_r",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.017Z"
+  },
+  {
+    "id": "mem_1782532595019_t",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs updated",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.019Z"
+  },
+  {
+    "id": "mem_1782532595020_u",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.020Z"
+  },
+  {
+    "id": "mem_1782532595023_v",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.023Z"
+  },
+  {
+    "id": "mem_1782532595032_2",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA failed: QA fail item",
+    "detail": "Test coverage < 80%; Missing edge case",
+    "workItemId": "wi_1782532595029_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.032Z"
+  },
+  {
+    "id": "mem_1782532595034_4",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security flagged: QA fail item",
+    "detail": "SQL injection risk",
+    "workItemId": "wi_1782532595029_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.034Z"
+  },
+  {
+    "id": "mem_1782532595037_2",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532595037_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.037Z"
+  },
+  {
+    "id": "mem_1782532595038_3",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Issues: High error rate; Latency spike",
+    "workItemId": "wi_1782532595037_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.038Z"
+  },
+  {
+    "id": "mem_1782532595996_5",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:35.996Z"
+  },
+  {
+    "id": "mem_1782532596005_6",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:36.005Z"
+  },
+  {
+    "id": "mem_1782532596013_7",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:36.013Z"
+  },
+  {
+    "id": "mem_1782532596018_8",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:36.018Z"
+  },
+  {
+    "id": "mem_1782532596021_9",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:36.021Z"
+  },
+  {
+    "id": "mem_1782532596023_a",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:36.023Z"
+  },
+  {
+    "id": "mem_1782532597001_b",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:37.001Z"
+  },
+  {
+    "id": "mem_1782532597007_c",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:37.007Z"
+  },
+  {
+    "id": "mem_1782532597015_d",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:37.015Z"
+  },
+  {
+    "id": "mem_1782532597020_e",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:37.020Z"
+  },
+  {
+    "id": "mem_1782532597024_f",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:37.024Z"
+  },
+  {
+    "id": "mem_1782532597028_g",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532594968_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:56:37.028Z"
+  },
+  {
+    "id": "mem_1782532638845_1",
+    "engineerId": "engorg_cto",
+    "type": "lesson",
+    "title": "Platform reliability insight",
+    "detail": "Uptime improved after fixing retry logic",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:18.845Z"
+  },
+  {
+    "id": "mem_1782532638853_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: Q3-Test-Obj-1782532638808",
+    "detail": "Test",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:18.853Z"
+  },
+  {
+    "id": "mem_1782532638856_4",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782532638808 — Backend & API",
+    "detail": "Obj: obj_1782532638852_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:18.856Z"
+  },
+  {
+    "id": "mem_1782532638863_8",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532638855_3",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:18.863Z"
+  },
+  {
+    "id": "mem_1782532638864_a",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782532638808 — Frontend & UX",
+    "detail": "Obj: obj_1782532638852_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:18.864Z"
+  },
+  {
+    "id": "mem_1782532638871_e",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532638863_9",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:18.871Z"
+  },
+  {
+    "id": "mem_1782532638873_g",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782532638808 — DevOps & Release",
+    "detail": "Obj: obj_1782532638852_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:18.873Z"
+  },
+  {
+    "id": "mem_1782532638882_k",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532638872_f",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:18.882Z"
+  },
+  {
+    "id": "mem_1782532639509_4",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782532639492_1",
+    "detail": "2 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.509Z"
+  },
+  {
+    "id": "mem_1782532639513_5",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Claimed: Ready item",
+    "detail": "Epic: null",
+    "workItemId": "wi_1782532595024_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.513Z"
+  },
+  {
+    "id": "mem_1782532639518_6",
+    "engineerId": "engorg_backend",
+    "type": "completion",
+    "title": "Completed: Backend task",
+    "detail": "Done",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.518Z"
+  },
+  {
+    "id": "mem_1782532639524_8",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.524Z"
+  },
+  {
+    "id": "mem_1782532639527_9",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.527Z"
+  },
+  {
+    "id": "mem_1782532639530_a",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.530Z"
+  },
+  {
+    "id": "mem_1782532639531_b",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.531Z"
+  },
+  {
+    "id": "mem_1782532639535_c",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.535Z"
+  },
+  {
+    "id": "mem_1782532639541_e",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.541Z"
+  },
+  {
+    "id": "mem_1782532639543_f",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.543Z"
+  },
+  {
+    "id": "mem_1782532639544_g",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.544Z"
+  },
+  {
+    "id": "mem_1782532639545_h",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.545Z"
+  },
+  {
+    "id": "mem_1782532639549_i",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.549Z"
+  },
+  {
+    "id": "mem_1782532639554_k",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.554Z"
+  },
+  {
+    "id": "mem_1782532639555_l",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.555Z"
+  },
+  {
+    "id": "mem_1782532639557_m",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.557Z"
+  },
+  {
+    "id": "mem_1782532639561_n",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.561Z"
+  },
+  {
+    "id": "mem_1782532639563_p",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.563Z"
+  },
+  {
+    "id": "mem_1782532639564_q",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.564Z"
+  },
+  {
+    "id": "mem_1782532639568_r",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.568Z"
+  },
+  {
+    "id": "mem_1782532639570_t",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs updated",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.570Z"
+  },
+  {
+    "id": "mem_1782532639572_u",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.572Z"
+  },
+  {
+    "id": "mem_1782532639584_2",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA failed: QA fail item",
+    "detail": "Test coverage < 80%; Missing edge case",
+    "workItemId": "wi_1782532639580_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.584Z"
+  },
+  {
+    "id": "mem_1782532639586_4",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security flagged: QA fail item",
+    "detail": "SQL injection risk",
+    "workItemId": "wi_1782532639580_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.586Z"
+  },
+  {
+    "id": "mem_1782532639592_2",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532639591_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.592Z"
+  },
+  {
+    "id": "mem_1782532639593_3",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Issues: High error rate; Latency spike",
+    "workItemId": "wi_1782532639591_1",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:19.593Z"
+  },
+  {
+    "id": "mem_1782532640538_5",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:20.538Z"
+  },
+  {
+    "id": "mem_1782532640552_6",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:20.552Z"
+  },
+  {
+    "id": "mem_1782532640563_7",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:20.563Z"
+  },
+  {
+    "id": "mem_1782532640570_8",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:20.570Z"
+  },
+  {
+    "id": "mem_1782532641544_9",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:21.544Z"
+  },
+  {
+    "id": "mem_1782532641554_a",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:21.554Z"
+  },
+  {
+    "id": "mem_1782532641564_b",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:21.564Z"
+  },
+  {
+    "id": "mem_1782532641571_c",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:21.571Z"
+  },
+  {
+    "id": "mem_1782532641576_d",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782532639503_2",
+    "tags": [],
+    "timestamp": "2026-06-27T03:57:21.576Z"
+  },
+  {
+    "id": "mem_1782533448801_1",
+    "engineerId": "engorg_cto",
+    "type": "lesson",
+    "title": "Platform reliability insight",
+    "detail": "Uptime improved after fixing retry logic",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:48.801Z"
+  },
+  {
+    "id": "mem_1782533448811_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: Q3-Test-Obj-1782533448765",
+    "detail": "Test",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:48.811Z"
+  },
+  {
+    "id": "mem_1782533448814_4",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782533448765 — Backend & API",
+    "detail": "Obj: obj_1782533448811_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:48.814Z"
+  },
+  {
+    "id": "mem_1782533448821_8",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782533448813_3",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:48.821Z"
+  },
+  {
+    "id": "mem_1782533448823_a",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782533448765 — Frontend & UX",
+    "detail": "Obj: obj_1782533448811_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:48.823Z"
+  },
+  {
+    "id": "mem_1782533448829_e",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782533448822_9",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:48.829Z"
+  },
+  {
+    "id": "mem_1782533448831_g",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782533448765 — DevOps & Release",
+    "detail": "Obj: obj_1782533448811_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:48.831Z"
+  },
+  {
+    "id": "mem_1782533448838_k",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782533448830_f",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:48.838Z"
+  },
+  {
+    "id": "mem_1782533449470_4",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782533449446_1",
+    "detail": "2 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.470Z"
+  },
+  {
+    "id": "mem_1782533449474_5",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Claimed: Implement core logic — Q3-Test-Obj-1782532638808 — Backend & API",
+    "detail": "Epic: epic_1782532638855_3",
+    "workItemId": "wi_1782532638858_5",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.474Z"
+  },
+  {
+    "id": "mem_1782533449477_6",
+    "engineerId": "engorg_backend",
+    "type": "completion",
+    "title": "Completed: Backend task",
+    "detail": "Done",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.477Z"
+  },
+  {
+    "id": "mem_1782533449483_8",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.483Z"
+  },
+  {
+    "id": "mem_1782533449486_9",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.486Z"
+  },
+  {
+    "id": "mem_1782533449489_a",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.489Z"
+  },
+  {
+    "id": "mem_1782533449490_b",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.490Z"
+  },
+  {
+    "id": "mem_1782533449494_c",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.494Z"
+  },
+  {
+    "id": "mem_1782533449499_e",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.499Z"
+  },
+  {
+    "id": "mem_1782533449501_f",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.501Z"
+  },
+  {
+    "id": "mem_1782533449502_g",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.502Z"
+  },
+  {
+    "id": "mem_1782533449504_h",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.504Z"
+  },
+  {
+    "id": "mem_1782533449507_i",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.507Z"
+  },
+  {
+    "id": "mem_1782533449511_k",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.511Z"
+  },
+  {
+    "id": "mem_1782533449512_l",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.512Z"
+  },
+  {
+    "id": "mem_1782533449512_m",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.512Z"
+  },
+  {
+    "id": "mem_1782533449515_n",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.515Z"
+  },
+  {
+    "id": "mem_1782533449518_p",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.518Z"
+  },
+  {
+    "id": "mem_1782533449519_q",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.519Z"
+  },
+  {
+    "id": "mem_1782533449522_r",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.522Z"
+  },
+  {
+    "id": "mem_1782533449525_t",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs updated",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.525Z"
+  },
+  {
+    "id": "mem_1782533449527_u",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.527Z"
+  },
+  {
+    "id": "mem_1782533449540_2",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA failed: QA fail item",
+    "detail": "Test coverage < 80%; Missing edge case",
+    "workItemId": "wi_1782533449535_1",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.540Z"
+  },
+  {
+    "id": "mem_1782533449542_4",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security flagged: QA fail item",
+    "detail": "SQL injection risk",
+    "workItemId": "wi_1782533449535_1",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.542Z"
+  },
+  {
+    "id": "mem_1782533449547_2",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782533449546_1",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.547Z"
+  },
+  {
+    "id": "mem_1782533449548_3",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Issues: High error rate; Latency spike",
+    "workItemId": "wi_1782533449546_1",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:49.548Z"
+  },
+  {
+    "id": "mem_1782533450497_5",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:50.497Z"
+  },
+  {
+    "id": "mem_1782533450508_6",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:50.508Z"
+  },
+  {
+    "id": "mem_1782533450517_7",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:50.517Z"
+  },
+  {
+    "id": "mem_1782533450524_8",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:50.524Z"
+  },
+  {
+    "id": "mem_1782533451500_9",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:51.500Z"
+  },
+  {
+    "id": "mem_1782533451511_a",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:51.511Z"
+  },
+  {
+    "id": "mem_1782533451519_b",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:51.519Z"
+  },
+  {
+    "id": "mem_1782533451526_c",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:51.526Z"
+  },
+  {
+    "id": "mem_1782533451532_d",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782533449459_2",
+    "tags": [],
+    "timestamp": "2026-06-27T04:10:51.532Z"
+  },
+  {
+    "id": "mem_1782557643550_1",
+    "engineerId": "engorg_cto",
+    "type": "lesson",
+    "title": "Platform reliability insight",
+    "detail": "Uptime improved after fixing retry logic",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:03.550Z"
+  },
+  {
+    "id": "mem_1782557643562_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: Q3-Test-Obj-1782557643500",
+    "detail": "Test",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:03.562Z"
+  },
+  {
+    "id": "mem_1782557643566_4",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782557643500 — Backend & API",
+    "detail": "Obj: obj_1782557643560_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:03.566Z"
+  },
+  {
+    "id": "mem_1782557643575_8",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782557643565_3",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:03.575Z"
+  },
+  {
+    "id": "mem_1782557643577_a",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782557643500 — Frontend & UX",
+    "detail": "Obj: obj_1782557643560_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:03.577Z"
+  },
+  {
+    "id": "mem_1782557643587_e",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782557643576_9",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:03.587Z"
+  },
+  {
+    "id": "mem_1782557643590_g",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782557643500 — DevOps & Release",
+    "detail": "Obj: obj_1782557643560_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:03.590Z"
+  },
+  {
+    "id": "mem_1782557643599_k",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782557643589_f",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:03.599Z"
+  },
+  {
+    "id": "mem_1782557644217_4",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782557644208_1",
+    "detail": "2 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.217Z"
+  },
+  {
+    "id": "mem_1782557644219_5",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Claimed: Ready item",
+    "detail": "Epic: null",
+    "workItemId": "wi_1782532639574_1",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.219Z"
+  },
+  {
+    "id": "mem_1782557644222_6",
+    "engineerId": "engorg_backend",
+    "type": "completion",
+    "title": "Completed: Backend task",
+    "detail": "Done",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.222Z"
+  },
+  {
+    "id": "mem_1782557644228_8",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.228Z"
+  },
+  {
+    "id": "mem_1782557644233_9",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.233Z"
+  },
+  {
+    "id": "mem_1782557644236_a",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.236Z"
+  },
+  {
+    "id": "mem_1782557644237_b",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.237Z"
+  },
+  {
+    "id": "mem_1782557644240_c",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.240Z"
+  },
+  {
+    "id": "mem_1782557644245_e",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.245Z"
+  },
+  {
+    "id": "mem_1782557644247_f",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.247Z"
+  },
+  {
+    "id": "mem_1782557644249_g",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.249Z"
+  },
+  {
+    "id": "mem_1782557644250_h",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.250Z"
+  },
+  {
+    "id": "mem_1782557644253_i",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.253Z"
+  },
+  {
+    "id": "mem_1782557644258_k",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.258Z"
+  },
+  {
+    "id": "mem_1782557644259_l",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.259Z"
+  },
+  {
+    "id": "mem_1782557644260_m",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.260Z"
+  },
+  {
+    "id": "mem_1782557644264_n",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.264Z"
+  },
+  {
+    "id": "mem_1782557644268_p",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.268Z"
+  },
+  {
+    "id": "mem_1782557644269_q",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.269Z"
+  },
+  {
+    "id": "mem_1782557644273_r",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.273Z"
+  },
+  {
+    "id": "mem_1782557644277_t",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs updated",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.277Z"
+  },
+  {
+    "id": "mem_1782557644280_u",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.280Z"
+  },
+  {
+    "id": "mem_1782557644296_2",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA failed: QA fail item",
+    "detail": "Test coverage < 80%; Missing edge case",
+    "workItemId": "wi_1782557644288_1",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.296Z"
+  },
+  {
+    "id": "mem_1782557644299_4",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security flagged: QA fail item",
+    "detail": "SQL injection risk",
+    "workItemId": "wi_1782557644288_1",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.299Z"
+  },
+  {
+    "id": "mem_1782557644304_2",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782557644303_1",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.304Z"
+  },
+  {
+    "id": "mem_1782557644306_3",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Issues: High error rate; Latency spike",
+    "workItemId": "wi_1782557644303_1",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:04.306Z"
+  },
+  {
+    "id": "mem_1782557645244_5",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:05.244Z"
+  },
+  {
+    "id": "mem_1782557645255_6",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:05.255Z"
+  },
+  {
+    "id": "mem_1782557645268_7",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:05.268Z"
+  },
+  {
+    "id": "mem_1782557645274_8",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:05.274Z"
+  },
+  {
+    "id": "mem_1782557646247_9",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:06.247Z"
+  },
+  {
+    "id": "mem_1782557646257_a",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:06.257Z"
+  },
+  {
+    "id": "mem_1782557646267_b",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:06.267Z"
+  },
+  {
+    "id": "mem_1782557646276_c",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:06.276Z"
+  },
+  {
+    "id": "mem_1782557646283_d",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782557644211_2",
+    "tags": [],
+    "timestamp": "2026-06-27T10:54:06.283Z"
+  },
+  {
+    "id": "mem_1782592426555_1",
+    "engineerId": "engorg_cto",
+    "type": "lesson",
+    "title": "Platform reliability insight",
+    "detail": "Uptime improved after fixing retry logic",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:46.555Z"
+  },
+  {
+    "id": "mem_1782592426568_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: Q3-Test-Obj-1782592426500",
+    "detail": "Test",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:46.568Z"
+  },
+  {
+    "id": "mem_1782592426572_4",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782592426500 — Backend & API",
+    "detail": "Obj: obj_1782592426566_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:46.572Z"
+  },
+  {
+    "id": "mem_1782592426584_8",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782592426570_3",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:46.584Z"
+  },
+  {
+    "id": "mem_1782592426587_a",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782592426500 — Frontend & UX",
+    "detail": "Obj: obj_1782592426566_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:46.587Z"
+  },
+  {
+    "id": "mem_1782592426596_e",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782592426585_9",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:46.596Z"
+  },
+  {
+    "id": "mem_1782592426598_g",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782592426500 — DevOps & Release",
+    "detail": "Obj: obj_1782592426566_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:46.598Z"
+  },
+  {
+    "id": "mem_1782592426609_k",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782592426597_f",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:46.609Z"
+  },
+  {
+    "id": "mem_1782592427230_4",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782592427217_1",
+    "detail": "2 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.230Z"
+  },
+  {
+    "id": "mem_1782592427234_5",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Claimed: Implement core logic — Q3-Test-Obj-1782533448765 — Backend & API",
+    "detail": "Epic: epic_1782533448813_3",
+    "workItemId": "wi_1782533448816_5",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.234Z"
+  },
+  {
+    "id": "mem_1782592427237_6",
+    "engineerId": "engorg_backend",
+    "type": "completion",
+    "title": "Completed: Backend task",
+    "detail": "Done",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.237Z"
+  },
+  {
+    "id": "mem_1782592427245_8",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.245Z"
+  },
+  {
+    "id": "mem_1782592427248_9",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.248Z"
+  },
+  {
+    "id": "mem_1782592427251_a",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.251Z"
+  },
+  {
+    "id": "mem_1782592427252_b",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.252Z"
+  },
+  {
+    "id": "mem_1782592427256_c",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.256Z"
+  },
+  {
+    "id": "mem_1782592427263_e",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.263Z"
+  },
+  {
+    "id": "mem_1782592427265_f",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.265Z"
+  },
+  {
+    "id": "mem_1782592427267_g",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.267Z"
+  },
+  {
+    "id": "mem_1782592427268_h",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.268Z"
+  },
+  {
+    "id": "mem_1782592427271_i",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.271Z"
+  },
+  {
+    "id": "mem_1782592427276_k",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.276Z"
+  },
+  {
+    "id": "mem_1782592427278_l",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.278Z"
+  },
+  {
+    "id": "mem_1782592427279_m",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.279Z"
+  },
+  {
+    "id": "mem_1782592427283_n",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.283Z"
+  },
+  {
+    "id": "mem_1782592427286_p",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.286Z"
+  },
+  {
+    "id": "mem_1782592427287_q",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.287Z"
+  },
+  {
+    "id": "mem_1782592427291_r",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.291Z"
+  },
+  {
+    "id": "mem_1782592427294_t",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs updated",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.294Z"
+  },
+  {
+    "id": "mem_1782592427297_u",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.297Z"
+  },
+  {
+    "id": "mem_1782592427313_2",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA failed: QA fail item",
+    "detail": "Test coverage < 80%; Missing edge case",
+    "workItemId": "wi_1782592427307_1",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.313Z"
+  },
+  {
+    "id": "mem_1782592427317_4",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security flagged: QA fail item",
+    "detail": "SQL injection risk",
+    "workItemId": "wi_1782592427307_1",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.317Z"
+  },
+  {
+    "id": "mem_1782592427323_2",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782592427322_1",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.323Z"
+  },
+  {
+    "id": "mem_1782592427324_3",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Issues: High error rate; Latency spike",
+    "workItemId": "wi_1782592427322_1",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:47.324Z"
+  },
+  {
+    "id": "mem_1782592428259_5",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:48.259Z"
+  },
+  {
+    "id": "mem_1782592428273_6",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:48.273Z"
+  },
+  {
+    "id": "mem_1782592428284_7",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:48.284Z"
+  },
+  {
+    "id": "mem_1782592428292_8",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:48.292Z"
+  },
+  {
+    "id": "mem_1782592429261_9",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:49.261Z"
+  },
+  {
+    "id": "mem_1782592429276_a",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:49.276Z"
+  },
+  {
+    "id": "mem_1782592429286_b",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:49.286Z"
+  },
+  {
+    "id": "mem_1782592429293_c",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:49.293Z"
+  },
+  {
+    "id": "mem_1782592429300_d",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782592427221_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:33:49.300Z"
+  },
+  {
+    "id": "mem_1782592442118_1",
+    "engineerId": "engorg_cto",
+    "type": "lesson",
+    "title": "Platform reliability insight",
+    "detail": "Uptime improved after fixing retry logic",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.118Z"
+  },
+  {
+    "id": "mem_1782592442136_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: Q3-Test-Obj-1782592442057",
+    "detail": "Test",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.136Z"
+  },
+  {
+    "id": "mem_1782592442142_4",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782592442057 — Backend & API",
+    "detail": "Obj: obj_1782592442135_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.142Z"
+  },
+  {
+    "id": "mem_1782592442155_8",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782592442140_3",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.155Z"
+  },
+  {
+    "id": "mem_1782592442158_a",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782592442057 — Frontend & UX",
+    "detail": "Obj: obj_1782592442135_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.158Z"
+  },
+  {
+    "id": "mem_1782592442171_e",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782592442157_9",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.171Z"
+  },
+  {
+    "id": "mem_1782592442173_g",
+    "engineerId": "engorg_manager",
+    "type": "epic",
+    "title": "Epic created: Q3-Test-Obj-1782592442057 — DevOps & Release",
+    "detail": "Obj: obj_1782592442135_1",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.173Z"
+  },
+  {
+    "id": "mem_1782592442185_k",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782592442172_f",
+    "detail": "3 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.185Z"
+  },
+  {
+    "id": "mem_1782592442800_4",
+    "engineerId": "engorg_architect",
+    "type": "tech_plan",
+    "title": "Tech plan for epic epic_1782592442792_1",
+    "detail": "2 work items created",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.800Z"
+  },
+  {
+    "id": "mem_1782592442803_5",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Claimed: Ready item",
+    "detail": "Epic: null",
+    "workItemId": "wi_1782533449529_1",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.803Z"
+  },
+  {
+    "id": "mem_1782592442806_6",
+    "engineerId": "engorg_backend",
+    "type": "completion",
+    "title": "Completed: Backend task",
+    "detail": "Done",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.806Z"
+  },
+  {
+    "id": "mem_1782592442812_8",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.812Z"
+  },
+  {
+    "id": "mem_1782592442815_9",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.815Z"
+  },
+  {
+    "id": "mem_1782592442817_a",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.817Z"
+  },
+  {
+    "id": "mem_1782592442819_b",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.819Z"
+  },
+  {
+    "id": "mem_1782592442823_c",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.823Z"
+  },
+  {
+    "id": "mem_1782592442832_e",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA passed: Backend task",
+    "detail": "All checks passed",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.832Z"
+  },
+  {
+    "id": "mem_1782592442835_f",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.835Z"
+  },
+  {
+    "id": "mem_1782592442836_g",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.836Z"
+  },
+  {
+    "id": "mem_1782592442837_h",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.837Z"
+  },
+  {
+    "id": "mem_1782592442842_i",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.842Z"
+  },
+  {
+    "id": "mem_1782592442848_k",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security cleared: Backend task",
+    "detail": "No issues",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.848Z"
+  },
+  {
+    "id": "mem_1782592442849_l",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.849Z"
+  },
+  {
+    "id": "mem_1782592442851_m",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.851Z"
+  },
+  {
+    "id": "mem_1782592442855_n",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.855Z"
+  },
+  {
+    "id": "mem_1782592442859_p",
+    "engineerId": "engorg_code_review",
+    "type": "code_review",
+    "title": "Review approved: Backend task",
+    "detail": "LGTM",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.859Z"
+  },
+  {
+    "id": "mem_1782592442861_q",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs generated for: Backend task",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.861Z"
+  },
+  {
+    "id": "mem_1782592442865_r",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.865Z"
+  },
+  {
+    "id": "mem_1782592442869_t",
+    "engineerId": "engorg_docs",
+    "type": "docs_update",
+    "title": "Docs updated: Backend task",
+    "detail": "Docs updated",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.869Z"
+  },
+  {
+    "id": "mem_1782592442875_u",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Backend task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.875Z"
+  },
+  {
+    "id": "mem_1782592442896_2",
+    "engineerId": "engorg_qa",
+    "type": "qa_review",
+    "title": "QA failed: QA fail item",
+    "detail": "Test coverage < 80%; Missing edge case",
+    "workItemId": "wi_1782592442887_1",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.896Z"
+  },
+  {
+    "id": "mem_1782592442902_4",
+    "engineerId": "engorg_security",
+    "type": "security_review",
+    "title": "Security flagged: QA fail item",
+    "detail": "SQL injection risk",
+    "workItemId": "wi_1782592442887_1",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.902Z"
+  },
+  {
+    "id": "mem_1782592442909_2",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782592442908_1",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.909Z"
+  },
+  {
+    "id": "mem_1782592442911_3",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Deploy item",
+    "detail": "Issues: High error rate; Latency spike",
+    "workItemId": "wi_1782592442908_1",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:02.911Z"
+  },
+  {
+    "id": "mem_1782592443828_5",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:03.828Z"
+  },
+  {
+    "id": "mem_1782592443846_6",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:03.846Z"
+  },
+  {
+    "id": "mem_1782592443857_7",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:03.857Z"
+  },
+  {
+    "id": "mem_1782592443868_8",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Backend task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:34:03.868Z"
+  },
+  {
+    "id": "mem_1782592581752_9",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:36:21.752Z"
+  },
+  {
+    "id": "mem_1782592581791_a",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:36:21.791Z"
+  },
+  {
+    "id": "mem_1782592581806_b",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:36:21.806Z"
+  },
+  {
+    "id": "mem_1782592581819_c",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:36:21.819Z"
+  },
+  {
+    "id": "mem_1782592581833_d",
+    "engineerId": "engorg_release",
+    "type": "deployment_complete",
+    "title": "Deployed: Backend task",
+    "detail": "Target: staging",
+    "workItemId": "wi_1782592442795_2",
+    "tags": [],
+    "timestamp": "2026-06-27T20:36:21.833Z"
+  },
+  {
+    "id": "mem_1782599503223_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] DispEng 1782599502788",
+    "detail": "Executive goal delegated to engineering: DispEng 1782599502788",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:31:43.223Z"
+  },
+  {
+    "id": "mem_1782599503305_4",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Full Pipeline 1782599502788",
+    "detail": "Executive goal delegated to engineering: Full Pipeline 1782599502788",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:31:43.305Z"
+  },
+  {
+    "id": "mem_1782599508676_6",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Smoke Test 1782599502788",
+    "detail": "Executive goal delegated to engineering: Smoke Test 1782599502788",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:31:48.676Z"
+  },
+  {
+    "id": "mem_1782599535514_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] DispEng 1782599535116",
+    "detail": "Executive goal delegated to engineering: DispEng 1782599535116",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:32:15.514Z"
+  },
+  {
+    "id": "mem_1782599535587_4",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Full Pipeline 1782599535116",
+    "detail": "Executive goal delegated to engineering: Full Pipeline 1782599535116",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:32:15.587Z"
+  },
+  {
+    "id": "mem_1782599540496_6",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Smoke Test 1782599535116",
+    "detail": "Executive goal delegated to engineering: Smoke Test 1782599535116",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:32:20.496Z"
+  },
+  {
+    "id": "mem_1782600224557_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Enterprise Pipeline Test 1782600223572",
+    "detail": "Executive goal delegated to engineering: Enterprise Pipeline Test 1782600223572",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:43:44.557Z"
+  },
+  {
+    "id": "mem_1782600229921_4",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Launch SmokeProduct to GA 1782600223572",
+    "detail": "Executive goal delegated to engineering: Launch SmokeProduct to GA 1782600223572",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:43:49.921Z"
+  },
+  {
+    "id": "mem_1782600888689_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Ecosystem pipeline test 1782600888225",
+    "detail": "Executive goal delegated to engineering: Ecosystem pipeline test 1782600888225",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:54:48.689Z"
+  },
+  {
+    "id": "mem_1782600888826_4",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Build feature for tenant 1782600888225",
+    "detail": "Executive goal delegated to engineering: Build feature for tenant 1782600888225",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:54:48.826Z"
+  },
+  {
+    "id": "mem_1782600888939_6",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Health test 1782600888225",
+    "detail": "Executive goal delegated to engineering: Health test 1782600888225",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:54:48.939Z"
+  },
+  {
+    "id": "mem_1782600893921_8",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Integration smoke 1782600888225",
+    "detail": "Executive goal delegated to engineering: Integration smoke 1782600888225",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:54:53.921Z"
+  },
+  {
+    "id": "mem_1782600997108_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Ecosystem pipeline test 1782600996584",
+    "detail": "Executive goal delegated to engineering: Ecosystem pipeline test 1782600996584",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:56:37.108Z"
+  },
+  {
+    "id": "mem_1782600997230_4",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Build feature for tenant 1782600996584",
+    "detail": "Executive goal delegated to engineering: Build feature for tenant 1782600996584",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:56:37.230Z"
+  },
+  {
+    "id": "mem_1782600997330_6",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Health test 1782600996584",
+    "detail": "Executive goal delegated to engineering: Health test 1782600996584",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:56:37.330Z"
+  },
+  {
+    "id": "mem_1782601002645_8",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Integration smoke 1782600996584",
+    "detail": "Executive goal delegated to engineering: Integration smoke 1782600996584",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T22:56:42.645Z"
+  },
+  {
+    "id": "mem_1782601786642_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Build civilization feature 1782601786114",
+    "detail": "Executive goal delegated to engineering: Build civilization feature 1782601786114",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T23:09:46.642Z"
+  },
+  {
+    "id": "mem_1782601786818_4",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Health test 1782601786114",
+    "detail": "Executive goal delegated to engineering: Health test 1782601786114",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T23:09:46.818Z"
+  },
+  {
+    "id": "mem_1782601786952_6",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Resource-backed initiative 1782601786114",
+    "detail": "Executive goal delegated to engineering: Resource-backed initiative 1782601786114",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T23:09:46.952Z"
+  },
+  {
+    "id": "mem_1782601792153_8",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Cross-layer smoke 1782601786114",
+    "detail": "Executive goal delegated to engineering: Cross-layer smoke 1782601786114",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-27T23:09:52.153Z"
+  },
+  {
+    "id": "mem_1782624960495_2",
+    "engineerId": "engorg_cto",
+    "type": "objective",
+    "title": "Objective created: [EOS] Autonomous recovery: restore all systems",
+    "detail": "Executive goal delegated to engineering: Autonomous recovery: restore all systems",
+    "workItemId": null,
+    "tags": [],
+    "timestamp": "2026-06-28T05:36:00.495Z"
+  },
+  {
+    "id": "mem_1782625910686_1",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Claimed: Implement core logic — Q3-Test-Obj-1782557643500 — Backend & API",
+    "detail": "Epic: epic_1782557643565_3",
+    "workItemId": "wi_1782557643569_5",
+    "tags": [],
+    "timestamp": "2026-06-28T05:51:50.686Z"
+  },
+  {
+    "id": "mem_1782625910691_2",
+    "engineerId": "engorg_frontend",
+    "type": "claim",
+    "title": "Claimed: Implement core logic — Q3-Test-Obj — Frontend & UX",
+    "detail": "Epic: epic_1782532409891_9",
+    "workItemId": "wi_1782532409893_b",
+    "tags": [],
+    "timestamp": "2026-06-28T05:51:50.691Z"
+  },
+  {
+    "id": "mem_1782625911027_3",
+    "engineerId": "engorg_devops",
+    "type": "claim",
+    "title": "Claimed: Implement core logic — Platform Reliability Q3-2026 — DevOps & Release",
+    "detail": "Epic: epic_1782532055811_f",
+    "workItemId": "wi_1782532055812_h",
+    "tags": [],
+    "timestamp": "2026-06-28T05:51:51.027Z"
+  },
+  {
+    "id": "mem_1782625911042_4",
+    "engineerId": "engorg_docs",
+    "type": "claim",
+    "title": "Claimed: Update docs — Platform Reliability Q3-2026 — Frontend & UX",
+    "detail": "Epic: epic_1782532055808_9",
+    "workItemId": "wi_1782532055811_d",
+    "tags": [],
+    "timestamp": "2026-06-28T05:51:51.042Z"
+  },
+  {
+    "id": "mem_1782625911058_5",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Needs approval",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532409875_1",
+    "tags": [],
+    "timestamp": "2026-06-28T05:51:51.058Z"
+  },
+  {
+    "id": "mem_1782625911065_6",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Needs approval",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532409875_1",
+    "tags": [],
+    "timestamp": "2026-06-28T05:51:51.065Z"
+  },
+  {
+    "id": "mem_1782626890441_1",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Claimed: Ready item",
+    "detail": "Epic: null",
+    "workItemId": "wi_1782557644282_1",
+    "tags": [],
+    "timestamp": "2026-06-28T06:08:10.441Z"
+  },
+  {
+    "id": "mem_1782626890446_2",
+    "engineerId": "engorg_frontend",
+    "type": "claim",
+    "title": "Claimed: Another ready",
+    "detail": "Epic: null",
+    "workItemId": "wi_1782532410562_2",
+    "tags": [],
+    "timestamp": "2026-06-28T06:08:10.446Z"
+  },
+  {
+    "id": "mem_1782626890770_3",
+    "engineerId": "engorg_devops",
+    "type": "claim",
+    "title": "Claimed: Implement core logic — Q3-Test-Obj — DevOps & Release",
+    "detail": "Epic: epic_1782532409895_f",
+    "workItemId": "wi_1782532409896_h",
+    "tags": [],
+    "timestamp": "2026-06-28T06:08:10.770Z"
+  },
+  {
+    "id": "mem_1782626890787_4",
+    "engineerId": "engorg_docs",
+    "type": "claim",
+    "title": "Claimed: Update docs — Platform Reliability Q3-2026 — DevOps & Release",
+    "detail": "Epic: epic_1782532055811_f",
+    "workItemId": "wi_1782532055814_j",
+    "tags": [],
+    "timestamp": "2026-06-28T06:08:10.787Z"
+  },
+  {
+    "id": "mem_1782626890802_5",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Review task",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532409876_1",
+    "tags": [],
+    "timestamp": "2026-06-28T06:08:10.802Z"
+  },
+  {
+    "id": "mem_1782626890808_6",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Needs approval",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532409875_1",
+    "tags": [],
+    "timestamp": "2026-06-28T06:08:10.808Z"
+  },
+  {
+    "id": "mem_1782626890810_7",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Review task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532409876_1",
+    "tags": [],
+    "timestamp": "2026-06-28T06:08:10.810Z"
+  },
+  {
+    "id": "mem_1782628532879_1",
+    "engineerId": "engorg_backend",
+    "type": "claim",
+    "title": "Claimed: Implement core logic — Q3-Test-Obj-1782592426500 — Backend & API",
+    "detail": "Epic: epic_1782592426570_3",
+    "workItemId": "wi_1782592426575_5",
+    "tags": [],
+    "timestamp": "2026-06-28T06:35:32.879Z"
+  },
+  {
+    "id": "mem_1782628532885_2",
+    "engineerId": "engorg_frontend",
+    "type": "claim",
+    "title": "Claimed: Another ready",
+    "detail": "Epic: null",
+    "workItemId": "wi_1782532588043_2",
+    "tags": [],
+    "timestamp": "2026-06-28T06:35:32.885Z"
+  },
+  {
+    "id": "mem_1782628533192_3",
+    "engineerId": "engorg_devops",
+    "type": "claim",
+    "title": "Claimed: Implement core logic — Q3-Test-Obj-1782532638808 — DevOps & Release",
+    "detail": "Epic: epic_1782532638872_f",
+    "workItemId": "wi_1782532638875_h",
+    "tags": [],
+    "timestamp": "2026-06-28T06:35:33.192Z"
+  },
+  {
+    "id": "mem_1782628533209_4",
+    "engineerId": "engorg_docs",
+    "type": "claim",
+    "title": "Claimed: Update docs — Q3-Test-Obj — Backend & API",
+    "detail": "Epic: epic_1782532409883_3",
+    "workItemId": "wi_1782532409890_7",
+    "tags": [],
+    "timestamp": "2026-06-28T06:35:33.209Z"
+  },
+  {
+    "id": "mem_1782628533219_5",
+    "engineerId": "engorg_release",
+    "type": "deployment",
+    "title": "Deploying: Needs approval",
+    "detail": "Target: staging v?",
+    "workItemId": "wi_1782532587364_1",
+    "tags": [],
+    "timestamp": "2026-06-28T06:35:33.219Z"
+  },
+  {
+    "id": "mem_1782628533227_6",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Needs approval",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532409875_1",
+    "tags": [],
+    "timestamp": "2026-06-28T06:35:33.227Z"
+  },
+  {
+    "id": "mem_1782628533229_7",
+    "engineerId": "engorg_incident",
+    "type": "production_monitor",
+    "title": "Monitor: Review task",
+    "detail": "Production healthy",
+    "workItemId": "wi_1782532409876_1",
+    "tags": [],
+    "timestamp": "2026-06-28T06:35:33.229Z"
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "id": "mem-1782514613429-7ttsl",
+  "finding": {
+    "type": "spacing",
+    "severity": "warning",
+    "message": "off grid"
+  },
+  "patchSpec": [
+    {
+      "patchTarget": "p-3",
+      "patchReplacement": "p-4"
+    }
+  ],
+  "targetFile": null,
+  "strategy": "spacing",
+  "scoreBefore": null,
+  "scoreAfter": null,
+  "improvement": null,
+  "outcome": "applied",
+  "usageCount": 0,
+  "createdAt": "2026-06-26T22:56:53.429Z",
+  "lastUsedAt": null
+}

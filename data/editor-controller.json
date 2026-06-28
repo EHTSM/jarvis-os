@@ -1,0 +1,46 @@
+{
+  "openProjects": {
+    "proj__Users_ehtsm_jarvis_os": {
+      "projectId": "proj__Users_ehtsm_jarvis_os",
+      "path": "/Users/ehtsm/jarvis-os",
+      "name": "jarvis-os",
+      "branch": "main",
+      "dirty": true,
+      "openedAt": "2026-06-28T12:16:07.191Z"
+    }
+  },
+  "sessions": {},
+  "history": [
+    {
+      "event": "create_file",
+      "path": "/tmp/ucc_test_1782648951482.js",
+      "ts": "2026-06-28T12:15:51.558Z"
+    },
+    {
+      "event": "create_file",
+      "path": "/tmp/ucc_test_1782648951482.js",
+      "ts": "2026-06-28T12:15:51.558Z"
+    },
+    {
+      "event": "save_file",
+      "path": "/tmp/ucc_test_1782648951482.js",
+      "ts": "2026-06-28T12:15:51.558Z"
+    },
+    {
+      "event": "search",
+      "query": "autonomousExecutionEngine",
+      "ts": "2026-06-28T12:15:57.680Z"
+    },
+    {
+      "event": "search",
+      "query": "xyzzy_nonexistent_symbol_99999_abc",
+      "ts": "2026-06-28T12:15:57.680Z"
+    }
+  ],
+  "stats": {
+    "filesCreated": 2,
+    "filesModified": 0,
+    "commits": 0,
+    "searches": 2
+  }
+}

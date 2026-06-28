@@ -1,0 +1,161 @@
+{
+  "runs": [
+    {
+      "runId": "cee_1782648966329_r3z",
+      "command": "Verify environment health",
+      "status": "completed",
+      "startedAt": "2026-06-28T12:16:06.329Z",
+      "classification": {
+        "domain": "deployment",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "health.*check|verify.*env"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 10,
+      "error": null,
+      "durationMs": 397,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "category": "environment",
+        "score": 38,
+        "checks": [
+          {
+            "name": "NODE_ENV",
+            "status": "warn",
+            "detail": "NODE_ENV=unset — set to 'production'"
+          },
+          {
+            "name": "PORT",
+            "status": "warn",
+            "detail": "PORT not set — defaulting to 5050"
+          },
+          {
+            "name": "JWT_SECRET",
+            "status": "fail",
+            "detail": "JWT_SECRET missing — auth will fail"
+          },
+          {
+            "name": "OPERATOR_PASSWORD_HASH",
+            "status": "fail",
+            "detail": "Missing — operator login disabled"
+          },
+          {
+            "name": "env_file",
+            "status": "pass",
+            "detail": ".env file present"
+          },
+          {
+            "name": "APP_URL",
+            "status": "warn",
+            "detail": "APP_URL/BASE_URL not set — OAuth redirects may break"
+          },
+          {
+            "name": "node_version",
+            "status": "pass",
+            "detail": "Node v24.11.1"
+          },
+          {
+            "name": "data_writable",
+            "status": "pass",
+            "detail": "data/ writable"
+          }
+        ],
+        "context": "general"
+      },
+      "completedAt": "2026-06-28T12:16:06.726Z"
+    },
+    {
+      "runId": "cee_1782648966833_41l",
+      "command": "Open the CRM project.",
+      "status": "completed",
+      "startedAt": "2026-06-28T12:16:06.833Z",
+      "classification": {
+        "domain": "editor",
+        "tools": [
+          "editor"
+        ],
+        "matched": "open.*project|load.*project"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 2,
+      "error": null,
+      "durationMs": 390,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "projectId": "proj__Users_ehtsm_jarvis_os",
+        "path": "/Users/ehtsm/jarvis-os",
+        "name": "jarvis-os",
+        "branch": "main"
+      },
+      "completedAt": "2026-06-28T12:16:07.223Z"
+    },
+    {
+      "runId": "cee_1782648967310_4ze",
+      "command": "Commit changes.",
+      "status": "running",
+      "startedAt": "2026-06-28T12:16:07.310Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    }
+  ],
+  "stats": {
+    "total": 3,
+    "succeeded": 2,
+    "failed": 0,
+    "minutesSaved": 12,
+    "toolsUsed": {}
+  }
+}

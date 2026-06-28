@@ -1,0 +1,29 @@
+{
+  "mode": "active",
+  "autonomyLevel": 1,
+  "confidenceThreshold": 0.6,
+  "epoch": 1,
+  "startedAt": "2026-06-28T05:36:00.555Z",
+  "lastHealthAt": "2026-06-28T12:04:00.703Z",
+  "globalHealth": 93,
+  "layerHealth": {
+    "civilization": {
+      "score": 86,
+      "alerts": 0
+    },
+    "ecosystem": {
+      "score": 91
+    },
+    "enterprise": {
+      "score": 87
+    },
+    "executive": {
+      "score": 100
+    },
+    "runtime": {
+      "total": 0,
+      "running": 0,
+      "score": 100
+    }
+  }
+}

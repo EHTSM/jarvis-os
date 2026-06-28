@@ -1,0 +1,94 @@
+[
+  {
+    "id": "epol_1782599502822_tgu4",
+    "title": "PolA 1782599502788",
+    "description": "",
+    "scope": "global",
+    "rules": [],
+    "priority": 50,
+    "enabled": true,
+    "createdAt": "2026-06-27T22:31:42.822Z",
+    "updatedAt": "2026-06-27T22:31:42.822Z"
+  },
+  {
+    "id": "epol_1782599502822_808y",
+    "title": "DupPol 1782599502788",
+    "description": "",
+    "scope": "global",
+    "rules": [],
+    "priority": 50,
+    "enabled": true,
+    "createdAt": "2026-06-27T22:31:42.822Z",
+    "updatedAt": "2026-06-27T22:31:42.822Z"
+  },
+  {
+    "id": "epol_1782599503293_wxrl",
+    "title": "Critical goal priority enforcement",
+    "description": "Critical goals always preempt all other work",
+    "scope": "global",
+    "rules": [
+      {
+        "type": "priority_preempt",
+        "condition": "priority === critical"
+      }
+    ],
+    "priority": 100,
+    "enabled": true,
+    "createdAt": "2026-06-27T22:31:43.293Z",
+    "updatedAt": "2026-06-27T22:31:43.293Z"
+  },
+  {
+    "id": "epol_1782599503293_5yh4",
+    "title": "Health gate for deployments",
+    "description": "No deployment when global health < 50",
+    "scope": "deployment",
+    "rules": [
+      {
+        "type": "health_gate",
+        "minHealth": 50
+      }
+    ],
+    "priority": 90,
+    "enabled": true,
+    "createdAt": "2026-06-27T22:31:43.293Z",
+    "updatedAt": "2026-06-27T22:31:43.293Z"
+  },
+  {
+    "id": "epol_1782599503293_1gey",
+    "title": "Auto-approve low-risk missions",
+    "description": "Auto-approve missions when no critical risks active",
+    "scope": "approval",
+    "rules": [
+      {
+        "type": "auto_approve",
+        "condition": "critical_risks === 0"
+      }
+    ],
+    "priority": 70,
+    "enabled": true,
+    "createdAt": "2026-06-27T22:31:43.293Z",
+    "updatedAt": "2026-06-27T22:31:43.293Z"
+  },
+  {
+    "id": "epol_1782599535142_htdf",
+    "title": "PolA 1782599535116",
+    "description": "",
+    "scope": "global",
+    "rules": [],
+    "priority": 50,
+    "enabled": true,
+    "createdAt": "2026-06-27T22:32:15.142Z",
+    "updatedAt": "2026-06-27T22:32:15.142Z"
+  },
+  {
+    "id": "epol_1782599535142_5uii",
+    "title": "DupPol 1782599535116",
+    "description": "",
+    "scope": "global",
+    "rules": [],
+    "priority": 50,
+    "enabled": true,
+    "createdAt": "2026-06-27T22:32:15.142Z",
+    "updatedAt": "2026-06-27T22:32:15.142Z"
+  }
+]

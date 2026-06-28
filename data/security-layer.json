@@ -282,5 +282,39 @@
       "allowedDomains": []
     },
     "tokens": []
+  },
+  "undefined": {
+    "sessions": [],
+    "devices": [],
+    "auditLog": [],
+    "policies": {
+      "requireMfa": false,
+      "sessionTimeoutHours": 24,
+      "maxSessionsPerUser": 5,
+      "ipAllowlist": [],
+      "enforceDeviceTrust": false,
+      "auditLogEnabled": true,
+      "tokenExpiryDays": 90,
+      "passwordMinLength": 8,
+      "allowedDomains": []
+    },
+    "tokens": []
+  },
+  "[object Object]": {
+    "sessions": [],
+    "devices": [],
+    "auditLog": [],
+    "policies": {
+      "requireMfa": false,
+      "sessionTimeoutHours": 24,
+      "maxSessionsPerUser": 5,
+      "ipAllowlist": [],
+      "enforceDeviceTrust": false,
+      "auditLogEnabled": true,
+      "tokenExpiryDays": 90,
+      "passwordMinLength": 8,
+      "allowedDomains": []
+    },
+    "tokens": []
   }
 }

@@ -1,0 +1,1460 @@
+[
+  {
+    "id": "emem_1782600888265_fqk6",
+    "domainId": "eco_director",
+    "type": "observation",
+    "title": "Test memory 1782600888225",
+    "detail": "detail",
+    "tags": [],
+    "at": "2026-06-27T22:54:48.265Z"
+  },
+  {
+    "id": "emem_1782600893876_27es",
+    "domainId": "eco_registry",
+    "type": "tick",
+    "title": "Registry: 10 active tenants, 1 active orgs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.876Z"
+  },
+  {
+    "id": "emem_1782600893876_64ba",
+    "domainId": "eco_org_registry",
+    "type": "tick",
+    "title": "Org Registry: 1 orgs deployed",
+    "detail": "{\"org\":1}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.876Z"
+  },
+  {
+    "id": "emem_1782600893877_4iqs",
+    "domainId": "eco_company_registry",
+    "type": "tick",
+    "title": "Company Registry: 1 enterprise tenants",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.877Z"
+  },
+  {
+    "id": "emem_1782600893877_32a7",
+    "domainId": "eco_workspace_registry",
+    "type": "tick",
+    "title": "Workspace Registry: 0 workspace orgs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.877Z"
+  },
+  {
+    "id": "emem_1782600893877_7c8i",
+    "domainId": "eco_marketplace",
+    "type": "tick",
+    "title": "Marketplace: 16 listings, 0 external plugins, 76 AI models",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.877Z"
+  },
+  {
+    "id": "emem_1782600893878_zcqi",
+    "domainId": "eco_cap_market",
+    "type": "tick",
+    "title": "Capabilities: 5 ecosystem listings + 52 SDK capabilities",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.878Z"
+  },
+  {
+    "id": "emem_1782600893878_orp5",
+    "domainId": "eco_agent_market",
+    "type": "tick",
+    "title": "Agent Marketplace: 2 published agents, 17 runtime agents",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.878Z"
+  },
+  {
+    "id": "emem_1782600893878_90vi",
+    "domainId": "eco_integration_market",
+    "type": "tick",
+    "title": "Integrations: 2 available",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.878Z"
+  },
+  {
+    "id": "emem_1782600893879_3jmc",
+    "domainId": "eco_api_market",
+    "type": "tick",
+    "title": "APIs: 9 public endpoints, 1 developer apps",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.879Z"
+  },
+  {
+    "id": "emem_1782600893880_6rja",
+    "domainId": "eco_plugin_runtime",
+    "type": "tick",
+    "title": "Plugin Runtime: 2 ecosystem plugins + 0 managed",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.880Z"
+  },
+  {
+    "id": "emem_1782600893880_pxi0",
+    "domainId": "eco_extension_sdk",
+    "type": "tick",
+    "title": "SDK: 3 stable versions, 10 deployable packages",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.880Z"
+  },
+  {
+    "id": "emem_1782600893880_fkep",
+    "domainId": "eco_developer",
+    "type": "tick",
+    "title": "Developer Platform: 1 apps, 1 webhooks",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.880Z"
+  },
+  {
+    "id": "emem_1782600893881_n379",
+    "domainId": "eco_public_api",
+    "type": "tick",
+    "title": "Public APIs: 9 registered endpoints",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.881Z"
+  },
+  {
+    "id": "emem_1782600893881_noqz",
+    "domainId": "eco_event_exchange",
+    "type": "tick",
+    "title": "Event Exchange: 50 recent events in bus",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.881Z"
+  },
+  {
+    "id": "emem_1782600893882_c3g6",
+    "domainId": "eco_cross_org_comm",
+    "type": "tick",
+    "title": "Cross-Org Comm: 5 routes, 1 active permissions",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.882Z"
+  },
+  {
+    "id": "emem_1782600893882_wyed",
+    "domainId": "eco_mission_exchange",
+    "type": "tick",
+    "title": "Mission Exchange: 3 open, 0 assigned",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.882Z"
+  },
+  {
+    "id": "emem_1782600893882_n2ik",
+    "domainId": "eco_knowledge_exchange",
+    "type": "tick",
+    "title": "Knowledge Exchange: 1 articles, 0 prompts, 1 workflows, 1 design systems, 1 automations",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.882Z"
+  },
+  {
+    "id": "emem_1782600893882_lbl2",
+    "domainId": "eco_trust",
+    "type": "tick",
+    "title": "Trust: 4 entities, avg=60, low=1, high=1",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.882Z"
+  },
+  {
+    "id": "emem_1782600893889_18wj",
+    "domainId": "eco_analytics",
+    "type": "tick",
+    "title": "Analytics: ecosystem health=91, 19 domain KPIs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.889Z"
+  },
+  {
+    "id": "emem_1782600893895_5ths",
+    "domainId": "eco_director",
+    "type": "tick",
+    "title": "Director: health=91, openMissions=3, lowTrust=1",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.895Z"
+  },
+  {
+    "id": "emem_1782600893896_nyvc",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.896Z"
+  },
+  {
+    "id": "emem_1782600893916_sm78",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.916Z"
+  },
+  {
+    "id": "emem_1782600893917_n52f",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.917Z"
+  },
+  {
+    "id": "emem_1782600893917_bk6d",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.917Z"
+  },
+  {
+    "id": "emem_1782600893918_7enh",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.918Z"
+  },
+  {
+    "id": "emem_1782600893919_8bno",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.919Z"
+  },
+  {
+    "id": "emem_1782600893924_q8ut",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.924Z"
+  },
+  {
+    "id": "emem_1782600893925_mu9m",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.925Z"
+  },
+  {
+    "id": "emem_1782600893932_7bja",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.932Z"
+  },
+  {
+    "id": "emem_1782600893935_9q3k",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.935Z"
+  },
+  {
+    "id": "emem_1782600893941_e8bi",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.941Z"
+  },
+  {
+    "id": "emem_1782600893947_i6gs",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.947Z"
+  },
+  {
+    "id": "emem_1782600893948_6l07",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.948Z"
+  },
+  {
+    "id": "emem_1782600893951_s7tl",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.951Z"
+  },
+  {
+    "id": "emem_1782600893952_7i9x",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.952Z"
+  },
+  {
+    "id": "emem_1782600893953_q0vs",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.953Z"
+  },
+  {
+    "id": "emem_1782600893960_0e4q",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.960Z"
+  },
+  {
+    "id": "emem_1782600893968_kvfr",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.968Z"
+  },
+  {
+    "id": "emem_1782600893972_g7b9",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.972Z"
+  },
+  {
+    "id": "emem_1782600893972_3dc6",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.972Z"
+  },
+  {
+    "id": "emem_1782600893973_orzi",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.973Z"
+  },
+  {
+    "id": "emem_1782600893973_aks9",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.973Z"
+  },
+  {
+    "id": "emem_1782600893973_vryu",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.973Z"
+  },
+  {
+    "id": "emem_1782600893973_vjcl",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.973Z"
+  },
+  {
+    "id": "emem_1782600893973_eqtq",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.973Z"
+  },
+  {
+    "id": "emem_1782600893973_ikat",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.973Z"
+  },
+  {
+    "id": "emem_1782600893973_m0av",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.973Z"
+  },
+  {
+    "id": "emem_1782600893974_ik21",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.974Z"
+  },
+  {
+    "id": "emem_1782600893974_1m6l",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.974Z"
+  },
+  {
+    "id": "emem_1782600893974_r3km",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:54:53.974Z"
+  },
+  {
+    "id": "emem_1782600996640_wch1",
+    "domainId": "eco_director",
+    "type": "observation",
+    "title": "Test memory 1782600996584",
+    "detail": "detail",
+    "tags": [],
+    "at": "2026-06-27T22:56:36.640Z"
+  },
+  {
+    "id": "emem_1782601002598_uwfo",
+    "domainId": "eco_registry",
+    "type": "tick",
+    "title": "Registry: 20 active tenants, 3 active orgs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.598Z"
+  },
+  {
+    "id": "emem_1782601002598_bmww",
+    "domainId": "eco_org_registry",
+    "type": "tick",
+    "title": "Org Registry: 3 orgs deployed",
+    "detail": "{\"org\":2,\"engineering\":1}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.598Z"
+  },
+  {
+    "id": "emem_1782601002598_b72i",
+    "domainId": "eco_company_registry",
+    "type": "tick",
+    "title": "Company Registry: 2 enterprise tenants",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.598Z"
+  },
+  {
+    "id": "emem_1782601002598_y1zc",
+    "domainId": "eco_workspace_registry",
+    "type": "tick",
+    "title": "Workspace Registry: 0 workspace orgs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.598Z"
+  },
+  {
+    "id": "emem_1782601002599_xphc",
+    "domainId": "eco_marketplace",
+    "type": "tick",
+    "title": "Marketplace: 23 listings, 0 external plugins, 76 AI models",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.599Z"
+  },
+  {
+    "id": "emem_1782601002599_f08n",
+    "domainId": "eco_cap_market",
+    "type": "tick",
+    "title": "Capabilities: 8 ecosystem listings + 52 SDK capabilities",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.599Z"
+  },
+  {
+    "id": "emem_1782601002600_zvyv",
+    "domainId": "eco_agent_market",
+    "type": "tick",
+    "title": "Agent Marketplace: 3 published agents, 17 runtime agents",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.600Z"
+  },
+  {
+    "id": "emem_1782601002600_m8f2",
+    "domainId": "eco_integration_market",
+    "type": "tick",
+    "title": "Integrations: 2 available",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.600Z"
+  },
+  {
+    "id": "emem_1782601002601_xmrw",
+    "domainId": "eco_api_market",
+    "type": "tick",
+    "title": "APIs: 11 public endpoints, 2 developer apps",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.601Z"
+  },
+  {
+    "id": "emem_1782601002602_rqkv",
+    "domainId": "eco_plugin_runtime",
+    "type": "tick",
+    "title": "Plugin Runtime: 3 ecosystem plugins + 0 managed",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.602Z"
+  },
+  {
+    "id": "emem_1782601002602_703n",
+    "domainId": "eco_extension_sdk",
+    "type": "tick",
+    "title": "SDK: 18 stable versions, 11 deployable packages",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.602Z"
+  },
+  {
+    "id": "emem_1782601002603_r07m",
+    "domainId": "eco_developer",
+    "type": "tick",
+    "title": "Developer Platform: 2 apps, 2 webhooks",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.603Z"
+  },
+  {
+    "id": "emem_1782601002603_jo8u",
+    "domainId": "eco_public_api",
+    "type": "tick",
+    "title": "Public APIs: 11 registered endpoints",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.603Z"
+  },
+  {
+    "id": "emem_1782601002603_31u0",
+    "domainId": "eco_event_exchange",
+    "type": "tick",
+    "title": "Event Exchange: 50 recent events in bus",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.603Z"
+  },
+  {
+    "id": "emem_1782601002604_qra6",
+    "domainId": "eco_cross_org_comm",
+    "type": "tick",
+    "title": "Cross-Org Comm: 10 routes, 2 active permissions",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.604Z"
+  },
+  {
+    "id": "emem_1782601002604_9ti3",
+    "domainId": "eco_mission_exchange",
+    "type": "tick",
+    "title": "Mission Exchange: 6 open, 1 assigned",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.604Z"
+  },
+  {
+    "id": "emem_1782601002604_rt68",
+    "domainId": "eco_knowledge_exchange",
+    "type": "tick",
+    "title": "Knowledge Exchange: 2 articles, 1 prompts, 2 workflows, 2 design systems, 2 automations",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.604Z"
+  },
+  {
+    "id": "emem_1782601002605_uc2x",
+    "domainId": "eco_trust",
+    "type": "tick",
+    "title": "Trust: 8 entities, avg=60, low=2, high=2",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.605Z"
+  },
+  {
+    "id": "emem_1782601002612_5eyl",
+    "domainId": "eco_analytics",
+    "type": "tick",
+    "title": "Analytics: ecosystem health=91, 20 domain KPIs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.612Z"
+  },
+  {
+    "id": "emem_1782601002618_kpyj",
+    "domainId": "eco_director",
+    "type": "tick",
+    "title": "Director: health=91, openMissions=6, lowTrust=2",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.618Z"
+  },
+  {
+    "id": "emem_1782601002619_xith",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.619Z"
+  },
+  {
+    "id": "emem_1782601002641_d2ur",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.641Z"
+  },
+  {
+    "id": "emem_1782601002641_efyp",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.641Z"
+  },
+  {
+    "id": "emem_1782601002642_zolu",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.642Z"
+  },
+  {
+    "id": "emem_1782601002642_upc6",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.642Z"
+  },
+  {
+    "id": "emem_1782601002643_3r17",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.643Z"
+  },
+  {
+    "id": "emem_1782601002648_0gmg",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.648Z"
+  },
+  {
+    "id": "emem_1782601002650_l6o7",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.650Z"
+  },
+  {
+    "id": "emem_1782601002657_egra",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.657Z"
+  },
+  {
+    "id": "emem_1782601002659_u20w",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.659Z"
+  },
+  {
+    "id": "emem_1782601002664_pjwk",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.664Z"
+  },
+  {
+    "id": "emem_1782601002670_h0k1",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.670Z"
+  },
+  {
+    "id": "emem_1782601002673_u75h",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.673Z"
+  },
+  {
+    "id": "emem_1782601002675_j2q7",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.675Z"
+  },
+  {
+    "id": "emem_1782601002676_bggz",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.676Z"
+  },
+  {
+    "id": "emem_1782601002677_mf3u",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.677Z"
+  },
+  {
+    "id": "emem_1782601002684_otxf",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.684Z"
+  },
+  {
+    "id": "emem_1782601002692_0y74",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.692Z"
+  },
+  {
+    "id": "emem_1782601002696_bm0w",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.696Z"
+  },
+  {
+    "id": "emem_1782601002696_z038",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.696Z"
+  },
+  {
+    "id": "emem_1782601002696_20bl",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.696Z"
+  },
+  {
+    "id": "emem_1782601002696_bimu",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.696Z"
+  },
+  {
+    "id": "emem_1782601002696_i7e5",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.696Z"
+  },
+  {
+    "id": "emem_1782601002696_d11q",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.696Z"
+  },
+  {
+    "id": "emem_1782601002696_pjuq",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.696Z"
+  },
+  {
+    "id": "emem_1782601002697_2zzq",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.697Z"
+  },
+  {
+    "id": "emem_1782601002697_s3r5",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.697Z"
+  },
+  {
+    "id": "emem_1782601002697_xx61",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.697Z"
+  },
+  {
+    "id": "emem_1782601002697_x5a4",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.697Z"
+  },
+  {
+    "id": "emem_1782601002697_zp6d",
+    "domainId": "eco_director",
+    "type": "goal",
+    "title": "Goal: undefined",
+    "detail": "{}",
+    "tags": [],
+    "at": "2026-06-27T22:56:42.697Z"
+  },
+  {
+    "id": "emem_1782626818128_blzw",
+    "domainId": "eco_registry",
+    "type": "tick",
+    "title": "Registry: 43 active tenants, 5 active orgs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.128Z"
+  },
+  {
+    "id": "emem_1782626818129_0q29",
+    "domainId": "eco_org_registry",
+    "type": "tick",
+    "title": "Org Registry: 5 orgs deployed",
+    "detail": "{\"org\":2,\"engineering\":1,\"agency\":2}",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.129Z"
+  },
+  {
+    "id": "emem_1782626818129_rzie",
+    "domainId": "eco_company_registry",
+    "type": "tick",
+    "title": "Company Registry: 2 enterprise tenants",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.129Z"
+  },
+  {
+    "id": "emem_1782626818129_mpra",
+    "domainId": "eco_workspace_registry",
+    "type": "tick",
+    "title": "Workspace Registry: 0 workspace orgs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.129Z"
+  },
+  {
+    "id": "emem_1782626818130_e3vy",
+    "domainId": "eco_marketplace",
+    "type": "tick",
+    "title": "Marketplace: 24 listings, 0 external plugins, 76 AI models",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.130Z"
+  },
+  {
+    "id": "emem_1782626818130_fd5q",
+    "domainId": "eco_cap_market",
+    "type": "tick",
+    "title": "Capabilities: 9 ecosystem listings + 52 SDK capabilities",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.130Z"
+  },
+  {
+    "id": "emem_1782626818130_462q",
+    "domainId": "eco_agent_market",
+    "type": "tick",
+    "title": "Agent Marketplace: 3 published agents, 117 runtime agents",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.130Z"
+  },
+  {
+    "id": "emem_1782626818130_il0w",
+    "domainId": "eco_integration_market",
+    "type": "tick",
+    "title": "Integrations: 2 available",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.130Z"
+  },
+  {
+    "id": "emem_1782626818132_scer",
+    "domainId": "eco_api_market",
+    "type": "tick",
+    "title": "APIs: 11 public endpoints, 2 developer apps",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.132Z"
+  },
+  {
+    "id": "emem_1782626818134_68kq",
+    "domainId": "eco_plugin_runtime",
+    "type": "tick",
+    "title": "Plugin Runtime: 3 ecosystem plugins + 0 managed",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.134Z"
+  },
+  {
+    "id": "emem_1782626818135_drei",
+    "domainId": "eco_extension_sdk",
+    "type": "tick",
+    "title": "SDK: 30 stable versions, 14 deployable packages",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.135Z"
+  },
+  {
+    "id": "emem_1782626818135_efpz",
+    "domainId": "eco_developer",
+    "type": "tick",
+    "title": "Developer Platform: 2 apps, 2 webhooks",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.135Z"
+  },
+  {
+    "id": "emem_1782626818135_dudf",
+    "domainId": "eco_public_api",
+    "type": "tick",
+    "title": "Public APIs: 11 registered endpoints",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.135Z"
+  },
+  {
+    "id": "emem_1782626818136_yhjl",
+    "domainId": "eco_event_exchange",
+    "type": "tick",
+    "title": "Event Exchange: 50 recent events in bus",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.136Z"
+  },
+  {
+    "id": "emem_1782626818136_9luk",
+    "domainId": "eco_cross_org_comm",
+    "type": "tick",
+    "title": "Cross-Org Comm: 10 routes, 2 active permissions",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.136Z"
+  },
+  {
+    "id": "emem_1782626818137_ngo0",
+    "domainId": "eco_mission_exchange",
+    "type": "tick",
+    "title": "Mission Exchange: 28 open, 2 assigned",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.137Z"
+  },
+  {
+    "id": "emem_1782626818137_hese",
+    "domainId": "eco_knowledge_exchange",
+    "type": "tick",
+    "title": "Knowledge Exchange: 2 articles, 1 prompts, 2 workflows, 2 design systems, 2 automations",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.137Z"
+  },
+  {
+    "id": "emem_1782626818137_0tq7",
+    "domainId": "eco_trust",
+    "type": "tick",
+    "title": "Trust: 11 entities, avg=61, low=3, high=4",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.137Z"
+  },
+  {
+    "id": "emem_1782626818145_hdy4",
+    "domainId": "eco_analytics",
+    "type": "tick",
+    "title": "Analytics: ecosystem health=91, 20 domain KPIs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.145Z"
+  },
+  {
+    "id": "emem_1782626818151_yixh",
+    "domainId": "eco_director",
+    "type": "tick",
+    "title": "Director: health=91, openMissions=28, lowTrust=3",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:06:58.151Z"
+  },
+  {
+    "id": "emem_1782627037045_q30b",
+    "domainId": "eco_registry",
+    "type": "tick",
+    "title": "Registry: 69 active tenants, 8 active orgs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.045Z"
+  },
+  {
+    "id": "emem_1782627037046_47kg",
+    "domainId": "eco_org_registry",
+    "type": "tick",
+    "title": "Org Registry: 8 orgs deployed",
+    "detail": "{\"org\":2,\"engineering\":1,\"agency\":5}",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.046Z"
+  },
+  {
+    "id": "emem_1782627037046_0o50",
+    "domainId": "eco_company_registry",
+    "type": "tick",
+    "title": "Company Registry: 2 enterprise tenants",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.046Z"
+  },
+  {
+    "id": "emem_1782627037046_rrqt",
+    "domainId": "eco_workspace_registry",
+    "type": "tick",
+    "title": "Workspace Registry: 0 workspace orgs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.046Z"
+  },
+  {
+    "id": "emem_1782627037047_sri9",
+    "domainId": "eco_marketplace",
+    "type": "tick",
+    "title": "Marketplace: 24 listings, 0 external plugins, 76 AI models",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.047Z"
+  },
+  {
+    "id": "emem_1782627037047_revg",
+    "domainId": "eco_cap_market",
+    "type": "tick",
+    "title": "Capabilities: 9 ecosystem listings + 52 SDK capabilities",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.047Z"
+  },
+  {
+    "id": "emem_1782627037047_vsx1",
+    "domainId": "eco_agent_market",
+    "type": "tick",
+    "title": "Agent Marketplace: 3 published agents, 117 runtime agents",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.047Z"
+  },
+  {
+    "id": "emem_1782627037047_wjpf",
+    "domainId": "eco_integration_market",
+    "type": "tick",
+    "title": "Integrations: 2 available",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.047Z"
+  },
+  {
+    "id": "emem_1782627037048_31l4",
+    "domainId": "eco_api_market",
+    "type": "tick",
+    "title": "APIs: 11 public endpoints, 2 developer apps",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.048Z"
+  },
+  {
+    "id": "emem_1782627037049_egur",
+    "domainId": "eco_plugin_runtime",
+    "type": "tick",
+    "title": "Plugin Runtime: 3 ecosystem plugins + 0 managed",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.049Z"
+  },
+  {
+    "id": "emem_1782627037050_sfry",
+    "domainId": "eco_extension_sdk",
+    "type": "tick",
+    "title": "SDK: 33 stable versions, 19 deployable packages",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.050Z"
+  },
+  {
+    "id": "emem_1782627037050_r02l",
+    "domainId": "eco_developer",
+    "type": "tick",
+    "title": "Developer Platform: 2 apps, 2 webhooks",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.050Z"
+  },
+  {
+    "id": "emem_1782627037050_cptx",
+    "domainId": "eco_public_api",
+    "type": "tick",
+    "title": "Public APIs: 11 registered endpoints",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.050Z"
+  },
+  {
+    "id": "emem_1782627037050_7lv0",
+    "domainId": "eco_event_exchange",
+    "type": "tick",
+    "title": "Event Exchange: 50 recent events in bus",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.050Z"
+  },
+  {
+    "id": "emem_1782627037051_iwgr",
+    "domainId": "eco_cross_org_comm",
+    "type": "tick",
+    "title": "Cross-Org Comm: 10 routes, 2 active permissions",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.051Z"
+  },
+  {
+    "id": "emem_1782627037051_2w0p",
+    "domainId": "eco_mission_exchange",
+    "type": "tick",
+    "title": "Mission Exchange: 30 open, 2 assigned",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.051Z"
+  },
+  {
+    "id": "emem_1782627037051_g9e2",
+    "domainId": "eco_knowledge_exchange",
+    "type": "tick",
+    "title": "Knowledge Exchange: 2 articles, 1 prompts, 2 workflows, 2 design systems, 2 automations",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.051Z"
+  },
+  {
+    "id": "emem_1782627037052_xlrj",
+    "domainId": "eco_trust",
+    "type": "tick",
+    "title": "Trust: 11 entities, avg=61, low=3, high=4",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.052Z"
+  },
+  {
+    "id": "emem_1782627037058_6hjd",
+    "domainId": "eco_analytics",
+    "type": "tick",
+    "title": "Analytics: ecosystem health=91, 20 domain KPIs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.058Z"
+  },
+  {
+    "id": "emem_1782627037065_plgg",
+    "domainId": "eco_director",
+    "type": "tick",
+    "title": "Director: health=91, openMissions=30, lowTrust=3",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:10:37.065Z"
+  },
+  {
+    "id": "emem_1782629757571_m4hz",
+    "domainId": "eco_registry",
+    "type": "tick",
+    "title": "Registry: 72 active tenants, 9 active orgs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.571Z"
+  },
+  {
+    "id": "emem_1782629757571_kg82",
+    "domainId": "eco_org_registry",
+    "type": "tick",
+    "title": "Org Registry: 9 orgs deployed",
+    "detail": "{\"org\":2,\"engineering\":1,\"agency\":6}",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.571Z"
+  },
+  {
+    "id": "emem_1782629757572_fdbo",
+    "domainId": "eco_company_registry",
+    "type": "tick",
+    "title": "Company Registry: 2 enterprise tenants",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.572Z"
+  },
+  {
+    "id": "emem_1782629757579_yokz",
+    "domainId": "eco_workspace_registry",
+    "type": "tick",
+    "title": "Workspace Registry: 0 workspace orgs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.579Z"
+  },
+  {
+    "id": "emem_1782629757580_ilz4",
+    "domainId": "eco_marketplace",
+    "type": "tick",
+    "title": "Marketplace: 24 listings, 0 external plugins, 76 AI models",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.580Z"
+  },
+  {
+    "id": "emem_1782629757580_hmn4",
+    "domainId": "eco_cap_market",
+    "type": "tick",
+    "title": "Capabilities: 9 ecosystem listings + 52 SDK capabilities",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.580Z"
+  },
+  {
+    "id": "emem_1782629757581_gpm2",
+    "domainId": "eco_agent_market",
+    "type": "tick",
+    "title": "Agent Marketplace: 3 published agents, 137 runtime agents",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.581Z"
+  },
+  {
+    "id": "emem_1782629757581_ybux",
+    "domainId": "eco_integration_market",
+    "type": "tick",
+    "title": "Integrations: 2 available",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.581Z"
+  },
+  {
+    "id": "emem_1782629757581_v9hq",
+    "domainId": "eco_api_market",
+    "type": "tick",
+    "title": "APIs: 11 public endpoints, 2 developer apps",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.581Z"
+  },
+  {
+    "id": "emem_1782629757583_cmxd",
+    "domainId": "eco_plugin_runtime",
+    "type": "tick",
+    "title": "Plugin Runtime: 3 ecosystem plugins + 0 managed",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.583Z"
+  },
+  {
+    "id": "emem_1782629757584_s9n7",
+    "domainId": "eco_extension_sdk",
+    "type": "tick",
+    "title": "SDK: 36 stable versions, 19 deployable packages",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.584Z"
+  },
+  {
+    "id": "emem_1782629757585_lm08",
+    "domainId": "eco_developer",
+    "type": "tick",
+    "title": "Developer Platform: 2 apps, 2 webhooks",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.585Z"
+  },
+  {
+    "id": "emem_1782629757585_fddg",
+    "domainId": "eco_public_api",
+    "type": "tick",
+    "title": "Public APIs: 11 registered endpoints",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.585Z"
+  },
+  {
+    "id": "emem_1782629757585_okxb",
+    "domainId": "eco_event_exchange",
+    "type": "tick",
+    "title": "Event Exchange: 50 recent events in bus",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.585Z"
+  },
+  {
+    "id": "emem_1782629757586_dtgi",
+    "domainId": "eco_cross_org_comm",
+    "type": "tick",
+    "title": "Cross-Org Comm: 10 routes, 2 active permissions",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.586Z"
+  },
+  {
+    "id": "emem_1782629757586_fwyu",
+    "domainId": "eco_mission_exchange",
+    "type": "tick",
+    "title": "Mission Exchange: 32 open, 2 assigned",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.586Z"
+  },
+  {
+    "id": "emem_1782629757587_ogu5",
+    "domainId": "eco_knowledge_exchange",
+    "type": "tick",
+    "title": "Knowledge Exchange: 2 articles, 1 prompts, 2 workflows, 2 design systems, 2 automations",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.587Z"
+  },
+  {
+    "id": "emem_1782629757589_267b",
+    "domainId": "eco_trust",
+    "type": "tick",
+    "title": "Trust: 11 entities, avg=61, low=3, high=4",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.589Z"
+  },
+  {
+    "id": "emem_1782629757596_x0ih",
+    "domainId": "eco_analytics",
+    "type": "tick",
+    "title": "Analytics: ecosystem health=91, 20 domain KPIs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.596Z"
+  },
+  {
+    "id": "emem_1782629757605_uehc",
+    "domainId": "eco_director",
+    "type": "tick",
+    "title": "Director: health=91, openMissions=32, lowTrust=3",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T06:55:57.605Z"
+  }
+]

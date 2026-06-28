@@ -1832,7 +1832,7 @@
       ],
       "version": "1.0.0",
       "createdAt": "2026-06-28T06:10:37.039Z",
-      "updatedAt": "2026-06-28T06:10:37.370Z"
+      "updatedAt": "2026-06-28T06:55:58.636Z"
     },
     {
       "id": "org_1782627037040_4051",
@@ -1885,7 +1885,7 @@
       ],
       "version": "1.0.0",
       "createdAt": "2026-06-28T06:10:37.040Z",
-      "updatedAt": "2026-06-28T06:10:37.370Z"
+      "updatedAt": "2026-06-28T06:55:58.594Z"
     },
     {
       "id": "org_1782627037683_5f9a",
@@ -1906,20 +1906,40 @@
       "blueprintId": "bp_1782627037683_3d4e",
       "visibility": "private",
       "plan": "free",
-      "status": "provisioning",
-      "health": 100,
+      "status": "active",
+      "health": 90,
       "kpis": {},
       "governance": {
-        "policies": [],
-        "auditLog": []
+        "policies": [
+          {
+            "id": "pol_1782629758771_8cse",
+            "policy": "All org decisions must be explainable and traceable",
+            "addedBy": "platform_governance",
+            "addedAt": "2026-06-28T06:55:58.771Z"
+          }
+        ],
+        "auditLog": [
+          {
+            "action": "policy_added",
+            "policy": "All org decisions must be explainable and traceable",
+            "by": "platform_governance",
+            "at": "2026-06-28T06:55:58.771Z"
+          }
+        ]
       },
       "memoryId": null,
-      "evolutionHistory": [],
+      "evolutionHistory": [
+        {
+          "version": "1.0.0",
+          "changelog": "Initial version",
+          "at": "2026-06-28T06:55:58.640Z"
+        }
+      ],
       "deploymentHistory": [],
       "certifications": [],
       "version": "1.0.0",
       "createdAt": "2026-06-28T06:10:37.683Z",
-      "updatedAt": "2026-06-28T06:10:37.683Z"
+      "updatedAt": "2026-06-28T06:55:58.640Z"
     },
     {
       "id": "org_1782627037686_425l",
@@ -1941,11 +1961,25 @@
       "visibility": "private",
       "plan": "free",
       "status": "active",
-      "health": 100,
+      "health": 90,
       "kpis": {},
       "governance": {
-        "policies": [],
-        "auditLog": []
+        "policies": [
+          {
+            "id": "pol_1782629758771_ef37",
+            "policy": "All org decisions must be explainable and traceable",
+            "addedBy": "platform_governance",
+            "addedAt": "2026-06-28T06:55:58.771Z"
+          }
+        ],
+        "auditLog": [
+          {
+            "action": "policy_added",
+            "policy": "All org decisions must be explainable and traceable",
+            "by": "platform_governance",
+            "at": "2026-06-28T06:55:58.771Z"
+          }
+        ]
       },
       "memoryId": "mem_1782627037688_lc86",
       "evolutionHistory": [
@@ -1975,7 +2009,7 @@
       "certifications": [],
       "version": "1.1.0",
       "createdAt": "2026-06-28T06:10:37.686Z",
-      "updatedAt": "2026-06-28T06:10:37.689Z"
+      "updatedAt": "2026-06-28T06:55:58.505Z"
     },
     {
       "id": "org_1782627037729_dgem",
@@ -1989,20 +2023,40 @@
       "tags": [],
       "visibility": "private",
       "plan": "free",
-      "status": "provisioning",
-      "health": 100,
+      "status": "active",
+      "health": 90,
       "kpis": {},
       "governance": {
-        "policies": [],
-        "auditLog": []
+        "policies": [
+          {
+            "id": "pol_1782629758770_8yx0",
+            "policy": "All org decisions must be explainable and traceable",
+            "addedBy": "platform_governance",
+            "addedAt": "2026-06-28T06:55:58.770Z"
+          }
+        ],
+        "auditLog": [
+          {
+            "action": "policy_added",
+            "policy": "All org decisions must be explainable and traceable",
+            "by": "platform_governance",
+            "at": "2026-06-28T06:55:58.770Z"
+          }
+        ]
       },
       "memoryId": null,
-      "evolutionHistory": [],
+      "evolutionHistory": [
+        {
+          "version": "1.0.0",
+          "changelog": "Initial version",
+          "at": "2026-06-28T06:55:58.640Z"
+        }
+      ],
       "deploymentHistory": [],
       "certifications": [],
       "version": "1.0.0",
       "createdAt": "2026-06-28T06:10:37.729Z",
-      "updatedAt": "2026-06-28T06:10:37.729Z"
+      "updatedAt": "2026-06-28T06:55:58.640Z"
     }
   ],
   "total": 53

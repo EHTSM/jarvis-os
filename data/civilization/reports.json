@@ -1,0 +1,2525 @@
+[
+  {
+    "id": "crpt2_1782601786594_sjir",
+    "title": "Report-1782601786114",
+    "domainId": "civ_analytics",
+    "type": "civilization",
+    "data": {},
+    "summary": "All well",
+    "createdAt": "2026-06-27T23:09:46.594Z"
+  },
+  {
+    "id": "crpt2_1782601786630_4zwd",
+    "title": "Civilization Report: goal-1782601786114",
+    "domainId": "civ_analytics",
+    "type": "pipeline",
+    "data": {
+      "dashboard": {
+        "civilization": {
+          "members": {
+            "total": 4,
+            "active": 4
+          },
+          "alliances": {
+            "total": 1,
+            "active": 1
+          },
+          "council": {
+            "members": 2,
+            "proposals": 3,
+            "openProposals": 2
+          },
+          "constitution": {
+            "articles": 7,
+            "amendments": 1,
+            "precedents": 2
+          },
+          "economy": {
+            "trades": 3,
+            "completedTrades": 1,
+            "resourcePools": 1
+          },
+          "network": {
+            "channels": 7,
+            "missions": 2,
+            "openMissions": 1,
+            "collaborations": 2
+          },
+          "diplomacy": {
+            "treaties": 2,
+            "ratified": 1,
+            "openDisputes": 0,
+            "openNegotiations": 2
+          },
+          "innovation": {
+            "projects": 1,
+            "innovations": 1,
+            "adopted": 1,
+            "evolutionProposals": 1
+          },
+          "reputation": {
+            "members": 3,
+            "avgScore": 64
+          },
+          "reports": {
+            "total": 1
+          }
+        },
+        "health": {
+          "score": 86,
+          "layers": {
+            "ecosystem": {
+              "score": 91
+            },
+            "enterprise": {
+              "score": 87
+            },
+            "executive": {
+              "score": 100
+            },
+            "civilization": {
+              "members": 4,
+              "openMissions": 1,
+              "openDisputes": 0,
+              "ratifiedTreaties": 1,
+              "adoptedInnovations": 1,
+              "avgReputation": 64,
+              "score": 66
+            }
+          },
+          "alerts": []
+        },
+        "ecosystem": {
+          "ecosystem": {
+            "tenants": {
+              "total": 20,
+              "active": 20
+            },
+            "orgs": {
+              "total": 3,
+              "active": 3
+            },
+            "packages": {
+              "builtin": 10,
+              "custom": 1
+            },
+            "routes": {
+              "total": 10
+            }
+          },
+          "marketplace": {
+            "total": 24,
+            "byType": {
+              "capability": 9,
+              "agent": 3,
+              "plugin": 3,
+              "workflow": 3,
+              "template": 3,
+              "integration": 2,
+              "api": 1
+            },
+            "externalPlugins": 0,
+            "externalCapabilities": 52,
+            "externalModels": 76
+          },
+          "exchange": {
+            "missions": {
+              "total": 10,
+              "open": 8,
+              "assigned": 2
+            },
+            "knowledge": {
+              "total": 4
+            },
+            "workflows": {
+              "total": 2
+            },
+            "prompts": {
+              "total": 1
+            },
+            "designSystems": {
+              "total": 2
+            },
+            "automations": {
+              "total": 2
+            }
+          },
+          "developer": {
+            "apps": 2,
+            "publicApis": 11,
+            "webhooks": 2,
+            "sdkVersions": 32
+          },
+          "trust": {
+            "entries": 11,
+            "avgScore": 61
+          },
+          "health": {
+            "score": 91,
+            "layers": {
+              "enterprise": {
+                "score": 87,
+                "companies": 26
+              },
+              "executive": {
+                "score": 100
+              },
+              "tenants": {
+                "total": 20,
+                "active": 20,
+                "score": 100
+              },
+              "marketplace": {
+                "total": 24,
+                "score": 100
+              },
+              "exchange": {
+                "openMissions": 8,
+                "knowledgeItems": 4,
+                "score": 90
+              },
+              "trust": {
+                "avgScore": 61,
+                "entries": 11,
+                "score": 61
+              },
+              "agents": {
+                "total": 0,
+                "running": 0,
+                "score": 100
+              }
+            },
+            "alerts": []
+          },
+          "enterprise": {
+            "enterprise": {
+              "companies": {
+                "total": 26,
+                "active": 26
+              },
+              "workspaces": {
+                "total": 3,
+                "active": 3
+              },
+              "products": {
+                "total": 4,
+                "ga": 2
+              },
+              "customers": {
+                "total": 3,
+                "active": 0
+              },
+              "partners": {
+                "total": 1
+              },
+              "vendors": {
+                "total": 2
+              }
+            },
+            "portfolio": {
+              "portfolios": 7,
+              "initiatives": 4,
+              "programs": 1,
+              "atRisk": 0
+            },
+            "finance": {
+              "totalBudgetUsd": 1010500,
+              "totalSpentUsd": 0,
+              "totalARR": 9576,
+              "forecasts": 1
+            },
+            "governance": {
+              "policies": 6,
+              "controls": 13,
+              "pendingApprovals": 1,
+              "auditEntries": 139
+            },
+            "hr": {
+              "totalHeadcount": 2
+            },
+            "reports": {
+              "total": 12
+            },
+            "health": {
+              "score": 87,
+              "dimensions": {
+                "companies": {
+                  "total": 26,
+                  "active": 26,
+                  "score": 100
+                },
+                "products": {
+                  "total": 4,
+                  "ga": 2,
+                  "score": 50
+                },
+                "customers": {
+                  "total": 3,
+                  "highChurnRisk": 1,
+                  "totalARR": 9576,
+                  "score": 67
+                },
+                "finance": {
+                  "totalBudget": 1010500,
+                  "totalSpent": 0,
+                  "utilization": 0,
+                  "score": 100
+                },
+                "governance": {
+                  "pendingApprovals": 1,
+                  "score": 95
+                },
+                "compliance": {
+                  "activeControls": 13,
+                  "failedControls": 0,
+                  "score": 100
+                },
+                "executive": {
+                  "score": 100,
+                  "orgs": {
+                    "engineering": {
+                      "blockers": 14,
+                      "velocity": 0,
+                      "score": 0
+                    },
+                    "business": {
+                      "winRate": 100,
+                      "mrr": 5391429,
+                      "score": 10000
+                    },
+                    "knowledge": {
+                      "ratio": 0.7591463414634146,
+                      "total": 328,
+                      "score": 76
+                    },
+                    "evolution": {
+                      "keepRate": 0.39285714285714285,
+                      "total": 56,
+                      "score": 39
+                    }
+                  }
+                }
+              },
+              "companies": {},
+              "alerts": []
+            },
+            "executive": {
+              "quarter": "2026-Q2",
+              "goals": {
+                "total": 76,
+                "active": 76,
+                "completed": 0
+              },
+              "strategies": {
+                "total": 29
+              },
+              "missions": {
+                "total": 89,
+                "active": 87,
+                "completed": 2
+              },
+              "decisions": {
+                "total": 18
+              },
+              "approvals": {
+                "pending": 0,
+                "approved": 22
+              },
+              "risks": {
+                "active": 4,
+                "critical": 0
+              },
+              "allocations": {
+                "active": 14
+              },
+              "health": {
+                "score": 100,
+                "orgs": {
+                  "engineering": {
+                    "blockers": 14,
+                    "velocity": 0,
+                    "score": 0
+                  },
+                  "business": {
+                    "winRate": 100,
+                    "mrr": 5391429,
+                    "score": 10000
+                  },
+                  "knowledge": {
+                    "ratio": 0.7591463414634146,
+                    "total": 328,
+                    "score": 76
+                  },
+                  "evolution": {
+                    "keepRate": 0.39285714285714285,
+                    "total": 56,
+                    "score": 39
+                  }
+                },
+                "risks": [
+                  {
+                    "id": "erisk_1782599502820_nvky",
+                    "title": "RiskA 1782599502788",
+                    "description": "",
+                    "severity": "high",
+                    "source": "test",
+                    "mitigations": [],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:31:42.820Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599508571_wf2b",
+                    "goalId": "egoal_1782599503303_ot27",
+                    "title": "High engineering blocker count: 14",
+                    "description": "",
+                    "severity": "high",
+                    "source": "engineering_blockers",
+                    "mitigations": [
+                      "Resolve blockers",
+                      "Re-assign work items"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:31:48.571Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599535139_2erp",
+                    "title": "RiskA 1782599535116",
+                    "description": "",
+                    "severity": "high",
+                    "source": "test",
+                    "mitigations": [],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:32:15.139Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599540423_dqn1",
+                    "goalId": "egoal_1782599535585_un8s",
+                    "title": "High engineering blocker count: 14",
+                    "description": "",
+                    "severity": "high",
+                    "source": "engineering_blockers",
+                    "mitigations": [
+                      "Resolve blockers",
+                      "Re-assign work items"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:32:20.423Z",
+                    "resolvedAt": null
+                  }
+                ],
+                "agents": {
+                  "total": 0,
+                  "running": 0,
+                  "score": 100
+                },
+                "runtime": {}
+              },
+              "orgStatus": {
+                "engineering": {
+                  "workItems": 167,
+                  "velocity": 0
+                },
+                "business": {
+                  "mrr": 5391429,
+                  "winRate": 100,
+                  "deals": 74
+                },
+                "knowledge": {
+                  "items": 328,
+                  "validated": 249,
+                  "playbooks": 12
+                },
+                "evolution": {
+                  "evolutions": 56,
+                  "kept": 22,
+                  "avgImpact": 1
+                },
+                "runtime": {
+                  "healed": 0,
+                  "failed": 2000
+                },
+                "agents": {
+                  "total": 0,
+                  "running": 0
+                }
+              },
+              "reports": {
+                "total": 24
+              },
+              "context": {
+                "globalObjective": "Integration smoke 1782600996584",
+                "lastSync": "2026-06-27T23:09:46.627Z"
+              }
+            },
+            "lastSync": "2026-06-27T23:09:46.624Z"
+          },
+          "reports": {
+            "total": 12
+          },
+          "lastSync": "2026-06-27T23:09:46.618Z"
+        },
+        "context": {
+          "phase": "active",
+          "membersCount": 4,
+          "healthScore": 86,
+          "epoch": 2,
+          "lastSync": "2026-06-27T23:09:52.264Z"
+        },
+        "lastSync": "2026-06-27T23:09:46.630Z"
+      },
+      "goal": null,
+      "healthScore": 80,
+      "steps": 0,
+      "coordinationActions": []
+    },
+    "summary": "Civilization initiative: goal-1782601786114 | Civilization health: 86/100 | Ecosystem health: 80/100 | Members: 4 active | Treaties: 1 ratified | Innovations: 1 adopted | Coordination actions: 0",
+    "createdAt": "2026-06-27T23:09:46.630Z"
+  },
+  {
+    "id": "crpt2_1782601786802_o3yu",
+    "title": "Civilization Report: Build civilization feature 1782601786114",
+    "domainId": "civ_analytics",
+    "type": "pipeline",
+    "data": {
+      "dashboard": {
+        "civilization": {
+          "members": {
+            "total": 4,
+            "active": 4
+          },
+          "alliances": {
+            "total": 1,
+            "active": 1
+          },
+          "council": {
+            "members": 2,
+            "proposals": 3,
+            "openProposals": 2
+          },
+          "constitution": {
+            "articles": 7,
+            "amendments": 1,
+            "precedents": 2
+          },
+          "economy": {
+            "trades": 3,
+            "completedTrades": 1,
+            "resourcePools": 1
+          },
+          "network": {
+            "channels": 7,
+            "missions": 4,
+            "openMissions": 2,
+            "collaborations": 2
+          },
+          "diplomacy": {
+            "treaties": 3,
+            "ratified": 1,
+            "openDisputes": 0,
+            "openNegotiations": 2
+          },
+          "innovation": {
+            "projects": 1,
+            "innovations": 1,
+            "adopted": 1,
+            "evolutionProposals": 1
+          },
+          "reputation": {
+            "members": 3,
+            "avgScore": 64
+          },
+          "reports": {
+            "total": 2
+          }
+        },
+        "health": {
+          "score": 86,
+          "layers": {
+            "ecosystem": {
+              "score": 91
+            },
+            "enterprise": {
+              "score": 87
+            },
+            "executive": {
+              "score": 100
+            },
+            "civilization": {
+              "members": 4,
+              "openMissions": 2,
+              "openDisputes": 0,
+              "ratifiedTreaties": 1,
+              "adoptedInnovations": 1,
+              "avgReputation": 64,
+              "score": 66
+            }
+          },
+          "alerts": []
+        },
+        "ecosystem": {
+          "ecosystem": {
+            "tenants": {
+              "total": 20,
+              "active": 20
+            },
+            "orgs": {
+              "total": 3,
+              "active": 3
+            },
+            "packages": {
+              "builtin": 10,
+              "custom": 1
+            },
+            "routes": {
+              "total": 10
+            }
+          },
+          "marketplace": {
+            "total": 24,
+            "byType": {
+              "capability": 9,
+              "agent": 3,
+              "plugin": 3,
+              "workflow": 3,
+              "template": 3,
+              "integration": 2,
+              "api": 1
+            },
+            "externalPlugins": 0,
+            "externalCapabilities": 52,
+            "externalModels": 76
+          },
+          "exchange": {
+            "missions": {
+              "total": 12,
+              "open": 10,
+              "assigned": 2
+            },
+            "knowledge": {
+              "total": 5
+            },
+            "workflows": {
+              "total": 2
+            },
+            "prompts": {
+              "total": 1
+            },
+            "designSystems": {
+              "total": 2
+            },
+            "automations": {
+              "total": 2
+            }
+          },
+          "developer": {
+            "apps": 2,
+            "publicApis": 11,
+            "webhooks": 2,
+            "sdkVersions": 32
+          },
+          "trust": {
+            "entries": 11,
+            "avgScore": 61
+          },
+          "health": {
+            "score": 91,
+            "layers": {
+              "enterprise": {
+                "score": 87,
+                "companies": 26
+              },
+              "executive": {
+                "score": 100
+              },
+              "tenants": {
+                "total": 20,
+                "active": 20,
+                "score": 100
+              },
+              "marketplace": {
+                "total": 24,
+                "score": 100
+              },
+              "exchange": {
+                "openMissions": 10,
+                "knowledgeItems": 5,
+                "score": 90
+              },
+              "trust": {
+                "avgScore": 61,
+                "entries": 11,
+                "score": 61
+              },
+              "agents": {
+                "total": 0,
+                "running": 0,
+                "score": 100
+              }
+            },
+            "alerts": []
+          },
+          "enterprise": {
+            "enterprise": {
+              "companies": {
+                "total": 26,
+                "active": 26
+              },
+              "workspaces": {
+                "total": 3,
+                "active": 3
+              },
+              "products": {
+                "total": 4,
+                "ga": 2
+              },
+              "customers": {
+                "total": 3,
+                "active": 0
+              },
+              "partners": {
+                "total": 1
+              },
+              "vendors": {
+                "total": 2
+              }
+            },
+            "portfolio": {
+              "portfolios": 7,
+              "initiatives": 4,
+              "programs": 1,
+              "atRisk": 0
+            },
+            "finance": {
+              "totalBudgetUsd": 1010500,
+              "totalSpentUsd": 0,
+              "totalARR": 9576,
+              "forecasts": 1
+            },
+            "governance": {
+              "policies": 6,
+              "controls": 13,
+              "pendingApprovals": 1,
+              "auditEntries": 142
+            },
+            "hr": {
+              "totalHeadcount": 2
+            },
+            "reports": {
+              "total": 13
+            },
+            "health": {
+              "score": 87,
+              "dimensions": {
+                "companies": {
+                  "total": 26,
+                  "active": 26,
+                  "score": 100
+                },
+                "products": {
+                  "total": 4,
+                  "ga": 2,
+                  "score": 50
+                },
+                "customers": {
+                  "total": 3,
+                  "highChurnRisk": 1,
+                  "totalARR": 9576,
+                  "score": 67
+                },
+                "finance": {
+                  "totalBudget": 1010500,
+                  "totalSpent": 0,
+                  "utilization": 0,
+                  "score": 100
+                },
+                "governance": {
+                  "pendingApprovals": 1,
+                  "score": 95
+                },
+                "compliance": {
+                  "activeControls": 13,
+                  "failedControls": 0,
+                  "score": 100
+                },
+                "executive": {
+                  "score": 100,
+                  "orgs": {
+                    "engineering": {
+                      "blockers": 14,
+                      "velocity": 0,
+                      "score": 0
+                    },
+                    "business": {
+                      "winRate": 100,
+                      "mrr": 5391429,
+                      "score": 10000
+                    },
+                    "knowledge": {
+                      "ratio": 0.7545454545454545,
+                      "total": 330,
+                      "score": 75
+                    },
+                    "evolution": {
+                      "keepRate": 0.38596491228070173,
+                      "total": 57,
+                      "score": 39
+                    }
+                  }
+                }
+              },
+              "companies": {},
+              "alerts": []
+            },
+            "executive": {
+              "quarter": "2026-Q2",
+              "goals": {
+                "total": 77,
+                "active": 77,
+                "completed": 0
+              },
+              "strategies": {
+                "total": 30
+              },
+              "missions": {
+                "total": 95,
+                "active": 93,
+                "completed": 2
+              },
+              "decisions": {
+                "total": 19
+              },
+              "approvals": {
+                "pending": 0,
+                "approved": 23
+              },
+              "risks": {
+                "active": 4,
+                "critical": 0
+              },
+              "allocations": {
+                "active": 14
+              },
+              "health": {
+                "score": 100,
+                "orgs": {
+                  "engineering": {
+                    "blockers": 14,
+                    "velocity": 0,
+                    "score": 0
+                  },
+                  "business": {
+                    "winRate": 100,
+                    "mrr": 5391429,
+                    "score": 10000
+                  },
+                  "knowledge": {
+                    "ratio": 0.7545454545454545,
+                    "total": 330,
+                    "score": 75
+                  },
+                  "evolution": {
+                    "keepRate": 0.38596491228070173,
+                    "total": 57,
+                    "score": 39
+                  }
+                },
+                "risks": [
+                  {
+                    "id": "erisk_1782599502820_nvky",
+                    "title": "RiskA 1782599502788",
+                    "description": "",
+                    "severity": "high",
+                    "source": "test",
+                    "mitigations": [],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:31:42.820Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599508571_wf2b",
+                    "goalId": "egoal_1782599503303_ot27",
+                    "title": "High engineering blocker count: 14",
+                    "description": "",
+                    "severity": "high",
+                    "source": "engineering_blockers",
+                    "mitigations": [
+                      "Resolve blockers",
+                      "Re-assign work items"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:31:48.571Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599535139_2erp",
+                    "title": "RiskA 1782599535116",
+                    "description": "",
+                    "severity": "high",
+                    "source": "test",
+                    "mitigations": [],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:32:15.139Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599540423_dqn1",
+                    "goalId": "egoal_1782599535585_un8s",
+                    "title": "High engineering blocker count: 14",
+                    "description": "",
+                    "severity": "high",
+                    "source": "engineering_blockers",
+                    "mitigations": [
+                      "Resolve blockers",
+                      "Re-assign work items"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:32:20.423Z",
+                    "resolvedAt": null
+                  }
+                ],
+                "agents": {
+                  "total": 0,
+                  "running": 0,
+                  "score": 100
+                },
+                "runtime": {}
+              },
+              "orgStatus": {
+                "engineering": {
+                  "workItems": 167,
+                  "velocity": 0
+                },
+                "business": {
+                  "mrr": 5391429,
+                  "winRate": 100,
+                  "deals": 74
+                },
+                "knowledge": {
+                  "items": 330,
+                  "validated": 249,
+                  "playbooks": 12
+                },
+                "evolution": {
+                  "evolutions": 57,
+                  "kept": 22,
+                  "avgImpact": 1
+                },
+                "runtime": {
+                  "healed": 0,
+                  "failed": 2000
+                },
+                "agents": {
+                  "total": 0,
+                  "running": 0
+                }
+              },
+              "reports": {
+                "total": 25
+              },
+              "context": {
+                "globalObjective": "Build civilization feature 1782601786114",
+                "lastSync": "2026-06-27T23:09:46.799Z"
+              }
+            },
+            "lastSync": "2026-06-27T23:09:46.796Z"
+          },
+          "reports": {
+            "total": 13
+          },
+          "lastSync": "2026-06-27T23:09:46.794Z"
+        },
+        "context": {
+          "phase": "active",
+          "membersCount": 4,
+          "healthScore": 86,
+          "epoch": 2,
+          "lastSync": "2026-06-27T23:09:52.264Z"
+        },
+        "lastSync": "2026-06-27T23:09:46.802Z"
+      },
+      "goal": {
+        "id": "egoal_1782601786633_pjhm",
+        "title": "Build civilization feature 1782601786114",
+        "description": "Civilization initiative: Build civilization feature 1782601786114",
+        "priority": "high",
+        "kpis": [],
+        "deadline": null,
+        "tags": [
+          "civilization",
+          "cmem_1782601786119_t5z3",
+          "engineering"
+        ],
+        "sourceCommand": null,
+        "status": "active",
+        "quarter": "2026-Q2",
+        "strategyIds": [
+          "estrat_1782601786637_3d9q"
+        ],
+        "missionIds": [
+          "emiss_1782601786646_s72o",
+          "emiss_1782601786656_7el3",
+          "emiss_1782601786670_byni",
+          "emiss_1782601786673_mdvo",
+          "emiss_1782601786674_cd3b"
+        ],
+        "orgTasks": {},
+        "createdAt": "2026-06-27T23:09:46.633Z",
+        "updatedAt": "2026-06-27T23:09:46.633Z",
+        "completedAt": null,
+        "progress": 0
+      },
+      "healthScore": 91,
+      "steps": 5,
+      "coordinationActions": [
+        {
+          "type": "mission_published",
+          "id": "cmrt_1782601786776_iv6u"
+        },
+        {
+          "type": "knowledge_shared",
+          "id": "ckr_1782601786776_v2q1"
+        }
+      ]
+    },
+    "summary": "Civilization initiative: Build civilization feature 1782601786114 | Civilization health: 86/100 | Ecosystem health: 91/100 | Members: 4 active | Treaties: 1 ratified | Innovations: 1 adopted | Coordination actions: 2",
+    "createdAt": "2026-06-27T23:09:46.802Z"
+  },
+  {
+    "id": "crpt2_1782601786936_7wsl",
+    "title": "Civilization Report: Health test 1782601786114",
+    "domainId": "civ_analytics",
+    "type": "pipeline",
+    "data": {
+      "dashboard": {
+        "civilization": {
+          "members": {
+            "total": 4,
+            "active": 4
+          },
+          "alliances": {
+            "total": 1,
+            "active": 1
+          },
+          "council": {
+            "members": 2,
+            "proposals": 3,
+            "openProposals": 2
+          },
+          "constitution": {
+            "articles": 7,
+            "amendments": 1,
+            "precedents": 2
+          },
+          "economy": {
+            "trades": 3,
+            "completedTrades": 1,
+            "resourcePools": 1
+          },
+          "network": {
+            "channels": 7,
+            "missions": 5,
+            "openMissions": 3,
+            "collaborations": 2
+          },
+          "diplomacy": {
+            "treaties": 3,
+            "ratified": 1,
+            "openDisputes": 0,
+            "openNegotiations": 2
+          },
+          "innovation": {
+            "projects": 1,
+            "innovations": 1,
+            "adopted": 1,
+            "evolutionProposals": 1
+          },
+          "reputation": {
+            "members": 3,
+            "avgScore": 64
+          },
+          "reports": {
+            "total": 3
+          }
+        },
+        "health": {
+          "score": 86,
+          "layers": {
+            "ecosystem": {
+              "score": 91
+            },
+            "enterprise": {
+              "score": 87
+            },
+            "executive": {
+              "score": 100
+            },
+            "civilization": {
+              "members": 4,
+              "openMissions": 3,
+              "openDisputes": 0,
+              "ratifiedTreaties": 1,
+              "adoptedInnovations": 1,
+              "avgReputation": 64,
+              "score": 66
+            }
+          },
+          "alerts": []
+        },
+        "ecosystem": {
+          "ecosystem": {
+            "tenants": {
+              "total": 20,
+              "active": 20
+            },
+            "orgs": {
+              "total": 3,
+              "active": 3
+            },
+            "packages": {
+              "builtin": 10,
+              "custom": 1
+            },
+            "routes": {
+              "total": 10
+            }
+          },
+          "marketplace": {
+            "total": 24,
+            "byType": {
+              "capability": 9,
+              "agent": 3,
+              "plugin": 3,
+              "workflow": 3,
+              "template": 3,
+              "integration": 2,
+              "api": 1
+            },
+            "externalPlugins": 0,
+            "externalCapabilities": 52,
+            "externalModels": 76
+          },
+          "exchange": {
+            "missions": {
+              "total": 13,
+              "open": 11,
+              "assigned": 2
+            },
+            "knowledge": {
+              "total": 6
+            },
+            "workflows": {
+              "total": 2
+            },
+            "prompts": {
+              "total": 1
+            },
+            "designSystems": {
+              "total": 2
+            },
+            "automations": {
+              "total": 2
+            }
+          },
+          "developer": {
+            "apps": 2,
+            "publicApis": 11,
+            "webhooks": 2,
+            "sdkVersions": 32
+          },
+          "trust": {
+            "entries": 11,
+            "avgScore": 61
+          },
+          "health": {
+            "score": 91,
+            "layers": {
+              "enterprise": {
+                "score": 87,
+                "companies": 26
+              },
+              "executive": {
+                "score": 100
+              },
+              "tenants": {
+                "total": 20,
+                "active": 20,
+                "score": 100
+              },
+              "marketplace": {
+                "total": 24,
+                "score": 100
+              },
+              "exchange": {
+                "openMissions": 11,
+                "knowledgeItems": 6,
+                "score": 90
+              },
+              "trust": {
+                "avgScore": 61,
+                "entries": 11,
+                "score": 61
+              },
+              "agents": {
+                "total": 0,
+                "running": 0,
+                "score": 100
+              }
+            },
+            "alerts": []
+          },
+          "enterprise": {
+            "enterprise": {
+              "companies": {
+                "total": 26,
+                "active": 26
+              },
+              "workspaces": {
+                "total": 3,
+                "active": 3
+              },
+              "products": {
+                "total": 4,
+                "ga": 2
+              },
+              "customers": {
+                "total": 3,
+                "active": 0
+              },
+              "partners": {
+                "total": 1
+              },
+              "vendors": {
+                "total": 2
+              }
+            },
+            "portfolio": {
+              "portfolios": 7,
+              "initiatives": 4,
+              "programs": 1,
+              "atRisk": 0
+            },
+            "finance": {
+              "totalBudgetUsd": 1010500,
+              "totalSpentUsd": 0,
+              "totalARR": 9576,
+              "forecasts": 1
+            },
+            "governance": {
+              "policies": 6,
+              "controls": 13,
+              "pendingApprovals": 1,
+              "auditEntries": 145
+            },
+            "hr": {
+              "totalHeadcount": 2
+            },
+            "reports": {
+              "total": 14
+            },
+            "health": {
+              "score": 87,
+              "dimensions": {
+                "companies": {
+                  "total": 26,
+                  "active": 26,
+                  "score": 100
+                },
+                "products": {
+                  "total": 4,
+                  "ga": 2,
+                  "score": 50
+                },
+                "customers": {
+                  "total": 3,
+                  "highChurnRisk": 1,
+                  "totalARR": 9576,
+                  "score": 67
+                },
+                "finance": {
+                  "totalBudget": 1010500,
+                  "totalSpent": 0,
+                  "utilization": 0,
+                  "score": 100
+                },
+                "governance": {
+                  "pendingApprovals": 1,
+                  "score": 95
+                },
+                "compliance": {
+                  "activeControls": 13,
+                  "failedControls": 0,
+                  "score": 100
+                },
+                "executive": {
+                  "score": 100,
+                  "orgs": {
+                    "engineering": {
+                      "blockers": 14,
+                      "velocity": 0,
+                      "score": 0
+                    },
+                    "business": {
+                      "winRate": 100,
+                      "mrr": 5391429,
+                      "score": 10000
+                    },
+                    "knowledge": {
+                      "ratio": 0.75,
+                      "total": 332,
+                      "score": 75
+                    },
+                    "evolution": {
+                      "keepRate": 0.3793103448275862,
+                      "total": 58,
+                      "score": 38
+                    }
+                  }
+                }
+              },
+              "companies": {},
+              "alerts": []
+            },
+            "executive": {
+              "quarter": "2026-Q2",
+              "goals": {
+                "total": 78,
+                "active": 78,
+                "completed": 0
+              },
+              "strategies": {
+                "total": 31
+              },
+              "missions": {
+                "total": 100,
+                "active": 98,
+                "completed": 2
+              },
+              "decisions": {
+                "total": 20
+              },
+              "approvals": {
+                "pending": 0,
+                "approved": 24
+              },
+              "risks": {
+                "active": 4,
+                "critical": 0
+              },
+              "allocations": {
+                "active": 14
+              },
+              "health": {
+                "score": 100,
+                "orgs": {
+                  "engineering": {
+                    "blockers": 14,
+                    "velocity": 0,
+                    "score": 0
+                  },
+                  "business": {
+                    "winRate": 100,
+                    "mrr": 5391429,
+                    "score": 10000
+                  },
+                  "knowledge": {
+                    "ratio": 0.75,
+                    "total": 332,
+                    "score": 75
+                  },
+                  "evolution": {
+                    "keepRate": 0.3793103448275862,
+                    "total": 58,
+                    "score": 38
+                  }
+                },
+                "risks": [
+                  {
+                    "id": "erisk_1782599502820_nvky",
+                    "title": "RiskA 1782599502788",
+                    "description": "",
+                    "severity": "high",
+                    "source": "test",
+                    "mitigations": [],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:31:42.820Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599508571_wf2b",
+                    "goalId": "egoal_1782599503303_ot27",
+                    "title": "High engineering blocker count: 14",
+                    "description": "",
+                    "severity": "high",
+                    "source": "engineering_blockers",
+                    "mitigations": [
+                      "Resolve blockers",
+                      "Re-assign work items"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:31:48.571Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599535139_2erp",
+                    "title": "RiskA 1782599535116",
+                    "description": "",
+                    "severity": "high",
+                    "source": "test",
+                    "mitigations": [],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:32:15.139Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599540423_dqn1",
+                    "goalId": "egoal_1782599535585_un8s",
+                    "title": "High engineering blocker count: 14",
+                    "description": "",
+                    "severity": "high",
+                    "source": "engineering_blockers",
+                    "mitigations": [
+                      "Resolve blockers",
+                      "Re-assign work items"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:32:20.423Z",
+                    "resolvedAt": null
+                  }
+                ],
+                "agents": {
+                  "total": 0,
+                  "running": 0,
+                  "score": 100
+                },
+                "runtime": {}
+              },
+              "orgStatus": {
+                "engineering": {
+                  "workItems": 167,
+                  "velocity": 0
+                },
+                "business": {
+                  "mrr": 5391429,
+                  "winRate": 100,
+                  "deals": 74
+                },
+                "knowledge": {
+                  "items": 332,
+                  "validated": 249,
+                  "playbooks": 12
+                },
+                "evolution": {
+                  "evolutions": 58,
+                  "kept": 22,
+                  "avgImpact": 1
+                },
+                "runtime": {
+                  "healed": 0,
+                  "failed": 2000
+                },
+                "agents": {
+                  "total": 0,
+                  "running": 0
+                }
+              },
+              "reports": {
+                "total": 26
+              },
+              "context": {
+                "globalObjective": "Health test 1782601786114",
+                "lastSync": "2026-06-27T23:09:46.933Z"
+              }
+            },
+            "lastSync": "2026-06-27T23:09:46.930Z"
+          },
+          "reports": {
+            "total": 14
+          },
+          "lastSync": "2026-06-27T23:09:46.927Z"
+        },
+        "context": {
+          "phase": "active",
+          "membersCount": 4,
+          "healthScore": 86,
+          "epoch": 2,
+          "lastSync": "2026-06-27T23:09:52.264Z"
+        },
+        "lastSync": "2026-06-27T23:09:46.936Z"
+      },
+      "goal": {
+        "id": "egoal_1782601786814_0jvo",
+        "title": "Health test 1782601786114",
+        "description": "Civilization initiative: Health test 1782601786114",
+        "priority": "high",
+        "kpis": [],
+        "deadline": null,
+        "tags": [
+          "civilization",
+          "general"
+        ],
+        "sourceCommand": null,
+        "status": "active",
+        "quarter": "2026-Q2",
+        "strategyIds": [
+          "estrat_1782601786815_uczn"
+        ],
+        "missionIds": [
+          "emiss_1782601786825_86b2",
+          "emiss_1782601786833_48sd",
+          "emiss_1782601786846_bu4r",
+          "emiss_1782601786848_iwoi",
+          "emiss_1782601786849_9eve"
+        ],
+        "orgTasks": {},
+        "createdAt": "2026-06-27T23:09:46.814Z",
+        "updatedAt": "2026-06-27T23:09:46.814Z",
+        "completedAt": null,
+        "progress": 0
+      },
+      "healthScore": 91,
+      "steps": 5,
+      "coordinationActions": [
+        {
+          "type": "mission_published",
+          "id": "cmrt_1782601786910_16fc"
+        },
+        {
+          "type": "knowledge_shared",
+          "id": "ckr_1782601786910_odx2"
+        }
+      ]
+    },
+    "summary": "Civilization initiative: Health test 1782601786114 | Civilization health: 86/100 | Ecosystem health: 91/100 | Members: 4 active | Treaties: 1 ratified | Innovations: 1 adopted | Coordination actions: 2",
+    "createdAt": "2026-06-27T23:09:46.936Z"
+  },
+  {
+    "id": "crpt2_1782601787073_yp4v",
+    "title": "Civilization Report: Resource-backed initiative 1782601786114",
+    "domainId": "civ_analytics",
+    "type": "pipeline",
+    "data": {
+      "dashboard": {
+        "civilization": {
+          "members": {
+            "total": 4,
+            "active": 4
+          },
+          "alliances": {
+            "total": 1,
+            "active": 1
+          },
+          "council": {
+            "members": 2,
+            "proposals": 3,
+            "openProposals": 2
+          },
+          "constitution": {
+            "articles": 7,
+            "amendments": 1,
+            "precedents": 2
+          },
+          "economy": {
+            "trades": 3,
+            "completedTrades": 1,
+            "resourcePools": 1
+          },
+          "network": {
+            "channels": 7,
+            "missions": 6,
+            "openMissions": 4,
+            "collaborations": 2
+          },
+          "diplomacy": {
+            "treaties": 3,
+            "ratified": 1,
+            "openDisputes": 0,
+            "openNegotiations": 2
+          },
+          "innovation": {
+            "projects": 1,
+            "innovations": 1,
+            "adopted": 1,
+            "evolutionProposals": 1
+          },
+          "reputation": {
+            "members": 3,
+            "avgScore": 64
+          },
+          "reports": {
+            "total": 4
+          }
+        },
+        "health": {
+          "score": 86,
+          "layers": {
+            "ecosystem": {
+              "score": 91
+            },
+            "enterprise": {
+              "score": 87
+            },
+            "executive": {
+              "score": 100
+            },
+            "civilization": {
+              "members": 4,
+              "openMissions": 4,
+              "openDisputes": 0,
+              "ratifiedTreaties": 1,
+              "adoptedInnovations": 1,
+              "avgReputation": 64,
+              "score": 66
+            }
+          },
+          "alerts": []
+        },
+        "ecosystem": {
+          "ecosystem": {
+            "tenants": {
+              "total": 20,
+              "active": 20
+            },
+            "orgs": {
+              "total": 3,
+              "active": 3
+            },
+            "packages": {
+              "builtin": 10,
+              "custom": 1
+            },
+            "routes": {
+              "total": 10
+            }
+          },
+          "marketplace": {
+            "total": 24,
+            "byType": {
+              "capability": 9,
+              "agent": 3,
+              "plugin": 3,
+              "workflow": 3,
+              "template": 3,
+              "integration": 2,
+              "api": 1
+            },
+            "externalPlugins": 0,
+            "externalCapabilities": 52,
+            "externalModels": 76
+          },
+          "exchange": {
+            "missions": {
+              "total": 14,
+              "open": 12,
+              "assigned": 2
+            },
+            "knowledge": {
+              "total": 7
+            },
+            "workflows": {
+              "total": 2
+            },
+            "prompts": {
+              "total": 1
+            },
+            "designSystems": {
+              "total": 2
+            },
+            "automations": {
+              "total": 2
+            }
+          },
+          "developer": {
+            "apps": 2,
+            "publicApis": 11,
+            "webhooks": 2,
+            "sdkVersions": 32
+          },
+          "trust": {
+            "entries": 11,
+            "avgScore": 61
+          },
+          "health": {
+            "score": 91,
+            "layers": {
+              "enterprise": {
+                "score": 87,
+                "companies": 26
+              },
+              "executive": {
+                "score": 100
+              },
+              "tenants": {
+                "total": 20,
+                "active": 20,
+                "score": 100
+              },
+              "marketplace": {
+                "total": 24,
+                "score": 100
+              },
+              "exchange": {
+                "openMissions": 12,
+                "knowledgeItems": 7,
+                "score": 90
+              },
+              "trust": {
+                "avgScore": 61,
+                "entries": 11,
+                "score": 61
+              },
+              "agents": {
+                "total": 0,
+                "running": 0,
+                "score": 100
+              }
+            },
+            "alerts": []
+          },
+          "enterprise": {
+            "enterprise": {
+              "companies": {
+                "total": 26,
+                "active": 26
+              },
+              "workspaces": {
+                "total": 3,
+                "active": 3
+              },
+              "products": {
+                "total": 4,
+                "ga": 2
+              },
+              "customers": {
+                "total": 3,
+                "active": 0
+              },
+              "partners": {
+                "total": 1
+              },
+              "vendors": {
+                "total": 2
+              }
+            },
+            "portfolio": {
+              "portfolios": 7,
+              "initiatives": 4,
+              "programs": 1,
+              "atRisk": 0
+            },
+            "finance": {
+              "totalBudgetUsd": 1010500,
+              "totalSpentUsd": 0,
+              "totalARR": 9576,
+              "forecasts": 1
+            },
+            "governance": {
+              "policies": 6,
+              "controls": 13,
+              "pendingApprovals": 1,
+              "auditEntries": 148
+            },
+            "hr": {
+              "totalHeadcount": 2
+            },
+            "reports": {
+              "total": 15
+            },
+            "health": {
+              "score": 87,
+              "dimensions": {
+                "companies": {
+                  "total": 26,
+                  "active": 26,
+                  "score": 100
+                },
+                "products": {
+                  "total": 4,
+                  "ga": 2,
+                  "score": 50
+                },
+                "customers": {
+                  "total": 3,
+                  "highChurnRisk": 1,
+                  "totalARR": 9576,
+                  "score": 67
+                },
+                "finance": {
+                  "totalBudget": 1010500,
+                  "totalSpent": 0,
+                  "utilization": 0,
+                  "score": 100
+                },
+                "governance": {
+                  "pendingApprovals": 1,
+                  "score": 95
+                },
+                "compliance": {
+                  "activeControls": 13,
+                  "failedControls": 0,
+                  "score": 100
+                },
+                "executive": {
+                  "score": 100,
+                  "orgs": {
+                    "engineering": {
+                      "blockers": 14,
+                      "velocity": 0,
+                      "score": 0
+                    },
+                    "business": {
+                      "winRate": 100,
+                      "mrr": 5391429,
+                      "score": 10000
+                    },
+                    "knowledge": {
+                      "ratio": 0.7455089820359282,
+                      "total": 334,
+                      "score": 75
+                    },
+                    "evolution": {
+                      "keepRate": 0.3728813559322034,
+                      "total": 59,
+                      "score": 37
+                    }
+                  }
+                }
+              },
+              "companies": {},
+              "alerts": []
+            },
+            "executive": {
+              "quarter": "2026-Q2",
+              "goals": {
+                "total": 79,
+                "active": 79,
+                "completed": 0
+              },
+              "strategies": {
+                "total": 32
+              },
+              "missions": {
+                "total": 105,
+                "active": 103,
+                "completed": 2
+              },
+              "decisions": {
+                "total": 21
+              },
+              "approvals": {
+                "pending": 0,
+                "approved": 25
+              },
+              "risks": {
+                "active": 4,
+                "critical": 0
+              },
+              "allocations": {
+                "active": 14
+              },
+              "health": {
+                "score": 100,
+                "orgs": {
+                  "engineering": {
+                    "blockers": 14,
+                    "velocity": 0,
+                    "score": 0
+                  },
+                  "business": {
+                    "winRate": 100,
+                    "mrr": 5391429,
+                    "score": 10000
+                  },
+                  "knowledge": {
+                    "ratio": 0.7455089820359282,
+                    "total": 334,
+                    "score": 75
+                  },
+                  "evolution": {
+                    "keepRate": 0.3728813559322034,
+                    "total": 59,
+                    "score": 37
+                  }
+                },
+                "risks": [
+                  {
+                    "id": "erisk_1782599502820_nvky",
+                    "title": "RiskA 1782599502788",
+                    "description": "",
+                    "severity": "high",
+                    "source": "test",
+                    "mitigations": [],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:31:42.820Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599508571_wf2b",
+                    "goalId": "egoal_1782599503303_ot27",
+                    "title": "High engineering blocker count: 14",
+                    "description": "",
+                    "severity": "high",
+                    "source": "engineering_blockers",
+                    "mitigations": [
+                      "Resolve blockers",
+                      "Re-assign work items"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:31:48.571Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599535139_2erp",
+                    "title": "RiskA 1782599535116",
+                    "description": "",
+                    "severity": "high",
+                    "source": "test",
+                    "mitigations": [],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:32:15.139Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599540423_dqn1",
+                    "goalId": "egoal_1782599535585_un8s",
+                    "title": "High engineering blocker count: 14",
+                    "description": "",
+                    "severity": "high",
+                    "source": "engineering_blockers",
+                    "mitigations": [
+                      "Resolve blockers",
+                      "Re-assign work items"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:32:20.423Z",
+                    "resolvedAt": null
+                  }
+                ],
+                "agents": {
+                  "total": 0,
+                  "running": 0,
+                  "score": 100
+                },
+                "runtime": {}
+              },
+              "orgStatus": {
+                "engineering": {
+                  "workItems": 167,
+                  "velocity": 0
+                },
+                "business": {
+                  "mrr": 5391429,
+                  "winRate": 100,
+                  "deals": 74
+                },
+                "knowledge": {
+                  "items": 334,
+                  "validated": 249,
+                  "playbooks": 12
+                },
+                "evolution": {
+                  "evolutions": 59,
+                  "kept": 22,
+                  "avgImpact": 1
+                },
+                "runtime": {
+                  "healed": 0,
+                  "failed": 2000
+                },
+                "agents": {
+                  "total": 0,
+                  "running": 0
+                }
+              },
+              "reports": {
+                "total": 27
+              },
+              "context": {
+                "globalObjective": "Resource-backed initiative 1782601786114",
+                "lastSync": "2026-06-27T23:09:47.070Z"
+              }
+            },
+            "lastSync": "2026-06-27T23:09:47.067Z"
+          },
+          "reports": {
+            "total": 15
+          },
+          "lastSync": "2026-06-27T23:09:47.065Z"
+        },
+        "context": {
+          "phase": "active",
+          "membersCount": 4,
+          "healthScore": 86,
+          "epoch": 2,
+          "lastSync": "2026-06-27T23:09:52.264Z"
+        },
+        "lastSync": "2026-06-27T23:09:47.073Z"
+      },
+      "goal": {
+        "id": "egoal_1782601786947_yj35",
+        "title": "Resource-backed initiative 1782601786114",
+        "description": "Civilization initiative: Resource-backed initiative 1782601786114",
+        "priority": "high",
+        "kpis": [],
+        "deadline": null,
+        "tags": [
+          "civilization",
+          "cmem_1782601786126_r6x6",
+          "business"
+        ],
+        "sourceCommand": null,
+        "status": "active",
+        "quarter": "2026-Q2",
+        "strategyIds": [
+          "estrat_1782601786949_jzcu"
+        ],
+        "missionIds": [
+          "emiss_1782601786955_iwpi",
+          "emiss_1782601786964_9wjv",
+          "emiss_1782601786978_752l",
+          "emiss_1782601786982_g51t",
+          "emiss_1782601786983_i8mx"
+        ],
+        "orgTasks": {},
+        "createdAt": "2026-06-27T23:09:46.947Z",
+        "updatedAt": "2026-06-27T23:09:46.947Z",
+        "completedAt": null,
+        "progress": 0
+      },
+      "healthScore": 91,
+      "steps": 5,
+      "coordinationActions": [
+        {
+          "type": "mission_published",
+          "id": "cmrt_1782601787047_ldp2"
+        },
+        {
+          "type": "knowledge_shared",
+          "id": "ckr_1782601787048_hpuh"
+        }
+      ]
+    },
+    "summary": "Civilization initiative: Resource-backed initiative 1782601786114 | Civilization health: 86/100 | Ecosystem health: 91/100 | Members: 4 active | Treaties: 1 ratified | Innovations: 1 adopted | Coordination actions: 2",
+    "createdAt": "2026-06-27T23:09:47.073Z"
+  },
+  {
+    "id": "crpt2_1782601792277_3uju",
+    "title": "Civilization Report: Cross-layer smoke 1782601786114",
+    "domainId": "civ_analytics",
+    "type": "pipeline",
+    "data": {
+      "dashboard": {
+        "civilization": {
+          "members": {
+            "total": 4,
+            "active": 4
+          },
+          "alliances": {
+            "total": 1,
+            "active": 1
+          },
+          "council": {
+            "members": 2,
+            "proposals": 3,
+            "openProposals": 2
+          },
+          "constitution": {
+            "articles": 7,
+            "amendments": 1,
+            "precedents": 2
+          },
+          "economy": {
+            "trades": 3,
+            "completedTrades": 1,
+            "resourcePools": 1
+          },
+          "network": {
+            "channels": 7,
+            "missions": 7,
+            "openMissions": 5,
+            "collaborations": 2
+          },
+          "diplomacy": {
+            "treaties": 3,
+            "ratified": 1,
+            "openDisputes": 0,
+            "openNegotiations": 2
+          },
+          "innovation": {
+            "projects": 1,
+            "innovations": 1,
+            "adopted": 1,
+            "evolutionProposals": 1
+          },
+          "reputation": {
+            "members": 3,
+            "avgScore": 64
+          },
+          "reports": {
+            "total": 5
+          }
+        },
+        "health": {
+          "score": 86,
+          "layers": {
+            "ecosystem": {
+              "score": 91
+            },
+            "enterprise": {
+              "score": 87
+            },
+            "executive": {
+              "score": 100
+            },
+            "civilization": {
+              "members": 4,
+              "openMissions": 5,
+              "openDisputes": 0,
+              "ratifiedTreaties": 1,
+              "adoptedInnovations": 1,
+              "avgReputation": 64,
+              "score": 66
+            }
+          },
+          "alerts": []
+        },
+        "ecosystem": {
+          "ecosystem": {
+            "tenants": {
+              "total": 20,
+              "active": 20
+            },
+            "orgs": {
+              "total": 3,
+              "active": 3
+            },
+            "packages": {
+              "builtin": 10,
+              "custom": 1
+            },
+            "routes": {
+              "total": 10
+            }
+          },
+          "marketplace": {
+            "total": 24,
+            "byType": {
+              "capability": 9,
+              "agent": 3,
+              "plugin": 3,
+              "workflow": 3,
+              "template": 3,
+              "integration": 2,
+              "api": 1
+            },
+            "externalPlugins": 0,
+            "externalCapabilities": 52,
+            "externalModels": 76
+          },
+          "exchange": {
+            "missions": {
+              "total": 15,
+              "open": 13,
+              "assigned": 2
+            },
+            "knowledge": {
+              "total": 8
+            },
+            "workflows": {
+              "total": 2
+            },
+            "prompts": {
+              "total": 1
+            },
+            "designSystems": {
+              "total": 2
+            },
+            "automations": {
+              "total": 2
+            }
+          },
+          "developer": {
+            "apps": 2,
+            "publicApis": 11,
+            "webhooks": 2,
+            "sdkVersions": 32
+          },
+          "trust": {
+            "entries": 11,
+            "avgScore": 61
+          },
+          "health": {
+            "score": 91,
+            "layers": {
+              "enterprise": {
+                "score": 87,
+                "companies": 26
+              },
+              "executive": {
+                "score": 100
+              },
+              "tenants": {
+                "total": 20,
+                "active": 20,
+                "score": 100
+              },
+              "marketplace": {
+                "total": 24,
+                "score": 100
+              },
+              "exchange": {
+                "openMissions": 13,
+                "knowledgeItems": 8,
+                "score": 90
+              },
+              "trust": {
+                "avgScore": 61,
+                "entries": 11,
+                "score": 61
+              },
+              "agents": {
+                "total": 30,
+                "running": 30,
+                "score": 100
+              }
+            },
+            "alerts": []
+          },
+          "enterprise": {
+            "enterprise": {
+              "companies": {
+                "total": 26,
+                "active": 26
+              },
+              "workspaces": {
+                "total": 3,
+                "active": 3
+              },
+              "products": {
+                "total": 4,
+                "ga": 2
+              },
+              "customers": {
+                "total": 3,
+                "active": 0
+              },
+              "partners": {
+                "total": 1
+              },
+              "vendors": {
+                "total": 2
+              }
+            },
+            "portfolio": {
+              "portfolios": 7,
+              "initiatives": 4,
+              "programs": 1,
+              "atRisk": 0
+            },
+            "finance": {
+              "totalBudgetUsd": 1010500,
+              "totalSpentUsd": 0,
+              "totalARR": 9576,
+              "forecasts": 1
+            },
+            "governance": {
+              "policies": 6,
+              "controls": 13,
+              "pendingApprovals": 1,
+              "auditEntries": 151
+            },
+            "hr": {
+              "totalHeadcount": 2
+            },
+            "reports": {
+              "total": 16
+            },
+            "health": {
+              "score": 87,
+              "dimensions": {
+                "companies": {
+                  "total": 26,
+                  "active": 26,
+                  "score": 100
+                },
+                "products": {
+                  "total": 4,
+                  "ga": 2,
+                  "score": 50
+                },
+                "customers": {
+                  "total": 3,
+                  "highChurnRisk": 1,
+                  "totalARR": 9576,
+                  "score": 67
+                },
+                "finance": {
+                  "totalBudget": 1010500,
+                  "totalSpent": 0,
+                  "utilization": 0,
+                  "score": 100
+                },
+                "governance": {
+                  "pendingApprovals": 1,
+                  "score": 95
+                },
+                "compliance": {
+                  "activeControls": 13,
+                  "failedControls": 0,
+                  "score": 100
+                },
+                "executive": {
+                  "score": 100,
+                  "orgs": {
+                    "engineering": {
+                      "blockers": 14,
+                      "velocity": 0,
+                      "score": 0
+                    },
+                    "business": {
+                      "winRate": 100,
+                      "mrr": 5391429,
+                      "score": 10000
+                    },
+                    "knowledge": {
+                      "ratio": 0.7410714285714286,
+                      "total": 336,
+                      "score": 74
+                    },
+                    "evolution": {
+                      "keepRate": 0.36666666666666664,
+                      "total": 60,
+                      "score": 37
+                    }
+                  }
+                }
+              },
+              "companies": {},
+              "alerts": []
+            },
+            "executive": {
+              "quarter": "2026-Q2",
+              "goals": {
+                "total": 80,
+                "active": 80,
+                "completed": 0
+              },
+              "strategies": {
+                "total": 33
+              },
+              "missions": {
+                "total": 110,
+                "active": 108,
+                "completed": 2
+              },
+              "decisions": {
+                "total": 22
+              },
+              "approvals": {
+                "pending": 0,
+                "approved": 26
+              },
+              "risks": {
+                "active": 4,
+                "critical": 0
+              },
+              "allocations": {
+                "active": 14
+              },
+              "health": {
+                "score": 100,
+                "orgs": {
+                  "engineering": {
+                    "blockers": 14,
+                    "velocity": 0,
+                    "score": 0
+                  },
+                  "business": {
+                    "winRate": 100,
+                    "mrr": 5391429,
+                    "score": 10000
+                  },
+                  "knowledge": {
+                    "ratio": 0.7410714285714286,
+                    "total": 336,
+                    "score": 74
+                  },
+                  "evolution": {
+                    "keepRate": 0.36666666666666664,
+                    "total": 60,
+                    "score": 37
+                  }
+                },
+                "risks": [
+                  {
+                    "id": "erisk_1782599502820_nvky",
+                    "title": "RiskA 1782599502788",
+                    "description": "",
+                    "severity": "high",
+                    "source": "test",
+                    "mitigations": [],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:31:42.820Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599508571_wf2b",
+                    "goalId": "egoal_1782599503303_ot27",
+                    "title": "High engineering blocker count: 14",
+                    "description": "",
+                    "severity": "high",
+                    "source": "engineering_blockers",
+                    "mitigations": [
+                      "Resolve blockers",
+                      "Re-assign work items"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:31:48.571Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599535139_2erp",
+                    "title": "RiskA 1782599535116",
+                    "description": "",
+                    "severity": "high",
+                    "source": "test",
+                    "mitigations": [],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:32:15.139Z",
+                    "resolvedAt": null
+                  },
+                  {
+                    "id": "erisk_1782599540423_dqn1",
+                    "goalId": "egoal_1782599535585_un8s",
+                    "title": "High engineering blocker count: 14",
+                    "description": "",
+                    "severity": "high",
+                    "source": "engineering_blockers",
+                    "mitigations": [
+                      "Resolve blockers",
+                      "Re-assign work items"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-06-27T22:32:20.423Z",
+                    "resolvedAt": null
+                  }
+                ],
+                "agents": {
+                  "total": 30,
+                  "running": 30,
+                  "score": 100
+                },
+                "runtime": {}
+              },
+              "orgStatus": {
+                "engineering": {
+                  "workItems": 167,
+                  "velocity": 0
+                },
+                "business": {
+                  "mrr": 5391429,
+                  "winRate": 100,
+                  "deals": 74
+                },
+                "knowledge": {
+                  "items": 336,
+                  "validated": 249,
+                  "playbooks": 12
+                },
+                "evolution": {
+                  "evolutions": 60,
+                  "kept": 22,
+                  "avgImpact": 1
+                },
+                "runtime": {
+                  "healed": 0,
+                  "failed": 2000
+                },
+                "agents": {
+                  "total": 30,
+                  "running": 30
+                }
+              },
+              "reports": {
+                "total": 28
+              },
+              "context": {
+                "globalObjective": "Cross-layer smoke 1782601786114",
+                "lastSync": "2026-06-27T23:09:52.275Z"
+              }
+            },
+            "lastSync": "2026-06-27T23:09:52.272Z"
+          },
+          "reports": {
+            "total": 16
+          },
+          "lastSync": "2026-06-27T23:09:52.269Z"
+        },
+        "context": {
+          "phase": "active",
+          "membersCount": 4,
+          "healthScore": 86,
+          "epoch": 2,
+          "lastSync": "2026-06-27T23:09:52.264Z"
+        },
+        "lastSync": "2026-06-27T23:09:52.277Z"
+      },
+      "goal": {
+        "id": "egoal_1782601792145_f5oa",
+        "title": "Cross-layer smoke 1782601786114",
+        "description": "Civilization initiative: Cross-layer smoke 1782601786114",
+        "priority": "high",
+        "kpis": [],
+        "deadline": null,
+        "tags": [
+          "civilization",
+          "cmem_1782601786119_t5z3",
+          "general"
+        ],
+        "sourceCommand": null,
+        "status": "active",
+        "quarter": "2026-Q2",
+        "strategyIds": [
+          "estrat_1782601792148_9osz"
+        ],
+        "missionIds": [
+          "emiss_1782601792157_08qq",
+          "emiss_1782601792165_2pj4",
+          "emiss_1782601792179_ub3u",
+          "emiss_1782601792182_0938",
+          "emiss_1782601792183_zmq8"
+        ],
+        "orgTasks": {},
+        "createdAt": "2026-06-27T23:09:52.145Z",
+        "updatedAt": "2026-06-27T23:09:52.145Z",
+        "completedAt": null,
+        "progress": 0
+      },
+      "healthScore": 91,
+      "steps": 5,
+      "coordinationActions": [
+        {
+          "type": "mission_published",
+          "id": "cmrt_1782601792253_cmzq"
+        },
+        {
+          "type": "knowledge_shared",
+          "id": "ckr_1782601792253_pg18"
+        }
+      ]
+    },
+    "summary": "Civilization initiative: Cross-layer smoke 1782601786114 | Civilization health: 86/100 | Ecosystem health: 91/100 | Members: 4 active | Treaties: 1 ratified | Innovations: 1 adopted | Coordination actions: 2",
+    "createdAt": "2026-06-27T23:09:52.277Z"
+  },
+  {
+    "id": "crpt2_1782624960554_nduk",
+    "title": "Recovery Report",
+    "domainId": "civ_health",
+    "type": "recovery",
+    "data": {},
+    "summary": "test_recovery",
+    "createdAt": "2026-06-28T05:36:00.554Z"
+  }
+]

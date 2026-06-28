@@ -1,0 +1,2579 @@
+[
+  {
+    "id": "brpt_1782533090522_19",
+    "title": "Business Org Executive Report — 6/27/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-27T04:04:50.497Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 1,
+          "active": 1
+        },
+        "campaigns": {
+          "total": 2,
+          "active": 2,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 2,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 0,
+              "value": 0
+            },
+            "demo": {
+              "count": 0,
+              "value": 0
+            },
+            "proposal": {
+              "count": 0,
+              "value": 0
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 2,
+              "value": 4750
+            },
+            "closed_lost": {
+              "count": 0,
+              "value": 0
+            }
+          },
+          "pipelineValue": 0,
+          "totalWonValue": 4750,
+          "winRate": 100
+        },
+        "tasks": {
+          "total": 7,
+          "inProgress": 0,
+          "blocked": 0,
+          "done": 2
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 5544,
+          "arr": 66528
+        },
+        "leads": {
+          "total": 6,
+          "won": 2
+        },
+        "reports": {
+          "total": 0
+        },
+        "deptCount": 17
+      },
+      "execMetrics": {
+        "generatedAt": 1782533090494,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 2,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-27T04:04:50.497Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-27T04:04:50.522Z"
+    },
+    "createdAt": "2026-06-27T04:04:50.522Z"
+  },
+  {
+    "id": "brpt_1782533090526_1c",
+    "title": "Business Org Executive Report — 6/27/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-27T04:04:50.526Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 1,
+          "active": 1
+        },
+        "campaigns": {
+          "total": 2,
+          "active": 2,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 2,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 0,
+              "value": 0
+            },
+            "demo": {
+              "count": 0,
+              "value": 0
+            },
+            "proposal": {
+              "count": 0,
+              "value": 0
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 2,
+              "value": 4750
+            },
+            "closed_lost": {
+              "count": 0,
+              "value": 0
+            }
+          },
+          "pipelineValue": 0,
+          "totalWonValue": 4750,
+          "winRate": 100
+        },
+        "tasks": {
+          "total": 7,
+          "inProgress": 0,
+          "blocked": 0,
+          "done": 2
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 5544,
+          "arr": 66528
+        },
+        "leads": {
+          "total": 6,
+          "won": 2
+        },
+        "reports": {
+          "total": 1
+        },
+        "deptCount": 18
+      },
+      "execMetrics": {
+        "generatedAt": 1782533090525,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 2,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-27T04:04:50.525Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-27T04:04:50.526Z"
+    },
+    "createdAt": "2026-06-27T04:04:50.526Z"
+  },
+  {
+    "id": "brpt_1782533378012_1",
+    "title": "Q3 Business Summary",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "mrr": 5000,
+      "leads": 20
+    },
+    "createdAt": "2026-06-27T04:09:38.012Z"
+  },
+  {
+    "id": "brpt_1782533379028_4",
+    "title": "Business Org Executive Report — 6/27/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-27T04:09:38.991Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 5,
+          "active": 4
+        },
+        "campaigns": {
+          "total": 8,
+          "active": 6,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 14,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 2,
+              "value": 4000
+            },
+            "demo": {
+              "count": 3,
+              "value": 7748
+            },
+            "proposal": {
+              "count": 2,
+              "value": 4185
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 6,
+              "value": 20350
+            },
+            "closed_lost": {
+              "count": 1,
+              "value": 500
+            }
+          },
+          "pipelineValue": 15933,
+          "totalWonValue": 20350,
+          "winRate": 86
+        },
+        "tasks": {
+          "total": 16,
+          "inProgress": 1,
+          "blocked": 0,
+          "done": 4
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 9720,
+          "arr": 116640
+        },
+        "leads": {
+          "total": 30,
+          "won": 4
+        },
+        "reports": {
+          "total": 3
+        },
+        "deptCount": 18
+      },
+      "execMetrics": {
+        "generatedAt": 1782533378989,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 1,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-27T04:09:38.991Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-27T04:09:39.028Z"
+    },
+    "createdAt": "2026-06-27T04:09:39.028Z"
+  },
+  {
+    "id": "brpt_1782533385692_1",
+    "title": "Q3 Business Summary",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "mrr": 5000,
+      "leads": 20
+    },
+    "createdAt": "2026-06-27T04:09:45.692Z"
+  },
+  {
+    "id": "brpt_1782533386648_5",
+    "title": "Business Org Executive Report — 6/27/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-27T04:09:46.638Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 9,
+          "active": 7
+        },
+        "campaigns": {
+          "total": 14,
+          "active": 10,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 25,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 5,
+              "value": 8500
+            },
+            "demo": {
+              "count": 4,
+              "value": 10935
+            },
+            "proposal": {
+              "count": 1,
+              "value": 1516
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 14,
+              "value": 45883
+            },
+            "closed_lost": {
+              "count": 1,
+              "value": 500
+            }
+          },
+          "pipelineValue": 20951,
+          "totalWonValue": 45883,
+          "winRate": 93
+        },
+        "tasks": {
+          "total": 28,
+          "inProgress": 2,
+          "blocked": 0,
+          "done": 7
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 32761,
+          "arr": 393132
+        },
+        "leads": {
+          "total": 51,
+          "won": 11
+        },
+        "reports": {
+          "total": 5
+        },
+        "deptCount": 18
+      },
+      "execMetrics": {
+        "generatedAt": 1782533386637,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 1,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-27T04:09:46.638Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-27T04:09:46.648Z"
+    },
+    "createdAt": "2026-06-27T04:09:46.648Z"
+  },
+  {
+    "id": "brpt_1782533386809_9",
+    "title": "Business Org Executive Report — 6/27/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-27T04:09:46.809Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 9,
+          "active": 7
+        },
+        "campaigns": {
+          "total": 14,
+          "active": 10,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 25,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 7,
+              "value": 11400
+            },
+            "demo": {
+              "count": 2,
+              "value": 4000
+            },
+            "proposal": {
+              "count": 3,
+              "value": 8451
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 13,
+              "value": 43483
+            },
+            "closed_lost": {
+              "count": 0,
+              "value": 0
+            }
+          },
+          "pipelineValue": 23851,
+          "totalWonValue": 43483,
+          "winRate": 100
+        },
+        "tasks": {
+          "total": 31,
+          "inProgress": 4,
+          "blocked": 0,
+          "done": 8
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 50903,
+          "arr": 610836
+        },
+        "leads": {
+          "total": 51,
+          "won": 11
+        },
+        "reports": {
+          "total": 6
+        },
+        "deptCount": 18
+      },
+      "execMetrics": {
+        "generatedAt": 1782533386809,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 1,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-27T04:09:46.809Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-27T04:09:46.809Z"
+    },
+    "createdAt": "2026-06-27T04:09:46.809Z"
+  },
+  {
+    "id": "brpt_1782533439982_1",
+    "title": "Q3 Business Summary",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "mrr": 5000,
+      "leads": 20
+    },
+    "createdAt": "2026-06-27T04:10:39.982Z"
+  },
+  {
+    "id": "brpt_1782533440971_4",
+    "title": "Business Org Executive Report — 6/27/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-27T04:10:40.960Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 13,
+          "active": 10
+        },
+        "campaigns": {
+          "total": 20,
+          "active": 14,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 37,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 8,
+              "value": 13000
+            },
+            "demo": {
+              "count": 5,
+              "value": 10659
+            },
+            "proposal": {
+              "count": 2,
+              "value": 4963
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 21,
+              "value": 69934
+            },
+            "closed_lost": {
+              "count": 1,
+              "value": 500
+            }
+          },
+          "pipelineValue": 28622,
+          "totalWonValue": 69934,
+          "winRate": 95
+        },
+        "tasks": {
+          "total": 40,
+          "inProgress": 5,
+          "blocked": 0,
+          "done": 10
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 71053,
+          "arr": 852636
+        },
+        "leads": {
+          "total": 75,
+          "won": 17
+        },
+        "reports": {
+          "total": 8
+        },
+        "deptCount": 18
+      },
+      "execMetrics": {
+        "generatedAt": 1782533440958,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 1,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-27T04:10:40.960Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-27T04:10:40.971Z"
+    },
+    "createdAt": "2026-06-27T04:10:40.971Z"
+  },
+  {
+    "id": "brpt_1782557646364_1",
+    "title": "Q3 Business Summary",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "mrr": 5000,
+      "leads": 20
+    },
+    "createdAt": "2026-06-27T10:54:06.364Z"
+  },
+  {
+    "id": "brpt_1782557647376_5",
+    "title": "Business Org Executive Report — 6/27/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-27T10:54:07.344Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 18,
+          "active": 14
+        },
+        "campaigns": {
+          "total": 28,
+          "active": 20,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 52,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 11,
+              "value": 17500
+            },
+            "demo": {
+              "count": 6,
+              "value": 14960
+            },
+            "proposal": {
+              "count": 1,
+              "value": 3547
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 33,
+              "value": 103895
+            },
+            "closed_lost": {
+              "count": 1,
+              "value": 500
+            }
+          },
+          "pipelineValue": 36007,
+          "totalWonValue": 103895,
+          "winRate": 97
+        },
+        "tasks": {
+          "total": 57,
+          "inProgress": 6,
+          "blocked": 0,
+          "done": 13
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 191018,
+          "arr": 2292216
+        },
+        "leads": {
+          "total": 108,
+          "won": 28
+        },
+        "reports": {
+          "total": 10
+        },
+        "deptCount": 18
+      },
+      "execMetrics": {
+        "generatedAt": 1782557647342,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 1,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-27T10:54:07.344Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-27T10:54:07.376Z"
+    },
+    "createdAt": "2026-06-27T10:54:07.376Z"
+  },
+  {
+    "id": "brpt_1782557647509_9",
+    "title": "Business Org Executive Report — 6/27/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-27T10:54:07.509Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 18,
+          "active": 14
+        },
+        "campaigns": {
+          "total": 28,
+          "active": 20,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 52,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 13,
+              "value": 20400
+            },
+            "demo": {
+              "count": 4,
+              "value": 8000
+            },
+            "proposal": {
+              "count": 3,
+              "value": 10507
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 32,
+              "value": 101495
+            },
+            "closed_lost": {
+              "count": 0,
+              "value": 0
+            }
+          },
+          "pipelineValue": 38907,
+          "totalWonValue": 101495,
+          "winRate": 100
+        },
+        "tasks": {
+          "total": 60,
+          "inProgress": 8,
+          "blocked": 0,
+          "done": 14
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 290006,
+          "arr": 3480072
+        },
+        "leads": {
+          "total": 108,
+          "won": 28
+        },
+        "reports": {
+          "total": 11
+        },
+        "deptCount": 18
+      },
+      "execMetrics": {
+        "generatedAt": 1782557647509,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 1,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-27T10:54:07.509Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-27T10:54:07.509Z"
+    },
+    "createdAt": "2026-06-27T10:54:07.509Z"
+  },
+  {
+    "id": "brpt_1782592429385_1",
+    "title": "Q3 Business Summary",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "mrr": 5000,
+      "leads": 20
+    },
+    "createdAt": "2026-06-27T20:33:49.385Z"
+  },
+  {
+    "id": "brpt_1782592430455_5",
+    "title": "Business Org Executive Report — 6/28/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-27T20:33:50.424Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 22,
+          "active": 17
+        },
+        "campaigns": {
+          "total": 34,
+          "active": 24,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 63,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 14,
+              "value": 22000
+            },
+            "demo": {
+              "count": 7,
+              "value": 14817
+            },
+            "proposal": {
+              "count": 1,
+              "value": 3087
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 40,
+              "value": 130002
+            },
+            "closed_lost": {
+              "count": 1,
+              "value": 500
+            }
+          },
+          "pipelineValue": 39904,
+          "totalWonValue": 130002,
+          "winRate": 98
+        },
+        "tasks": {
+          "total": 69,
+          "inProgress": 9,
+          "blocked": 0,
+          "done": 16
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 590198,
+          "arr": 7082376
+        },
+        "leads": {
+          "total": 129,
+          "won": 34
+        },
+        "reports": {
+          "total": 13
+        },
+        "deptCount": 18
+      },
+      "execMetrics": {
+        "generatedAt": 1782592430422,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 1,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-27T20:33:50.424Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-27T20:33:50.455Z"
+    },
+    "createdAt": "2026-06-27T20:33:50.455Z"
+  },
+  {
+    "id": "brpt_1782592430563_9",
+    "title": "Business Org Executive Report — 6/28/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-27T20:33:50.562Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 22,
+          "active": 17
+        },
+        "campaigns": {
+          "total": 34,
+          "active": 24,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 63,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 16,
+              "value": 24900
+            },
+            "demo": {
+              "count": 5,
+              "value": 10000
+            },
+            "proposal": {
+              "count": 3,
+              "value": 7904
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 39,
+              "value": 127602
+            },
+            "closed_lost": {
+              "count": 0,
+              "value": 0
+            }
+          },
+          "pipelineValue": 42804,
+          "totalWonValue": 127602,
+          "winRate": 100
+        },
+        "tasks": {
+          "total": 72,
+          "inProgress": 11,
+          "blocked": 0,
+          "done": 17
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 889514,
+          "arr": 10674168
+        },
+        "leads": {
+          "total": 129,
+          "won": 34
+        },
+        "reports": {
+          "total": 14
+        },
+        "deptCount": 18
+      },
+      "execMetrics": {
+        "generatedAt": 1782592430562,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 1,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-27T20:33:50.562Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-27T20:33:50.563Z"
+    },
+    "createdAt": "2026-06-27T20:33:50.563Z"
+  },
+  {
+    "id": "brpt_1782592442122_1",
+    "title": "Q3 Business Summary",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "mrr": 5000,
+      "leads": 20
+    },
+    "createdAt": "2026-06-27T20:34:02.122Z"
+  },
+  {
+    "id": "brpt_1782592443184_5",
+    "title": "Business Org Executive Report — 6/28/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-27T20:34:03.173Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 26,
+          "active": 20
+        },
+        "campaigns": {
+          "total": 40,
+          "active": 28,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 74,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 17,
+              "value": 26500
+            },
+            "demo": {
+              "count": 7,
+              "value": 14146
+            },
+            "proposal": {
+              "count": 2,
+              "value": 3162
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 47,
+              "value": 153506
+            },
+            "closed_lost": {
+              "count": 1,
+              "value": 500
+            }
+          },
+          "pipelineValue": 43808,
+          "totalWonValue": 153506,
+          "winRate": 98
+        },
+        "tasks": {
+          "total": 81,
+          "inProgress": 12,
+          "blocked": 0,
+          "done": 19
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 1790039,
+          "arr": 21480468
+        },
+        "leads": {
+          "total": 150,
+          "won": 40
+        },
+        "reports": {
+          "total": 16
+        },
+        "deptCount": 18
+      },
+      "execMetrics": {
+        "generatedAt": 1782592443172,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 1,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-27T20:34:03.173Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-27T20:34:03.184Z"
+    },
+    "createdAt": "2026-06-27T20:34:03.184Z"
+  },
+  {
+    "id": "brpt_1782592443309_8",
+    "title": "Business Org Executive Report — 6/28/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-27T20:34:03.309Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 26,
+          "active": 20
+        },
+        "campaigns": {
+          "total": 40,
+          "active": 28,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 74,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 19,
+              "value": 29400
+            },
+            "demo": {
+              "count": 6,
+              "value": 12000
+            },
+            "proposal": {
+              "count": 3,
+              "value": 5308
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 46,
+              "value": 151106
+            },
+            "closed_lost": {
+              "count": 0,
+              "value": 0
+            }
+          },
+          "pipelineValue": 46708,
+          "totalWonValue": 151106,
+          "winRate": 100
+        },
+        "tasks": {
+          "total": 84,
+          "inProgress": 13,
+          "blocked": 0,
+          "done": 20
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 2689905,
+          "arr": 32278860
+        },
+        "leads": {
+          "total": 150,
+          "won": 40
+        },
+        "reports": {
+          "total": 17
+        },
+        "deptCount": 18
+      },
+      "execMetrics": {
+        "generatedAt": 1782592443309,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 1,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-27T20:34:03.309Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-27T20:34:03.309Z"
+    },
+    "createdAt": "2026-06-27T20:34:03.309Z"
+  },
+  {
+    "id": "brpt_1782625911332_l",
+    "title": "Business Org Executive Report — 6/28/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-28T05:51:51.306Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 47,
+          "active": 41
+        },
+        "campaigns": {
+          "total": 40,
+          "active": 30,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 76,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 18,
+              "value": 29260
+            },
+            "demo": {
+              "count": 6,
+              "value": 12000
+            },
+            "proposal": {
+              "count": 2,
+              "value": 4000
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 50,
+              "value": 158814
+            },
+            "closed_lost": {
+              "count": 0,
+              "value": 0
+            }
+          },
+          "pipelineValue": 45260,
+          "totalWonValue": 158814,
+          "winRate": 100
+        },
+        "tasks": {
+          "total": 85,
+          "inProgress": 13,
+          "blocked": 0,
+          "done": 21
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 13494205,
+          "arr": 161930460
+        },
+        "leads": {
+          "total": 156,
+          "won": 44
+        },
+        "reports": {
+          "total": 18
+        },
+        "deptCount": 19
+      },
+      "execMetrics": {
+        "generatedAt": 1782625911306,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 8,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-28T05:51:51.306Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-28T05:51:51.331Z"
+    },
+    "createdAt": "2026-06-28T05:51:51.332Z"
+  },
+  {
+    "id": "brpt_1782626891065_m",
+    "title": "Business Org Executive Report — 6/28/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-28T06:08:11.040Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 47,
+          "active": 41
+        },
+        "campaigns": {
+          "total": 40,
+          "active": 32,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 78,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 18,
+              "value": 33247
+            },
+            "demo": {
+              "count": 6,
+              "value": 9500
+            },
+            "proposal": {
+              "count": 3,
+              "value": 6000
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 51,
+              "value": 160814
+            },
+            "closed_lost": {
+              "count": 0,
+              "value": 0
+            }
+          },
+          "pipelineValue": 48747,
+          "totalWonValue": 160814,
+          "winRate": 100
+        },
+        "tasks": {
+          "total": 85,
+          "inProgress": 13,
+          "blocked": 0,
+          "done": 21
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 35103102,
+          "arr": 421237224
+        },
+        "leads": {
+          "total": 162,
+          "won": 45
+        },
+        "reports": {
+          "total": 19
+        },
+        "deptCount": 19
+      },
+      "execMetrics": {
+        "generatedAt": 1782626891040,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 8,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 0,
+          "aiProvidersUp": 1,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-28T06:08:11.040Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-28T06:08:11.065Z"
+    },
+    "createdAt": "2026-06-28T06:08:11.065Z"
+  },
+  {
+    "id": "brpt_1782628533416_m",
+    "title": "Business Org Executive Report — 6/28/2026",
+    "deptId": "bizorg_analytics",
+    "type": "executive",
+    "period": "Q2-2026",
+    "data": {
+      "dashboard": {
+        "updatedAt": "2026-06-28T06:35:33.415Z",
+        "quarter": "Q2-2026",
+        "objectives": {
+          "total": 47,
+          "active": 41
+        },
+        "campaigns": {
+          "total": 40,
+          "active": 34,
+          "completed": 0
+        },
+        "pipeline": {
+          "total": 80,
+          "byStage": {
+            "prospect": {
+              "count": 0,
+              "value": 0
+            },
+            "qualified": {
+              "count": 17,
+              "value": 34112
+            },
+            "demo": {
+              "count": 6,
+              "value": 11500
+            },
+            "proposal": {
+              "count": 4,
+              "value": 6500
+            },
+            "negotiation": {
+              "count": 0,
+              "value": 0
+            },
+            "closed_won": {
+              "count": 52,
+              "value": 161814
+            },
+            "closed_lost": {
+              "count": 1,
+              "value": 1861
+            }
+          },
+          "pipelineValue": 52112,
+          "totalWonValue": 161814,
+          "winRate": 98
+        },
+        "tasks": {
+          "total": 85,
+          "inProgress": 13,
+          "blocked": 0,
+          "done": 21
+        },
+        "blockers": {
+          "active": 0
+        },
+        "handoffs": {
+          "pending": 0
+        },
+        "revenue": {
+          "mrr": 91826749,
+          "arr": 1101920988
+        },
+        "leads": {
+          "total": 168,
+          "won": 46
+        },
+        "reports": {
+          "total": 20
+        },
+        "deptCount": 19
+      },
+      "execMetrics": {
+        "generatedAt": 1782628533415,
+        "kpis": {
+          "healthScore": 100,
+          "uptimeSeconds": 8,
+          "totalRequests": 0,
+          "errorRate": 0,
+          "activeAgents": 7,
+          "aiProvidersUp": 3,
+          "runtimeRecs": 5
+        },
+        "topErrors": [],
+        "byIntent": {},
+        "latency": {
+          "sales": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "execution": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "intelligence": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          },
+          "whatsapp": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "avg": null,
+            "max": null
+          }
+        }
+      },
+      "biHealth": {
+        "computedAt": "2026-06-28T06:35:33.415Z",
+        "healthScore": 60,
+        "leads": {
+          "total": 0,
+          "new": 0,
+          "contacted": 0,
+          "qualified": 0,
+          "converted": 0,
+          "idle7d": 0,
+          "conversionRate": 0
+        },
+        "pipeline": {
+          "total": 0,
+          "open": 0,
+          "stalled": 0,
+          "won": 0,
+          "lost": 0,
+          "pipelineValue": 0,
+          "wonValue": 0,
+          "winRate": 0
+        },
+        "campaigns": {
+          "total": 0,
+          "active": 0,
+          "totalImpressions": 0,
+          "totalConversions": 0,
+          "campaignCVR": 0
+        },
+        "revenue": {
+          "total": 0,
+          "thisMonth": 0,
+          "count": 0
+        }
+      },
+      "generatedAt": "2026-06-28T06:35:33.416Z"
+    },
+    "createdAt": "2026-06-28T06:35:33.416Z"
+  }
+]

@@ -1,0 +1,836 @@
+{
+  "scores": {
+    "te-1782600888225": {
+      "score": 75,
+      "events": [
+        {
+          "id": "etrv_1782600888260_7m9v",
+          "eventType": "pipeline_success",
+          "score": 5,
+          "detail": "all good",
+          "at": "2026-06-27T22:54:48.260Z"
+        }
+      ]
+    },
+    "clamp-1782600888225": {
+      "score": 100,
+      "events": [
+        {
+          "id": "etrv_1782600888261_8rql",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.261Z"
+        },
+        {
+          "id": "etrv_1782600888261_8k4v",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.261Z"
+        },
+        {
+          "id": "etrv_1782600888261_lbji",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.261Z"
+        },
+        {
+          "id": "etrv_1782600888261_5yoq",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.261Z"
+        },
+        {
+          "id": "etrv_1782600888261_iclj",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.261Z"
+        },
+        {
+          "id": "etrv_1782600888261_qzwd",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.261Z"
+        },
+        {
+          "id": "etrv_1782600888261_u8n3",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.261Z"
+        },
+        {
+          "id": "etrv_1782600888261_b3oa",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.261Z"
+        },
+        {
+          "id": "etrv_1782600888261_ti4b",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.261Z"
+        },
+        {
+          "id": "etrv_1782600888262_zgd4",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.262Z"
+        },
+        {
+          "id": "etrv_1782600888262_6aj4",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.262Z"
+        },
+        {
+          "id": "etrv_1782600888262_pf7y",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.262Z"
+        },
+        {
+          "id": "etrv_1782600888262_1ypc",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.262Z"
+        },
+        {
+          "id": "etrv_1782600888262_o9jr",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.262Z"
+        },
+        {
+          "id": "etrv_1782600888262_cmsx",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.262Z"
+        },
+        {
+          "id": "etrv_1782600888262_g4t2",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.262Z"
+        },
+        {
+          "id": "etrv_1782600888262_ppu2",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.262Z"
+        },
+        {
+          "id": "etrv_1782600888262_lzmz",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.262Z"
+        },
+        {
+          "id": "etrv_1782600888262_atd4",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.262Z"
+        },
+        {
+          "id": "etrv_1782600888262_mxu2",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.262Z"
+        },
+        {
+          "id": "etrv_1782600888263_pb2l",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.263Z"
+        },
+        {
+          "id": "etrv_1782600888263_12ah",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.263Z"
+        },
+        {
+          "id": "etrv_1782600888263_3yp9",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.263Z"
+        },
+        {
+          "id": "etrv_1782600888263_pzsa",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.263Z"
+        },
+        {
+          "id": "etrv_1782600888263_z973",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.263Z"
+        },
+        {
+          "id": "etrv_1782600888263_0jyf",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.263Z"
+        },
+        {
+          "id": "etrv_1782600888264_favk",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.264Z"
+        },
+        {
+          "id": "etrv_1782600888264_xwcb",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.264Z"
+        },
+        {
+          "id": "etrv_1782600888264_p6ot",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.264Z"
+        },
+        {
+          "id": "etrv_1782600888264_k929",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.264Z"
+        }
+      ]
+    },
+    "low_trust-1782600888225": {
+      "score": 65,
+      "events": [
+        {
+          "id": "etrv_1782600888264_8qu4",
+          "eventType": "violation",
+          "score": -5,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.264Z"
+        }
+      ]
+    },
+    "low-1782600888225": {
+      "score": 0,
+      "events": [
+        {
+          "id": "etrv_1782600888656_ehhs",
+          "eventType": "violation",
+          "score": -100,
+          "detail": "",
+          "at": "2026-06-27T22:54:48.656Z"
+        }
+      ]
+    },
+    "te-1782600996584": {
+      "score": 75,
+      "events": [
+        {
+          "id": "etrv_1782600996633_bzo5",
+          "eventType": "pipeline_success",
+          "score": 5,
+          "detail": "all good",
+          "at": "2026-06-27T22:56:36.633Z"
+        }
+      ]
+    },
+    "clamp-1782600996584": {
+      "score": 100,
+      "events": [
+        {
+          "id": "etrv_1782600996634_nneb",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.634Z"
+        },
+        {
+          "id": "etrv_1782600996634_2a2l",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.634Z"
+        },
+        {
+          "id": "etrv_1782600996634_j4tr",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.634Z"
+        },
+        {
+          "id": "etrv_1782600996634_v79t",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.634Z"
+        },
+        {
+          "id": "etrv_1782600996634_g1zx",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.634Z"
+        },
+        {
+          "id": "etrv_1782600996635_5nhn",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.635Z"
+        },
+        {
+          "id": "etrv_1782600996635_sy2e",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.635Z"
+        },
+        {
+          "id": "etrv_1782600996635_455i",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.635Z"
+        },
+        {
+          "id": "etrv_1782600996635_zagz",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.635Z"
+        },
+        {
+          "id": "etrv_1782600996636_zivq",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.636Z"
+        },
+        {
+          "id": "etrv_1782600996636_f2p0",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.636Z"
+        },
+        {
+          "id": "etrv_1782600996636_w05g",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.636Z"
+        },
+        {
+          "id": "etrv_1782600996636_iwm5",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.636Z"
+        },
+        {
+          "id": "etrv_1782600996636_kc91",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.636Z"
+        },
+        {
+          "id": "etrv_1782600996637_rbq2",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.637Z"
+        },
+        {
+          "id": "etrv_1782600996637_jofz",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.637Z"
+        },
+        {
+          "id": "etrv_1782600996637_epcp",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.637Z"
+        },
+        {
+          "id": "etrv_1782600996637_mj98",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.637Z"
+        },
+        {
+          "id": "etrv_1782600996637_5eoh",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.637Z"
+        },
+        {
+          "id": "etrv_1782600996637_cvx8",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.637Z"
+        },
+        {
+          "id": "etrv_1782600996638_zpdj",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.638Z"
+        },
+        {
+          "id": "etrv_1782600996638_ni9v",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.638Z"
+        },
+        {
+          "id": "etrv_1782600996638_5jvq",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.638Z"
+        },
+        {
+          "id": "etrv_1782600996638_8thw",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.638Z"
+        },
+        {
+          "id": "etrv_1782600996638_h9k0",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.638Z"
+        },
+        {
+          "id": "etrv_1782600996639_a5iz",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.639Z"
+        },
+        {
+          "id": "etrv_1782600996639_8tf2",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.639Z"
+        },
+        {
+          "id": "etrv_1782600996639_a007",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.639Z"
+        },
+        {
+          "id": "etrv_1782600996639_5el6",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.639Z"
+        },
+        {
+          "id": "etrv_1782600996640_9d73",
+          "eventType": "milestone",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.640Z"
+        }
+      ]
+    },
+    "low_trust-1782600996584": {
+      "score": 65,
+      "events": [
+        {
+          "id": "etrv_1782600996640_a3i5",
+          "eventType": "violation",
+          "score": -5,
+          "detail": "",
+          "at": "2026-06-27T22:56:36.640Z"
+        }
+      ]
+    },
+    "low-1782600996584": {
+      "score": 0,
+      "events": [
+        {
+          "id": "etrv_1782600997077_smag",
+          "eventType": "violation",
+          "score": -100,
+          "detail": "",
+          "at": "2026-06-27T22:56:37.077Z"
+        }
+      ]
+    },
+    "cmem_1782601786119_t5z3": {
+      "score": 92,
+      "events": [
+        {
+          "id": "etrv_1782601786158_408p",
+          "eventType": "mission_completed",
+          "score": 5,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.158Z"
+        },
+        {
+          "id": "etrv_1782601786170_1nof",
+          "eventType": "endorsement",
+          "score": 2,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.170Z"
+        },
+        {
+          "id": "etrv_1782601786172_bf37",
+          "eventType": "innovation_adopted",
+          "score": 5,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.172Z"
+        },
+        {
+          "id": "etrv_1782601786173_viub",
+          "eventType": "innovation_adopted",
+          "score": 5,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.173Z"
+        },
+        {
+          "id": "etrv_1782601786173_1azd",
+          "eventType": "innovation_adopted",
+          "score": 5,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.173Z"
+        }
+      ]
+    },
+    "cmem_1782601786126_r6x6": {
+      "score": 100,
+      "events": [
+        {
+          "id": "etrv_1782601786158_uae9",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.158Z"
+        },
+        {
+          "id": "etrv_1782601786159_eeuu",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.159Z"
+        },
+        {
+          "id": "etrv_1782601786159_bz78",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.159Z"
+        },
+        {
+          "id": "etrv_1782601786159_qe0f",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.159Z"
+        },
+        {
+          "id": "etrv_1782601786160_xeuo",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.160Z"
+        },
+        {
+          "id": "etrv_1782601786160_a8hv",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.160Z"
+        },
+        {
+          "id": "etrv_1782601786160_6rlt",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.160Z"
+        },
+        {
+          "id": "etrv_1782601786161_280y",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.161Z"
+        },
+        {
+          "id": "etrv_1782601786161_swfj",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.161Z"
+        },
+        {
+          "id": "etrv_1782601786161_6yya",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.161Z"
+        },
+        {
+          "id": "etrv_1782601786162_p7yz",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.162Z"
+        },
+        {
+          "id": "etrv_1782601786162_1xia",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.162Z"
+        },
+        {
+          "id": "etrv_1782601786162_ryd3",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.162Z"
+        },
+        {
+          "id": "etrv_1782601786163_3lgx",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.163Z"
+        },
+        {
+          "id": "etrv_1782601786163_njer",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.163Z"
+        },
+        {
+          "id": "etrv_1782601786163_m9vm",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.163Z"
+        },
+        {
+          "id": "etrv_1782601786164_puh3",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.164Z"
+        },
+        {
+          "id": "etrv_1782601786164_jtt1",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.164Z"
+        },
+        {
+          "id": "etrv_1782601786164_j0ie",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.164Z"
+        },
+        {
+          "id": "etrv_1782601786165_utmn",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.165Z"
+        },
+        {
+          "id": "etrv_1782601786165_ws93",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.165Z"
+        },
+        {
+          "id": "etrv_1782601786166_1dqz",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.166Z"
+        },
+        {
+          "id": "etrv_1782601786166_raze",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.166Z"
+        },
+        {
+          "id": "etrv_1782601786166_cl4o",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.166Z"
+        },
+        {
+          "id": "etrv_1782601786167_g2d5",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.167Z"
+        },
+        {
+          "id": "etrv_1782601786167_q2zo",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.167Z"
+        },
+        {
+          "id": "etrv_1782601786168_tb20",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.168Z"
+        },
+        {
+          "id": "etrv_1782601786168_t0yg",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.168Z"
+        },
+        {
+          "id": "etrv_1782601786169_4vfr",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.169Z"
+        },
+        {
+          "id": "etrv_1782601786169_2489",
+          "eventType": "contribution",
+          "score": 10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.169Z"
+        }
+      ]
+    },
+    "cmem_1782601786596_7epr": {
+      "score": 0,
+      "events": [
+        {
+          "id": "etrv_1782601786596_0jg5",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.596Z"
+        },
+        {
+          "id": "etrv_1782601786597_0g5n",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.597Z"
+        },
+        {
+          "id": "etrv_1782601786597_mcoc",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.597Z"
+        },
+        {
+          "id": "etrv_1782601786598_gsu9",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.598Z"
+        },
+        {
+          "id": "etrv_1782601786598_e02d",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.598Z"
+        },
+        {
+          "id": "etrv_1782601786598_goac",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.598Z"
+        },
+        {
+          "id": "etrv_1782601786599_9c97",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.599Z"
+        },
+        {
+          "id": "etrv_1782601786599_xdoe",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.599Z"
+        },
+        {
+          "id": "etrv_1782601786599_bh6o",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.599Z"
+        },
+        {
+          "id": "etrv_1782601786600_t67w",
+          "eventType": "violation",
+          "score": -10,
+          "detail": "",
+          "at": "2026-06-27T23:09:46.600Z"
+        }
+      ]
+    }
+  }
+}

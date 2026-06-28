@@ -1078,5 +1078,149 @@
     "outcome": "success",
     "minutesSaved": 5,
     "domain": "docs"
+  },
+  {
+    "evidenceId": "ev_1782648168307_5k9i",
+    "workflowId": "wf_mkt_social_post",
+    "executionId": "aee_1782648167946_wvzr",
+    "ts": "2026-06-28T12:02:48.307Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "marketing"
+  },
+  {
+    "evidenceId": "ev_1782648168446_y7tr",
+    "workflowId": "wf_eng_code_review",
+    "executionId": "aee_1782648168005_9ty3",
+    "ts": "2026-06-28T12:02:48.446Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782648168579_a0qu",
+    "workflowId": "wf_mkt_social_post",
+    "executionId": "aee_1782648168127_j3m8",
+    "ts": "2026-06-28T12:02:48.579Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "marketing"
+  },
+  {
+    "evidenceId": "ev_1782648168710_em3j",
+    "workflowId": "wf_eng_code_review",
+    "executionId": "aee_1782648168182_dz6f",
+    "ts": "2026-06-28T12:02:48.710Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782648208482_twcf",
+    "workflowId": "wf_mkt_social_post",
+    "executionId": "aee_1782648208356_p94d",
+    "ts": "2026-06-28T12:03:28.482Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "marketing"
+  },
+  {
+    "evidenceId": "ev_1782648220730_iwfz",
+    "workflowId": "wf_mkt_social_post",
+    "executionId": "aee_1782648220366_jz01",
+    "ts": "2026-06-28T12:03:40.730Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "marketing"
+  },
+  {
+    "evidenceId": "ev_1782648220869_0x9a",
+    "workflowId": "wf_eng_code_review",
+    "executionId": "aee_1782648220423_uzi8",
+    "ts": "2026-06-28T12:03:40.869Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782648221001_yxbb",
+    "workflowId": "wf_mkt_social_post",
+    "executionId": "aee_1782648220548_lyh2",
+    "ts": "2026-06-28T12:03:41.001Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "marketing"
+  },
+  {
+    "evidenceId": "ev_1782648221135_ffpz",
+    "workflowId": "wf_eng_code_review",
+    "executionId": "aee_1782648220605_xnc3",
+    "ts": "2026-06-28T12:03:41.135Z",
+    "outcome": "success",
+    "minutesSaved": 0,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782648235620_ww47",
+    "workflowId": "wf_test_p3",
+    "executionId": "exec_1782648235342",
+    "ts": "2026-06-28T12:03:55.620Z",
+    "outcome": "success",
+    "minutesSaved": 10,
+    "domain": "self_improvement"
+  },
+  {
+    "evidenceId": "ev_1782648235709_nyo8",
+    "workflowId": "wf_p3_1782648235342",
+    "executionId": "exec_1782648235342",
+    "ts": "2026-06-28T12:03:55.709Z",
+    "outcome": "success",
+    "minutesSaved": 30,
+    "domain": "engineering"
+  },
+  {
+    "evidenceId": "ev_1782648235793_tn2p",
+    "workflowId": "wf_git_test",
+    "executionId": "e1782648235342",
+    "ts": "2026-06-28T12:03:55.793Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "docs"
+  },
+  {
+    "evidenceId": "ev_1782648235877_jcpp",
+    "workflowId": "wf_health_test",
+    "executionId": "e1782648235342",
+    "ts": "2026-06-28T12:03:55.877Z",
+    "outcome": "success",
+    "minutesSaved": 10,
+    "domain": "daily_ops"
+  },
+  {
+    "evidenceId": "ev_1782648235968_iyr6",
+    "workflowId": "wf_get_1782648235342",
+    "executionId": "e1782648235342",
+    "ts": "2026-06-28T12:03:55.968Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "docs"
+  },
+  {
+    "evidenceId": "ev_1782648966820_q8g4",
+    "workflowId": "cee_deployment",
+    "executionId": "cee_1782648966329_r3z",
+    "ts": "2026-06-28T12:16:06.820Z",
+    "outcome": "success",
+    "minutesSaved": 10,
+    "domain": "deployment"
+  },
+  {
+    "evidenceId": "ev_1782648967301_7ugx",
+    "workflowId": "cee_editor",
+    "executionId": "cee_1782648966833_41l",
+    "ts": "2026-06-28T12:16:07.301Z",
+    "outcome": "success",
+    "minutesSaved": 2,
+    "domain": "editor"
   }
 ]

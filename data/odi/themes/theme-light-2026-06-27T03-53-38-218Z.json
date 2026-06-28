@@ -1,0 +1,85 @@
+{
+  "themeId": "theme-light-2026-06-27T03-53-38-218Z",
+  "themeName": "Light",
+  "description": "Clean, accessible light theme for general use",
+  "theme": {
+    "name": "Light",
+    "description": "Clean, accessible light theme for general use",
+    "colors": {
+      "primary": "#3B82F6",
+      "primaryHover": "#2563EB",
+      "secondary": "#8B5CF6",
+      "surface": "#FFFFFF",
+      "background": "#F9FAFB",
+      "card": "#FFFFFF",
+      "text": "#111827",
+      "textMuted": "#6B7280",
+      "border": "#E5E7EB",
+      "error": "#EF4444",
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "info": "#06B6D4"
+    },
+    "typography": {
+      "heading": "Inter, system-ui, sans-serif",
+      "body": "Inter, system-ui, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "radius": {
+      "sm": "4px",
+      "md": "8px",
+      "lg": "12px",
+      "xl": "16px",
+      "full": "9999px"
+    },
+    "shadows": {
+      "sm": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+      "md": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+      "lg": "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+      "xl": "0 20px 25px -5px rgb(0 0 0 / 0.1)"
+    }
+  },
+  "cssVars": ":root {\n  --color-primary: #3B82F6;\n  --color-primary-hover: #2563EB;\n  --color-secondary: #8B5CF6;\n  --color-surface: #FFFFFF;\n  --color-background: #F9FAFB;\n  --color-card: #FFFFFF;\n  --color-text: #111827;\n  --color-text-muted: #6B7280;\n  --color-border: #E5E7EB;\n  --color-error: #EF4444;\n  --color-success: #10B981;\n  --color-warning: #F59E0B;\n  --color-info: #06B6D4;\n  --font-heading: Inter, system-ui, sans-serif;\n  --font-body: Inter, system-ui, sans-serif;\n  --font-mono: JetBrains Mono, monospace;\n  --radius-sm: 4px;\n  --radius-md: 8px;\n  --radius-lg: 12px;\n  --radius-xl: 16px;\n  --radius-full: 9999px;\n  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);\n  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);\n  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);\n  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);\n}",
+  "tailwindConfig": {
+    "theme": {
+      "extend": {
+        "colors": {
+          "primary": {
+            "DEFAULT": "#3B82F6",
+            "hover": "#2563EB"
+          },
+          "secondary": "#8B5CF6",
+          "surface": "#FFFFFF",
+          "card": "#FFFFFF",
+          "muted": "#6B7280",
+          "border": "#E5E7EB"
+        },
+        "fontFamily": {
+          "heading": [
+            "Inter, system-ui, sans-serif"
+          ],
+          "body": [
+            "Inter, system-ui, sans-serif"
+          ],
+          "mono": [
+            "JetBrains Mono, monospace"
+          ]
+        },
+        "borderRadius": {
+          "sm": "4px",
+          "md": "8px",
+          "lg": "12px",
+          "xl": "16px",
+          "full": "9999px"
+        },
+        "boxShadow": {
+          "sm": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+          "md": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+          "lg": "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+          "xl": "0 20px 25px -5px rgb(0 0 0 / 0.1)"
+        }
+      }
+    }
+  },
+  "generatedAt": "2026-06-27T03:53:38.218Z"
+}

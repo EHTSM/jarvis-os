@@ -127,5 +127,6 @@ router.use(require("./postOmega"));             // POST-Ω:   /pomena/status /po
 router.use(require("./founderAutomation"));     // POST-Ω P2: /founder/* /bible/*
 router.use(require("./autonomousExecution"));   // POST-Ω P3: /execution/* dashboard+plan+execute+evidence+recovery+metrics
 router.use(require("./approvalRoutes"));        // POST-Ω P4: /approval/* queue+engine+evidence+analytics+dashboard+policy
+router.use(require("./computerController"));    // POST-Ω P5: /computer/* desktop+browser+editor+terminal+workspace+run
 
 module.exports = router;

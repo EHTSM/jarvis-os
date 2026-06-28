@@ -1,0 +1,2039 @@
+{
+  "policies": [
+    {
+      "id": "egpol_1782600223602_16fi",
+      "title": "Data Residency 1782600223572",
+      "scope": "enterprise",
+      "category": "compliance",
+      "rules": [],
+      "enforcement": "mandatory",
+      "enabled": true,
+      "violationCount": 0,
+      "lastEvaluatedAt": "2026-06-28T06:55:57.563Z",
+      "createdAt": "2026-06-27T22:43:43.602Z",
+      "updatedAt": "2026-06-27T22:43:43.602Z"
+    },
+    {
+      "id": "egpol_1782600223602_ghdt",
+      "title": "DupPol 1782600223572",
+      "scope": "enterprise",
+      "category": "operational",
+      "rules": [],
+      "enforcement": "mandatory",
+      "enabled": true,
+      "violationCount": 0,
+      "lastEvaluatedAt": "2026-06-28T06:55:57.563Z",
+      "createdAt": "2026-06-27T22:43:43.602Z",
+      "updatedAt": "2026-06-27T22:43:43.602Z"
+    },
+    {
+      "id": "egpol_1782600224427_lh98",
+      "title": "Enterprise Data Residency Policy",
+      "scope": "enterprise",
+      "category": "compliance",
+      "rules": [
+        {
+          "type": "data_region",
+          "allowed": [
+            "global",
+            "US",
+            "IN",
+            "EU"
+          ]
+        }
+      ],
+      "enforcement": "mandatory",
+      "enabled": true,
+      "violationCount": 0,
+      "lastEvaluatedAt": "2026-06-28T06:55:57.563Z",
+      "createdAt": "2026-06-27T22:43:44.427Z",
+      "updatedAt": "2026-06-27T22:43:44.427Z"
+    },
+    {
+      "id": "egpol_1782600224427_0l4x",
+      "title": "Enterprise Spend Governance",
+      "scope": "enterprise",
+      "category": "financial",
+      "rules": [
+        {
+          "type": "spend_cap",
+          "limit": 100000
+        }
+      ],
+      "enforcement": "advisory",
+      "enabled": true,
+      "violationCount": 0,
+      "lastEvaluatedAt": "2026-06-28T06:55:57.563Z",
+      "createdAt": "2026-06-27T22:43:44.427Z",
+      "updatedAt": "2026-06-27T22:43:44.427Z"
+    },
+    {
+      "id": "egpol_1782600224427_s2yd",
+      "title": "Enterprise Headcount Governance",
+      "scope": "enterprise",
+      "category": "hr",
+      "rules": [
+        {
+          "type": "headcount",
+          "limit": 500
+        }
+      ],
+      "enforcement": "advisory",
+      "enabled": true,
+      "violationCount": 0,
+      "lastEvaluatedAt": "2026-06-28T06:55:57.563Z",
+      "createdAt": "2026-06-27T22:43:44.427Z",
+      "updatedAt": "2026-06-27T22:43:44.427Z"
+    },
+    {
+      "id": "egpol_1782600224428_qmsp",
+      "title": "Enterprise Approval Gate",
+      "scope": "enterprise",
+      "category": "governance",
+      "rules": [
+        {
+          "type": "approval_required",
+          "applies_to": [
+            "budget_over_10k"
+          ]
+        }
+      ],
+      "enforcement": "mandatory",
+      "enabled": true,
+      "violationCount": 0,
+      "lastEvaluatedAt": "2026-06-28T06:55:57.563Z",
+      "createdAt": "2026-06-27T22:43:44.428Z",
+      "updatedAt": "2026-06-27T22:43:44.428Z"
+    }
+  ],
+  "controls": [
+    {
+      "id": "ectrl_1782600223605_0m0y",
+      "title": "MFA Control 1782600223572",
+      "framework": "SOC2",
+      "category": "access",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:43.605Z"
+    },
+    {
+      "id": "ectrl_1782600224428_h2r3",
+      "title": "Access Control Review",
+      "framework": "SOC2",
+      "category": "access",
+      "divisionId": "ent_compliance",
+      "automated": false,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:44.428Z"
+    },
+    {
+      "id": "ectrl_1782600224428_ht4b",
+      "title": "Data Encryption at Rest",
+      "framework": "SOC2",
+      "category": "data",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:44.428Z"
+    },
+    {
+      "id": "ectrl_1782600224428_a0ky",
+      "title": "API Rate Limiting",
+      "framework": "SOC2",
+      "category": "infra",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:44.428Z"
+    },
+    {
+      "id": "ectrl_1782600224428_5066",
+      "title": "Audit Log Retention",
+      "framework": "SOC2",
+      "category": "audit",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:44.428Z"
+    },
+    {
+      "id": "ectrl_1782600224428_g5b8",
+      "title": "GDPR Data Subject Requests",
+      "framework": "GDPR",
+      "category": "privacy",
+      "divisionId": "ent_compliance",
+      "automated": false,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:44.428Z"
+    },
+    {
+      "id": "ectrl_1782600224429_3ilh",
+      "title": "PCI DSS Tokenization",
+      "framework": "PCI",
+      "category": "payments",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:44.429Z"
+    },
+    {
+      "id": "ectrl_1782600229888_y5h4",
+      "title": "Access Control Review",
+      "framework": "SOC2",
+      "category": "access",
+      "divisionId": "ent_compliance",
+      "automated": false,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:49.888Z"
+    },
+    {
+      "id": "ectrl_1782600229889_q3qh",
+      "title": "Data Encryption at Rest",
+      "framework": "SOC2",
+      "category": "data",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:49.889Z"
+    },
+    {
+      "id": "ectrl_1782600229891_yigq",
+      "title": "API Rate Limiting",
+      "framework": "SOC2",
+      "category": "infra",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:49.891Z"
+    },
+    {
+      "id": "ectrl_1782600229891_lrt3",
+      "title": "Audit Log Retention",
+      "framework": "SOC2",
+      "category": "audit",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:49.891Z"
+    },
+    {
+      "id": "ectrl_1782600229891_nlcy",
+      "title": "GDPR Data Subject Requests",
+      "framework": "GDPR",
+      "category": "privacy",
+      "divisionId": "ent_compliance",
+      "automated": false,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:49.891Z"
+    },
+    {
+      "id": "ectrl_1782600229892_m431",
+      "title": "PCI DSS Tokenization",
+      "framework": "PCI",
+      "category": "payments",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-27T22:43:49.892Z"
+    },
+    {
+      "id": "ectrl_1782629757564_rhcj",
+      "title": "Access Control Review",
+      "framework": "SOC2",
+      "category": "access",
+      "divisionId": "ent_compliance",
+      "automated": false,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-28T06:55:57.564Z"
+    },
+    {
+      "id": "ectrl_1782629757564_z5w7",
+      "title": "Data Encryption at Rest",
+      "framework": "SOC2",
+      "category": "data",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-28T06:55:57.564Z"
+    },
+    {
+      "id": "ectrl_1782629757565_h1om",
+      "title": "API Rate Limiting",
+      "framework": "SOC2",
+      "category": "infra",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-28T06:55:57.565Z"
+    },
+    {
+      "id": "ectrl_1782629757565_kezs",
+      "title": "Audit Log Retention",
+      "framework": "SOC2",
+      "category": "audit",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-28T06:55:57.565Z"
+    },
+    {
+      "id": "ectrl_1782629757565_wwin",
+      "title": "GDPR Data Subject Requests",
+      "framework": "GDPR",
+      "category": "privacy",
+      "divisionId": "ent_compliance",
+      "automated": false,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-28T06:55:57.565Z"
+    },
+    {
+      "id": "ectrl_1782629757566_zvad",
+      "title": "PCI DSS Tokenization",
+      "framework": "PCI",
+      "category": "payments",
+      "divisionId": "ent_compliance",
+      "automated": true,
+      "status": "active",
+      "lastTestedAt": null,
+      "nextTestAt": null,
+      "evidenceCount": 0,
+      "createdAt": "2026-06-28T06:55:57.566Z"
+    }
+  ],
+  "approvals": [
+    {
+      "id": "egappr_1782600223604_gu0y",
+      "title": "Appr 1782600223572",
+      "type": "budget",
+      "autoApprove": false,
+      "threshold": 0.8,
+      "data": {},
+      "status": "pending",
+      "resolvedBy": null,
+      "createdAt": "2026-06-27T22:43:43.604Z",
+      "resolvedAt": null
+    },
+    {
+      "id": "egappr_1782600223604_uikk",
+      "title": "AutoAppr 1782600223572",
+      "type": "budget",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T22:43:43.604Z",
+      "resolvedAt": "2026-06-27T22:43:43.604Z"
+    },
+    {
+      "id": "egappr_1782600223605_sl6j",
+      "title": "ResolveAppr 1782600223572",
+      "type": "budget",
+      "autoApprove": false,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "ceo",
+      "createdAt": "2026-06-27T22:43:43.605Z",
+      "resolvedAt": "2026-06-27T22:43:43.605Z",
+      "reason": ""
+    },
+    {
+      "id": "egappr_1782600224436_3ad2",
+      "title": "Enterprise Approval: egoal_1782600224435_ie2g",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T22:43:44.436Z",
+      "resolvedAt": "2026-06-27T22:43:44.436Z"
+    },
+    {
+      "id": "egappr_1782600224549_o5lm",
+      "companyId": "eco_1782600224545_mmtu",
+      "title": "Enterprise Approval: egoal_1782600224545_xoym",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T22:43:44.549Z",
+      "resolvedAt": "2026-06-27T22:43:44.549Z"
+    },
+    {
+      "id": "egappr_1782600229915_w64j",
+      "companyId": "eco_1782600229902_gtbp",
+      "title": "Enterprise Approval: egoal_1782600229907_sjo2",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T22:43:49.915Z",
+      "resolvedAt": "2026-06-27T22:43:49.915Z"
+    },
+    {
+      "id": "egappr_1782600888684_ja8q",
+      "title": "Enterprise Approval: egoal_1782600888680_7mmr",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T22:54:48.684Z",
+      "resolvedAt": "2026-06-27T22:54:48.684Z"
+    },
+    {
+      "id": "egappr_1782600888823_e3vx",
+      "title": "Enterprise Approval: egoal_1782600888822_k64t",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T22:54:48.824Z",
+      "resolvedAt": "2026-06-27T22:54:48.824Z"
+    },
+    {
+      "id": "egappr_1782600888937_h7nd",
+      "title": "Enterprise Approval: egoal_1782600888936_4ktf",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T22:54:48.937Z",
+      "resolvedAt": "2026-06-27T22:54:48.937Z"
+    },
+    {
+      "id": "egappr_1782600893919_0okx",
+      "title": "Enterprise Approval: egoal_1782600893916_9nlx",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T22:54:53.919Z",
+      "resolvedAt": "2026-06-27T22:54:53.919Z"
+    },
+    {
+      "id": "egappr_1782600997103_xvt7",
+      "title": "Enterprise Approval: egoal_1782600997099_ue2s",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T22:56:37.103Z",
+      "resolvedAt": "2026-06-27T22:56:37.103Z"
+    },
+    {
+      "id": "egappr_1782600997228_wcfb",
+      "title": "Enterprise Approval: egoal_1782600997226_qugb",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T22:56:37.228Z",
+      "resolvedAt": "2026-06-27T22:56:37.228Z"
+    },
+    {
+      "id": "egappr_1782600997327_uthh",
+      "title": "Enterprise Approval: egoal_1782600997324_9odi",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T22:56:37.327Z",
+      "resolvedAt": "2026-06-27T22:56:37.327Z"
+    },
+    {
+      "id": "egappr_1782601002643_ksyn",
+      "title": "Enterprise Approval: egoal_1782601002641_ko6a",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T22:56:42.643Z",
+      "resolvedAt": "2026-06-27T22:56:42.643Z"
+    },
+    {
+      "id": "egappr_1782601786638_fhd5",
+      "title": "Enterprise Approval: egoal_1782601786633_pjhm",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T23:09:46.638Z",
+      "resolvedAt": "2026-06-27T23:09:46.638Z"
+    },
+    {
+      "id": "egappr_1782601786816_2qkd",
+      "title": "Enterprise Approval: egoal_1782601786814_0jvo",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T23:09:46.816Z",
+      "resolvedAt": "2026-06-27T23:09:46.816Z"
+    },
+    {
+      "id": "egappr_1782601786949_tx4b",
+      "title": "Enterprise Approval: egoal_1782601786947_yj35",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T23:09:46.949Z",
+      "resolvedAt": "2026-06-27T23:09:46.949Z"
+    },
+    {
+      "id": "egappr_1782601792150_z2yk",
+      "title": "Enterprise Approval: egoal_1782601792145_f5oa",
+      "type": "strategic",
+      "autoApprove": true,
+      "threshold": 0.8,
+      "data": {},
+      "status": "approved",
+      "resolvedBy": "auto",
+      "createdAt": "2026-06-27T23:09:52.150Z",
+      "resolvedAt": "2026-06-27T23:09:52.150Z"
+    }
+  ],
+  "auditTrail": [
+    {
+      "id": "eaud_1782600223605_uznn",
+      "entityId": "egappr_1782600223605_sl6j",
+      "entityType": "approval",
+      "action": "approved",
+      "actor": "ceo",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:43.605Z"
+    },
+    {
+      "id": "eaud_1782600223606_brbq",
+      "entityId": "test",
+      "entityType": "test",
+      "action": "created",
+      "actor": "jest",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:43.606Z"
+    },
+    {
+      "id": "eaud_1782600224431_vtuk",
+      "entityId": "egoal_1782600224429_c62h",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.431Z"
+    },
+    {
+      "id": "eaud_1782600224433_sajp",
+      "entityId": "egoal_1782600224432_c9aw",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.433Z"
+    },
+    {
+      "id": "eaud_1782600224434_442k",
+      "entityId": "egoal_1782600224434_4b58",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.434Z"
+    },
+    {
+      "id": "eaud_1782600224436_scgg",
+      "entityId": "egoal_1782600224435_ie2g",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.436Z"
+    },
+    {
+      "id": "eaud_1782600224436_8f45",
+      "entityId": "egoal_1782600224435_ie2g",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.436Z"
+    },
+    {
+      "id": "eaud_1782600224437_f8sd",
+      "entityId": "egoal_1782600224436_k40p",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.437Z"
+    },
+    {
+      "id": "eaud_1782600224437_yxbi",
+      "entityId": "global",
+      "entityType": "compliance_scan",
+      "action": "completed",
+      "actor": "ent_compliance",
+      "detail": "score=100 framework=SOC2",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.437Z"
+    },
+    {
+      "id": "eaud_1782600224441_gp8v",
+      "entityId": "global",
+      "entityType": "risk_score",
+      "action": "computed",
+      "actor": "ent_risk",
+      "detail": "score=43 level=high",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.441Z"
+    },
+    {
+      "id": "eaud_1782600224442_jjhk",
+      "entityId": "egoal_1782600224442_9p1u",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.442Z"
+    },
+    {
+      "id": "eaud_1782600224452_j75e",
+      "entityId": "egoal_1782600224442_9p1u",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=high findings=1",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.452Z"
+    },
+    {
+      "id": "eaud_1782600224452_oaze",
+      "entityId": "egoal_1782600224452_eknx",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.452Z"
+    },
+    {
+      "id": "eaud_1782600224461_hg4u",
+      "entityId": "egoal_1782600224452_eknx",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=high findings=1",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.461Z"
+    },
+    {
+      "id": "eaud_1782600224547_gaqt",
+      "entityId": "egoal_1782600224545_xoym",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "companyId": "eco_1782600224545_mmtu",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.547Z"
+    },
+    {
+      "id": "eaud_1782600224549_ozdr",
+      "entityId": "egoal_1782600224545_xoym",
+      "entityType": "strategy",
+      "action": "built",
+      "actor": "ent_strategy",
+      "detail": "",
+      "companyId": "eco_1782600224545_mmtu",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.549Z"
+    },
+    {
+      "id": "eaud_1782600224549_j8vs",
+      "entityId": "egoal_1782600224545_xoym",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "companyId": "eco_1782600224545_mmtu",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.549Z"
+    },
+    {
+      "id": "eaud_1782600224679_aiih",
+      "entityId": "egoal_1782600224545_xoym",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "companyId": "eco_1782600224545_mmtu",
+      "severity": "info",
+      "at": "2026-06-27T22:43:44.679Z"
+    },
+    {
+      "id": "eaud_1782600229854_mby4",
+      "entityId": "global",
+      "entityType": "compliance_scan",
+      "action": "completed",
+      "actor": "ent_compliance",
+      "detail": "score=100 framework=SOC2",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.854Z"
+    },
+    {
+      "id": "eaud_1782600229859_v0th",
+      "entityId": "global",
+      "entityType": "risk_score",
+      "action": "computed",
+      "actor": "ent_risk",
+      "detail": "score=43 level=high",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.859Z"
+    },
+    {
+      "id": "eaud_1782600229888_lt9d",
+      "entityId": "global",
+      "entityType": "risk_score",
+      "action": "computed",
+      "actor": "ent_risk",
+      "detail": "score=43 level=high",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.888Z"
+    },
+    {
+      "id": "eaud_1782600229892_s47e",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.892Z"
+    },
+    {
+      "id": "eaud_1782600229892_iq1v",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.892Z"
+    },
+    {
+      "id": "eaud_1782600229892_8c5f",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.892Z"
+    },
+    {
+      "id": "eaud_1782600229903_wtcb",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.903Z"
+    },
+    {
+      "id": "eaud_1782600229903_ljxe",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.903Z"
+    },
+    {
+      "id": "eaud_1782600229903_60td",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.903Z"
+    },
+    {
+      "id": "eaud_1782600229903_om6j",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.903Z"
+    },
+    {
+      "id": "eaud_1782600229903_ie8e",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.903Z"
+    },
+    {
+      "id": "eaud_1782600229903_qbis",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.903Z"
+    },
+    {
+      "id": "eaud_1782600229904_fn6t",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.904Z"
+    },
+    {
+      "id": "eaud_1782600229906_zhwr",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.906Z"
+    },
+    {
+      "id": "eaud_1782600229906_4aad",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.906Z"
+    },
+    {
+      "id": "eaud_1782600229908_behj",
+      "entityId": "egoal_1782600229907_sjo2",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "companyId": "eco_1782600229902_gtbp",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.908Z"
+    },
+    {
+      "id": "eaud_1782600229912_rdmk",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.912Z"
+    },
+    {
+      "id": "eaud_1782600229912_o9rb",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.912Z"
+    },
+    {
+      "id": "eaud_1782600229912_dkjs",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.912Z"
+    },
+    {
+      "id": "eaud_1782600229915_07nk",
+      "entityId": "egoal_1782600229907_sjo2",
+      "entityType": "strategy",
+      "action": "built",
+      "actor": "ent_strategy",
+      "detail": "",
+      "companyId": "eco_1782600229902_gtbp",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.915Z"
+    },
+    {
+      "id": "eaud_1782600229916_6cq7",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.916Z"
+    },
+    {
+      "id": "eaud_1782600229916_aobo",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.916Z"
+    },
+    {
+      "id": "eaud_1782600229916_s3eu",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.916Z"
+    },
+    {
+      "id": "eaud_1782600229916_2f9q",
+      "entityId": "egoal_1782600229907_sjo2",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "companyId": "eco_1782600229902_gtbp",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.916Z"
+    },
+    {
+      "id": "eaud_1782600229919_24sh",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.919Z"
+    },
+    {
+      "id": "eaud_1782600229919_e30q",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.919Z"
+    },
+    {
+      "id": "eaud_1782600229919_19xj",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.919Z"
+    },
+    {
+      "id": "eaud_1782600229932_s53p",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.932Z"
+    },
+    {
+      "id": "eaud_1782600229932_74wk",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.932Z"
+    },
+    {
+      "id": "eaud_1782600229932_gtys",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.932Z"
+    },
+    {
+      "id": "eaud_1782600229933_v9z8",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.934Z"
+    },
+    {
+      "id": "eaud_1782600229934_tt4k",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.934Z"
+    },
+    {
+      "id": "eaud_1782600229934_758z",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.934Z"
+    },
+    {
+      "id": "eaud_1782600229941_jw92",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.941Z"
+    },
+    {
+      "id": "eaud_1782600229941_9qck",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.941Z"
+    },
+    {
+      "id": "eaud_1782600229941_sk74",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.941Z"
+    },
+    {
+      "id": "eaud_1782600229948_rmjm",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.948Z"
+    },
+    {
+      "id": "eaud_1782600229948_zcqd",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.948Z"
+    },
+    {
+      "id": "eaud_1782600229948_quo9",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.948Z"
+    },
+    {
+      "id": "eaud_1782600229961_o0o2",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.961Z"
+    },
+    {
+      "id": "eaud_1782600229961_qy9g",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.961Z"
+    },
+    {
+      "id": "eaud_1782600229961_nwos",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.961Z"
+    },
+    {
+      "id": "eaud_1782600229973_ui44",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.973Z"
+    },
+    {
+      "id": "eaud_1782600229973_dpa6",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.973Z"
+    },
+    {
+      "id": "eaud_1782600229974_b4h7",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.974Z"
+    },
+    {
+      "id": "eaud_1782600229975_frqd",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.975Z"
+    },
+    {
+      "id": "eaud_1782600229975_egyw",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.975Z"
+    },
+    {
+      "id": "eaud_1782600229975_34at",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.975Z"
+    },
+    {
+      "id": "eaud_1782600229980_la6v",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.980Z"
+    },
+    {
+      "id": "eaud_1782600229980_e2zj",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.980Z"
+    },
+    {
+      "id": "eaud_1782600229980_hexz",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.980Z"
+    },
+    {
+      "id": "eaud_1782600229981_lhgl",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.981Z"
+    },
+    {
+      "id": "eaud_1782600229982_o5r1",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.982Z"
+    },
+    {
+      "id": "eaud_1782600229982_4uvh",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.982Z"
+    },
+    {
+      "id": "eaud_1782600229982_bzka",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.982Z"
+    },
+    {
+      "id": "eaud_1782600229982_05gs",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.982Z"
+    },
+    {
+      "id": "eaud_1782600229983_gw0c",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.983Z"
+    },
+    {
+      "id": "eaud_1782600229991_6jro",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.991Z"
+    },
+    {
+      "id": "eaud_1782600229991_xy1x",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.991Z"
+    },
+    {
+      "id": "eaud_1782600229992_qd0q",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:49.992Z"
+    },
+    {
+      "id": "eaud_1782600230008_0sst",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.008Z"
+    },
+    {
+      "id": "eaud_1782600230008_5iz5",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.008Z"
+    },
+    {
+      "id": "eaud_1782600230008_3n1z",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.008Z"
+    },
+    {
+      "id": "eaud_1782600230018_eutp",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.018Z"
+    },
+    {
+      "id": "eaud_1782600230019_tt39",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.019Z"
+    },
+    {
+      "id": "eaud_1782600230019_1vvf",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.019Z"
+    },
+    {
+      "id": "eaud_1782600230019_jmxa",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.019Z"
+    },
+    {
+      "id": "eaud_1782600230019_u4bz",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.019Z"
+    },
+    {
+      "id": "eaud_1782600230020_nznk",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.020Z"
+    },
+    {
+      "id": "eaud_1782600230020_cmaj",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.020Z"
+    },
+    {
+      "id": "eaud_1782600230024_vtli",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.024Z"
+    },
+    {
+      "id": "eaud_1782600230024_yft8",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.024Z"
+    },
+    {
+      "id": "eaud_1782600230024_qbe1",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.024Z"
+    },
+    {
+      "id": "eaud_1782600230024_6c8s",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.024Z"
+    },
+    {
+      "id": "eaud_1782600230024_0h4p",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.024Z"
+    },
+    {
+      "id": "eaud_1782600230024_942l",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.024Z"
+    },
+    {
+      "id": "eaud_1782600230025_w8wr",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.025Z"
+    },
+    {
+      "id": "eaud_1782600230025_7cw4",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.025Z"
+    },
+    {
+      "id": "eaud_1782600230025_heka",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.025Z"
+    },
+    {
+      "id": "eaud_1782600230025_d7kn",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.025Z"
+    },
+    {
+      "id": "eaud_1782600230025_nqh5",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.025Z"
+    },
+    {
+      "id": "eaud_1782600230025_610z",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.025Z"
+    },
+    {
+      "id": "eaud_1782600230026_arnp",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.026Z"
+    },
+    {
+      "id": "eaud_1782600230026_yhr0",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.026Z"
+    },
+    {
+      "id": "eaud_1782600230026_syp2",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.026Z"
+    },
+    {
+      "id": "eaud_1782600230026_qrld",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.026Z"
+    },
+    {
+      "id": "eaud_1782600230026_lmpa",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.026Z"
+    },
+    {
+      "id": "eaud_1782600230027_0z9w",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.027Z"
+    },
+    {
+      "id": "eaud_1782600230027_zb5f",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.027Z"
+    },
+    {
+      "id": "eaud_1782600230027_k1w2",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.027Z"
+    },
+    {
+      "id": "eaud_1782600230027_qhxe",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.027Z"
+    },
+    {
+      "id": "eaud_1782600230028_k1zo",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.028Z"
+    },
+    {
+      "id": "eaud_1782600230032_7ore",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.032Z"
+    },
+    {
+      "id": "eaud_1782600230032_aoz6",
+      "entityType": "eos_pipeline",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "{}",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.032Z"
+    },
+    {
+      "id": "eaud_1782600230032_364c",
+      "entityType": "customer",
+      "action": "created",
+      "actor": "ent_customer",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.032Z"
+    },
+    {
+      "id": "eaud_1782600230035_r4yx",
+      "entityType": "product_stage",
+      "action": "undefined→undefined",
+      "actor": "ent_product",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.035Z"
+    },
+    {
+      "id": "eaud_1782600230045_m42o",
+      "entityId": "egoal_1782600229907_sjo2",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "companyId": "eco_1782600229902_gtbp",
+      "severity": "info",
+      "at": "2026-06-27T22:43:50.045Z"
+    },
+    {
+      "id": "eaud_1782600888683_vvxf",
+      "entityId": "egoal_1782600888680_7mmr",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:54:48.683Z"
+    },
+    {
+      "id": "eaud_1782600888685_9pd0",
+      "entityId": "egoal_1782600888680_7mmr",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T22:54:48.685Z"
+    },
+    {
+      "id": "eaud_1782600888772_a15r",
+      "entityId": "egoal_1782600888680_7mmr",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "severity": "info",
+      "at": "2026-06-27T22:54:48.772Z"
+    },
+    {
+      "id": "eaud_1782600888823_0uoj",
+      "entityId": "egoal_1782600888822_k64t",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:54:48.823Z"
+    },
+    {
+      "id": "eaud_1782600888824_1ef9",
+      "entityId": "egoal_1782600888822_k64t",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T22:54:48.824Z"
+    },
+    {
+      "id": "eaud_1782600888895_9bi0",
+      "entityId": "egoal_1782600888822_k64t",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "severity": "info",
+      "at": "2026-06-27T22:54:48.895Z"
+    },
+    {
+      "id": "eaud_1782600888936_w4qu",
+      "entityId": "egoal_1782600888936_4ktf",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:54:48.936Z"
+    },
+    {
+      "id": "eaud_1782600888937_xy3f",
+      "entityId": "egoal_1782600888936_4ktf",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T22:54:48.937Z"
+    },
+    {
+      "id": "eaud_1782600888994_spg9",
+      "entityId": "egoal_1782600888936_4ktf",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "severity": "info",
+      "at": "2026-06-27T22:54:48.994Z"
+    },
+    {
+      "id": "eaud_1782600893917_dh4f",
+      "entityId": "egoal_1782600893916_9nlx",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:54:53.917Z"
+    },
+    {
+      "id": "eaud_1782600893919_4nig",
+      "entityId": "egoal_1782600893916_9nlx",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T22:54:53.919Z"
+    },
+    {
+      "id": "eaud_1782600893984_nbfb",
+      "entityId": "egoal_1782600893916_9nlx",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "severity": "info",
+      "at": "2026-06-27T22:54:53.984Z"
+    },
+    {
+      "id": "eaud_1782600997101_gdd6",
+      "entityId": "egoal_1782600997099_ue2s",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:56:37.101Z"
+    },
+    {
+      "id": "eaud_1782600997104_9c01",
+      "entityId": "egoal_1782600997099_ue2s",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T22:56:37.104Z"
+    },
+    {
+      "id": "eaud_1782600997176_qsy1",
+      "entityId": "egoal_1782600997099_ue2s",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "severity": "info",
+      "at": "2026-06-27T22:56:37.176Z"
+    },
+    {
+      "id": "eaud_1782600997227_xn9x",
+      "entityId": "egoal_1782600997226_qugb",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:56:37.227Z"
+    },
+    {
+      "id": "eaud_1782600997228_9ktr",
+      "entityId": "egoal_1782600997226_qugb",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T22:56:37.228Z"
+    },
+    {
+      "id": "eaud_1782600997289_lwm6",
+      "entityId": "egoal_1782600997226_qugb",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "severity": "info",
+      "at": "2026-06-27T22:56:37.289Z"
+    },
+    {
+      "id": "eaud_1782600997326_afwf",
+      "entityId": "egoal_1782600997324_9odi",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:56:37.326Z"
+    },
+    {
+      "id": "eaud_1782600997328_vw5s",
+      "entityId": "egoal_1782600997324_9odi",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T22:56:37.328Z"
+    },
+    {
+      "id": "eaud_1782600997398_5l3n",
+      "entityId": "egoal_1782600997324_9odi",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "severity": "info",
+      "at": "2026-06-27T22:56:37.398Z"
+    },
+    {
+      "id": "eaud_1782601002642_4n3w",
+      "entityId": "egoal_1782601002641_ko6a",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T22:56:42.642Z"
+    },
+    {
+      "id": "eaud_1782601002643_c40s",
+      "entityId": "egoal_1782601002641_ko6a",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T22:56:42.643Z"
+    },
+    {
+      "id": "eaud_1782601002705_tjoq",
+      "entityId": "egoal_1782601002641_ko6a",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "severity": "info",
+      "at": "2026-06-27T22:56:42.705Z"
+    },
+    {
+      "id": "eaud_1782601786636_ryyb",
+      "entityId": "egoal_1782601786633_pjhm",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T23:09:46.636Z"
+    },
+    {
+      "id": "eaud_1782601786639_ljn5",
+      "entityId": "egoal_1782601786633_pjhm",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T23:09:46.639Z"
+    },
+    {
+      "id": "eaud_1782601786707_7la0",
+      "entityId": "egoal_1782601786633_pjhm",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "severity": "info",
+      "at": "2026-06-27T23:09:46.707Z"
+    },
+    {
+      "id": "eaud_1782601786815_po7j",
+      "entityId": "egoal_1782601786814_0jvo",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T23:09:46.815Z"
+    },
+    {
+      "id": "eaud_1782601786816_9d4k",
+      "entityId": "egoal_1782601786814_0jvo",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T23:09:46.816Z"
+    },
+    {
+      "id": "eaud_1782601786876_po8y",
+      "entityId": "egoal_1782601786814_0jvo",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "severity": "info",
+      "at": "2026-06-27T23:09:46.876Z"
+    },
+    {
+      "id": "eaud_1782601786948_zurs",
+      "entityId": "egoal_1782601786947_yj35",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T23:09:46.948Z"
+    },
+    {
+      "id": "eaud_1782601786950_3xyi",
+      "entityId": "egoal_1782601786947_yj35",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T23:09:46.950Z"
+    },
+    {
+      "id": "eaud_1782601787014_udem",
+      "entityId": "egoal_1782601786947_yj35",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "severity": "info",
+      "at": "2026-06-27T23:09:47.014Z"
+    },
+    {
+      "id": "eaud_1782601792148_ucf3",
+      "entityId": "egoal_1782601792145_f5oa",
+      "entityType": "enterprise_goal",
+      "action": "created",
+      "actor": "ent_director",
+      "detail": "",
+      "severity": "info",
+      "at": "2026-06-27T23:09:52.148Z"
+    },
+    {
+      "id": "eaud_1782601792151_ei2a",
+      "entityId": "egoal_1782601792145_f5oa",
+      "entityType": "governance_gate",
+      "action": "evaluated",
+      "actor": "ent_governance",
+      "detail": "0 violations, 0 blockers",
+      "severity": "info",
+      "at": "2026-06-27T23:09:52.151Z"
+    },
+    {
+      "id": "eaud_1782601792220_rclk",
+      "entityId": "egoal_1782601792145_f5oa",
+      "entityType": "enterprise_audit",
+      "action": "completed",
+      "actor": "ent_audit",
+      "detail": "risk=low findings=0",
+      "severity": "info",
+      "at": "2026-06-27T23:09:52.220Z"
+    },
+    {
+      "id": "eaud_1782629757532_inip",
+      "entityId": "global",
+      "entityType": "compliance_scan",
+      "action": "completed",
+      "actor": "ent_compliance",
+      "detail": "score=100 framework=SOC2",
+      "severity": "info",
+      "at": "2026-06-28T06:55:57.532Z"
+    },
+    {
+      "id": "eaud_1782629757537_88xg",
+      "entityId": "global",
+      "entityType": "risk_score",
+      "action": "computed",
+      "actor": "ent_risk",
+      "detail": "score=53 level=high",
+      "severity": "info",
+      "at": "2026-06-28T06:55:57.537Z"
+    },
+    {
+      "id": "eaud_1782629757563_k34n",
+      "entityId": "global",
+      "entityType": "risk_score",
+      "action": "computed",
+      "actor": "ent_risk",
+      "detail": "score=53 level=high",
+      "severity": "info",
+      "at": "2026-06-28T06:55:57.563Z"
+    }
+  ]
+}

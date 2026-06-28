@@ -1,0 +1,226 @@
+{
+  "portfolios": [
+    {
+      "id": "epfl_1782600223596_2u40",
+      "name": "Growth Portfolio 1782600223572",
+      "description": "",
+      "companyId": "eco_1782600223596_4u2v",
+      "ownerDivision": "ent_portfolio",
+      "budget": 100000,
+      "horizon": "annual",
+      "status": "active",
+      "initiativeIds": [],
+      "programIds": [],
+      "healthScore": 100,
+      "onTrack": 0,
+      "atRisk": 0,
+      "blocked": 0,
+      "createdAt": "2026-06-27T22:43:43.596Z",
+      "updatedAt": "2026-06-27T22:43:43.596Z"
+    },
+    {
+      "id": "epfl_1782600223597_zggr",
+      "name": "InitPfl 1782600223572",
+      "description": "",
+      "companyId": "eco_1782600223596_h8md",
+      "ownerDivision": "ent_portfolio",
+      "budget": 0,
+      "horizon": "annual",
+      "status": "active",
+      "initiativeIds": [
+        "einit_1782600223597_o690"
+      ],
+      "programIds": [],
+      "healthScore": 100,
+      "onTrack": 0,
+      "atRisk": 0,
+      "blocked": 0,
+      "createdAt": "2026-06-27T22:43:43.597Z",
+      "updatedAt": "2026-06-27T22:43:43.597Z"
+    },
+    {
+      "id": "epfl_1782600223598_3l9e",
+      "name": "InitUpdPfl 1782600223572",
+      "description": "",
+      "companyId": "eco_1782600223597_zyt4",
+      "ownerDivision": "ent_portfolio",
+      "budget": 0,
+      "horizon": "annual",
+      "status": "active",
+      "initiativeIds": [
+        "einit_1782600223598_69ze"
+      ],
+      "programIds": [],
+      "healthScore": 100,
+      "onTrack": 0,
+      "atRisk": 0,
+      "blocked": 0,
+      "createdAt": "2026-06-27T22:43:43.598Z",
+      "updatedAt": "2026-06-27T22:43:43.598Z"
+    },
+    {
+      "id": "epfl_1782600223599_dpbh",
+      "name": "ProgPfl 1782600223572",
+      "description": "",
+      "companyId": "eco_1782600223598_dnir",
+      "ownerDivision": "ent_portfolio",
+      "budget": 0,
+      "horizon": "annual",
+      "status": "active",
+      "initiativeIds": [],
+      "programIds": [],
+      "healthScore": 100,
+      "onTrack": 0,
+      "atRisk": 0,
+      "blocked": 0,
+      "createdAt": "2026-06-27T22:43:43.599Z",
+      "updatedAt": "2026-06-27T22:43:43.599Z"
+    },
+    {
+      "id": "epfl_1782600224431_bkde",
+      "name": "IntakePfl 1782600223572",
+      "description": "",
+      "companyId": "eco_1782600224431_88eu",
+      "ownerDivision": "ent_portfolio",
+      "budget": 0,
+      "horizon": "annual",
+      "status": "active",
+      "initiativeIds": [
+        "einit_1782600224433_6yue"
+      ],
+      "programIds": [],
+      "healthScore": 100,
+      "onTrack": 0,
+      "atRisk": 0,
+      "blocked": 0,
+      "createdAt": "2026-06-27T22:43:44.431Z",
+      "updatedAt": "2026-06-27T22:43:44.431Z"
+    },
+    {
+      "id": "epfl_1782600224442_t77f",
+      "name": "SyncPfl 1782600223572",
+      "description": "",
+      "companyId": "eco_1782600224441_wi0k",
+      "ownerDivision": "ent_portfolio",
+      "budget": 0,
+      "horizon": "annual",
+      "status": "active",
+      "initiativeIds": [],
+      "programIds": [],
+      "healthScore": 100,
+      "onTrack": 0,
+      "atRisk": 0,
+      "blocked": 0,
+      "createdAt": "2026-06-27T22:43:44.442Z",
+      "updatedAt": "2026-06-27T22:43:44.442Z"
+    },
+    {
+      "id": "epfl_1782600229907_1hgw",
+      "name": "Smoke Portfolio 1782600223572",
+      "description": "",
+      "companyId": "eco_1782600229902_gtbp",
+      "ownerDivision": "ent_portfolio",
+      "budget": 500000,
+      "horizon": "annual",
+      "status": "active",
+      "initiativeIds": [
+        "einit_1782600229907_bd4w"
+      ],
+      "programIds": [],
+      "healthScore": 100,
+      "onTrack": 0,
+      "atRisk": 0,
+      "blocked": 0,
+      "createdAt": "2026-06-27T22:43:49.907Z",
+      "updatedAt": "2026-06-27T22:43:49.907Z"
+    }
+  ],
+  "initiatives": [
+    {
+      "id": "einit_1782600223597_o690",
+      "portfolioId": "epfl_1782600223597_zggr",
+      "name": "Init-A 1782600223572",
+      "description": "",
+      "orgTargets": [],
+      "budget": 0,
+      "priority": "high",
+      "execGoalId": null,
+      "status": "active",
+      "progress": 0,
+      "milestones": [],
+      "createdAt": "2026-06-27T22:43:43.597Z",
+      "updatedAt": "2026-06-27T22:43:43.597Z"
+    },
+    {
+      "id": "einit_1782600223598_69ze",
+      "portfolioId": "epfl_1782600223598_3l9e",
+      "name": "InitUpd 1782600223572",
+      "description": "",
+      "orgTargets": [],
+      "budget": 0,
+      "priority": "high",
+      "execGoalId": null,
+      "status": "active",
+      "progress": 50,
+      "milestones": [],
+      "createdAt": "2026-06-27T22:43:43.598Z",
+      "updatedAt": "2026-06-27T22:43:43.598Z"
+    },
+    {
+      "id": "einit_1782600224433_6yue",
+      "portfolioId": "epfl_1782600224431_bkde",
+      "name": "Intake With Portfolio 1782600223572",
+      "description": "",
+      "orgTargets": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "odi"
+      ],
+      "budget": 0,
+      "priority": "high",
+      "execGoalId": "egoal_1782600224432_c9aw",
+      "status": "active",
+      "progress": 0,
+      "milestones": [],
+      "createdAt": "2026-06-27T22:43:44.433Z",
+      "updatedAt": "2026-06-28T06:55:57.496Z"
+    },
+    {
+      "id": "einit_1782600229907_bd4w",
+      "portfolioId": "epfl_1782600229907_1hgw",
+      "name": "Launch SmokeProduct to GA 1782600223572",
+      "description": "",
+      "orgTargets": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "odi"
+      ],
+      "budget": 0,
+      "priority": "critical",
+      "execGoalId": "egoal_1782600229907_sjo2",
+      "status": "active",
+      "progress": 0,
+      "milestones": [],
+      "createdAt": "2026-06-27T22:43:49.907Z",
+      "updatedAt": "2026-06-28T06:55:57.497Z"
+    }
+  ],
+  "programs": [
+    {
+      "id": "eprog_1782600223599_9h9c",
+      "portfolioId": "epfl_1782600223599_dpbh",
+      "name": "Prog-A 1782600223572",
+      "description": "",
+      "initiativeIds": [],
+      "budget": 0,
+      "status": "active",
+      "progress": 0,
+      "createdAt": "2026-06-27T22:43:43.599Z",
+      "updatedAt": "2026-06-27T22:43:43.599Z"
+    }
+  ]
+}

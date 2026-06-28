@@ -1,0 +1,7304 @@
+[
+  {
+    "id": "emem_1782599502824_c6tv",
+    "deptId": "eos_orchestrator",
+    "type": "signal",
+    "title": "Mem 1782599502788",
+    "detail": "",
+    "tags": [],
+    "createdAt": "2026-06-27T22:31:42.824Z"
+  },
+  {
+    "id": "emem_1782599508558_mu3m",
+    "deptId": "eos_resource",
+    "type": "cost",
+    "title": "Cost: $0 / Revenue: $0",
+    "detail": "",
+    "tags": [
+      "cost",
+      "resource"
+    ],
+    "createdAt": "2026-06-27T22:31:48.558Z"
+  },
+  {
+    "id": "emem_1782599508577_6l7p",
+    "deptId": "eos_health",
+    "type": "health_snapshot",
+    "title": "Health: 2056/100",
+    "detail": "{\"orgs\":{\"engineering\":{\"blockers\":14,\"velocity\":0,\"score\":0},\"business\":{\"winRate\":100,\"mrr\":5391429,\"score\":10000},\"knowledge\":{\"ratio\":0.83,\"total\":300,\"score\":83},\"evolution\":{\"keepRate\":0.5238095",
+    "tags": [
+      "health",
+      "snapshot"
+    ],
+    "createdAt": "2026-06-27T22:31:48.577Z"
+  },
+  {
+    "id": "emem_1782599508630_720c",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.630Z"
+  },
+  {
+    "id": "emem_1782599508630_nckp",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.630Z"
+  },
+  {
+    "id": "emem_1782599508630_a06u",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.630Z"
+  },
+  {
+    "id": "emem_1782599508630_3ils",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.630Z"
+  },
+  {
+    "id": "emem_1782599508631_02x4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.631Z"
+  },
+  {
+    "id": "emem_1782599508631_7xh5",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:registered: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.631Z"
+  },
+  {
+    "id": "emem_1782599508631_bjkx",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.631Z"
+  },
+  {
+    "id": "emem_1782599508665_roja",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.665Z"
+  },
+  {
+    "id": "emem_1782599508665_jprx",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.665Z"
+  },
+  {
+    "id": "emem_1782599508665_b8ly",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.665Z"
+  },
+  {
+    "id": "emem_1782599508665_r6oc",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.665Z"
+  },
+  {
+    "id": "emem_1782599508666_mtvr",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.666Z"
+  },
+  {
+    "id": "emem_1782599508666_mtdh",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:goal:created: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.666Z"
+  },
+  {
+    "id": "emem_1782599508666_0o1t",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.666Z"
+  },
+  {
+    "id": "emem_1782599508672_dnwn",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.672Z"
+  },
+  {
+    "id": "emem_1782599508673_do1w",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.673Z"
+  },
+  {
+    "id": "emem_1782599508673_ct2w",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.673Z"
+  },
+  {
+    "id": "emem_1782599508673_2uwp",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.673Z"
+  },
+  {
+    "id": "emem_1782599508673_zv70",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.673Z"
+  },
+  {
+    "id": "emem_1782599508673_768o",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:strategy:created: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.673Z"
+  },
+  {
+    "id": "emem_1782599508674_0ax4",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.674Z"
+  },
+  {
+    "id": "emem_1782599508682_8ywn",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.682Z"
+  },
+  {
+    "id": "emem_1782599508682_ttvh",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.682Z"
+  },
+  {
+    "id": "emem_1782599508682_enbq",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.682Z"
+  },
+  {
+    "id": "emem_1782599508682_uraz",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.682Z"
+  },
+  {
+    "id": "emem_1782599508683_knlv",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.683Z"
+  },
+  {
+    "id": "emem_1782599508683_3nm7",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated engorg:objective:created: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.683Z"
+  },
+  {
+    "id": "emem_1782599508683_kagn",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.683Z"
+  },
+  {
+    "id": "emem_1782599508686_jefu",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.686Z"
+  },
+  {
+    "id": "emem_1782599508687_g981",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.687Z"
+  },
+  {
+    "id": "emem_1782599508687_g2of",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.687Z"
+  },
+  {
+    "id": "emem_1782599508687_99au",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.687Z"
+  },
+  {
+    "id": "emem_1782599508687_x4by",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.687Z"
+  },
+  {
+    "id": "emem_1782599508687_tuhs",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.687Z"
+  },
+  {
+    "id": "emem_1782599508688_kuzo",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:org:tasked: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.688Z"
+  },
+  {
+    "id": "emem_1782599508688_bc18",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.688Z"
+  },
+  {
+    "id": "emem_1782599508699_0aog",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.699Z"
+  },
+  {
+    "id": "emem_1782599508699_3jkk",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.699Z"
+  },
+  {
+    "id": "emem_1782599508699_t75n",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.699Z"
+  },
+  {
+    "id": "emem_1782599508699_5xl7",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.699Z"
+  },
+  {
+    "id": "emem_1782599508699_9wn5",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.699Z"
+  },
+  {
+    "id": "emem_1782599508700_1hw9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.700Z"
+  },
+  {
+    "id": "emem_1782599508700_tdjz",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated bizorg:objective:created: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.700Z"
+  },
+  {
+    "id": "emem_1782599508700_kkg3",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.700Z"
+  },
+  {
+    "id": "emem_1782599508703_bo2q",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.703Z"
+  },
+  {
+    "id": "emem_1782599508703_2eia",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.703Z"
+  },
+  {
+    "id": "emem_1782599508704_nuqg",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.704Z"
+  },
+  {
+    "id": "emem_1782599508704_hyf6",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.704Z"
+  },
+  {
+    "id": "emem_1782599508704_wejr",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.704Z"
+  },
+  {
+    "id": "emem_1782599508704_ko5f",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.704Z"
+  },
+  {
+    "id": "emem_1782599508705_el5y",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:org:tasked: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.705Z"
+  },
+  {
+    "id": "emem_1782599508705_1bw8",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.705Z"
+  },
+  {
+    "id": "emem_1782599508714_rq60",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.714Z"
+  },
+  {
+    "id": "emem_1782599508715_i48r",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.715Z"
+  },
+  {
+    "id": "emem_1782599508715_3mhv",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.715Z"
+  },
+  {
+    "id": "emem_1782599508715_me5b",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.715Z"
+  },
+  {
+    "id": "emem_1782599508716_e4dn",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.716Z"
+  },
+  {
+    "id": "emem_1782599508717_5ky9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.717Z"
+  },
+  {
+    "id": "emem_1782599508717_dzz5",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated ako:objective:created: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.717Z"
+  },
+  {
+    "id": "emem_1782599508717_65ob",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.717Z"
+  },
+  {
+    "id": "emem_1782599508727_tyma",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.727Z"
+  },
+  {
+    "id": "emem_1782599508727_sugm",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.727Z"
+  },
+  {
+    "id": "emem_1782599508727_ed8n",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.727Z"
+  },
+  {
+    "id": "emem_1782599508728_8rqb",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.728Z"
+  },
+  {
+    "id": "emem_1782599508728_7k6g",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.728Z"
+  },
+  {
+    "id": "emem_1782599508728_2gdw",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.728Z"
+  },
+  {
+    "id": "emem_1782599508728_v45y",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated ako:knowledge:captured: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.728Z"
+  },
+  {
+    "id": "emem_1782599508728_bev4",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.728Z"
+  },
+  {
+    "id": "emem_1782599508734_d58r",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.734Z"
+  },
+  {
+    "id": "emem_1782599508734_e0bk",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.734Z"
+  },
+  {
+    "id": "emem_1782599508734_dl30",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.734Z"
+  },
+  {
+    "id": "emem_1782599508735_ofux",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.735Z"
+  },
+  {
+    "id": "emem_1782599508735_3spz",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.735Z"
+  },
+  {
+    "id": "emem_1782599508735_2ojs",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.735Z"
+  },
+  {
+    "id": "emem_1782599508735_s1hm",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:org:tasked: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.735Z"
+  },
+  {
+    "id": "emem_1782599508735_88de",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.735Z"
+  },
+  {
+    "id": "emem_1782599508745_rx0r",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.745Z"
+  },
+  {
+    "id": "emem_1782599508745_o9bd",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.745Z"
+  },
+  {
+    "id": "emem_1782599508746_sv0u",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.746Z"
+  },
+  {
+    "id": "emem_1782599508746_6xy3",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.746Z"
+  },
+  {
+    "id": "emem_1782599508746_sbu5",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.746Z"
+  },
+  {
+    "id": "emem_1782599508746_fx8f",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.746Z"
+  },
+  {
+    "id": "emem_1782599508746_irqj",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:org:tasked: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.746Z"
+  },
+  {
+    "id": "emem_1782599508746_zdes",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.746Z"
+  },
+  {
+    "id": "emem_1782599508750_1yby",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.750Z"
+  },
+  {
+    "id": "emem_1782599508750_ndr8",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.750Z"
+  },
+  {
+    "id": "emem_1782599508750_nqcl",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.750Z"
+  },
+  {
+    "id": "emem_1782599508750_ynkk",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.750Z"
+  },
+  {
+    "id": "emem_1782599508750_r9r5",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.750Z"
+  },
+  {
+    "id": "emem_1782599508751_v29x",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.751Z"
+  },
+  {
+    "id": "emem_1782599508751_gzlg",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:org:tasked: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.751Z"
+  },
+  {
+    "id": "emem_1782599508751_q78z",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.751Z"
+  },
+  {
+    "id": "emem_1782599508754_wk0w",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.754Z"
+  },
+  {
+    "id": "emem_1782599508754_nia1",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.754Z"
+  },
+  {
+    "id": "emem_1782599508754_vqla",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.754Z"
+  },
+  {
+    "id": "emem_1782599508754_e692",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.754Z"
+  },
+  {
+    "id": "emem_1782599508755_rpcb",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.755Z"
+  },
+  {
+    "id": "emem_1782599508755_ooj1",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.755Z"
+  },
+  {
+    "id": "emem_1782599508755_v7h4",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:deploy:triggered: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.755Z"
+  },
+  {
+    "id": "emem_1782599508755_vebj",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.755Z"
+  },
+  {
+    "id": "emem_1782599508764_24vy",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.764Z"
+  },
+  {
+    "id": "emem_1782599508764_5hqa",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.764Z"
+  },
+  {
+    "id": "emem_1782599508764_jqy4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.764Z"
+  },
+  {
+    "id": "emem_1782599508764_q22m",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.764Z"
+  },
+  {
+    "id": "emem_1782599508765_g5gz",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.765Z"
+  },
+  {
+    "id": "emem_1782599508765_3baj",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.765Z"
+  },
+  {
+    "id": "emem_1782599508765_ii45",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:validation:done: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.765Z"
+  },
+  {
+    "id": "emem_1782599508765_rp6t",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.765Z"
+  },
+  {
+    "id": "emem_1782599508776_3ts5",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.776Z"
+  },
+  {
+    "id": "emem_1782599508776_qvgw",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.776Z"
+  },
+  {
+    "id": "emem_1782599508777_tnap",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.777Z"
+  },
+  {
+    "id": "emem_1782599508777_n7sz",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.777Z"
+  },
+  {
+    "id": "emem_1782599508777_bxll",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.777Z"
+  },
+  {
+    "id": "emem_1782599508777_tkol",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.777Z"
+  },
+  {
+    "id": "emem_1782599508777_yo4e",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated ako:knowledge:captured: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.777Z"
+  },
+  {
+    "id": "emem_1782599508778_80n8",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.778Z"
+  },
+  {
+    "id": "emem_1782599508784_anoj",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.784Z"
+  },
+  {
+    "id": "emem_1782599508784_vce3",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.784Z"
+  },
+  {
+    "id": "emem_1782599508784_t7f1",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.784Z"
+  },
+  {
+    "id": "emem_1782599508784_b6qv",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.784Z"
+  },
+  {
+    "id": "emem_1782599508784_b9r3",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.784Z"
+  },
+  {
+    "id": "emem_1782599508785_60vg",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.785Z"
+  },
+  {
+    "id": "emem_1782599508785_5na2",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:report:ready: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.785Z"
+  },
+  {
+    "id": "emem_1782599508785_75rq",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.785Z"
+  },
+  {
+    "id": "emem_1782599508788_pq6n",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.788Z"
+  },
+  {
+    "id": "emem_1782599508788_fnxi",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.788Z"
+  },
+  {
+    "id": "emem_1782599508788_53ng",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.788Z"
+  },
+  {
+    "id": "emem_1782599508788_p67i",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.788Z"
+  },
+  {
+    "id": "emem_1782599508789_w6w0",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.789Z"
+  },
+  {
+    "id": "emem_1782599508789_3ew6",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.789Z"
+  },
+  {
+    "id": "emem_1782599508789_q15p",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_planner:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.789Z"
+  },
+  {
+    "id": "emem_1782599508789_4bkb",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.789Z"
+  },
+  {
+    "id": "emem_1782599508791_eydy",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.791Z"
+  },
+  {
+    "id": "emem_1782599508791_1vr8",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.791Z"
+  },
+  {
+    "id": "emem_1782599508792_79ga",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.792Z"
+  },
+  {
+    "id": "emem_1782599508792_frh9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.792Z"
+  },
+  {
+    "id": "emem_1782599508792_ahyg",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.792Z"
+  },
+  {
+    "id": "emem_1782599508792_qmil",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.792Z"
+  },
+  {
+    "id": "emem_1782599508792_n05y",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_reviewer:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.792Z"
+  },
+  {
+    "id": "emem_1782599508793_dn2g",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.793Z"
+  },
+  {
+    "id": "emem_1782599508795_8iaz",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.795Z"
+  },
+  {
+    "id": "emem_1782599508795_ttr3",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.795Z"
+  },
+  {
+    "id": "emem_1782599508795_vkdh",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.795Z"
+  },
+  {
+    "id": "emem_1782599508795_ucj7",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.795Z"
+  },
+  {
+    "id": "emem_1782599508796_ay6k",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.796Z"
+  },
+  {
+    "id": "emem_1782599508796_s0gg",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.796Z"
+  },
+  {
+    "id": "emem_1782599508796_k8rj",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_verifier:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.796Z"
+  },
+  {
+    "id": "emem_1782599508796_0fpf",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.796Z"
+  },
+  {
+    "id": "emem_1782599508799_r3d1",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.799Z"
+  },
+  {
+    "id": "emem_1782599508799_ew4j",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.799Z"
+  },
+  {
+    "id": "emem_1782599508800_v90c",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.800Z"
+  },
+  {
+    "id": "emem_1782599508800_plvr",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.800Z"
+  },
+  {
+    "id": "emem_1782599508800_jtqm",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.800Z"
+  },
+  {
+    "id": "emem_1782599508800_j505",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.800Z"
+  },
+  {
+    "id": "emem_1782599508801_584a",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_developer:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.801Z"
+  },
+  {
+    "id": "emem_1782599508801_nrmt",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.801Z"
+  },
+  {
+    "id": "emem_1782599508804_pabz",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.804Z"
+  },
+  {
+    "id": "emem_1782599508804_2kfa",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.804Z"
+  },
+  {
+    "id": "emem_1782599508804_sb8p",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.804Z"
+  },
+  {
+    "id": "emem_1782599508805_23xc",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.805Z"
+  },
+  {
+    "id": "emem_1782599508805_lke5",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.805Z"
+  },
+  {
+    "id": "emem_1782599508805_zaqc",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.805Z"
+  },
+  {
+    "id": "emem_1782599508805_nbw8",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_tester:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.805Z"
+  },
+  {
+    "id": "emem_1782599508806_71m2",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.806Z"
+  },
+  {
+    "id": "emem_1782599508808_eyre",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.808Z"
+  },
+  {
+    "id": "emem_1782599508809_0eaq",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.809Z"
+  },
+  {
+    "id": "emem_1782599508809_ys1m",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.809Z"
+  },
+  {
+    "id": "emem_1782599508809_uosl",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.809Z"
+  },
+  {
+    "id": "emem_1782599508809_3izr",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.809Z"
+  },
+  {
+    "id": "emem_1782599508810_34kk",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.810Z"
+  },
+  {
+    "id": "emem_1782599508810_6hhv",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_security:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.810Z"
+  },
+  {
+    "id": "emem_1782599508810_4viq",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.810Z"
+  },
+  {
+    "id": "emem_1782599508813_doeh",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.813Z"
+  },
+  {
+    "id": "emem_1782599508813_0gur",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.813Z"
+  },
+  {
+    "id": "emem_1782599508814_xpzy",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.814Z"
+  },
+  {
+    "id": "emem_1782599508814_d2x6",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.814Z"
+  },
+  {
+    "id": "emem_1782599508814_p066",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.814Z"
+  },
+  {
+    "id": "emem_1782599508814_xupr",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.814Z"
+  },
+  {
+    "id": "emem_1782599508815_jfoj",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_documentation:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.815Z"
+  },
+  {
+    "id": "emem_1782599508815_f9ij",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.815Z"
+  },
+  {
+    "id": "emem_1782599508818_s4ae",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.818Z"
+  },
+  {
+    "id": "emem_1782599508818_2suk",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.818Z"
+  },
+  {
+    "id": "emem_1782599508818_5w0b",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.818Z"
+  },
+  {
+    "id": "emem_1782599508819_aot4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.819Z"
+  },
+  {
+    "id": "emem_1782599508820_gzou",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.820Z"
+  },
+  {
+    "id": "emem_1782599508820_1t5c",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.820Z"
+  },
+  {
+    "id": "emem_1782599508820_sbd7",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_crm:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.820Z"
+  },
+  {
+    "id": "emem_1782599508821_bkyq",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.821Z"
+  },
+  {
+    "id": "emem_1782599508823_209e",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.823Z"
+  },
+  {
+    "id": "emem_1782599508824_klho",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.824Z"
+  },
+  {
+    "id": "emem_1782599508824_3hy9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.824Z"
+  },
+  {
+    "id": "emem_1782599508824_qdce",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.824Z"
+  },
+  {
+    "id": "emem_1782599508824_zzyv",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.824Z"
+  },
+  {
+    "id": "emem_1782599508825_ea7i",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.825Z"
+  },
+  {
+    "id": "emem_1782599508825_o5yu",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_marketing:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.825Z"
+  },
+  {
+    "id": "emem_1782599508825_0vhg",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.825Z"
+  },
+  {
+    "id": "emem_1782599508827_tg5m",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.827Z"
+  },
+  {
+    "id": "emem_1782599508827_omba",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.827Z"
+  },
+  {
+    "id": "emem_1782599508828_efkg",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.828Z"
+  },
+  {
+    "id": "emem_1782599508828_1urq",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.828Z"
+  },
+  {
+    "id": "emem_1782599508828_7h5m",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.828Z"
+  },
+  {
+    "id": "emem_1782599508829_4qrh",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.829Z"
+  },
+  {
+    "id": "emem_1782599508829_s2qe",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_executive:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.829Z"
+  },
+  {
+    "id": "emem_1782599508829_cjrv",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.829Z"
+  },
+  {
+    "id": "emem_1782599508832_04vu",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.832Z"
+  },
+  {
+    "id": "emem_1782599508832_i85i",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.832Z"
+  },
+  {
+    "id": "emem_1782599508832_xojc",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.832Z"
+  },
+  {
+    "id": "emem_1782599508832_0pv4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.832Z"
+  },
+  {
+    "id": "emem_1782599508833_hjr3",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.833Z"
+  },
+  {
+    "id": "emem_1782599508833_lam4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.833Z"
+  },
+  {
+    "id": "emem_1782599508833_lmts",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:eos_planner:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.833Z"
+  },
+  {
+    "id": "emem_1782599508833_lt0t",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.833Z"
+  },
+  {
+    "id": "emem_1782599508836_4o8t",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.836Z"
+  },
+  {
+    "id": "emem_1782599508836_b90y",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.836Z"
+  },
+  {
+    "id": "emem_1782599508836_fm80",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.836Z"
+  },
+  {
+    "id": "emem_1782599508836_atas",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.836Z"
+  },
+  {
+    "id": "emem_1782599508837_49xg",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.837Z"
+  },
+  {
+    "id": "emem_1782599508837_s43q",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.837Z"
+  },
+  {
+    "id": "emem_1782599508837_4p5o",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:eos_goal:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.837Z"
+  },
+  {
+    "id": "emem_1782599508838_f6yv",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.838Z"
+  },
+  {
+    "id": "emem_1782599508840_rmq3",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.840Z"
+  },
+  {
+    "id": "emem_1782599508840_tjbg",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.840Z"
+  },
+  {
+    "id": "emem_1782599508840_z0tg",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.840Z"
+  },
+  {
+    "id": "emem_1782599508840_i1r4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.840Z"
+  },
+  {
+    "id": "emem_1782599508841_88nx",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.841Z"
+  },
+  {
+    "id": "emem_1782599508842_621l",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.842Z"
+  },
+  {
+    "id": "emem_1782599508842_qro1",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:eos_priority:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.842Z"
+  },
+  {
+    "id": "emem_1782599508843_p744",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.843Z"
+  },
+  {
+    "id": "emem_1782599508846_vhin",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:31:48.846Z"
+  },
+  {
+    "id": "emem_1782599508846_ov97",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:31:48.846Z"
+  },
+  {
+    "id": "emem_1782599508847_mblq",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.847Z"
+  },
+  {
+    "id": "emem_1782599508847_cu3a",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.847Z"
+  },
+  {
+    "id": "emem_1782599508848_8nqz",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.848Z"
+  },
+  {
+    "id": "emem_1782599508848_j0za",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:31:48.848Z"
+  },
+  {
+    "id": "emem_1782599508849_0l22",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:eos_coordinator:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:31:48.849Z"
+  },
+  {
+    "id": "emem_1782599508849_8z2x",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:31:48.849Z"
+  },
+  {
+    "id": "emem_1782599535144_m2h1",
+    "deptId": "eos_orchestrator",
+    "type": "signal",
+    "title": "Mem 1782599535116",
+    "detail": "",
+    "tags": [],
+    "createdAt": "2026-06-27T22:32:15.144Z"
+  },
+  {
+    "id": "emem_1782599540414_1xg5",
+    "deptId": "eos_resource",
+    "type": "cost",
+    "title": "Cost: $0 / Revenue: $0",
+    "detail": "",
+    "tags": [
+      "cost",
+      "resource"
+    ],
+    "createdAt": "2026-06-27T22:32:20.414Z"
+  },
+  {
+    "id": "emem_1782599540428_54jv",
+    "deptId": "eos_health",
+    "type": "health_snapshot",
+    "title": "Health: 100/100",
+    "detail": "{\"orgs\":{\"engineering\":{\"blockers\":14,\"velocity\":0,\"score\":0},\"business\":{\"winRate\":100,\"mrr\":5391429,\"score\":10000},\"knowledge\":{\"ratio\":0.8137254901960784,\"total\":306,\"score\":81},\"evolution\":{\"keepR",
+    "tags": [
+      "health",
+      "snapshot"
+    ],
+    "createdAt": "2026-06-27T22:32:20.428Z"
+  },
+  {
+    "id": "emem_1782599540466_n8tr",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.466Z"
+  },
+  {
+    "id": "emem_1782599540467_yob9",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.467Z"
+  },
+  {
+    "id": "emem_1782599540467_gfdz",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.467Z"
+  },
+  {
+    "id": "emem_1782599540467_6xfi",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.467Z"
+  },
+  {
+    "id": "emem_1782599540468_3sjb",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.468Z"
+  },
+  {
+    "id": "emem_1782599540468_qfhg",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.468Z"
+  },
+  {
+    "id": "emem_1782599540469_fqan",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.469Z"
+  },
+  {
+    "id": "emem_1782599540469_dmt9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.469Z"
+  },
+  {
+    "id": "emem_1782599540469_abbe",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.469Z"
+  },
+  {
+    "id": "emem_1782599540470_zdfy",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:registered: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.470Z"
+  },
+  {
+    "id": "emem_1782599540470_d3yb",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.470Z"
+  },
+  {
+    "id": "emem_1782599540481_12l8",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.481Z"
+  },
+  {
+    "id": "emem_1782599540481_6q79",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.481Z"
+  },
+  {
+    "id": "emem_1782599540481_og1l",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.481Z"
+  },
+  {
+    "id": "emem_1782599540482_iix5",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.482Z"
+  },
+  {
+    "id": "emem_1782599540482_8n54",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.482Z"
+  },
+  {
+    "id": "emem_1782599540482_sivr",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.482Z"
+  },
+  {
+    "id": "emem_1782599540483_px6s",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.483Z"
+  },
+  {
+    "id": "emem_1782599540483_w5up",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.483Z"
+  },
+  {
+    "id": "emem_1782599540483_g211",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.483Z"
+  },
+  {
+    "id": "emem_1782599540484_ulcj",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:goal:created: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.484Z"
+  },
+  {
+    "id": "emem_1782599540484_ykm9",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.484Z"
+  },
+  {
+    "id": "emem_1782599540490_yxob",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.490Z"
+  },
+  {
+    "id": "emem_1782599540490_jppu",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.490Z"
+  },
+  {
+    "id": "emem_1782599540491_ua2t",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.491Z"
+  },
+  {
+    "id": "emem_1782599540491_tl67",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.491Z"
+  },
+  {
+    "id": "emem_1782599540492_0hul",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.492Z"
+  },
+  {
+    "id": "emem_1782599540492_seil",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.492Z"
+  },
+  {
+    "id": "emem_1782599540492_w3h0",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.492Z"
+  },
+  {
+    "id": "emem_1782599540493_1863",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.493Z"
+  },
+  {
+    "id": "emem_1782599540493_dupl",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.493Z"
+  },
+  {
+    "id": "emem_1782599540493_gbw0",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:strategy:created: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.493Z"
+  },
+  {
+    "id": "emem_1782599540494_4cdd",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.494Z"
+  },
+  {
+    "id": "emem_1782599540504_gh28",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.504Z"
+  },
+  {
+    "id": "emem_1782599540504_jsio",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.504Z"
+  },
+  {
+    "id": "emem_1782599540504_ffjh",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.504Z"
+  },
+  {
+    "id": "emem_1782599540505_9mvo",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.505Z"
+  },
+  {
+    "id": "emem_1782599540505_vpdk",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.505Z"
+  },
+  {
+    "id": "emem_1782599540505_l3qh",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.505Z"
+  },
+  {
+    "id": "emem_1782599540506_aoj4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.506Z"
+  },
+  {
+    "id": "emem_1782599540506_8qty",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.506Z"
+  },
+  {
+    "id": "emem_1782599540507_3oxu",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.507Z"
+  },
+  {
+    "id": "emem_1782599540507_a9o0",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated engorg:objective:created: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.507Z"
+  },
+  {
+    "id": "emem_1782599540507_0pad",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.507Z"
+  },
+  {
+    "id": "emem_1782599540515_oapk",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.515Z"
+  },
+  {
+    "id": "emem_1782599540515_nydl",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.515Z"
+  },
+  {
+    "id": "emem_1782599540515_qtge",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.515Z"
+  },
+  {
+    "id": "emem_1782599540516_orj1",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.516Z"
+  },
+  {
+    "id": "emem_1782599540516_1k4l",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.516Z"
+  },
+  {
+    "id": "emem_1782599540516_eba4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.516Z"
+  },
+  {
+    "id": "emem_1782599540517_6y38",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.517Z"
+  },
+  {
+    "id": "emem_1782599540517_53y9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.517Z"
+  },
+  {
+    "id": "emem_1782599540518_isrx",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.518Z"
+  },
+  {
+    "id": "emem_1782599540518_pi33",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.518Z"
+  },
+  {
+    "id": "emem_1782599540518_uzyk",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:org:tasked: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.518Z"
+  },
+  {
+    "id": "emem_1782599540519_x5ng",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.519Z"
+  },
+  {
+    "id": "emem_1782599540532_b4ec",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.532Z"
+  },
+  {
+    "id": "emem_1782599540532_m39q",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.532Z"
+  },
+  {
+    "id": "emem_1782599540533_6pfq",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.533Z"
+  },
+  {
+    "id": "emem_1782599540533_jrjl",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.533Z"
+  },
+  {
+    "id": "emem_1782599540534_qp97",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.534Z"
+  },
+  {
+    "id": "emem_1782599540534_wl9j",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.534Z"
+  },
+  {
+    "id": "emem_1782599540534_3cvc",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.534Z"
+  },
+  {
+    "id": "emem_1782599540535_h7q1",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.535Z"
+  },
+  {
+    "id": "emem_1782599540535_xg7m",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.535Z"
+  },
+  {
+    "id": "emem_1782599540535_j3i5",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.535Z"
+  },
+  {
+    "id": "emem_1782599540536_wk3f",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated bizorg:objective:created: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.536Z"
+  },
+  {
+    "id": "emem_1782599540536_828q",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.536Z"
+  },
+  {
+    "id": "emem_1782599540544_i02o",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.544Z"
+  },
+  {
+    "id": "emem_1782599540544_p0ck",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.544Z"
+  },
+  {
+    "id": "emem_1782599540545_3fo7",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.545Z"
+  },
+  {
+    "id": "emem_1782599540545_fzd6",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.545Z"
+  },
+  {
+    "id": "emem_1782599540545_of82",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.545Z"
+  },
+  {
+    "id": "emem_1782599540546_keoo",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.546Z"
+  },
+  {
+    "id": "emem_1782599540546_a627",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.546Z"
+  },
+  {
+    "id": "emem_1782599540546_dfxc",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.546Z"
+  },
+  {
+    "id": "emem_1782599540547_wdho",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.547Z"
+  },
+  {
+    "id": "emem_1782599540547_bmgv",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.547Z"
+  },
+  {
+    "id": "emem_1782599540548_u88k",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:org:tasked: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.548Z"
+  },
+  {
+    "id": "emem_1782599540548_gj8h",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.548Z"
+  },
+  {
+    "id": "emem_1782599540559_nu6q",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.559Z"
+  },
+  {
+    "id": "emem_1782599540560_77rp",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.560Z"
+  },
+  {
+    "id": "emem_1782599540560_9vnb",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.560Z"
+  },
+  {
+    "id": "emem_1782599540561_eib9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.561Z"
+  },
+  {
+    "id": "emem_1782599540561_rf9z",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.561Z"
+  },
+  {
+    "id": "emem_1782599540562_5d9t",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.562Z"
+  },
+  {
+    "id": "emem_1782599540562_77xh",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.562Z"
+  },
+  {
+    "id": "emem_1782599540562_j7zv",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.562Z"
+  },
+  {
+    "id": "emem_1782599540563_vwbx",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.563Z"
+  },
+  {
+    "id": "emem_1782599540563_njfg",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.563Z"
+  },
+  {
+    "id": "emem_1782599540563_bs8w",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated ako:objective:created: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.563Z"
+  },
+  {
+    "id": "emem_1782599540564_9ep5",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.564Z"
+  },
+  {
+    "id": "emem_1782599540574_hwqb",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.574Z"
+  },
+  {
+    "id": "emem_1782599540575_zt86",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.575Z"
+  },
+  {
+    "id": "emem_1782599540576_aztl",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.576Z"
+  },
+  {
+    "id": "emem_1782599540576_hla9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.576Z"
+  },
+  {
+    "id": "emem_1782599540577_95j0",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.577Z"
+  },
+  {
+    "id": "emem_1782599540577_pok1",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.577Z"
+  },
+  {
+    "id": "emem_1782599540577_ojcp",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.577Z"
+  },
+  {
+    "id": "emem_1782599540578_33x1",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.578Z"
+  },
+  {
+    "id": "emem_1782599540578_e8pj",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.578Z"
+  },
+  {
+    "id": "emem_1782599540579_e10s",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.579Z"
+  },
+  {
+    "id": "emem_1782599540579_epy2",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated ako:knowledge:captured: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.579Z"
+  },
+  {
+    "id": "emem_1782599540580_ovna",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.580Z"
+  },
+  {
+    "id": "emem_1782599540590_z9xr",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.590Z"
+  },
+  {
+    "id": "emem_1782599540590_2dt4",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.590Z"
+  },
+  {
+    "id": "emem_1782599540590_xf95",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.590Z"
+  },
+  {
+    "id": "emem_1782599540591_a9il",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.591Z"
+  },
+  {
+    "id": "emem_1782599540591_g6d6",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.591Z"
+  },
+  {
+    "id": "emem_1782599540592_yfv4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.592Z"
+  },
+  {
+    "id": "emem_1782599540592_fu0g",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.592Z"
+  },
+  {
+    "id": "emem_1782599540592_szf1",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.592Z"
+  },
+  {
+    "id": "emem_1782599540593_lfnp",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.593Z"
+  },
+  {
+    "id": "emem_1782599540593_psaw",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.593Z"
+  },
+  {
+    "id": "emem_1782599540594_koj3",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:org:tasked: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.594Z"
+  },
+  {
+    "id": "emem_1782599540594_s1i7",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.594Z"
+  },
+  {
+    "id": "emem_1782599540602_tlgi",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.602Z"
+  },
+  {
+    "id": "emem_1782599540602_orjk",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.602Z"
+  },
+  {
+    "id": "emem_1782599540602_rghx",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.602Z"
+  },
+  {
+    "id": "emem_1782599540603_c953",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.603Z"
+  },
+  {
+    "id": "emem_1782599540603_df0o",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.603Z"
+  },
+  {
+    "id": "emem_1782599540604_ar3e",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.604Z"
+  },
+  {
+    "id": "emem_1782599540604_972w",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.604Z"
+  },
+  {
+    "id": "emem_1782599540604_oj0v",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.604Z"
+  },
+  {
+    "id": "emem_1782599540605_jc8k",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.605Z"
+  },
+  {
+    "id": "emem_1782599540605_y2pw",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.605Z"
+  },
+  {
+    "id": "emem_1782599540606_vmhc",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:org:tasked: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.606Z"
+  },
+  {
+    "id": "emem_1782599540606_9ixw",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.606Z"
+  },
+  {
+    "id": "emem_1782599540614_zfew",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.614Z"
+  },
+  {
+    "id": "emem_1782599540615_2u8y",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.615Z"
+  },
+  {
+    "id": "emem_1782599540615_nchj",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.615Z"
+  },
+  {
+    "id": "emem_1782599540616_c48g",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.616Z"
+  },
+  {
+    "id": "emem_1782599540616_joc8",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.616Z"
+  },
+  {
+    "id": "emem_1782599540616_m6m0",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.616Z"
+  },
+  {
+    "id": "emem_1782599540617_zuy0",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.617Z"
+  },
+  {
+    "id": "emem_1782599540617_879x",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.617Z"
+  },
+  {
+    "id": "emem_1782599540618_bnlu",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.618Z"
+  },
+  {
+    "id": "emem_1782599540618_ln55",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.618Z"
+  },
+  {
+    "id": "emem_1782599540618_69jm",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:org:tasked: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.618Z"
+  },
+  {
+    "id": "emem_1782599540619_g5g4",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.619Z"
+  },
+  {
+    "id": "emem_1782599540627_zx6n",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.627Z"
+  },
+  {
+    "id": "emem_1782599540627_wbqt",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.627Z"
+  },
+  {
+    "id": "emem_1782599540628_976o",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.628Z"
+  },
+  {
+    "id": "emem_1782599540629_cpl5",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.629Z"
+  },
+  {
+    "id": "emem_1782599540630_43m9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.630Z"
+  },
+  {
+    "id": "emem_1782599540631_kj49",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.631Z"
+  },
+  {
+    "id": "emem_1782599540631_jq01",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.631Z"
+  },
+  {
+    "id": "emem_1782599540632_87a5",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.632Z"
+  },
+  {
+    "id": "emem_1782599540632_fn4f",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.632Z"
+  },
+  {
+    "id": "emem_1782599540633_d2hg",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.633Z"
+  },
+  {
+    "id": "emem_1782599540633_e5t2",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:deploy:triggered: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.633Z"
+  },
+  {
+    "id": "emem_1782599540634_lufm",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.634Z"
+  },
+  {
+    "id": "emem_1782599540647_1crh",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.647Z"
+  },
+  {
+    "id": "emem_1782599540647_oo49",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.647Z"
+  },
+  {
+    "id": "emem_1782599540648_e9x6",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.648Z"
+  },
+  {
+    "id": "emem_1782599540648_4tm9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.648Z"
+  },
+  {
+    "id": "emem_1782599540649_3a5r",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.649Z"
+  },
+  {
+    "id": "emem_1782599540649_4ft7",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.649Z"
+  },
+  {
+    "id": "emem_1782599540650_vwdt",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.650Z"
+  },
+  {
+    "id": "emem_1782599540651_xobw",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.651Z"
+  },
+  {
+    "id": "emem_1782599540651_etxx",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.651Z"
+  },
+  {
+    "id": "emem_1782599540651_x9bx",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.651Z"
+  },
+  {
+    "id": "emem_1782599540652_zdzw",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:validation:done: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.652Z"
+  },
+  {
+    "id": "emem_1782599540652_eqzv",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.652Z"
+  },
+  {
+    "id": "emem_1782599540669_jwz1",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.669Z"
+  },
+  {
+    "id": "emem_1782599540669_15sw",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.669Z"
+  },
+  {
+    "id": "emem_1782599540670_1uuo",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.670Z"
+  },
+  {
+    "id": "emem_1782599540671_stpq",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.671Z"
+  },
+  {
+    "id": "emem_1782599540671_4ww4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.671Z"
+  },
+  {
+    "id": "emem_1782599540672_5bkv",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.672Z"
+  },
+  {
+    "id": "emem_1782599540672_oh7i",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.672Z"
+  },
+  {
+    "id": "emem_1782599540673_f7ry",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.673Z"
+  },
+  {
+    "id": "emem_1782599540673_40pq",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.673Z"
+  },
+  {
+    "id": "emem_1782599540674_8dgg",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.674Z"
+  },
+  {
+    "id": "emem_1782599540674_tt2t",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated ako:knowledge:captured: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.674Z"
+  },
+  {
+    "id": "emem_1782599540675_euij",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.675Z"
+  },
+  {
+    "id": "emem_1782599540686_8ime",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.686Z"
+  },
+  {
+    "id": "emem_1782599540687_7i7w",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.687Z"
+  },
+  {
+    "id": "emem_1782599540688_zhs4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.688Z"
+  },
+  {
+    "id": "emem_1782599540688_g3p9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.688Z"
+  },
+  {
+    "id": "emem_1782599540689_5wbr",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.689Z"
+  },
+  {
+    "id": "emem_1782599540689_c62q",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.689Z"
+  },
+  {
+    "id": "emem_1782599540690_d6lc",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.690Z"
+  },
+  {
+    "id": "emem_1782599540691_jjxj",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.691Z"
+  },
+  {
+    "id": "emem_1782599540691_q8pf",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.691Z"
+  },
+  {
+    "id": "emem_1782599540692_bifm",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.692Z"
+  },
+  {
+    "id": "emem_1782599540692_mqd3",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated eos:report:ready: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.692Z"
+  },
+  {
+    "id": "emem_1782599540692_ircs",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.692Z"
+  },
+  {
+    "id": "emem_1782599540702_yb0j",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.702Z"
+  },
+  {
+    "id": "emem_1782599540703_617q",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.703Z"
+  },
+  {
+    "id": "emem_1782599540703_30fn",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.703Z"
+  },
+  {
+    "id": "emem_1782599540704_etwz",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.704Z"
+  },
+  {
+    "id": "emem_1782599540705_f44g",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.705Z"
+  },
+  {
+    "id": "emem_1782599540705_tble",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.705Z"
+  },
+  {
+    "id": "emem_1782599540706_4nr4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.706Z"
+  },
+  {
+    "id": "emem_1782599540706_iz9e",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.706Z"
+  },
+  {
+    "id": "emem_1782599540706_5jfo",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.706Z"
+  },
+  {
+    "id": "emem_1782599540707_qdyj",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.707Z"
+  },
+  {
+    "id": "emem_1782599540708_h01g",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_planner:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.708Z"
+  },
+  {
+    "id": "emem_1782599540708_vqkr",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.708Z"
+  },
+  {
+    "id": "emem_1782599540714_7o6r",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.714Z"
+  },
+  {
+    "id": "emem_1782599540715_mvsu",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.715Z"
+  },
+  {
+    "id": "emem_1782599540715_txbe",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.715Z"
+  },
+  {
+    "id": "emem_1782599540716_9133",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.716Z"
+  },
+  {
+    "id": "emem_1782599540716_aivc",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.716Z"
+  },
+  {
+    "id": "emem_1782599540717_zee8",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.717Z"
+  },
+  {
+    "id": "emem_1782599540717_0qj9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.717Z"
+  },
+  {
+    "id": "emem_1782599540718_75x5",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.718Z"
+  },
+  {
+    "id": "emem_1782599540719_8u0c",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.719Z"
+  },
+  {
+    "id": "emem_1782599540721_zuvd",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.721Z"
+  },
+  {
+    "id": "emem_1782599540722_7uxy",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_reviewer:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.722Z"
+  },
+  {
+    "id": "emem_1782599540722_3jqy",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.722Z"
+  },
+  {
+    "id": "emem_1782599540732_crfb",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.732Z"
+  },
+  {
+    "id": "emem_1782599540733_wn70",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.733Z"
+  },
+  {
+    "id": "emem_1782599540734_0pqd",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.734Z"
+  },
+  {
+    "id": "emem_1782599540734_zxav",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.734Z"
+  },
+  {
+    "id": "emem_1782599540735_j7vt",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.735Z"
+  },
+  {
+    "id": "emem_1782599540736_i028",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.736Z"
+  },
+  {
+    "id": "emem_1782599540736_fhzn",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.736Z"
+  },
+  {
+    "id": "emem_1782599540737_ntc4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.737Z"
+  },
+  {
+    "id": "emem_1782599540738_0b3b",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.738Z"
+  },
+  {
+    "id": "emem_1782599540738_86in",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.738Z"
+  },
+  {
+    "id": "emem_1782599540739_7sta",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_verifier:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.739Z"
+  },
+  {
+    "id": "emem_1782599540739_rso7",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.739Z"
+  },
+  {
+    "id": "emem_1782599540749_xn7g",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.749Z"
+  },
+  {
+    "id": "emem_1782599540749_pd04",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.749Z"
+  },
+  {
+    "id": "emem_1782599540750_5l36",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.750Z"
+  },
+  {
+    "id": "emem_1782599540750_8ds3",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.750Z"
+  },
+  {
+    "id": "emem_1782599540751_97rp",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.751Z"
+  },
+  {
+    "id": "emem_1782599540752_62ai",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.752Z"
+  },
+  {
+    "id": "emem_1782599540752_c9ic",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.752Z"
+  },
+  {
+    "id": "emem_1782599540753_7jqq",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.753Z"
+  },
+  {
+    "id": "emem_1782599540754_7wyy",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.754Z"
+  },
+  {
+    "id": "emem_1782599540754_wdh8",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.754Z"
+  },
+  {
+    "id": "emem_1782599540755_gh96",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_developer:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.755Z"
+  },
+  {
+    "id": "emem_1782599540755_hfi2",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.755Z"
+  },
+  {
+    "id": "emem_1782599540762_xg4x",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.762Z"
+  },
+  {
+    "id": "emem_1782599540763_dz82",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.763Z"
+  },
+  {
+    "id": "emem_1782599540764_zmkb",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.764Z"
+  },
+  {
+    "id": "emem_1782599540764_1nsp",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.764Z"
+  },
+  {
+    "id": "emem_1782599540765_1m6a",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.765Z"
+  },
+  {
+    "id": "emem_1782599540765_3qzj",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.765Z"
+  },
+  {
+    "id": "emem_1782599540766_gn5b",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.766Z"
+  },
+  {
+    "id": "emem_1782599540767_a8od",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.767Z"
+  },
+  {
+    "id": "emem_1782599540767_jgs5",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.767Z"
+  },
+  {
+    "id": "emem_1782599540768_akpl",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.768Z"
+  },
+  {
+    "id": "emem_1782599540768_vn07",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_tester:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.768Z"
+  },
+  {
+    "id": "emem_1782599540769_o0vo",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.769Z"
+  },
+  {
+    "id": "emem_1782599540777_jls4",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.777Z"
+  },
+  {
+    "id": "emem_1782599540777_zgut",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.777Z"
+  },
+  {
+    "id": "emem_1782599540778_7q86",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.778Z"
+  },
+  {
+    "id": "emem_1782599540779_omof",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.779Z"
+  },
+  {
+    "id": "emem_1782599540780_0s0p",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.780Z"
+  },
+  {
+    "id": "emem_1782599540780_rd72",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.780Z"
+  },
+  {
+    "id": "emem_1782599540781_g889",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.781Z"
+  },
+  {
+    "id": "emem_1782599540781_n04s",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.781Z"
+  },
+  {
+    "id": "emem_1782599540782_z3hd",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.782Z"
+  },
+  {
+    "id": "emem_1782599540783_cxo1",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.783Z"
+  },
+  {
+    "id": "emem_1782599540783_mvbd",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_security:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.783Z"
+  },
+  {
+    "id": "emem_1782599540784_xta5",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.784Z"
+  },
+  {
+    "id": "emem_1782599540792_llor",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.792Z"
+  },
+  {
+    "id": "emem_1782599540793_legd",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.793Z"
+  },
+  {
+    "id": "emem_1782599540793_6oho",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.793Z"
+  },
+  {
+    "id": "emem_1782599540794_4j78",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.794Z"
+  },
+  {
+    "id": "emem_1782599540795_p58y",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.795Z"
+  },
+  {
+    "id": "emem_1782599540796_ec9d",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.796Z"
+  },
+  {
+    "id": "emem_1782599540796_wh5z",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.796Z"
+  },
+  {
+    "id": "emem_1782599540797_ubz4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.797Z"
+  },
+  {
+    "id": "emem_1782599540797_smvw",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.797Z"
+  },
+  {
+    "id": "emem_1782599540799_39ux",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.799Z"
+  },
+  {
+    "id": "emem_1782599540799_ok32",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_documentation:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.799Z"
+  },
+  {
+    "id": "emem_1782599540800_jyhr",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.800Z"
+  },
+  {
+    "id": "emem_1782599540807_ands",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.807Z"
+  },
+  {
+    "id": "emem_1782599540808_54qj",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.808Z"
+  },
+  {
+    "id": "emem_1782599540808_e41z",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.808Z"
+  },
+  {
+    "id": "emem_1782599540809_d83x",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.809Z"
+  },
+  {
+    "id": "emem_1782599540809_4qjn",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.809Z"
+  },
+  {
+    "id": "emem_1782599540810_2lb4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.810Z"
+  },
+  {
+    "id": "emem_1782599540811_l1mr",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.811Z"
+  },
+  {
+    "id": "emem_1782599540811_0vj5",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.811Z"
+  },
+  {
+    "id": "emem_1782599540812_4pjf",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.812Z"
+  },
+  {
+    "id": "emem_1782599540813_klef",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.813Z"
+  },
+  {
+    "id": "emem_1782599540813_twh3",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_crm:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.813Z"
+  },
+  {
+    "id": "emem_1782599540814_l0dj",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.814Z"
+  },
+  {
+    "id": "emem_1782599540821_5sn6",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.821Z"
+  },
+  {
+    "id": "emem_1782599540821_q53c",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.821Z"
+  },
+  {
+    "id": "emem_1782599540822_26sh",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.822Z"
+  },
+  {
+    "id": "emem_1782599540822_w2cf",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.822Z"
+  },
+  {
+    "id": "emem_1782599540823_l6e2",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.823Z"
+  },
+  {
+    "id": "emem_1782599540823_6v2y",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.823Z"
+  },
+  {
+    "id": "emem_1782599540824_9075",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.824Z"
+  },
+  {
+    "id": "emem_1782599540825_m521",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.825Z"
+  },
+  {
+    "id": "emem_1782599540826_wvbd",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.826Z"
+  },
+  {
+    "id": "emem_1782599540826_m8az",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.826Z"
+  },
+  {
+    "id": "emem_1782599540827_6whq",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_marketing:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.827Z"
+  },
+  {
+    "id": "emem_1782599540827_4tx0",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.827Z"
+  },
+  {
+    "id": "emem_1782599540834_eexh",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.834Z"
+  },
+  {
+    "id": "emem_1782599540835_xpre",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.835Z"
+  },
+  {
+    "id": "emem_1782599540836_effh",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.836Z"
+  },
+  {
+    "id": "emem_1782599540837_ofhr",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.837Z"
+  },
+  {
+    "id": "emem_1782599540837_det4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.837Z"
+  },
+  {
+    "id": "emem_1782599540838_nosw",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.838Z"
+  },
+  {
+    "id": "emem_1782599540838_ec2z",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.838Z"
+  },
+  {
+    "id": "emem_1782599540839_6lmd",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.839Z"
+  },
+  {
+    "id": "emem_1782599540840_aoo4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.840Z"
+  },
+  {
+    "id": "emem_1782599540840_mgw9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.840Z"
+  },
+  {
+    "id": "emem_1782599540841_9i58",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:agent_executive:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.841Z"
+  },
+  {
+    "id": "emem_1782599540841_wa7l",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.841Z"
+  },
+  {
+    "id": "emem_1782599540849_5tex",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.849Z"
+  },
+  {
+    "id": "emem_1782599540849_6to6",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.849Z"
+  },
+  {
+    "id": "emem_1782599540850_b03g",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.850Z"
+  },
+  {
+    "id": "emem_1782599540851_n0bc",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.851Z"
+  },
+  {
+    "id": "emem_1782599540852_grbd",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.852Z"
+  },
+  {
+    "id": "emem_1782599540852_k1mx",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.852Z"
+  },
+  {
+    "id": "emem_1782599540853_zd3u",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.853Z"
+  },
+  {
+    "id": "emem_1782599540854_l37r",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.854Z"
+  },
+  {
+    "id": "emem_1782599540854_i3bh",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.854Z"
+  },
+  {
+    "id": "emem_1782599540855_j8tq",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.855Z"
+  },
+  {
+    "id": "emem_1782599540855_78fy",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:eos_planner:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.855Z"
+  },
+  {
+    "id": "emem_1782599540856_phsg",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.856Z"
+  },
+  {
+    "id": "emem_1782599540862_frad",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.862Z"
+  },
+  {
+    "id": "emem_1782599540863_l0m6",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.863Z"
+  },
+  {
+    "id": "emem_1782599540864_nxx9",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.864Z"
+  },
+  {
+    "id": "emem_1782599540864_k69h",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.864Z"
+  },
+  {
+    "id": "emem_1782599540865_ndqj",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.865Z"
+  },
+  {
+    "id": "emem_1782599540866_oj1x",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.866Z"
+  },
+  {
+    "id": "emem_1782599540866_lvko",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.866Z"
+  },
+  {
+    "id": "emem_1782599540867_44lu",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.867Z"
+  },
+  {
+    "id": "emem_1782599540867_2oa2",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.867Z"
+  },
+  {
+    "id": "emem_1782599540868_gysd",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.868Z"
+  },
+  {
+    "id": "emem_1782599540869_0s1d",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:eos_goal:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.869Z"
+  },
+  {
+    "id": "emem_1782599540869_yi3f",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.869Z"
+  },
+  {
+    "id": "emem_1782599540876_3n19",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.876Z"
+  },
+  {
+    "id": "emem_1782599540877_z7uw",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.877Z"
+  },
+  {
+    "id": "emem_1782599540877_qnq5",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.877Z"
+  },
+  {
+    "id": "emem_1782599540880_jvk3",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.880Z"
+  },
+  {
+    "id": "emem_1782599540880_8m9o",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.880Z"
+  },
+  {
+    "id": "emem_1782599540881_8mqb",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.881Z"
+  },
+  {
+    "id": "emem_1782599540882_71hj",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.882Z"
+  },
+  {
+    "id": "emem_1782599540882_obyu",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.882Z"
+  },
+  {
+    "id": "emem_1782599540883_l998",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.883Z"
+  },
+  {
+    "id": "emem_1782599540883_w7bs",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.883Z"
+  },
+  {
+    "id": "emem_1782599540884_z0ve",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:eos_priority:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.884Z"
+  },
+  {
+    "id": "emem_1782599540885_mczf",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.885Z"
+  },
+  {
+    "id": "emem_1782599540891_doui",
+    "deptId": "eos_orchestrator",
+    "type": "evolution_signal",
+    "title": "Evolution kept: undefined — impact undefined%",
+    "detail": "",
+    "tags": [
+      "evolution",
+      "kept"
+    ],
+    "createdAt": "2026-06-27T22:32:20.891Z"
+  },
+  {
+    "id": "emem_1782599540891_fkgf",
+    "deptId": "eos_business",
+    "type": "revenue_signal",
+    "title": "Deal won: $undefined",
+    "detail": "",
+    "tags": [
+      "business",
+      "deal",
+      "revenue"
+    ],
+    "createdAt": "2026-06-27T22:32:20.891Z"
+  },
+  {
+    "id": "emem_1782599540892_w264",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.892Z"
+  },
+  {
+    "id": "emem_1782599540893_f68x",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.893Z"
+  },
+  {
+    "id": "emem_1782599540893_6lut",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.893Z"
+  },
+  {
+    "id": "emem_1782599540894_oxn4",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.894Z"
+  },
+  {
+    "id": "emem_1782599540895_yw3e",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.895Z"
+  },
+  {
+    "id": "emem_1782599540895_sjpr",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.895Z"
+  },
+  {
+    "id": "emem_1782599540896_p8rs",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.896Z"
+  },
+  {
+    "id": "emem_1782599540896_3ppa",
+    "deptId": "eos_orchestrator",
+    "type": "eng_signal",
+    "title": "Engineering work completed: undefined",
+    "detail": "Domain: undefined",
+    "tags": [
+      "engineering",
+      "progress"
+    ],
+    "createdAt": "2026-06-27T22:32:20.896Z"
+  },
+  {
+    "id": "emem_1782599540897_kvgk",
+    "deptId": "eos_context",
+    "type": "knowledge_signal",
+    "title": "AKO validated agent:eos_coordinator:state: undefined",
+    "detail": "",
+    "tags": [
+      "knowledge",
+      "validated"
+    ],
+    "createdAt": "2026-06-27T22:32:20.897Z"
+  },
+  {
+    "id": "emem_1782599540898_o6ha",
+    "deptId": "eos_recovery",
+    "type": "heal",
+    "title": "Runtime healed: undefined via undefined",
+    "detail": "",
+    "tags": [
+      "recovery",
+      "heal"
+    ],
+    "createdAt": "2026-06-27T22:32:20.898Z"
+  },
+  {
+    "id": "emem_1782626818038_8mf2",
+    "deptId": "eos_resource",
+    "type": "cost",
+    "title": "Cost: $0 / Revenue: $0",
+    "detail": "",
+    "tags": [
+      "cost",
+      "resource"
+    ],
+    "createdAt": "2026-06-28T06:06:58.038Z"
+  },
+  {
+    "id": "emem_1782626818056_ppti",
+    "deptId": "eos_health",
+    "type": "health_snapshot",
+    "title": "Health: 100/100",
+    "detail": "{\"orgs\":{\"engineering\":{\"blockers\":14,\"velocity\":0,\"score\":0},\"business\":{\"winRate\":100,\"mrr\":13494205,\"score\":10000},\"knowledge\":{\"ratio\":0.8689458689458689,\"total\":351,\"score\":87},\"evolution\":{\"keep",
+    "tags": [
+      "health",
+      "snapshot"
+    ],
+    "createdAt": "2026-06-28T06:06:58.056Z"
+  },
+  {
+    "id": "emem_1782627036928_3tnv",
+    "deptId": "eos_resource",
+    "type": "cost",
+    "title": "Cost: $0 / Revenue: $0",
+    "detail": "",
+    "tags": [
+      "cost",
+      "resource"
+    ],
+    "createdAt": "2026-06-28T06:10:36.928Z"
+  },
+  {
+    "id": "emem_1782627036943_e334",
+    "deptId": "eos_health",
+    "type": "health_snapshot",
+    "title": "Health: 100/100",
+    "detail": "{\"orgs\":{\"engineering\":{\"blockers\":14,\"velocity\":0,\"score\":0},\"business\":{\"winRate\":100,\"mrr\":35103102,\"score\":10000},\"knowledge\":{\"ratio\":0.8774373259052924,\"total\":359,\"score\":88},\"evolution\":{\"keep",
+    "tags": [
+      "health",
+      "snapshot"
+    ],
+    "createdAt": "2026-06-28T06:10:36.943Z"
+  },
+  {
+    "id": "emem_1782629757422_2xyx",
+    "deptId": "eos_resource",
+    "type": "cost",
+    "title": "Cost: $0 / Revenue: $0",
+    "detail": "",
+    "tags": [
+      "cost",
+      "resource"
+    ],
+    "createdAt": "2026-06-28T06:55:57.422Z"
+  },
+  {
+    "id": "emem_1782629757437_0d5r",
+    "deptId": "eos_health",
+    "type": "health_snapshot",
+    "title": "Health: 100/100",
+    "detail": "{\"orgs\":{\"engineering\":{\"blockers\":14,\"velocity\":0,\"score\":0},\"business\":{\"winRate\":98,\"mrr\":91826749,\"score\":9800},\"knowledge\":{\"ratio\":0.8804347826086957,\"total\":368,\"score\":88},\"evolution\":{\"keepRa",
+    "tags": [
+      "health",
+      "snapshot"
+    ],
+    "createdAt": "2026-06-28T06:55:57.437Z"
+  }
+]

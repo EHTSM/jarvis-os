@@ -1,0 +1,43 @@
+{
+  "brandScore": 100,
+  "brandStrength": "strong",
+  "violations": [
+    {
+      "type": "no_images",
+      "severity": "info",
+      "message": "No images found on page — logo may be CSS/SVG-based (manual verification needed)",
+      "category": "brand"
+    }
+  ],
+  "colorAnalysis": {
+    "colorCount": 3
+  },
+  "typographyAnalysis": {
+    "fontFamilies": [
+      "system-ui"
+    ]
+  },
+  "logoAnalysis": {
+    "logoFound": false
+  },
+  "toneAnalysis": {
+    "detectedTone": "neutral"
+  },
+  "visualLanguage": {
+    "language": "flat",
+    "density": "dense",
+    "avgRadius": 0,
+    "avgSpacing": 0
+  },
+  "stats": {
+    "errors": 0,
+    "warnings": 0,
+    "total": 1
+  },
+  "url": "https://example.com/",
+  "domFilename": "dom-2026-06-26T22-40-18-784Z.json",
+  "brandConfig": {
+    "name": "Ooplix"
+  },
+  "timestamp": "2026-06-26T22:56:53.411Z"
+}

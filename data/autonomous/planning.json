@@ -1,0 +1,105 @@
+{
+  "globalPlan": {
+    "id": "apln_1782627037630_pzdj",
+    "title": "Civilization Global Plan — Cycle 10",
+    "objective": "Operate at maximum civilization health across all 9 layers",
+    "horizon": "1y",
+    "priorities": [
+      "Maintain global health > 80",
+      "Grow civilization membership",
+      "Drive innovation adoption",
+      "Resolve disputes via diplomacy",
+      "Expand marketplace"
+    ],
+    "layers": [
+      "civilization",
+      "ecosystem",
+      "enterprise",
+      "executive",
+      "engineering",
+      "business",
+      "knowledge",
+      "evolution",
+      "odi"
+    ],
+    "confidence": 0.8,
+    "generatedBy": "autonomous",
+    "status": "active",
+    "cycle": 10,
+    "outcomes": [],
+    "revision": 0,
+    "createdAt": "2026-06-28T06:10:37.630Z",
+    "updatedAt": "2026-06-28T06:10:37.630Z"
+  },
+  "multiYearPlan": {
+    "id": "amyp_1782624959077_xyrl",
+    "title": "MultiYear-1782624959055",
+    "years": 3,
+    "phases": [
+      {
+        "year": 1,
+        "focus": "Foundation"
+      },
+      {
+        "year": 2,
+        "focus": "Growth"
+      },
+      {
+        "year": 3,
+        "focus": "Mastery"
+      }
+    ],
+    "milestones": [],
+    "objective": "100+ members, 1000+ innovations",
+    "confidence": 0.65,
+    "status": "active",
+    "progress": 0,
+    "createdAt": "2026-06-28T05:35:59.077Z",
+    "updatedAt": "2026-06-28T05:35:59.077Z"
+  },
+  "schedule": [
+    {
+      "id": "asch_1782624959077_i73z",
+      "title": "Schedule-1782624959055",
+      "scheduledFor": "2026-06-28T05:35:58.077Z",
+      "type": "observe",
+      "priority": "low",
+      "domain": "health",
+      "layer": "civilization",
+      "confidence": 0.7,
+      "status": "executed",
+      "executedAt": "2026-06-28T05:35:59.077Z",
+      "outcome": null,
+      "scheduledAt": "2026-06-28T05:35:59.077Z"
+    },
+    {
+      "id": "asch_1782624966175_v6w7",
+      "title": "Health check",
+      "scheduledFor": "2026-06-28T05:41:06.175Z",
+      "type": "observe",
+      "priority": "low",
+      "domain": "health",
+      "layer": "civilization",
+      "confidence": 0.7,
+      "status": "executed",
+      "executedAt": "2026-06-28T06:55:58.247Z",
+      "outcome": null,
+      "scheduledAt": "2026-06-28T05:36:06.175Z"
+    },
+    {
+      "id": "asch_1782629758247_7elq",
+      "title": "Health check",
+      "scheduledFor": "2026-06-28T07:00:58.247Z",
+      "type": "observe",
+      "priority": "low",
+      "domain": "health",
+      "layer": "civilization",
+      "confidence": 0.7,
+      "status": "scheduled",
+      "executedAt": null,
+      "outcome": null,
+      "scheduledAt": "2026-06-28T06:55:58.247Z"
+    }
+  ],
+  "cycles": 2
+}

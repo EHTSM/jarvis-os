@@ -1,0 +1,237 @@
+{
+  "projects": [
+    {
+      "id": "crsp_1782601786172_33ut",
+      "title": "Research-1782601786114",
+      "description": "",
+      "leadMemberId": "cmem_1782601786119_t5z3",
+      "collaborators": [
+        "cmem_1782601786126_r6x6"
+      ],
+      "domain": "ai",
+      "hypothesis": "AI can self-organize",
+      "resources": {},
+      "timeline": "6m",
+      "status": "active",
+      "findings": [
+        {
+          "id": "cfnd_1782601786172_lgko",
+          "finding": "Self-organization emerges after 100 cycles",
+          "confidence": 0.85,
+          "evidence": "Simulation data",
+          "memberId": "cmem_1782601786119_t5z3",
+          "at": "2026-06-27T23:09:46.172Z"
+        }
+      ],
+      "innovations": [],
+      "startedAt": "2026-06-27T23:09:46.172Z",
+      "updatedAt": "2026-06-27T23:09:46.172Z"
+    }
+  ],
+  "innovations": [
+    {
+      "id": "cinv_1782601786172_zlek",
+      "title": "Innovation-1782601786114",
+      "description": "Novel consensus algorithm",
+      "authorMemberId": "cmem_1782601786119_t5z3",
+      "projectId": null,
+      "category": "process",
+      "impact": "high",
+      "implementation": "Use weighted voting with reputation",
+      "tags": [],
+      "status": "adopted",
+      "adoptions": 3,
+      "rating": 0,
+      "reviews": 0,
+      "publishedAt": "2026-06-27T23:09:46.172Z"
+    }
+  ],
+  "proposals": [
+    {
+      "id": "cevo_1782601786173_g828",
+      "title": "Evo-1782601786114",
+      "description": "",
+      "proposerId": "cmem_1782601786119_t5z3",
+      "targetDomain": "engineering",
+      "change": "Add self-healing to all engineering orgs",
+      "rationale": "Reduces downtime",
+      "priority": "high",
+      "status": "approved",
+      "votes": [
+        {
+          "memberId": "cmem_1782601786119_t5z3",
+          "vote": "for",
+          "rationale": "Critical for resilience",
+          "at": "2026-06-27T23:09:46.179Z"
+        },
+        {
+          "memberId": "cmem_1782601786126_r6x6",
+          "vote": "for",
+          "rationale": "",
+          "at": "2026-06-27T23:09:46.179Z"
+        },
+        {
+          "memberId": "cmem_1782601786126_ft0d",
+          "vote": "for",
+          "rationale": "",
+          "at": "2026-06-27T23:09:46.179Z"
+        }
+      ],
+      "votesFor": 3,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-27T23:09:46.173Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782624959073_cgp5",
+      "title": "Evo-1782624959055",
+      "description": "",
+      "proposerId": "autonomous_system",
+      "targetDomain": "autonomous",
+      "change": "Add adaptive confidence scoring",
+      "rationale": "Static threshold misses context",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-28T05:35:59.073Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782624966543_7r3o",
+      "title": "Enhance autonomous decision quality — cycle 5",
+      "description": "Success rate 100% — propose confidence threshold reduction",
+      "proposerId": "autonomous_system",
+      "targetDomain": "autonomous",
+      "change": "Reduce confidence threshold from 0.6 to 0.58",
+      "rationale": "High success rate (100%) indicates system can act with slightly lower confidence",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-28T05:36:06.543Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782626818106_fqif",
+      "title": "Deployed: BlueprintA-1782625903725",
+      "description": "",
+      "proposerId": "autonomous_system",
+      "targetDomain": "agency",
+      "change": "org:org_1782625904201_rr7e",
+      "rationale": "User/platform deployed agency org",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-28T06:06:58.106Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782626818107_w4v7",
+      "title": "Deployed: AgencyA-1782625903725",
+      "description": "",
+      "proposerId": "autonomous_system",
+      "targetDomain": "agency",
+      "change": "org:org_1782625903729_e1ay",
+      "rationale": "User/platform deployed agency org",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-28T06:06:58.107Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782626818758_ol91",
+      "title": "Deployed: Roundtrip-1782625903725",
+      "description": "",
+      "proposerId": "autonomous_system",
+      "targetDomain": "agency",
+      "change": "org:org_1782626818752_yq5n",
+      "rationale": "User/platform deployed agency org",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-28T06:06:58.758Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782627037017_vxgw",
+      "title": "Deployed: BlueprintA-1782626883324",
+      "description": "",
+      "proposerId": "autonomous_system",
+      "targetDomain": "agency",
+      "change": "org:org_1782626883742_tpmn",
+      "rationale": "User/platform deployed agency org",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-28T06:10:37.017Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782627037019_fz5e",
+      "title": "Deployed: AgencyA-1782626883324",
+      "description": "",
+      "proposerId": "autonomous_system",
+      "targetDomain": "agency",
+      "change": "org:org_1782626883329_54uq",
+      "rationale": "User/platform deployed agency org",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-28T06:10:37.019Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782627037689_0i0f",
+      "title": "Deployed: Roundtrip-1782626883324",
+      "description": "",
+      "proposerId": "autonomous_system",
+      "targetDomain": "agency",
+      "change": "org:org_1782627037686_425l",
+      "rationale": "User/platform deployed agency org",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-28T06:10:37.689Z",
+      "implementedAt": null
+    }
+  ],
+  "adoptions": [
+    {
+      "id": "cadp_1782601786172_zvqw",
+      "innovationId": "cinv_1782601786172_zlek",
+      "memberId": "cmem_1782601786126_r6x6",
+      "notes": "Implementing in our pipeline",
+      "at": "2026-06-27T23:09:46.172Z"
+    },
+    {
+      "id": "cadp_1782601786173_gg6i",
+      "innovationId": "cinv_1782601786172_zlek",
+      "memberId": "cmem_1782601786126_ft0d",
+      "notes": "",
+      "at": "2026-06-27T23:09:46.173Z"
+    },
+    {
+      "id": "cadp_1782601786173_d1sx",
+      "innovationId": "cinv_1782601786172_zlek",
+      "memberId": "extra-1782601786114",
+      "notes": "",
+      "at": "2026-06-27T23:09:46.173Z"
+    }
+  ]
+}

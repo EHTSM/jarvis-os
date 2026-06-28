@@ -1,0 +1,198 @@
+{
+  "budget": [
+    {
+      "id": "abopt_1782624959077_hivt",
+      "domain": "ecosystem",
+      "layer": "ecosystem",
+      "action": "Reduce redundant capability calls by 30%",
+      "amountSaved": 150,
+      "rationale": "Profiling revealed 30% duplicate capability checks",
+      "confidence": 0.75,
+      "recordedAt": "2026-06-28T05:35:59.077Z"
+    },
+    {
+      "id": "abopt_1782624960279_nslu",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 2: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-06-28T05:36:00.279Z"
+    },
+    {
+      "id": "abopt_1782624960371_k71f",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 3: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-06-28T05:36:00.371Z"
+    },
+    {
+      "id": "abopt_1782624960465_4mtr",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 4: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-06-28T05:36:00.465Z"
+    },
+    {
+      "id": "abopt_1782624966175_chbq",
+      "domain": "autonomous",
+      "layer": "autonomous",
+      "action": "Reduce retry cost from 1 failed decisions",
+      "amountSaved": 5,
+      "rationale": "Fewer retries = lower compute cost",
+      "confidence": 0.6,
+      "recordedAt": "2026-06-28T05:36:06.175Z"
+    },
+    {
+      "id": "abopt_1782624966543_ahum",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 5: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-06-28T05:36:06.543Z"
+    },
+    {
+      "id": "abopt_1782624966564_fq5u",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 6: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-06-28T05:36:06.564Z"
+    },
+    {
+      "id": "abopt_1782624966654_718c",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 7: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-06-28T05:36:06.654Z"
+    },
+    {
+      "id": "abopt_1782624966744_c72t",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 8: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-06-28T05:36:06.744Z"
+    },
+    {
+      "id": "abopt_1782629758247_mjvq",
+      "domain": "autonomous",
+      "layer": "autonomous",
+      "action": "Reduce retry cost from 1 failed decisions",
+      "amountSaved": 5,
+      "rationale": "Fewer retries = lower compute cost",
+      "confidence": 0.6,
+      "recordedAt": "2026-06-28T06:55:58.247Z"
+    },
+    {
+      "id": "abopt_1782629759154_kcfs",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 11: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-06-28T06:55:59.154Z"
+    },
+    {
+      "id": "abopt_1782629759181_hlmt",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 12: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-06-28T06:55:59.181Z"
+    }
+  ],
+  "resources": [
+    {
+      "id": "aropt_1782624959077_xusz",
+      "resourceType": "compute",
+      "action": "Rebalance compute across civilization pools",
+      "amountOptimized": 200,
+      "domain": "economy",
+      "rationale": "Civilization pool had excess compute",
+      "confidence": 0.8,
+      "recordedAt": "2026-06-28T05:35:59.077Z"
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "acevo_1782624959077_ikuc",
+      "capability": "autonomous_planning",
+      "action": "upgraded_to_v2",
+      "domain": "autonomous",
+      "rationale": "V2 has 20% better coverage",
+      "confidence": 0.8,
+      "impact": "medium",
+      "recordedAt": "2026-06-28T05:35:59.077Z"
+    },
+    {
+      "id": "acevo_1782624960279_xbn0",
+      "capability": "Exp-1782624959055",
+      "action": "graduated_from_experiment",
+      "domain": "autonomous",
+      "rationale": "Experiment succeeded: 12% improvement confirmed",
+      "confidence": 0.65,
+      "impact": "medium",
+      "recordedAt": "2026-06-28T05:36:00.279Z"
+    },
+    {
+      "id": "acevo_1782624966175_ikvf",
+      "capability": "AutoExp-1782624959055",
+      "action": "tick_review",
+      "domain": "autonomous",
+      "rationale": "Experiment aexp_1782624960147_oxe8 outcome: observed",
+      "confidence": 0.65,
+      "impact": "low",
+      "recordedAt": "2026-06-28T05:36:06.175Z"
+    },
+    {
+      "id": "acevo_1782624966175_upf0",
+      "capability": "Exp-1782624959055",
+      "action": "tick_review",
+      "domain": "autonomous",
+      "rationale": "Experiment aexp_1782624959071_w1au outcome: success",
+      "confidence": 0.65,
+      "impact": "low",
+      "recordedAt": "2026-06-28T05:36:06.175Z"
+    },
+    {
+      "id": "acevo_1782629758248_ntra",
+      "capability": "Auto experiment 1782624966176",
+      "action": "tick_review",
+      "domain": "autonomous",
+      "rationale": "Experiment aexp_1782624966176_efvl outcome: observed",
+      "confidence": 0.6,
+      "impact": "low",
+      "recordedAt": "2026-06-28T06:55:58.248Z"
+    },
+    {
+      "id": "acevo_1782629758248_a8y0",
+      "capability": "AutoExp-1782624959055",
+      "action": "tick_review",
+      "domain": "autonomous",
+      "rationale": "Experiment aexp_1782624960147_oxe8 outcome: observed",
+      "confidence": 0.65,
+      "impact": "low",
+      "recordedAt": "2026-06-28T06:55:58.248Z"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "mem-1782532331273-om5pi",
+  "finding": {
+    "type": "test_finding",
+    "severity": "warning",
+    "message": "test"
+  },
+  "patchSpec": [
+    {
+      "patchTarget": "foo",
+      "patchReplacement": "bar"
+    }
+  ],
+  "targetFile": null,
+  "strategy": "test",
+  "scoreBefore": null,
+  "scoreAfter": null,
+  "improvement": null,
+  "outcome": "applied",
+  "usageCount": 5,
+  "createdAt": "2026-06-27T03:52:11.273Z",
+  "lastUsedAt": "2026-06-27T10:54:03.458Z"
+}

@@ -1,0 +1,45 @@
+{
+  "globalObjective": "Autonomous recovery: restore all systems",
+  "activeGoals": [],
+  "orgStatus": {
+    "engineering": {
+      "workItems": 167,
+      "velocity": 0
+    },
+    "business": {
+      "mrr": 91826749,
+      "winRate": 98,
+      "deals": 80
+    },
+    "knowledge": {
+      "items": 368,
+      "validated": 324,
+      "playbooks": 12
+    },
+    "evolution": {
+      "evolutions": 62,
+      "kept": 29,
+      "avgImpact": -3
+    },
+    "runtime": {
+      "healed": 0,
+      "failed": 2001
+    },
+    "agents": {
+      "total": 129,
+      "running": 128
+    }
+  },
+  "lastSync": "2026-06-28T06:55:57.551Z",
+  "topPriorityGoal": "egoal_1782624960488_cmqa",
+  "globalHealthScore": 100,
+  "lastContextSync": "2026-06-28T06:55:57.450Z",
+  "ileStats": {
+    "total": 0,
+    "active": 0,
+    "kept": 0,
+    "reverted": 0,
+    "improved": 0,
+    "degraded": 0
+  }
+}

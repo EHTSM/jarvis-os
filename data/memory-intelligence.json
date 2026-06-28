@@ -1,0 +1,108 @@
+{
+  "ts": "2026-06-28T06:55:56.913Z",
+  "totalNodes": 2000,
+  "topScore": 72,
+  "mergeCount": 1563,
+  "conflictCount": 711,
+  "archivedCount": 0,
+  "topMemories": [
+    {
+      "nodeId": "mem_1782628526005_mqxezx9w",
+      "key": "playbook:pb_1782628526002_7",
+      "score": 72
+    },
+    {
+      "nodeId": "mem_1782628525974_mqxezx9v",
+      "key": "playbook:pb_1782628525971_5",
+      "score": 72
+    },
+    {
+      "nodeId": "mem_1782626883606_mqxe0qfb",
+      "key": "playbook:pb_1782626883603_7",
+      "score": 72
+    },
+    {
+      "nodeId": "mem_1782626883582_mqxe0qfa",
+      "key": "playbook:pb_1782626883580_5",
+      "score": 72
+    },
+    {
+      "nodeId": "mem_1782625904043_mqxdfqkn",
+      "key": "playbook:pb_1782625904040_7",
+      "score": 72
+    },
+    {
+      "nodeId": "mem_1782625904009_mqxdfqkm",
+      "key": "playbook:pb_1782625904006_5",
+      "score": 72
+    },
+    {
+      "nodeId": "mem_1782624959355_mqxcvhn9",
+      "key": "playbook:pb_1782624959352_7",
+      "score": 72
+    },
+    {
+      "nodeId": "mem_1782624959318_mqxcvhn8",
+      "key": "playbook:pb_1782624959315_5",
+      "score": 72
+    },
+    {
+      "nodeId": "mem_1782601786412_mqwz2tbg",
+      "key": "playbook:pb_1782601786408_5",
+      "score": 72
+    },
+    {
+      "nodeId": "mem_1782600996866_mqwylw3l",
+      "key": "playbook:pb_1782600996863_5",
+      "score": 72
+    }
+  ],
+  "conflicts": [
+    {
+      "nodeA": "mem_1780748237245_mq2bgmcb",
+      "keyA": "Cycle summary: Test autonomous workflow",
+      "nodeB": "mem_1780692827235_mq1e5wpc",
+      "keyB": "Cycle summary: Test autonomous workflow",
+      "keySimilarity": 100,
+      "valueDivergence": 100,
+      "recommendation": "Review and consolidate — keep the more recently updated node."
+    },
+    {
+      "nodeA": "mem_1780748237245_mq2bgmcb",
+      "keyA": "Cycle summary: Test autonomous workflow",
+      "nodeB": "mem_1780692827220_mq1e5wpb",
+      "keyB": "Cycle summary: Test autonomous workflow",
+      "keySimilarity": 100,
+      "valueDivergence": 100,
+      "recommendation": "Review and consolidate — keep the more recently updated node."
+    },
+    {
+      "nodeA": "mem_1780748237245_mq2bgmcb",
+      "keyA": "Cycle summary: Test autonomous workflow",
+      "nodeB": "mem_1780692827202_mq1e5wpa",
+      "keyB": "Cycle summary: Test autonomous workflow",
+      "keySimilarity": 100,
+      "valueDivergence": 100,
+      "recommendation": "Review and consolidate — keep the more recently updated node."
+    },
+    {
+      "nodeA": "mem_1780748237245_mq2bgmcb",
+      "keyA": "Cycle summary: Test autonomous workflow",
+      "nodeB": "mem_1780692827146_mq1e5wp9",
+      "keyB": "Cycle summary: Test autonomous workflow",
+      "keySimilarity": 100,
+      "valueDivergence": 100,
+      "recommendation": "Review and consolidate — keep the more recently updated node."
+    },
+    {
+      "nodeA": "mem_1780748237245_mq2bgmcb",
+      "keyA": "Cycle summary: Test autonomous workflow",
+      "nodeB": "mem_1780692767255_mq1e5wp8",
+      "keyB": "Cycle summary: Test autonomous workflow",
+      "keySimilarity": 100,
+      "valueDivergence": 100,
+      "recommendation": "Review and consolidate — keep the more recently updated node."
+    }
+  ],
+  "dryRun": false
+}

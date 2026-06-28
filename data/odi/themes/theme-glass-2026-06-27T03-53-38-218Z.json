@@ -1,0 +1,89 @@
+{
+  "themeId": "theme-glass-2026-06-27T03-53-38-218Z",
+  "themeName": "Glass",
+  "description": "Glassmorphism — frosted glass surfaces with depth",
+  "theme": {
+    "name": "Glass",
+    "description": "Glassmorphism — frosted glass surfaces with depth",
+    "colors": {
+      "primary": "#6366F1",
+      "primaryHover": "#4F46E5",
+      "secondary": "#EC4899",
+      "surface": "rgba(255, 255, 255, 0.1)",
+      "background": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      "card": "rgba(255, 255, 255, 0.15)",
+      "text": "#FFFFFF",
+      "textMuted": "rgba(255, 255, 255, 0.7)",
+      "border": "rgba(255, 255, 255, 0.2)",
+      "error": "#F87171",
+      "success": "#34D399",
+      "warning": "#FBBF24",
+      "info": "#38BDF8"
+    },
+    "typography": {
+      "heading": "Inter, system-ui, sans-serif",
+      "body": "Inter, system-ui, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "radius": {
+      "sm": "8px",
+      "md": "12px",
+      "lg": "16px",
+      "xl": "24px",
+      "full": "9999px"
+    },
+    "shadows": {
+      "sm": "0 2px 8px rgba(31,38,135,0.2)",
+      "md": "0 8px 32px rgba(31,38,135,0.3)",
+      "lg": "0 16px 48px rgba(31,38,135,0.4)",
+      "xl": "0 32px 64px rgba(31,38,135,0.5)"
+    },
+    "special": {
+      "backdropFilter": "blur(16px) saturate(180%)",
+      "-webkit-backdrop-filter": "blur(16px) saturate(180%)"
+    }
+  },
+  "cssVars": ":root {\n  --color-primary: #6366F1;\n  --color-primary-hover: #4F46E5;\n  --color-secondary: #EC4899;\n  --color-surface: rgba(255, 255, 255, 0.1);\n  --color-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  --color-card: rgba(255, 255, 255, 0.15);\n  --color-text: #FFFFFF;\n  --color-text-muted: rgba(255, 255, 255, 0.7);\n  --color-border: rgba(255, 255, 255, 0.2);\n  --color-error: #F87171;\n  --color-success: #34D399;\n  --color-warning: #FBBF24;\n  --color-info: #38BDF8;\n  --font-heading: Inter, system-ui, sans-serif;\n  --font-body: Inter, system-ui, sans-serif;\n  --font-mono: JetBrains Mono, monospace;\n  --radius-sm: 8px;\n  --radius-md: 12px;\n  --radius-lg: 16px;\n  --radius-xl: 24px;\n  --radius-full: 9999px;\n  --shadow-sm: 0 2px 8px rgba(31,38,135,0.2);\n  --shadow-md: 0 8px 32px rgba(31,38,135,0.3);\n  --shadow-lg: 0 16px 48px rgba(31,38,135,0.4);\n  --shadow-xl: 0 32px 64px rgba(31,38,135,0.5);\n  --special-backdrop-filter: blur(16px) saturate(180%);\n  --special--webkit-backdrop-filter: blur(16px) saturate(180%);\n}",
+  "tailwindConfig": {
+    "theme": {
+      "extend": {
+        "colors": {
+          "primary": {
+            "DEFAULT": "#6366F1",
+            "hover": "#4F46E5"
+          },
+          "secondary": "#EC4899",
+          "surface": "rgba(255, 255, 255, 0.1)",
+          "card": "rgba(255, 255, 255, 0.15)",
+          "muted": "rgba(255, 255, 255, 0.7)",
+          "border": "rgba(255, 255, 255, 0.2)"
+        },
+        "fontFamily": {
+          "heading": [
+            "Inter, system-ui, sans-serif"
+          ],
+          "body": [
+            "Inter, system-ui, sans-serif"
+          ],
+          "mono": [
+            "JetBrains Mono, monospace"
+          ]
+        },
+        "borderRadius": {
+          "sm": "8px",
+          "md": "12px",
+          "lg": "16px",
+          "xl": "24px",
+          "full": "9999px"
+        },
+        "boxShadow": {
+          "sm": "0 2px 8px rgba(31,38,135,0.2)",
+          "md": "0 8px 32px rgba(31,38,135,0.3)",
+          "lg": "0 16px 48px rgba(31,38,135,0.4)",
+          "xl": "0 32px 64px rgba(31,38,135,0.5)"
+        }
+      }
+    }
+  },
+  "generatedAt": "2026-06-27T03:53:38.218Z"
+}

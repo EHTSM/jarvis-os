@@ -1,0 +1,243 @@
+{
+  "commands": {
+    "tc_1782648784546_0nj": {
+      "cmdId": "tc_1782648784546_0nj",
+      "cmd": "node --version",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "success",
+      "startedAt": "2026-06-28T12:13:04.546Z",
+      "output": "v24.11.1\n",
+      "error": null,
+      "exitCode": 0,
+      "durationMs": 22,
+      "completedAt": "2026-06-28T12:13:04.569Z"
+    },
+    "tc_1782648784578_fdh": {
+      "cmdId": "tc_1782648784578_fdh",
+      "cmd": "git log --oneline -2",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "success",
+      "startedAt": "2026-06-28T12:13:04.578Z",
+      "output": "a41d12f feat(post-omega-p4): Autonomous Approval & Human-in-the-Loop Engine\n29b3071 feat(post-omega-p3): Autonomous Execution Engine — detect→plan→execute→verify→recover→evidence→learn\n",
+      "error": null,
+      "exitCode": 0,
+      "durationMs": 18,
+      "completedAt": "2026-06-28T12:13:04.596Z"
+    },
+    "tc_1782648960190_f4i": {
+      "cmdId": "tc_1782648960190_f4i",
+      "cmd": "node --version",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "success",
+      "startedAt": "2026-06-28T12:16:00.190Z",
+      "output": "v24.11.1\n",
+      "error": null,
+      "exitCode": 0,
+      "durationMs": 15,
+      "completedAt": "2026-06-28T12:16:00.206Z"
+    },
+    "tc_1782648960212_jmy": {
+      "cmdId": "tc_1782648960212_jmy",
+      "cmd": "git log --oneline -3",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "success",
+      "startedAt": "2026-06-28T12:16:00.212Z",
+      "output": "a41d12f feat(post-omega-p4): Autonomous Approval & Human-in-the-Loop Engine\n29b3071 feat(post-omega-p3): Autonomous Execution Engine — detect→plan→execute→verify→recover→evidence→learn\n31a7455 feat(post-omega-p2): Founder Elimination Program — Work Registry + Automation Engine + Production Bible\n",
+      "error": null,
+      "exitCode": 0,
+      "durationMs": 27,
+      "completedAt": "2026-06-28T12:16:00.239Z"
+    },
+    "tc_1782648960243_z35": {
+      "cmdId": "tc_1782648960243_z35",
+      "cmd": "npm --version",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "success",
+      "startedAt": "2026-06-28T12:16:00.243Z",
+      "output": "11.8.0\n",
+      "error": null,
+      "exitCode": 0,
+      "durationMs": 69,
+      "completedAt": "2026-06-28T12:16:00.312Z"
+    },
+    "tc_1782648960316_jg0": {
+      "cmdId": "tc_1782648960316_jg0",
+      "cmd": "ls package.json backend/",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "success",
+      "startedAt": "2026-06-28T12:16:00.316Z",
+      "output": "package.json\n\nbackend/:\nconfig\ncontrollers\ncore\ndb\nmiddleware\nroutes\nsecurity\nserver.js\nservices\nutils\n",
+      "error": null,
+      "exitCode": 0,
+      "durationMs": 6,
+      "completedAt": "2026-06-28T12:16:00.322Z"
+    },
+    "tc_1782648960326_la6": {
+      "cmdId": "tc_1782648960326_la6",
+      "cmd": "node -e 'process.exit(1)'",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "failed",
+      "startedAt": "2026-06-28T12:16:00.326Z",
+      "output": "",
+      "error": "Command failed: node -e 'process.exit(1)'",
+      "exitCode": 1,
+      "durationMs": 22,
+      "completedAt": "2026-06-28T12:16:00.348Z"
+    },
+    "tc_1782648960350_ps4": {
+      "cmdId": "tc_1782648960350_ps4",
+      "cmd": "node -e 'process.exit(1)'",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "failed",
+      "startedAt": "2026-06-28T12:16:00.350Z",
+      "output": "",
+      "error": "Command failed: node -e 'process.exit(1)'",
+      "exitCode": 1,
+      "durationMs": 22,
+      "completedAt": "2026-06-28T12:16:00.372Z"
+    },
+    "tc_1782648962382_uh9": {
+      "cmdId": "tc_1782648962382_uh9",
+      "cmd": "node -e 'process.exit(1)'",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "failed",
+      "startedAt": "2026-06-28T12:16:02.383Z",
+      "output": "",
+      "error": "Command failed: node -e 'process.exit(1)'",
+      "exitCode": 1,
+      "durationMs": 50,
+      "completedAt": "2026-06-28T12:16:02.434Z"
+    },
+    "tc_1782648964445_scy": {
+      "cmdId": "tc_1782648964445_scy",
+      "cmd": "nonexistent_command_xyz_12345 2>/dev/null || exit 1",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "failed",
+      "startedAt": "2026-06-28T12:16:04.445Z",
+      "output": "",
+      "error": "Command failed: nonexistent_command_xyz_12345 2>/dev/null || exit 1",
+      "exitCode": 1,
+      "durationMs": 11,
+      "completedAt": "2026-06-28T12:16:04.457Z"
+    },
+    "tc_1782648964474_g16": {
+      "cmdId": "tc_1782648964474_g16",
+      "cmd": "npm test",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "failed",
+      "startedAt": "2026-06-28T12:16:04.474Z",
+      "output": "",
+      "error": "npm error Missing script: \"test\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: /Users/ehtsm/.npm/_logs/2026-06-28T12_16_04_531Z-debug-0.log\n",
+      "exitCode": 1,
+      "durationMs": 95,
+      "completedAt": "2026-06-28T12:16:04.569Z"
+    },
+    "tc_1782648964570_0dh": {
+      "cmdId": "tc_1782648964570_0dh",
+      "cmd": "node --version",
+      "cwd": "/Users/ehtsm/jarvis-os",
+      "status": "streaming",
+      "startedAt": "2026-06-28T12:16:04.570Z",
+      "outputLines": [],
+      "error": null,
+      "exitCode": null
+    }
+  },
+  "history": [
+    {
+      "event": "execute",
+      "cmdId": "tc_1782648784546_0nj",
+      "cmd": "node --version",
+      "status": "success",
+      "durationMs": 22,
+      "ts": "2026-06-28T12:13:04.569Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782648784578_fdh",
+      "cmd": "git log --oneline -2",
+      "status": "success",
+      "durationMs": 18,
+      "ts": "2026-06-28T12:13:04.596Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782648960190_f4i",
+      "cmd": "node --version",
+      "status": "success",
+      "durationMs": 15,
+      "ts": "2026-06-28T12:16:00.206Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782648960212_jmy",
+      "cmd": "git log --oneline -3",
+      "status": "success",
+      "durationMs": 27,
+      "ts": "2026-06-28T12:16:00.239Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782648960243_z35",
+      "cmd": "npm --version",
+      "status": "success",
+      "durationMs": 69,
+      "ts": "2026-06-28T12:16:00.312Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782648960316_jg0",
+      "cmd": "ls package.json backend/",
+      "status": "success",
+      "durationMs": 6,
+      "ts": "2026-06-28T12:16:00.322Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782648960326_la6",
+      "cmd": "node -e 'process.exit(1)'",
+      "status": "failed",
+      "error": "Command failed: node -e 'process.exit(1)'",
+      "ts": "2026-06-28T12:16:00.348Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782648960350_ps4",
+      "cmd": "node -e 'process.exit(1)'",
+      "status": "failed",
+      "error": "Command failed: node -e 'process.exit(1)'",
+      "ts": "2026-06-28T12:16:00.372Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782648962382_uh9",
+      "cmd": "node -e 'process.exit(1)'",
+      "status": "failed",
+      "error": "Command failed: node -e 'process.exit(1)'",
+      "ts": "2026-06-28T12:16:02.434Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782648964445_scy",
+      "cmd": "nonexistent_command_xyz_12345 2>/dev/null || exit 1",
+      "status": "failed",
+      "error": "Command failed: nonexistent_command_xyz_12345 2>/dev/null || exit 1",
+      "ts": "2026-06-28T12:16:04.457Z"
+    },
+    {
+      "event": "execute",
+      "cmdId": "tc_1782648964474_g16",
+      "cmd": "npm test",
+      "status": "failed",
+      "error": "npm error Missing script: \"test\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: /Users/ehtsm/.npm/_logs/2026-06-28T12_16_0",
+      "ts": "2026-06-28T12:16:04.569Z"
+    }
+  ],
+  "stats": {
+    "executed": 12,
+    "succeeded": 6,
+    "failed": 5,
+    "recovered": 0,
+    "verified": 2
+  }
+}

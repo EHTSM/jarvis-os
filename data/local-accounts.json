@@ -149,5 +149,75 @@
     "createdAt": "2026-06-15T08:37:39.284Z",
     "lastLoginAt": "2026-06-15T08:37:39.368Z",
     "active": true
+  },
+  "10cee484f5eb28234e32541b": {
+    "id": "10cee484f5eb28234e32541b",
+    "email": "test@example.com",
+    "passwordHash": "1d55147e460421b9dfe7d2396395e9ba:3066c4389c6b85fc80b755c16e909ccefb114e51b9ba079ca9ba7fe5074d5f2c9891a267d0453626383f11b21ab12c4b014280fd3e2db738b925637e515531d2",
+    "name": "Test User",
+    "role": "user",
+    "createdAt": "2026-06-26T19:22:08.018Z",
+    "lastLoginAt": "2026-06-26T21:06:51.519Z",
+    "active": true
+  },
+  "5e26ba07a2e1bb62b3b6d7b7": {
+    "id": "5e26ba07a2e1bb62b3b6d7b7",
+    "email": "brand-new-99@example.com",
+    "passwordHash": "483b47ebee16ba63771579e5b4a42dd5:5fab006f38ac39fe031b426ea6cfb9b84b08b329ac8f2e8c8ff6c5e28a0f6e79fb7de4cf2f0c0e0e1ada5803acd84f3b12325ee3e7d34bb96509acfd3a005b10",
+    "name": "New",
+    "role": "user",
+    "createdAt": "2026-06-26T21:06:51.556Z",
+    "lastLoginAt": null,
+    "active": true
+  },
+  "12d633b06bd0f93a86ba30bb": {
+    "id": "12d633b06bd0f93a86ba30bb",
+    "email": "test@ooplix.com",
+    "passwordHash": "9f500e1f0a4e4a5f8acf44ee45fe4ebc:43242a8cdbe20f4414ea3b08b0e80516836047d6bdd2aeca4dd3b5fbe4ce71ea7220a85e3b5e431815f1ae5e8d8164d520c958e4a629e06c1773f1659e60e0ea",
+    "name": "Test User",
+    "role": "user",
+    "createdAt": "2026-06-26T22:00:43.147Z",
+    "lastLoginAt": "2026-06-26T22:02:09.195Z",
+    "active": true
+  },
+  "a6131bb97bd1d94d2a48e96c": {
+    "id": "a6131bb97bd1d94d2a48e96c",
+    "email": "e2e@ooplix.com",
+    "passwordHash": "639d3c437f578e584173352d67cad939:be91d0919c0f88594407f78877f015f8f06d535bed37da6136e287db80ba9a519a3429695fcbce279a317635679595bb7fbac7b87154ca659959ba37bd3ae1a7",
+    "name": "E2E Test",
+    "role": "user",
+    "createdAt": "2026-06-26T22:09:32.568Z",
+    "lastLoginAt": "2026-06-26T22:09:32.700Z",
+    "active": true
+  },
+  "d881435fad6376a4d55cd509": {
+    "id": "d881435fad6376a4d55cd509",
+    "email": "e2e2@ooplix.com",
+    "passwordHash": "7a85b7e11b67f49a792769366f418763:8c2bc6e2b9a0e4bd072bb25fb1ef464b65604a2f5f2f58f098c7e2f5b861d1ac47b4ef656a366ec283fe487fd51328362e28f45b06375211c4d0693db8e20615",
+    "name": "E2E Test 2",
+    "role": "user",
+    "createdAt": "2026-06-26T22:09:32.743Z",
+    "lastLoginAt": null,
+    "active": true
+  },
+  "796d29cf38054ce618460427": {
+    "id": "796d29cf38054ce618460427",
+    "email": "auth_test@ooplix.com",
+    "passwordHash": "456d664ff3933ece8c9efb9502a7772d:e53465a5dedb13fb7c10fd819e249130d17d8f799d9fd2150be1ebffa76240490e24d78cf7faa92e5a7728e32857586bfc22bf8c8eb826bb386e0fa345fc1245",
+    "name": "Auth Test",
+    "role": "user",
+    "createdAt": "2026-06-26T22:11:02.296Z",
+    "lastLoginAt": "2026-06-27T03:41:24.884Z",
+    "active": true
+  },
+  "9c7a4dec7600dcc42a5e6548": {
+    "id": "9c7a4dec7600dcc42a5e6548",
+    "email": "auth_test2@ooplix.com",
+    "passwordHash": "3b5bcea7673f1c6e15e58e635ec8cf56:f830f04cf4c60c8b0b2c98844d22c51db7e6e36e2d8900dea62264d98a3f8f065e2e9e28e249752645cf3424bc9678cc2d841bb2a73767f6bce9ade595797bb4",
+    "name": "Test 2",
+    "role": "user",
+    "createdAt": "2026-06-26T22:11:02.536Z",
+    "lastLoginAt": null,
+    "active": true
   }
 }

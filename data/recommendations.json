@@ -16,10 +16,10 @@
     "priority": 2,
     "createdAt": "2026-06-05T18:58:01.463Z",
     "title": "Investigate: unknown",
-    "detail": "Medium-severity failure (6 occurrences). Root cause: unclassified error — review logs for detail",
+    "detail": "Medium-severity failure (4 occurrences). Root cause: unclassified error — review logs for detail",
     "type": "investigate",
     "source": "auto_analysis",
-    "updatedAt": "2026-06-05T18:59:51.574Z"
+    "updatedAt": "2026-06-27T20:11:23.508Z"
   },
   {
     "recId": "rec_1780686503298_5i",
@@ -27,10 +27,10 @@
     "priority": 1,
     "createdAt": "2026-06-05T19:08:23.298Z",
     "title": "Fix: unknown",
-    "detail": "High-severity failure cluster (999 occurrences). Root cause: unclassified error — review logs for detail",
+    "detail": "High-severity failure cluster (94 occurrences). Root cause: unclassified error — review logs for detail",
     "type": "fix",
     "source": "auto_analysis",
-    "updatedAt": "2026-06-21T20:31:24.604Z"
+    "updatedAt": "2026-06-28T12:04:01.241Z"
   },
   {
     "recId": "rec_1780686503298_5j",
@@ -75,5 +75,16 @@
     "type": "fix",
     "source": "auto_analysis",
     "updatedAt": "2026-06-07T19:32:36.938Z"
+  },
+  {
+    "recId": "rec_1782630033164_g3",
+    "status": "open",
+    "priority": 1,
+    "createdAt": "2026-06-28T07:00:33.164Z",
+    "title": "Fix: memory_pressure",
+    "detail": "High-severity failure cluster (22 occurrences). Root cause: application error — review stack trace",
+    "type": "fix",
+    "source": "auto_analysis",
+    "updatedAt": "2026-06-28T12:04:01.241Z"
   }
 ]

@@ -1,0 +1,169 @@
+{
+  "ledger": [
+    {
+      "id": "aexp_1782624959071_w1au",
+      "title": "Exp-1782624959055",
+      "hypothesis": "Reducing tick interval increases responsiveness",
+      "type": "process",
+      "domain": "autonomous",
+      "layer": "autonomous",
+      "targetLayer": "autonomous",
+      "changes": [],
+      "expectedOutcome": "",
+      "rollbackPlan": "Restore original tick interval",
+      "confidence": 0.65,
+      "status": "completed",
+      "observations": [
+        {
+          "observation": "Response time improved by 12%",
+          "metric": "response_time_ms",
+          "value": 88,
+          "source": "autonomous_monitor",
+          "at": "2026-06-28T05:35:59.071Z"
+        }
+      ],
+      "measurements": {
+        "response_time_ms": 88
+      },
+      "outcome": "success",
+      "rationale": "Reducing tick interval increases responsiveness",
+      "actualOutcome": "12% improvement confirmed",
+      "lessons": [
+        "Shorter intervals improve responsiveness by 12%"
+      ],
+      "designedAt": "2026-06-28T05:35:59.071Z",
+      "startedAt": "2026-06-28T05:35:59.071Z",
+      "completedAt": "2026-06-28T05:35:59.071Z",
+      "graduated": true
+    },
+    {
+      "id": "aexp_1782624959072_snbh",
+      "title": "Rollback-1782624959055",
+      "hypothesis": "Rollback test",
+      "type": "capability",
+      "domain": "test",
+      "layer": "civilization",
+      "targetLayer": "civilization",
+      "changes": [],
+      "expectedOutcome": "",
+      "rollbackPlan": "",
+      "confidence": 0.6,
+      "status": "rolled_back",
+      "observations": [],
+      "measurements": {},
+      "outcome": "failed",
+      "rationale": "Rollback test",
+      "actualOutcome": "Regression detected",
+      "lessons": [],
+      "designedAt": "2026-06-28T05:35:59.072Z",
+      "startedAt": "2026-06-28T05:35:59.072Z",
+      "completedAt": "2026-06-28T05:35:59.072Z"
+    },
+    {
+      "id": "aexp_1782624960147_oxe8",
+      "title": "AutoExp-1782624959055",
+      "hypothesis": "Testing loop efficiency",
+      "type": "process",
+      "domain": "autonomous",
+      "layer": "civilization",
+      "targetLayer": "civilization",
+      "changes": [],
+      "expectedOutcome": "improvement",
+      "rollbackPlan": "Revert changes and restart from previous state",
+      "confidence": 0.65,
+      "status": "completed",
+      "observations": [
+        {
+          "observation": "Baseline health at experiment start: 93",
+          "metric": "health_baseline",
+          "value": 93,
+          "source": "autonomous",
+          "at": "2026-06-28T05:36:00.169Z"
+        }
+      ],
+      "measurements": {
+        "health_baseline": 93
+      },
+      "outcome": "observed",
+      "rationale": "Testing loop efficiency",
+      "actualOutcome": "Experiment running: Testing loop efficiency",
+      "lessons": [
+        "Experiment designed for domain=autonomous, confidence=0.65"
+      ],
+      "designedAt": "2026-06-28T05:36:00.147Z",
+      "startedAt": "2026-06-28T05:36:00.147Z",
+      "completedAt": "2026-06-28T05:36:00.169Z"
+    },
+    {
+      "id": "aexp_1782624966176_efvl",
+      "title": "Auto experiment 1782624966176",
+      "hypothesis": "Autonomous tick frequency optimization",
+      "type": "process",
+      "domain": "autonomous",
+      "layer": "civilization",
+      "targetLayer": "civilization",
+      "changes": [],
+      "expectedOutcome": "improvement",
+      "rollbackPlan": "Revert changes and restart from previous state",
+      "confidence": 0.6,
+      "status": "completed",
+      "observations": [
+        {
+          "observation": "Baseline health at experiment start: 92",
+          "metric": "health_baseline",
+          "value": 92,
+          "source": "autonomous",
+          "at": "2026-06-28T05:36:06.197Z"
+        }
+      ],
+      "measurements": {
+        "health_baseline": 92
+      },
+      "outcome": "observed",
+      "rationale": "Autonomous tick frequency optimization",
+      "actualOutcome": "Experiment running: Autonomous tick frequency optimization",
+      "lessons": [
+        "Experiment designed for domain=autonomous, confidence=0.6"
+      ],
+      "designedAt": "2026-06-28T05:36:06.176Z",
+      "startedAt": "2026-06-28T05:36:06.176Z",
+      "completedAt": "2026-06-28T05:36:06.197Z"
+    },
+    {
+      "id": "aexp_1782629758249_cryj",
+      "title": "Auto experiment 1782629758249",
+      "hypothesis": "Autonomous tick frequency optimization",
+      "type": "process",
+      "domain": "autonomous",
+      "layer": "civilization",
+      "targetLayer": "civilization",
+      "changes": [],
+      "expectedOutcome": "improvement",
+      "rollbackPlan": "Revert changes and restart from previous state",
+      "confidence": 0.6,
+      "status": "completed",
+      "observations": [
+        {
+          "observation": "Baseline health at experiment start: 93",
+          "metric": "health_baseline",
+          "value": 93,
+          "source": "autonomous",
+          "at": "2026-06-28T06:55:58.275Z"
+        }
+      ],
+      "measurements": {
+        "health_baseline": 93
+      },
+      "outcome": "observed",
+      "rationale": "Autonomous tick frequency optimization",
+      "actualOutcome": "Experiment running: Autonomous tick frequency optimization",
+      "lessons": [
+        "Experiment designed for domain=autonomous, confidence=0.6"
+      ],
+      "designedAt": "2026-06-28T06:55:58.249Z",
+      "startedAt": "2026-06-28T06:55:58.250Z",
+      "completedAt": "2026-06-28T06:55:58.275Z"
+    }
+  ],
+  "totalExperiments": 5
+}

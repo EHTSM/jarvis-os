@@ -1,0 +1,260 @@
+{
+  "ts": "2026-06-27T03:41:24.891Z",
+  "uptime_s": 7,
+  "pid": 95081,
+  "nodeVersion": "v24.11.1",
+  "memory": {
+    "rss_mb": 553,
+    "heap_mb": 255,
+    "heapTotal_mb": 387
+  },
+  "os": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "loadavg": [
+      2.27001953125,
+      1.9697265625,
+      2.02587890625
+    ],
+    "freemem_mb": 75,
+    "totalmem_mb": 8192
+  },
+  "health": {
+    "self": {
+      "service": "self",
+      "status": "healthy",
+      "latencyMs": 259
+    },
+    "ollama": {
+      "service": "ollama",
+      "status": "healthy",
+      "latencyMs": 260
+    },
+    "openrouter": {
+      "service": "openrouter",
+      "status": "degraded",
+      "latencyMs": 109
+    },
+    "github": {
+      "service": "github",
+      "status": "degraded",
+      "latencyMs": 109
+    },
+    "slack": {
+      "service": "slack",
+      "status": "degraded",
+      "latencyMs": 109
+    },
+    "google": {
+      "service": "google",
+      "status": "degraded",
+      "latencyMs": 109
+    },
+    "notion": {
+      "service": "notion",
+      "status": "degraded",
+      "latencyMs": 109
+    }
+  },
+  "metrics": [
+    {
+      "name": "system.rss_mb",
+      "count": 1,
+      "lastValue": 155,
+      "lastTs": 1782531677920
+    },
+    {
+      "name": "system.heap_mb",
+      "count": 1,
+      "lastValue": 62,
+      "lastTs": 1782531677920
+    },
+    {
+      "name": "system.heap_total_mb",
+      "count": 1,
+      "lastValue": 105,
+      "lastTs": 1782531677920
+    },
+    {
+      "name": "system.uptime_s",
+      "count": 1,
+      "lastValue": 0,
+      "lastTs": 1782531677920
+    },
+    {
+      "name": "system.cpu_user_ms",
+      "count": 1,
+      "lastValue": 268.952,
+      "lastTs": 1782531677920
+    },
+    {
+      "name": "os.loadavg_1m",
+      "count": 1,
+      "lastValue": 2.50146484375,
+      "lastTs": 1782531677920
+    },
+    {
+      "name": "os.freemem_mb",
+      "count": 1,
+      "lastValue": 80,
+      "lastTs": 1782531677920
+    },
+    {
+      "name": "observer.events.observer",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1782531678111
+    },
+    {
+      "name": "engineering.capabilities.registered",
+      "count": 1,
+      "lastValue": 12,
+      "lastTs": 1782531678112
+    },
+    {
+      "name": "decisions.Ignore",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1782531684740
+    },
+    {
+      "name": "observer.events.git",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1782531684774
+    },
+    {
+      "name": "observer.events.build",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1782531684776
+    },
+    {
+      "name": "observer.events.tasks",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1782531684777
+    },
+    {
+      "name": "observer.events.agents",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1782531684779
+    },
+    {
+      "name": "observer.events.plugins",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1782531684779
+    },
+    {
+      "name": "observer.events.extensions",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1782531684780
+    },
+    {
+      "name": "observer.events.memory",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1782531684784
+    },
+    {
+      "name": "observer.events.ai",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1782531684785
+    },
+    {
+      "name": "observer.events.system",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1782531684785
+    },
+    {
+      "name": "health.latency.self",
+      "count": 2,
+      "lastValue": 259,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.up.self",
+      "count": 2,
+      "lastValue": 1,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.latency.ollama",
+      "count": 2,
+      "lastValue": 260,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.up.ollama",
+      "count": 2,
+      "lastValue": 1,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.latency.openrouter",
+      "count": 2,
+      "lastValue": 109,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.up.openrouter",
+      "count": 2,
+      "lastValue": 0,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.latency.github",
+      "count": 2,
+      "lastValue": 109,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.up.github",
+      "count": 2,
+      "lastValue": 0,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.latency.slack",
+      "count": 2,
+      "lastValue": 109,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.up.slack",
+      "count": 2,
+      "lastValue": 0,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.latency.google",
+      "count": 2,
+      "lastValue": 109,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.up.google",
+      "count": 2,
+      "lastValue": 0,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.latency.notion",
+      "count": 2,
+      "lastValue": 109,
+      "lastTs": 1782531684891
+    },
+    {
+      "name": "health.up.notion",
+      "count": 2,
+      "lastValue": 0,
+      "lastTs": 1782531684891
+    }
+  ],
+  "alerts": []
+}

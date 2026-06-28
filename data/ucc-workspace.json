@@ -1,0 +1,60 @@
+{
+  "activeProject": {
+    "path": "/Users/ehtsm/jarvis-os",
+    "name": "jarvis-os",
+    "setAt": "2026-06-28T12:16:07.191Z"
+  },
+  "activeBrowser": {
+    "tabId": "tab_test_1",
+    "url": "https://example.com",
+    "setAt": "2026-06-28T12:16:04.572Z"
+  },
+  "activeTerminal": {
+    "cmdId": "cmd_test_1",
+    "cmd": "node --version",
+    "setAt": "2026-06-28T12:16:04.573Z"
+  },
+  "activeEditor": null,
+  "currentTask": {
+    "task": "Commit changes.",
+    "startedAt": "2026-06-28T12:16:07.310Z"
+  },
+  "currentWorkflow": null,
+  "taskHistory": [
+    {
+      "task": "Test run",
+      "startedAt": "2026-06-28T12:13:04.647Z",
+      "completedAt": "2026-06-28T12:13:10.667Z",
+      "outcome": "success",
+      "minutesSaved": 10
+    },
+    {
+      "task": "Deploy today's release",
+      "startedAt": "2026-06-28T12:16:04.573Z",
+      "completedAt": "2026-06-28T12:16:05.300Z",
+      "outcome": "success",
+      "minutesSaved": 15
+    },
+    {
+      "task": "Verify environment health",
+      "startedAt": "2026-06-28T12:16:06.330Z",
+      "completedAt": "2026-06-28T12:16:06.832Z",
+      "outcome": "success",
+      "minutesSaved": 10
+    },
+    {
+      "task": "Open the CRM project.",
+      "startedAt": "2026-06-28T12:16:06.833Z",
+      "completedAt": "2026-06-28T12:16:07.309Z",
+      "outcome": "success",
+      "minutesSaved": 2
+    }
+  ],
+  "stats": {
+    "tasksCompleted": 4,
+    "workflowsRun": 0,
+    "minutesSaved": 37,
+    "automationCoverage": 0
+  },
+  "updatedAt": "2026-06-28T12:16:07.310Z"
+}

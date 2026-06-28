@@ -51,6 +51,17 @@
         "value": 5,
         "lastUpdated": 1781559412683
       }
+    },
+    "aeo.keep_rate": {
+      "0": {
+        "type": "gauge",
+        "name": 0,
+        "labels": {},
+        "value": {
+          "dept": "aeo_performance"
+        },
+        "lastUpdated": 1782629757203
+      }
     }
   },
   "traces": [],
