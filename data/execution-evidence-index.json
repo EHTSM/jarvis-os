@@ -1429,5 +1429,32 @@
     "outcome": "success",
     "minutesSaved": 5,
     "domain": "browser"
+  },
+  {
+    "evidenceId": "ev_1782649078984_uimk",
+    "workflowId": "cee_editor",
+    "executionId": "cee_1782649078348_y9t",
+    "ts": "2026-06-28T12:17:58.984Z",
+    "outcome": "success",
+    "minutesSaved": 5,
+    "domain": "editor"
+  },
+  {
+    "evidenceId": "ev_1782649154494_ux5q",
+    "workflowId": "cee_deployment",
+    "executionId": "cee_1782649154010_ge7",
+    "ts": "2026-06-28T12:19:14.494Z",
+    "outcome": "success",
+    "minutesSaved": 10,
+    "domain": "deployment"
+  },
+  {
+    "evidenceId": "ev_1782649154988_y518",
+    "workflowId": "cee_editor",
+    "executionId": "cee_1782649154505_t42",
+    "ts": "2026-06-28T12:19:14.988Z",
+    "outcome": "success",
+    "minutesSaved": 2,
+    "domain": "editor"
   }
 ]

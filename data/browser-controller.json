@@ -76,6 +76,28 @@
       "openedAt": "2026-06-28T12:17:40.965Z",
       "closedAt": null,
       "title": null
+    },
+    "bc_1782649139386_cfc": {
+      "tabId": "bc_1782649139386_cfc",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "browserName": "Google Chrome",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-06-28T12:18:59.386Z",
+      "closedAt": null,
+      "title": null
+    },
+    "bc_1782649139387_a11": {
+      "tabId": "bc_1782649139387_a11",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "closed",
+      "openedAt": "2026-06-28T12:18:59.387Z",
+      "closedAt": "2026-06-28T12:18:59.387Z",
+      "title": null
     }
   },
   "history": [
@@ -183,13 +205,55 @@
       "url": "https://facade.example.com",
       "browserId": "playwright_chromium",
       "ts": "2026-06-28T12:17:40.965Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782649139386_cfc",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "ts": "2026-06-28T12:18:59.386Z"
+    },
+    {
+      "event": "switch_tab",
+      "tabId": "bc_1782649139386_cfc",
+      "url": "https://example.com",
+      "ts": "2026-06-28T12:18:59.387Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782649139387_a11",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-06-28T12:18:59.387Z"
+    },
+    {
+      "event": "close_tab",
+      "tabId": "bc_1782649139387_a11",
+      "ts": "2026-06-28T12:18:59.387Z"
+    },
+    {
+      "event": "inspect_page",
+      "tabId": "bc_1782649139386_cfc",
+      "query": "test query",
+      "ts": "2026-06-28T12:18:59.387Z"
+    },
+    {
+      "event": "authenticate",
+      "service": "github",
+      "profileId": "default",
+      "ts": "2026-06-28T12:19:03.475Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": "Click Pay now and confirm payment",
+      "ts": "2026-06-28T12:19:03.478Z"
     }
   ],
   "stats": {
-    "openTabs": 7,
-    "closedTabs": 2,
+    "openTabs": 9,
+    "closedTabs": 3,
     "screenshots": 12,
-    "workflows": 2,
-    "authentications": 2
+    "workflows": 3,
+    "authentications": 3
   }
 }
