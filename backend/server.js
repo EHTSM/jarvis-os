@@ -844,6 +844,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn('[CIV] failed to register (non-fatal):', civErr.message);
     }
 
+    // ── Level 10: Autonomous Civilization (20 Autonomous Domains) ───────────
+    try {
+        const autoOrg = require('./services/autonomousOrg.cjs');
+        const autoResult = autoOrg.register();
+        logger.info('[AUTO] Level 10 registered — ' + autoResult.registered + '/' + autoResult.count + ' autonomous domains active');
+    } catch (autoErr) {
+        logger.warn('[AUTO] failed to register (non-fatal):', autoErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;
