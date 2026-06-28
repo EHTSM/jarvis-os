@@ -1,51 +1,51 @@
 {
   "patterns": {
     "high_risk_approval_rate": {
-      "rate": 0.26666666666666666,
-      "sampleSize": 30,
+      "rate": 0.2647058823529412,
+      "sampleSize": 34,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:13:25.959Z"
+      "updatedAt": "2026-06-28T19:14:29.198Z"
     },
     "deployment_approval_rate": {
       "rate": 1,
-      "sampleSize": 44,
+      "sampleSize": 50,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:13:25.959Z"
+      "updatedAt": "2026-06-28T19:14:29.198Z"
     },
     "ui_approval_rate": {
       "rate": 1,
-      "sampleSize": 8,
-      "confidence": 0.8,
-      "updatedAt": "2026-06-28T19:13:25.959Z"
+      "sampleSize": 9,
+      "confidence": 0.9,
+      "updatedAt": "2026-06-28T19:14:29.198Z"
     },
     "security_approval_rate": {
       "rate": 0,
-      "sampleSize": 22,
+      "sampleSize": 25,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:13:25.959Z"
+      "updatedAt": "2026-06-28T19:14:29.198Z"
     },
     "avg_decision_speed_ms": {
-      "avgMs": 7222,
-      "sampleSize": 64,
+      "avgMs": 7159,
+      "sampleSize": 73,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:13:25.959Z"
+      "updatedAt": "2026-06-28T19:14:29.198Z"
     },
     "weekend_decision_rate": {
-      "rate": 0.3125,
+      "rate": 0.27472527472527475,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:13:25.959Z"
+      "updatedAt": "2026-06-28T19:14:29.198Z"
     },
     "after_hours_decision_rate": {
-      "rate": 0.825,
+      "rate": 0.8461538461538461,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:13:25.959Z"
+      "updatedAt": "2026-06-28T19:14:29.198Z"
     },
     "correction_frequency": {
-      "rate": 0.2375,
-      "sampleSize": 80,
+      "rate": 0.24175824175824176,
+      "sampleSize": 91,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:13:25.959Z"
+      "updatedAt": "2026-06-28T19:14:29.198Z"
     }
   },
-  "updatedAt": "2026-06-28T19:13:25.959Z"
+  "updatedAt": "2026-06-28T19:14:29.198Z"
 }
