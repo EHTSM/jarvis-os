@@ -402,11 +402,37 @@
       "outcome": "retry_queued",
       "notes": "Retrying failed step immediately",
       "completedAt": "2026-06-28T19:11:29.205Z"
+    },
+    {
+      "id": "rec_1782675384402_few",
+      "executionId": "exec_1782675383626",
+      "workflowId": "wf_test",
+      "failedStep": "test step",
+      "error": "ETIMEDOUT",
+      "strategy": "RETRY_IMMEDIATE",
+      "attemptCount": 0,
+      "startedAt": "2026-06-28T19:36:24.402Z",
+      "outcome": "retry_queued",
+      "notes": "Retrying failed step immediately",
+      "completedAt": "2026-06-28T19:36:24.402Z"
+    },
+    {
+      "id": "rec_1782675390971_bge",
+      "executionId": "exec_1782675390278",
+      "workflowId": "wf_test",
+      "failedStep": "test step",
+      "error": "ETIMEDOUT",
+      "strategy": "RETRY_IMMEDIATE",
+      "attemptCount": 0,
+      "startedAt": "2026-06-28T19:36:30.971Z",
+      "outcome": "retry_queued",
+      "notes": "Retrying failed step immediately",
+      "completedAt": "2026-06-28T19:36:30.971Z"
     }
   ],
   "stats": {
-    "totalRecoveries": 31,
-    "successfulRecoveries": 31,
+    "totalRecoveries": 33,
+    "successfulRecoveries": 33,
     "escalations": 0
   }
 }

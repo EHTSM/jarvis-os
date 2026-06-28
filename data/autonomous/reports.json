@@ -17957,7 +17957,1815 @@
       },
       "confidence": 0.8,
       "createdAt": "2026-06-28T19:11:34.554Z"
+    },
+    {
+      "id": "arpt_1782674802723_n8r1",
+      "title": "Autonomous Cycle 13 Report",
+      "type": "cycle",
+      "cycle": 13,
+      "summary": "Cycle 13: health=93 | obs: 29/30 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 30,
+            "running": 29
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:26:42.723Z"
+    },
+    {
+      "id": "arpt_1782674948307_qcvh",
+      "title": "Autonomous Cycle 14 Report",
+      "type": "cycle",
+      "cycle": 14,
+      "summary": "Cycle 14: health=93 | obs: 29/30 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 30,
+            "running": 29
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:29:08.307Z"
+    },
+    {
+      "id": "arpt_1782674965089_bsro",
+      "title": "Autonomous Cycle 15 Report",
+      "type": "cycle",
+      "cycle": 15,
+      "summary": "Cycle 15: health=93 | obs: 29/30 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 30,
+            "running": 29
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:29:25.089Z"
+    },
+    {
+      "id": "arpt_1782675283968_gbbj",
+      "title": "Autonomous Cycle 16 Report",
+      "type": "cycle",
+      "cycle": 16,
+      "summary": "Cycle 16: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:34:43.968Z"
+    },
+    {
+      "id": "arpt_1782675374104_9d39",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.104Z"
+    },
+    {
+      "id": "arpt_1782675374166_ahec",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.166Z"
+    },
+    {
+      "id": "arpt_1782675374223_trng",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.223Z"
+    },
+    {
+      "id": "arpt_1782675374279_ip3r",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.279Z"
+    },
+    {
+      "id": "arpt_1782675374339_ppl1",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.339Z"
+    },
+    {
+      "id": "arpt_1782675374393_j9r2",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.393Z"
+    },
+    {
+      "id": "arpt_1782675374478_q0fx",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.478Z"
+    },
+    {
+      "id": "arpt_1782675374549_calg",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.549Z"
+    },
+    {
+      "id": "arpt_1782675374619_cdqc",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.619Z"
+    },
+    {
+      "id": "arpt_1782675374687_uuw9",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.687Z"
+    },
+    {
+      "id": "arpt_1782675374740_sydl",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.740Z"
+    },
+    {
+      "id": "arpt_1782675374796_qije",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.796Z"
+    },
+    {
+      "id": "arpt_1782675374852_g50u",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.852Z"
+    },
+    {
+      "id": "arpt_1782675374904_id1d",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.904Z"
+    },
+    {
+      "id": "arpt_1782675374966_5q4i",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:14.966Z"
+    },
+    {
+      "id": "arpt_1782675377760_6ete",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:17.760Z"
+    },
+    {
+      "id": "arpt_1782675378185_80xj",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:18.185Z"
+    },
+    {
+      "id": "arpt_1782675378248_n0ji",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:18.248Z"
+    },
+    {
+      "id": "arpt_1782675378979_vkqc",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:18.979Z"
+    },
+    {
+      "id": "arpt_1782675379037_hozl",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.037Z"
+    },
+    {
+      "id": "arpt_1782675379093_970t",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.093Z"
+    },
+    {
+      "id": "arpt_1782675379148_gjrr",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.148Z"
+    },
+    {
+      "id": "arpt_1782675379205_o0tf",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.205Z"
+    },
+    {
+      "id": "arpt_1782675379258_0n2m",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.258Z"
+    },
+    {
+      "id": "arpt_1782675379313_4b1w",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.313Z"
+    },
+    {
+      "id": "arpt_1782675379370_lo4t",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.370Z"
+    },
+    {
+      "id": "arpt_1782675379430_az01",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.430Z"
+    },
+    {
+      "id": "arpt_1782675379487_9ny3",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.487Z"
+    },
+    {
+      "id": "arpt_1782675379541_lyu8",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.541Z"
+    },
+    {
+      "id": "arpt_1782675379594_g10d",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.594Z"
+    },
+    {
+      "id": "arpt_1782675379650_x62g",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.650Z"
+    },
+    {
+      "id": "arpt_1782675379703_rcx1",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.703Z"
+    },
+    {
+      "id": "arpt_1782675379759_0zjk",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:19.759Z"
+    },
+    {
+      "id": "arpt_1782675382365_aphq",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:22.365Z"
+    },
+    {
+      "id": "arpt_1782675382775_1sss",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:22.775Z"
+    },
+    {
+      "id": "arpt_1782675382833_r18s",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:22.833Z"
+    },
+    {
+      "id": "arpt_1782675383222_fs02",
+      "title": "Production Bible built — 118 workflows",
+      "type": "production_bible_build",
+      "cycle": 16,
+      "summary": "78 full-auto, 38 semi-auto, 2 manual",
+      "data": {
+        "total": 118,
+        "automated": 78,
+        "semiAuto": 38,
+        "manual": 2
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:23.222Z"
+    },
+    {
+      "id": "arpt_1782675383545_5uay",
+      "title": "Production Bible built — 118 workflows",
+      "type": "production_bible_build",
+      "cycle": 16,
+      "summary": "78 full-auto, 38 semi-auto, 2 manual",
+      "data": {
+        "total": 118,
+        "automated": 78,
+        "semiAuto": 38,
+        "manual": 2
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:23.545Z"
+    },
+    {
+      "id": "arpt_1782675385448_n6x8",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:25.448Z"
+    },
+    {
+      "id": "arpt_1782675385526_e3vu",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:25.526Z"
+    },
+    {
+      "id": "arpt_1782675385588_rv2x",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:25.588Z"
+    },
+    {
+      "id": "arpt_1782675385647_a76x",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:25.647Z"
+    },
+    {
+      "id": "arpt_1782675385708_61zr",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:25.708Z"
+    },
+    {
+      "id": "arpt_1782675385768_nmxw",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:25.768Z"
+    },
+    {
+      "id": "arpt_1782675385831_u3sw",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:25.831Z"
+    },
+    {
+      "id": "arpt_1782675385891_kpn9",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:25.891Z"
+    },
+    {
+      "id": "arpt_1782675385950_sodh",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:25.950Z"
+    },
+    {
+      "id": "arpt_1782675386011_6pjs",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:26.011Z"
+    },
+    {
+      "id": "arpt_1782675386070_hyh6",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:26.070Z"
+    },
+    {
+      "id": "arpt_1782675386130_orl5",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:26.130Z"
+    },
+    {
+      "id": "arpt_1782675386190_j7fb",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:26.190Z"
+    },
+    {
+      "id": "arpt_1782675386247_23mc",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:26.247Z"
+    },
+    {
+      "id": "arpt_1782675386308_5sql",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:26.308Z"
+    },
+    {
+      "id": "arpt_1782675389014_6xxr",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:29.014Z"
+    },
+    {
+      "id": "arpt_1782675389431_mkin",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:29.431Z"
+    },
+    {
+      "id": "arpt_1782675389495_6kls",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:29.495Z"
+    },
+    {
+      "id": "arpt_1782675389807_1i71",
+      "title": "Production Bible built — 118 workflows",
+      "type": "production_bible_build",
+      "cycle": 16,
+      "summary": "78 full-auto, 38 semi-auto, 2 manual",
+      "data": {
+        "total": 118,
+        "automated": 78,
+        "semiAuto": 38,
+        "manual": 2
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:29.807Z"
+    },
+    {
+      "id": "arpt_1782675391979_gort",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:31.979Z"
+    },
+    {
+      "id": "arpt_1782675392047_pyrf",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.047Z"
+    },
+    {
+      "id": "arpt_1782675392111_igrm",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.111Z"
+    },
+    {
+      "id": "arpt_1782675392173_vt1y",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.173Z"
+    },
+    {
+      "id": "arpt_1782675392237_vbnl",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.237Z"
+    },
+    {
+      "id": "arpt_1782675392295_vdya",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.295Z"
+    },
+    {
+      "id": "arpt_1782675392361_jvc4",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.361Z"
+    },
+    {
+      "id": "arpt_1782675392420_e319",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.420Z"
+    },
+    {
+      "id": "arpt_1782675392481_c63c",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.481Z"
+    },
+    {
+      "id": "arpt_1782675392541_hwrh",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.541Z"
+    },
+    {
+      "id": "arpt_1782675392601_7157",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.601Z"
+    },
+    {
+      "id": "arpt_1782675392659_bf5o",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.659Z"
+    },
+    {
+      "id": "arpt_1782675392720_64ia",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.720Z"
+    },
+    {
+      "id": "arpt_1782675392777_wp4n",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.777Z"
+    },
+    {
+      "id": "arpt_1782675392838_yuqt",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:32.838Z"
+    },
+    {
+      "id": "arpt_1782675395532_v5jv",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:35.532Z"
+    },
+    {
+      "id": "arpt_1782675395946_xiw7",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:35.946Z"
+    },
+    {
+      "id": "arpt_1782675396012_lvhc",
+      "title": "Weekly Self-Review — Overall 79/100",
+      "type": "weekly_self_review",
+      "cycle": 16,
+      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "data": {
+        "overall": 79,
+        "scores": {
+          "architecture": 100,
+          "autonomy": 75,
+          "technicalDebt": 67,
+          "reliability": 80,
+          "performance": 85,
+          "founderTimeSaved": 20,
+          "customerImpact": 94,
+          "consolidation": 80,
+          "security": 60
+        }
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:36.012Z"
+    },
+    {
+      "id": "arpt_1782675396314_wrcd",
+      "title": "Production Bible built — 118 workflows",
+      "type": "production_bible_build",
+      "cycle": 16,
+      "summary": "78 full-auto, 38 semi-auto, 2 manual",
+      "data": {
+        "total": 118,
+        "automated": 78,
+        "semiAuto": 38,
+        "manual": 2
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-28T19:36:36.314Z"
     }
   ],
-  "totalReports": 795
+  "totalReports": 875
 }

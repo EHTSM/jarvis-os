@@ -27,10 +27,10 @@
     "priority": 1,
     "createdAt": "2026-06-05T19:08:23.298Z",
     "title": "Fix: unknown",
-    "detail": "High-severity failure cluster (94 occurrences). Root cause: unclassified error — review logs for detail",
+    "detail": "High-severity failure cluster (454 occurrences). Root cause: unclassified error — review logs for detail",
     "type": "fix",
     "source": "auto_analysis",
-    "updatedAt": "2026-06-28T19:14:29.242Z"
+    "updatedAt": "2026-06-28T19:36:42.041Z"
   },
   {
     "recId": "rec_1780686503298_5j",
@@ -85,6 +85,6 @@
     "detail": "High-severity failure cluster (22 occurrences). Root cause: application error — review stack trace",
     "type": "fix",
     "source": "auto_analysis",
-    "updatedAt": "2026-06-28T19:14:29.243Z"
+    "updatedAt": "2026-06-28T19:36:42.042Z"
   }
 ]

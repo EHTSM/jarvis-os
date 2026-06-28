@@ -130,5 +130,6 @@ router.use(require("./approvalRoutes"));        // POST-Ω P4: /approval/* queue
 router.use(require("./computerController"));    // POST-Ω P5: /computer/* desktop+browser+editor+terminal+workspace+run
 router.use(require("./founderTwin"));          // POST-Ω P6: /twin/* profile+decisions+predict+preferences+context+scenarios
 router.use(require("./workforceOS"));          // POST-Ω P7: /workforce-os/* agents+teams+capacity+performance+dashboard
+router.use(require("./companyFactory"));       // POST-Ω P8: /company-factory/* create+blueprints+workspace+lifecycle+dashboard
 
 module.exports = router;

@@ -159,6 +159,26 @@
       "proposedAt": "2026-06-28T06:10:37.688Z",
       "implementedAt": "2026-06-28T06:55:58.219Z",
       "measuredAt": null
+    },
+    {
+      "id": "aevo_1782674964860_eqto",
+      "type": "capability",
+      "title": "Enhance autonomous decision quality — cycle 15",
+      "description": "Success rate 100% — propose confidence threshold reduction",
+      "targetDomain": "autonomous",
+      "targetLayer": "autonomous",
+      "change": "Reduce confidence threshold from 0.6 to 0.58",
+      "rationale": "High success rate (100%) indicates system can act with slightly lower confidence",
+      "confidence": 0.7,
+      "impact": "low",
+      "measuredBy": [],
+      "reversible": true,
+      "status": "proposed",
+      "outcome": null,
+      "measuredImpact": null,
+      "proposedAt": "2026-06-28T19:29:24.860Z",
+      "implementedAt": null,
+      "measuredAt": null
     }
   ],
   "orgLifecycle": [
@@ -182,5 +202,5 @@
       "at": "2026-06-28T05:35:59.075Z"
     }
   ],
-  "totalEvolutions": 8
+  "totalEvolutions": 9
 }

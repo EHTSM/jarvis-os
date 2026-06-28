@@ -755,7 +755,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:32:15.122Z",
-      "updatedAt": "2026-06-27T22:32:20.888Z",
+      "updatedAt": "2026-06-28T19:36:45.480Z",
       "completedAt": null,
       "progress": 0
     },
@@ -776,7 +776,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:32:15.135Z",
-      "updatedAt": "2026-06-27T22:32:20.887Z",
+      "updatedAt": "2026-06-28T19:36:45.479Z",
       "completedAt": null,
       "progress": 0
     },
@@ -797,7 +797,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:32:15.136Z",
-      "updatedAt": "2026-06-27T22:32:20.887Z",
+      "updatedAt": "2026-06-28T19:36:45.478Z",
       "completedAt": null,
       "progress": 100
     },
@@ -978,13 +978,15 @@
       "sourceCommand": "DispEng 1782599535116",
       "status": "active",
       "quarter": "2026-Q2",
-      "strategyIds": [],
+      "strategyIds": [
+        "estrat_1782675337902_dkm4"
+      ],
       "missionIds": [
         "emiss_1782599535518_7szr"
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:32:15.512Z",
-      "updatedAt": "2026-06-27T22:32:20.887Z",
+      "updatedAt": "2026-06-28T19:36:45.478Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1002,13 +1004,15 @@
       "sourceCommand": "DispBiz 1782599535116",
       "status": "active",
       "quarter": "2026-Q2",
-      "strategyIds": [],
+      "strategyIds": [
+        "estrat_1782675337559_uyh4"
+      ],
       "missionIds": [
         "emiss_1782599535526_49d5"
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:32:15.518Z",
-      "updatedAt": "2026-06-27T22:32:20.887Z",
+      "updatedAt": "2026-06-28T19:36:45.477Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1026,13 +1030,15 @@
       "sourceCommand": "DispKnow 1782599535116",
       "status": "active",
       "quarter": "2026-Q2",
-      "strategyIds": [],
+      "strategyIds": [
+        "estrat_1782674964468_mdk2"
+      ],
       "missionIds": [
         "emiss_1782599535539_9j69"
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:32:15.526Z",
-      "updatedAt": "2026-06-27T22:32:20.886Z",
+      "updatedAt": "2026-06-28T19:36:45.477Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1050,13 +1056,15 @@
       "sourceCommand": "DispEvo 1782599535116",
       "status": "active",
       "quarter": "2026-Q2",
-      "strategyIds": [],
+      "strategyIds": [
+        "estrat_1782674964466_3mr7"
+      ],
       "missionIds": [
         "emiss_1782599535542_c7cq"
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:32:15.540Z",
-      "updatedAt": "2026-06-27T22:32:20.886Z",
+      "updatedAt": "2026-06-28T19:36:45.476Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1074,13 +1082,15 @@
       "sourceCommand": "DispODI 1782599535116",
       "status": "active",
       "quarter": "2026-Q2",
-      "strategyIds": [],
+      "strategyIds": [
+        "estrat_1782674947764_bpmq"
+      ],
       "missionIds": [
         "emiss_1782599535543_py59"
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:32:15.542Z",
-      "updatedAt": "2026-06-27T22:32:20.886Z",
+      "updatedAt": "2026-06-28T19:36:45.476Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1206,7 +1216,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:32:15.585Z",
-      "updatedAt": "2026-06-27T22:32:20.886Z",
+      "updatedAt": "2026-06-28T19:36:45.475Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1236,7 +1246,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:32:20.476Z",
-      "updatedAt": "2026-06-27T22:32:20.885Z",
+      "updatedAt": "2026-06-28T19:36:45.475Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1254,7 +1264,9 @@
       "sourceCommand": "Intake Goal 1782600223572",
       "status": "active",
       "quarter": "2026-Q2",
-      "strategyIds": [],
+      "strategyIds": [
+        "estrat_1782674947759_zj4m"
+      ],
       "missionIds": [],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:43:44.429Z",
@@ -1276,7 +1288,9 @@
       "sourceCommand": "Intake With Portfolio 1782600223572",
       "status": "active",
       "quarter": "2026-Q2",
-      "strategyIds": [],
+      "strategyIds": [
+        "estrat_1782674802124_sq38"
+      ],
       "missionIds": [],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:43:44.432Z",
@@ -1322,7 +1336,9 @@
       "sourceCommand": "Gov Goal 1782600223572",
       "status": "active",
       "quarter": "2026-Q2",
-      "strategyIds": [],
+      "strategyIds": [
+        "estrat_1782674802117_e3dx"
+      ],
       "missionIds": [],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:43:44.435Z",
@@ -1429,7 +1445,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:43:44.545Z",
-      "updatedAt": "2026-06-27T22:43:44.545Z",
+      "updatedAt": "2026-06-28T19:36:45.474Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1460,7 +1476,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:43:49.907Z",
-      "updatedAt": "2026-06-27T22:43:49.907Z",
+      "updatedAt": "2026-06-28T19:36:45.474Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1512,7 +1528,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:54:48.680Z",
-      "updatedAt": "2026-06-27T22:54:48.680Z",
+      "updatedAt": "2026-06-28T19:36:45.473Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1542,7 +1558,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:54:48.822Z",
-      "updatedAt": "2026-06-27T22:54:48.822Z",
+      "updatedAt": "2026-06-28T19:36:45.473Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1571,7 +1587,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:54:48.936Z",
-      "updatedAt": "2026-06-27T22:54:48.936Z",
+      "updatedAt": "2026-06-28T19:36:45.472Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1600,7 +1616,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:54:53.916Z",
-      "updatedAt": "2026-06-27T22:54:53.916Z",
+      "updatedAt": "2026-06-28T19:36:45.472Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1652,7 +1668,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:56:37.099Z",
-      "updatedAt": "2026-06-27T22:56:37.099Z",
+      "updatedAt": "2026-06-28T19:36:45.471Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1682,7 +1698,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:56:37.226Z",
-      "updatedAt": "2026-06-27T22:56:37.226Z",
+      "updatedAt": "2026-06-28T19:36:45.471Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1711,7 +1727,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:56:37.324Z",
-      "updatedAt": "2026-06-27T22:56:37.324Z",
+      "updatedAt": "2026-06-28T19:36:45.470Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1740,7 +1756,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T22:56:42.641Z",
-      "updatedAt": "2026-06-27T22:56:42.641Z",
+      "updatedAt": "2026-06-28T19:36:45.470Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1796,7 +1812,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T23:09:46.633Z",
-      "updatedAt": "2026-06-27T23:09:46.633Z",
+      "updatedAt": "2026-06-28T19:36:45.469Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1826,7 +1842,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T23:09:46.814Z",
-      "updatedAt": "2026-06-27T23:09:46.814Z",
+      "updatedAt": "2026-06-28T19:36:45.469Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1857,7 +1873,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T23:09:46.947Z",
-      "updatedAt": "2026-06-27T23:09:46.947Z",
+      "updatedAt": "2026-06-28T19:36:45.468Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1888,7 +1904,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-27T23:09:52.145Z",
-      "updatedAt": "2026-06-27T23:09:52.145Z",
+      "updatedAt": "2026-06-28T19:36:45.468Z",
       "completedAt": null,
       "progress": 0
     },
@@ -1918,7 +1934,7 @@
       ],
       "orgTasks": {},
       "createdAt": "2026-06-28T05:36:00.488Z",
-      "updatedAt": "2026-06-28T05:36:00.488Z",
+      "updatedAt": "2026-06-28T19:36:45.467Z",
       "completedAt": null,
       "progress": 0
     }
@@ -3744,6 +3760,414 @@
       "status": "active",
       "createdAt": "2026-06-28T06:55:57.458Z",
       "updatedAt": "2026-06-28T06:55:57.460Z",
+      "approvedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "estrat_1782674802117_e3dx",
+      "goalId": "egoal_1782600224435_ie2g",
+      "title": "Strategy: Gov Goal 1782600223572",
+      "description": "Multi-org execution strategy for: Gov Goal 1782600223572",
+      "orgTargets": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "odi"
+      ],
+      "phases": [
+        {
+          "name": "Engineering Execution",
+          "orgTarget": "engineering",
+          "estimatedDays": 7
+        },
+        {
+          "name": "Business Execution",
+          "orgTarget": "business",
+          "estimatedDays": 5
+        },
+        {
+          "name": "Knowledge Capture",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Design & UX",
+          "orgTarget": "odi",
+          "estimatedDays": 3
+        },
+        {
+          "name": "Evolution & Validation",
+          "orgTarget": "evolution",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Deploy & Report",
+          "orgTarget": "executive",
+          "estimatedDays": 1
+        }
+      ],
+      "estimatedDuration": "3w",
+      "status": "active",
+      "createdAt": "2026-06-28T19:26:42.117Z",
+      "updatedAt": "2026-06-28T19:26:42.119Z",
+      "approvedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "estrat_1782674802124_sq38",
+      "goalId": "egoal_1782600224432_c9aw",
+      "title": "Strategy: Intake With Portfolio 1782600223572",
+      "description": "Multi-org execution strategy for: Intake With Portfolio 1782600223572",
+      "orgTargets": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "odi"
+      ],
+      "phases": [
+        {
+          "name": "Engineering Execution",
+          "orgTarget": "engineering",
+          "estimatedDays": 7
+        },
+        {
+          "name": "Business Execution",
+          "orgTarget": "business",
+          "estimatedDays": 5
+        },
+        {
+          "name": "Knowledge Capture",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Design & UX",
+          "orgTarget": "odi",
+          "estimatedDays": 3
+        },
+        {
+          "name": "Evolution & Validation",
+          "orgTarget": "evolution",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Deploy & Report",
+          "orgTarget": "executive",
+          "estimatedDays": 1
+        }
+      ],
+      "estimatedDuration": "3w",
+      "status": "active",
+      "createdAt": "2026-06-28T19:26:42.124Z",
+      "updatedAt": "2026-06-28T19:26:42.127Z",
+      "approvedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "estrat_1782674947759_zj4m",
+      "goalId": "egoal_1782600224429_c62h",
+      "title": "Strategy: Intake Goal 1782600223572",
+      "description": "Multi-org execution strategy for: Intake Goal 1782600223572",
+      "orgTargets": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "odi"
+      ],
+      "phases": [
+        {
+          "name": "Engineering Execution",
+          "orgTarget": "engineering",
+          "estimatedDays": 7
+        },
+        {
+          "name": "Business Execution",
+          "orgTarget": "business",
+          "estimatedDays": 5
+        },
+        {
+          "name": "Knowledge Capture",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Design & UX",
+          "orgTarget": "odi",
+          "estimatedDays": 3
+        },
+        {
+          "name": "Evolution & Validation",
+          "orgTarget": "evolution",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Deploy & Report",
+          "orgTarget": "executive",
+          "estimatedDays": 1
+        }
+      ],
+      "estimatedDuration": "3w",
+      "status": "active",
+      "createdAt": "2026-06-28T19:29:07.759Z",
+      "updatedAt": "2026-06-28T19:29:07.762Z",
+      "approvedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "estrat_1782674947764_bpmq",
+      "goalId": "egoal_1782599535542_mmur",
+      "title": "Strategy: DispODI 1782599535116",
+      "description": "Multi-org execution strategy for: DispODI 1782599535116",
+      "orgTargets": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "odi"
+      ],
+      "phases": [
+        {
+          "name": "Engineering Execution",
+          "orgTarget": "engineering",
+          "estimatedDays": 7
+        },
+        {
+          "name": "Business Execution",
+          "orgTarget": "business",
+          "estimatedDays": 5
+        },
+        {
+          "name": "Knowledge Capture",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Design & UX",
+          "orgTarget": "odi",
+          "estimatedDays": 3
+        },
+        {
+          "name": "Evolution & Validation",
+          "orgTarget": "evolution",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Deploy & Report",
+          "orgTarget": "executive",
+          "estimatedDays": 1
+        }
+      ],
+      "estimatedDuration": "3w",
+      "status": "active",
+      "createdAt": "2026-06-28T19:29:07.764Z",
+      "updatedAt": "2026-06-28T19:29:07.772Z",
+      "approvedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "estrat_1782674964466_3mr7",
+      "goalId": "egoal_1782599535540_xnf5",
+      "title": "Strategy: DispEvo 1782599535116",
+      "description": "Multi-org execution strategy for: DispEvo 1782599535116",
+      "orgTargets": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "odi"
+      ],
+      "phases": [
+        {
+          "name": "Engineering Execution",
+          "orgTarget": "engineering",
+          "estimatedDays": 7
+        },
+        {
+          "name": "Business Execution",
+          "orgTarget": "business",
+          "estimatedDays": 5
+        },
+        {
+          "name": "Knowledge Capture",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Design & UX",
+          "orgTarget": "odi",
+          "estimatedDays": 3
+        },
+        {
+          "name": "Evolution & Validation",
+          "orgTarget": "evolution",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Deploy & Report",
+          "orgTarget": "executive",
+          "estimatedDays": 1
+        }
+      ],
+      "estimatedDuration": "3w",
+      "status": "active",
+      "createdAt": "2026-06-28T19:29:24.466Z",
+      "updatedAt": "2026-06-28T19:29:24.467Z",
+      "approvedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "estrat_1782674964468_mdk2",
+      "goalId": "egoal_1782599535526_30hz",
+      "title": "Strategy: DispKnow 1782599535116",
+      "description": "Multi-org execution strategy for: DispKnow 1782599535116",
+      "orgTargets": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "odi"
+      ],
+      "phases": [
+        {
+          "name": "Engineering Execution",
+          "orgTarget": "engineering",
+          "estimatedDays": 7
+        },
+        {
+          "name": "Business Execution",
+          "orgTarget": "business",
+          "estimatedDays": 5
+        },
+        {
+          "name": "Knowledge Capture",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Design & UX",
+          "orgTarget": "odi",
+          "estimatedDays": 3
+        },
+        {
+          "name": "Evolution & Validation",
+          "orgTarget": "evolution",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Deploy & Report",
+          "orgTarget": "executive",
+          "estimatedDays": 1
+        }
+      ],
+      "estimatedDuration": "3w",
+      "status": "active",
+      "createdAt": "2026-06-28T19:29:24.468Z",
+      "updatedAt": "2026-06-28T19:29:24.469Z",
+      "approvedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "estrat_1782675337559_uyh4",
+      "goalId": "egoal_1782599535518_kne3",
+      "title": "Strategy: DispBiz 1782599535116",
+      "description": "Multi-org execution strategy for: DispBiz 1782599535116",
+      "orgTargets": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "odi"
+      ],
+      "phases": [
+        {
+          "name": "Engineering Execution",
+          "orgTarget": "engineering",
+          "estimatedDays": 7
+        },
+        {
+          "name": "Business Execution",
+          "orgTarget": "business",
+          "estimatedDays": 5
+        },
+        {
+          "name": "Knowledge Capture",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Design & UX",
+          "orgTarget": "odi",
+          "estimatedDays": 3
+        },
+        {
+          "name": "Evolution & Validation",
+          "orgTarget": "evolution",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Deploy & Report",
+          "orgTarget": "executive",
+          "estimatedDays": 1
+        }
+      ],
+      "estimatedDuration": "3w",
+      "status": "active",
+      "createdAt": "2026-06-28T19:35:37.559Z",
+      "updatedAt": "2026-06-28T19:35:37.560Z",
+      "approvedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "estrat_1782675337902_dkm4",
+      "goalId": "egoal_1782599535512_32xl",
+      "title": "Strategy: DispEng 1782599535116",
+      "description": "Multi-org execution strategy for: DispEng 1782599535116",
+      "orgTargets": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "odi"
+      ],
+      "phases": [
+        {
+          "name": "Engineering Execution",
+          "orgTarget": "engineering",
+          "estimatedDays": 7
+        },
+        {
+          "name": "Business Execution",
+          "orgTarget": "business",
+          "estimatedDays": 5
+        },
+        {
+          "name": "Knowledge Capture",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Design & UX",
+          "orgTarget": "odi",
+          "estimatedDays": 3
+        },
+        {
+          "name": "Evolution & Validation",
+          "orgTarget": "evolution",
+          "estimatedDays": 2
+        },
+        {
+          "name": "Deploy & Report",
+          "orgTarget": "executive",
+          "estimatedDays": 1
+        }
+      ],
+      "estimatedDuration": "3w",
+      "status": "active",
+      "createdAt": "2026-06-28T19:35:37.902Z",
+      "updatedAt": "2026-06-28T19:35:37.906Z",
       "approvedAt": null,
       "completedAt": null
     }
@@ -7416,6 +7840,158 @@
       "createdAt": "2026-06-28T06:55:58.987Z",
       "updatedAt": "2026-06-28T06:55:58.987Z",
       "completedAt": null
+    },
+    {
+      "id": "emiss_1782674801956_yo3d",
+      "title": "Cross-org: Cross-layer smoke 1782601786114",
+      "description": "Cross-org: Cross-layer smoke 1782601786114",
+      "orgTargets": [
+        "engineering",
+        "business"
+      ],
+      "priority": "medium",
+      "subtasks": [],
+      "status": "active",
+      "orchMissionId": null,
+      "orgResults": {},
+      "completedOrgs": [],
+      "failedOrgs": [],
+      "createdAt": "2026-06-28T19:26:41.956Z",
+      "updatedAt": "2026-06-28T19:26:41.956Z",
+      "completedAt": null
+    },
+    {
+      "id": "emiss_1782674801959_9mko",
+      "title": "Cross-org: Cross-layer smoke 1782601786114",
+      "description": "Cross-org: Cross-layer smoke 1782601786114",
+      "orgTargets": [
+        "engineering",
+        "business"
+      ],
+      "priority": "medium",
+      "subtasks": [],
+      "status": "active",
+      "orchMissionId": null,
+      "orgResults": {},
+      "completedOrgs": [],
+      "failedOrgs": [],
+      "createdAt": "2026-06-28T19:26:41.959Z",
+      "updatedAt": "2026-06-28T19:26:41.959Z",
+      "completedAt": null
+    },
+    {
+      "id": "emiss_1782674947541_he5p",
+      "title": "Cross-org: Cross-layer smoke 1782601786114",
+      "description": "Cross-org: Cross-layer smoke 1782601786114",
+      "orgTargets": [
+        "engineering",
+        "business"
+      ],
+      "priority": "medium",
+      "subtasks": [],
+      "status": "active",
+      "orchMissionId": null,
+      "orgResults": {},
+      "completedOrgs": [],
+      "failedOrgs": [],
+      "createdAt": "2026-06-28T19:29:07.541Z",
+      "updatedAt": "2026-06-28T19:29:07.541Z",
+      "completedAt": null
+    },
+    {
+      "id": "emiss_1782674947544_3mxa",
+      "title": "Cross-org: Cross-layer smoke 1782601786114",
+      "description": "Cross-org: Cross-layer smoke 1782601786114",
+      "orgTargets": [
+        "engineering",
+        "business"
+      ],
+      "priority": "medium",
+      "subtasks": [],
+      "status": "active",
+      "orchMissionId": null,
+      "orgResults": {},
+      "completedOrgs": [],
+      "failedOrgs": [],
+      "createdAt": "2026-06-28T19:29:07.544Z",
+      "updatedAt": "2026-06-28T19:29:07.544Z",
+      "completedAt": null
+    },
+    {
+      "id": "emiss_1782674964287_5jvz",
+      "title": "Cross-org: Cross-layer smoke 1782601786114",
+      "description": "Cross-org: Cross-layer smoke 1782601786114",
+      "orgTargets": [
+        "engineering",
+        "business"
+      ],
+      "priority": "medium",
+      "subtasks": [],
+      "status": "active",
+      "orchMissionId": null,
+      "orgResults": {},
+      "completedOrgs": [],
+      "failedOrgs": [],
+      "createdAt": "2026-06-28T19:29:24.287Z",
+      "updatedAt": "2026-06-28T19:29:24.287Z",
+      "completedAt": null
+    },
+    {
+      "id": "emiss_1782674964290_k621",
+      "title": "Cross-org: Cross-layer smoke 1782601786114",
+      "description": "Cross-org: Cross-layer smoke 1782601786114",
+      "orgTargets": [
+        "engineering",
+        "business"
+      ],
+      "priority": "medium",
+      "subtasks": [],
+      "status": "active",
+      "orchMissionId": null,
+      "orgResults": {},
+      "completedOrgs": [],
+      "failedOrgs": [],
+      "createdAt": "2026-06-28T19:29:24.290Z",
+      "updatedAt": "2026-06-28T19:29:24.290Z",
+      "completedAt": null
+    },
+    {
+      "id": "emiss_1782675280739_78i0",
+      "title": "Cross-org: Cross-layer smoke 1782601786114",
+      "description": "Cross-org: Cross-layer smoke 1782601786114",
+      "orgTargets": [
+        "engineering",
+        "business"
+      ],
+      "priority": "medium",
+      "subtasks": [],
+      "status": "active",
+      "orchMissionId": null,
+      "orgResults": {},
+      "completedOrgs": [],
+      "failedOrgs": [],
+      "createdAt": "2026-06-28T19:34:40.739Z",
+      "updatedAt": "2026-06-28T19:34:40.739Z",
+      "completedAt": null
+    },
+    {
+      "id": "emiss_1782675282110_36fe",
+      "title": "Cross-org: Cross-layer smoke 1782601786114",
+      "description": "Cross-org: Cross-layer smoke 1782601786114",
+      "orgTargets": [
+        "engineering",
+        "business"
+      ],
+      "priority": "medium",
+      "subtasks": [],
+      "status": "active",
+      "orchMissionId": null,
+      "orgResults": {},
+      "completedOrgs": [],
+      "failedOrgs": [],
+      "createdAt": "2026-06-28T19:34:42.110Z",
+      "updatedAt": "2026-06-28T19:34:42.110Z",
+      "completedAt": null
     }
   ],
   "decisions": [
@@ -9832,6 +10408,574 @@
       "status": "active",
       "createdAt": "2026-06-28T06:55:57.459Z",
       "updatedAt": "2026-06-28T06:55:57.459Z"
+    },
+    {
+      "id": "etl_1782674802118_ee35",
+      "goalId": "egoal_1782600224435_ie2g",
+      "title": "Timeline: Gov Goal 1782600223572",
+      "phases": [
+        {
+          "id": "etlph_1782674802118_itu7",
+          "order": 0,
+          "name": "Engineering Execution",
+          "status": "planned",
+          "orgTarget": "engineering",
+          "estimatedDays": 7,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674802118_j8kz",
+          "order": 1,
+          "name": "Business Execution",
+          "status": "planned",
+          "orgTarget": "business",
+          "estimatedDays": 5,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674802118_4t11",
+          "order": 2,
+          "name": "Knowledge Capture",
+          "status": "planned",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674802118_pfar",
+          "order": 3,
+          "name": "Design & UX",
+          "status": "planned",
+          "orgTarget": "odi",
+          "estimatedDays": 3,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674802118_sl5h",
+          "order": 4,
+          "name": "Evolution & Validation",
+          "status": "planned",
+          "orgTarget": "evolution",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674802118_8r3h",
+          "order": 5,
+          "name": "Deploy & Report",
+          "status": "planned",
+          "orgTarget": "executive",
+          "estimatedDays": 1,
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "estimatedEnd": null,
+      "status": "active",
+      "createdAt": "2026-06-28T19:26:42.118Z",
+      "updatedAt": "2026-06-28T19:26:42.118Z"
+    },
+    {
+      "id": "etl_1782674802125_t5n5",
+      "goalId": "egoal_1782600224432_c9aw",
+      "title": "Timeline: Intake With Portfolio 1782600223572",
+      "phases": [
+        {
+          "id": "etlph_1782674802125_ipb9",
+          "order": 0,
+          "name": "Engineering Execution",
+          "status": "planned",
+          "orgTarget": "engineering",
+          "estimatedDays": 7,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674802125_4dsu",
+          "order": 1,
+          "name": "Business Execution",
+          "status": "planned",
+          "orgTarget": "business",
+          "estimatedDays": 5,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674802125_9jao",
+          "order": 2,
+          "name": "Knowledge Capture",
+          "status": "planned",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674802125_t7ho",
+          "order": 3,
+          "name": "Design & UX",
+          "status": "planned",
+          "orgTarget": "odi",
+          "estimatedDays": 3,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674802125_jpk6",
+          "order": 4,
+          "name": "Evolution & Validation",
+          "status": "planned",
+          "orgTarget": "evolution",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674802125_y9pm",
+          "order": 5,
+          "name": "Deploy & Report",
+          "status": "planned",
+          "orgTarget": "executive",
+          "estimatedDays": 1,
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "estimatedEnd": null,
+      "status": "active",
+      "createdAt": "2026-06-28T19:26:42.125Z",
+      "updatedAt": "2026-06-28T19:26:42.125Z"
+    },
+    {
+      "id": "etl_1782674947760_6ap0",
+      "goalId": "egoal_1782600224429_c62h",
+      "title": "Timeline: Intake Goal 1782600223572",
+      "phases": [
+        {
+          "id": "etlph_1782674947761_lwdt",
+          "order": 0,
+          "name": "Engineering Execution",
+          "status": "planned",
+          "orgTarget": "engineering",
+          "estimatedDays": 7,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674947761_omj4",
+          "order": 1,
+          "name": "Business Execution",
+          "status": "planned",
+          "orgTarget": "business",
+          "estimatedDays": 5,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674947761_b4cg",
+          "order": 2,
+          "name": "Knowledge Capture",
+          "status": "planned",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674947761_elya",
+          "order": 3,
+          "name": "Design & UX",
+          "status": "planned",
+          "orgTarget": "odi",
+          "estimatedDays": 3,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674947761_ew6c",
+          "order": 4,
+          "name": "Evolution & Validation",
+          "status": "planned",
+          "orgTarget": "evolution",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674947761_23d3",
+          "order": 5,
+          "name": "Deploy & Report",
+          "status": "planned",
+          "orgTarget": "executive",
+          "estimatedDays": 1,
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "estimatedEnd": null,
+      "status": "active",
+      "createdAt": "2026-06-28T19:29:07.761Z",
+      "updatedAt": "2026-06-28T19:29:07.761Z"
+    },
+    {
+      "id": "etl_1782674947770_d4sf",
+      "goalId": "egoal_1782599535542_mmur",
+      "title": "Timeline: DispODI 1782599535116",
+      "phases": [
+        {
+          "id": "etlph_1782674947770_qw2l",
+          "order": 0,
+          "name": "Engineering Execution",
+          "status": "planned",
+          "orgTarget": "engineering",
+          "estimatedDays": 7,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674947770_yigf",
+          "order": 1,
+          "name": "Business Execution",
+          "status": "planned",
+          "orgTarget": "business",
+          "estimatedDays": 5,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674947770_pq19",
+          "order": 2,
+          "name": "Knowledge Capture",
+          "status": "planned",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674947770_zox2",
+          "order": 3,
+          "name": "Design & UX",
+          "status": "planned",
+          "orgTarget": "odi",
+          "estimatedDays": 3,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674947770_aah2",
+          "order": 4,
+          "name": "Evolution & Validation",
+          "status": "planned",
+          "orgTarget": "evolution",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674947770_wrql",
+          "order": 5,
+          "name": "Deploy & Report",
+          "status": "planned",
+          "orgTarget": "executive",
+          "estimatedDays": 1,
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "estimatedEnd": null,
+      "status": "active",
+      "createdAt": "2026-06-28T19:29:07.770Z",
+      "updatedAt": "2026-06-28T19:29:07.770Z"
+    },
+    {
+      "id": "etl_1782674964467_cnxr",
+      "goalId": "egoal_1782599535540_xnf5",
+      "title": "Timeline: DispEvo 1782599535116",
+      "phases": [
+        {
+          "id": "etlph_1782674964467_n1y9",
+          "order": 0,
+          "name": "Engineering Execution",
+          "status": "planned",
+          "orgTarget": "engineering",
+          "estimatedDays": 7,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674964467_1rnv",
+          "order": 1,
+          "name": "Business Execution",
+          "status": "planned",
+          "orgTarget": "business",
+          "estimatedDays": 5,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674964467_1kwt",
+          "order": 2,
+          "name": "Knowledge Capture",
+          "status": "planned",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674964467_1i0a",
+          "order": 3,
+          "name": "Design & UX",
+          "status": "planned",
+          "orgTarget": "odi",
+          "estimatedDays": 3,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674964467_4fiv",
+          "order": 4,
+          "name": "Evolution & Validation",
+          "status": "planned",
+          "orgTarget": "evolution",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674964467_oflb",
+          "order": 5,
+          "name": "Deploy & Report",
+          "status": "planned",
+          "orgTarget": "executive",
+          "estimatedDays": 1,
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "estimatedEnd": null,
+      "status": "active",
+      "createdAt": "2026-06-28T19:29:24.467Z",
+      "updatedAt": "2026-06-28T19:29:24.467Z"
+    },
+    {
+      "id": "etl_1782674964468_llao",
+      "goalId": "egoal_1782599535526_30hz",
+      "title": "Timeline: DispKnow 1782599535116",
+      "phases": [
+        {
+          "id": "etlph_1782674964468_j4yg",
+          "order": 0,
+          "name": "Engineering Execution",
+          "status": "planned",
+          "orgTarget": "engineering",
+          "estimatedDays": 7,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674964468_gukp",
+          "order": 1,
+          "name": "Business Execution",
+          "status": "planned",
+          "orgTarget": "business",
+          "estimatedDays": 5,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674964468_11p5",
+          "order": 2,
+          "name": "Knowledge Capture",
+          "status": "planned",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674964468_7aa7",
+          "order": 3,
+          "name": "Design & UX",
+          "status": "planned",
+          "orgTarget": "odi",
+          "estimatedDays": 3,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674964468_ahae",
+          "order": 4,
+          "name": "Evolution & Validation",
+          "status": "planned",
+          "orgTarget": "evolution",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782674964468_y4x4",
+          "order": 5,
+          "name": "Deploy & Report",
+          "status": "planned",
+          "orgTarget": "executive",
+          "estimatedDays": 1,
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "estimatedEnd": null,
+      "status": "active",
+      "createdAt": "2026-06-28T19:29:24.468Z",
+      "updatedAt": "2026-06-28T19:29:24.468Z"
+    },
+    {
+      "id": "etl_1782675337560_p3e8",
+      "goalId": "egoal_1782599535518_kne3",
+      "title": "Timeline: DispBiz 1782599535116",
+      "phases": [
+        {
+          "id": "etlph_1782675337560_u04a",
+          "order": 0,
+          "name": "Engineering Execution",
+          "status": "planned",
+          "orgTarget": "engineering",
+          "estimatedDays": 7,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782675337560_p279",
+          "order": 1,
+          "name": "Business Execution",
+          "status": "planned",
+          "orgTarget": "business",
+          "estimatedDays": 5,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782675337560_tex1",
+          "order": 2,
+          "name": "Knowledge Capture",
+          "status": "planned",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782675337560_a9sk",
+          "order": 3,
+          "name": "Design & UX",
+          "status": "planned",
+          "orgTarget": "odi",
+          "estimatedDays": 3,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782675337560_2dv8",
+          "order": 4,
+          "name": "Evolution & Validation",
+          "status": "planned",
+          "orgTarget": "evolution",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782675337560_hewh",
+          "order": 5,
+          "name": "Deploy & Report",
+          "status": "planned",
+          "orgTarget": "executive",
+          "estimatedDays": 1,
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "estimatedEnd": null,
+      "status": "active",
+      "createdAt": "2026-06-28T19:35:37.560Z",
+      "updatedAt": "2026-06-28T19:35:37.560Z"
+    },
+    {
+      "id": "etl_1782675337904_yusn",
+      "goalId": "egoal_1782599535512_32xl",
+      "title": "Timeline: DispEng 1782599535116",
+      "phases": [
+        {
+          "id": "etlph_1782675337904_6q97",
+          "order": 0,
+          "name": "Engineering Execution",
+          "status": "planned",
+          "orgTarget": "engineering",
+          "estimatedDays": 7,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782675337904_zijn",
+          "order": 1,
+          "name": "Business Execution",
+          "status": "planned",
+          "orgTarget": "business",
+          "estimatedDays": 5,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782675337904_2qsa",
+          "order": 2,
+          "name": "Knowledge Capture",
+          "status": "planned",
+          "orgTarget": "knowledge",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782675337904_yoq1",
+          "order": 3,
+          "name": "Design & UX",
+          "status": "planned",
+          "orgTarget": "odi",
+          "estimatedDays": 3,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782675337904_fgsa",
+          "order": 4,
+          "name": "Evolution & Validation",
+          "status": "planned",
+          "orgTarget": "evolution",
+          "estimatedDays": 2,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": "etlph_1782675337904_6irs",
+          "order": 5,
+          "name": "Deploy & Report",
+          "status": "planned",
+          "orgTarget": "executive",
+          "estimatedDays": 1,
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "estimatedEnd": null,
+      "status": "active",
+      "createdAt": "2026-06-28T19:35:37.904Z",
+      "updatedAt": "2026-06-28T19:35:37.904Z"
     }
   ],
   "capabilities": [
@@ -9863,7 +11007,7 @@
       "confidence": 90,
       "enabled": true,
       "createdAt": "2026-06-27T22:31:43.290Z",
-      "updatedAt": "2026-06-28T06:55:57.483Z"
+      "updatedAt": "2026-06-28T19:29:24.482Z"
     },
     {
       "id": "ecap_1782599503290_obu2",
@@ -9873,7 +11017,7 @@
       "confidence": 85,
       "enabled": true,
       "createdAt": "2026-06-27T22:31:43.290Z",
-      "updatedAt": "2026-06-28T06:55:57.484Z"
+      "updatedAt": "2026-06-28T19:29:24.483Z"
     },
     {
       "id": "ecap_1782599503290_wlcl",
@@ -9883,7 +11027,7 @@
       "confidence": 80,
       "enabled": true,
       "createdAt": "2026-06-27T22:31:43.290Z",
-      "updatedAt": "2026-06-28T06:55:57.485Z"
+      "updatedAt": "2026-06-28T19:29:24.483Z"
     },
     {
       "id": "ecap_1782599503291_n1l9",
@@ -9893,7 +11037,7 @@
       "confidence": 75,
       "enabled": true,
       "createdAt": "2026-06-27T22:31:43.291Z",
-      "updatedAt": "2026-06-28T06:55:57.485Z"
+      "updatedAt": "2026-06-28T19:29:24.483Z"
     },
     {
       "id": "ecap_1782599503291_kfan",
@@ -9903,7 +11047,7 @@
       "confidence": 88,
       "enabled": true,
       "createdAt": "2026-06-27T22:31:43.291Z",
-      "updatedAt": "2026-06-28T06:55:57.486Z"
+      "updatedAt": "2026-06-28T19:29:24.484Z"
     },
     {
       "id": "ecap_1782599503291_ygbn",
@@ -9913,7 +11057,7 @@
       "confidence": 85,
       "enabled": true,
       "createdAt": "2026-06-27T22:31:43.291Z",
-      "updatedAt": "2026-06-28T06:55:57.486Z"
+      "updatedAt": "2026-06-28T19:29:24.484Z"
     },
     {
       "id": "ecap_1782599503291_n4j6",
@@ -9923,7 +11067,7 @@
       "confidence": 82,
       "enabled": true,
       "createdAt": "2026-06-27T22:31:43.291Z",
-      "updatedAt": "2026-06-28T06:55:57.487Z"
+      "updatedAt": "2026-06-28T19:29:24.485Z"
     },
     {
       "id": "ecap_1782599503291_mneo",
@@ -9933,7 +11077,7 @@
       "confidence": 80,
       "enabled": true,
       "createdAt": "2026-06-27T22:31:43.291Z",
-      "updatedAt": "2026-06-28T06:55:57.487Z"
+      "updatedAt": "2026-06-28T19:29:24.485Z"
     },
     {
       "id": "ecap_1782599503291_q59v",
@@ -9943,7 +11087,7 @@
       "confidence": 78,
       "enabled": true,
       "createdAt": "2026-06-27T22:31:43.291Z",
-      "updatedAt": "2026-06-28T06:55:57.488Z"
+      "updatedAt": "2026-06-28T19:29:24.486Z"
     },
     {
       "id": "ecap_1782599503292_bo72",
@@ -9953,7 +11097,7 @@
       "confidence": 95,
       "enabled": true,
       "createdAt": "2026-06-27T22:31:43.292Z",
-      "updatedAt": "2026-06-28T06:55:57.488Z"
+      "updatedAt": "2026-06-28T19:29:24.486Z"
     },
     {
       "id": "ecap_1782599535506_suw2",
