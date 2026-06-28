@@ -1,32 +1,5 @@
 [
   {
-    "taskId": "t-mqji3onv",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-18T12:53:34.219Z"
-  },
-  {
-    "taskId": "t-mqji3pg1",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-18T12:53:35.230Z"
-  },
-  {
-    "taskId": "t-mqji3q84",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-18T12:53:35.239Z"
-  },
-  {
     "taskId": "t-mqji3q89",
     "taskType": "media",
     "input": "media task",
@@ -8998,5 +8971,32 @@
     "attempts": 4,
     "agentId": null,
     "deadAt": "2026-06-28T12:22:22.390Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T12:23:22.343Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T12:24:22.450Z"
+  },
+  {
+    "taskId": "tq_1782514192213",
+    "taskType": "auto_recover",
+    "input": "",
+    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
+    "attempts": 4,
+    "agentId": null,
+    "deadAt": "2026-06-28T12:25:22.416Z"
   }
 ]

@@ -1,24 +1,5 @@
 [
   {
-    "recId": "bgrec_1782426224544_2if",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "5 file(s) have uncommitted changes. Recent log: a791a29 Production Snapshot Before Launch",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-25T22:23:44.544Z",
-    "acknowledged": false
-  },
-  {
     "recId": "bgrec_1782426261502_2ig",
     "source": "incidentObserver",
     "title": "70 escalated incident(s) in the last 30 minutes",
@@ -16538,6 +16519,30 @@
       ]
     },
     "createdAt": "2026-06-28T12:19:52.309Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782649492309_5z",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "16 file(s) have uncommitted changes. Recent log: 9f7beb9 Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/browser-controller.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decisions.ndjson",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson",
+        " M data/healing-history.json",
+        " M data/lessons.json"
+      ]
+    },
+    "createdAt": "2026-06-28T12:24:52.309Z",
     "acknowledged": false
   }
 ]
