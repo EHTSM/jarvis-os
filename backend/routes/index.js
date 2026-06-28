@@ -136,5 +136,6 @@ router.use(require("./researchInstitute"));  // POST-Ω P10: /research/* planner
 router.use(require("./odi-x"));             // ODI X V1:   /odi/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 router.use(require("./oai-x"));             // OAI X V1:   /engineering/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 router.use(require("./obi-x"));             // OBI X V1:   /business/x/* reasoning+quality+benchmark+predict+evolution+dashboard
+router.use(require("./okb-x"));             // OKB X V1:   /knowledge/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 
 module.exports = router;
