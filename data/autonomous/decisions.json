@@ -1639,7 +1639,69 @@
       "decidedAt": "2026-06-28T19:34:38.399Z",
       "executedAt": "2026-06-28T19:34:42.780Z",
       "measuredAt": "2026-06-28T19:34:43.054Z"
+    },
+    {
+      "id": "adec_1782675586553_lgvk",
+      "type": "plan",
+      "title": "Act on: Route 44 open ecosystem missions",
+      "rationale": "Route 44 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2200,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782675585681_gil4"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T19:39:46.553Z",
+      "executedAt": "2026-06-28T19:39:51.341Z",
+      "measuredAt": "2026-06-28T19:39:53.705Z"
+    },
+    {
+      "id": "adec_1782675586965_qi1j",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782675585252_ysgb"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T19:39:46.965Z",
+      "executedAt": "2026-06-28T19:39:53.214Z",
+      "measuredAt": "2026-06-28T19:39:53.705Z"
     }
   ],
-  "totalDecisions": 63
+  "totalDecisions": 65
 }

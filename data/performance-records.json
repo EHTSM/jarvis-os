@@ -3208,60 +3208,770 @@
       "collaborators": [],
       "notes": "",
       "ts": "2026-06-28T19:12:30.835Z"
+    },
+    {
+      "id": "perf_1782675502420_9cb",
+      "agentId": "engorg_backend",
+      "event": "task_complete",
+      "durationMs": 2000,
+      "qualityScore": 85,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:22.420Z"
+    },
+    {
+      "id": "perf_1782675502424_scm",
+      "agentId": "engorg_frontend",
+      "event": "task_failed",
+      "qualityScore": 20,
+      "outcome": "failure",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:22.424Z"
+    },
+    {
+      "id": "perf_1782675502425_vh7",
+      "agentId": "engorg_qa",
+      "event": "recovery",
+      "qualityScore": 70,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:22.425Z"
+    },
+    {
+      "id": "perf_1782675502428_5t0",
+      "agentId": "engorg_architect",
+      "event": "collaboration",
+      "qualityScore": 90,
+      "outcome": "success",
+      "collaborators": [
+        "engorg_backend"
+      ],
+      "notes": "",
+      "ts": "2026-06-28T19:38:22.428Z"
+    },
+    {
+      "id": "perf_1782675507017_ugq",
+      "agentId": "engorg_perf",
+      "teamId": "team_1782675507007_kag",
+      "missionId": "wf_1782675506694_ojz",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:27.017Z"
+    },
+    {
+      "id": "perf_1782675507025_nm4",
+      "agentId": "aeo_performance",
+      "teamId": "team_1782675507007_kag",
+      "missionId": "wf_1782675506694_ojz",
+      "event": "task_complete",
+      "durationMs": 8,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:27.025Z"
+    },
+    {
+      "id": "perf_1782675508401_idr",
+      "agentId": "engorg_architect",
+      "teamId": "team_1782675504572_6kz",
+      "missionId": "wf_1782675504259_dav",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.401Z"
+    },
+    {
+      "id": "perf_1782675508405_ar2",
+      "agentId": "engorg_api",
+      "teamId": "team_1782675504572_6kz",
+      "missionId": "wf_1782675504259_dav",
+      "event": "task_complete",
+      "durationMs": 4,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.405Z"
+    },
+    {
+      "id": "perf_1782675508491_yg4",
+      "agentId": "engorg_architect",
+      "teamId": "team_1782675504888_kaq",
+      "missionId": "wf_1782675504581_yd9",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.491Z"
+    },
+    {
+      "id": "perf_1782675508496_pi7",
+      "agentId": "engorg_api",
+      "teamId": "team_1782675504888_kaq",
+      "missionId": "wf_1782675504581_yd9",
+      "event": "task_complete",
+      "durationMs": 6,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.496Z"
+    },
+    {
+      "id": "perf_1782675508570_5b5",
+      "agentId": "eos_health",
+      "teamId": "team_1782675505195_voe",
+      "missionId": "wf_1782675504896_h4s",
+      "event": "task_complete",
+      "durationMs": 1,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.570Z"
+    },
+    {
+      "id": "perf_1782675508574_j1n",
+      "agentId": "aeo_performance",
+      "teamId": "team_1782675505195_voe",
+      "missionId": "wf_1782675504896_h4s",
+      "event": "task_complete",
+      "durationMs": 5,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.574Z"
+    },
+    {
+      "id": "perf_1782675508652_bqv",
+      "agentId": "engorg_code_review",
+      "teamId": "team_1782675505565_gyz",
+      "missionId": "wf_1782675505257_t9u",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.652Z"
+    },
+    {
+      "id": "perf_1782675508657_q5g",
+      "agentId": "engorg_electron",
+      "teamId": "team_1782675505565_gyz",
+      "missionId": "wf_1782675505257_t9u",
+      "event": "task_complete",
+      "durationMs": 4,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.657Z"
+    },
+    {
+      "id": "perf_1782675508732_yru",
+      "agentId": "engorg_devops",
+      "teamId": "team_1782675505901_akt",
+      "missionId": "wf_1782675505587_7f4",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.732Z"
+    },
+    {
+      "id": "perf_1782675508736_trh",
+      "agentId": "engorg_release",
+      "teamId": "team_1782675505901_akt",
+      "missionId": "wf_1782675505587_7f4",
+      "event": "task_complete",
+      "durationMs": 4,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.736Z"
+    },
+    {
+      "id": "perf_1782675508811_9eb",
+      "agentId": "engorg_architect",
+      "teamId": "team_1782675506260_nx3",
+      "missionId": "wf_1782675505917_cw3",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.811Z"
+    },
+    {
+      "id": "perf_1782675508815_ifd",
+      "agentId": "engorg_devops",
+      "teamId": "team_1782675506260_nx3",
+      "missionId": "wf_1782675505917_cw3",
+      "event": "task_complete",
+      "durationMs": 3,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.815Z"
+    },
+    {
+      "id": "perf_1782675508886_ilu",
+      "agentId": "engorg_architect",
+      "teamId": "team_1782675506600_1g7",
+      "missionId": "wf_1782675506275_vgn",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.886Z"
+    },
+    {
+      "id": "perf_1782675508889_1hi",
+      "agentId": "engorg_devops",
+      "teamId": "team_1782675506600_1g7",
+      "missionId": "wf_1782675506275_vgn",
+      "event": "task_complete",
+      "durationMs": 4,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.889Z"
+    },
+    {
+      "id": "perf_1782675508968_etu",
+      "agentId": "engorg_api",
+      "teamId": "team_1782675507405_bok",
+      "missionId": "wf_1782675507090_v7x",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.968Z"
+    },
+    {
+      "id": "perf_1782675508972_clb",
+      "agentId": "engorg_backend",
+      "teamId": "team_1782675507405_bok",
+      "missionId": "wf_1782675507090_v7x",
+      "event": "task_complete",
+      "durationMs": 4,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:28.972Z"
+    },
+    {
+      "id": "perf_1782675509049_wyw",
+      "agentId": "engorg_electron",
+      "teamId": "team_1782675507717_n1o",
+      "missionId": "wf_1782675507414_atn",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:29.049Z"
+    },
+    {
+      "id": "perf_1782675509054_xky",
+      "agentId": "engorg_mobile",
+      "teamId": "team_1782675507717_n1o",
+      "missionId": "wf_1782675507414_atn",
+      "event": "task_complete",
+      "durationMs": 4,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:29.054Z"
+    },
+    {
+      "id": "perf_1782675509134_4pr",
+      "agentId": "engorg_architect",
+      "teamId": "team_1782675508034_w0x",
+      "missionId": "wf_1782675507726_j04",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:29.134Z"
+    },
+    {
+      "id": "perf_1782675509139_u20",
+      "agentId": "engorg_api",
+      "teamId": "team_1782675508034_w0x",
+      "missionId": "wf_1782675507726_j04",
+      "event": "task_complete",
+      "durationMs": 4,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:29.139Z"
+    },
+    {
+      "id": "perf_1782675509214_2z6",
+      "agentId": "engorg_api",
+      "teamId": "team_1782675508375_6q1",
+      "missionId": "wf_1782675508043_d1a",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:29.214Z"
+    },
+    {
+      "id": "perf_1782675509218_jbu",
+      "agentId": "engorg_backend",
+      "teamId": "team_1782675508375_6q1",
+      "missionId": "wf_1782675508043_d1a",
+      "event": "task_complete",
+      "durationMs": 3,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:29.218Z"
+    },
+    {
+      "id": "perf_1782675509719_80a",
+      "agentId": "engorg_backend",
+      "event": "task_complete",
+      "durationMs": 2000,
+      "qualityScore": 85,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:29.719Z"
+    },
+    {
+      "id": "perf_1782675509723_njq",
+      "agentId": "engorg_frontend",
+      "event": "task_failed",
+      "qualityScore": 20,
+      "outcome": "failure",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:29.723Z"
+    },
+    {
+      "id": "perf_1782675509724_yr0",
+      "agentId": "engorg_qa",
+      "event": "recovery",
+      "qualityScore": 70,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:29.724Z"
+    },
+    {
+      "id": "perf_1782675509727_xy6",
+      "agentId": "engorg_architect",
+      "event": "collaboration",
+      "qualityScore": 90,
+      "outcome": "success",
+      "collaborators": [
+        "engorg_backend"
+      ],
+      "notes": "",
+      "ts": "2026-06-28T19:38:29.727Z"
+    },
+    {
+      "id": "perf_1782675514261_pz5",
+      "agentId": "engorg_perf",
+      "teamId": "team_1782675514249_y2d",
+      "missionId": "wf_1782675513945_q0o",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:34.261Z"
+    },
+    {
+      "id": "perf_1782675514265_sgw",
+      "agentId": "aeo_performance",
+      "teamId": "team_1782675514249_y2d",
+      "missionId": "wf_1782675513945_q0o",
+      "event": "task_complete",
+      "durationMs": 4,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:34.265Z"
+    },
+    {
+      "id": "perf_1782675515635_y6j",
+      "agentId": "engorg_architect",
+      "teamId": "team_1782675511832_9wm",
+      "missionId": "wf_1782675511513_smp",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:35.635Z"
+    },
+    {
+      "id": "perf_1782675515639_yyd",
+      "agentId": "engorg_api",
+      "teamId": "team_1782675511832_9wm",
+      "missionId": "wf_1782675511513_smp",
+      "event": "task_complete",
+      "durationMs": 4,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:35.639Z"
+    },
+    {
+      "id": "perf_1782675515720_hie",
+      "agentId": "engorg_architect",
+      "teamId": "team_1782675512159_q5q",
+      "missionId": "wf_1782675511842_174",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:35.720Z"
+    },
+    {
+      "id": "perf_1782675515724_9cu",
+      "agentId": "engorg_api",
+      "teamId": "team_1782675512159_q5q",
+      "missionId": "wf_1782675511842_174",
+      "event": "task_complete",
+      "durationMs": 4,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:35.724Z"
+    },
+    {
+      "id": "perf_1782675515806_ejz",
+      "agentId": "eos_health",
+      "teamId": "team_1782675512482_b7u",
+      "missionId": "wf_1782675512171_no3",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:35.806Z"
+    },
+    {
+      "id": "perf_1782675515811_qfe",
+      "agentId": "aeo_performance",
+      "teamId": "team_1782675512482_b7u",
+      "missionId": "wf_1782675512171_no3",
+      "event": "task_complete",
+      "durationMs": 5,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:35.811Z"
+    },
+    {
+      "id": "perf_1782675515888_co2",
+      "agentId": "engorg_code_review",
+      "teamId": "team_1782675512846_2x7",
+      "missionId": "wf_1782675512537_qvo",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:35.888Z"
+    },
+    {
+      "id": "perf_1782675515893_kbl",
+      "agentId": "engorg_electron",
+      "teamId": "team_1782675512846_2x7",
+      "missionId": "wf_1782675512537_qvo",
+      "event": "task_complete",
+      "durationMs": 5,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:35.893Z"
+    },
+    {
+      "id": "perf_1782675515973_xf8",
+      "agentId": "engorg_devops",
+      "teamId": "team_1782675513183_bs3",
+      "missionId": "wf_1782675512866_10z",
+      "event": "task_complete",
+      "durationMs": 1,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:35.973Z"
+    },
+    {
+      "id": "perf_1782675515982_dke",
+      "agentId": "engorg_release",
+      "teamId": "team_1782675513183_bs3",
+      "missionId": "wf_1782675512866_10z",
+      "event": "task_complete",
+      "durationMs": 10,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:35.982Z"
+    },
+    {
+      "id": "perf_1782675516085_cqc",
+      "agentId": "engorg_architect",
+      "teamId": "team_1782675513506_bqv",
+      "missionId": "wf_1782675513201_mbo",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:36.085Z"
+    },
+    {
+      "id": "perf_1782675516091_73g",
+      "agentId": "engorg_devops",
+      "teamId": "team_1782675513506_bqv",
+      "missionId": "wf_1782675513201_mbo",
+      "event": "task_complete",
+      "durationMs": 7,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:36.091Z"
+    },
+    {
+      "id": "perf_1782675516177_axg",
+      "agentId": "engorg_architect",
+      "teamId": "team_1782675513855_s7v",
+      "missionId": "wf_1782675513523_jz0",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:36.177Z"
+    },
+    {
+      "id": "perf_1782675516182_mda",
+      "agentId": "engorg_devops",
+      "teamId": "team_1782675513855_s7v",
+      "missionId": "wf_1782675513523_jz0",
+      "event": "task_complete",
+      "durationMs": 4,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:36.182Z"
+    },
+    {
+      "id": "perf_1782675516270_na4",
+      "agentId": "engorg_api",
+      "teamId": "team_1782675514652_g8v",
+      "missionId": "wf_1782675514334_z3s",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:36.270Z"
+    },
+    {
+      "id": "perf_1782675516275_bge",
+      "agentId": "engorg_backend",
+      "teamId": "team_1782675514652_g8v",
+      "missionId": "wf_1782675514334_z3s",
+      "event": "task_complete",
+      "durationMs": 4,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:36.275Z"
+    },
+    {
+      "id": "perf_1782675516363_gu5",
+      "agentId": "engorg_electron",
+      "teamId": "team_1782675514971_skv",
+      "missionId": "wf_1782675514661_zrg",
+      "event": "task_complete",
+      "durationMs": 1,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:36.363Z"
+    },
+    {
+      "id": "perf_1782675516367_9ma",
+      "agentId": "engorg_mobile",
+      "teamId": "team_1782675514971_skv",
+      "missionId": "wf_1782675514661_zrg",
+      "event": "task_complete",
+      "durationMs": 5,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:36.367Z"
+    },
+    {
+      "id": "perf_1782675516454_kji",
+      "agentId": "engorg_architect",
+      "teamId": "team_1782675515287_djp",
+      "missionId": "wf_1782675514982_6hz",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:36.454Z"
+    },
+    {
+      "id": "perf_1782675516458_cro",
+      "agentId": "engorg_api",
+      "teamId": "team_1782675515287_djp",
+      "missionId": "wf_1782675514982_6hz",
+      "event": "task_complete",
+      "durationMs": 5,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:36.458Z"
+    },
+    {
+      "id": "perf_1782675516546_rob",
+      "agentId": "engorg_api",
+      "teamId": "team_1782675515608_8wv",
+      "missionId": "wf_1782675515297_1y7",
+      "event": "task_complete",
+      "durationMs": 0,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:36.546Z"
+    },
+    {
+      "id": "perf_1782675516551_w7z",
+      "agentId": "engorg_backend",
+      "teamId": "team_1782675515608_8wv",
+      "missionId": "wf_1782675515297_1y7",
+      "event": "task_complete",
+      "durationMs": 6,
+      "qualityScore": 80,
+      "outcome": "success",
+      "collaborators": [],
+      "notes": "",
+      "ts": "2026-06-28T19:38:36.551Z"
     }
   ],
   "agentStats": {
     "engorg_backend": {
-      "totalTasks": 24,
-      "successCount": 23,
+      "totalTasks": 30,
+      "successCount": 29,
       "failCount": 1,
       "recoveryCount": 0,
-      "avgDurationMs": 786,
+      "avgDurationMs": 763,
       "avgQuality": 78,
       "collaborationCount": 0,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:05:24.798Z",
-      "lastActive": "2026-06-28T19:12:30.835Z"
+      "lastActive": "2026-06-28T19:38:36.551Z"
     },
     "engorg_frontend": {
-      "totalTasks": 16,
+      "totalTasks": 18,
       "successCount": 8,
-      "failCount": 8,
+      "failCount": 10,
       "recoveryCount": 0,
       "avgDurationMs": 8,
-      "avgQuality": 50,
+      "avgQuality": 46,
       "collaborationCount": 0,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:05:24.803Z",
-      "lastActive": "2026-06-28T19:12:23.787Z"
+      "lastActive": "2026-06-28T19:38:29.723Z"
     },
     "engorg_qa": {
-      "totalTasks": 11,
-      "successCount": 10,
+      "totalTasks": 13,
+      "successCount": 12,
       "failCount": 1,
-      "recoveryCount": 8,
+      "recoveryCount": 10,
       "avgDurationMs": 1,
       "avgQuality": 67,
       "collaborationCount": 0,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:05:24.803Z",
-      "lastActive": "2026-06-28T19:12:23.788Z"
+      "lastActive": "2026-06-28T19:38:29.724Z"
     },
     "engorg_architect": {
-      "totalTasks": 43,
-      "successCount": 43,
+      "totalTasks": 55,
+      "successCount": 55,
       "failCount": 0,
       "recoveryCount": 0,
       "avgDurationMs": 1,
       "avgQuality": 84,
-      "collaborationCount": 8,
+      "collaborationCount": 10,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:05:24.813Z",
-      "lastActive": "2026-06-28T19:12:30.763Z"
+      "lastActive": "2026-06-28T19:38:36.454Z"
     },
     "engorg_perf": {
-      "totalTasks": 8,
-      "successCount": 8,
+      "totalTasks": 10,
+      "successCount": 10,
       "failCount": 0,
       "recoveryCount": 0,
       "avgDurationMs": 1,
@@ -3269,7 +3979,7 @@
       "collaborationCount": 0,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:05:29.755Z",
-      "lastActive": "2026-06-28T19:12:28.687Z"
+      "lastActive": "2026-06-28T19:38:34.261Z"
     },
     "engorg_docs": {
       "totalTasks": 16,
@@ -3284,8 +3994,8 @@
       "lastActive": "2026-06-28T19:07:23.870Z"
     },
     "aeo_performance": {
-      "totalTasks": 16,
-      "successCount": 16,
+      "totalTasks": 20,
+      "successCount": 20,
       "failCount": 0,
       "recoveryCount": 0,
       "avgDurationMs": 7,
@@ -3293,11 +4003,11 @@
       "collaborationCount": 0,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:05:29.765Z",
-      "lastActive": "2026-06-28T19:12:30.340Z"
+      "lastActive": "2026-06-28T19:38:35.811Z"
     },
     "engorg_devops": {
-      "totalTasks": 18,
-      "successCount": 18,
+      "totalTasks": 24,
+      "successCount": 24,
       "failCount": 0,
       "recoveryCount": 0,
       "avgDurationMs": 3,
@@ -3305,7 +4015,7 @@
       "collaborationCount": 0,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:05:31.256Z",
-      "lastActive": "2026-06-28T19:12:30.578Z"
+      "lastActive": "2026-06-28T19:38:36.182Z"
     },
     "aeo_reliability": {
       "totalTasks": 5,
@@ -3320,20 +4030,20 @@
       "lastActive": "2026-06-28T19:07:21.589Z"
     },
     "eos_health": {
-      "totalTasks": 8,
-      "successCount": 8,
+      "totalTasks": 10,
+      "successCount": 10,
       "failCount": 0,
       "recoveryCount": 0,
-      "avgDurationMs": 8,
+      "avgDurationMs": 7,
       "avgQuality": 80,
       "collaborationCount": 0,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:05:31.264Z",
-      "lastActive": "2026-06-28T19:12:30.337Z"
+      "lastActive": "2026-06-28T19:38:35.806Z"
     },
     "engorg_code_review": {
-      "totalTasks": 8,
-      "successCount": 8,
+      "totalTasks": 10,
+      "successCount": 10,
       "failCount": 0,
       "recoveryCount": 0,
       "avgDurationMs": 0,
@@ -3341,11 +4051,11 @@
       "collaborationCount": 0,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:05:31.314Z",
-      "lastActive": "2026-06-28T19:12:30.391Z"
+      "lastActive": "2026-06-28T19:38:35.888Z"
     },
     "engorg_electron": {
-      "totalTasks": 12,
-      "successCount": 12,
+      "totalTasks": 16,
+      "successCount": 16,
       "failCount": 0,
       "recoveryCount": 0,
       "avgDurationMs": 6,
@@ -3353,7 +4063,7 @@
       "collaborationCount": 0,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:05:31.319Z",
-      "lastActive": "2026-06-28T19:12:30.696Z"
+      "lastActive": "2026-06-28T19:38:36.363Z"
     },
     "engorg_refactor": {
       "totalTasks": 4,
@@ -3380,16 +4090,16 @@
       "lastActive": "2026-06-28T19:07:11.489Z"
     },
     "engorg_release": {
-      "totalTasks": 9,
-      "successCount": 9,
+      "totalTasks": 11,
+      "successCount": 11,
       "failCount": 0,
       "recoveryCount": 0,
-      "avgDurationMs": 3,
+      "avgDurationMs": 4,
       "avgQuality": 80,
       "collaborationCount": 0,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:05:31.371Z",
-      "lastActive": "2026-06-28T19:12:30.454Z"
+      "lastActive": "2026-06-28T19:38:35.982Z"
     },
     "bizorg_growth": {
       "totalTasks": 7,
@@ -3428,8 +4138,8 @@
       "lastActive": "2026-06-28T19:07:23.726Z"
     },
     "engorg_mobile": {
-      "totalTasks": 8,
-      "successCount": 8,
+      "totalTasks": 10,
+      "successCount": 10,
       "failCount": 0,
       "recoveryCount": 0,
       "avgDurationMs": 5,
@@ -3437,11 +4147,11 @@
       "collaborationCount": 0,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:05:31.565Z",
-      "lastActive": "2026-06-28T19:12:30.699Z"
+      "lastActive": "2026-06-28T19:38:36.367Z"
     },
     "engorg_api": {
-      "totalTasks": 22,
-      "successCount": 22,
+      "totalTasks": 32,
+      "successCount": 32,
       "failCount": 0,
       "recoveryCount": 0,
       "avgDurationMs": 6,
@@ -3449,7 +4159,7 @@
       "collaborationCount": 0,
       "handoffCount": 0,
       "firstSeen": "2026-06-28T19:07:23.781Z",
-      "lastActive": "2026-06-28T19:12:30.831Z"
+      "lastActive": "2026-06-28T19:38:36.546Z"
     }
   },
   "teamStats": {
@@ -4152,6 +4862,174 @@
       "failCount": 0,
       "avgDurationMs": 2,
       "avgQuality": 80
+    },
+    "team_1782675507007_kag": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 4,
+      "avgQuality": 80
+    },
+    "team_1782675504572_6kz": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675504888_kaq": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 3,
+      "avgQuality": 80
+    },
+    "team_1782675505195_voe": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 3,
+      "avgQuality": 80
+    },
+    "team_1782675505565_gyz": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675505901_akt": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675506260_nx3": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675506600_1g7": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675507405_bok": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675507717_n1o": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675508034_w0x": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675508375_6q1": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675514249_y2d": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675511832_9wm": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675512159_q5q": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675512482_b7u": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 3,
+      "avgQuality": 80
+    },
+    "team_1782675512846_2x7": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 3,
+      "avgQuality": 80
+    },
+    "team_1782675513183_bs3": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 6,
+      "avgQuality": 80
+    },
+    "team_1782675513506_bqv": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 4,
+      "avgQuality": 80
+    },
+    "team_1782675513855_s7v": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675514652_g8v": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 2,
+      "avgQuality": 80
+    },
+    "team_1782675514971_skv": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 3,
+      "avgQuality": 80
+    },
+    "team_1782675515287_djp": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 3,
+      "avgQuality": 80
+    },
+    "team_1782675515608_8wv": {
+      "totalTasks": 2,
+      "successCount": 2,
+      "failCount": 0,
+      "avgDurationMs": 3,
+      "avgQuality": 80
     }
   },
   "rankings": [
@@ -4190,17 +5068,33 @@
     {
       "agentId": "engorg_architect",
       "org": "engineering",
-      "composite": 86,
+      "composite": 89,
       "scores": {
         "deliverySpeed": 100,
         "quality": 84,
         "reliability": 100,
-        "collaboration": 80,
-        "learning": 62,
+        "collaboration": 100,
+        "learning": 68,
         "recovery": 60,
-        "composite": 86
+        "composite": 89
       },
-      "totalTasks": 43,
+      "totalTasks": 55,
+      "successRate": 100
+    },
+    {
+      "agentId": "engorg_api",
+      "org": "engineering",
+      "composite": 81,
+      "scores": {
+        "deliverySpeed": 100,
+        "quality": 80,
+        "reliability": 100,
+        "collaboration": 40,
+        "learning": 56,
+        "recovery": 60,
+        "composite": 81
+      },
+      "totalTasks": 32,
       "successRate": 100
     },
     {
@@ -4212,15 +5106,15 @@
         "quality": 80,
         "reliability": 100,
         "collaboration": 40,
-        "learning": 46,
+        "learning": 48,
         "recovery": 60,
         "composite": 80
       },
-      "totalTasks": 12,
+      "totalTasks": 16,
       "successRate": 100
     },
     {
-      "agentId": "engorg_api",
+      "agentId": "engorg_mobile",
       "org": "engineering",
       "composite": 80,
       "scores": {
@@ -4228,11 +5122,11 @@
         "quality": 80,
         "reliability": 100,
         "collaboration": 40,
-        "learning": 51,
+        "learning": 45,
         "recovery": 60,
         "composite": 80
       },
-      "totalTasks": 22,
+      "totalTasks": 10,
       "successRate": 100
     },
     {
@@ -4244,11 +5138,27 @@
         "quality": 80,
         "reliability": 100,
         "collaboration": 40,
-        "learning": 49,
+        "learning": 52,
         "recovery": 60,
         "composite": 80
       },
-      "totalTasks": 18,
+      "totalTasks": 24,
+      "successRate": 100
+    },
+    {
+      "agentId": "engorg_perf",
+      "org": "engineering",
+      "composite": 80,
+      "scores": {
+        "deliverySpeed": 100,
+        "quality": 80,
+        "reliability": 100,
+        "collaboration": 40,
+        "learning": 45,
+        "recovery": 60,
+        "composite": 80
+      },
+      "totalTasks": 10,
       "successRate": 100
     },
     {
@@ -4276,11 +5186,11 @@
         "quality": 80,
         "reliability": 100,
         "collaboration": 40,
-        "learning": 45,
+        "learning": 46,
         "recovery": 60,
         "composite": 80
       },
-      "totalTasks": 9,
+      "totalTasks": 11,
       "successRate": 100
     },
     {
@@ -4300,52 +5210,36 @@
       "successRate": 100
     },
     {
+      "agentId": "eos_health",
+      "org": "executive",
+      "composite": 80,
+      "scores": {
+        "deliverySpeed": 100,
+        "quality": 80,
+        "reliability": 100,
+        "collaboration": 40,
+        "learning": 45,
+        "recovery": 60,
+        "composite": 80
+      },
+      "totalTasks": 10,
+      "successRate": 100
+    },
+    {
       "agentId": "engorg_backend",
       "org": "engineering",
       "composite": 79,
       "scores": {
         "deliverySpeed": 100,
         "quality": 78,
-        "reliability": 96,
+        "reliability": 97,
         "collaboration": 40,
-        "learning": 52,
+        "learning": 55,
         "recovery": 60,
         "composite": 79
       },
-      "totalTasks": 24,
-      "successRate": 96
-    },
-    {
-      "agentId": "engorg_mobile",
-      "org": "engineering",
-      "composite": 79,
-      "scores": {
-        "deliverySpeed": 100,
-        "quality": 80,
-        "reliability": 100,
-        "collaboration": 40,
-        "learning": 44,
-        "recovery": 60,
-        "composite": 79
-      },
-      "totalTasks": 8,
-      "successRate": 100
-    },
-    {
-      "agentId": "engorg_perf",
-      "org": "engineering",
-      "composite": 79,
-      "scores": {
-        "deliverySpeed": 100,
-        "quality": 80,
-        "reliability": 100,
-        "collaboration": 40,
-        "learning": 44,
-        "recovery": 60,
-        "composite": 79
-      },
-      "totalTasks": 8,
-      "successRate": 100
+      "totalTasks": 30,
+      "successRate": 97
     },
     {
       "agentId": "engorg_refactor",
@@ -4364,36 +5258,20 @@
       "successRate": 100
     },
     {
-      "agentId": "eos_health",
-      "org": "executive",
-      "composite": 79,
-      "scores": {
-        "deliverySpeed": 100,
-        "quality": 80,
-        "reliability": 100,
-        "collaboration": 40,
-        "learning": 44,
-        "recovery": 60,
-        "composite": 79
-      },
-      "totalTasks": 8,
-      "successRate": 100
-    },
-    {
       "agentId": "engorg_qa",
       "org": "engineering",
       "composite": 78,
       "scores": {
         "deliverySpeed": 100,
         "quality": 67,
-        "reliability": 91,
+        "reliability": 92,
         "collaboration": 40,
-        "learning": 46,
+        "learning": 47,
         "recovery": 100,
         "composite": 78
       },
-      "totalTasks": 11,
-      "successRate": 91
+      "totalTasks": 13,
+      "successRate": 92
     },
     {
       "agentId": "engorg_security",
@@ -4414,18 +5292,18 @@
     {
       "agentId": "engorg_frontend",
       "org": "engineering",
-      "composite": 57,
+      "composite": 55,
       "scores": {
         "deliverySpeed": 100,
-        "quality": 50,
-        "reliability": 50,
+        "quality": 46,
+        "reliability": 44,
         "collaboration": 40,
-        "learning": 48,
+        "learning": 49,
         "recovery": 60,
-        "composite": 57
+        "composite": 55
       },
-      "totalTasks": 16,
-      "successRate": 50
+      "totalTasks": 18,
+      "successRate": 44
     },
     {
       "agentId": "engorg_database",
@@ -4468,11 +5346,11 @@
         "quality": 80,
         "reliability": 100,
         "collaboration": 40,
-        "learning": 44,
+        "learning": 45,
         "recovery": 60,
         "composite": 72
       },
-      "totalTasks": 8,
+      "totalTasks": 10,
       "successRate": 100
     },
     {
@@ -4692,11 +5570,11 @@
         "quality": 80,
         "reliability": 100,
         "collaboration": 40,
-        "learning": 48,
+        "learning": 50,
         "recovery": 60,
         "composite": 80
       },
-      "totalTasks": 16,
+      "totalTasks": 20,
       "successRate": 100
     },
     {
@@ -4780,5 +5658,5 @@
       "successRate": 89
     }
   ],
-  "updatedAt": "2026-06-28T19:35:29.057Z"
+  "updatedAt": "2026-06-28T19:39:19.166Z"
 }

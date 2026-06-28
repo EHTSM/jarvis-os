@@ -1,51 +1,51 @@
 {
   "patterns": {
     "high_risk_approval_rate": {
-      "rate": 0.2647058823529412,
-      "sampleSize": 34,
+      "rate": 0.2619047619047619,
+      "sampleSize": 42,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:36:05.884Z"
+      "updatedAt": "2026-06-28T19:39:56.305Z"
     },
     "deployment_approval_rate": {
       "rate": 1,
-      "sampleSize": 50,
+      "sampleSize": 62,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:36:05.884Z"
+      "updatedAt": "2026-06-28T19:39:56.305Z"
     },
     "ui_approval_rate": {
       "rate": 1,
-      "sampleSize": 9,
-      "confidence": 0.9,
-      "updatedAt": "2026-06-28T19:36:05.884Z"
+      "sampleSize": 11,
+      "confidence": 1,
+      "updatedAt": "2026-06-28T19:39:56.305Z"
     },
     "security_approval_rate": {
       "rate": 0,
-      "sampleSize": 25,
+      "sampleSize": 31,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:36:05.884Z"
+      "updatedAt": "2026-06-28T19:39:56.305Z"
     },
     "avg_decision_speed_ms": {
-      "avgMs": 7159,
-      "sampleSize": 73,
-      "confidence": 1,
-      "updatedAt": "2026-06-28T19:36:05.884Z"
-    },
-    "weekend_decision_rate": {
-      "rate": 0.27472527472527475,
-      "confidence": 1,
-      "updatedAt": "2026-06-28T19:36:05.884Z"
-    },
-    "after_hours_decision_rate": {
-      "rate": 0.8461538461538461,
-      "confidence": 1,
-      "updatedAt": "2026-06-28T19:36:05.884Z"
-    },
-    "correction_frequency": {
-      "rate": 0.24175824175824176,
+      "avgMs": 7073,
       "sampleSize": 91,
       "confidence": 1,
-      "updatedAt": "2026-06-28T19:36:05.884Z"
+      "updatedAt": "2026-06-28T19:39:56.305Z"
+    },
+    "weekend_decision_rate": {
+      "rate": 0.22123893805309736,
+      "confidence": 1,
+      "updatedAt": "2026-06-28T19:39:56.305Z"
+    },
+    "after_hours_decision_rate": {
+      "rate": 0.8761061946902655,
+      "confidence": 1,
+      "updatedAt": "2026-06-28T19:39:56.305Z"
+    },
+    "correction_frequency": {
+      "rate": 0.24778761061946902,
+      "sampleSize": 113,
+      "confidence": 1,
+      "updatedAt": "2026-06-28T19:39:56.305Z"
     }
   },
-  "updatedAt": "2026-06-28T19:36:05.884Z"
+  "updatedAt": "2026-06-28T19:39:56.305Z"
 }

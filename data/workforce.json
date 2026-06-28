@@ -2,2418 +2,6 @@
   "missions": [],
   "history": [
     {
-      "id": "wf_1782673529412_6p9",
-      "title": "Performance tracking mission",
-      "description": "",
-      "domain": "backend",
-      "priority": "medium",
-      "teamId": "team_1782673529740_ruq",
-      "teamType": "mixed",
-      "teamSize": 3,
-      "skillCoverage": 50,
-      "requiredSkills": [
-        "backend",
-        "api",
-        "performance",
-        "profiling"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_perf",
-          "role": "lead",
-          "skills": [
-            "performance",
-            "profiling",
-            "optimization"
-          ]
-        },
-        {
-          "agentId": "engorg_docs",
-          "role": "docs",
-          "skills": [
-            "documentation",
-            "writing",
-            "api_docs"
-          ]
-        },
-        {
-          "agentId": "aeo_performance",
-          "role": "member",
-          "skills": [
-            "performance",
-            "benchmarking",
-            "optimization"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": null
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:05:29.412Z",
-          "title": "Performance tracking mission",
-          "domain": "backend",
-          "priority": "medium"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:05:29.412Z",
-          "teamType": "mixed",
-          "skills": [
-            "backend",
-            "api",
-            "performance",
-            "profiling"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:05:29.739Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:05:29.740Z",
-          "candidateCount": 3
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:05:29.745Z",
-          "teamId": "team_1782673529740_ruq",
-          "size": 3,
-          "coverage": 50
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:05:29.745Z",
-          "assignments": 3
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:05:29.755Z",
-          "mode": "engorg_dispatch",
-          "lead": "engorg_perf"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:05:29.769Z",
-          "members": 3
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:05:29.779Z",
-          "overloaded": 8,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:05:29.794Z",
-          "teamId": "team_1782673529740_ruq",
-          "minutesSaved": 45
-        }
-      ],
-      "minutesSaved": 45,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:05:29.412Z",
-      "completedAt": "2026-06-28T19:05:29.798Z",
-      "durationMs": 386
-    },
-    {
-      "id": "wf_1782673526920_xbt",
-      "title": "Update documentation for API v2",
-      "description": "",
-      "domain": "backend",
-      "priority": "low",
-      "teamId": "team_1782673527255_xaf",
-      "teamType": "research",
-      "teamSize": 2,
-      "skillCoverage": 50,
-      "requiredSkills": [
-        "backend",
-        "api",
-        "documentation",
-        "writing"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_architect",
-          "role": "lead",
-          "skills": [
-            "architecture",
-            "design",
-            "planning"
-          ]
-        },
-        {
-          "agentId": "engorg_docs",
-          "role": "docs",
-          "skills": [
-            "documentation",
-            "writing",
-            "api_docs"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_docs_update"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:05:26.920Z",
-          "title": "Update documentation for API v2",
-          "domain": "backend",
-          "priority": "low"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:05:26.920Z",
-          "teamType": "research",
-          "skills": [
-            "backend",
-            "api",
-            "documentation",
-            "writing"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:05:27.255Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:05:27.255Z",
-          "candidateCount": 2
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:05:27.260Z",
-          "teamId": "team_1782673527255_xaf",
-          "size": 2,
-          "coverage": 50
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:05:27.260Z",
-          "assignments": 2
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:05:31.187Z",
-          "workflowId": "wf_docs_update",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:05:31.195Z",
-          "members": 2
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:05:31.205Z",
-          "overloaded": 9,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:05:31.217Z",
-          "teamId": "team_1782673527255_xaf",
-          "minutesSaved": 30
-        }
-      ],
-      "minutesSaved": 30,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:05:26.920Z",
-      "completedAt": "2026-06-28T19:05:31.220Z",
-      "durationMs": 4300
-    },
-    {
-      "id": "wf_1782673527261_zf9",
-      "title": "Fix critical production bug",
-      "description": "",
-      "domain": "backend",
-      "priority": "critical",
-      "teamId": "team_1782673527604_qri",
-      "teamType": "emergency",
-      "teamSize": 2,
-      "skillCoverage": 0,
-      "requiredSkills": [
-        "backend",
-        "api"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_architect",
-          "role": "lead",
-          "skills": [
-            "architecture",
-            "design",
-            "planning"
-          ]
-        },
-        {
-          "agentId": "engorg_docs",
-          "role": "docs",
-          "skills": [
-            "documentation",
-            "writing",
-            "api_docs"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_eng_bug_fix"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:05:27.261Z",
-          "title": "Fix critical production bug",
-          "domain": "backend",
-          "priority": "critical"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:05:27.261Z",
-          "teamType": "emergency",
-          "skills": [
-            "backend",
-            "api"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:05:27.603Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:05:27.603Z",
-          "candidateCount": 2
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:05:27.610Z",
-          "teamId": "team_1782673527604_qri",
-          "size": 2,
-          "coverage": 0
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:05:27.610Z",
-          "assignments": 2
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:05:31.222Z",
-          "workflowId": "wf_eng_bug_fix",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:05:31.232Z",
-          "members": 2
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:05:31.240Z",
-          "overloaded": 8,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:05:31.250Z",
-          "teamId": "team_1782673527604_qri",
-          "minutesSaved": 30
-        }
-      ],
-      "minutesSaved": 30,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:05:27.261Z",
-      "completedAt": "2026-06-28T19:05:31.254Z",
-      "durationMs": 3993
-    },
-    {
-      "id": "wf_1782673527611_g2r",
-      "title": "Run health check monitoring",
-      "description": "",
-      "domain": "ops",
-      "priority": "medium",
-      "teamId": "team_1782673527950_0dh",
-      "teamType": "mixed",
-      "teamSize": 4,
-      "skillCoverage": 100,
-      "requiredSkills": [
-        "monitoring",
-        "reliability"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_devops",
-          "role": "lead",
-          "skills": [
-            "devops",
-            "deployment",
-            "ci_cd"
-          ]
-        },
-        {
-          "agentId": "aeo_reliability",
-          "role": "qa",
-          "skills": [
-            "reliability",
-            "stability",
-            "fault_tolerance"
-          ]
-        },
-        {
-          "agentId": "eos_health",
-          "role": "member",
-          "skills": [
-            "health",
-            "monitoring",
-            "alerting"
-          ]
-        },
-        {
-          "agentId": "aeo_performance",
-          "role": "member",
-          "skills": [
-            "performance",
-            "benchmarking",
-            "optimization"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_ops_health_check"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:05:27.611Z",
-          "title": "Run health check monitoring",
-          "domain": "ops",
-          "priority": "medium"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:05:27.611Z",
-          "teamType": "mixed",
-          "skills": [
-            "monitoring",
-            "reliability"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:05:27.949Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:05:27.950Z",
-          "candidateCount": 4
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:05:27.956Z",
-          "teamId": "team_1782673527950_0dh",
-          "size": 4,
-          "coverage": 100
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:05:27.956Z",
-          "assignments": 4
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:05:31.256Z",
-          "workflowId": "wf_ops_health_check",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:05:31.277Z",
-          "members": 4
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:05:31.285Z",
-          "overloaded": 7,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:05:31.306Z",
-          "teamId": "team_1782673527950_0dh",
-          "minutesSaved": 60
-        }
-      ],
-      "minutesSaved": 60,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:05:27.611Z",
-      "completedAt": "2026-06-28T19:05:31.312Z",
-      "durationMs": 3701
-    },
-    {
-      "id": "wf_1782673528002_tpm",
-      "title": "Review UI components",
-      "description": "",
-      "domain": "frontend",
-      "priority": "medium",
-      "teamId": "team_1782673528336_axm",
-      "teamType": "design",
-      "teamSize": 4,
-      "skillCoverage": 50,
-      "requiredSkills": [
-        "frontend",
-        "ui",
-        "code_review",
-        "refactoring"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_code_review",
-          "role": "lead",
-          "skills": [
-            "code_review",
-            "standards",
-            "feedback"
-          ]
-        },
-        {
-          "agentId": "engorg_electron",
-          "role": "member",
-          "skills": [
-            "electron",
-            "desktop",
-            "packaging"
-          ]
-        },
-        {
-          "agentId": "engorg_refactor",
-          "role": "member",
-          "skills": [
-            "refactoring",
-            "code_quality",
-            "patterns"
-          ]
-        },
-        {
-          "agentId": "bizorg_marketing",
-          "role": "member",
-          "skills": [
-            "marketing",
-            "campaigns",
-            "branding"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_eng_code_review"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:05:28.002Z",
-          "title": "Review UI components",
-          "domain": "frontend",
-          "priority": "medium"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:05:28.002Z",
-          "teamType": "design",
-          "skills": [
-            "frontend",
-            "ui",
-            "code_review",
-            "refactoring"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:05:28.335Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:05:28.336Z",
-          "candidateCount": 7
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:05:28.342Z",
-          "teamId": "team_1782673528336_axm",
-          "size": 4,
-          "coverage": 50
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:05:28.342Z",
-          "assignments": 4
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:05:31.314Z",
-          "workflowId": "wf_eng_code_review",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:05:31.338Z",
-          "members": 4
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:05:31.345Z",
-          "overloaded": 6,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:05:31.365Z",
-          "teamId": "team_1782673528336_axm",
-          "minutesSaved": 60
-        }
-      ],
-      "minutesSaved": 60,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:05:28.002Z",
-      "completedAt": "2026-06-28T19:05:31.369Z",
-      "durationMs": 3367
-    },
-    {
-      "id": "wf_1782673528352_43q",
-      "title": "Deploy release v2.0 to production",
-      "description": "",
-      "domain": "devops",
-      "priority": "high",
-      "teamId": "team_1782673528682_a6l",
-      "teamType": "deployment",
-      "teamSize": 2,
-      "skillCoverage": 100,
-      "requiredSkills": [
-        "devops",
-        "deployment",
-        "release",
-        "versioning"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_release",
-          "role": "lead",
-          "skills": [
-            "release",
-            "versioning",
-            "changelog"
-          ]
-        },
-        {
-          "agentId": "engorg_devops",
-          "role": "devops",
-          "skills": [
-            "devops",
-            "deployment",
-            "ci_cd"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_eng_deploy_release"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:05:28.352Z",
-          "title": "Deploy release v2.0 to production",
-          "domain": "devops",
-          "priority": "high"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:05:28.352Z",
-          "teamType": "deployment",
-          "skills": [
-            "devops",
-            "deployment",
-            "release",
-            "versioning"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:05:28.681Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:05:28.681Z",
-          "candidateCount": 1
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:05:28.688Z",
-          "teamId": "team_1782673528682_a6l",
-          "size": 2,
-          "coverage": 100
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:05:28.688Z",
-          "assignments": 2
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:05:31.371Z",
-          "workflowId": "wf_eng_deploy_release",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:05:31.383Z",
-          "members": 2
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:05:31.391Z",
-          "overloaded": 5,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:05:31.401Z",
-          "teamId": "team_1782673528682_a6l",
-          "minutesSaved": 30
-        }
-      ],
-      "minutesSaved": 30,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:05:28.352Z",
-      "completedAt": "2026-06-28T19:05:31.405Z",
-      "durationMs": 3053
-    },
-    {
-      "id": "wf_1782673528694_g8t",
-      "title": "Backend deploy test",
-      "description": "",
-      "domain": "backend",
-      "priority": "medium",
-      "teamId": "team_1782673529028_74q",
-      "teamType": "deployment",
-      "teamSize": 5,
-      "skillCoverage": 33,
-      "requiredSkills": [
-        "backend",
-        "api",
-        "devops",
-        "deployment",
-        "testing",
-        "qa"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_qa",
-          "role": "lead",
-          "skills": [
-            "testing",
-            "automation",
-            "regression"
-          ]
-        },
-        {
-          "agentId": "engorg_release",
-          "role": "member",
-          "skills": [
-            "release",
-            "versioning",
-            "changelog"
-          ]
-        },
-        {
-          "agentId": "aeo_reliability",
-          "role": "qa",
-          "skills": [
-            "reliability",
-            "stability",
-            "fault_tolerance"
-          ]
-        },
-        {
-          "agentId": "engorg_docs",
-          "role": "docs",
-          "skills": [
-            "documentation",
-            "writing",
-            "api_docs"
-          ]
-        },
-        {
-          "agentId": "bizorg_growth",
-          "role": "member",
-          "skills": [
-            "growth",
-            "acquisition",
-            "retention"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_eng_deploy_release"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:05:28.694Z",
-          "title": "Backend deploy test",
-          "domain": "backend",
-          "priority": "medium"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:05:28.694Z",
-          "teamType": "deployment",
-          "skills": [
-            "backend",
-            "api",
-            "devops",
-            "deployment",
-            "testing",
-            "qa"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:05:29.026Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:05:29.026Z",
-          "candidateCount": 6
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:05:29.032Z",
-          "teamId": "team_1782673529028_74q",
-          "size": 5,
-          "coverage": 33
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:05:29.032Z",
-          "assignments": 5
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:05:31.406Z",
-          "workflowId": "wf_eng_deploy_release",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:05:31.432Z",
-          "members": 5
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:05:31.439Z",
-          "overloaded": 3,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:05:31.459Z",
-          "teamId": "team_1782673529028_74q",
-          "minutesSaved": 75
-        }
-      ],
-      "minutesSaved": 75,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:05:28.694Z",
-      "completedAt": "2026-06-28T19:05:31.466Z",
-      "durationMs": 2772
-    },
-    {
-      "id": "wf_1782673529038_0c1",
-      "title": "Build and deploy a new authentication feature",
-      "description": "",
-      "domain": "backend",
-      "priority": "high",
-      "teamId": "team_1782673529383_7zq",
-      "teamType": "deployment",
-      "teamSize": 5,
-      "skillCoverage": 25,
-      "requiredSkills": [
-        "backend",
-        "api",
-        "frontend",
-        "ui",
-        "devops",
-        "deployment",
-        "security",
-        "audit"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_security",
-          "role": "lead",
-          "skills": [
-            "security",
-            "audit",
-            "compliance"
-          ]
-        },
-        {
-          "agentId": "engorg_docs",
-          "role": "docs",
-          "skills": [
-            "documentation",
-            "writing",
-            "api_docs"
-          ]
-        },
-        {
-          "agentId": "engorg_electron",
-          "role": "member",
-          "skills": [
-            "electron",
-            "desktop",
-            "packaging"
-          ]
-        },
-        {
-          "agentId": "bizorg_marketing",
-          "role": "member",
-          "skills": [
-            "marketing",
-            "campaigns",
-            "branding"
-          ]
-        },
-        {
-          "agentId": "ako_learning",
-          "role": "member",
-          "skills": [
-            "learning",
-            "training",
-            "improvement"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_eng_deploy_release"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:05:29.038Z",
-          "title": "Build and deploy a new authentication feature",
-          "domain": "backend",
-          "priority": "high"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:05:29.038Z",
-          "teamType": "deployment",
-          "skills": [
-            "backend",
-            "api",
-            "frontend",
-            "ui",
-            "devops",
-            "deployment",
-            "security",
-            "audit"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:05:29.382Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:05:29.382Z",
-          "candidateCount": 7
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:05:29.389Z",
-          "teamId": "team_1782673529383_7zq",
-          "size": 5,
-          "coverage": 25
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:05:29.389Z",
-          "assignments": 5
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:05:31.467Z",
-          "workflowId": "wf_eng_deploy_release",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:05:31.491Z",
-          "members": 5
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:05:31.493Z",
-          "overloaded": 2,
-          "rebalanced": false
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:05:31.515Z",
-          "teamId": "team_1782673529383_7zq",
-          "minutesSaved": 75
-        }
-      ],
-      "minutesSaved": 75,
-      "rebalanced": false,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:05:29.038Z",
-      "completedAt": "2026-06-28T19:05:31.519Z",
-      "durationMs": 2481
-    },
-    {
-      "id": "wf_1782673529798_xqg",
-      "title": "Dashboard refresh test",
-      "description": "",
-      "domain": "qa",
-      "priority": "medium",
-      "teamId": "team_1782673530139_cxi",
-      "teamType": "mixed",
-      "teamSize": 3,
-      "skillCoverage": 50,
-      "requiredSkills": [
-        "testing",
-        "qa"
-      ],
-      "assignments": [
-        {
-          "agentId": "bizorg_growth",
-          "role": "lead",
-          "skills": [
-            "growth",
-            "acquisition",
-            "retention"
-          ]
-        },
-        {
-          "agentId": "engorg_qa",
-          "role": "qa",
-          "skills": [
-            "testing",
-            "automation",
-            "regression"
-          ]
-        },
-        {
-          "agentId": "engorg_frontend",
-          "role": "qa",
-          "skills": [
-            "frontend",
-            "react",
-            "ui"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_qa_regression_suite"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:05:29.798Z",
-          "title": "Dashboard refresh test",
-          "domain": "qa",
-          "priority": "medium"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:05:29.798Z",
-          "teamType": "mixed",
-          "skills": [
-            "testing",
-            "qa"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:05:30.138Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:05:30.138Z",
-          "candidateCount": 3
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:05:30.145Z",
-          "teamId": "team_1782673530139_cxi",
-          "size": 3,
-          "coverage": 50
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:05:30.145Z",
-          "assignments": 3
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:05:31.523Z",
-          "workflowId": "wf_qa_regression_suite",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:05:31.536Z",
-          "members": 3
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:05:31.538Z",
-          "overloaded": 2,
-          "rebalanced": false
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:05:31.553Z",
-          "teamId": "team_1782673530139_cxi",
-          "minutesSaved": 45
-        }
-      ],
-      "minutesSaved": 45,
-      "rebalanced": false,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:05:29.798Z",
-      "completedAt": "2026-06-28T19:05:31.556Z",
-      "durationMs": 1758
-    },
-    {
-      "id": "wf_1782673530145_yft",
-      "title": "Frontend fix 1",
-      "description": "",
-      "domain": "frontend",
-      "priority": "medium",
-      "teamId": "team_1782673530482_37f",
-      "teamType": "engineering",
-      "teamSize": 4,
-      "skillCoverage": 100,
-      "requiredSkills": [
-        "frontend",
-        "ui"
-      ],
-      "assignments": [
-        {
-          "agentId": "bizorg_marketing",
-          "role": "lead",
-          "skills": [
-            "marketing",
-            "campaigns",
-            "branding"
-          ]
-        },
-        {
-          "agentId": "ako_learning",
-          "role": "member",
-          "skills": [
-            "learning",
-            "training",
-            "improvement"
-          ]
-        },
-        {
-          "agentId": "engorg_mobile",
-          "role": "member",
-          "skills": [
-            "mobile",
-            "android",
-            "capacitor"
-          ]
-        },
-        {
-          "agentId": "engorg_frontend",
-          "role": "qa",
-          "skills": [
-            "frontend",
-            "react",
-            "ui"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_eng_bug_fix"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:05:30.145Z",
-          "title": "Frontend fix 1",
-          "domain": "frontend",
-          "priority": "medium"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:05:30.145Z",
-          "teamType": "engineering",
-          "skills": [
-            "frontend",
-            "ui"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:05:30.481Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:05:30.481Z",
-          "candidateCount": 4
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:05:30.487Z",
-          "teamId": "team_1782673530482_37f",
-          "size": 4,
-          "coverage": 100
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:05:30.487Z",
-          "assignments": 4
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:05:31.558Z",
-          "workflowId": "wf_eng_bug_fix",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:05:31.573Z",
-          "members": 4
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:05:31.575Z",
-          "overloaded": 2,
-          "rebalanced": false
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:05:31.593Z",
-          "teamId": "team_1782673530482_37f",
-          "minutesSaved": 60
-        }
-      ],
-      "minutesSaved": 60,
-      "rebalanced": false,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:05:30.145Z",
-      "completedAt": "2026-06-28T19:05:31.597Z",
-      "durationMs": 1452
-    },
-    {
-      "id": "wf_1782673530487_8et",
-      "title": "Backend fix 2",
-      "description": "",
-      "domain": "backend",
-      "priority": "medium",
-      "teamId": "team_1782673530823_ib9",
-      "teamType": "engineering",
-      "teamSize": 2,
-      "skillCoverage": 0,
-      "requiredSkills": [
-        "backend",
-        "api"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_docs",
-          "role": "lead",
-          "skills": [
-            "documentation",
-            "writing",
-            "api_docs"
-          ]
-        },
-        {
-          "agentId": "engorg_architect",
-          "role": "docs",
-          "skills": [
-            "architecture",
-            "design",
-            "planning"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_eng_bug_fix"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:05:30.487Z",
-          "title": "Backend fix 2",
-          "domain": "backend",
-          "priority": "medium"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:05:30.487Z",
-          "teamType": "engineering",
-          "skills": [
-            "backend",
-            "api"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:05:30.822Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:05:30.823Z",
-          "candidateCount": 1
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:05:30.829Z",
-          "teamId": "team_1782673530823_ib9",
-          "size": 2,
-          "coverage": 0
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:05:30.829Z",
-          "assignments": 2
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:05:31.599Z",
-          "workflowId": "wf_eng_bug_fix",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:05:31.610Z",
-          "members": 2
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:05:31.612Z",
-          "overloaded": 2,
-          "rebalanced": false
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:05:31.620Z",
-          "teamId": "team_1782673530823_ib9",
-          "minutesSaved": 30
-        }
-      ],
-      "minutesSaved": 30,
-      "rebalanced": false,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:05:30.487Z",
-      "completedAt": "2026-06-28T19:05:31.624Z",
-      "durationMs": 1137
-    },
-    {
-      "id": "wf_1782673530830_33s",
-      "title": "QA validation 3",
-      "description": "",
-      "domain": "qa",
-      "priority": "medium",
-      "teamId": "team_1782673531167_c2y",
-      "teamType": "mixed",
-      "teamSize": 2,
-      "skillCoverage": 50,
-      "requiredSkills": [
-        "testing",
-        "qa"
-      ],
-      "assignments": [
-        {
-          "agentId": "bizorg_growth",
-          "role": "lead",
-          "skills": [
-            "growth",
-            "acquisition",
-            "retention"
-          ]
-        },
-        {
-          "agentId": "engorg_backend",
-          "role": "qa",
-          "skills": [
-            "backend",
-            "api",
-            "database"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_qa_regression_suite"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:05:30.830Z",
-          "title": "QA validation 3",
-          "domain": "qa",
-          "priority": "medium"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:05:30.830Z",
-          "teamType": "mixed",
-          "skills": [
-            "testing",
-            "qa"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:05:31.167Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:05:31.167Z",
-          "candidateCount": 2
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:05:31.173Z",
-          "teamId": "team_1782673531167_c2y",
-          "size": 2,
-          "coverage": 50
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:05:31.173Z",
-          "assignments": 2
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:05:31.626Z",
-          "workflowId": "wf_qa_regression_suite",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:05:31.633Z",
-          "members": 2
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:05:31.635Z",
-          "overloaded": 2,
-          "rebalanced": false
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:05:31.643Z",
-          "teamId": "team_1782673531167_c2y",
-          "minutesSaved": 30
-        }
-      ],
-      "minutesSaved": 30,
-      "rebalanced": false,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:05:30.830Z",
-      "completedAt": "2026-06-28T19:05:31.646Z",
-      "durationMs": 816
-    },
-    {
-      "id": "wf_1782673607740_99g",
-      "title": "Performance tracking mission",
-      "description": "",
-      "domain": "backend",
-      "priority": "medium",
-      "teamId": "team_1782673608066_pu3",
-      "teamType": "mixed",
-      "teamSize": 2,
-      "skillCoverage": 50,
-      "requiredSkills": [
-        "backend",
-        "api",
-        "performance",
-        "profiling"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_perf",
-          "role": "lead",
-          "skills": [
-            "performance",
-            "profiling",
-            "optimization"
-          ]
-        },
-        {
-          "agentId": "aeo_performance",
-          "role": "member",
-          "skills": [
-            "performance",
-            "benchmarking",
-            "optimization"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": null
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:06:47.740Z",
-          "title": "Performance tracking mission",
-          "domain": "backend",
-          "priority": "medium"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:06:47.740Z",
-          "teamType": "mixed",
-          "skills": [
-            "backend",
-            "api",
-            "performance",
-            "profiling"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:06:48.065Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:06:48.065Z",
-          "candidateCount": 2
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:06:48.071Z",
-          "teamId": "team_1782673608066_pu3",
-          "size": 2,
-          "coverage": 50
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:06:48.071Z",
-          "assignments": 2
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:06:48.082Z",
-          "mode": "engorg_dispatch",
-          "lead": "engorg_perf"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:06:48.093Z",
-          "members": 2
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:06:48.103Z",
-          "overloaded": 11,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:06:48.114Z",
-          "teamId": "team_1782673608066_pu3",
-          "minutesSaved": 30
-        }
-      ],
-      "minutesSaved": 30,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:06:47.740Z",
-      "completedAt": "2026-06-28T19:06:48.117Z",
-      "durationMs": 377
-    },
-    {
-      "id": "wf_1782673605323_1kj",
-      "title": "Update documentation for API v2",
-      "description": "",
-      "domain": "backend",
-      "priority": "low",
-      "teamId": "team_1782673605639_qxi",
-      "teamType": "research",
-      "teamSize": 2,
-      "skillCoverage": 50,
-      "requiredSkills": [
-        "backend",
-        "api",
-        "documentation",
-        "writing"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_architect",
-          "role": "lead",
-          "skills": [
-            "architecture",
-            "design",
-            "planning"
-          ]
-        },
-        {
-          "agentId": "engorg_docs",
-          "role": "docs",
-          "skills": [
-            "documentation",
-            "writing",
-            "api_docs"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_docs_update"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:06:45.323Z",
-          "title": "Update documentation for API v2",
-          "domain": "backend",
-          "priority": "low"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:06:45.324Z",
-          "teamType": "research",
-          "skills": [
-            "backend",
-            "api",
-            "documentation",
-            "writing"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:06:45.639Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:06:45.639Z",
-          "candidateCount": 2
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:06:45.643Z",
-          "teamId": "team_1782673605639_qxi",
-          "size": 2,
-          "coverage": 50
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:06:45.643Z",
-          "assignments": 2
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:06:49.453Z",
-          "workflowId": "wf_docs_update",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:06:49.461Z",
-          "members": 2
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:06:49.471Z",
-          "overloaded": 14,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:06:49.480Z",
-          "teamId": "team_1782673605639_qxi",
-          "minutesSaved": 30
-        }
-      ],
-      "minutesSaved": 30,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:06:45.323Z",
-      "completedAt": "2026-06-28T19:06:49.485Z",
-      "durationMs": 4162
-    },
-    {
-      "id": "wf_1782673605644_e2y",
-      "title": "Fix critical production bug",
-      "description": "",
-      "domain": "backend",
-      "priority": "critical",
-      "teamId": "team_1782673605976_t4j",
-      "teamType": "emergency",
-      "teamSize": 2,
-      "skillCoverage": 0,
-      "requiredSkills": [
-        "backend",
-        "api"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_architect",
-          "role": "lead",
-          "skills": [
-            "architecture",
-            "design",
-            "planning"
-          ]
-        },
-        {
-          "agentId": "engorg_docs",
-          "role": "docs",
-          "skills": [
-            "documentation",
-            "writing",
-            "api_docs"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_eng_bug_fix"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:06:45.644Z",
-          "title": "Fix critical production bug",
-          "domain": "backend",
-          "priority": "critical"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:06:45.644Z",
-          "teamType": "emergency",
-          "skills": [
-            "backend",
-            "api"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:06:45.975Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:06:45.975Z",
-          "candidateCount": 2
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:06:45.981Z",
-          "teamId": "team_1782673605976_t4j",
-          "size": 2,
-          "coverage": 0
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:06:45.981Z",
-          "assignments": 2
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:06:49.489Z",
-          "workflowId": "wf_eng_bug_fix",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:06:49.497Z",
-          "members": 2
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:06:49.506Z",
-          "overloaded": 14,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:06:49.516Z",
-          "teamId": "team_1782673605976_t4j",
-          "minutesSaved": 30
-        }
-      ],
-      "minutesSaved": 30,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:06:45.644Z",
-      "completedAt": "2026-06-28T19:06:49.521Z",
-      "durationMs": 3877
-    },
-    {
-      "id": "wf_1782673605982_e4y",
-      "title": "Run health check monitoring",
-      "description": "",
-      "domain": "ops",
-      "priority": "medium",
-      "teamId": "team_1782673606319_xgq",
-      "teamType": "mixed",
-      "teamSize": 2,
-      "skillCoverage": 50,
-      "requiredSkills": [
-        "monitoring",
-        "reliability"
-      ],
-      "assignments": [
-        {
-          "agentId": "eos_health",
-          "role": "lead",
-          "skills": [
-            "health",
-            "monitoring",
-            "alerting"
-          ]
-        },
-        {
-          "agentId": "aeo_performance",
-          "role": "member",
-          "skills": [
-            "performance",
-            "benchmarking",
-            "optimization"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_ops_health_check"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:06:45.982Z",
-          "title": "Run health check monitoring",
-          "domain": "ops",
-          "priority": "medium"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:06:45.982Z",
-          "teamType": "mixed",
-          "skills": [
-            "monitoring",
-            "reliability"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:06:46.318Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:06:46.319Z",
-          "candidateCount": 2
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:06:46.325Z",
-          "teamId": "team_1782673606319_xgq",
-          "size": 2,
-          "coverage": 50
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:06:46.325Z",
-          "assignments": 2
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:06:49.523Z",
-          "workflowId": "wf_ops_health_check",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:06:49.533Z",
-          "members": 2
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:06:49.544Z",
-          "overloaded": 12,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:06:49.554Z",
-          "teamId": "team_1782673606319_xgq",
-          "minutesSaved": 30
-        }
-      ],
-      "minutesSaved": 30,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:06:45.982Z",
-      "completedAt": "2026-06-28T19:06:49.559Z",
-      "durationMs": 3577
-    },
-    {
-      "id": "wf_1782673606371_d05",
-      "title": "Review UI components",
-      "description": "",
-      "domain": "frontend",
-      "priority": "medium",
-      "teamId": "team_1782673606696_9p9",
-      "teamType": "design",
-      "teamSize": 4,
-      "skillCoverage": 50,
-      "requiredSkills": [
-        "frontend",
-        "ui",
-        "code_review",
-        "refactoring"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_code_review",
-          "role": "lead",
-          "skills": [
-            "code_review",
-            "standards",
-            "feedback"
-          ]
-        },
-        {
-          "agentId": "engorg_mobile",
-          "role": "member",
-          "skills": [
-            "mobile",
-            "android",
-            "capacitor"
-          ]
-        },
-        {
-          "agentId": "engorg_refactor",
-          "role": "member",
-          "skills": [
-            "refactoring",
-            "code_quality",
-            "patterns"
-          ]
-        },
-        {
-          "agentId": "bizorg_marketing",
-          "role": "member",
-          "skills": [
-            "marketing",
-            "campaigns",
-            "branding"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_eng_code_review"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:06:46.371Z",
-          "title": "Review UI components",
-          "domain": "frontend",
-          "priority": "medium"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:06:46.371Z",
-          "teamType": "design",
-          "skills": [
-            "frontend",
-            "ui",
-            "code_review",
-            "refactoring"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:06:46.696Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:06:46.696Z",
-          "candidateCount": 6
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:06:46.702Z",
-          "teamId": "team_1782673606696_9p9",
-          "size": 4,
-          "coverage": 50
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:06:46.702Z",
-          "assignments": 4
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:06:49.561Z",
-          "workflowId": "wf_eng_code_review",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:06:49.578Z",
-          "members": 4
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:06:49.588Z",
-          "overloaded": 12,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:06:49.606Z",
-          "teamId": "team_1782673606696_9p9",
-          "minutesSaved": 60
-        }
-      ],
-      "minutesSaved": 60,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:06:46.371Z",
-      "completedAt": "2026-06-28T19:06:49.609Z",
-      "durationMs": 3238
-    },
-    {
-      "id": "wf_1782673606711_hth",
-      "title": "Deploy release v2.0 to production",
-      "description": "",
-      "domain": "devops",
-      "priority": "high",
-      "teamId": "team_1782673607041_vky",
-      "teamType": "deployment",
-      "teamSize": 2,
-      "skillCoverage": 100,
-      "requiredSkills": [
-        "devops",
-        "deployment",
-        "release",
-        "versioning"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_release",
-          "role": "lead",
-          "skills": [
-            "release",
-            "versioning",
-            "changelog"
-          ]
-        },
-        {
-          "agentId": "engorg_devops",
-          "role": "devops",
-          "skills": [
-            "devops",
-            "deployment",
-            "ci_cd"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_eng_deploy_release"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:06:46.711Z",
-          "title": "Deploy release v2.0 to production",
-          "domain": "devops",
-          "priority": "high"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:06:46.711Z",
-          "teamType": "deployment",
-          "skills": [
-            "devops",
-            "deployment",
-            "release",
-            "versioning"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:06:47.040Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:06:47.040Z",
-          "candidateCount": 1
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:06:47.047Z",
-          "teamId": "team_1782673607041_vky",
-          "size": 2,
-          "coverage": 100
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:06:47.047Z",
-          "assignments": 2
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:06:49.614Z",
-          "workflowId": "wf_eng_deploy_release",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:06:49.621Z",
-          "members": 2
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:06:49.633Z",
-          "overloaded": 10,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:06:49.644Z",
-          "teamId": "team_1782673607041_vky",
-          "minutesSaved": 30
-        }
-      ],
-      "minutesSaved": 30,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:06:46.711Z",
-      "completedAt": "2026-06-28T19:06:49.649Z",
-      "durationMs": 2938
-    },
-    {
-      "id": "wf_1782673607056_d5o",
-      "title": "Backend deploy test",
-      "description": "",
-      "domain": "backend",
-      "priority": "medium",
-      "teamId": "team_1782673607381_apn",
-      "teamType": "deployment",
-      "teamSize": 3,
-      "skillCoverage": 17,
-      "requiredSkills": [
-        "backend",
-        "api",
-        "devops",
-        "deployment",
-        "testing",
-        "qa"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_docs",
-          "role": "lead",
-          "skills": [
-            "documentation",
-            "writing",
-            "api_docs"
-          ]
-        },
-        {
-          "agentId": "bizorg_growth",
-          "role": "member",
-          "skills": [
-            "growth",
-            "acquisition",
-            "retention"
-          ]
-        },
-        {
-          "agentId": "engorg_frontend",
-          "role": "qa",
-          "skills": [
-            "frontend",
-            "react",
-            "ui"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_eng_deploy_release"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:06:47.056Z",
-          "title": "Backend deploy test",
-          "domain": "backend",
-          "priority": "medium"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:06:47.056Z",
-          "teamType": "deployment",
-          "skills": [
-            "backend",
-            "api",
-            "devops",
-            "deployment",
-            "testing",
-            "qa"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:06:47.381Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:06:47.381Z",
-          "candidateCount": 3
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:06:47.386Z",
-          "teamId": "team_1782673607381_apn",
-          "size": 3,
-          "coverage": 17
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:06:47.386Z",
-          "assignments": 3
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:06:49.652Z",
-          "workflowId": "wf_eng_deploy_release",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:06:49.662Z",
-          "members": 3
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:06:49.673Z",
-          "overloaded": 9,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:06:49.688Z",
-          "teamId": "team_1782673607381_apn",
-          "minutesSaved": 45
-        }
-      ],
-      "minutesSaved": 45,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:06:47.056Z",
-      "completedAt": "2026-06-28T19:06:49.692Z",
-      "durationMs": 2636
-    },
-    {
-      "id": "wf_1782673607391_kxy",
-      "title": "Build and deploy a new authentication feature",
-      "description": "",
-      "domain": "backend",
-      "priority": "high",
-      "teamId": "team_1782673607711_ii0",
-      "teamType": "deployment",
-      "teamSize": 5,
-      "skillCoverage": 25,
-      "requiredSkills": [
-        "backend",
-        "api",
-        "frontend",
-        "ui",
-        "devops",
-        "deployment",
-        "security",
-        "audit"
-      ],
-      "assignments": [
-        {
-          "agentId": "engorg_mobile",
-          "role": "lead",
-          "skills": [
-            "mobile",
-            "android",
-            "capacitor"
-          ]
-        },
-        {
-          "agentId": "engorg_docs",
-          "role": "docs",
-          "skills": [
-            "documentation",
-            "writing",
-            "api_docs"
-          ]
-        },
-        {
-          "agentId": "bizorg_marketing",
-          "role": "member",
-          "skills": [
-            "marketing",
-            "campaigns",
-            "branding"
-          ]
-        },
-        {
-          "agentId": "ako_learning",
-          "role": "member",
-          "skills": [
-            "learning",
-            "training",
-            "improvement"
-          ]
-        },
-        {
-          "agentId": "engorg_frontend",
-          "role": "qa",
-          "skills": [
-            "frontend",
-            "react",
-            "ui"
-          ]
-        }
-      ],
-      "execution": {
-        "outcome": "dispatched",
-        "workflowId": "wf_eng_deploy_release"
-      },
-      "timeline": [
-        {
-          "step": "intake",
-          "ts": "2026-06-28T19:06:47.391Z",
-          "title": "Build and deploy a new authentication feature",
-          "domain": "backend",
-          "priority": "high"
-        },
-        {
-          "step": "requirements",
-          "ts": "2026-06-28T19:06:47.391Z",
-          "teamType": "deployment",
-          "skills": [
-            "backend",
-            "api",
-            "frontend",
-            "ui",
-            "devops",
-            "deployment",
-            "security",
-            "audit"
-          ]
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:06:47.711Z"
-        },
-        {
-          "step": "agents_located",
-          "ts": "2026-06-28T19:06:47.711Z",
-          "candidateCount": 5
-        },
-        {
-          "step": "team_built",
-          "ts": "2026-06-28T19:06:47.717Z",
-          "teamId": "team_1782673607711_ii0",
-          "size": 5,
-          "coverage": 25
-        },
-        {
-          "step": "assigned",
-          "ts": "2026-06-28T19:06:47.717Z",
-          "assignments": 5
-        },
-        {
-          "step": "execution",
-          "ts": "2026-06-28T19:06:49.693Z",
-          "workflowId": "wf_eng_deploy_release",
-          "outcome": "dispatched"
-        },
-        {
-          "step": "monitored",
-          "ts": "2026-06-28T19:06:49.715Z",
-          "members": 5
-        },
-        {
-          "step": "capacity_checked",
-          "ts": "2026-06-28T19:06:49.729Z",
-          "overloaded": 7,
-          "rebalanced": true
-        },
-        {
-          "step": "disbanded",
-          "ts": "2026-06-28T19:06:49.749Z",
-          "teamId": "team_1782673607711_ii0",
-          "minutesSaved": 75
-        }
-      ],
-      "minutesSaved": 75,
-      "rebalanced": true,
-      "twinPrediction": {},
-      "status": "completed",
-      "startedAt": "2026-06-28T19:06:47.391Z",
-      "completedAt": "2026-06-28T19:06:49.753Z",
-      "durationMs": 2362
-    },
-    {
       "id": "wf_1782673608118_9av",
       "title": "Dashboard refresh test",
       "description": "",
@@ -10881,15 +8469,2679 @@
       "startedAt": "2026-06-28T19:12:29.833Z",
       "completedAt": "2026-06-28T19:12:30.900Z",
       "durationMs": 1067
+    },
+    {
+      "id": "wf_1782675506694_ojz",
+      "title": "Performance tracking mission",
+      "description": "",
+      "domain": "backend",
+      "priority": "medium",
+      "teamId": "team_1782675507007_kag",
+      "teamType": "mixed",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "performance",
+        "profiling"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_perf",
+          "role": "lead",
+          "skills": [
+            "performance",
+            "profiling",
+            "optimization"
+          ]
+        },
+        {
+          "agentId": "aeo_performance",
+          "role": "member",
+          "skills": [
+            "performance",
+            "benchmarking",
+            "optimization"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": null
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:26.694Z",
+          "title": "Performance tracking mission",
+          "domain": "backend",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:26.695Z",
+          "teamType": "mixed",
+          "skills": [
+            "backend",
+            "api",
+            "performance",
+            "profiling"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:27.006Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:27.006Z",
+          "candidateCount": 2
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:27.015Z",
+          "teamId": "team_1782675507007_kag",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:27.015Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:27.016Z",
+          "mode": "engorg_dispatch",
+          "lead": "engorg_perf"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:27.028Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:27.073Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:27.085Z",
+          "teamId": "team_1782675507007_kag",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:26.694Z",
+      "completedAt": "2026-06-28T19:38:27.088Z",
+      "durationMs": 394
+    },
+    {
+      "id": "wf_1782675504259_dav",
+      "title": "Update documentation for API v2",
+      "description": "",
+      "domain": "backend",
+      "priority": "low",
+      "teamId": "team_1782675504572_6kz",
+      "teamType": "research",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "documentation",
+        "writing"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_api",
+          "role": "qa",
+          "skills": [
+            "api",
+            "rest",
+            "graphql"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_docs_update"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:24.259Z",
+          "title": "Update documentation for API v2",
+          "domain": "backend",
+          "priority": "low"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:24.259Z",
+          "teamType": "research",
+          "skills": [
+            "backend",
+            "api",
+            "documentation",
+            "writing"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:24.571Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:24.571Z",
+          "candidateCount": 1
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:24.580Z",
+          "teamId": "team_1782675504572_6kz",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:24.580Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:28.400Z",
+          "workflowId": "wf_docs_update",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:28.409Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:28.470Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:28.483Z",
+          "teamId": "team_1782675504572_6kz",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:24.259Z",
+      "completedAt": "2026-06-28T19:38:28.486Z",
+      "durationMs": 4227
+    },
+    {
+      "id": "wf_1782675504581_yd9",
+      "title": "Fix critical production bug",
+      "description": "",
+      "domain": "backend",
+      "priority": "critical",
+      "teamId": "team_1782675504888_kaq",
+      "teamType": "emergency",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_api",
+          "role": "qa",
+          "skills": [
+            "api",
+            "rest",
+            "graphql"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_bug_fix"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:24.581Z",
+          "title": "Fix critical production bug",
+          "domain": "backend",
+          "priority": "critical"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:24.581Z",
+          "teamType": "emergency",
+          "skills": [
+            "backend",
+            "api"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:24.887Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:24.887Z",
+          "candidateCount": 1
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:24.896Z",
+          "teamId": "team_1782675504888_kaq",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:24.896Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:28.490Z",
+          "workflowId": "wf_eng_bug_fix",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:28.500Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:28.549Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:28.562Z",
+          "teamId": "team_1782675504888_kaq",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:24.581Z",
+      "completedAt": "2026-06-28T19:38:28.565Z",
+      "durationMs": 3984
+    },
+    {
+      "id": "wf_1782675504896_h4s",
+      "title": "Run health check monitoring",
+      "description": "",
+      "domain": "ops",
+      "priority": "medium",
+      "teamId": "team_1782675505195_voe",
+      "teamType": "mixed",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "monitoring",
+        "reliability"
+      ],
+      "assignments": [
+        {
+          "agentId": "eos_health",
+          "role": "lead",
+          "skills": [
+            "health",
+            "monitoring",
+            "alerting"
+          ]
+        },
+        {
+          "agentId": "aeo_performance",
+          "role": "member",
+          "skills": [
+            "performance",
+            "benchmarking",
+            "optimization"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_ops_health_check"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:24.896Z",
+          "title": "Run health check monitoring",
+          "domain": "ops",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:24.897Z",
+          "teamType": "mixed",
+          "skills": [
+            "monitoring",
+            "reliability"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:25.195Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:25.195Z",
+          "candidateCount": 2
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:25.205Z",
+          "teamId": "team_1782675505195_voe",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:25.205Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:28.569Z",
+          "workflowId": "wf_ops_health_check",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:28.579Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:28.631Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:28.644Z",
+          "teamId": "team_1782675505195_voe",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:24.896Z",
+      "completedAt": "2026-06-28T19:38:28.648Z",
+      "durationMs": 3752
+    },
+    {
+      "id": "wf_1782675505257_t9u",
+      "title": "Review UI components",
+      "description": "",
+      "domain": "frontend",
+      "priority": "medium",
+      "teamId": "team_1782675505565_gyz",
+      "teamType": "design",
+      "teamSize": 2,
+      "skillCoverage": 25,
+      "requiredSkills": [
+        "frontend",
+        "ui",
+        "code_review",
+        "refactoring"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_code_review",
+          "role": "lead",
+          "skills": [
+            "code_review",
+            "standards",
+            "feedback"
+          ]
+        },
+        {
+          "agentId": "engorg_electron",
+          "role": "member",
+          "skills": [
+            "electron",
+            "desktop",
+            "packaging"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_code_review"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:25.257Z",
+          "title": "Review UI components",
+          "domain": "frontend",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:25.257Z",
+          "teamType": "design",
+          "skills": [
+            "frontend",
+            "ui",
+            "code_review",
+            "refactoring"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:25.565Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:25.565Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:25.576Z",
+          "teamId": "team_1782675505565_gyz",
+          "size": 2,
+          "coverage": 25
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:25.576Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:28.652Z",
+          "workflowId": "wf_eng_code_review",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:28.662Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:28.710Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:28.724Z",
+          "teamId": "team_1782675505565_gyz",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:25.257Z",
+      "completedAt": "2026-06-28T19:38:28.728Z",
+      "durationMs": 3471
+    },
+    {
+      "id": "wf_1782675505587_7f4",
+      "title": "Deploy release v2.0 to production",
+      "description": "",
+      "domain": "devops",
+      "priority": "high",
+      "teamId": "team_1782675505901_akt",
+      "teamType": "deployment",
+      "teamSize": 2,
+      "skillCoverage": 100,
+      "requiredSkills": [
+        "devops",
+        "deployment",
+        "release",
+        "versioning"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_devops",
+          "role": "lead",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        },
+        {
+          "agentId": "engorg_release",
+          "role": "member",
+          "skills": [
+            "release",
+            "versioning",
+            "changelog"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_deploy_release"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:25.588Z",
+          "title": "Deploy release v2.0 to production",
+          "domain": "devops",
+          "priority": "high"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:25.588Z",
+          "teamType": "deployment",
+          "skills": [
+            "devops",
+            "deployment",
+            "release",
+            "versioning"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:25.900Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:25.900Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:25.910Z",
+          "teamId": "team_1782675505901_akt",
+          "size": 2,
+          "coverage": 100
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:25.910Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:28.732Z",
+          "workflowId": "wf_eng_deploy_release",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:28.739Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:28.792Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:28.804Z",
+          "teamId": "team_1782675505901_akt",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:25.587Z",
+      "completedAt": "2026-06-28T19:38:28.807Z",
+      "durationMs": 3220
+    },
+    {
+      "id": "wf_1782675505917_cw3",
+      "title": "Backend deploy test",
+      "description": "",
+      "domain": "backend",
+      "priority": "medium",
+      "teamId": "team_1782675506260_nx3",
+      "teamType": "deployment",
+      "teamSize": 2,
+      "skillCoverage": 33,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "devops",
+        "deployment",
+        "testing",
+        "qa"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_devops",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_deploy_release"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:25.917Z",
+          "title": "Backend deploy test",
+          "domain": "backend",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:25.917Z",
+          "teamType": "deployment",
+          "skills": [
+            "backend",
+            "api",
+            "devops",
+            "deployment",
+            "testing",
+            "qa"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:26.259Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:26.259Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:26.268Z",
+          "teamId": "team_1782675506260_nx3",
+          "size": 2,
+          "coverage": 33
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:26.268Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:28.811Z",
+          "workflowId": "wf_eng_deploy_release",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:28.818Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:28.866Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:28.878Z",
+          "teamId": "team_1782675506260_nx3",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:25.917Z",
+      "completedAt": "2026-06-28T19:38:28.882Z",
+      "durationMs": 2965
+    },
+    {
+      "id": "wf_1782675506275_vgn",
+      "title": "Build and deploy a new authentication feature",
+      "description": "",
+      "domain": "backend",
+      "priority": "high",
+      "teamId": "team_1782675506600_1g7",
+      "teamType": "deployment",
+      "teamSize": 2,
+      "skillCoverage": 25,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "frontend",
+        "ui",
+        "devops",
+        "deployment",
+        "security",
+        "audit"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_devops",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_deploy_release"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:26.275Z",
+          "title": "Build and deploy a new authentication feature",
+          "domain": "backend",
+          "priority": "high"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:26.275Z",
+          "teamType": "deployment",
+          "skills": [
+            "backend",
+            "api",
+            "frontend",
+            "ui",
+            "devops",
+            "deployment",
+            "security",
+            "audit"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:26.599Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:26.599Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:26.608Z",
+          "teamId": "team_1782675506600_1g7",
+          "size": 2,
+          "coverage": 25
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:26.608Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:28.885Z",
+          "workflowId": "wf_eng_deploy_release",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:28.894Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:28.943Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:28.958Z",
+          "teamId": "team_1782675506600_1g7",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:26.275Z",
+      "completedAt": "2026-06-28T19:38:28.962Z",
+      "durationMs": 2687
+    },
+    {
+      "id": "wf_1782675507090_v7x",
+      "title": "Dashboard refresh test",
+      "description": "",
+      "domain": "qa",
+      "priority": "medium",
+      "teamId": "team_1782675507405_bok",
+      "teamType": "mixed",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "testing",
+        "qa"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_api",
+          "role": "lead",
+          "skills": [
+            "api",
+            "rest",
+            "graphql"
+          ]
+        },
+        {
+          "agentId": "engorg_backend",
+          "role": "qa",
+          "skills": [
+            "backend",
+            "api",
+            "database"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_qa_regression_suite"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:27.090Z",
+          "title": "Dashboard refresh test",
+          "domain": "qa",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:27.090Z",
+          "teamType": "mixed",
+          "skills": [
+            "testing",
+            "qa"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:27.404Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:27.405Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:27.413Z",
+          "teamId": "team_1782675507405_bok",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:27.413Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:28.968Z",
+          "workflowId": "wf_qa_regression_suite",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:28.976Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:29.024Z",
+          "overloaded": 28,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:29.041Z",
+          "teamId": "team_1782675507405_bok",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:27.090Z",
+      "completedAt": "2026-06-28T19:38:29.045Z",
+      "durationMs": 1955
+    },
+    {
+      "id": "wf_1782675507414_atn",
+      "title": "Frontend fix 1",
+      "description": "",
+      "domain": "frontend",
+      "priority": "medium",
+      "teamId": "team_1782675507717_n1o",
+      "teamType": "engineering",
+      "teamSize": 2,
+      "skillCoverage": 0,
+      "requiredSkills": [
+        "frontend",
+        "ui"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_electron",
+          "role": "lead",
+          "skills": [
+            "electron",
+            "desktop",
+            "packaging"
+          ]
+        },
+        {
+          "agentId": "engorg_mobile",
+          "role": "member",
+          "skills": [
+            "mobile",
+            "android",
+            "capacitor"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_bug_fix"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:27.414Z",
+          "title": "Frontend fix 1",
+          "domain": "frontend",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:27.414Z",
+          "teamType": "engineering",
+          "skills": [
+            "frontend",
+            "ui"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:27.716Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:27.716Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:27.725Z",
+          "teamId": "team_1782675507717_n1o",
+          "size": 2,
+          "coverage": 0
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:27.725Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:29.049Z",
+          "workflowId": "wf_eng_bug_fix",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:29.058Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:29.110Z",
+          "overloaded": 28,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:29.127Z",
+          "teamId": "team_1782675507717_n1o",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:27.414Z",
+      "completedAt": "2026-06-28T19:38:29.130Z",
+      "durationMs": 1716
+    },
+    {
+      "id": "wf_1782675507726_j04",
+      "title": "Backend fix 2",
+      "description": "",
+      "domain": "backend",
+      "priority": "medium",
+      "teamId": "team_1782675508034_w0x",
+      "teamType": "engineering",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_api",
+          "role": "qa",
+          "skills": [
+            "api",
+            "rest",
+            "graphql"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_bug_fix"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:27.726Z",
+          "title": "Backend fix 2",
+          "domain": "backend",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:27.726Z",
+          "teamType": "engineering",
+          "skills": [
+            "backend",
+            "api"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:28.033Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:28.034Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:28.043Z",
+          "teamId": "team_1782675508034_w0x",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:28.043Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:29.134Z",
+          "workflowId": "wf_eng_bug_fix",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:29.142Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:29.192Z",
+          "overloaded": 28,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:29.205Z",
+          "teamId": "team_1782675508034_w0x",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:27.726Z",
+      "completedAt": "2026-06-28T19:38:29.210Z",
+      "durationMs": 1484
+    },
+    {
+      "id": "wf_1782675508043_d1a",
+      "title": "QA validation 3",
+      "description": "",
+      "domain": "qa",
+      "priority": "medium",
+      "teamId": "team_1782675508375_6q1",
+      "teamType": "mixed",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "testing",
+        "qa"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_api",
+          "role": "lead",
+          "skills": [
+            "api",
+            "rest",
+            "graphql"
+          ]
+        },
+        {
+          "agentId": "engorg_backend",
+          "role": "qa",
+          "skills": [
+            "backend",
+            "api",
+            "database"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_qa_regression_suite"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:28.043Z",
+          "title": "QA validation 3",
+          "domain": "qa",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:28.043Z",
+          "teamType": "mixed",
+          "skills": [
+            "testing",
+            "qa"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:28.374Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:28.374Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:28.385Z",
+          "teamId": "team_1782675508375_6q1",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:28.385Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:29.214Z",
+          "workflowId": "wf_qa_regression_suite",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:29.230Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:29.284Z",
+          "overloaded": 28,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:29.297Z",
+          "teamId": "team_1782675508375_6q1",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:28.043Z",
+      "completedAt": "2026-06-28T19:38:29.301Z",
+      "durationMs": 1258
+    },
+    {
+      "id": "wf_1782675513945_q0o",
+      "title": "Performance tracking mission",
+      "description": "",
+      "domain": "backend",
+      "priority": "medium",
+      "teamId": "team_1782675514249_y2d",
+      "teamType": "mixed",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "performance",
+        "profiling"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_perf",
+          "role": "lead",
+          "skills": [
+            "performance",
+            "profiling",
+            "optimization"
+          ]
+        },
+        {
+          "agentId": "aeo_performance",
+          "role": "member",
+          "skills": [
+            "performance",
+            "benchmarking",
+            "optimization"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": null
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:33.946Z",
+          "title": "Performance tracking mission",
+          "domain": "backend",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:33.946Z",
+          "teamType": "mixed",
+          "skills": [
+            "backend",
+            "api",
+            "performance",
+            "profiling"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:34.248Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:34.249Z",
+          "candidateCount": 2
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:34.260Z",
+          "teamId": "team_1782675514249_y2d",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:34.260Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:34.261Z",
+          "mode": "engorg_dispatch",
+          "lead": "engorg_perf"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:34.269Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:34.318Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:34.330Z",
+          "teamId": "team_1782675514249_y2d",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:33.946Z",
+      "completedAt": "2026-06-28T19:38:34.333Z",
+      "durationMs": 387
+    },
+    {
+      "id": "wf_1782675511513_smp",
+      "title": "Update documentation for API v2",
+      "description": "",
+      "domain": "backend",
+      "priority": "low",
+      "teamId": "team_1782675511832_9wm",
+      "teamType": "research",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "documentation",
+        "writing"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_api",
+          "role": "qa",
+          "skills": [
+            "api",
+            "rest",
+            "graphql"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_docs_update"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:31.513Z",
+          "title": "Update documentation for API v2",
+          "domain": "backend",
+          "priority": "low"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:31.513Z",
+          "teamType": "research",
+          "skills": [
+            "backend",
+            "api",
+            "documentation",
+            "writing"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:31.831Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:31.831Z",
+          "candidateCount": 1
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:31.841Z",
+          "teamId": "team_1782675511832_9wm",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:31.841Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:35.635Z",
+          "workflowId": "wf_docs_update",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:35.643Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:35.697Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:35.711Z",
+          "teamId": "team_1782675511832_9wm",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:31.513Z",
+      "completedAt": "2026-06-28T19:38:35.716Z",
+      "durationMs": 4203
+    },
+    {
+      "id": "wf_1782675511842_174",
+      "title": "Fix critical production bug",
+      "description": "",
+      "domain": "backend",
+      "priority": "critical",
+      "teamId": "team_1782675512159_q5q",
+      "teamType": "emergency",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_api",
+          "role": "qa",
+          "skills": [
+            "api",
+            "rest",
+            "graphql"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_bug_fix"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:31.842Z",
+          "title": "Fix critical production bug",
+          "domain": "backend",
+          "priority": "critical"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:31.842Z",
+          "teamType": "emergency",
+          "skills": [
+            "backend",
+            "api"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:32.158Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:32.158Z",
+          "candidateCount": 1
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:32.170Z",
+          "teamId": "team_1782675512159_q5q",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:32.170Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:35.720Z",
+          "workflowId": "wf_eng_bug_fix",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:35.728Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:35.782Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:35.799Z",
+          "teamId": "team_1782675512159_q5q",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:31.842Z",
+      "completedAt": "2026-06-28T19:38:35.802Z",
+      "durationMs": 3960
+    },
+    {
+      "id": "wf_1782675512171_no3",
+      "title": "Run health check monitoring",
+      "description": "",
+      "domain": "ops",
+      "priority": "medium",
+      "teamId": "team_1782675512482_b7u",
+      "teamType": "mixed",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "monitoring",
+        "reliability"
+      ],
+      "assignments": [
+        {
+          "agentId": "eos_health",
+          "role": "lead",
+          "skills": [
+            "health",
+            "monitoring",
+            "alerting"
+          ]
+        },
+        {
+          "agentId": "aeo_performance",
+          "role": "member",
+          "skills": [
+            "performance",
+            "benchmarking",
+            "optimization"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_ops_health_check"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:32.171Z",
+          "title": "Run health check monitoring",
+          "domain": "ops",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:32.171Z",
+          "teamType": "mixed",
+          "skills": [
+            "monitoring",
+            "reliability"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:32.481Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:32.481Z",
+          "candidateCount": 2
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:32.492Z",
+          "teamId": "team_1782675512482_b7u",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:32.492Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:35.806Z",
+          "workflowId": "wf_ops_health_check",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:35.815Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:35.867Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:35.880Z",
+          "teamId": "team_1782675512482_b7u",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:32.171Z",
+      "completedAt": "2026-06-28T19:38:35.883Z",
+      "durationMs": 3712
+    },
+    {
+      "id": "wf_1782675512537_qvo",
+      "title": "Review UI components",
+      "description": "",
+      "domain": "frontend",
+      "priority": "medium",
+      "teamId": "team_1782675512846_2x7",
+      "teamType": "design",
+      "teamSize": 2,
+      "skillCoverage": 25,
+      "requiredSkills": [
+        "frontend",
+        "ui",
+        "code_review",
+        "refactoring"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_code_review",
+          "role": "lead",
+          "skills": [
+            "code_review",
+            "standards",
+            "feedback"
+          ]
+        },
+        {
+          "agentId": "engorg_electron",
+          "role": "member",
+          "skills": [
+            "electron",
+            "desktop",
+            "packaging"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_code_review"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:32.537Z",
+          "title": "Review UI components",
+          "domain": "frontend",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:32.537Z",
+          "teamType": "design",
+          "skills": [
+            "frontend",
+            "ui",
+            "code_review",
+            "refactoring"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:32.846Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:32.846Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:32.856Z",
+          "teamId": "team_1782675512846_2x7",
+          "size": 2,
+          "coverage": 25
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:32.856Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:35.887Z",
+          "workflowId": "wf_eng_code_review",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:35.898Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:35.952Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:35.965Z",
+          "teamId": "team_1782675512846_2x7",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:32.537Z",
+      "completedAt": "2026-06-28T19:38:35.969Z",
+      "durationMs": 3432
+    },
+    {
+      "id": "wf_1782675512866_10z",
+      "title": "Deploy release v2.0 to production",
+      "description": "",
+      "domain": "devops",
+      "priority": "high",
+      "teamId": "team_1782675513183_bs3",
+      "teamType": "deployment",
+      "teamSize": 2,
+      "skillCoverage": 100,
+      "requiredSkills": [
+        "devops",
+        "deployment",
+        "release",
+        "versioning"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_devops",
+          "role": "lead",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        },
+        {
+          "agentId": "engorg_release",
+          "role": "member",
+          "skills": [
+            "release",
+            "versioning",
+            "changelog"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_deploy_release"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:32.866Z",
+          "title": "Deploy release v2.0 to production",
+          "domain": "devops",
+          "priority": "high"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:32.867Z",
+          "teamType": "deployment",
+          "skills": [
+            "devops",
+            "deployment",
+            "release",
+            "versioning"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:33.183Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:33.183Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:33.193Z",
+          "teamId": "team_1782675513183_bs3",
+          "size": 2,
+          "coverage": 100
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:33.193Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:35.972Z",
+          "workflowId": "wf_eng_deploy_release",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:35.995Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:36.059Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:36.075Z",
+          "teamId": "team_1782675513183_bs3",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:32.866Z",
+      "completedAt": "2026-06-28T19:38:36.080Z",
+      "durationMs": 3214
+    },
+    {
+      "id": "wf_1782675513201_mbo",
+      "title": "Backend deploy test",
+      "description": "",
+      "domain": "backend",
+      "priority": "medium",
+      "teamId": "team_1782675513506_bqv",
+      "teamType": "deployment",
+      "teamSize": 2,
+      "skillCoverage": 33,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "devops",
+        "deployment",
+        "testing",
+        "qa"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_devops",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_deploy_release"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:33.201Z",
+          "title": "Backend deploy test",
+          "domain": "backend",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:33.201Z",
+          "teamType": "deployment",
+          "skills": [
+            "backend",
+            "api",
+            "devops",
+            "deployment",
+            "testing",
+            "qa"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:33.505Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:33.506Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:33.516Z",
+          "teamId": "team_1782675513506_bqv",
+          "size": 2,
+          "coverage": 33
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:33.516Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:36.084Z",
+          "workflowId": "wf_eng_deploy_release",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:36.096Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:36.156Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:36.170Z",
+          "teamId": "team_1782675513506_bqv",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:33.201Z",
+      "completedAt": "2026-06-28T19:38:36.173Z",
+      "durationMs": 2972
+    },
+    {
+      "id": "wf_1782675513523_jz0",
+      "title": "Build and deploy a new authentication feature",
+      "description": "",
+      "domain": "backend",
+      "priority": "high",
+      "teamId": "team_1782675513855_s7v",
+      "teamType": "deployment",
+      "teamSize": 2,
+      "skillCoverage": 25,
+      "requiredSkills": [
+        "backend",
+        "api",
+        "frontend",
+        "ui",
+        "devops",
+        "deployment",
+        "security",
+        "audit"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_devops",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_deploy_release"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:33.523Z",
+          "title": "Build and deploy a new authentication feature",
+          "domain": "backend",
+          "priority": "high"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:33.523Z",
+          "teamType": "deployment",
+          "skills": [
+            "backend",
+            "api",
+            "frontend",
+            "ui",
+            "devops",
+            "deployment",
+            "security",
+            "audit"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:33.855Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:33.855Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:33.865Z",
+          "teamId": "team_1782675513855_s7v",
+          "size": 2,
+          "coverage": 25
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:33.865Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:36.177Z",
+          "workflowId": "wf_eng_deploy_release",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:36.186Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:36.246Z",
+          "overloaded": 29,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:36.260Z",
+          "teamId": "team_1782675513855_s7v",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:33.523Z",
+      "completedAt": "2026-06-28T19:38:36.264Z",
+      "durationMs": 2741
+    },
+    {
+      "id": "wf_1782675514334_z3s",
+      "title": "Dashboard refresh test",
+      "description": "",
+      "domain": "qa",
+      "priority": "medium",
+      "teamId": "team_1782675514652_g8v",
+      "teamType": "mixed",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "testing",
+        "qa"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_api",
+          "role": "lead",
+          "skills": [
+            "api",
+            "rest",
+            "graphql"
+          ]
+        },
+        {
+          "agentId": "engorg_backend",
+          "role": "qa",
+          "skills": [
+            "backend",
+            "api",
+            "database"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_qa_regression_suite"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:34.334Z",
+          "title": "Dashboard refresh test",
+          "domain": "qa",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:34.335Z",
+          "teamType": "mixed",
+          "skills": [
+            "testing",
+            "qa"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:34.651Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:34.651Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:34.661Z",
+          "teamId": "team_1782675514652_g8v",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:34.661Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:36.270Z",
+          "workflowId": "wf_qa_regression_suite",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:36.278Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:36.337Z",
+          "overloaded": 28,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:36.355Z",
+          "teamId": "team_1782675514652_g8v",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:34.334Z",
+      "completedAt": "2026-06-28T19:38:36.358Z",
+      "durationMs": 2024
+    },
+    {
+      "id": "wf_1782675514661_zrg",
+      "title": "Frontend fix 1",
+      "description": "",
+      "domain": "frontend",
+      "priority": "medium",
+      "teamId": "team_1782675514971_skv",
+      "teamType": "engineering",
+      "teamSize": 2,
+      "skillCoverage": 0,
+      "requiredSkills": [
+        "frontend",
+        "ui"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_electron",
+          "role": "lead",
+          "skills": [
+            "electron",
+            "desktop",
+            "packaging"
+          ]
+        },
+        {
+          "agentId": "engorg_mobile",
+          "role": "member",
+          "skills": [
+            "mobile",
+            "android",
+            "capacitor"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_bug_fix"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:34.661Z",
+          "title": "Frontend fix 1",
+          "domain": "frontend",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:34.661Z",
+          "teamType": "engineering",
+          "skills": [
+            "frontend",
+            "ui"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:34.970Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:34.971Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:34.982Z",
+          "teamId": "team_1782675514971_skv",
+          "size": 2,
+          "coverage": 0
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:34.982Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:36.362Z",
+          "workflowId": "wf_eng_bug_fix",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:36.371Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:36.429Z",
+          "overloaded": 28,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:36.444Z",
+          "teamId": "team_1782675514971_skv",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:34.661Z",
+      "completedAt": "2026-06-28T19:38:36.447Z",
+      "durationMs": 1786
+    },
+    {
+      "id": "wf_1782675514982_6hz",
+      "title": "Backend fix 2",
+      "description": "",
+      "domain": "backend",
+      "priority": "medium",
+      "teamId": "team_1782675515287_djp",
+      "teamType": "engineering",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "backend",
+        "api"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_api",
+          "role": "qa",
+          "skills": [
+            "api",
+            "rest",
+            "graphql"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_eng_bug_fix"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:34.982Z",
+          "title": "Backend fix 2",
+          "domain": "backend",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:34.982Z",
+          "teamType": "engineering",
+          "skills": [
+            "backend",
+            "api"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:35.287Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:35.287Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:35.297Z",
+          "teamId": "team_1782675515287_djp",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:35.297Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:36.453Z",
+          "workflowId": "wf_eng_bug_fix",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:36.463Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:36.524Z",
+          "overloaded": 28,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:36.538Z",
+          "teamId": "team_1782675515287_djp",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:34.982Z",
+      "completedAt": "2026-06-28T19:38:36.542Z",
+      "durationMs": 1560
+    },
+    {
+      "id": "wf_1782675515297_1y7",
+      "title": "QA validation 3",
+      "description": "",
+      "domain": "qa",
+      "priority": "medium",
+      "teamId": "team_1782675515608_8wv",
+      "teamType": "mixed",
+      "teamSize": 2,
+      "skillCoverage": 50,
+      "requiredSkills": [
+        "testing",
+        "qa"
+      ],
+      "assignments": [
+        {
+          "agentId": "engorg_api",
+          "role": "lead",
+          "skills": [
+            "api",
+            "rest",
+            "graphql"
+          ]
+        },
+        {
+          "agentId": "engorg_backend",
+          "role": "qa",
+          "skills": [
+            "backend",
+            "api",
+            "database"
+          ]
+        }
+      ],
+      "execution": {
+        "outcome": "dispatched",
+        "workflowId": "wf_qa_regression_suite"
+      },
+      "timeline": [
+        {
+          "step": "intake",
+          "ts": "2026-06-28T19:38:35.297Z",
+          "title": "QA validation 3",
+          "domain": "qa",
+          "priority": "medium"
+        },
+        {
+          "step": "requirements",
+          "ts": "2026-06-28T19:38:35.297Z",
+          "teamType": "mixed",
+          "skills": [
+            "testing",
+            "qa"
+          ]
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:35.607Z"
+        },
+        {
+          "step": "agents_located",
+          "ts": "2026-06-28T19:38:35.608Z",
+          "candidateCount": 0
+        },
+        {
+          "step": "team_built",
+          "ts": "2026-06-28T19:38:35.617Z",
+          "teamId": "team_1782675515608_8wv",
+          "size": 2,
+          "coverage": 50
+        },
+        {
+          "step": "assigned",
+          "ts": "2026-06-28T19:38:35.617Z",
+          "assignments": 2
+        },
+        {
+          "step": "execution",
+          "ts": "2026-06-28T19:38:36.545Z",
+          "workflowId": "wf_qa_regression_suite",
+          "outcome": "dispatched"
+        },
+        {
+          "step": "monitored",
+          "ts": "2026-06-28T19:38:36.556Z",
+          "members": 2
+        },
+        {
+          "step": "capacity_checked",
+          "ts": "2026-06-28T19:38:36.616Z",
+          "overloaded": 28,
+          "rebalanced": true
+        },
+        {
+          "step": "disbanded",
+          "ts": "2026-06-28T19:38:36.632Z",
+          "teamId": "team_1782675515608_8wv",
+          "minutesSaved": 30
+        }
+      ],
+      "minutesSaved": 30,
+      "rebalanced": true,
+      "twinPrediction": {},
+      "status": "completed",
+      "startedAt": "2026-06-28T19:38:35.297Z",
+      "completedAt": "2026-06-28T19:38:36.635Z",
+      "durationMs": 1338
     }
   ],
   "stats": {
-    "missionsRun": 96,
-    "teamsBuilt": 96,
+    "missionsRun": 120,
+    "teamsBuilt": 120,
     "teamsReplaced": 4,
-    "rebalances": 91,
-    "minutesSaved": 3255,
-    "autoAssigned": 217
+    "rebalances": 115,
+    "minutesSaved": 3975,
+    "autoAssigned": 265
   },
-  "updatedAt": "2026-06-28T19:12:30.901Z"
+  "updatedAt": "2026-06-28T19:38:36.636Z"
 }

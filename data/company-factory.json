@@ -1,2128 +1,6 @@
 {
   "runs": [
     {
-      "id": "cf_1782674803458_e2pg",
-      "companyId": "lc_1782674842750_pztv",
-      "companyName": "SaaSCo Alpha",
-      "templateId": "saas",
-      "blueprintId": "bp_1782674803458_mvpd",
-      "workspaceId": "ws_1782674804152_gl3c",
-      "checklist": [
-        {
-          "item": "Domain name registered",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "SSL certificate configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Database backup automated",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "Environment variables secured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Error monitoring active (Sentry)",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Uptime monitoring configured",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "CI/CD pipeline green",
-          "category": "engineering",
-          "done": false
-        },
-        {
-          "item": "README up to date",
-          "category": "documentation",
-          "done": false
-        },
-        {
-          "item": "Security headers configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "CORS policy set",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Rate limiting enabled",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Logging pipeline active",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Rollback plan documented",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Support channel active",
-          "category": "business",
-          "done": false
-        },
-        {
-          "item": "Privacy policy published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Terms of service published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Stripe billing connected",
-          "category": "billing",
-          "done": false
-        },
-        {
-          "item": "Trial flow tested end-to-end",
-          "category": "product",
-          "done": false
-        },
-        {
-          "item": "Multi-tenant isolation verified",
-          "category": "security",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "step": "idea",
-          "ts": "2026-06-28T19:26:43.458Z",
-          "idea": "Create a SaaS company",
-          "name": "SaaSCo Alpha"
-        },
-        {
-          "step": "analyze",
-          "ts": "2026-06-28T19:26:43.458Z",
-          "inferredTemplate": "saas"
-        },
-        {
-          "step": "template",
-          "ts": "2026-06-28T19:26:43.458Z",
-          "id": "saas",
-          "name": "SaaS",
-          "riskProfile": "medium"
-        },
-        {
-          "step": "name_resolved",
-          "ts": "2026-06-28T19:26:43.458Z",
-          "companyName": "SaaSCo Alpha"
-        },
-        {
-          "step": "blueprint",
-          "ts": "2026-06-28T19:26:43.804Z",
-          "blueprintId": "bp_1782674803458_mvpd",
-          "missions": 14,
-          "weeks": 54
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:26:44.152Z"
-        },
-        {
-          "step": "workspace",
-          "ts": "2026-06-28T19:27:17.391Z",
-          "workspaceId": "ws_1782674804152_gl3c",
-          "repos": 4,
-          "missions": 0,
-          "readiness": 40
-        },
-        {
-          "step": "workforce",
-          "ts": "2026-06-28T19:27:22.746Z",
-          "teamType": "engineering",
-          "coverage": 20
-        },
-        {
-          "step": "checklist",
-          "ts": "2026-06-28T19:27:22.746Z",
-          "items": 19
-        },
-        {
-          "step": "register",
-          "ts": "2026-06-28T19:27:22.746Z"
-        },
-        {
-          "step": "lifecycle",
-          "ts": "2026-06-28T19:27:22.751Z",
-          "companyId": "lc_1782674842750_pztv",
-          "stage": "planning"
-        },
-        {
-          "step": "ready",
-          "ts": "2026-06-28T19:27:22.756Z",
-          "minutesSaved": 4800,
-          "companyId": "lc_1782674842750_pztv"
-        }
-      ],
-      "minutesSaved": 4800,
-      "twinPrediction": {},
-      "status": "completed",
-      "durationMs": 39298,
-      "createdAt": "2026-06-28T19:27:22.756Z"
-    },
-    {
-      "id": "cf_1782674804511_2aww",
-      "companyId": "lc_1782674842761_g37q",
-      "companyName": "MarketplaceCo",
-      "templateId": "marketplace",
-      "blueprintId": "bp_1782674804512_z06w",
-      "workspaceId": "ws_1782674805220_al66",
-      "checklist": [
-        {
-          "item": "Domain name registered",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "SSL certificate configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Database backup automated",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "Environment variables secured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Error monitoring active (Sentry)",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Uptime monitoring configured",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "CI/CD pipeline green",
-          "category": "engineering",
-          "done": false
-        },
-        {
-          "item": "README up to date",
-          "category": "documentation",
-          "done": false
-        },
-        {
-          "item": "Security headers configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "CORS policy set",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Rate limiting enabled",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Logging pipeline active",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Rollback plan documented",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Support channel active",
-          "category": "business",
-          "done": false
-        },
-        {
-          "item": "Privacy policy published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Terms of service published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Escrow system tested",
-          "category": "payments",
-          "done": false
-        },
-        {
-          "item": "Fraud detection active",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Seller verification flow live",
-          "category": "operations",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "step": "idea",
-          "ts": "2026-06-28T19:26:44.511Z",
-          "idea": "Build a marketplace",
-          "name": "MarketplaceCo"
-        },
-        {
-          "step": "analyze",
-          "ts": "2026-06-28T19:26:44.512Z",
-          "inferredTemplate": "marketplace"
-        },
-        {
-          "step": "template",
-          "ts": "2026-06-28T19:26:44.512Z",
-          "id": "marketplace",
-          "name": "Marketplace",
-          "riskProfile": "high"
-        },
-        {
-          "step": "name_resolved",
-          "ts": "2026-06-28T19:26:44.512Z",
-          "companyName": "MarketplaceCo"
-        },
-        {
-          "step": "blueprint",
-          "ts": "2026-06-28T19:26:44.881Z",
-          "blueprintId": "bp_1782674804512_z06w",
-          "missions": 14,
-          "weeks": 55
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:26:45.219Z"
-        },
-        {
-          "step": "approval_requested",
-          "ts": "2026-06-28T19:26:45.220Z",
-          "riskProfile": "high"
-        },
-        {
-          "step": "workspace",
-          "ts": "2026-06-28T19:27:17.741Z",
-          "workspaceId": "ws_1782674805220_al66",
-          "repos": 4,
-          "missions": 0,
-          "readiness": 40
-        },
-        {
-          "step": "workforce",
-          "ts": "2026-06-28T19:27:22.760Z",
-          "teamType": "engineering",
-          "coverage": 20
-        },
-        {
-          "step": "checklist",
-          "ts": "2026-06-28T19:27:22.760Z",
-          "items": 19
-        },
-        {
-          "step": "register",
-          "ts": "2026-06-28T19:27:22.760Z"
-        },
-        {
-          "step": "lifecycle",
-          "ts": "2026-06-28T19:27:22.762Z",
-          "companyId": "lc_1782674842761_g37q",
-          "stage": "planning"
-        },
-        {
-          "step": "ready",
-          "ts": "2026-06-28T19:27:22.766Z",
-          "minutesSaved": 5200,
-          "companyId": "lc_1782674842761_g37q"
-        }
-      ],
-      "minutesSaved": 5200,
-      "twinPrediction": {},
-      "status": "completed",
-      "durationMs": 38255,
-      "createdAt": "2026-06-28T19:27:22.766Z"
-    },
-    {
-      "id": "cf_1782674805579_7sq7",
-      "companyId": "lc_1782674842770_o2o5",
-      "companyName": "HealthVenture",
-      "templateId": "healthcare",
-      "blueprintId": "bp_1782674805580_2g5r",
-      "workspaceId": "ws_1782674806277_r43j",
-      "checklist": [
-        {
-          "item": "Domain name registered",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "SSL certificate configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Database backup automated",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "Environment variables secured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Error monitoring active (Sentry)",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Uptime monitoring configured",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "CI/CD pipeline green",
-          "category": "engineering",
-          "done": false
-        },
-        {
-          "item": "README up to date",
-          "category": "documentation",
-          "done": false
-        },
-        {
-          "item": "Security headers configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "CORS policy set",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Rate limiting enabled",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Logging pipeline active",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Rollback plan documented",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Support channel active",
-          "category": "business",
-          "done": false
-        },
-        {
-          "item": "Privacy policy published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Terms of service published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "HIPAA BAAs signed with vendors",
-          "category": "compliance",
-          "done": false
-        },
-        {
-          "item": "PHI access audit log live",
-          "category": "compliance",
-          "done": false
-        },
-        {
-          "item": "Encryption at rest verified",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Breach notification plan ready",
-          "category": "compliance",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "step": "idea",
-          "ts": "2026-06-28T19:26:45.579Z",
-          "idea": "HIPAA-compliant patient management system",
-          "name": "HealthVenture"
-        },
-        {
-          "step": "analyze",
-          "ts": "2026-06-28T19:26:45.579Z",
-          "inferredTemplate": "healthcare"
-        },
-        {
-          "step": "template",
-          "ts": "2026-06-28T19:26:45.579Z",
-          "id": "healthcare",
-          "name": "Healthcare",
-          "riskProfile": "critical"
-        },
-        {
-          "step": "name_resolved",
-          "ts": "2026-06-28T19:26:45.579Z",
-          "companyName": "HealthVenture"
-        },
-        {
-          "step": "blueprint",
-          "ts": "2026-06-28T19:26:45.926Z",
-          "blueprintId": "bp_1782674805580_2g5r",
-          "missions": 14,
-          "weeks": 93
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:26:46.277Z"
-        },
-        {
-          "step": "workspace",
-          "ts": "2026-06-28T19:27:18.094Z",
-          "workspaceId": "ws_1782674806277_r43j",
-          "repos": 4,
-          "missions": 0,
-          "readiness": 40
-        },
-        {
-          "step": "workforce",
-          "ts": "2026-06-28T19:27:22.768Z",
-          "teamType": "engineering",
-          "coverage": 60
-        },
-        {
-          "step": "checklist",
-          "ts": "2026-06-28T19:27:22.768Z",
-          "items": 20
-        },
-        {
-          "step": "register",
-          "ts": "2026-06-28T19:27:22.768Z"
-        },
-        {
-          "step": "lifecycle",
-          "ts": "2026-06-28T19:27:22.770Z",
-          "companyId": "lc_1782674842770_o2o5",
-          "stage": "planning"
-        },
-        {
-          "step": "ready",
-          "ts": "2026-06-28T19:27:22.774Z",
-          "minutesSaved": 6400,
-          "companyId": "lc_1782674842770_o2o5"
-        }
-      ],
-      "minutesSaved": 6400,
-      "twinPrediction": {},
-      "status": "completed",
-      "durationMs": 37195,
-      "createdAt": "2026-06-28T19:27:22.774Z"
-    },
-    {
-      "id": "cf_1782674806618_dddg",
-      "companyId": "lc_1782674842780_546m",
-      "companyName": "AIAgency",
-      "templateId": "agency",
-      "blueprintId": "bp_1782674806618_2wcq",
-      "workspaceId": "ws_1782674807315_9ega",
-      "checklist": [
-        {
-          "item": "Domain name registered",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "SSL certificate configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Database backup automated",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "Environment variables secured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Error monitoring active (Sentry)",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Uptime monitoring configured",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "CI/CD pipeline green",
-          "category": "engineering",
-          "done": false
-        },
-        {
-          "item": "README up to date",
-          "category": "documentation",
-          "done": false
-        },
-        {
-          "item": "Security headers configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "CORS policy set",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Rate limiting enabled",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Logging pipeline active",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Rollback plan documented",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Support channel active",
-          "category": "business",
-          "done": false
-        },
-        {
-          "item": "Privacy policy published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Terms of service published",
-          "category": "legal",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "step": "idea",
-          "ts": "2026-06-28T19:26:46.618Z",
-          "idea": "Create an AI agency",
-          "name": "AIAgency"
-        },
-        {
-          "step": "analyze",
-          "ts": "2026-06-28T19:26:46.618Z",
-          "inferredTemplate": "agency"
-        },
-        {
-          "step": "template",
-          "ts": "2026-06-28T19:26:46.618Z",
-          "id": "agency",
-          "name": "Agency",
-          "riskProfile": "low"
-        },
-        {
-          "step": "name_resolved",
-          "ts": "2026-06-28T19:26:46.618Z",
-          "companyName": "AIAgency"
-        },
-        {
-          "step": "blueprint",
-          "ts": "2026-06-28T19:26:46.959Z",
-          "blueprintId": "bp_1782674806618_2wcq",
-          "missions": 12,
-          "weeks": 56
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:26:47.315Z"
-        },
-        {
-          "step": "workspace",
-          "ts": "2026-06-28T19:27:18.458Z",
-          "workspaceId": "ws_1782674807315_9ega",
-          "repos": 4,
-          "missions": 0,
-          "readiness": 40
-        },
-        {
-          "step": "workforce",
-          "ts": "2026-06-28T19:27:22.778Z",
-          "teamType": "business",
-          "coverage": 40
-        },
-        {
-          "step": "checklist",
-          "ts": "2026-06-28T19:27:22.778Z",
-          "items": 16
-        },
-        {
-          "step": "register",
-          "ts": "2026-06-28T19:27:22.778Z"
-        },
-        {
-          "step": "lifecycle",
-          "ts": "2026-06-28T19:27:22.780Z",
-          "companyId": "lc_1782674842780_546m",
-          "stage": "planning"
-        },
-        {
-          "step": "ready",
-          "ts": "2026-06-28T19:27:22.784Z",
-          "minutesSaved": 3200,
-          "companyId": "lc_1782674842780_546m"
-        }
-      ],
-      "minutesSaved": 3200,
-      "twinPrediction": {},
-      "status": "completed",
-      "durationMs": 36166,
-      "createdAt": "2026-06-28T19:27:22.784Z"
-    },
-    {
-      "id": "cf_1782674807687_6m9d",
-      "companyId": "lc_1782674842787_ro5o",
-      "companyName": "ShopNow",
-      "templateId": "ecommerce",
-      "blueprintId": "bp_1782674807687_x7gd",
-      "workspaceId": "ws_1782674808391_m2ci",
-      "checklist": [
-        {
-          "item": "Domain name registered",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "SSL certificate configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Database backup automated",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "Environment variables secured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Error monitoring active (Sentry)",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Uptime monitoring configured",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "CI/CD pipeline green",
-          "category": "engineering",
-          "done": false
-        },
-        {
-          "item": "README up to date",
-          "category": "documentation",
-          "done": false
-        },
-        {
-          "item": "Security headers configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "CORS policy set",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Rate limiting enabled",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Logging pipeline active",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Rollback plan documented",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Support channel active",
-          "category": "business",
-          "done": false
-        },
-        {
-          "item": "Privacy policy published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Terms of service published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Payment processor live",
-          "category": "payments",
-          "done": false
-        },
-        {
-          "item": "Inventory sync tested",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Return policy published",
-          "category": "legal",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "step": "idea",
-          "ts": "2026-06-28T19:26:47.687Z",
-          "idea": "Online ecommerce store",
-          "name": "ShopNow"
-        },
-        {
-          "step": "analyze",
-          "ts": "2026-06-28T19:26:47.687Z",
-          "inferredTemplate": "ecommerce"
-        },
-        {
-          "step": "template",
-          "ts": "2026-06-28T19:26:47.687Z",
-          "id": "ecommerce",
-          "name": "Ecommerce",
-          "riskProfile": "medium"
-        },
-        {
-          "step": "name_resolved",
-          "ts": "2026-06-28T19:26:47.687Z",
-          "companyName": "ShopNow"
-        },
-        {
-          "step": "blueprint",
-          "ts": "2026-06-28T19:26:48.042Z",
-          "blueprintId": "bp_1782674807687_x7gd",
-          "missions": 12,
-          "weeks": 23
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:26:48.390Z"
-        },
-        {
-          "step": "workspace",
-          "ts": "2026-06-28T19:27:18.793Z",
-          "workspaceId": "ws_1782674808391_m2ci",
-          "repos": 4,
-          "missions": 0,
-          "readiness": 40
-        },
-        {
-          "step": "workforce",
-          "ts": "2026-06-28T19:27:22.786Z",
-          "teamType": "engineering",
-          "coverage": 60
-        },
-        {
-          "step": "checklist",
-          "ts": "2026-06-28T19:27:22.786Z",
-          "items": 19
-        },
-        {
-          "step": "register",
-          "ts": "2026-06-28T19:27:22.786Z"
-        },
-        {
-          "step": "lifecycle",
-          "ts": "2026-06-28T19:27:22.788Z",
-          "companyId": "lc_1782674842787_ro5o",
-          "stage": "planning"
-        },
-        {
-          "step": "ready",
-          "ts": "2026-06-28T19:27:22.791Z",
-          "minutesSaved": 3600,
-          "companyId": "lc_1782674842787_ro5o"
-        }
-      ],
-      "minutesSaved": 3600,
-      "twinPrediction": {},
-      "status": "completed",
-      "durationMs": 35104,
-      "createdAt": "2026-06-28T19:27:22.791Z"
-    },
-    {
-      "id": "cf_1782674808741_g2qg",
-      "companyId": "lc_1782674842795_csxa",
-      "companyName": "ERPCo",
-      "templateId": "erp",
-      "blueprintId": "bp_1782674808741_zj2p",
-      "workspaceId": "ws_1782674809523_7xcs",
-      "checklist": [
-        {
-          "item": "Domain name registered",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "SSL certificate configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Database backup automated",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "Environment variables secured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Error monitoring active (Sentry)",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Uptime monitoring configured",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "CI/CD pipeline green",
-          "category": "engineering",
-          "done": false
-        },
-        {
-          "item": "README up to date",
-          "category": "documentation",
-          "done": false
-        },
-        {
-          "item": "Security headers configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "CORS policy set",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Rate limiting enabled",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Logging pipeline active",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Rollback plan documented",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Support channel active",
-          "category": "business",
-          "done": false
-        },
-        {
-          "item": "Privacy policy published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Terms of service published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Data migration plan approved",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Rollback procedure drilled",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Access control matrix reviewed",
-          "category": "security",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "step": "idea",
-          "ts": "2026-06-28T19:26:48.741Z",
-          "idea": "Something generic",
-          "name": "ERPCo"
-        },
-        {
-          "step": "analyze",
-          "ts": "2026-06-28T19:26:48.741Z",
-          "inferredTemplate": "erp"
-        },
-        {
-          "step": "template",
-          "ts": "2026-06-28T19:26:48.741Z",
-          "id": "erp",
-          "name": "ERP",
-          "riskProfile": "high"
-        },
-        {
-          "step": "name_resolved",
-          "ts": "2026-06-28T19:26:48.741Z",
-          "companyName": "ERPCo"
-        },
-        {
-          "step": "blueprint",
-          "ts": "2026-06-28T19:26:49.163Z",
-          "blueprintId": "bp_1782674808741_zj2p",
-          "missions": 14,
-          "weeks": 53
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:26:49.522Z"
-        },
-        {
-          "step": "workspace",
-          "ts": "2026-06-28T19:27:19.129Z",
-          "workspaceId": "ws_1782674809523_7xcs",
-          "repos": 4,
-          "missions": 0,
-          "readiness": 40
-        },
-        {
-          "step": "workforce",
-          "ts": "2026-06-28T19:27:22.794Z",
-          "teamType": "engineering",
-          "coverage": 20
-        },
-        {
-          "step": "checklist",
-          "ts": "2026-06-28T19:27:22.794Z",
-          "items": 19
-        },
-        {
-          "step": "register",
-          "ts": "2026-06-28T19:27:22.794Z"
-        },
-        {
-          "step": "lifecycle",
-          "ts": "2026-06-28T19:27:22.795Z",
-          "companyId": "lc_1782674842795_csxa",
-          "stage": "planning"
-        },
-        {
-          "step": "ready",
-          "ts": "2026-06-28T19:27:22.799Z",
-          "minutesSaved": 7200,
-          "companyId": "lc_1782674842795_csxa"
-        }
-      ],
-      "minutesSaved": 7200,
-      "twinPrediction": {},
-      "status": "completed",
-      "durationMs": 34058,
-      "createdAt": "2026-06-28T19:27:22.799Z"
-    },
-    {
-      "id": "cf_1782674809886_4m33",
-      "companyId": "lc_1782674842803_xv1a",
-      "companyName": "HRTool",
-      "templateId": "internal_tool",
-      "blueprintId": "bp_1782674809886_os68",
-      "workspaceId": "ws_1782674810583_0e8o",
-      "checklist": [
-        {
-          "item": "Domain name registered",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "SSL certificate configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Database backup automated",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "Environment variables secured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Error monitoring active (Sentry)",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Uptime monitoring configured",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "CI/CD pipeline green",
-          "category": "engineering",
-          "done": false
-        },
-        {
-          "item": "README up to date",
-          "category": "documentation",
-          "done": false
-        },
-        {
-          "item": "Security headers configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "CORS policy set",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Rate limiting enabled",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Logging pipeline active",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Rollback plan documented",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Support channel active",
-          "category": "business",
-          "done": false
-        },
-        {
-          "item": "Privacy policy published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Terms of service published",
-          "category": "legal",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "step": "idea",
-          "ts": "2026-06-28T19:26:49.886Z",
-          "idea": "Internal tool for HR",
-          "name": "HRTool"
-        },
-        {
-          "step": "analyze",
-          "ts": "2026-06-28T19:26:49.886Z",
-          "inferredTemplate": "internal_tool"
-        },
-        {
-          "step": "template",
-          "ts": "2026-06-28T19:26:49.886Z",
-          "id": "internal_tool",
-          "name": "Internal Tool",
-          "riskProfile": "low"
-        },
-        {
-          "step": "name_resolved",
-          "ts": "2026-06-28T19:26:49.886Z",
-          "companyName": "HRTool"
-        },
-        {
-          "step": "blueprint",
-          "ts": "2026-06-28T19:26:50.238Z",
-          "blueprintId": "bp_1782674809886_os68",
-          "missions": 12,
-          "weeks": 20
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:26:50.582Z"
-        },
-        {
-          "step": "workspace",
-          "ts": "2026-06-28T19:27:19.508Z",
-          "workspaceId": "ws_1782674810583_0e8o",
-          "repos": 4,
-          "missions": 0,
-          "readiness": 40
-        },
-        {
-          "step": "workforce",
-          "ts": "2026-06-28T19:27:22.802Z",
-          "teamType": "engineering",
-          "coverage": 40
-        },
-        {
-          "step": "checklist",
-          "ts": "2026-06-28T19:27:22.802Z",
-          "items": 16
-        },
-        {
-          "step": "register",
-          "ts": "2026-06-28T19:27:22.802Z"
-        },
-        {
-          "step": "lifecycle",
-          "ts": "2026-06-28T19:27:22.803Z",
-          "companyId": "lc_1782674842803_xv1a",
-          "stage": "planning"
-        },
-        {
-          "step": "ready",
-          "ts": "2026-06-28T19:27:22.807Z",
-          "minutesSaved": 2400,
-          "companyId": "lc_1782674842803_xv1a"
-        }
-      ],
-      "minutesSaved": 2400,
-      "twinPrediction": {},
-      "status": "completed",
-      "durationMs": 32921,
-      "createdAt": "2026-06-28T19:27:22.807Z"
-    },
-    {
-      "id": "cf_1782674810943_o1vk",
-      "companyId": "lc_1782674842810_xqfh",
-      "companyName": "BillFlow",
-      "templateId": "saas",
-      "blueprintId": "bp_1782674810943_tkuq",
-      "workspaceId": "ws_1782674811628_35za",
-      "checklist": [
-        {
-          "item": "Domain name registered",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "SSL certificate configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Database backup automated",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "Environment variables secured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Error monitoring active (Sentry)",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Uptime monitoring configured",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "CI/CD pipeline green",
-          "category": "engineering",
-          "done": false
-        },
-        {
-          "item": "README up to date",
-          "category": "documentation",
-          "done": false
-        },
-        {
-          "item": "Security headers configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "CORS policy set",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Rate limiting enabled",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Logging pipeline active",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Rollback plan documented",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Support channel active",
-          "category": "business",
-          "done": false
-        },
-        {
-          "item": "Privacy policy published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Terms of service published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Stripe billing connected",
-          "category": "billing",
-          "done": false
-        },
-        {
-          "item": "Trial flow tested end-to-end",
-          "category": "product",
-          "done": false
-        },
-        {
-          "item": "Multi-tenant isolation verified",
-          "category": "security",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "step": "idea",
-          "ts": "2026-06-28T19:26:50.943Z",
-          "idea": "SaaS billing platform",
-          "name": "BillFlow"
-        },
-        {
-          "step": "analyze",
-          "ts": "2026-06-28T19:26:50.943Z",
-          "inferredTemplate": "saas"
-        },
-        {
-          "step": "template",
-          "ts": "2026-06-28T19:26:50.943Z",
-          "id": "saas",
-          "name": "SaaS",
-          "riskProfile": "medium"
-        },
-        {
-          "step": "name_resolved",
-          "ts": "2026-06-28T19:26:50.943Z",
-          "companyName": "BillFlow"
-        },
-        {
-          "step": "blueprint",
-          "ts": "2026-06-28T19:26:51.278Z",
-          "blueprintId": "bp_1782674810943_tkuq",
-          "missions": 14,
-          "weeks": 54
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:26:51.628Z"
-        },
-        {
-          "step": "workspace",
-          "ts": "2026-06-28T19:27:19.941Z",
-          "workspaceId": "ws_1782674811628_35za",
-          "repos": 4,
-          "missions": 0,
-          "readiness": 40
-        },
-        {
-          "step": "workforce",
-          "ts": "2026-06-28T19:27:22.809Z",
-          "teamType": "engineering",
-          "coverage": 20
-        },
-        {
-          "step": "checklist",
-          "ts": "2026-06-28T19:27:22.809Z",
-          "items": 19
-        },
-        {
-          "step": "register",
-          "ts": "2026-06-28T19:27:22.809Z"
-        },
-        {
-          "step": "lifecycle",
-          "ts": "2026-06-28T19:27:22.811Z",
-          "companyId": "lc_1782674842810_xqfh",
-          "stage": "planning"
-        },
-        {
-          "step": "ready",
-          "ts": "2026-06-28T19:27:22.815Z",
-          "minutesSaved": 4800,
-          "companyId": "lc_1782674842810_xqfh"
-        }
-      ],
-      "minutesSaved": 4800,
-      "twinPrediction": {},
-      "status": "completed",
-      "durationMs": 31872,
-      "createdAt": "2026-06-28T19:27:22.815Z"
-    },
-    {
-      "id": "cf_1782674811987_ekjt",
-      "companyId": "lc_1782674842818_l8bv",
-      "companyName": "LearnCo",
-      "templateId": "education",
-      "blueprintId": "bp_1782674811987_l0mp",
-      "workspaceId": "ws_1782674812677_hapz",
-      "checklist": [
-        {
-          "item": "Domain name registered",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "SSL certificate configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Database backup automated",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "Environment variables secured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Error monitoring active (Sentry)",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Uptime monitoring configured",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "CI/CD pipeline green",
-          "category": "engineering",
-          "done": false
-        },
-        {
-          "item": "README up to date",
-          "category": "documentation",
-          "done": false
-        },
-        {
-          "item": "Security headers configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "CORS policy set",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Rate limiting enabled",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Logging pipeline active",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Rollback plan documented",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Support channel active",
-          "category": "business",
-          "done": false
-        },
-        {
-          "item": "Privacy policy published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Terms of service published",
-          "category": "legal",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "step": "idea",
-          "ts": "2026-06-28T19:26:51.987Z",
-          "idea": "Build a learning management system",
-          "name": "LearnCo"
-        },
-        {
-          "step": "analyze",
-          "ts": "2026-06-28T19:26:51.987Z",
-          "inferredTemplate": "education"
-        },
-        {
-          "step": "template",
-          "ts": "2026-06-28T19:26:51.987Z",
-          "id": "education",
-          "name": "Education",
-          "riskProfile": "medium"
-        },
-        {
-          "step": "name_resolved",
-          "ts": "2026-06-28T19:26:51.987Z",
-          "companyName": "LearnCo"
-        },
-        {
-          "step": "blueprint",
-          "ts": "2026-06-28T19:26:52.332Z",
-          "blueprintId": "bp_1782674811987_l0mp",
-          "missions": 12,
-          "weeks": 36
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:26:52.676Z"
-        },
-        {
-          "step": "workspace",
-          "ts": "2026-06-28T19:27:20.316Z",
-          "workspaceId": "ws_1782674812677_hapz",
-          "repos": 4,
-          "missions": 0,
-          "readiness": 40
-        },
-        {
-          "step": "workforce",
-          "ts": "2026-06-28T19:27:22.817Z",
-          "teamType": "engineering",
-          "coverage": 40
-        },
-        {
-          "step": "checklist",
-          "ts": "2026-06-28T19:27:22.817Z",
-          "items": 16
-        },
-        {
-          "step": "register",
-          "ts": "2026-06-28T19:27:22.817Z"
-        },
-        {
-          "step": "lifecycle",
-          "ts": "2026-06-28T19:27:22.818Z",
-          "companyId": "lc_1782674842818_l8bv",
-          "stage": "planning"
-        },
-        {
-          "step": "ready",
-          "ts": "2026-06-28T19:27:22.822Z",
-          "minutesSaved": 3800,
-          "companyId": "lc_1782674842818_l8bv"
-        }
-      ],
-      "minutesSaved": 3800,
-      "twinPrediction": {},
-      "status": "completed",
-      "durationMs": 30835,
-      "createdAt": "2026-06-28T19:27:22.822Z"
-    },
-    {
-      "id": "cf_1782674813038_4bq3",
-      "companyId": "lc_1782674842827_etzh",
-      "companyName": "FreelanceHub",
-      "templateId": "agency",
-      "blueprintId": "bp_1782674813038_xv6q",
-      "workspaceId": "ws_1782674813745_pusq",
-      "checklist": [
-        {
-          "item": "Domain name registered",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "SSL certificate configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Database backup automated",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "Environment variables secured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Error monitoring active (Sentry)",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Uptime monitoring configured",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "CI/CD pipeline green",
-          "category": "engineering",
-          "done": false
-        },
-        {
-          "item": "README up to date",
-          "category": "documentation",
-          "done": false
-        },
-        {
-          "item": "Security headers configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "CORS policy set",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Rate limiting enabled",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Logging pipeline active",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Rollback plan documented",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Support channel active",
-          "category": "business",
-          "done": false
-        },
-        {
-          "item": "Privacy policy published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Terms of service published",
-          "category": "legal",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "step": "idea",
-          "ts": "2026-06-28T19:26:53.038Z",
-          "idea": "Marketplace for freelancers",
-          "name": "FreelanceHub"
-        },
-        {
-          "step": "analyze",
-          "ts": "2026-06-28T19:26:53.038Z",
-          "inferredTemplate": "agency"
-        },
-        {
-          "step": "template",
-          "ts": "2026-06-28T19:26:53.038Z",
-          "id": "agency",
-          "name": "Agency",
-          "riskProfile": "low"
-        },
-        {
-          "step": "name_resolved",
-          "ts": "2026-06-28T19:26:53.038Z",
-          "companyName": "FreelanceHub"
-        },
-        {
-          "step": "blueprint",
-          "ts": "2026-06-28T19:26:53.399Z",
-          "blueprintId": "bp_1782674813038_xv6q",
-          "missions": 12,
-          "weeks": 56
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:26:53.744Z"
-        },
-        {
-          "step": "workspace",
-          "ts": "2026-06-28T19:27:20.682Z",
-          "workspaceId": "ws_1782674813745_pusq",
-          "repos": 4,
-          "missions": 0,
-          "readiness": 40
-        },
-        {
-          "step": "workforce",
-          "ts": "2026-06-28T19:27:22.826Z",
-          "teamType": "business",
-          "coverage": 40
-        },
-        {
-          "step": "checklist",
-          "ts": "2026-06-28T19:27:22.826Z",
-          "items": 16
-        },
-        {
-          "step": "register",
-          "ts": "2026-06-28T19:27:22.826Z"
-        },
-        {
-          "step": "lifecycle",
-          "ts": "2026-06-28T19:27:22.827Z",
-          "companyId": "lc_1782674842827_etzh",
-          "stage": "planning"
-        },
-        {
-          "step": "ready",
-          "ts": "2026-06-28T19:27:22.831Z",
-          "minutesSaved": 3200,
-          "companyId": "lc_1782674842827_etzh"
-        }
-      ],
-      "minutesSaved": 3200,
-      "twinPrediction": {},
-      "status": "completed",
-      "durationMs": 29793,
-      "createdAt": "2026-06-28T19:27:22.831Z"
-    },
-    {
-      "id": "cf_1782674814105_ymf2",
-      "companyId": "lc_1782674842835_tzd4",
-      "companyName": "MfgERP",
-      "templateId": "erp",
-      "blueprintId": "bp_1782674814105_exbw",
-      "workspaceId": "ws_1782674814781_noey",
-      "checklist": [
-        {
-          "item": "Domain name registered",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "SSL certificate configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Database backup automated",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "Environment variables secured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Error monitoring active (Sentry)",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Uptime monitoring configured",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "CI/CD pipeline green",
-          "category": "engineering",
-          "done": false
-        },
-        {
-          "item": "README up to date",
-          "category": "documentation",
-          "done": false
-        },
-        {
-          "item": "Security headers configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "CORS policy set",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Rate limiting enabled",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Logging pipeline active",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Rollback plan documented",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Support channel active",
-          "category": "business",
-          "done": false
-        },
-        {
-          "item": "Privacy policy published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Terms of service published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Data migration plan approved",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Rollback procedure drilled",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Access control matrix reviewed",
-          "category": "security",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "step": "idea",
-          "ts": "2026-06-28T19:26:54.105Z",
-          "idea": "ERP system for manufacturing",
-          "name": "MfgERP"
-        },
-        {
-          "step": "analyze",
-          "ts": "2026-06-28T19:26:54.105Z",
-          "inferredTemplate": "erp"
-        },
-        {
-          "step": "template",
-          "ts": "2026-06-28T19:26:54.105Z",
-          "id": "erp",
-          "name": "ERP",
-          "riskProfile": "high"
-        },
-        {
-          "step": "name_resolved",
-          "ts": "2026-06-28T19:26:54.105Z",
-          "companyName": "MfgERP"
-        },
-        {
-          "step": "blueprint",
-          "ts": "2026-06-28T19:26:54.447Z",
-          "blueprintId": "bp_1782674814105_exbw",
-          "missions": 14,
-          "weeks": 53
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:26:54.781Z"
-        },
-        {
-          "step": "workspace",
-          "ts": "2026-06-28T19:27:21.027Z",
-          "workspaceId": "ws_1782674814781_noey",
-          "repos": 4,
-          "missions": 0,
-          "readiness": 40
-        },
-        {
-          "step": "workforce",
-          "ts": "2026-06-28T19:27:22.834Z",
-          "teamType": "engineering",
-          "coverage": 20
-        },
-        {
-          "step": "checklist",
-          "ts": "2026-06-28T19:27:22.834Z",
-          "items": 19
-        },
-        {
-          "step": "register",
-          "ts": "2026-06-28T19:27:22.834Z"
-        },
-        {
-          "step": "lifecycle",
-          "ts": "2026-06-28T19:27:22.835Z",
-          "companyId": "lc_1782674842835_tzd4",
-          "stage": "planning"
-        },
-        {
-          "step": "ready",
-          "ts": "2026-06-28T19:27:22.839Z",
-          "minutesSaved": 7200,
-          "companyId": "lc_1782674842835_tzd4"
-        }
-      ],
-      "minutesSaved": 7200,
-      "twinPrediction": {},
-      "status": "completed",
-      "durationMs": 28734,
-      "createdAt": "2026-06-28T19:27:22.839Z"
-    },
-    {
-      "id": "cf_1782674815128_blfd",
-      "companyId": "lc_1782674842843_mhu6",
-      "companyName": "AnalyticsCo",
-      "templateId": "saas",
-      "blueprintId": "bp_1782674815128_3m7h",
-      "workspaceId": "ws_1782674815824_926o",
-      "checklist": [
-        {
-          "item": "Domain name registered",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "SSL certificate configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Database backup automated",
-          "category": "infrastructure",
-          "done": false
-        },
-        {
-          "item": "Environment variables secured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Error monitoring active (Sentry)",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Uptime monitoring configured",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "CI/CD pipeline green",
-          "category": "engineering",
-          "done": false
-        },
-        {
-          "item": "README up to date",
-          "category": "documentation",
-          "done": false
-        },
-        {
-          "item": "Security headers configured",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "CORS policy set",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Rate limiting enabled",
-          "category": "security",
-          "done": false
-        },
-        {
-          "item": "Logging pipeline active",
-          "category": "monitoring",
-          "done": false
-        },
-        {
-          "item": "Rollback plan documented",
-          "category": "operations",
-          "done": false
-        },
-        {
-          "item": "Support channel active",
-          "category": "business",
-          "done": false
-        },
-        {
-          "item": "Privacy policy published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Terms of service published",
-          "category": "legal",
-          "done": false
-        },
-        {
-          "item": "Stripe billing connected",
-          "category": "billing",
-          "done": false
-        },
-        {
-          "item": "Trial flow tested end-to-end",
-          "category": "product",
-          "done": false
-        },
-        {
-          "item": "Multi-tenant isolation verified",
-          "category": "security",
-          "done": false
-        }
-      ],
-      "timeline": [
-        {
-          "step": "idea",
-          "ts": "2026-06-28T19:26:55.128Z",
-          "idea": "SaaS analytics tool",
-          "name": "AnalyticsCo"
-        },
-        {
-          "step": "analyze",
-          "ts": "2026-06-28T19:26:55.128Z",
-          "inferredTemplate": "saas"
-        },
-        {
-          "step": "template",
-          "ts": "2026-06-28T19:26:55.128Z",
-          "id": "saas",
-          "name": "SaaS",
-          "riskProfile": "medium"
-        },
-        {
-          "step": "name_resolved",
-          "ts": "2026-06-28T19:26:55.128Z",
-          "companyName": "AnalyticsCo"
-        },
-        {
-          "step": "blueprint",
-          "ts": "2026-06-28T19:26:55.479Z",
-          "blueprintId": "bp_1782674815128_3m7h",
-          "missions": 14,
-          "weeks": 54
-        },
-        {
-          "step": "twin_prediction",
-          "ts": "2026-06-28T19:26:55.823Z"
-        },
-        {
-          "step": "workspace",
-          "ts": "2026-06-28T19:27:21.390Z",
-          "workspaceId": "ws_1782674815824_926o",
-          "repos": 4,
-          "missions": 0,
-          "readiness": 40
-        },
-        {
-          "step": "workforce",
-          "ts": "2026-06-28T19:27:22.842Z",
-          "teamType": "engineering",
-          "coverage": 20
-        },
-        {
-          "step": "checklist",
-          "ts": "2026-06-28T19:27:22.842Z",
-          "items": 19
-        },
-        {
-          "step": "register",
-          "ts": "2026-06-28T19:27:22.842Z"
-        },
-        {
-          "step": "lifecycle",
-          "ts": "2026-06-28T19:27:22.843Z",
-          "companyId": "lc_1782674842843_mhu6",
-          "stage": "planning"
-        },
-        {
-          "step": "ready",
-          "ts": "2026-06-28T19:27:22.847Z",
-          "minutesSaved": 4800,
-          "companyId": "lc_1782674842843_mhu6"
-        }
-      ],
-      "minutesSaved": 4800,
-      "twinPrediction": {},
-      "status": "completed",
-      "durationMs": 27719,
-      "createdAt": "2026-06-28T19:27:22.847Z"
-    },
-    {
       "id": "cf_1782674816181_6i2s",
       "companyId": "lc_1782674842851_qa2k",
       "companyName": "EduPlatform",
@@ -14843,23 +12721,4971 @@
       "status": "completed",
       "durationMs": 22723,
       "createdAt": "2026-06-28T19:36:05.156Z"
+    },
+    {
+      "id": "cf_1782675519212_xigg",
+      "companyId": "lc_1782675556547_r35h",
+      "companyName": "SaaSCo Alpha",
+      "templateId": "saas",
+      "blueprintId": "bp_1782675519212_e325",
+      "workspaceId": "ws_1782675519839_nh47",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Stripe billing connected",
+          "category": "billing",
+          "done": false
+        },
+        {
+          "item": "Trial flow tested end-to-end",
+          "category": "product",
+          "done": false
+        },
+        {
+          "item": "Multi-tenant isolation verified",
+          "category": "security",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:39.212Z",
+          "idea": "Create a SaaS company",
+          "name": "SaaSCo Alpha"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:39.212Z",
+          "inferredTemplate": "saas"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:39.212Z",
+          "id": "saas",
+          "name": "SaaS",
+          "riskProfile": "medium"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:39.212Z",
+          "companyName": "SaaSCo Alpha"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:39.534Z",
+          "blueprintId": "bp_1782675519212_e325",
+          "missions": 14,
+          "weeks": 54
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:39.837Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:11.351Z",
+          "workspaceId": "ws_1782675519839_nh47",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.534Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.534Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.534Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.549Z",
+          "companyId": "lc_1782675556547_r35h",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.557Z",
+          "minutesSaved": 4800,
+          "companyId": "lc_1782675556547_r35h"
+        }
+      ],
+      "minutesSaved": 4800,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 37345,
+      "createdAt": "2026-06-28T19:39:16.557Z"
+    },
+    {
+      "id": "cf_1782675520179_g0nw",
+      "companyId": "lc_1782675556569_3dgi",
+      "companyName": "MarketplaceCo",
+      "templateId": "marketplace",
+      "blueprintId": "bp_1782675520179_in7a",
+      "workspaceId": "ws_1782675520803_umuu",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Escrow system tested",
+          "category": "payments",
+          "done": false
+        },
+        {
+          "item": "Fraud detection active",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Seller verification flow live",
+          "category": "operations",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:40.179Z",
+          "idea": "Build a marketplace",
+          "name": "MarketplaceCo"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:40.179Z",
+          "inferredTemplate": "marketplace"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:40.179Z",
+          "id": "marketplace",
+          "name": "Marketplace",
+          "riskProfile": "high"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:40.179Z",
+          "companyName": "MarketplaceCo"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:40.497Z",
+          "blueprintId": "bp_1782675520179_in7a",
+          "missions": 14,
+          "weeks": 55
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:40.801Z"
+        },
+        {
+          "step": "approval_requested",
+          "ts": "2026-06-28T19:38:40.801Z",
+          "riskProfile": "high"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:11.709Z",
+          "workspaceId": "ws_1782675520803_umuu",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.563Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.563Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.563Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.571Z",
+          "companyId": "lc_1782675556569_3dgi",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.580Z",
+          "minutesSaved": 5200,
+          "companyId": "lc_1782675556569_3dgi"
+        }
+      ],
+      "minutesSaved": 5200,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 36401,
+      "createdAt": "2026-06-28T19:39:16.580Z"
+    },
+    {
+      "id": "cf_1782675521117_xndy",
+      "companyId": "lc_1782675556591_wrnh",
+      "companyName": "HealthVenture",
+      "templateId": "healthcare",
+      "blueprintId": "bp_1782675521117_svhi",
+      "workspaceId": "ws_1782675521749_j71u",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "HIPAA BAAs signed with vendors",
+          "category": "compliance",
+          "done": false
+        },
+        {
+          "item": "PHI access audit log live",
+          "category": "compliance",
+          "done": false
+        },
+        {
+          "item": "Encryption at rest verified",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Breach notification plan ready",
+          "category": "compliance",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:41.117Z",
+          "idea": "HIPAA-compliant patient management system",
+          "name": "HealthVenture"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:41.117Z",
+          "inferredTemplate": "healthcare"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:41.117Z",
+          "id": "healthcare",
+          "name": "Healthcare",
+          "riskProfile": "critical"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:41.117Z",
+          "companyName": "HealthVenture"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:41.438Z",
+          "blueprintId": "bp_1782675521117_svhi",
+          "missions": 14,
+          "weeks": 93
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:41.747Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:12.068Z",
+          "workspaceId": "ws_1782675521749_j71u",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.584Z",
+          "teamType": "engineering",
+          "coverage": 60
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.584Z",
+          "items": 20
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.584Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.592Z",
+          "companyId": "lc_1782675556591_wrnh",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.601Z",
+          "minutesSaved": 6400,
+          "companyId": "lc_1782675556591_wrnh"
+        }
+      ],
+      "minutesSaved": 6400,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 35484,
+      "createdAt": "2026-06-28T19:39:16.601Z"
+    },
+    {
+      "id": "cf_1782675522068_z3x0",
+      "companyId": "lc_1782675556618_hwr3",
+      "companyName": "AIAgency",
+      "templateId": "agency",
+      "blueprintId": "bp_1782675522068_f7i9",
+      "workspaceId": "ws_1782675522687_0uhu",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:42.068Z",
+          "idea": "Create an AI agency",
+          "name": "AIAgency"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:42.068Z",
+          "inferredTemplate": "agency"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:42.068Z",
+          "id": "agency",
+          "name": "Agency",
+          "riskProfile": "low"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:42.068Z",
+          "companyName": "AIAgency"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:42.381Z",
+          "blueprintId": "bp_1782675522068_f7i9",
+          "missions": 12,
+          "weeks": 56
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:42.685Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:12.443Z",
+          "workspaceId": "ws_1782675522687_0uhu",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.607Z",
+          "teamType": "business",
+          "coverage": 60
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.607Z",
+          "items": 16
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.607Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.619Z",
+          "companyId": "lc_1782675556618_hwr3",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.627Z",
+          "minutesSaved": 3200,
+          "companyId": "lc_1782675556618_hwr3"
+        }
+      ],
+      "minutesSaved": 3200,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 34559,
+      "createdAt": "2026-06-28T19:39:16.627Z"
+    },
+    {
+      "id": "cf_1782675523010_ez0r",
+      "companyId": "lc_1782675556637_pp74",
+      "companyName": "ShopNow",
+      "templateId": "ecommerce",
+      "blueprintId": "bp_1782675523010_ku95",
+      "workspaceId": "ws_1782675523637_6m9g",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Payment processor live",
+          "category": "payments",
+          "done": false
+        },
+        {
+          "item": "Inventory sync tested",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Return policy published",
+          "category": "legal",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:43.010Z",
+          "idea": "Online ecommerce store",
+          "name": "ShopNow"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:43.010Z",
+          "inferredTemplate": "ecommerce"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:43.010Z",
+          "id": "ecommerce",
+          "name": "Ecommerce",
+          "riskProfile": "medium"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:43.010Z",
+          "companyName": "ShopNow"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:43.326Z",
+          "blueprintId": "bp_1782675523010_ku95",
+          "missions": 12,
+          "weeks": 23
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:43.635Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:12.815Z",
+          "workspaceId": "ws_1782675523637_6m9g",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.631Z",
+          "teamType": "engineering",
+          "coverage": 60
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.631Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.631Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.638Z",
+          "companyId": "lc_1782675556637_pp74",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.646Z",
+          "minutesSaved": 3600,
+          "companyId": "lc_1782675556637_pp74"
+        }
+      ],
+      "minutesSaved": 3600,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 33636,
+      "createdAt": "2026-06-28T19:39:16.646Z"
+    },
+    {
+      "id": "cf_1782675523957_9id1",
+      "companyId": "lc_1782675556656_vrbr",
+      "companyName": "ERPCo",
+      "templateId": "erp",
+      "blueprintId": "bp_1782675523957_89qq",
+      "workspaceId": "ws_1782675524605_0rt8",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Data migration plan approved",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Rollback procedure drilled",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Access control matrix reviewed",
+          "category": "security",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:43.957Z",
+          "idea": "Something generic",
+          "name": "ERPCo"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:43.957Z",
+          "inferredTemplate": "erp"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:43.957Z",
+          "id": "erp",
+          "name": "ERP",
+          "riskProfile": "high"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:43.957Z",
+          "companyName": "ERPCo"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:44.271Z",
+          "blueprintId": "bp_1782675523957_89qq",
+          "missions": 14,
+          "weeks": 53
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:44.603Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:13.190Z",
+          "workspaceId": "ws_1782675524605_0rt8",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.649Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.649Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.649Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.657Z",
+          "companyId": "lc_1782675556656_vrbr",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.665Z",
+          "minutesSaved": 7200,
+          "companyId": "lc_1782675556656_vrbr"
+        }
+      ],
+      "minutesSaved": 7200,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 32708,
+      "createdAt": "2026-06-28T19:39:16.665Z"
+    },
+    {
+      "id": "cf_1782675524926_mimp",
+      "companyId": "lc_1782675556675_kvfp",
+      "companyName": "HRTool",
+      "templateId": "internal_tool",
+      "blueprintId": "bp_1782675524926_qznl",
+      "workspaceId": "ws_1782675525563_oplg",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:44.926Z",
+          "idea": "Internal tool for HR",
+          "name": "HRTool"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:44.926Z",
+          "inferredTemplate": "internal_tool"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:44.926Z",
+          "id": "internal_tool",
+          "name": "Internal Tool",
+          "riskProfile": "low"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:44.926Z",
+          "companyName": "HRTool"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:45.259Z",
+          "blueprintId": "bp_1782675524926_qznl",
+          "missions": 12,
+          "weeks": 20
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:45.561Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:13.557Z",
+          "workspaceId": "ws_1782675525563_oplg",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.669Z",
+          "teamType": "engineering",
+          "coverage": 40
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.669Z",
+          "items": 16
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.669Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.677Z",
+          "companyId": "lc_1782675556675_kvfp",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.685Z",
+          "minutesSaved": 2400,
+          "companyId": "lc_1782675556675_kvfp"
+        }
+      ],
+      "minutesSaved": 2400,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 31759,
+      "createdAt": "2026-06-28T19:39:16.685Z"
+    },
+    {
+      "id": "cf_1782675525875_1yfj",
+      "companyId": "lc_1782675556696_hy82",
+      "companyName": "BillFlow",
+      "templateId": "saas",
+      "blueprintId": "bp_1782675525875_dzwg",
+      "workspaceId": "ws_1782675526515_im4e",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Stripe billing connected",
+          "category": "billing",
+          "done": false
+        },
+        {
+          "item": "Trial flow tested end-to-end",
+          "category": "product",
+          "done": false
+        },
+        {
+          "item": "Multi-tenant isolation verified",
+          "category": "security",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:45.875Z",
+          "idea": "SaaS billing platform",
+          "name": "BillFlow"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:45.875Z",
+          "inferredTemplate": "saas"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:45.875Z",
+          "id": "saas",
+          "name": "SaaS",
+          "riskProfile": "medium"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:45.875Z",
+          "companyName": "BillFlow"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:46.195Z",
+          "blueprintId": "bp_1782675525875_dzwg",
+          "missions": 14,
+          "weeks": 54
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:46.513Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:13.914Z",
+          "workspaceId": "ws_1782675526515_im4e",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.690Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.690Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.690Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.698Z",
+          "companyId": "lc_1782675556696_hy82",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.706Z",
+          "minutesSaved": 4800,
+          "companyId": "lc_1782675556696_hy82"
+        }
+      ],
+      "minutesSaved": 4800,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 30831,
+      "createdAt": "2026-06-28T19:39:16.706Z"
+    },
+    {
+      "id": "cf_1782675526840_1q9w",
+      "companyId": "lc_1782675556720_pz4j",
+      "companyName": "LearnCo",
+      "templateId": "education",
+      "blueprintId": "bp_1782675526840_5p75",
+      "workspaceId": "ws_1782675527517_1tel",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:46.840Z",
+          "idea": "Build a learning management system",
+          "name": "LearnCo"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:46.840Z",
+          "inferredTemplate": "education"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:46.840Z",
+          "id": "education",
+          "name": "Education",
+          "riskProfile": "medium"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:46.840Z",
+          "companyName": "LearnCo"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:47.182Z",
+          "blueprintId": "bp_1782675526840_5p75",
+          "missions": 12,
+          "weeks": 36
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:47.515Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:14.262Z",
+          "workspaceId": "ws_1782675527517_1tel",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.711Z",
+          "teamType": "engineering",
+          "coverage": 40
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.711Z",
+          "items": 16
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.711Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.722Z",
+          "companyId": "lc_1782675556720_pz4j",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.730Z",
+          "minutesSaved": 3800,
+          "companyId": "lc_1782675556720_pz4j"
+        }
+      ],
+      "minutesSaved": 3800,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 29890,
+      "createdAt": "2026-06-28T19:39:16.730Z"
+    },
+    {
+      "id": "cf_1782675527880_dyxo",
+      "companyId": "lc_1782675556742_m9vz",
+      "companyName": "FreelanceHub",
+      "templateId": "agency",
+      "blueprintId": "bp_1782675527880_ctlb",
+      "workspaceId": "ws_1782675528595_26fa",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:47.880Z",
+          "idea": "Marketplace for freelancers",
+          "name": "FreelanceHub"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:47.880Z",
+          "inferredTemplate": "agency"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:47.880Z",
+          "id": "agency",
+          "name": "Agency",
+          "riskProfile": "low"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:47.880Z",
+          "companyName": "FreelanceHub"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:48.261Z",
+          "blueprintId": "bp_1782675527880_ctlb",
+          "missions": 12,
+          "weeks": 56
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:48.591Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:14.614Z",
+          "workspaceId": "ws_1782675528595_26fa",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.733Z",
+          "teamType": "business",
+          "coverage": 60
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.733Z",
+          "items": 16
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.733Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.745Z",
+          "companyId": "lc_1782675556742_m9vz",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.754Z",
+          "minutesSaved": 3200,
+          "companyId": "lc_1782675556742_m9vz"
+        }
+      ],
+      "minutesSaved": 3200,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 28874,
+      "createdAt": "2026-06-28T19:39:16.754Z"
+    },
+    {
+      "id": "cf_1782675528965_60dz",
+      "companyId": "lc_1782675556764_fpxx",
+      "companyName": "MfgERP",
+      "templateId": "erp",
+      "blueprintId": "bp_1782675528966_ff2j",
+      "workspaceId": "ws_1782675529697_m02n",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Data migration plan approved",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Rollback procedure drilled",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Access control matrix reviewed",
+          "category": "security",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:48.965Z",
+          "idea": "ERP system for manufacturing",
+          "name": "MfgERP"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:48.965Z",
+          "inferredTemplate": "erp"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:48.965Z",
+          "id": "erp",
+          "name": "ERP",
+          "riskProfile": "high"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:48.965Z",
+          "companyName": "MfgERP"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:49.341Z",
+          "blueprintId": "bp_1782675528966_ff2j",
+          "missions": 14,
+          "weeks": 53
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:49.694Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:14.986Z",
+          "workspaceId": "ws_1782675529697_m02n",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.758Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.758Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.758Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.766Z",
+          "companyId": "lc_1782675556764_fpxx",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.773Z",
+          "minutesSaved": 7200,
+          "companyId": "lc_1782675556764_fpxx"
+        }
+      ],
+      "minutesSaved": 7200,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 27808,
+      "createdAt": "2026-06-28T19:39:16.773Z"
+    },
+    {
+      "id": "cf_1782675530082_iwiz",
+      "companyId": "lc_1782675556783_fi52",
+      "companyName": "AnalyticsCo",
+      "templateId": "saas",
+      "blueprintId": "bp_1782675530082_3b6u",
+      "workspaceId": "ws_1782675530772_9y85",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Stripe billing connected",
+          "category": "billing",
+          "done": false
+        },
+        {
+          "item": "Trial flow tested end-to-end",
+          "category": "product",
+          "done": false
+        },
+        {
+          "item": "Multi-tenant isolation verified",
+          "category": "security",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:50.082Z",
+          "idea": "SaaS analytics tool",
+          "name": "AnalyticsCo"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:50.082Z",
+          "inferredTemplate": "saas"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:50.082Z",
+          "id": "saas",
+          "name": "SaaS",
+          "riskProfile": "medium"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:50.082Z",
+          "companyName": "AnalyticsCo"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:50.427Z",
+          "blueprintId": "bp_1782675530082_3b6u",
+          "missions": 14,
+          "weeks": 54
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:50.769Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:15.548Z",
+          "workspaceId": "ws_1782675530772_9y85",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.777Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.777Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.777Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.785Z",
+          "companyId": "lc_1782675556783_fi52",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.792Z",
+          "minutesSaved": 4800,
+          "companyId": "lc_1782675556783_fi52"
+        }
+      ],
+      "minutesSaved": 4800,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 26710,
+      "createdAt": "2026-06-28T19:39:16.792Z"
+    },
+    {
+      "id": "cf_1782675531148_nekc",
+      "companyId": "lc_1782675556801_mrdi",
+      "companyName": "EduPlatform",
+      "templateId": "education",
+      "blueprintId": "bp_1782675531148_j6l3",
+      "workspaceId": "ws_1782675531872_8td3",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:51.148Z",
+          "idea": "EdTech learning platform",
+          "name": "EduPlatform"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:51.148Z",
+          "inferredTemplate": "education"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:51.148Z",
+          "id": "education",
+          "name": "Education",
+          "riskProfile": "medium"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:51.148Z",
+          "companyName": "EduPlatform"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:51.517Z",
+          "blueprintId": "bp_1782675531148_j6l3",
+          "missions": 12,
+          "weeks": 36
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:51.868Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:15.861Z",
+          "workspaceId": "ws_1782675531872_8td3",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.796Z",
+          "teamType": "engineering",
+          "coverage": 40
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.796Z",
+          "items": 16
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.796Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.803Z",
+          "companyId": "lc_1782675556801_mrdi",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.810Z",
+          "minutesSaved": 3800,
+          "companyId": "lc_1782675556801_mrdi"
+        }
+      ],
+      "minutesSaved": 3800,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 25662,
+      "createdAt": "2026-06-28T19:39:16.810Z"
+    },
+    {
+      "id": "cf_1782675532249_dek9",
+      "companyId": "lc_1782675556820_i4rv",
+      "companyName": "DevAI",
+      "templateId": "ai_product",
+      "blueprintId": "bp_1782675532249_vpcj",
+      "workspaceId": "ws_1782675532958_bqr8",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Evals suite baseline set",
+          "category": "ai_safety",
+          "done": false
+        },
+        {
+          "item": "Prompt injection tests passing",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Cost per call monitored",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Hallucination guard in place",
+          "category": "ai_safety",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:38:52.249Z",
+          "idea": "AI product for developers",
+          "name": "DevAI"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:38:52.249Z",
+          "inferredTemplate": "ai_product"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:38:52.249Z",
+          "id": "ai_product",
+          "name": "AI Product",
+          "riskProfile": "high"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:38:52.249Z",
+          "companyName": "DevAI"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:38:52.603Z",
+          "blueprintId": "bp_1782675532249_vpcj",
+          "missions": 14,
+          "weeks": 55
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:38:52.955Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:16.196Z",
+          "workspaceId": "ws_1782675532958_bqr8",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:16.814Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:16.814Z",
+          "items": 20
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:16.814Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:16.821Z",
+          "companyId": "lc_1782675556820_i4rv",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:16.829Z",
+          "minutesSaved": 5600,
+          "companyId": "lc_1782675556820_i4rv"
+        }
+      ],
+      "minutesSaved": 5600,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 24580,
+      "createdAt": "2026-06-28T19:39:16.829Z"
+    },
+    {
+      "id": "cf_1782675560351_adbf",
+      "companyId": "lc_1782675595306_txzt",
+      "companyName": "SaaSCo Alpha",
+      "templateId": "saas",
+      "blueprintId": "bp_1782675560351_oz1m",
+      "workspaceId": "ws_1782675561077_afdf",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Stripe billing connected",
+          "category": "billing",
+          "done": false
+        },
+        {
+          "item": "Trial flow tested end-to-end",
+          "category": "product",
+          "done": false
+        },
+        {
+          "item": "Multi-tenant isolation verified",
+          "category": "security",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:20.351Z",
+          "idea": "Create a SaaS company",
+          "name": "SaaSCo Alpha"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:20.351Z",
+          "inferredTemplate": "saas"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:20.351Z",
+          "id": "saas",
+          "name": "SaaS",
+          "riskProfile": "medium"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:20.351Z",
+          "companyName": "SaaSCo Alpha"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:20.708Z",
+          "blueprintId": "bp_1782675560351_oz1m",
+          "missions": 14,
+          "weeks": 54
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:21.074Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:50.809Z",
+          "workspaceId": "ws_1782675561077_afdf",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.297Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.297Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.297Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.309Z",
+          "companyId": "lc_1782675595306_txzt",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.317Z",
+          "minutesSaved": 4800,
+          "companyId": "lc_1782675595306_txzt"
+        }
+      ],
+      "minutesSaved": 4800,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 34966,
+      "createdAt": "2026-06-28T19:39:55.317Z"
+    },
+    {
+      "id": "cf_1782675561459_68md",
+      "companyId": "lc_1782675595330_t9jy",
+      "companyName": "MarketplaceCo",
+      "templateId": "marketplace",
+      "blueprintId": "bp_1782675561459_naxu",
+      "workspaceId": "ws_1782675562218_hdu6",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Escrow system tested",
+          "category": "payments",
+          "done": false
+        },
+        {
+          "item": "Fraud detection active",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Seller verification flow live",
+          "category": "operations",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:21.459Z",
+          "idea": "Build a marketplace",
+          "name": "MarketplaceCo"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:21.459Z",
+          "inferredTemplate": "marketplace"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:21.459Z",
+          "id": "marketplace",
+          "name": "Marketplace",
+          "riskProfile": "high"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:21.459Z",
+          "companyName": "MarketplaceCo"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:21.833Z",
+          "blueprintId": "bp_1782675561459_naxu",
+          "missions": 14,
+          "weeks": 55
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:22.214Z"
+        },
+        {
+          "step": "approval_requested",
+          "ts": "2026-06-28T19:39:22.214Z",
+          "riskProfile": "high"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:51.132Z",
+          "workspaceId": "ws_1782675562218_hdu6",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.323Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.323Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.323Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.332Z",
+          "companyId": "lc_1782675595330_t9jy",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.343Z",
+          "minutesSaved": 5200,
+          "companyId": "lc_1782675595330_t9jy"
+        }
+      ],
+      "minutesSaved": 5200,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 33884,
+      "createdAt": "2026-06-28T19:39:55.343Z"
+    },
+    {
+      "id": "cf_1782675562602_i0wz",
+      "companyId": "lc_1782675595354_b6wx",
+      "companyName": "HealthVenture",
+      "templateId": "healthcare",
+      "blueprintId": "bp_1782675562602_v74u",
+      "workspaceId": "ws_1782675563341_a1la",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "HIPAA BAAs signed with vendors",
+          "category": "compliance",
+          "done": false
+        },
+        {
+          "item": "PHI access audit log live",
+          "category": "compliance",
+          "done": false
+        },
+        {
+          "item": "Encryption at rest verified",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Breach notification plan ready",
+          "category": "compliance",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:22.602Z",
+          "idea": "HIPAA-compliant patient management system",
+          "name": "HealthVenture"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:22.602Z",
+          "inferredTemplate": "healthcare"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:22.602Z",
+          "id": "healthcare",
+          "name": "Healthcare",
+          "riskProfile": "critical"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:22.602Z",
+          "companyName": "HealthVenture"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:22.968Z",
+          "blueprintId": "bp_1782675562602_v74u",
+          "missions": 14,
+          "weeks": 93
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:23.338Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:51.445Z",
+          "workspaceId": "ws_1782675563341_a1la",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.347Z",
+          "teamType": "engineering",
+          "coverage": 60
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.347Z",
+          "items": 20
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.347Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.356Z",
+          "companyId": "lc_1782675595354_b6wx",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.364Z",
+          "minutesSaved": 6400,
+          "companyId": "lc_1782675595354_b6wx"
+        }
+      ],
+      "minutesSaved": 6400,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 32762,
+      "createdAt": "2026-06-28T19:39:55.364Z"
+    },
+    {
+      "id": "cf_1782675563683_3pid",
+      "companyId": "lc_1782675595375_tvz7",
+      "companyName": "AIAgency",
+      "templateId": "agency",
+      "blueprintId": "bp_1782675563683_2dvj",
+      "workspaceId": "ws_1782675564330_pxjq",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:23.683Z",
+          "idea": "Create an AI agency",
+          "name": "AIAgency"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:23.683Z",
+          "inferredTemplate": "agency"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:23.683Z",
+          "id": "agency",
+          "name": "Agency",
+          "riskProfile": "low"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:23.683Z",
+          "companyName": "AIAgency"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:24.014Z",
+          "blueprintId": "bp_1782675563683_2dvj",
+          "missions": 12,
+          "weeks": 56
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:24.328Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:51.760Z",
+          "workspaceId": "ws_1782675564330_pxjq",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.368Z",
+          "teamType": "business",
+          "coverage": 60
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.368Z",
+          "items": 16
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.368Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.377Z",
+          "companyId": "lc_1782675595375_tvz7",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.387Z",
+          "minutesSaved": 3200,
+          "companyId": "lc_1782675595375_tvz7"
+        }
+      ],
+      "minutesSaved": 3200,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 31704,
+      "createdAt": "2026-06-28T19:39:55.387Z"
+    },
+    {
+      "id": "cf_1782675564653_dzzl",
+      "companyId": "lc_1782675595397_70ip",
+      "companyName": "ShopNow",
+      "templateId": "ecommerce",
+      "blueprintId": "bp_1782675564653_8a24",
+      "workspaceId": "ws_1782675565287_7u28",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Payment processor live",
+          "category": "payments",
+          "done": false
+        },
+        {
+          "item": "Inventory sync tested",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Return policy published",
+          "category": "legal",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:24.653Z",
+          "idea": "Online ecommerce store",
+          "name": "ShopNow"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:24.653Z",
+          "inferredTemplate": "ecommerce"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:24.653Z",
+          "id": "ecommerce",
+          "name": "Ecommerce",
+          "riskProfile": "medium"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:24.653Z",
+          "companyName": "ShopNow"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:24.971Z",
+          "blueprintId": "bp_1782675564653_8a24",
+          "missions": 12,
+          "weeks": 23
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:25.284Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:52.082Z",
+          "workspaceId": "ws_1782675565287_7u28",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.390Z",
+          "teamType": "engineering",
+          "coverage": 60
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.390Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.390Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.399Z",
+          "companyId": "lc_1782675595397_70ip",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.408Z",
+          "minutesSaved": 3600,
+          "companyId": "lc_1782675595397_70ip"
+        }
+      ],
+      "minutesSaved": 3600,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 30755,
+      "createdAt": "2026-06-28T19:39:55.408Z"
+    },
+    {
+      "id": "cf_1782675565614_t4cr",
+      "companyId": "lc_1782675595419_camw",
+      "companyName": "ERPCo",
+      "templateId": "erp",
+      "blueprintId": "bp_1782675565614_ff5u",
+      "workspaceId": "ws_1782675566246_dk0c",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Data migration plan approved",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Rollback procedure drilled",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Access control matrix reviewed",
+          "category": "security",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:25.614Z",
+          "idea": "Something generic",
+          "name": "ERPCo"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:25.614Z",
+          "inferredTemplate": "erp"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:25.614Z",
+          "id": "erp",
+          "name": "ERP",
+          "riskProfile": "high"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:25.614Z",
+          "companyName": "ERPCo"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:25.934Z",
+          "blueprintId": "bp_1782675565614_ff5u",
+          "missions": 14,
+          "weeks": 53
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:26.244Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:52.415Z",
+          "workspaceId": "ws_1782675566246_dk0c",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.412Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.412Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.412Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.420Z",
+          "companyId": "lc_1782675595419_camw",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.430Z",
+          "minutesSaved": 7200,
+          "companyId": "lc_1782675595419_camw"
+        }
+      ],
+      "minutesSaved": 7200,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 29816,
+      "createdAt": "2026-06-28T19:39:55.430Z"
+    },
+    {
+      "id": "cf_1782675566563_bxog",
+      "companyId": "lc_1782675595440_bn99",
+      "companyName": "HRTool",
+      "templateId": "internal_tool",
+      "blueprintId": "bp_1782675566563_u2fm",
+      "workspaceId": "ws_1782675567205_85sn",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:26.563Z",
+          "idea": "Internal tool for HR",
+          "name": "HRTool"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:26.563Z",
+          "inferredTemplate": "internal_tool"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:26.563Z",
+          "id": "internal_tool",
+          "name": "Internal Tool",
+          "riskProfile": "low"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:26.563Z",
+          "companyName": "HRTool"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:26.876Z",
+          "blueprintId": "bp_1782675566563_u2fm",
+          "missions": 12,
+          "weeks": 20
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:27.203Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:52.731Z",
+          "workspaceId": "ws_1782675567205_85sn",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.433Z",
+          "teamType": "engineering",
+          "coverage": 40
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.433Z",
+          "items": 16
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.433Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.442Z",
+          "companyId": "lc_1782675595440_bn99",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.453Z",
+          "minutesSaved": 2400,
+          "companyId": "lc_1782675595440_bn99"
+        }
+      ],
+      "minutesSaved": 2400,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 28890,
+      "createdAt": "2026-06-28T19:39:55.453Z"
+    },
+    {
+      "id": "cf_1782675567560_dssv",
+      "companyId": "lc_1782675595466_d981",
+      "companyName": "BillFlow",
+      "templateId": "saas",
+      "blueprintId": "bp_1782675567560_v7tt",
+      "workspaceId": "ws_1782675568220_cxgt",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Stripe billing connected",
+          "category": "billing",
+          "done": false
+        },
+        {
+          "item": "Trial flow tested end-to-end",
+          "category": "product",
+          "done": false
+        },
+        {
+          "item": "Multi-tenant isolation verified",
+          "category": "security",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:27.560Z",
+          "idea": "SaaS billing platform",
+          "name": "BillFlow"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:27.560Z",
+          "inferredTemplate": "saas"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:27.560Z",
+          "id": "saas",
+          "name": "SaaS",
+          "riskProfile": "medium"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:27.560Z",
+          "companyName": "BillFlow"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:27.877Z",
+          "blueprintId": "bp_1782675567560_v7tt",
+          "missions": 14,
+          "weeks": 54
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:28.218Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:53.042Z",
+          "workspaceId": "ws_1782675568220_cxgt",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.459Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.459Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.459Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.468Z",
+          "companyId": "lc_1782675595466_d981",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.480Z",
+          "minutesSaved": 4800,
+          "companyId": "lc_1782675595466_d981"
+        }
+      ],
+      "minutesSaved": 4800,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 27920,
+      "createdAt": "2026-06-28T19:39:55.480Z"
+    },
+    {
+      "id": "cf_1782675568551_1akm",
+      "companyId": "lc_1782675595491_yc51",
+      "companyName": "LearnCo",
+      "templateId": "education",
+      "blueprintId": "bp_1782675568551_67g3",
+      "workspaceId": "ws_1782675569196_o2ea",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:28.551Z",
+          "idea": "Build a learning management system",
+          "name": "LearnCo"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:28.551Z",
+          "inferredTemplate": "education"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:28.551Z",
+          "id": "education",
+          "name": "Education",
+          "riskProfile": "medium"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:28.551Z",
+          "companyName": "LearnCo"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:28.876Z",
+          "blueprintId": "bp_1782675568551_67g3",
+          "missions": 12,
+          "weeks": 36
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:29.194Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:53.366Z",
+          "workspaceId": "ws_1782675569196_o2ea",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.484Z",
+          "teamType": "engineering",
+          "coverage": 40
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.484Z",
+          "items": 16
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.484Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.492Z",
+          "companyId": "lc_1782675595491_yc51",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.503Z",
+          "minutesSaved": 3800,
+          "companyId": "lc_1782675595491_yc51"
+        }
+      ],
+      "minutesSaved": 3800,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 26952,
+      "createdAt": "2026-06-28T19:39:55.503Z"
+    },
+    {
+      "id": "cf_1782675569511_utiy",
+      "companyId": "lc_1782675595514_s7k5",
+      "companyName": "FreelanceHub",
+      "templateId": "agency",
+      "blueprintId": "bp_1782675569511_unyg",
+      "workspaceId": "ws_1782675570142_v1en",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:29.511Z",
+          "idea": "Marketplace for freelancers",
+          "name": "FreelanceHub"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:29.511Z",
+          "inferredTemplate": "agency"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:29.511Z",
+          "id": "agency",
+          "name": "Agency",
+          "riskProfile": "low"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:29.511Z",
+          "companyName": "FreelanceHub"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:29.824Z",
+          "blueprintId": "bp_1782675569511_unyg",
+          "missions": 12,
+          "weeks": 56
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:30.139Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:53.679Z",
+          "workspaceId": "ws_1782675570142_v1en",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.507Z",
+          "teamType": "business",
+          "coverage": 60
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.507Z",
+          "items": 16
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.507Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.516Z",
+          "companyId": "lc_1782675595514_s7k5",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.525Z",
+          "minutesSaved": 3200,
+          "companyId": "lc_1782675595514_s7k5"
+        }
+      ],
+      "minutesSaved": 3200,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 26014,
+      "createdAt": "2026-06-28T19:39:55.525Z"
+    },
+    {
+      "id": "cf_1782675570467_hy41",
+      "companyId": "lc_1782675595536_6l4w",
+      "companyName": "MfgERP",
+      "templateId": "erp",
+      "blueprintId": "bp_1782675570467_717z",
+      "workspaceId": "ws_1782675571154_bbyt",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Data migration plan approved",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Rollback procedure drilled",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Access control matrix reviewed",
+          "category": "security",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:30.467Z",
+          "idea": "ERP system for manufacturing",
+          "name": "MfgERP"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:30.467Z",
+          "inferredTemplate": "erp"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:30.467Z",
+          "id": "erp",
+          "name": "ERP",
+          "riskProfile": "high"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:30.467Z",
+          "companyName": "MfgERP"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:30.842Z",
+          "blueprintId": "bp_1782675570467_717z",
+          "missions": 14,
+          "weeks": 53
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:31.152Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:53.994Z",
+          "workspaceId": "ws_1782675571154_bbyt",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.529Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.529Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.529Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.538Z",
+          "companyId": "lc_1782675595536_6l4w",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.547Z",
+          "minutesSaved": 7200,
+          "companyId": "lc_1782675595536_6l4w"
+        }
+      ],
+      "minutesSaved": 7200,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 25080,
+      "createdAt": "2026-06-28T19:39:55.547Z"
+    },
+    {
+      "id": "cf_1782675571474_xnd3",
+      "companyId": "lc_1782675595558_tm99",
+      "companyName": "AnalyticsCo",
+      "templateId": "saas",
+      "blueprintId": "bp_1782675571474_gqo3",
+      "workspaceId": "ws_1782675572155_fia6",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Stripe billing connected",
+          "category": "billing",
+          "done": false
+        },
+        {
+          "item": "Trial flow tested end-to-end",
+          "category": "product",
+          "done": false
+        },
+        {
+          "item": "Multi-tenant isolation verified",
+          "category": "security",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:31.474Z",
+          "idea": "SaaS analytics tool",
+          "name": "AnalyticsCo"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:31.474Z",
+          "inferredTemplate": "saas"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:31.474Z",
+          "id": "saas",
+          "name": "SaaS",
+          "riskProfile": "medium"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:31.474Z",
+          "companyName": "AnalyticsCo"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:31.798Z",
+          "blueprintId": "bp_1782675571474_gqo3",
+          "missions": 14,
+          "weeks": 54
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:32.153Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:54.308Z",
+          "workspaceId": "ws_1782675572155_fia6",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.551Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.551Z",
+          "items": 19
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.551Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.560Z",
+          "companyId": "lc_1782675595558_tm99",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.568Z",
+          "minutesSaved": 4800,
+          "companyId": "lc_1782675595558_tm99"
+        }
+      ],
+      "minutesSaved": 4800,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 24094,
+      "createdAt": "2026-06-28T19:39:55.568Z"
+    },
+    {
+      "id": "cf_1782675572478_x599",
+      "companyId": "lc_1782675595579_kwx1",
+      "companyName": "EduPlatform",
+      "templateId": "education",
+      "blueprintId": "bp_1782675572478_1fdm",
+      "workspaceId": "ws_1782675573144_7tw6",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:32.478Z",
+          "idea": "EdTech learning platform",
+          "name": "EduPlatform"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:32.478Z",
+          "inferredTemplate": "education"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:32.478Z",
+          "id": "education",
+          "name": "Education",
+          "riskProfile": "medium"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:32.478Z",
+          "companyName": "EduPlatform"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:32.820Z",
+          "blueprintId": "bp_1782675572478_1fdm",
+          "missions": 12,
+          "weeks": 36
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:33.141Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:54.648Z",
+          "workspaceId": "ws_1782675573144_7tw6",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.572Z",
+          "teamType": "engineering",
+          "coverage": 40
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.572Z",
+          "items": 16
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.572Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.581Z",
+          "companyId": "lc_1782675595579_kwx1",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.592Z",
+          "minutesSaved": 3800,
+          "companyId": "lc_1782675595579_kwx1"
+        }
+      ],
+      "minutesSaved": 3800,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 23114,
+      "createdAt": "2026-06-28T19:39:55.592Z"
+    },
+    {
+      "id": "cf_1782675573476_uwem",
+      "companyId": "lc_1782675595606_ncxx",
+      "companyName": "DevAI",
+      "templateId": "ai_product",
+      "blueprintId": "bp_1782675573476_j7h6",
+      "workspaceId": "ws_1782675574104_81hc",
+      "checklist": [
+        {
+          "item": "Domain name registered",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "SSL certificate configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Database backup automated",
+          "category": "infrastructure",
+          "done": false
+        },
+        {
+          "item": "Environment variables secured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Error monitoring active (Sentry)",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Uptime monitoring configured",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "CI/CD pipeline green",
+          "category": "engineering",
+          "done": false
+        },
+        {
+          "item": "README up to date",
+          "category": "documentation",
+          "done": false
+        },
+        {
+          "item": "Security headers configured",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "CORS policy set",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Rate limiting enabled",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Logging pipeline active",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Rollback plan documented",
+          "category": "operations",
+          "done": false
+        },
+        {
+          "item": "Support channel active",
+          "category": "business",
+          "done": false
+        },
+        {
+          "item": "Privacy policy published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Terms of service published",
+          "category": "legal",
+          "done": false
+        },
+        {
+          "item": "Evals suite baseline set",
+          "category": "ai_safety",
+          "done": false
+        },
+        {
+          "item": "Prompt injection tests passing",
+          "category": "security",
+          "done": false
+        },
+        {
+          "item": "Cost per call monitored",
+          "category": "monitoring",
+          "done": false
+        },
+        {
+          "item": "Hallucination guard in place",
+          "category": "ai_safety",
+          "done": false
+        }
+      ],
+      "timeline": [
+        {
+          "step": "idea",
+          "ts": "2026-06-28T19:39:33.476Z",
+          "idea": "AI product for developers",
+          "name": "DevAI"
+        },
+        {
+          "step": "analyze",
+          "ts": "2026-06-28T19:39:33.476Z",
+          "inferredTemplate": "ai_product"
+        },
+        {
+          "step": "template",
+          "ts": "2026-06-28T19:39:33.476Z",
+          "id": "ai_product",
+          "name": "AI Product",
+          "riskProfile": "high"
+        },
+        {
+          "step": "name_resolved",
+          "ts": "2026-06-28T19:39:33.476Z",
+          "companyName": "DevAI"
+        },
+        {
+          "step": "blueprint",
+          "ts": "2026-06-28T19:39:33.797Z",
+          "blueprintId": "bp_1782675573476_j7h6",
+          "missions": 14,
+          "weeks": 55
+        },
+        {
+          "step": "twin_prediction",
+          "ts": "2026-06-28T19:39:34.101Z"
+        },
+        {
+          "step": "workspace",
+          "ts": "2026-06-28T19:39:54.962Z",
+          "workspaceId": "ws_1782675574104_81hc",
+          "repos": 4,
+          "missions": 0,
+          "readiness": 40
+        },
+        {
+          "step": "workforce",
+          "ts": "2026-06-28T19:39:55.596Z",
+          "teamType": "engineering",
+          "coverage": 20
+        },
+        {
+          "step": "checklist",
+          "ts": "2026-06-28T19:39:55.596Z",
+          "items": 20
+        },
+        {
+          "step": "register",
+          "ts": "2026-06-28T19:39:55.596Z"
+        },
+        {
+          "step": "lifecycle",
+          "ts": "2026-06-28T19:39:55.608Z",
+          "companyId": "lc_1782675595606_ncxx",
+          "stage": "planning"
+        },
+        {
+          "step": "ready",
+          "ts": "2026-06-28T19:39:55.616Z",
+          "minutesSaved": 5600,
+          "companyId": "lc_1782675595606_ncxx"
+        }
+      ],
+      "minutesSaved": 5600,
+      "twinPrediction": {},
+      "status": "completed",
+      "durationMs": 22140,
+      "createdAt": "2026-06-28T19:39:55.616Z"
     }
   ],
   "stats": {
-    "totalCreated": 84,
+    "totalCreated": 112,
     "byTemplate": {
-      "saas": 18,
-      "marketplace": 6,
-      "healthcare": 6,
-      "agency": 12,
-      "ecommerce": 6,
-      "erp": 12,
-      "internal_tool": 6,
-      "education": 12,
-      "ai_product": 6
+      "saas": 24,
+      "marketplace": 8,
+      "healthcare": 8,
+      "agency": 16,
+      "ecommerce": 8,
+      "erp": 16,
+      "internal_tool": 8,
+      "education": 16,
+      "ai_product": 8
     },
-    "minutesSaved": 396000,
-    "avgDurationMs": 29555
+    "minutesSaved": 528000,
+    "avgDurationMs": 29615
   },
-  "updatedAt": "2026-06-28T19:36:05.156Z"
+  "updatedAt": "2026-06-28T19:39:55.617Z"
 }

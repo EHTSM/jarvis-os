@@ -11448,5 +11448,357 @@
     "approvedAt": null,
     "rejectedReason": null,
     "expiresAt": "2026-06-28T20:06:41.433Z"
+  },
+  "hitl-1782675505581-a58g": {
+    "id": "hitl-1782675505581-a58g",
+    "ts": "2026-06-28T19:38:25.581Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_code_review",
+      "plan": "plan_wf_eng_code_review_1782675505578",
+      "steps": 7,
+      "minutesSaved": 30,
+      "teamId": "team_1782675505565_gyz",
+      "missionId": "wf_1782675505257_t9u",
+      "members": [
+        {
+          "agentId": "engorg_code_review",
+          "role": "lead",
+          "skills": [
+            "code_review",
+            "standards",
+            "feedback"
+          ]
+        },
+        {
+          "agentId": "engorg_electron",
+          "role": "member",
+          "skills": [
+            "electron",
+            "desktop",
+            "packaging"
+          ]
+        }
+      ]
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T20:08:25.581Z"
+  },
+  "hitl-1782675505914-tpog": {
+    "id": "hitl-1782675505914-tpog",
+    "ts": "2026-06-28T19:38:25.914Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_deploy_release",
+      "plan": "plan_wf_eng_deploy_release_1782675505912",
+      "steps": 9,
+      "minutesSaved": 25,
+      "teamId": "team_1782675505901_akt",
+      "missionId": "wf_1782675505587_7f4",
+      "members": [
+        {
+          "agentId": "engorg_devops",
+          "role": "lead",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        },
+        {
+          "agentId": "engorg_release",
+          "role": "member",
+          "skills": [
+            "release",
+            "versioning",
+            "changelog"
+          ]
+        }
+      ]
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T20:08:25.914Z"
+  },
+  "hitl-1782675506272-vniq": {
+    "id": "hitl-1782675506272-vniq",
+    "ts": "2026-06-28T19:38:26.272Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_deploy_release",
+      "plan": "plan_wf_eng_deploy_release_1782675506271",
+      "steps": 9,
+      "minutesSaved": 25,
+      "teamId": "team_1782675506260_nx3",
+      "missionId": "wf_1782675505917_cw3",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_devops",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        }
+      ]
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T20:08:26.272Z"
+  },
+  "hitl-1782675506612-wkbe": {
+    "id": "hitl-1782675506612-wkbe",
+    "ts": "2026-06-28T19:38:26.612Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_deploy_release",
+      "plan": "plan_wf_eng_deploy_release_1782675506610",
+      "steps": 9,
+      "minutesSaved": 25,
+      "teamId": "team_1782675506600_1g7",
+      "missionId": "wf_1782675506275_vgn",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_devops",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        }
+      ]
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T20:08:26.612Z"
+  },
+  "hitl-1782675512862-h9em": {
+    "id": "hitl-1782675512862-h9em",
+    "ts": "2026-06-28T19:38:32.862Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_code_review",
+      "plan": "plan_wf_eng_code_review_1782675512859",
+      "steps": 7,
+      "minutesSaved": 30,
+      "teamId": "team_1782675512846_2x7",
+      "missionId": "wf_1782675512537_qvo",
+      "members": [
+        {
+          "agentId": "engorg_code_review",
+          "role": "lead",
+          "skills": [
+            "code_review",
+            "standards",
+            "feedback"
+          ]
+        },
+        {
+          "agentId": "engorg_electron",
+          "role": "member",
+          "skills": [
+            "electron",
+            "desktop",
+            "packaging"
+          ]
+        }
+      ]
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T20:08:32.862Z"
+  },
+  "hitl-1782675513197-fxlb": {
+    "id": "hitl-1782675513197-fxlb",
+    "ts": "2026-06-28T19:38:33.197Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_deploy_release",
+      "plan": "plan_wf_eng_deploy_release_1782675513195",
+      "steps": 9,
+      "minutesSaved": 25,
+      "teamId": "team_1782675513183_bs3",
+      "missionId": "wf_1782675512866_10z",
+      "members": [
+        {
+          "agentId": "engorg_devops",
+          "role": "lead",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        },
+        {
+          "agentId": "engorg_release",
+          "role": "member",
+          "skills": [
+            "release",
+            "versioning",
+            "changelog"
+          ]
+        }
+      ]
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T20:08:33.197Z"
+  },
+  "hitl-1782675513520-kn9a": {
+    "id": "hitl-1782675513520-kn9a",
+    "ts": "2026-06-28T19:38:33.520Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_deploy_release",
+      "plan": "plan_wf_eng_deploy_release_1782675513519",
+      "steps": 9,
+      "minutesSaved": 25,
+      "teamId": "team_1782675513506_bqv",
+      "missionId": "wf_1782675513201_mbo",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_devops",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        }
+      ]
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T20:08:33.520Z"
+  },
+  "hitl-1782675513868-s7lu": {
+    "id": "hitl-1782675513868-s7lu",
+    "ts": "2026-06-28T19:38:33.868Z",
+    "sessionId": null,
+    "workflowId": null,
+    "intent": "",
+    "dangerLevel": "review",
+    "dangerReason": "unknown",
+    "steps": [],
+    "flaggedSteps": [],
+    "context": {
+      "workflowId": "wf_eng_deploy_release",
+      "plan": "plan_wf_eng_deploy_release_1782675513867",
+      "steps": 9,
+      "minutesSaved": 25,
+      "teamId": "team_1782675513855_s7v",
+      "missionId": "wf_1782675513523_jz0",
+      "members": [
+        {
+          "agentId": "engorg_architect",
+          "role": "lead",
+          "skills": [
+            "architecture",
+            "design",
+            "planning"
+          ]
+        },
+        {
+          "agentId": "engorg_devops",
+          "role": "devops",
+          "skills": [
+            "devops",
+            "deployment",
+            "ci_cd"
+          ]
+        }
+      ]
+    },
+    "status": "pending",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedReason": null,
+    "expiresAt": "2026-06-28T20:08:33.868Z"
   }
 }

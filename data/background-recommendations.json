@@ -1,25 +1,5 @@
 [
   {
-    "recId": "bgrec_1782436985728_2jh",
-    "source": "repoObserver",
-    "title": "Uncommitted changes in jarvis-os",
-    "description": "6 file(s) have uncommitted changes. Recent log: 6c8edd6 fix(ops): operatorAudit crash — TypeError: Cannot read properties of undefined (reading 'on')",
-    "priority": "LOW",
-    "context": {
-      "repo": "/Users/ehtsm/jarvis-os",
-      "changedFiles": [
-        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
-        " M data/background-recommendations.json",
-        " M data/dead-letter.json",
-        " M data/healing-history.json",
-        " M data/metrics/metrics_2026-06-26.ndjson",
-        " M data/ops-alerts.json"
-      ]
-    },
-    "createdAt": "2026-06-26T01:23:05.728Z",
-    "acknowledged": false
-  },
-  {
     "recId": "bgrec_1782437253763_2ji",
     "source": "incidentObserver",
     "title": "15 escalated incident(s) in the last 30 minutes",
@@ -15950,6 +15930,30 @@
       ]
     },
     "createdAt": "2026-06-28T19:33:06.333Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782675486334_71",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "39 file(s) have uncommitted changes. Recent log: 07b9e6a Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/agent-runs.json",
+        " M data/approval-predictions.json",
+        " M data/autonomous-cycles.json",
+        " M data/autonomous/control.json",
+        " M data/browser-controller.json",
+        " M data/civilization/context.json",
+        " M data/computer-execution-engine.json",
+        " M data/dead-letter.json",
+        " M data/decision-learning.json"
+      ]
+    },
+    "createdAt": "2026-06-28T19:38:06.334Z",
     "acknowledged": false
   }
 ]

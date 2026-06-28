@@ -4119,559 +4119,1103 @@
       "resolvedAt": null,
       "ts": "2026-06-28T19:36:05.885Z",
       "durationMs": 340
+    },
+    {
+      "id": "fdt_1782675485908_mjd",
+      "command": "Skip QA for urgent hotfix.",
+      "domain": "security",
+      "category": "security",
+      "risk": "high",
+      "founderWouldLikely": "approve",
+      "confidence": 0.83,
+      "approveProbability": 0.58,
+      "rejectProbability": 0.42,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "This request is classified as high risk — probability reduced.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Skip QA for urgent hotfix.",
+          "outcome": "rejected",
+          "similarity": 1,
+          "ts": "2026-06-28T12:47:50.692Z"
+        },
+        {
+          "subject": "Skip QA for urgent hotfix.",
+          "outcome": "rejected",
+          "similarity": 1,
+          "ts": "2026-06-28T12:48:30.474Z"
+        },
+        {
+          "subject": "Skip QA for urgent hotfix.",
+          "outcome": "rejected",
+          "similarity": 1,
+          "ts": "2026-06-28T17:47:09.575Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 3,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:06.319Z",
+      "durationMs": 411
+    },
+    {
+      "id": "fdt_1782675486698_0li",
+      "command": "Ship production release v2.0.",
+      "workflowId": "wf_ops_deploy_backend",
+      "domain": "deployment",
+      "category": "deployment",
+      "risk": "high",
+      "founderWouldLikely": "approve",
+      "confidence": 0.83,
+      "approveProbability": 0.83,
+      "rejectProbability": 0.17,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder historically approves 100% of deployment requests.",
+        "Founder shows moderate-high risk tolerance.",
+        "This request is classified as high risk — probability reduced.",
+        "Founder prefers automation for deployments.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Release v1.0 to production",
+          "outcome": "approved",
+          "similarity": 0.5,
+          "ts": "2026-06-28T12:47:49.577Z"
+        },
+        {
+          "subject": "Release v1.1 to production",
+          "outcome": "approved",
+          "similarity": 0.5,
+          "ts": "2026-06-28T12:47:49.587Z"
+        },
+        {
+          "subject": "Release v1.2 to production",
+          "outcome": "approved",
+          "similarity": 0.5,
+          "ts": "2026-06-28T12:47:49.596Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 4,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:07.071Z",
+      "durationMs": 373
+    },
+    {
+      "id": "fdt_1782675485534_wrk",
+      "command": "Deploy microservice update.",
+      "domain": "deployment",
+      "category": "deployment",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.83,
+      "approveProbability": 0.98,
+      "rejectProbability": 0.02,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder historically approves 100% of deployment requests.",
+        "Founder shows moderate-high risk tolerance.",
+        "Founder prefers automation for deployments.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Deploy microservice update.",
+          "outcome": "approved",
+          "similarity": 1,
+          "ts": "2026-06-28T17:47:09.923Z"
+        },
+        {
+          "subject": "Deploy microservice update.",
+          "outcome": "approved",
+          "similarity": 1,
+          "ts": "2026-06-28T19:08:33.718Z"
+        },
+        {
+          "subject": "Deploy microservice update.",
+          "outcome": "approved",
+          "similarity": 1,
+          "ts": "2026-06-28T19:09:54.943Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 3,
+      "actualOutcome": "approved",
+      "wasCorrect": true,
+      "resolvedAt": "2026-06-28T19:38:07.073Z",
+      "ts": "2026-06-28T19:38:06.317Z",
+      "durationMs": 783
+    },
+    {
+      "id": "fdt_1782675487099_6l9",
+      "command": "Approve new UI layout for dashboard.",
+      "domain": "ui_review",
+      "category": "ui_review",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.68,
+      "rejectProbability": 0.32,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:07.458Z",
+      "durationMs": 359
+    },
+    {
+      "id": "fdt_1782675487461_x31",
+      "command": "Review and approve pull request for auth module.",
+      "domain": "code_review",
+      "category": "code_review",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.68,
+      "rejectProbability": 0.32,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:07.813Z",
+      "durationMs": 352
+    },
+    {
+      "id": "fdt_1782675487816_tks",
+      "command": "Approve documentation update for API.",
+      "domain": "documentation",
+      "category": "documentation",
+      "risk": "low",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.79,
+      "rejectProbability": 0.21,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Approve API docs.",
+          "outcome": "approved",
+          "similarity": 0.2,
+          "ts": "2026-06-28T17:47:10.287Z"
+        },
+        {
+          "subject": "Approve API docs.",
+          "outcome": "approved",
+          "similarity": 0.2,
+          "ts": "2026-06-28T19:08:34.090Z"
+        },
+        {
+          "subject": "Approve API docs.",
+          "outcome": "approved",
+          "similarity": 0.2,
+          "ts": "2026-06-28T19:09:55.323Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 3,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:08.168Z",
+      "durationMs": 352
+    },
+    {
+      "id": "fdt_1782675488171_pxa",
+      "command": "Prioritize mobile offline sync for next sprint.",
+      "domain": "business",
+      "category": "business",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.68,
+      "rejectProbability": 0.32,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:08.545Z",
+      "durationMs": 374
+    },
+    {
+      "id": "fdt_1782675488548_jk3",
+      "command": "Run production readiness checklist.",
+      "workflowId": "wf_ops_deployment_checklist_1",
+      "domain": "deployment",
+      "category": "deployment",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.83,
+      "approveProbability": 0.98,
+      "rejectProbability": 0.02,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder historically approves 100% of deployment requests.",
+        "Founder shows moderate-high risk tolerance.",
+        "Founder prefers automation for deployments.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Deploy backend to production v1.2",
+          "outcome": "approved",
+          "similarity": 0.25,
+          "ts": "2026-06-28T12:47:41.561Z"
+        },
+        {
+          "subject": "Release v1.0 to production",
+          "outcome": "approved",
+          "similarity": 0.25,
+          "ts": "2026-06-28T12:47:49.577Z"
+        },
+        {
+          "subject": "Release v1.1 to production",
+          "outcome": "approved",
+          "similarity": 0.25,
+          "ts": "2026-06-28T12:47:49.587Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 4,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:08.897Z",
+      "durationMs": 349
+    },
+    {
+      "id": "fdt_1782675481853_254",
+      "command": "Deploy backend service update.",
+      "domain": "deployment",
+      "category": "deployment",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.83,
+      "approveProbability": 0.98,
+      "rejectProbability": 0.02,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder historically approves 100% of deployment requests.",
+        "Founder shows moderate-high risk tolerance.",
+        "Founder prefers automation for deployments.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Deploy backend service update.",
+          "outcome": "approved",
+          "similarity": 1,
+          "ts": "2026-06-28T17:47:11.772Z"
+        },
+        {
+          "subject": "Deploy backend service update.",
+          "outcome": "approved",
+          "similarity": 1,
+          "ts": "2026-06-28T19:08:35.544Z"
+        },
+        {
+          "subject": "Deploy backend service update.",
+          "outcome": "approved",
+          "similarity": 1,
+          "ts": "2026-06-28T19:09:56.748Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 3,
+      "actualOutcome": "approved",
+      "wasCorrect": true,
+      "resolvedAt": "2026-06-28T19:38:08.901Z",
+      "ts": "2026-06-28T19:38:06.298Z",
+      "durationMs": 4445
+    },
+    {
+      "id": "fdt_1782675482224_q0q",
+      "command": "Run security audit before release.",
+      "domain": "security",
+      "category": "security",
+      "risk": "high",
+      "founderWouldLikely": "approve",
+      "confidence": 0.83,
+      "approveProbability": 0.58,
+      "rejectProbability": 0.42,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "This request is classified as high risk — probability reduced.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Run security audit before release.",
+          "outcome": "rejected",
+          "similarity": 1,
+          "ts": "2026-06-28T17:47:11.795Z"
+        },
+        {
+          "subject": "Run security audit before release.",
+          "outcome": "rejected",
+          "similarity": 1,
+          "ts": "2026-06-28T19:08:35.578Z"
+        },
+        {
+          "subject": "Run security audit before release.",
+          "outcome": "rejected",
+          "similarity": 1,
+          "ts": "2026-06-28T19:09:56.774Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 4,
+      "actualOutcome": "rejected",
+      "wasCorrect": false,
+      "resolvedAt": "2026-06-28T19:38:08.927Z",
+      "ts": "2026-06-28T19:38:06.300Z",
+      "durationMs": 4076
+    },
+    {
+      "id": "fdt_1782675498338_elx",
+      "command": "Skip QA for urgent hotfix.",
+      "domain": "security",
+      "category": "security",
+      "risk": "high",
+      "founderWouldLikely": "approve",
+      "confidence": 0.83,
+      "approveProbability": 0.58,
+      "rejectProbability": 0.42,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "This request is classified as high risk — probability reduced.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Skip QA for urgent hotfix.",
+          "outcome": "rejected",
+          "similarity": 1,
+          "ts": "2026-06-28T12:47:50.692Z"
+        },
+        {
+          "subject": "Skip QA for urgent hotfix.",
+          "outcome": "rejected",
+          "similarity": 1,
+          "ts": "2026-06-28T12:48:30.474Z"
+        },
+        {
+          "subject": "Skip QA for urgent hotfix.",
+          "outcome": "rejected",
+          "similarity": 1,
+          "ts": "2026-06-28T17:47:09.575Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 3,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:18.794Z",
+      "durationMs": 456
+    },
+    {
+      "id": "fdt_1782675499180_9u9",
+      "command": "Ship production release v2.0.",
+      "workflowId": "wf_ops_deploy_backend",
+      "domain": "deployment",
+      "category": "deployment",
+      "risk": "high",
+      "founderWouldLikely": "approve",
+      "confidence": 0.83,
+      "approveProbability": 0.83,
+      "rejectProbability": 0.17,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder historically approves 100% of deployment requests.",
+        "Founder shows moderate-high risk tolerance.",
+        "This request is classified as high risk — probability reduced.",
+        "Founder prefers automation for deployments.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Release v1.0 to production",
+          "outcome": "approved",
+          "similarity": 0.5,
+          "ts": "2026-06-28T12:47:49.577Z"
+        },
+        {
+          "subject": "Release v1.1 to production",
+          "outcome": "approved",
+          "similarity": 0.5,
+          "ts": "2026-06-28T12:47:49.587Z"
+        },
+        {
+          "subject": "Release v1.2 to production",
+          "outcome": "approved",
+          "similarity": 0.5,
+          "ts": "2026-06-28T12:47:49.596Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 4,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:19.533Z",
+      "durationMs": 353
+    },
+    {
+      "id": "fdt_1782675497986_mh9",
+      "command": "Deploy microservice update.",
+      "domain": "deployment",
+      "category": "deployment",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.83,
+      "approveProbability": 0.98,
+      "rejectProbability": 0.02,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder historically approves 100% of deployment requests.",
+        "Founder shows moderate-high risk tolerance.",
+        "Founder prefers automation for deployments.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Deploy microservice update.",
+          "outcome": "approved",
+          "similarity": 1,
+          "ts": "2026-06-28T17:47:09.923Z"
+        },
+        {
+          "subject": "Deploy microservice update.",
+          "outcome": "approved",
+          "similarity": 1,
+          "ts": "2026-06-28T19:08:33.718Z"
+        },
+        {
+          "subject": "Deploy microservice update.",
+          "outcome": "approved",
+          "similarity": 1,
+          "ts": "2026-06-28T19:09:54.943Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 3,
+      "actualOutcome": "approved",
+      "wasCorrect": true,
+      "resolvedAt": "2026-06-28T19:38:19.534Z",
+      "ts": "2026-06-28T19:38:18.792Z",
+      "durationMs": 806
+    },
+    {
+      "id": "fdt_1782675499560_hbo",
+      "command": "Approve new UI layout for dashboard.",
+      "domain": "ui_review",
+      "category": "ui_review",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.68,
+      "rejectProbability": 0.32,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:19.936Z",
+      "durationMs": 376
+    },
+    {
+      "id": "fdt_1782675499940_jny",
+      "command": "Review and approve pull request for auth module.",
+      "domain": "code_review",
+      "category": "code_review",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.68,
+      "rejectProbability": 0.32,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:20.315Z",
+      "durationMs": 375
+    },
+    {
+      "id": "fdt_1782675500320_w64",
+      "command": "Approve documentation update for API.",
+      "domain": "documentation",
+      "category": "documentation",
+      "risk": "low",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.79,
+      "rejectProbability": 0.21,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Approve API docs.",
+          "outcome": "approved",
+          "similarity": 0.2,
+          "ts": "2026-06-28T17:47:10.287Z"
+        },
+        {
+          "subject": "Approve API docs.",
+          "outcome": "approved",
+          "similarity": 0.2,
+          "ts": "2026-06-28T19:08:34.090Z"
+        },
+        {
+          "subject": "Approve API docs.",
+          "outcome": "approved",
+          "similarity": 0.2,
+          "ts": "2026-06-28T19:09:55.323Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 3,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:20.673Z",
+      "durationMs": 353
+    },
+    {
+      "id": "fdt_1782675500676_8ff",
+      "command": "Prioritize mobile offline sync for next sprint.",
+      "domain": "business",
+      "category": "business",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.68,
+      "rejectProbability": 0.32,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:20.984Z",
+      "durationMs": 308
+    },
+    {
+      "id": "fdt_1782675500987_bum",
+      "command": "Run production readiness checklist.",
+      "workflowId": "wf_ops_deployment_checklist_1",
+      "domain": "deployment",
+      "category": "deployment",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.83,
+      "approveProbability": 0.98,
+      "rejectProbability": 0.02,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder historically approves 100% of deployment requests.",
+        "Founder shows moderate-high risk tolerance.",
+        "Founder prefers automation for deployments.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Deploy backend to production v1.2",
+          "outcome": "approved",
+          "similarity": 0.25,
+          "ts": "2026-06-28T12:47:41.561Z"
+        },
+        {
+          "subject": "Release v1.0 to production",
+          "outcome": "approved",
+          "similarity": 0.25,
+          "ts": "2026-06-28T12:47:49.577Z"
+        },
+        {
+          "subject": "Release v1.1 to production",
+          "outcome": "approved",
+          "similarity": 0.25,
+          "ts": "2026-06-28T12:47:49.587Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 4,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:21.292Z",
+      "durationMs": 305
+    },
+    {
+      "id": "fdt_1782675494299_ehe",
+      "command": "Deploy backend service update.",
+      "domain": "deployment",
+      "category": "deployment",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.83,
+      "approveProbability": 0.98,
+      "rejectProbability": 0.02,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder historically approves 100% of deployment requests.",
+        "Founder shows moderate-high risk tolerance.",
+        "Founder prefers automation for deployments.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Deploy backend service update.",
+          "outcome": "approved",
+          "similarity": 1,
+          "ts": "2026-06-28T17:47:11.772Z"
+        },
+        {
+          "subject": "Deploy backend service update.",
+          "outcome": "approved",
+          "similarity": 1,
+          "ts": "2026-06-28T19:08:35.544Z"
+        },
+        {
+          "subject": "Deploy backend service update.",
+          "outcome": "approved",
+          "similarity": 1,
+          "ts": "2026-06-28T19:09:56.748Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 3,
+      "actualOutcome": "approved",
+      "wasCorrect": true,
+      "resolvedAt": "2026-06-28T19:38:21.296Z",
+      "ts": "2026-06-28T19:38:18.773Z",
+      "durationMs": 4474
+    },
+    {
+      "id": "fdt_1782675494655_rva",
+      "command": "Run security audit before release.",
+      "domain": "security",
+      "category": "security",
+      "risk": "high",
+      "founderWouldLikely": "approve",
+      "confidence": 0.83,
+      "approveProbability": 0.58,
+      "rejectProbability": 0.42,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "This request is classified as high risk — probability reduced.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [
+        {
+          "subject": "Run security audit before release.",
+          "outcome": "rejected",
+          "similarity": 1,
+          "ts": "2026-06-28T17:47:11.795Z"
+        },
+        {
+          "subject": "Run security audit before release.",
+          "outcome": "rejected",
+          "similarity": 1,
+          "ts": "2026-06-28T19:08:35.578Z"
+        },
+        {
+          "subject": "Run security audit before release.",
+          "outcome": "rejected",
+          "similarity": 1,
+          "ts": "2026-06-28T19:09:56.774Z"
+        }
+      ],
+      "trustScore": 67,
+      "contextSources": 4,
+      "actualOutcome": "rejected",
+      "wasCorrect": false,
+      "resolvedAt": "2026-06-28T19:38:21.318Z",
+      "ts": "2026-06-28T19:38:18.775Z",
+      "durationMs": 4120
+    },
+    {
+      "id": "fdt_1782675508044_3ca",
+      "command": "QA validation 3",
+      "domain": "qa",
+      "category": "qa",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:29.366Z",
+      "durationMs": 1322
+    },
+    {
+      "id": "fdt_1782675515298_g7z",
+      "command": "QA validation 3",
+      "domain": "qa",
+      "category": "qa",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:36.702Z",
+      "durationMs": 1404
+    },
+    {
+      "id": "fdt_1782675518850_umi",
+      "command": "FinalCo: building stage setup",
+      "domain": "building",
+      "category": "building",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:38:59.210Z",
+      "durationMs": 20360
+    },
+    {
+      "id": "fdt_1782675539213_32e",
+      "command": "FinalCo: testing stage setup",
+      "domain": "testing",
+      "category": "testing",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:39:10.286Z",
+      "durationMs": 11073
+    },
+    {
+      "id": "fdt_1782675550292_kio",
+      "command": "FinalCo: launch stage setup",
+      "domain": "launch",
+      "category": "launch",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 3,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:39:10.997Z",
+      "durationMs": 705
+    },
+    {
+      "id": "fdt_1782675551000_amm",
+      "command": "FinalCo: growth stage setup",
+      "domain": "growth",
+      "category": "growth",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:39:16.832Z",
+      "durationMs": 5832
+    },
+    {
+      "id": "fdt_1782675556835_yuj",
+      "command": "FinalCo: scale stage setup",
+      "domain": "scale",
+      "category": "scale",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:39:17.228Z",
+      "durationMs": 393
+    },
+    {
+      "id": "fdt_1782675557231_cie",
+      "command": "FinalCo: maintenance stage setup",
+      "domain": "maintenance",
+      "category": "maintenance",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:39:17.565Z",
+      "durationMs": 334
+    },
+    {
+      "id": "fdt_1782675559972_89p",
+      "command": "FinalCo: building stage setup",
+      "domain": "building",
+      "category": "building",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:39:39.737Z",
+      "durationMs": 19765
+    },
+    {
+      "id": "fdt_1782675579740_plt",
+      "command": "FinalCo: testing stage setup",
+      "domain": "testing",
+      "category": "testing",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:39:49.731Z",
+      "durationMs": 9991
+    },
+    {
+      "id": "fdt_1782675589736_qp9",
+      "command": "FinalCo: launch stage setup",
+      "domain": "launch",
+      "category": "launch",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 3,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:39:50.455Z",
+      "durationMs": 719
+    },
+    {
+      "id": "fdt_1782675590458_gow",
+      "command": "FinalCo: growth stage setup",
+      "domain": "growth",
+      "category": "growth",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:39:55.619Z",
+      "durationMs": 5161
+    },
+    {
+      "id": "fdt_1782675595623_pgo",
+      "command": "FinalCo: scale stage setup",
+      "domain": "scale",
+      "category": "scale",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:39:55.982Z",
+      "durationMs": 359
+    },
+    {
+      "id": "fdt_1782675595985_1sm",
+      "command": "FinalCo: maintenance stage setup",
+      "domain": "maintenance",
+      "category": "maintenance",
+      "risk": "medium",
+      "founderWouldLikely": "approve",
+      "confidence": 0.43,
+      "approveProbability": 0.63,
+      "rejectProbability": 0.37,
+      "shouldAutoApprove": false,
+      "reasoning": [
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "supportingHistory": [],
+      "trustScore": 67,
+      "contextSources": 2,
+      "actualOutcome": null,
+      "wasCorrect": null,
+      "resolvedAt": null,
+      "ts": "2026-06-28T19:39:56.305Z",
+      "durationMs": 320
     }
   ],
   "scenarios": [
-    {
-      "scenarioName": "roadmap_decision",
-      "scenario": {
-        "command": "Prioritize mobile offline sync for next sprint.",
-        "domain": "business",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.4,
-        "approveProbability": 0.68,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance.",
-          "Prediction model has been corrected frequently — confidence adjusted down."
-        ]
-      },
-      "ts": "2026-06-28T12:48:32.235Z"
-    },
-    {
-      "scenarioName": "production_checklist",
-      "scenario": {
-        "command": "Run production readiness checklist.",
-        "workflowId": "wf_ops_deployment_checklist_1",
-        "domain": "deployment",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.72,
-        "approveProbability": 0.98,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder historically approves 100% of deployment requests.",
-          "Founder shows moderate-high risk tolerance.",
-          "Founder prefers automation for deployments.",
-          "Prediction model has been corrected frequently — confidence adjusted down."
-        ]
-      },
-      "ts": "2026-06-28T12:48:32.586Z"
-    },
-    {
-      "scenarioName": "deployment",
-      "scenario": {
-        "command": "Deploy today's release to production.",
-        "workflowId": "wf_eng_deploy_release",
-        "domain": "deployment",
-        "risk": "high"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.81,
-        "approveProbability": 0.87,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder historically approves 100% of deployment requests.",
-          "Founder shows moderate-high risk tolerance.",
-          "This request is classified as high risk — probability reduced.",
-          "Founder prefers automation for deployments."
-        ]
-      },
-      "ts": "2026-06-28T17:47:09.249Z"
-    },
-    {
-      "scenarioName": "production_release",
-      "scenario": {
-        "command": "Ship production release v2.0.",
-        "workflowId": "wf_ops_deploy_backend",
-        "domain": "deployment",
-        "risk": "high"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.81,
-        "approveProbability": 0.87,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder historically approves 100% of deployment requests.",
-          "Founder shows moderate-high risk tolerance.",
-          "This request is classified as high risk — probability reduced.",
-          "Founder prefers automation for deployments."
-        ]
-      },
-      "ts": "2026-06-28T17:47:09.249Z"
-    },
-    {
-      "scenarioName": "ui_approval",
-      "scenario": {
-        "command": "Approve new UI layout for dashboard.",
-        "domain": "ui_review",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.41,
-        "approveProbability": 0.72,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T17:47:09.250Z"
-    },
-    {
-      "scenarioName": "code_review",
-      "scenario": {
-        "command": "Review and approve pull request for auth module.",
-        "domain": "code_review",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.41,
-        "approveProbability": 0.72,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T17:47:09.250Z"
-    },
-    {
-      "scenarioName": "documentation",
-      "scenario": {
-        "command": "Approve documentation update for API.",
-        "domain": "documentation",
-        "risk": "low"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.41,
-        "approveProbability": 0.83,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T17:47:09.250Z"
-    },
-    {
-      "scenarioName": "roadmap_decision",
-      "scenario": {
-        "command": "Prioritize mobile offline sync for next sprint.",
-        "domain": "business",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.41,
-        "approveProbability": 0.72,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T17:47:09.251Z"
-    },
-    {
-      "scenarioName": "production_checklist",
-      "scenario": {
-        "command": "Run production readiness checklist.",
-        "workflowId": "wf_ops_deployment_checklist_1",
-        "domain": "deployment",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.81,
-        "approveProbability": 0.98,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder historically approves 100% of deployment requests.",
-          "Founder shows moderate-high risk tolerance.",
-          "Founder prefers automation for deployments."
-        ]
-      },
-      "ts": "2026-06-28T17:47:09.251Z"
-    },
-    {
-      "scenarioName": "deployment",
-      "scenario": {
-        "command": "Deploy today's release to production.",
-        "workflowId": "wf_eng_deploy_release",
-        "domain": "deployment",
-        "risk": "high"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.81,
-        "approveProbability": 0.87,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder historically approves 100% of deployment requests.",
-          "Founder shows moderate-high risk tolerance.",
-          "This request is classified as high risk — probability reduced.",
-          "Founder prefers automation for deployments."
-        ]
-      },
-      "ts": "2026-06-28T17:47:09.251Z"
-    },
-    {
-      "scenarioName": "production_release",
-      "scenario": {
-        "command": "Ship production release v2.0.",
-        "workflowId": "wf_ops_deploy_backend",
-        "domain": "deployment",
-        "risk": "high"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.82,
-        "approveProbability": 0.83,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder historically approves 100% of deployment requests.",
-          "Founder shows moderate-high risk tolerance.",
-          "This request is classified as high risk — probability reduced.",
-          "Founder prefers automation for deployments."
-        ]
-      },
-      "ts": "2026-06-28T17:47:09.940Z"
-    },
-    {
-      "scenarioName": "ui_approval",
-      "scenario": {
-        "command": "Approve new UI layout for dashboard.",
-        "domain": "ui_review",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.42,
-        "approveProbability": 0.69,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T17:47:10.308Z"
-    },
-    {
-      "scenarioName": "code_review",
-      "scenario": {
-        "command": "Review and approve pull request for auth module.",
-        "domain": "code_review",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.42,
-        "approveProbability": 0.69,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T17:47:10.671Z"
-    },
-    {
-      "scenarioName": "documentation",
-      "scenario": {
-        "command": "Approve documentation update for API.",
-        "domain": "documentation",
-        "risk": "low"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.42,
-        "approveProbability": 0.79,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T17:47:11.038Z"
-    },
-    {
-      "scenarioName": "roadmap_decision",
-      "scenario": {
-        "command": "Prioritize mobile offline sync for next sprint.",
-        "domain": "business",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.42,
-        "approveProbability": 0.69,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T17:47:11.405Z"
-    },
-    {
-      "scenarioName": "production_checklist",
-      "scenario": {
-        "command": "Run production readiness checklist.",
-        "workflowId": "wf_ops_deployment_checklist_1",
-        "domain": "deployment",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.82,
-        "approveProbability": 0.98,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder historically approves 100% of deployment requests.",
-          "Founder shows moderate-high risk tolerance.",
-          "Founder prefers automation for deployments."
-        ]
-      },
-      "ts": "2026-06-28T17:47:11.766Z"
-    },
-    {
-      "scenarioName": "deployment",
-      "scenario": {
-        "command": "Deploy today's release to production.",
-        "workflowId": "wf_eng_deploy_release",
-        "domain": "deployment",
-        "risk": "high"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.82,
-        "approveProbability": 0.87,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder historically approves 100% of deployment requests.",
-          "Founder shows moderate-high risk tolerance.",
-          "This request is classified as high risk — probability reduced.",
-          "Founder prefers automation for deployments."
-        ]
-      },
-      "ts": "2026-06-28T19:08:32.983Z"
-    },
-    {
-      "scenarioName": "production_release",
-      "scenario": {
-        "command": "Ship production release v2.0.",
-        "workflowId": "wf_ops_deploy_backend",
-        "domain": "deployment",
-        "risk": "high"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.82,
-        "approveProbability": 0.87,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder historically approves 100% of deployment requests.",
-          "Founder shows moderate-high risk tolerance.",
-          "This request is classified as high risk — probability reduced.",
-          "Founder prefers automation for deployments."
-        ]
-      },
-      "ts": "2026-06-28T19:08:32.983Z"
-    },
-    {
-      "scenarioName": "ui_approval",
-      "scenario": {
-        "command": "Approve new UI layout for dashboard.",
-        "domain": "ui_review",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.42,
-        "approveProbability": 0.73,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T19:08:32.984Z"
-    },
-    {
-      "scenarioName": "code_review",
-      "scenario": {
-        "command": "Review and approve pull request for auth module.",
-        "domain": "code_review",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.42,
-        "approveProbability": 0.73,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T19:08:32.984Z"
-    },
-    {
-      "scenarioName": "documentation",
-      "scenario": {
-        "command": "Approve documentation update for API.",
-        "domain": "documentation",
-        "risk": "low"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.42,
-        "approveProbability": 0.83,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T19:08:32.985Z"
-    },
-    {
-      "scenarioName": "roadmap_decision",
-      "scenario": {
-        "command": "Prioritize mobile offline sync for next sprint.",
-        "domain": "business",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.42,
-        "approveProbability": 0.73,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T19:08:32.985Z"
-    },
-    {
-      "scenarioName": "production_checklist",
-      "scenario": {
-        "command": "Run production readiness checklist.",
-        "workflowId": "wf_ops_deployment_checklist_1",
-        "domain": "deployment",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.82,
-        "approveProbability": 0.98,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder historically approves 100% of deployment requests.",
-          "Founder shows moderate-high risk tolerance.",
-          "Founder prefers automation for deployments."
-        ]
-      },
-      "ts": "2026-06-28T19:08:32.986Z"
-    },
-    {
-      "scenarioName": "deployment",
-      "scenario": {
-        "command": "Deploy today's release to production.",
-        "workflowId": "wf_eng_deploy_release",
-        "domain": "deployment",
-        "risk": "high"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.82,
-        "approveProbability": 0.87,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder historically approves 100% of deployment requests.",
-          "Founder shows moderate-high risk tolerance.",
-          "This request is classified as high risk — probability reduced.",
-          "Founder prefers automation for deployments."
-        ]
-      },
-      "ts": "2026-06-28T19:08:32.986Z"
-    },
-    {
-      "scenarioName": "production_release",
-      "scenario": {
-        "command": "Ship production release v2.0.",
-        "workflowId": "wf_ops_deploy_backend",
-        "domain": "deployment",
-        "risk": "high"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.82,
-        "approveProbability": 0.83,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder historically approves 100% of deployment requests.",
-          "Founder shows moderate-high risk tolerance.",
-          "This request is classified as high risk — probability reduced.",
-          "Founder prefers automation for deployments."
-        ]
-      },
-      "ts": "2026-06-28T19:08:33.742Z"
-    },
-    {
-      "scenarioName": "ui_approval",
-      "scenario": {
-        "command": "Approve new UI layout for dashboard.",
-        "domain": "ui_review",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.42,
-        "approveProbability": 0.69,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T19:08:34.119Z"
-    },
-    {
-      "scenarioName": "code_review",
-      "scenario": {
-        "command": "Review and approve pull request for auth module.",
-        "domain": "code_review",
-        "risk": "medium"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.42,
-        "approveProbability": 0.69,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T19:08:34.463Z"
-    },
-    {
-      "scenarioName": "documentation",
-      "scenario": {
-        "command": "Approve documentation update for API.",
-        "domain": "documentation",
-        "risk": "low"
-      },
-      "result": {
-        "founderWouldLikely": "approve",
-        "confidence": 0.42,
-        "approveProbability": 0.79,
-        "shouldAutoApprove": false,
-        "reasoning": [
-          "Founder shows moderate-high risk tolerance."
-        ]
-      },
-      "ts": "2026-06-28T19:08:34.831Z"
-    },
     {
       "scenarioName": "roadmap_decision",
       "scenario": {
@@ -6137,23 +6681,599 @@
         ]
       },
       "ts": "2026-06-28T19:14:29.158Z"
+    },
+    {
+      "scenarioName": "deployment",
+      "scenario": {
+        "command": "Deploy today's release to production.",
+        "workflowId": "wf_eng_deploy_release",
+        "domain": "deployment",
+        "risk": "high"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.83,
+        "approveProbability": 0.87,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder historically approves 100% of deployment requests.",
+          "Founder shows moderate-high risk tolerance.",
+          "This request is classified as high risk — probability reduced.",
+          "Founder prefers automation for deployments.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:06.320Z"
+    },
+    {
+      "scenarioName": "production_release",
+      "scenario": {
+        "command": "Ship production release v2.0.",
+        "workflowId": "wf_ops_deploy_backend",
+        "domain": "deployment",
+        "risk": "high"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.83,
+        "approveProbability": 0.87,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder historically approves 100% of deployment requests.",
+          "Founder shows moderate-high risk tolerance.",
+          "This request is classified as high risk — probability reduced.",
+          "Founder prefers automation for deployments.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:06.322Z"
+    },
+    {
+      "scenarioName": "ui_approval",
+      "scenario": {
+        "command": "Approve new UI layout for dashboard.",
+        "domain": "ui_review",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.72,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:06.323Z"
+    },
+    {
+      "scenarioName": "code_review",
+      "scenario": {
+        "command": "Review and approve pull request for auth module.",
+        "domain": "code_review",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.72,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:06.325Z"
+    },
+    {
+      "scenarioName": "documentation",
+      "scenario": {
+        "command": "Approve documentation update for API.",
+        "domain": "documentation",
+        "risk": "low"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.83,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:06.326Z"
+    },
+    {
+      "scenarioName": "roadmap_decision",
+      "scenario": {
+        "command": "Prioritize mobile offline sync for next sprint.",
+        "domain": "business",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.72,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:06.327Z"
+    },
+    {
+      "scenarioName": "production_checklist",
+      "scenario": {
+        "command": "Run production readiness checklist.",
+        "workflowId": "wf_ops_deployment_checklist_1",
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.83,
+        "approveProbability": 0.98,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder historically approves 100% of deployment requests.",
+          "Founder shows moderate-high risk tolerance.",
+          "Founder prefers automation for deployments.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:06.329Z"
+    },
+    {
+      "scenarioName": "deployment",
+      "scenario": {
+        "command": "Deploy today's release to production.",
+        "workflowId": "wf_eng_deploy_release",
+        "domain": "deployment",
+        "risk": "high"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.83,
+        "approveProbability": 0.87,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder historically approves 100% of deployment requests.",
+          "Founder shows moderate-high risk tolerance.",
+          "This request is classified as high risk — probability reduced.",
+          "Founder prefers automation for deployments.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:06.330Z"
+    },
+    {
+      "scenarioName": "production_release",
+      "scenario": {
+        "command": "Ship production release v2.0.",
+        "workflowId": "wf_ops_deploy_backend",
+        "domain": "deployment",
+        "risk": "high"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.83,
+        "approveProbability": 0.83,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder historically approves 100% of deployment requests.",
+          "Founder shows moderate-high risk tolerance.",
+          "This request is classified as high risk — probability reduced.",
+          "Founder prefers automation for deployments.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:07.097Z"
+    },
+    {
+      "scenarioName": "ui_approval",
+      "scenario": {
+        "command": "Approve new UI layout for dashboard.",
+        "domain": "ui_review",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.68,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:07.460Z"
+    },
+    {
+      "scenarioName": "code_review",
+      "scenario": {
+        "command": "Review and approve pull request for auth module.",
+        "domain": "code_review",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.68,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:07.815Z"
+    },
+    {
+      "scenarioName": "documentation",
+      "scenario": {
+        "command": "Approve documentation update for API.",
+        "domain": "documentation",
+        "risk": "low"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.79,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:08.170Z"
+    },
+    {
+      "scenarioName": "roadmap_decision",
+      "scenario": {
+        "command": "Prioritize mobile offline sync for next sprint.",
+        "domain": "business",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.68,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:08.547Z"
+    },
+    {
+      "scenarioName": "production_checklist",
+      "scenario": {
+        "command": "Run production readiness checklist.",
+        "workflowId": "wf_ops_deployment_checklist_1",
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.83,
+        "approveProbability": 0.98,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder historically approves 100% of deployment requests.",
+          "Founder shows moderate-high risk tolerance.",
+          "Founder prefers automation for deployments.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:08.899Z"
+    },
+    {
+      "scenarioName": "deployment",
+      "scenario": {
+        "command": "Deploy today's release to production.",
+        "workflowId": "wf_eng_deploy_release",
+        "domain": "deployment",
+        "risk": "high"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.83,
+        "approveProbability": 0.87,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder historically approves 100% of deployment requests.",
+          "Founder shows moderate-high risk tolerance.",
+          "This request is classified as high risk — probability reduced.",
+          "Founder prefers automation for deployments.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:18.795Z"
+    },
+    {
+      "scenarioName": "production_release",
+      "scenario": {
+        "command": "Ship production release v2.0.",
+        "workflowId": "wf_ops_deploy_backend",
+        "domain": "deployment",
+        "risk": "high"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.83,
+        "approveProbability": 0.87,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder historically approves 100% of deployment requests.",
+          "Founder shows moderate-high risk tolerance.",
+          "This request is classified as high risk — probability reduced.",
+          "Founder prefers automation for deployments.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:18.797Z"
+    },
+    {
+      "scenarioName": "ui_approval",
+      "scenario": {
+        "command": "Approve new UI layout for dashboard.",
+        "domain": "ui_review",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.72,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:18.799Z"
+    },
+    {
+      "scenarioName": "code_review",
+      "scenario": {
+        "command": "Review and approve pull request for auth module.",
+        "domain": "code_review",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.72,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:18.800Z"
+    },
+    {
+      "scenarioName": "documentation",
+      "scenario": {
+        "command": "Approve documentation update for API.",
+        "domain": "documentation",
+        "risk": "low"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.83,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:18.801Z"
+    },
+    {
+      "scenarioName": "roadmap_decision",
+      "scenario": {
+        "command": "Prioritize mobile offline sync for next sprint.",
+        "domain": "business",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.72,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:18.803Z"
+    },
+    {
+      "scenarioName": "production_checklist",
+      "scenario": {
+        "command": "Run production readiness checklist.",
+        "workflowId": "wf_ops_deployment_checklist_1",
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.83,
+        "approveProbability": 0.98,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder historically approves 100% of deployment requests.",
+          "Founder shows moderate-high risk tolerance.",
+          "Founder prefers automation for deployments.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:18.804Z"
+    },
+    {
+      "scenarioName": "deployment",
+      "scenario": {
+        "command": "Deploy today's release to production.",
+        "workflowId": "wf_eng_deploy_release",
+        "domain": "deployment",
+        "risk": "high"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.83,
+        "approveProbability": 0.87,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder historically approves 100% of deployment requests.",
+          "Founder shows moderate-high risk tolerance.",
+          "This request is classified as high risk — probability reduced.",
+          "Founder prefers automation for deployments.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:18.805Z"
+    },
+    {
+      "scenarioName": "production_release",
+      "scenario": {
+        "command": "Ship production release v2.0.",
+        "workflowId": "wf_ops_deploy_backend",
+        "domain": "deployment",
+        "risk": "high"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.83,
+        "approveProbability": 0.83,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder historically approves 100% of deployment requests.",
+          "Founder shows moderate-high risk tolerance.",
+          "This request is classified as high risk — probability reduced.",
+          "Founder prefers automation for deployments.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:19.559Z"
+    },
+    {
+      "scenarioName": "ui_approval",
+      "scenario": {
+        "command": "Approve new UI layout for dashboard.",
+        "domain": "ui_review",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.68,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:19.938Z"
+    },
+    {
+      "scenarioName": "code_review",
+      "scenario": {
+        "command": "Review and approve pull request for auth module.",
+        "domain": "code_review",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.68,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:20.318Z"
+    },
+    {
+      "scenarioName": "documentation",
+      "scenario": {
+        "command": "Approve documentation update for API.",
+        "domain": "documentation",
+        "risk": "low"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.79,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:20.674Z"
+    },
+    {
+      "scenarioName": "roadmap_decision",
+      "scenario": {
+        "command": "Prioritize mobile offline sync for next sprint.",
+        "domain": "business",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.43,
+        "approveProbability": 0.68,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder shows moderate-high risk tolerance.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:20.986Z"
+    },
+    {
+      "scenarioName": "production_checklist",
+      "scenario": {
+        "command": "Run production readiness checklist.",
+        "workflowId": "wf_ops_deployment_checklist_1",
+        "domain": "deployment",
+        "risk": "medium"
+      },
+      "result": {
+        "founderWouldLikely": "approve",
+        "confidence": 0.83,
+        "approveProbability": 0.98,
+        "shouldAutoApprove": false,
+        "reasoning": [
+          "Founder historically approves 100% of deployment requests.",
+          "Founder shows moderate-high risk tolerance.",
+          "Founder prefers automation for deployments.",
+          "Prediction model has been corrected frequently — confidence adjusted down."
+        ]
+      },
+      "ts": "2026-06-28T19:38:21.294Z"
     }
   ],
   "stats": {
-    "total": 107,
-    "approved": 105,
+    "total": 135,
+    "approved": 133,
     "rejected": 2,
     "modified": 0,
-    "correct": 17,
+    "correct": 21,
     "autoResolved": 0,
-    "founderRequired": 107,
+    "founderRequired": 135,
     "minutesSaved": 0
   },
   "learningLoop": {
-    "totalCorrections": 16,
-    "knowledgeUpdates": 30,
-    "profileUpdates": 30,
-    "lastLoopAt": "2026-06-28T19:14:29.205Z"
+    "totalCorrections": 20,
+    "knowledgeUpdates": 38,
+    "profileUpdates": 38,
+    "lastLoopAt": "2026-06-28T19:38:21.344Z"
   },
-  "updatedAt": "2026-06-28T19:36:05.885Z"
+  "updatedAt": "2026-06-28T19:39:56.305Z"
 }
