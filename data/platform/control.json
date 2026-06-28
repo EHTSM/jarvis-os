@@ -1,0 +1,267 @@
+{
+  "epoch": 1,
+  "startedAt": "2026-06-28T06:06:58.200Z",
+  "sdkVersion": "1.1.0",
+  "platformHealth": 100,
+  "lastAnalytics": {
+    "orgs": {
+      "total": 50,
+      "active": 13,
+      "byType": {
+        "agency": 21,
+        "startup": 10,
+        "enterprise": 4,
+        "department": 2,
+        "team": 2,
+        "solo": 3,
+        "marketplace": 2,
+        "research": 2,
+        "service": 2,
+        "custom": 2
+      }
+    },
+    "blueprints": {
+      "total": 26,
+      "published": 10
+    },
+    "templates": {
+      "total": 4,
+      "public": 4,
+      "totalInstalls": 2
+    },
+    "deployments": {
+      "total": 5,
+      "completed": 5
+    },
+    "marketplace": {
+      "total": 4,
+      "totalPurchases": 2
+    },
+    "certifications": {
+      "total": 11
+    },
+    "clones": {
+      "total": 9
+    },
+    "packages": {
+      "total": 9
+    },
+    "events": {
+      "total": 142,
+      "byType": {
+        "org:registered": 50,
+        "blueprint:created": 26,
+        "template:published": 4,
+        "template:installed": 2,
+        "org:deployed": 5,
+        "org:cloned": 7,
+        "org:forked": 2,
+        "org:exported": 9,
+        "org:imported": 5,
+        "marketplace:listed": 4,
+        "marketplace:purchased": 2,
+        "org:certified": 11,
+        "org:upgraded": 4,
+        "org:migrated": 2,
+        "org:simulated": 9
+      }
+    }
+  },
+  "lastTickAt": "2026-06-28T06:10:37.370Z",
+  "sdkManifest": {
+    "version": "1.1.0",
+    "name": "Ooplix Organization SDK",
+    "endpoints": {
+      "orgs": {
+        "base": "/platform/v1/orgs",
+        "methods": [
+          "GET",
+          "POST",
+          "PATCH",
+          "DELETE"
+        ]
+      },
+      "blueprints": {
+        "base": "/platform/v1/blueprints",
+        "methods": [
+          "GET",
+          "POST",
+          "PATCH"
+        ]
+      },
+      "templates": {
+        "base": "/platform/v1/templates",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      "deploy": {
+        "base": "/platform/v1/deploy",
+        "methods": [
+          "POST"
+        ]
+      },
+      "clone": {
+        "base": "/platform/v1/clone",
+        "methods": [
+          "POST"
+        ]
+      },
+      "export": {
+        "base": "/platform/v1/export/:orgId",
+        "methods": [
+          "GET"
+        ]
+      },
+      "import": {
+        "base": "/platform/v1/import",
+        "methods": [
+          "POST"
+        ]
+      },
+      "simulate": {
+        "base": "/platform/v1/simulate",
+        "methods": [
+          "POST"
+        ]
+      },
+      "twin": {
+        "base": "/platform/v1/twin/:orgId",
+        "methods": [
+          "GET"
+        ]
+      },
+      "marketplace": {
+        "base": "/platform/v1/marketplace",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      "certify": {
+        "base": "/platform/v1/certify",
+        "methods": [
+          "POST"
+        ]
+      }
+    },
+    "capabilities": [
+      "agency",
+      "startup",
+      "enterprise",
+      "department",
+      "team",
+      "solo",
+      "marketplace",
+      "research",
+      "service",
+      "custom"
+    ],
+    "capabilitySets": {
+      "agency": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive",
+        "odi"
+      ],
+      "startup": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "enterprise": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive",
+        "enterprise",
+        "ecosystem"
+      ],
+      "department": [
+        "business",
+        "knowledge"
+      ],
+      "team": [
+        "engineering",
+        "knowledge"
+      ],
+      "solo": [
+        "engineering"
+      ],
+      "marketplace": [
+        "ecosystem",
+        "business"
+      ],
+      "research": [
+        "knowledge",
+        "evolution"
+      ],
+      "service": [
+        "business",
+        "engineering"
+      ],
+      "custom": []
+    },
+    "builtInTemplates": [
+      {
+        "templateId": "tpl_agency",
+        "name": "AI Marketing Agency",
+        "type": "agency"
+      },
+      {
+        "templateId": "tpl_startup",
+        "name": "AI Startup",
+        "type": "startup"
+      },
+      {
+        "templateId": "tpl_enterprise",
+        "name": "AI Enterprise Division",
+        "type": "enterprise"
+      },
+      {
+        "templateId": "tpl_saas",
+        "name": "AI SaaS Company",
+        "type": "startup"
+      },
+      {
+        "templateId": "tpl_research",
+        "name": "AI Research Lab",
+        "type": "research"
+      },
+      {
+        "templateId": "tpl_ecommerce",
+        "name": "AI E-Commerce Brand",
+        "type": "agency"
+      },
+      {
+        "templateId": "tpl_devshop",
+        "name": "AI Dev Shop",
+        "type": "team"
+      },
+      {
+        "templateId": "tpl_consulting",
+        "name": "AI Consulting Firm",
+        "type": "service"
+      }
+    ],
+    "levelStack": [
+      "L1:engineering",
+      "L2:business",
+      "L3:knowledge",
+      "L4:evolution",
+      "L5:executive",
+      "L6:enterprise",
+      "L7:ecosystem",
+      "L8:civilization",
+      "L9:autonomous",
+      "LΩ:platform"
+    ]
+  },
+  "registeredOrgPlugins": 0
+}

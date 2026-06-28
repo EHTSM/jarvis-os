@@ -1,0 +1,163 @@
+{
+  "reports": [
+    {
+      "id": "rpt_1782626818200_w80e",
+      "title": "Report-1782625903725",
+      "type": "platform",
+      "summary": "All systems nominal",
+      "data": {},
+      "createdAt": "2026-06-28T06:06:58.200Z"
+    },
+    {
+      "id": "rpt_1782626818665_4369",
+      "title": "Platform Analytics Tick — 2026-06-28T06:06:58.665Z",
+      "type": "analytics",
+      "summary": "24 orgs, 16 blueprints, 2 deployments",
+      "data": {
+        "orgs": {
+          "total": 24,
+          "active": 6,
+          "byType": {
+            "agency": 10,
+            "startup": 5,
+            "enterprise": 2,
+            "department": 1,
+            "team": 1,
+            "solo": 1,
+            "marketplace": 1,
+            "research": 1,
+            "service": 1,
+            "custom": 1
+          }
+        },
+        "blueprints": {
+          "total": 16,
+          "published": 9
+        },
+        "templates": {
+          "total": 3,
+          "public": 3,
+          "totalInstalls": 1
+        },
+        "deployments": {
+          "total": 2,
+          "completed": 2
+        },
+        "marketplace": {
+          "total": 2,
+          "totalPurchases": 1
+        },
+        "certifications": {
+          "total": 5
+        },
+        "clones": {
+          "total": 4
+        },
+        "packages": {
+          "total": 4
+        },
+        "events": {
+          "total": 71,
+          "byType": {
+            "org:registered": 24,
+            "blueprint:created": 16,
+            "template:published": 3,
+            "template:installed": 1,
+            "org:deployed": 2,
+            "org:cloned": 3,
+            "org:forked": 1,
+            "org:exported": 4,
+            "org:imported": 2,
+            "marketplace:listed": 2,
+            "marketplace:purchased": 1,
+            "org:certified": 5,
+            "org:upgraded": 2,
+            "org:migrated": 1,
+            "org:simulated": 4
+          }
+        }
+      },
+      "createdAt": "2026-06-28T06:06:58.665Z"
+    },
+    {
+      "id": "rpt_1782627037121_wm8x",
+      "title": "Report-1782626883324",
+      "type": "platform",
+      "summary": "All systems nominal",
+      "data": {},
+      "createdAt": "2026-06-28T06:10:37.121Z"
+    },
+    {
+      "id": "rpt_1782627037605_0295",
+      "title": "Platform Analytics Tick — 2026-06-28T06:10:37.605Z",
+      "type": "analytics",
+      "summary": "50 orgs, 26 blueprints, 5 deployments",
+      "data": {
+        "orgs": {
+          "total": 50,
+          "active": 13,
+          "byType": {
+            "agency": 21,
+            "startup": 10,
+            "enterprise": 4,
+            "department": 2,
+            "team": 2,
+            "solo": 3,
+            "marketplace": 2,
+            "research": 2,
+            "service": 2,
+            "custom": 2
+          }
+        },
+        "blueprints": {
+          "total": 26,
+          "published": 10
+        },
+        "templates": {
+          "total": 4,
+          "public": 4,
+          "totalInstalls": 2
+        },
+        "deployments": {
+          "total": 5,
+          "completed": 5
+        },
+        "marketplace": {
+          "total": 4,
+          "totalPurchases": 2
+        },
+        "certifications": {
+          "total": 11
+        },
+        "clones": {
+          "total": 9
+        },
+        "packages": {
+          "total": 9
+        },
+        "events": {
+          "total": 142,
+          "byType": {
+            "org:registered": 50,
+            "blueprint:created": 26,
+            "template:published": 4,
+            "template:installed": 2,
+            "org:deployed": 5,
+            "org:cloned": 7,
+            "org:forked": 2,
+            "org:exported": 9,
+            "org:imported": 5,
+            "marketplace:listed": 4,
+            "marketplace:purchased": 2,
+            "org:certified": 11,
+            "org:upgraded": 4,
+            "org:migrated": 2,
+            "org:simulated": 9
+          }
+        }
+      },
+      "createdAt": "2026-06-28T06:10:37.605Z"
+    }
+  ],
+  "total": 4
+}

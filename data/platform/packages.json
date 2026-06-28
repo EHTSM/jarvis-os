@@ -1,0 +1,1661 @@
+{
+  "packages": [
+    {
+      "id": "pkg_1782626818113_lycp",
+      "format": "ooplix-org-package",
+      "version": "1.0.0",
+      "org": {
+        "id": "org_1782625904201_rr7e",
+        "name": "BlueprintA-1782625903725",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "tenantId": "tenant-1782625903725",
+        "ownerId": "owner-1782625903725",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "tags": [],
+        "blueprintId": "bp_1782625904188_1cnc",
+        "visibility": "private",
+        "plan": "free",
+        "status": "active",
+        "health": 100,
+        "kpis": {},
+        "governance": {
+          "policies": [],
+          "auditLog": []
+        },
+        "memoryId": "mem_1782626818105_er33",
+        "evolutionHistory": [
+          {
+            "version": "1.1.0",
+            "changelog": "Added new capabilities",
+            "at": "2026-06-28T06:06:58.108Z"
+          },
+          {
+            "version": "1.1.0",
+            "changelog": "Rollback to 1.1.0",
+            "at": "2026-06-28T06:06:58.108Z"
+          },
+          {
+            "version": "1.1.1",
+            "changelog": "Added ecosystem tier",
+            "at": "2026-06-28T06:06:58.126Z"
+          },
+          {
+            "version": "1.1.1",
+            "changelog": "Added ecosystem tier",
+            "at": "2026-06-28T06:06:58.127Z"
+          },
+          {
+            "version": "1.1.2",
+            "changelog": "Removed ecosystem",
+            "at": "2026-06-28T06:06:58.152Z"
+          },
+          {
+            "version": "1.1.2",
+            "changelog": "Removed ecosystem",
+            "at": "2026-06-28T06:06:58.152Z"
+          }
+        ],
+        "deploymentHistory": [
+          {
+            "deploymentId": "dep_1782625904201_5xdb",
+            "at": "2026-06-28T06:06:58.106Z",
+            "environment": "production"
+          }
+        ],
+        "certifications": [
+          "bronze"
+        ],
+        "version": "1.1.0",
+        "createdAt": "2026-06-28T05:51:44.201Z",
+        "updatedAt": "2026-06-28T06:06:58.108Z"
+      },
+      "blueprint": {
+        "id": "bp_1782625904188_1cnc",
+        "name": "BlueprintA-1782625903725",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "agents": [
+          {
+            "role": "engineering",
+            "label": "engineering agent",
+            "enabled": true
+          },
+          {
+            "role": "business",
+            "label": "business agent",
+            "enabled": true
+          },
+          {
+            "role": "knowledge",
+            "label": "knowledge agent",
+            "enabled": true
+          },
+          {
+            "role": "evolution",
+            "label": "evolution agent",
+            "enabled": true
+          },
+          {
+            "role": "executive",
+            "label": "executive agent",
+            "enabled": true
+          }
+        ],
+        "workflows": [
+          {
+            "id": "wf_main",
+            "name": "Main workflow",
+            "steps": [
+              "plan",
+              "execute",
+              "measure",
+              "learn"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "pol_default",
+            "rule": "All decisions must be explainable",
+            "enforcement": "required"
+          }
+        ],
+        "memorySpec": {
+          "layers": [
+            "mission",
+            "knowledge",
+            "learning"
+          ],
+          "ttl": "infinite"
+        },
+        "governanceSpec": {
+          "requireApproval": false,
+          "auditAll": true,
+          "explainAll": true
+        },
+        "authorId": "owner-1782625903725",
+        "tags": [
+          "v2",
+          "agency"
+        ],
+        "version": "1.0.0",
+        "status": "published",
+        "deployCount": 1,
+        "createdAt": "2026-06-28T05:51:44.188Z",
+        "updatedAt": "2026-06-28T05:51:44.199Z"
+      },
+      "versions": [
+        {
+          "id": "ver_1782626818108_k3wj",
+          "orgId": "org_1782625904201_rr7e",
+          "version": "1.1.0",
+          "changelog": "Added new capabilities",
+          "snapshot": {},
+          "authorId": "owner-1782625903725",
+          "status": "released",
+          "createdAt": "2026-06-28T06:06:58.108Z"
+        }
+      ],
+      "deployments": [
+        {
+          "id": "dep_1782625904201_5xdb",
+          "orgId": "org_1782625904201_rr7e",
+          "blueprintId": "bp_1782625904188_1cnc",
+          "tenantId": "tenant-1782625903725",
+          "targetEnvironment": "production",
+          "config": {},
+          "triggeredBy": "user",
+          "status": "completed",
+          "steps": [
+            {
+              "capability": "engineering",
+              "status": "ok",
+              "at": "2026-06-28T05:51:44.201Z"
+            },
+            {
+              "capability": "business",
+              "status": "ok",
+              "at": "2026-06-28T05:51:51.070Z"
+            },
+            {
+              "capability": "knowledge",
+              "status": "ok",
+              "at": "2026-06-28T05:51:51.346Z"
+            },
+            {
+              "capability": "evolution",
+              "status": "ok",
+              "at": "2026-06-28T06:06:57.607Z"
+            },
+            {
+              "capability": "executive",
+              "status": "ok",
+              "at": "2026-06-28T06:06:58.011Z"
+            }
+          ],
+          "capabilities": [
+            "engineering",
+            "business",
+            "knowledge",
+            "evolution",
+            "executive"
+          ],
+          "startedAt": "2026-06-28T05:51:44.201Z",
+          "completedAt": "2026-06-28T06:06:58.106Z",
+          "error": null
+        }
+      ],
+      "exportedAt": "2026-06-28T06:06:58.113Z",
+      "checksum": "sha256:1782626818113"
+    },
+    {
+      "id": "pkg_1782626818113_i60w",
+      "format": "ooplix-org-package",
+      "version": "1.0.0",
+      "org": {
+        "id": "org_1782625904201_rr7e",
+        "name": "BlueprintA-1782625903725",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "tenantId": "tenant-1782625903725",
+        "ownerId": "owner-1782625903725",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "tags": [],
+        "blueprintId": "bp_1782625904188_1cnc",
+        "visibility": "private",
+        "plan": "free",
+        "status": "active",
+        "health": 100,
+        "kpis": {},
+        "governance": {
+          "policies": [],
+          "auditLog": []
+        },
+        "memoryId": "mem_1782626818105_er33",
+        "evolutionHistory": [
+          {
+            "version": "1.1.0",
+            "changelog": "Added new capabilities",
+            "at": "2026-06-28T06:06:58.108Z"
+          },
+          {
+            "version": "1.1.0",
+            "changelog": "Rollback to 1.1.0",
+            "at": "2026-06-28T06:06:58.108Z"
+          },
+          {
+            "version": "1.1.1",
+            "changelog": "Added ecosystem tier",
+            "at": "2026-06-28T06:06:58.126Z"
+          },
+          {
+            "version": "1.1.1",
+            "changelog": "Added ecosystem tier",
+            "at": "2026-06-28T06:06:58.127Z"
+          },
+          {
+            "version": "1.1.2",
+            "changelog": "Removed ecosystem",
+            "at": "2026-06-28T06:06:58.152Z"
+          },
+          {
+            "version": "1.1.2",
+            "changelog": "Removed ecosystem",
+            "at": "2026-06-28T06:06:58.152Z"
+          }
+        ],
+        "deploymentHistory": [
+          {
+            "deploymentId": "dep_1782625904201_5xdb",
+            "at": "2026-06-28T06:06:58.106Z",
+            "environment": "production"
+          }
+        ],
+        "certifications": [
+          "bronze"
+        ],
+        "version": "1.1.0",
+        "createdAt": "2026-06-28T05:51:44.201Z",
+        "updatedAt": "2026-06-28T06:06:58.108Z"
+      },
+      "blueprint": {
+        "id": "bp_1782625904188_1cnc",
+        "name": "BlueprintA-1782625903725",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "agents": [
+          {
+            "role": "engineering",
+            "label": "engineering agent",
+            "enabled": true
+          },
+          {
+            "role": "business",
+            "label": "business agent",
+            "enabled": true
+          },
+          {
+            "role": "knowledge",
+            "label": "knowledge agent",
+            "enabled": true
+          },
+          {
+            "role": "evolution",
+            "label": "evolution agent",
+            "enabled": true
+          },
+          {
+            "role": "executive",
+            "label": "executive agent",
+            "enabled": true
+          }
+        ],
+        "workflows": [
+          {
+            "id": "wf_main",
+            "name": "Main workflow",
+            "steps": [
+              "plan",
+              "execute",
+              "measure",
+              "learn"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "pol_default",
+            "rule": "All decisions must be explainable",
+            "enforcement": "required"
+          }
+        ],
+        "memorySpec": {
+          "layers": [
+            "mission",
+            "knowledge",
+            "learning"
+          ],
+          "ttl": "infinite"
+        },
+        "governanceSpec": {
+          "requireApproval": false,
+          "auditAll": true,
+          "explainAll": true
+        },
+        "authorId": "owner-1782625903725",
+        "tags": [
+          "v2",
+          "agency"
+        ],
+        "version": "1.0.0",
+        "status": "published",
+        "deployCount": 1,
+        "createdAt": "2026-06-28T05:51:44.188Z",
+        "updatedAt": "2026-06-28T05:51:44.199Z"
+      },
+      "versions": [
+        {
+          "id": "ver_1782626818108_k3wj",
+          "orgId": "org_1782625904201_rr7e",
+          "version": "1.1.0",
+          "changelog": "Added new capabilities",
+          "snapshot": {},
+          "authorId": "owner-1782625903725",
+          "status": "released",
+          "createdAt": "2026-06-28T06:06:58.108Z"
+        }
+      ],
+      "deployments": [
+        {
+          "id": "dep_1782625904201_5xdb",
+          "orgId": "org_1782625904201_rr7e",
+          "blueprintId": "bp_1782625904188_1cnc",
+          "tenantId": "tenant-1782625903725",
+          "targetEnvironment": "production",
+          "config": {},
+          "triggeredBy": "user",
+          "status": "completed",
+          "steps": [
+            {
+              "capability": "engineering",
+              "status": "ok",
+              "at": "2026-06-28T05:51:44.201Z"
+            },
+            {
+              "capability": "business",
+              "status": "ok",
+              "at": "2026-06-28T05:51:51.070Z"
+            },
+            {
+              "capability": "knowledge",
+              "status": "ok",
+              "at": "2026-06-28T05:51:51.346Z"
+            },
+            {
+              "capability": "evolution",
+              "status": "ok",
+              "at": "2026-06-28T06:06:57.607Z"
+            },
+            {
+              "capability": "executive",
+              "status": "ok",
+              "at": "2026-06-28T06:06:58.011Z"
+            }
+          ],
+          "capabilities": [
+            "engineering",
+            "business",
+            "knowledge",
+            "evolution",
+            "executive"
+          ],
+          "startedAt": "2026-06-28T05:51:44.201Z",
+          "completedAt": "2026-06-28T06:06:58.106Z",
+          "error": null
+        }
+      ],
+      "exportedAt": "2026-06-28T06:06:58.113Z",
+      "checksum": "sha256:1782626818113"
+    },
+    {
+      "id": "pkg_1782626818424_avey",
+      "format": "ooplix-org-package",
+      "version": "1.0.0",
+      "org": {
+        "id": "org_1782626818125_an1p",
+        "name": "CertOrg-platinum-1782625903725",
+        "description": "",
+        "type": "startup",
+        "tenantId": "cert-platinum-1782625903725",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "tags": [],
+        "visibility": "private",
+        "plan": "free",
+        "status": "active",
+        "health": 90,
+        "kpis": {},
+        "governance": {
+          "policies": [
+            {
+              "id": "pol_1782626818546_pxjc",
+              "policy": "All org decisions must be explainable and traceable",
+              "addedBy": "platform_governance",
+              "addedAt": "2026-06-28T06:06:58.546Z"
+            }
+          ],
+          "auditLog": [
+            {
+              "action": "policy_added",
+              "policy": "All org decisions must be explainable and traceable",
+              "by": "platform_governance",
+              "at": "2026-06-28T06:06:58.546Z"
+            }
+          ]
+        },
+        "memoryId": null,
+        "evolutionHistory": [
+          {
+            "version": "1.0.0",
+            "changelog": "Initial version",
+            "at": "2026-06-28T06:06:58.425Z"
+          }
+        ],
+        "deploymentHistory": [],
+        "certifications": [
+          "platinum"
+        ],
+        "version": "1.0.0",
+        "createdAt": "2026-06-28T06:06:58.125Z",
+        "updatedAt": "2026-06-28T06:06:58.245Z"
+      },
+      "blueprint": null,
+      "versions": [],
+      "deployments": [],
+      "exportedAt": "2026-06-28T06:06:58.424Z",
+      "checksum": "sha256:1782626818424"
+    },
+    {
+      "id": "pkg_1782626818425_e9qd",
+      "format": "ooplix-org-package",
+      "version": "1.0.0",
+      "org": {
+        "id": "org_1782626818124_r8wo",
+        "name": "CertOrg-gold-1782625903725",
+        "description": "",
+        "type": "startup",
+        "tenantId": "cert-gold-1782625903725",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "tags": [],
+        "visibility": "private",
+        "plan": "free",
+        "status": "active",
+        "health": 90,
+        "kpis": {},
+        "governance": {
+          "policies": [
+            {
+              "id": "pol_1782626818546_f3fv",
+              "policy": "All org decisions must be explainable and traceable",
+              "addedBy": "platform_governance",
+              "addedAt": "2026-06-28T06:06:58.546Z"
+            }
+          ],
+          "auditLog": [
+            {
+              "action": "policy_added",
+              "policy": "All org decisions must be explainable and traceable",
+              "by": "platform_governance",
+              "at": "2026-06-28T06:06:58.546Z"
+            }
+          ]
+        },
+        "memoryId": null,
+        "evolutionHistory": [
+          {
+            "version": "1.0.0",
+            "changelog": "Initial version",
+            "at": "2026-06-28T06:06:58.425Z"
+          }
+        ],
+        "deploymentHistory": [],
+        "certifications": [
+          "gold"
+        ],
+        "version": "1.0.0",
+        "createdAt": "2026-06-28T06:06:58.124Z",
+        "updatedAt": "2026-06-28T06:06:58.286Z"
+      },
+      "blueprint": null,
+      "versions": [],
+      "deployments": [],
+      "exportedAt": "2026-06-28T06:06:58.425Z",
+      "checksum": "sha256:1782626818425"
+    },
+    {
+      "id": "pkg_1782626818752_a4o0",
+      "format": "ooplix-org-package",
+      "version": "1.0.0",
+      "org": {
+        "id": "org_1782625904201_rr7e",
+        "name": "BlueprintA-1782625903725",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "tenantId": "tenant-1782625903725",
+        "ownerId": "owner-1782625903725",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "tags": [],
+        "blueprintId": "bp_1782625904188_1cnc",
+        "visibility": "private",
+        "plan": "free",
+        "status": "active",
+        "health": 90,
+        "kpis": {},
+        "governance": {
+          "policies": [],
+          "auditLog": []
+        },
+        "memoryId": "mem_1782626818105_er33",
+        "evolutionHistory": [
+          {
+            "version": "1.1.0",
+            "changelog": "Added new capabilities",
+            "at": "2026-06-28T06:06:58.108Z"
+          },
+          {
+            "version": "1.1.0",
+            "changelog": "Rollback to 1.1.0",
+            "at": "2026-06-28T06:06:58.108Z"
+          },
+          {
+            "version": "1.1.1",
+            "changelog": "Added ecosystem tier",
+            "at": "2026-06-28T06:06:58.126Z"
+          },
+          {
+            "version": "1.1.1",
+            "changelog": "Added ecosystem tier",
+            "at": "2026-06-28T06:06:58.127Z"
+          },
+          {
+            "version": "1.1.2",
+            "changelog": "Removed ecosystem",
+            "at": "2026-06-28T06:06:58.152Z"
+          },
+          {
+            "version": "1.1.2",
+            "changelog": "Removed ecosystem",
+            "at": "2026-06-28T06:06:58.152Z"
+          }
+        ],
+        "deploymentHistory": [
+          {
+            "deploymentId": "dep_1782625904201_5xdb",
+            "at": "2026-06-28T06:06:58.106Z",
+            "environment": "production"
+          }
+        ],
+        "certifications": [
+          "bronze"
+        ],
+        "version": "1.1.2",
+        "createdAt": "2026-06-28T05:51:44.201Z",
+        "updatedAt": "2026-06-28T06:06:58.424Z"
+      },
+      "blueprint": {
+        "id": "bp_1782625904188_1cnc",
+        "name": "BlueprintA-1782625903725",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "agents": [
+          {
+            "role": "engineering",
+            "label": "engineering agent",
+            "enabled": true
+          },
+          {
+            "role": "business",
+            "label": "business agent",
+            "enabled": true
+          },
+          {
+            "role": "knowledge",
+            "label": "knowledge agent",
+            "enabled": true
+          },
+          {
+            "role": "evolution",
+            "label": "evolution agent",
+            "enabled": true
+          },
+          {
+            "role": "executive",
+            "label": "executive agent",
+            "enabled": true
+          }
+        ],
+        "workflows": [
+          {
+            "id": "wf_main",
+            "name": "Main workflow",
+            "steps": [
+              "plan",
+              "execute",
+              "measure",
+              "learn"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "pol_default",
+            "rule": "All decisions must be explainable",
+            "enforcement": "required"
+          }
+        ],
+        "memorySpec": {
+          "layers": [
+            "mission",
+            "knowledge",
+            "learning"
+          ],
+          "ttl": "infinite"
+        },
+        "governanceSpec": {
+          "requireApproval": false,
+          "auditAll": true,
+          "explainAll": true
+        },
+        "authorId": "owner-1782625903725",
+        "tags": [
+          "v2",
+          "agency"
+        ],
+        "version": "1.0.0",
+        "status": "published",
+        "deployCount": 1,
+        "createdAt": "2026-06-28T05:51:44.188Z",
+        "updatedAt": "2026-06-28T05:51:44.199Z"
+      },
+      "versions": [
+        {
+          "id": "ver_1782626818152_8r0t",
+          "orgId": "org_1782625904201_rr7e",
+          "version": "1.1.2",
+          "changelog": "Removed ecosystem",
+          "snapshot": {
+            "capabilities": [
+              "engineering",
+              "business",
+              "knowledge",
+              "evolution",
+              "executive"
+            ]
+          },
+          "status": "released",
+          "createdAt": "2026-06-28T06:06:58.152Z"
+        },
+        {
+          "id": "ver_1782626818127_6r6e",
+          "orgId": "org_1782625904201_rr7e",
+          "version": "1.1.1",
+          "changelog": "Added ecosystem tier",
+          "snapshot": {
+            "capabilities": [
+              "engineering",
+              "business",
+              "knowledge",
+              "evolution",
+              "executive",
+              "ecosystem"
+            ]
+          },
+          "authorId": "owner-1782625903725",
+          "status": "released",
+          "createdAt": "2026-06-28T06:06:58.127Z"
+        },
+        {
+          "id": "ver_1782626818108_k3wj",
+          "orgId": "org_1782625904201_rr7e",
+          "version": "1.1.0",
+          "changelog": "Added new capabilities",
+          "snapshot": {},
+          "authorId": "owner-1782625903725",
+          "status": "released",
+          "createdAt": "2026-06-28T06:06:58.108Z"
+        }
+      ],
+      "deployments": [
+        {
+          "id": "dep_1782625904201_5xdb",
+          "orgId": "org_1782625904201_rr7e",
+          "blueprintId": "bp_1782625904188_1cnc",
+          "tenantId": "tenant-1782625903725",
+          "targetEnvironment": "production",
+          "config": {},
+          "triggeredBy": "user",
+          "status": "completed",
+          "steps": [
+            {
+              "capability": "engineering",
+              "status": "ok",
+              "at": "2026-06-28T05:51:44.201Z"
+            },
+            {
+              "capability": "business",
+              "status": "ok",
+              "at": "2026-06-28T05:51:51.070Z"
+            },
+            {
+              "capability": "knowledge",
+              "status": "ok",
+              "at": "2026-06-28T05:51:51.346Z"
+            },
+            {
+              "capability": "evolution",
+              "status": "ok",
+              "at": "2026-06-28T06:06:57.607Z"
+            },
+            {
+              "capability": "executive",
+              "status": "ok",
+              "at": "2026-06-28T06:06:58.011Z"
+            }
+          ],
+          "capabilities": [
+            "engineering",
+            "business",
+            "knowledge",
+            "evolution",
+            "executive"
+          ],
+          "startedAt": "2026-06-28T05:51:44.201Z",
+          "completedAt": "2026-06-28T06:06:58.106Z",
+          "error": null
+        }
+      ],
+      "exportedAt": "2026-06-28T06:06:58.752Z",
+      "checksum": "sha256:1782626818752"
+    },
+    {
+      "id": "pkg_1782627037026_norl",
+      "format": "ooplix-org-package",
+      "version": "1.0.0",
+      "org": {
+        "id": "org_1782626883742_tpmn",
+        "name": "BlueprintA-1782626883324",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "tenantId": "tenant-1782626883324",
+        "ownerId": "owner-1782626883324",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "tags": [],
+        "blueprintId": "bp_1782626883729_7pji",
+        "visibility": "private",
+        "plan": "free",
+        "status": "active",
+        "health": 100,
+        "kpis": {},
+        "governance": {
+          "policies": [],
+          "auditLog": []
+        },
+        "memoryId": "mem_1782627037016_zo8q",
+        "evolutionHistory": [
+          {
+            "version": "1.1.0",
+            "changelog": "Added new capabilities",
+            "at": "2026-06-28T06:10:37.021Z"
+          },
+          {
+            "version": "1.1.0",
+            "changelog": "Rollback to 1.1.0",
+            "at": "2026-06-28T06:10:37.022Z"
+          },
+          {
+            "version": "1.1.1",
+            "changelog": "Added ecosystem tier",
+            "at": "2026-06-28T06:10:37.043Z"
+          },
+          {
+            "version": "1.1.1",
+            "changelog": "Added ecosystem tier",
+            "at": "2026-06-28T06:10:37.043Z"
+          },
+          {
+            "version": "1.1.2",
+            "changelog": "Removed ecosystem",
+            "at": "2026-06-28T06:10:37.066Z"
+          },
+          {
+            "version": "1.1.2",
+            "changelog": "Removed ecosystem",
+            "at": "2026-06-28T06:10:37.067Z"
+          }
+        ],
+        "deploymentHistory": [
+          {
+            "deploymentId": "dep_1782626883742_gb26",
+            "at": "2026-06-28T06:10:37.017Z",
+            "environment": "production"
+          }
+        ],
+        "certifications": [
+          "bronze"
+        ],
+        "version": "1.1.0",
+        "createdAt": "2026-06-28T06:08:03.742Z",
+        "updatedAt": "2026-06-28T06:10:37.022Z"
+      },
+      "blueprint": {
+        "id": "bp_1782626883729_7pji",
+        "name": "BlueprintA-1782626883324",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "agents": [
+          {
+            "role": "engineering",
+            "label": "engineering agent",
+            "enabled": true
+          },
+          {
+            "role": "business",
+            "label": "business agent",
+            "enabled": true
+          },
+          {
+            "role": "knowledge",
+            "label": "knowledge agent",
+            "enabled": true
+          },
+          {
+            "role": "evolution",
+            "label": "evolution agent",
+            "enabled": true
+          },
+          {
+            "role": "executive",
+            "label": "executive agent",
+            "enabled": true
+          }
+        ],
+        "workflows": [
+          {
+            "id": "wf_main",
+            "name": "Main workflow",
+            "steps": [
+              "plan",
+              "execute",
+              "measure",
+              "learn"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "pol_default",
+            "rule": "All decisions must be explainable",
+            "enforcement": "required"
+          }
+        ],
+        "memorySpec": {
+          "layers": [
+            "mission",
+            "knowledge",
+            "learning"
+          ],
+          "ttl": "infinite"
+        },
+        "governanceSpec": {
+          "requireApproval": false,
+          "auditAll": true,
+          "explainAll": true
+        },
+        "authorId": "owner-1782626883324",
+        "tags": [
+          "v2",
+          "agency"
+        ],
+        "version": "1.0.0",
+        "status": "published",
+        "deployCount": 1,
+        "createdAt": "2026-06-28T06:08:03.729Z",
+        "updatedAt": "2026-06-28T06:08:03.740Z"
+      },
+      "versions": [
+        {
+          "id": "ver_1782627037020_92sl",
+          "orgId": "org_1782626883742_tpmn",
+          "version": "1.1.0",
+          "changelog": "Added new capabilities",
+          "snapshot": {},
+          "authorId": "owner-1782626883324",
+          "status": "released",
+          "createdAt": "2026-06-28T06:10:37.020Z"
+        }
+      ],
+      "deployments": [
+        {
+          "id": "dep_1782626883742_gb26",
+          "orgId": "org_1782626883742_tpmn",
+          "blueprintId": "bp_1782626883729_7pji",
+          "tenantId": "tenant-1782626883324",
+          "targetEnvironment": "production",
+          "config": {},
+          "triggeredBy": "user",
+          "status": "completed",
+          "steps": [
+            {
+              "capability": "engineering",
+              "status": "ok",
+              "at": "2026-06-28T06:08:03.742Z"
+            },
+            {
+              "capability": "business",
+              "status": "ok",
+              "at": "2026-06-28T06:08:10.815Z"
+            },
+            {
+              "capability": "knowledge",
+              "status": "ok",
+              "at": "2026-06-28T06:08:11.081Z"
+            },
+            {
+              "capability": "evolution",
+              "status": "ok",
+              "at": "2026-06-28T06:10:36.442Z"
+            },
+            {
+              "capability": "executive",
+              "status": "ok",
+              "at": "2026-06-28T06:10:36.904Z"
+            }
+          ],
+          "capabilities": [
+            "engineering",
+            "business",
+            "knowledge",
+            "evolution",
+            "executive"
+          ],
+          "startedAt": "2026-06-28T06:08:03.742Z",
+          "completedAt": "2026-06-28T06:10:37.017Z",
+          "error": null
+        }
+      ],
+      "exportedAt": "2026-06-28T06:10:37.026Z",
+      "checksum": "sha256:1782627037026"
+    },
+    {
+      "id": "pkg_1782627037027_f5jb",
+      "format": "ooplix-org-package",
+      "version": "1.0.0",
+      "org": {
+        "id": "org_1782626883742_tpmn",
+        "name": "BlueprintA-1782626883324",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "tenantId": "tenant-1782626883324",
+        "ownerId": "owner-1782626883324",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "tags": [],
+        "blueprintId": "bp_1782626883729_7pji",
+        "visibility": "private",
+        "plan": "free",
+        "status": "active",
+        "health": 100,
+        "kpis": {},
+        "governance": {
+          "policies": [],
+          "auditLog": []
+        },
+        "memoryId": "mem_1782627037016_zo8q",
+        "evolutionHistory": [
+          {
+            "version": "1.1.0",
+            "changelog": "Added new capabilities",
+            "at": "2026-06-28T06:10:37.021Z"
+          },
+          {
+            "version": "1.1.0",
+            "changelog": "Rollback to 1.1.0",
+            "at": "2026-06-28T06:10:37.022Z"
+          },
+          {
+            "version": "1.1.1",
+            "changelog": "Added ecosystem tier",
+            "at": "2026-06-28T06:10:37.043Z"
+          },
+          {
+            "version": "1.1.1",
+            "changelog": "Added ecosystem tier",
+            "at": "2026-06-28T06:10:37.043Z"
+          },
+          {
+            "version": "1.1.2",
+            "changelog": "Removed ecosystem",
+            "at": "2026-06-28T06:10:37.066Z"
+          },
+          {
+            "version": "1.1.2",
+            "changelog": "Removed ecosystem",
+            "at": "2026-06-28T06:10:37.067Z"
+          }
+        ],
+        "deploymentHistory": [
+          {
+            "deploymentId": "dep_1782626883742_gb26",
+            "at": "2026-06-28T06:10:37.017Z",
+            "environment": "production"
+          }
+        ],
+        "certifications": [
+          "bronze"
+        ],
+        "version": "1.1.0",
+        "createdAt": "2026-06-28T06:08:03.742Z",
+        "updatedAt": "2026-06-28T06:10:37.022Z"
+      },
+      "blueprint": {
+        "id": "bp_1782626883729_7pji",
+        "name": "BlueprintA-1782626883324",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "agents": [
+          {
+            "role": "engineering",
+            "label": "engineering agent",
+            "enabled": true
+          },
+          {
+            "role": "business",
+            "label": "business agent",
+            "enabled": true
+          },
+          {
+            "role": "knowledge",
+            "label": "knowledge agent",
+            "enabled": true
+          },
+          {
+            "role": "evolution",
+            "label": "evolution agent",
+            "enabled": true
+          },
+          {
+            "role": "executive",
+            "label": "executive agent",
+            "enabled": true
+          }
+        ],
+        "workflows": [
+          {
+            "id": "wf_main",
+            "name": "Main workflow",
+            "steps": [
+              "plan",
+              "execute",
+              "measure",
+              "learn"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "pol_default",
+            "rule": "All decisions must be explainable",
+            "enforcement": "required"
+          }
+        ],
+        "memorySpec": {
+          "layers": [
+            "mission",
+            "knowledge",
+            "learning"
+          ],
+          "ttl": "infinite"
+        },
+        "governanceSpec": {
+          "requireApproval": false,
+          "auditAll": true,
+          "explainAll": true
+        },
+        "authorId": "owner-1782626883324",
+        "tags": [
+          "v2",
+          "agency"
+        ],
+        "version": "1.0.0",
+        "status": "published",
+        "deployCount": 1,
+        "createdAt": "2026-06-28T06:08:03.729Z",
+        "updatedAt": "2026-06-28T06:08:03.740Z"
+      },
+      "versions": [
+        {
+          "id": "ver_1782627037020_92sl",
+          "orgId": "org_1782626883742_tpmn",
+          "version": "1.1.0",
+          "changelog": "Added new capabilities",
+          "snapshot": {},
+          "authorId": "owner-1782626883324",
+          "status": "released",
+          "createdAt": "2026-06-28T06:10:37.020Z"
+        }
+      ],
+      "deployments": [
+        {
+          "id": "dep_1782626883742_gb26",
+          "orgId": "org_1782626883742_tpmn",
+          "blueprintId": "bp_1782626883729_7pji",
+          "tenantId": "tenant-1782626883324",
+          "targetEnvironment": "production",
+          "config": {},
+          "triggeredBy": "user",
+          "status": "completed",
+          "steps": [
+            {
+              "capability": "engineering",
+              "status": "ok",
+              "at": "2026-06-28T06:08:03.742Z"
+            },
+            {
+              "capability": "business",
+              "status": "ok",
+              "at": "2026-06-28T06:08:10.815Z"
+            },
+            {
+              "capability": "knowledge",
+              "status": "ok",
+              "at": "2026-06-28T06:08:11.081Z"
+            },
+            {
+              "capability": "evolution",
+              "status": "ok",
+              "at": "2026-06-28T06:10:36.442Z"
+            },
+            {
+              "capability": "executive",
+              "status": "ok",
+              "at": "2026-06-28T06:10:36.904Z"
+            }
+          ],
+          "capabilities": [
+            "engineering",
+            "business",
+            "knowledge",
+            "evolution",
+            "executive"
+          ],
+          "startedAt": "2026-06-28T06:08:03.742Z",
+          "completedAt": "2026-06-28T06:10:37.017Z",
+          "error": null
+        }
+      ],
+      "exportedAt": "2026-06-28T06:10:37.027Z",
+      "checksum": "sha256:1782627037027"
+    },
+    {
+      "id": "pkg_1782627037369_j3r6",
+      "format": "ooplix-org-package",
+      "version": "1.0.0",
+      "org": {
+        "id": "org_1782627037040_4051",
+        "name": "CertOrg-platinum-1782626883324",
+        "description": "",
+        "type": "startup",
+        "tenantId": "cert-platinum-1782626883324",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "tags": [],
+        "visibility": "private",
+        "plan": "free",
+        "status": "active",
+        "health": 90,
+        "kpis": {},
+        "governance": {
+          "policies": [
+            {
+              "id": "pol_1782627037489_o2ac",
+              "policy": "All org decisions must be explainable and traceable",
+              "addedBy": "platform_governance",
+              "addedAt": "2026-06-28T06:10:37.489Z"
+            }
+          ],
+          "auditLog": [
+            {
+              "action": "policy_added",
+              "policy": "All org decisions must be explainable and traceable",
+              "by": "platform_governance",
+              "at": "2026-06-28T06:10:37.489Z"
+            }
+          ]
+        },
+        "memoryId": null,
+        "evolutionHistory": [
+          {
+            "version": "1.0.0",
+            "changelog": "Initial version",
+            "at": "2026-06-28T06:10:37.370Z"
+          }
+        ],
+        "deploymentHistory": [],
+        "certifications": [
+          "platinum"
+        ],
+        "version": "1.0.0",
+        "createdAt": "2026-06-28T06:10:37.040Z",
+        "updatedAt": "2026-06-28T06:10:37.197Z"
+      },
+      "blueprint": null,
+      "versions": [],
+      "deployments": [],
+      "exportedAt": "2026-06-28T06:10:37.369Z",
+      "checksum": "sha256:1782627037369"
+    },
+    {
+      "id": "pkg_1782627037369_cae0",
+      "format": "ooplix-org-package",
+      "version": "1.0.0",
+      "org": {
+        "id": "org_1782627037039_tb1e",
+        "name": "CertOrg-gold-1782626883324",
+        "description": "",
+        "type": "startup",
+        "tenantId": "cert-gold-1782626883324",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "tags": [],
+        "visibility": "private",
+        "plan": "free",
+        "status": "active",
+        "health": 90,
+        "kpis": {},
+        "governance": {
+          "policies": [
+            {
+              "id": "pol_1782627037489_depj",
+              "policy": "All org decisions must be explainable and traceable",
+              "addedBy": "platform_governance",
+              "addedAt": "2026-06-28T06:10:37.489Z"
+            }
+          ],
+          "auditLog": [
+            {
+              "action": "policy_added",
+              "policy": "All org decisions must be explainable and traceable",
+              "by": "platform_governance",
+              "at": "2026-06-28T06:10:37.489Z"
+            }
+          ]
+        },
+        "memoryId": null,
+        "evolutionHistory": [
+          {
+            "version": "1.0.0",
+            "changelog": "Initial version",
+            "at": "2026-06-28T06:10:37.370Z"
+          }
+        ],
+        "deploymentHistory": [],
+        "certifications": [
+          "gold"
+        ],
+        "version": "1.0.0",
+        "createdAt": "2026-06-28T06:10:37.039Z",
+        "updatedAt": "2026-06-28T06:10:37.247Z"
+      },
+      "blueprint": null,
+      "versions": [],
+      "deployments": [],
+      "exportedAt": "2026-06-28T06:10:37.369Z",
+      "checksum": "sha256:1782627037369"
+    },
+    {
+      "id": "pkg_1782627037686_zm8k",
+      "format": "ooplix-org-package",
+      "version": "1.0.0",
+      "org": {
+        "id": "org_1782626883742_tpmn",
+        "name": "BlueprintA-1782626883324",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "tenantId": "tenant-1782626883324",
+        "ownerId": "owner-1782626883324",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "tags": [],
+        "blueprintId": "bp_1782626883729_7pji",
+        "visibility": "private",
+        "plan": "free",
+        "status": "active",
+        "health": 90,
+        "kpis": {},
+        "governance": {
+          "policies": [],
+          "auditLog": []
+        },
+        "memoryId": "mem_1782627037016_zo8q",
+        "evolutionHistory": [
+          {
+            "version": "1.1.0",
+            "changelog": "Added new capabilities",
+            "at": "2026-06-28T06:10:37.021Z"
+          },
+          {
+            "version": "1.1.0",
+            "changelog": "Rollback to 1.1.0",
+            "at": "2026-06-28T06:10:37.022Z"
+          },
+          {
+            "version": "1.1.1",
+            "changelog": "Added ecosystem tier",
+            "at": "2026-06-28T06:10:37.043Z"
+          },
+          {
+            "version": "1.1.1",
+            "changelog": "Added ecosystem tier",
+            "at": "2026-06-28T06:10:37.043Z"
+          },
+          {
+            "version": "1.1.2",
+            "changelog": "Removed ecosystem",
+            "at": "2026-06-28T06:10:37.066Z"
+          },
+          {
+            "version": "1.1.2",
+            "changelog": "Removed ecosystem",
+            "at": "2026-06-28T06:10:37.067Z"
+          }
+        ],
+        "deploymentHistory": [
+          {
+            "deploymentId": "dep_1782626883742_gb26",
+            "at": "2026-06-28T06:10:37.017Z",
+            "environment": "production"
+          }
+        ],
+        "certifications": [
+          "bronze"
+        ],
+        "version": "1.1.2",
+        "createdAt": "2026-06-28T06:08:03.742Z",
+        "updatedAt": "2026-06-28T06:10:37.368Z"
+      },
+      "blueprint": {
+        "id": "bp_1782626883729_7pji",
+        "name": "BlueprintA-1782626883324",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "agents": [
+          {
+            "role": "engineering",
+            "label": "engineering agent",
+            "enabled": true
+          },
+          {
+            "role": "business",
+            "label": "business agent",
+            "enabled": true
+          },
+          {
+            "role": "knowledge",
+            "label": "knowledge agent",
+            "enabled": true
+          },
+          {
+            "role": "evolution",
+            "label": "evolution agent",
+            "enabled": true
+          },
+          {
+            "role": "executive",
+            "label": "executive agent",
+            "enabled": true
+          }
+        ],
+        "workflows": [
+          {
+            "id": "wf_main",
+            "name": "Main workflow",
+            "steps": [
+              "plan",
+              "execute",
+              "measure",
+              "learn"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "pol_default",
+            "rule": "All decisions must be explainable",
+            "enforcement": "required"
+          }
+        ],
+        "memorySpec": {
+          "layers": [
+            "mission",
+            "knowledge",
+            "learning"
+          ],
+          "ttl": "infinite"
+        },
+        "governanceSpec": {
+          "requireApproval": false,
+          "auditAll": true,
+          "explainAll": true
+        },
+        "authorId": "owner-1782626883324",
+        "tags": [
+          "v2",
+          "agency"
+        ],
+        "version": "1.0.0",
+        "status": "published",
+        "deployCount": 1,
+        "createdAt": "2026-06-28T06:08:03.729Z",
+        "updatedAt": "2026-06-28T06:08:03.740Z"
+      },
+      "versions": [
+        {
+          "id": "ver_1782627037066_atgk",
+          "orgId": "org_1782626883742_tpmn",
+          "version": "1.1.2",
+          "changelog": "Removed ecosystem",
+          "snapshot": {
+            "capabilities": [
+              "engineering",
+              "business",
+              "knowledge",
+              "evolution",
+              "executive"
+            ]
+          },
+          "status": "released",
+          "createdAt": "2026-06-28T06:10:37.066Z"
+        },
+        {
+          "id": "ver_1782627037043_xm3r",
+          "orgId": "org_1782626883742_tpmn",
+          "version": "1.1.1",
+          "changelog": "Added ecosystem tier",
+          "snapshot": {
+            "capabilities": [
+              "engineering",
+              "business",
+              "knowledge",
+              "evolution",
+              "executive",
+              "ecosystem"
+            ]
+          },
+          "authorId": "owner-1782626883324",
+          "status": "released",
+          "createdAt": "2026-06-28T06:10:37.043Z"
+        },
+        {
+          "id": "ver_1782627037020_92sl",
+          "orgId": "org_1782626883742_tpmn",
+          "version": "1.1.0",
+          "changelog": "Added new capabilities",
+          "snapshot": {},
+          "authorId": "owner-1782626883324",
+          "status": "released",
+          "createdAt": "2026-06-28T06:10:37.020Z"
+        }
+      ],
+      "deployments": [
+        {
+          "id": "dep_1782626883742_gb26",
+          "orgId": "org_1782626883742_tpmn",
+          "blueprintId": "bp_1782626883729_7pji",
+          "tenantId": "tenant-1782626883324",
+          "targetEnvironment": "production",
+          "config": {},
+          "triggeredBy": "user",
+          "status": "completed",
+          "steps": [
+            {
+              "capability": "engineering",
+              "status": "ok",
+              "at": "2026-06-28T06:08:03.742Z"
+            },
+            {
+              "capability": "business",
+              "status": "ok",
+              "at": "2026-06-28T06:08:10.815Z"
+            },
+            {
+              "capability": "knowledge",
+              "status": "ok",
+              "at": "2026-06-28T06:08:11.081Z"
+            },
+            {
+              "capability": "evolution",
+              "status": "ok",
+              "at": "2026-06-28T06:10:36.442Z"
+            },
+            {
+              "capability": "executive",
+              "status": "ok",
+              "at": "2026-06-28T06:10:36.904Z"
+            }
+          ],
+          "capabilities": [
+            "engineering",
+            "business",
+            "knowledge",
+            "evolution",
+            "executive"
+          ],
+          "startedAt": "2026-06-28T06:08:03.742Z",
+          "completedAt": "2026-06-28T06:10:37.017Z",
+          "error": null
+        }
+      ],
+      "exportedAt": "2026-06-28T06:10:37.686Z",
+      "checksum": "sha256:1782627037686"
+    }
+  ],
+  "total": 10
+}

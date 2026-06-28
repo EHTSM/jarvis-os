@@ -853,6 +853,15 @@ _httpServer = app.listen(PORT, () => {
         logger.warn('[AUTO] failed to register (non-fatal):', autoErr.message);
     }
 
+    // ── Level Omega: Artificial Organization Platform (20 Platform Domains) ──
+    try {
+        const pltOrg = require('./services/platformOrg.cjs');
+        const pltResult = pltOrg.register();
+        logger.info('[PLT] Level Omega registered — ' + pltResult.registered + '/' + pltResult.count + ' platform domains active');
+    } catch (pltErr) {
+        logger.warn('[PLT] failed to register (non-fatal):', pltErr.message);
+    }
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;

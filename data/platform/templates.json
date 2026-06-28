@@ -1,0 +1,413 @@
+{
+  "templates": [
+    {
+      "id": "tmpl_1782625904199_cmo5",
+      "name": "Template-1782625903725",
+      "description": "Reusable agency template",
+      "blueprintId": "bp_1782625904188_1cnc",
+      "authorId": "owner-1782625903725",
+      "price": 0,
+      "tags": [
+        "test"
+      ],
+      "category": "agency",
+      "visibility": "public",
+      "blueprint": {
+        "id": "bp_1782625904188_1cnc",
+        "name": "BlueprintA-1782625903725",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "agents": [
+          {
+            "role": "engineering",
+            "label": "engineering agent",
+            "enabled": true
+          },
+          {
+            "role": "business",
+            "label": "business agent",
+            "enabled": true
+          },
+          {
+            "role": "knowledge",
+            "label": "knowledge agent",
+            "enabled": true
+          },
+          {
+            "role": "evolution",
+            "label": "evolution agent",
+            "enabled": true
+          },
+          {
+            "role": "executive",
+            "label": "executive agent",
+            "enabled": true
+          }
+        ],
+        "workflows": [
+          {
+            "id": "wf_main",
+            "name": "Main workflow",
+            "steps": [
+              "plan",
+              "execute",
+              "measure",
+              "learn"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "pol_default",
+            "rule": "All decisions must be explainable",
+            "enforcement": "required"
+          }
+        ],
+        "memorySpec": {
+          "layers": [
+            "mission",
+            "knowledge",
+            "learning"
+          ],
+          "ttl": "infinite"
+        },
+        "governanceSpec": {
+          "requireApproval": false,
+          "auditAll": true,
+          "explainAll": true
+        },
+        "authorId": "owner-1782625903725",
+        "tags": [
+          "v2",
+          "agency"
+        ],
+        "version": "1.0.0",
+        "status": "published",
+        "deployCount": 1,
+        "createdAt": "2026-06-28T05:51:44.188Z",
+        "updatedAt": "2026-06-28T05:51:44.199Z"
+      },
+      "rating": 5,
+      "reviews": 1,
+      "installs": 1,
+      "status": "active",
+      "publishedAt": "2026-06-28T05:51:44.199Z"
+    },
+    {
+      "id": "tmpl_1782626818202_mnlz",
+      "name": "AI Marketing Agency",
+      "description": "Full AI marketing agency with engineering, content, SEO, analytics, evolution",
+      "blueprintId": "bp_1782626818200_m8p2",
+      "authorId": "platform",
+      "price": 0,
+      "tags": [
+        "built-in",
+        "official"
+      ],
+      "category": "agency",
+      "visibility": "public",
+      "blueprint": {
+        "id": "bp_1782626818200_m8p2",
+        "name": "AI Marketing Agency",
+        "description": "Full AI marketing agency with engineering, content, SEO, analytics, evolution",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive",
+          "odi"
+        ],
+        "agents": [
+          {
+            "role": "engineering",
+            "label": "engineering agent",
+            "enabled": true
+          },
+          {
+            "role": "business",
+            "label": "business agent",
+            "enabled": true
+          },
+          {
+            "role": "knowledge",
+            "label": "knowledge agent",
+            "enabled": true
+          },
+          {
+            "role": "evolution",
+            "label": "evolution agent",
+            "enabled": true
+          },
+          {
+            "role": "executive",
+            "label": "executive agent",
+            "enabled": true
+          },
+          {
+            "role": "odi",
+            "label": "odi agent",
+            "enabled": true
+          }
+        ],
+        "workflows": [
+          {
+            "id": "wf_main",
+            "name": "Main workflow",
+            "steps": [
+              "plan",
+              "execute",
+              "measure",
+              "learn"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "pol_default",
+            "rule": "All decisions must be explainable",
+            "enforcement": "required"
+          }
+        ],
+        "memorySpec": {
+          "layers": [
+            "mission",
+            "knowledge",
+            "learning"
+          ],
+          "ttl": "infinite"
+        },
+        "governanceSpec": {
+          "requireApproval": false,
+          "auditAll": true,
+          "explainAll": true
+        },
+        "authorId": "platform",
+        "tags": [
+          "built-in",
+          "official"
+        ],
+        "version": "1.0.0",
+        "status": "published",
+        "deployCount": 0,
+        "createdAt": "2026-06-28T06:06:58.200Z",
+        "updatedAt": "2026-06-28T06:06:58.200Z"
+      },
+      "rating": 0,
+      "reviews": 0,
+      "installs": 0,
+      "status": "active",
+      "publishedAt": "2026-06-28T06:06:58.202Z"
+    },
+    {
+      "id": "tmpl_1782626818203_vhua",
+      "name": "AI Startup",
+      "description": "Lean AI startup with product engineering, sales, knowledge and exec",
+      "blueprintId": "bp_1782626818200_esg1",
+      "authorId": "platform",
+      "price": 0,
+      "tags": [
+        "built-in",
+        "official"
+      ],
+      "category": "startup",
+      "visibility": "public",
+      "blueprint": {
+        "id": "bp_1782626818200_esg1",
+        "name": "AI Startup",
+        "description": "Lean AI startup with product engineering, sales, knowledge and exec",
+        "type": "startup",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "agents": [
+          {
+            "role": "engineering",
+            "label": "engineering agent",
+            "enabled": true
+          },
+          {
+            "role": "business",
+            "label": "business agent",
+            "enabled": true
+          },
+          {
+            "role": "knowledge",
+            "label": "knowledge agent",
+            "enabled": true
+          },
+          {
+            "role": "evolution",
+            "label": "evolution agent",
+            "enabled": true
+          },
+          {
+            "role": "executive",
+            "label": "executive agent",
+            "enabled": true
+          }
+        ],
+        "workflows": [
+          {
+            "id": "wf_main",
+            "name": "Main workflow",
+            "steps": [
+              "plan",
+              "execute",
+              "measure",
+              "learn"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "pol_default",
+            "rule": "All decisions must be explainable",
+            "enforcement": "required"
+          }
+        ],
+        "memorySpec": {
+          "layers": [
+            "mission",
+            "knowledge",
+            "learning"
+          ],
+          "ttl": "infinite"
+        },
+        "governanceSpec": {
+          "requireApproval": false,
+          "auditAll": true,
+          "explainAll": true
+        },
+        "authorId": "platform",
+        "tags": [
+          "built-in",
+          "official"
+        ],
+        "version": "1.0.0",
+        "status": "published",
+        "deployCount": 0,
+        "createdAt": "2026-06-28T06:06:58.200Z",
+        "updatedAt": "2026-06-28T06:06:58.200Z"
+      },
+      "rating": 0,
+      "reviews": 0,
+      "installs": 0,
+      "status": "active",
+      "publishedAt": "2026-06-28T06:06:58.203Z"
+    },
+    {
+      "id": "tmpl_1782626883740_4isc",
+      "name": "Template-1782626883324",
+      "description": "Reusable agency template",
+      "blueprintId": "bp_1782626883729_7pji",
+      "authorId": "owner-1782626883324",
+      "price": 0,
+      "tags": [
+        "test"
+      ],
+      "category": "agency",
+      "visibility": "public",
+      "blueprint": {
+        "id": "bp_1782626883729_7pji",
+        "name": "BlueprintA-1782626883324",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "agents": [
+          {
+            "role": "engineering",
+            "label": "engineering agent",
+            "enabled": true
+          },
+          {
+            "role": "business",
+            "label": "business agent",
+            "enabled": true
+          },
+          {
+            "role": "knowledge",
+            "label": "knowledge agent",
+            "enabled": true
+          },
+          {
+            "role": "evolution",
+            "label": "evolution agent",
+            "enabled": true
+          },
+          {
+            "role": "executive",
+            "label": "executive agent",
+            "enabled": true
+          }
+        ],
+        "workflows": [
+          {
+            "id": "wf_main",
+            "name": "Main workflow",
+            "steps": [
+              "plan",
+              "execute",
+              "measure",
+              "learn"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "pol_default",
+            "rule": "All decisions must be explainable",
+            "enforcement": "required"
+          }
+        ],
+        "memorySpec": {
+          "layers": [
+            "mission",
+            "knowledge",
+            "learning"
+          ],
+          "ttl": "infinite"
+        },
+        "governanceSpec": {
+          "requireApproval": false,
+          "auditAll": true,
+          "explainAll": true
+        },
+        "authorId": "owner-1782626883324",
+        "tags": [
+          "v2",
+          "agency"
+        ],
+        "version": "1.0.0",
+        "status": "published",
+        "deployCount": 0,
+        "createdAt": "2026-06-28T06:08:03.729Z",
+        "updatedAt": "2026-06-28T06:08:03.740Z"
+      },
+      "rating": 5,
+      "reviews": 1,
+      "installs": 1,
+      "status": "active",
+      "publishedAt": "2026-06-28T06:08:03.740Z"
+    }
+  ],
+  "total": 4
+}

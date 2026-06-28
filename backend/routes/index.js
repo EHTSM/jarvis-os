@@ -122,5 +122,6 @@ router.use(require("./enterpriseOrg"));          // Level 7: /ent/status /ent/su
 router.use(require("./ecosystemOrg"));           // Level 8: /eco/status /eco/summary /eco/agents/:id /eco/v8/*
 router.use(require("./civilizationOrg"));        // Level 9: /civ/status /civ/summary /civ/agents/:id /civ/v9/*
 router.use(require("./autonomousOrg"));          // Level 10: /auto/status /auto/summary /auto/agents/:id /auto/v10/*
+router.use(require("./platformOrg"));           // Level Ω:  /platform/status /platform/summary /platform/v1/*
 
 module.exports = router;
