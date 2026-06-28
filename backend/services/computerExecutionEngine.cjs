@@ -226,8 +226,9 @@ async function execute(command, opts = {}) {
     const classification = classifyCommand(command);
     run.classification = classification;
 
-    // Step 2: Check memory for known approach (recall requires string, not object)
-    const recall = _try(() => _eme()?.recall?.(command));
+    // Step 2: Check memory (recall is async and takes { query } — guard carefully)
+    let recall = null;
+    try { recall = await _eme()?.recall?.({ query: command, limit: 3 }); } catch {}
     run.memoryHits = Array.isArray(recall) ? recall.length : 0;
 
     // Step 3: Check workspace context

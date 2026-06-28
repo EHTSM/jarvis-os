@@ -1,56 +1,5 @@
 [
   {
-    "recId": "bgrec_1782426141496_2ie",
-    "source": "incidentObserver",
-    "title": "65 escalated incident(s) in the last 30 minutes",
-    "description": "Self-healing escalations detected: cyc_1781022898425_3km, cyc_1781022898403_3kl, cyc_1781022898379_3kk, cyc_1781022898354_3kj, cyc_1781022898284_3ki. These items could not be auto-healed and require manual intervention.",
-    "priority": "CRITICAL",
-    "context": {
-      "escalatedCount": 65,
-      "targets": [
-        "cyc_1781022898425_3km",
-        "cyc_1781022898403_3kl",
-        "cyc_1781022898379_3kk",
-        "cyc_1781022898354_3kj",
-        "cyc_1781022898284_3ki"
-      ],
-      "recent": [
-        {
-          "ts": "2026-06-25T22:22:21.473Z",
-          "recId": "heal_1782426141473_keh",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898379_3kk",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T22:22:21.482Z",
-          "recId": "heal_1782426141482_kei",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898354_3kj",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        },
-        {
-          "ts": "2026-06-25T22:22:21.486Z",
-          "recId": "heal_1782426141486_kej",
-          "strategy": "escalate",
-          "targetType": "cycle",
-          "targetId": "cyc_1781022898284_3ki",
-          "success": false,
-          "reason": "max retries (3) exceeded",
-          "count": 4
-        }
-      ]
-    },
-    "createdAt": "2026-06-25T22:22:21.496Z",
-    "acknowledged": false
-  },
-  {
     "recId": "bgrec_1782426224544_2if",
     "source": "repoObserver",
     "title": "Uncommitted changes in jarvis-os",
@@ -16565,6 +16514,30 @@
       ]
     },
     "createdAt": "2026-06-28T12:14:52.329Z",
+    "acknowledged": false
+  },
+  {
+    "recId": "bgrec_1782649192309_5y",
+    "source": "repoObserver",
+    "title": "Uncommitted changes in jarvis-os",
+    "description": "11 file(s) have uncommitted changes. Recent log: c96407d Commit changes.",
+    "priority": "LOW",
+    "context": {
+      "repo": "/Users/ehtsm/jarvis-os",
+      "changedFiles": [
+        "m .claude/worktrees/agent-a4f0dc9c2440eb806",
+        " M data/computer-execution-engine.json",
+        " M data/editor-controller.json",
+        " M data/execution-evidence-index.json",
+        " M data/execution-evidence.ndjson",
+        " M data/lessons.json",
+        " M data/metrics/metrics_2026-06-28.ndjson",
+        " M data/observer-events.ndjson",
+        " M data/ops-alerts.json",
+        " M data/terminal-controller.json"
+      ]
+    },
+    "createdAt": "2026-06-28T12:19:52.309Z",
     "acknowledged": false
   }
 ]

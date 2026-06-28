@@ -131,6 +131,50 @@
       "openedAt": "2026-06-28T12:19:35.524Z",
       "closedAt": "2026-06-28T12:19:35.524Z",
       "title": null
+    },
+    "bc_1782649194556_wkz": {
+      "tabId": "bc_1782649194556_wkz",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-06-28T12:19:54.556Z",
+      "closedAt": null,
+      "title": null
+    },
+    "bc_1782649230458_l1e": {
+      "tabId": "bc_1782649230458_l1e",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "browserName": "Google Chrome",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-06-28T12:20:30.458Z",
+      "closedAt": null,
+      "title": null
+    },
+    "bc_1782649230459_haz": {
+      "tabId": "bc_1782649230459_haz",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "closed",
+      "openedAt": "2026-06-28T12:20:30.459Z",
+      "closedAt": "2026-06-28T12:20:30.460Z",
+      "title": null
+    },
+    "bc_1782649248787_lyl": {
+      "tabId": "bc_1782649248787_lyl",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-06-28T12:20:48.787Z",
+      "closedAt": null,
+      "title": null
     }
   },
   "history": [
@@ -329,13 +373,69 @@
       "event": "execute_workflow",
       "intent": "Click Pay now and confirm payment",
       "ts": "2026-06-28T12:19:36.701Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782649194556_wkz",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-06-28T12:19:54.556Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782649230458_l1e",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "ts": "2026-06-28T12:20:30.459Z"
+    },
+    {
+      "event": "switch_tab",
+      "tabId": "bc_1782649230458_l1e",
+      "url": "https://example.com",
+      "ts": "2026-06-28T12:20:30.459Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782649230459_haz",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-06-28T12:20:30.459Z"
+    },
+    {
+      "event": "close_tab",
+      "tabId": "bc_1782649230459_haz",
+      "ts": "2026-06-28T12:20:30.460Z"
+    },
+    {
+      "event": "inspect_page",
+      "tabId": "bc_1782649230458_l1e",
+      "query": "test query",
+      "ts": "2026-06-28T12:20:30.460Z"
+    },
+    {
+      "event": "authenticate",
+      "service": "github",
+      "profileId": "default",
+      "ts": "2026-06-28T12:20:36.118Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": "Click Pay now and confirm payment",
+      "ts": "2026-06-28T12:20:36.122Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782649248787_lyl",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-06-28T12:20:48.787Z"
     }
   ],
   "stats": {
-    "openTabs": 12,
-    "closedTabs": 4,
-    "screenshots": 18,
-    "workflows": 4,
-    "authentications": 4
+    "openTabs": 16,
+    "closedTabs": 5,
+    "screenshots": 24,
+    "workflows": 5,
+    "authentications": 5
   }
 }
