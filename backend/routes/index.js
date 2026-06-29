@@ -137,5 +137,6 @@ router.use(require("./odi-x"));             // ODI X V1:   /odi/x/* reasoning+qu
 router.use(require("./oai-x"));             // OAI X V1:   /engineering/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 router.use(require("./obi-x"));             // OBI X V1:   /business/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 router.use(require("./okb-x"));             // OKB X V1:   /knowledge/x/* reasoning+quality+benchmark+predict+evolution+dashboard
+router.use(require("./ose-x"));             // OSE X V1:   /evolution/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 
 module.exports = router;
