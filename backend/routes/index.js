@@ -144,6 +144,7 @@ router.use(require("./autonomousMarketplace"));  // POST-Ω P13: /auto-market/* 
 router.use(require("./knowledgeNetwork"));      // POST-Ω P14: /knowledge-net/* federation+correlation+discovery+governance+exchange+dashboard
 router.use(require("./autonomousRevenue"));     // POST-Ω P15: /revenue-engine/* discovery+optimization+pricing+forecast+automation+dashboard
 router.use(require("./autonomousInvestment")); // POST-Ω P16: /investment/* capital+analysis+portfolio+risk+automation+dashboard
-router.use(require("./physicalWorld"));       // POST-Ω P17: /physical/* registry+orchestration+scenarios+health+workflow+dashboard
+router.use(require("./physicalWorld"));          // POST-Ω P17: /physical/* registry+orchestration+scenarios+health+workflow+dashboard
+router.use(require("./scientificDiscovery"));   // POST-Ω P18: /science/* plan+hypotheses+experiments+publications+innovations+dashboard
 
 module.exports = router;

@@ -7,7 +7,7 @@ process.env.SKIP_PLATFORM_REGISTER = "1";
  */
 
 const assert   = require("assert");
-const promises = [];
+const atests = [];
 let passed = 0, failed = 0;
 
 function test(name, fn) {
@@ -15,11 +15,7 @@ function test(name, fn) {
   catch (e) { console.error(`  ✗ ${name}: ${e.message}`); failed++; }
 }
 function atest(name, fn) {
-  promises.push(
-    Promise.resolve().then(fn)
-      .then(() => { console.log(`  ✓ ${name}`); passed++; })
-      .catch(e => { console.error(`  ✗ ${name}: ${e.message}`); failed++; })
-  );
+  atests.push({ name, fn });
 }
 
 const dpe = require("../../backend/services/discoveryPlannerEngine.cjs");
@@ -720,10 +716,17 @@ test("E2E: researchHealth score is 0-100", () => {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function main() {
-  await Promise.all(promises);
+  for (const { name, fn } of atests) {
+    try {
+      await fn();
+      console.log(`  ✓ ${name}`); passed++;
+    } catch (e) {
+      console.error(`  ✗ ${name}: ${e.message}`); failed++;
+    }
+  }
   console.log(`\n${"─".repeat(50)}`);
   console.log(`POST-Ω P18: ${passed} passed, ${failed} failed`);
-  if (failed > 0) process.exit(1);
+  process.exit(failed > 0 ? 1 : 0);
 }
 
 main();
