@@ -143,5 +143,6 @@ router.use(require("./productFactory"));          // POST-Ω P12: /product-facto
 router.use(require("./autonomousMarketplace"));  // POST-Ω P13: /auto-market/* catalog+recommend+cert+automate+economy+dashboard
 router.use(require("./knowledgeNetwork"));      // POST-Ω P14: /knowledge-net/* federation+correlation+discovery+governance+exchange+dashboard
 router.use(require("./autonomousRevenue"));     // POST-Ω P15: /revenue-engine/* discovery+optimization+pricing+forecast+automation+dashboard
+router.use(require("./autonomousInvestment")); // POST-Ω P16: /investment/* capital+analysis+portfolio+risk+automation+dashboard
 
 module.exports = router;
