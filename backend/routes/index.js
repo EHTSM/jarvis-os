@@ -139,6 +139,7 @@ router.use(require("./obi-x"));             // OBI X V1:   /business/x/* reasoni
 router.use(require("./okb-x"));             // OKB X V1:   /knowledge/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 router.use(require("./ose-x"));             // OSE X V1:   /evolution/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 router.use(require("./customerOrg"));       // POST-Ω P11: /customer-org/* journey+health+success+support+automation+dashboard
-router.use(require("./productFactory"));    // POST-Ω P12: /product-factory/* planner+arch+assembly+validation+release+dashboard+pipeline
+router.use(require("./productFactory"));          // POST-Ω P12: /product-factory/* planner+arch+assembly+validation+release+dashboard+pipeline
+router.use(require("./autonomousMarketplace"));  // POST-Ω P13: /auto-market/* catalog+recommend+cert+automate+economy+dashboard
 
 module.exports = router;
