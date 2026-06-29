@@ -138,5 +138,6 @@ router.use(require("./oai-x"));             // OAI X V1:   /engineering/x/* reas
 router.use(require("./obi-x"));             // OBI X V1:   /business/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 router.use(require("./okb-x"));             // OKB X V1:   /knowledge/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 router.use(require("./ose-x"));             // OSE X V1:   /evolution/x/* reasoning+quality+benchmark+predict+evolution+dashboard
+router.use(require("./customerOrg"));       // POST-Ω P11: /customer-org/* journey+health+success+support+automation+dashboard
 
 module.exports = router;
