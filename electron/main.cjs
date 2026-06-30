@@ -44,8 +44,15 @@ const _appStartTs = Date.now();
 let isDev = false;
 try { isDev = require("electron-is-dev"); } catch { isDev = !app.isPackaged; }
 
-// ── Constants ─────────────────────────────────────────────────────
-const API_URL        = "http://localhost:5050";
+// ── Production API URL resolution ─────────────────────────────────
+// Priority: BACKEND_URL env var → packaged default (localhost:5050, backend
+// spawned by Electron) → dev fallback (localhost:5050).
+// In packaged builds the backend Express server is launched as a child process
+// (see _startBackend below), so localhost:5050 remains correct even in prod.
+// To point at Ooplix.com cloud API instead, set BACKEND_URL=https://api.ooplix.com
+const API_URL = process.env.BACKEND_URL
+    ? process.env.BACKEND_URL.replace(/\/$/, "")
+    : "http://localhost:5050";
 const DEEP_LINK_SCHEME = "ooplix";
 const PRELOAD        = path.join(__dirname, "preload.cjs");
 const ICON_PATH      = path.join(__dirname, "assets", process.platform === "win32" ? "icon.ico" : process.platform === "darwin" ? "icon.icns" : "icon.png");
@@ -264,6 +271,9 @@ function createMainWindow() {
     });
 
     windows.main.on("closed", () => { windows.main = null; });
+
+    // Navigation guard: prevent external navigation, block window.open
+    _installNavigationGuard(windows.main);
 
     // Load fail / crash handlers
     _attachCrashHandlers(windows.main);
@@ -1418,11 +1428,140 @@ ipcMain.handle("request-gc", () => {
 });
 
 // ═══════════════════════════════════════════════════════════════════
+// Production backend process management
+// ═══════════════════════════════════════════════════════════════════
+
+let _backendProc = null;
+let _backendReady = false;
+
+function _startBackend() {
+    // In dev the backend is started separately (npm start / concurrently).
+    // In packaged builds, Electron owns the backend process.
+    if (isDev || process.env.BACKEND_URL) return;
+
+    const serverEntry = app.isPackaged
+        ? path.join(process.resourcesPath, "app", "backend", "server.js")
+        : path.join(__dirname, "..", "backend", "server.js");
+
+    if (!fs.existsSync(serverEntry)) {
+        console.warn("[Electron] Backend server.js not found at:", serverEntry);
+        return;
+    }
+
+    const nodeBin = process.execPath.includes("electron") ? "node" : process.execPath;
+    const env = {
+        ...process.env,
+        NODE_ENV:    "production",
+        PORT:        "5050",
+        ELECTRON_RUN: "1",
+    };
+
+    _backendProc = spawn(nodeBin, [serverEntry], {
+        env,
+        cwd:   path.dirname(serverEntry),
+        stdio: ["ignore", "pipe", "pipe"],
+    });
+
+    _backendProc.stdout?.on("data", d => console.log("[Backend]", d.toString().trim()));
+    _backendProc.stderr?.on("data", d => console.warn("[Backend:err]", d.toString().trim()));
+
+    _backendProc.on("error", e => console.error("[Backend] spawn error:", e.message));
+    _backendProc.on("exit", (code, sig) => {
+        console.warn(`[Backend] exited code=${code} sig=${sig}`);
+        _backendProc  = null;
+        _backendReady = false;
+        // Restart after 3s unless app is quitting
+        if (!isQuitting) setTimeout(_startBackend, 3_000);
+    });
+
+    console.log("[Electron] Backend process started (pid", _backendProc?.pid, ")");
+}
+
+function _stopBackend() {
+    if (_backendProc && !_backendProc.killed) {
+        try { _backendProc.kill("SIGTERM"); } catch {}
+        _backendProc = null;
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Permission handler — block browser-origin requests for camera/mic/geo
+// ═══════════════════════════════════════════════════════════════════
+
+const ALLOWED_PERMISSIONS = new Set([
+    "notifications",
+    "clipboard-read",
+    "clipboard-sanitized-write",
+    "fullscreen",
+]);
+
+function _installPermissionHandler() {
+    session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
+        callback(ALLOWED_PERMISSIONS.has(permission));
+    });
+    session.defaultSession.setPermissionCheckHandler((_webContents, permission) => {
+        return ALLOWED_PERMISSIONS.has(permission);
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CSP + navigation guard
+// ═══════════════════════════════════════════════════════════════════
+
+function _installSecurityHeaders() {
+    // Inject Content-Security-Policy on all responses
+    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+        callback({
+            responseHeaders: {
+                ...details.responseHeaders,
+                "Content-Security-Policy": [
+                    [
+                        "default-src 'self' http://localhost:5050",
+                        "script-src 'self' 'unsafe-inline' 'unsafe-eval'",  // React needs unsafe-eval in dev
+                        "style-src 'self' 'unsafe-inline'",
+                        "img-src 'self' data: blob: https:",
+                        "connect-src 'self' http://localhost:5050 https://api.ooplix.com wss://api.ooplix.com",
+                        "font-src 'self' data:",
+                        "worker-src 'self' blob:",
+                    ].join("; "),
+                ],
+            },
+        });
+    });
+}
+
+function _installNavigationGuard(win) {
+    // Prevent navigation away from the app origin
+    win.webContents.on("will-navigate", (e, url) => {
+        const allowed = url.startsWith("http://localhost") ||
+                        url.startsWith("file://") ||
+                        url.startsWith("data:");
+        if (!allowed) {
+            e.preventDefault();
+            shell.openExternal(url);
+        }
+    });
+
+    // Block new-window / window.open to external sites
+    win.webContents.setWindowOpenHandler(({ url }) => {
+        if (url.startsWith("https://")) shell.openExternal(url);
+        return { action: "deny" };
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // App lifecycle
 // ═══════════════════════════════════════════════════════════════════
 
 app.whenReady().then(async () => {
     console.log("[Electron] Booting Ooplix…");
+
+    // Security: install permission + CSP handlers before any window loads
+    _installPermissionHandler();
+    _installSecurityHeaders();
+
+    // Start bundled backend in production
+    _startBackend();
 
     const buildCheck = _validateBuild();
     if (!buildCheck.ok) {
@@ -1468,4 +1607,5 @@ app.on("will-quit", () => {
     globalShortcut.unregisterAll();
     if (_healthInterval) clearInterval(_healthInterval);
     clearInterval(_lowMemInterval);
+    _stopBackend();
 });
