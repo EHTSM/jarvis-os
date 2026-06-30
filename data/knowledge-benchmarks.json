@@ -1,0 +1,2365 @@
+{
+  "benchmarks": [
+    {
+      "id": "kbm_1782690461680_tq2s",
+      "context": "current_knowledge",
+      "type": "eng_memory_compare",
+      "engineeringItems": 0,
+      "growthRate": 0,
+      "assessment": "early",
+      "recommendation": "Build engineering memory by running more missions with capture",
+      "ts": "2026-06-28T23:47:41.680Z"
+    },
+    {
+      "id": "kbm_1782690461687_vyrj",
+      "context": "current_knowledge",
+      "type": "research_compare",
+      "findings": 114,
+      "publications": 110,
+      "coverage": "comprehensive",
+      "recommendation": "Research coverage acceptable",
+      "ts": "2026-06-28T23:47:41.687Z"
+    },
+    {
+      "id": "kbm_1782690461900_t9c3",
+      "context": "current_knowledge",
+      "type": "eng_memory_compare",
+      "engineeringItems": 0,
+      "growthRate": 0,
+      "assessment": "early",
+      "recommendation": "Build engineering memory by running more missions with capture",
+      "ts": "2026-06-28T23:47:41.900Z"
+    },
+    {
+      "id": "kbm_1782690461942_p429",
+      "context": "current_knowledge",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 58,
+        "dimensions": {}
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 58,
+          "baseline": 70,
+          "gap": -12,
+          "meetsBaseline": false
+        },
+        "confidence": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "usefulness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "5/7",
+      "productionReady": true,
+      "ts": "2026-06-28T23:47:41.942Z"
+    },
+    {
+      "id": "kbm_1782690461942_9kro",
+      "context": "get_cycle_know_direct",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 58,
+        "dimensions": {}
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 58,
+          "baseline": 70,
+          "gap": -12,
+          "meetsBaseline": false
+        },
+        "confidence": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "usefulness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "5/7",
+      "productionReady": true,
+      "ts": "2026-06-28T23:47:41.942Z"
+    },
+    {
+      "id": "kbm_1782690461942_ootr",
+      "context": "list_know_1782690461764",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 58,
+        "dimensions": {}
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 58,
+          "baseline": 70,
+          "gap": -12,
+          "meetsBaseline": false
+        },
+        "confidence": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "usefulness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "5/7",
+      "productionReady": true,
+      "ts": "2026-06-28T23:47:41.942Z"
+    },
+    {
+      "id": "kbm_1782690461942_08w5",
+      "context": "status_seed_know",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 58,
+        "dimensions": {}
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 58,
+          "baseline": 70,
+          "gap": -12,
+          "meetsBaseline": false
+        },
+        "confidence": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "usefulness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "5/7",
+      "productionReady": true,
+      "ts": "2026-06-28T23:47:41.942Z"
+    },
+    {
+      "id": "kbm_1782690461949_46ex",
+      "context": "multi_know_ctx",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 58,
+        "dimensions": {}
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 58,
+          "baseline": 70,
+          "gap": -12,
+          "meetsBaseline": false
+        },
+        "confidence": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "usefulness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "5/7",
+      "productionReady": true,
+      "ts": "2026-06-28T23:47:41.949Z"
+    },
+    {
+      "id": "kbm_1782690461952_xpue",
+      "context": "dashboard_evo_seed_know",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 58,
+        "dimensions": {}
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 58,
+          "baseline": 70,
+          "gap": -12,
+          "meetsBaseline": false
+        },
+        "confidence": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "usefulness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "5/7",
+      "productionReady": true,
+      "ts": "2026-06-28T23:47:41.952Z"
+    },
+    {
+      "id": "kbm_1782690461961_l6gk",
+      "context": "current_knowledge",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 58,
+        "dimensions": {}
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 58,
+          "baseline": 70,
+          "gap": -12,
+          "meetsBaseline": false
+        },
+        "confidence": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "usefulness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "5/7",
+      "productionReady": true,
+      "ts": "2026-06-28T23:47:41.961Z"
+    },
+    {
+      "id": "kbm_1782690461962_lpvr",
+      "context": "founder_time_know",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 58,
+        "dimensions": {}
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 58,
+          "baseline": 70,
+          "gap": -12,
+          "meetsBaseline": false
+        },
+        "confidence": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "usefulness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "5/7",
+      "productionReady": true,
+      "ts": "2026-06-28T23:47:41.962Z"
+    },
+    {
+      "id": "kbm_1782690461965_ei8r",
+      "context": "current_knowledge",
+      "type": "research_compare",
+      "findings": 114,
+      "publications": 110,
+      "coverage": "comprehensive",
+      "recommendation": "Research coverage acceptable",
+      "ts": "2026-06-28T23:47:41.965Z"
+    },
+    {
+      "id": "kbm_1782690461981_olbd",
+      "context": "baseline_know_test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 92.3,
+          "baseline": 50,
+          "gap": 42.3,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-28T23:47:41.981Z"
+    },
+    {
+      "id": "kbm_1782690461981_ymb4",
+      "context": "get_bm_know",
+      "type": "version_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "previous": {
+        "overall": null,
+        "dimensions": null
+      },
+      "deltas": {
+        "completeness": {
+          "current": 100,
+          "previous": 55,
+          "delta": 45
+        },
+        "freshness": {
+          "current": 100,
+          "previous": 70,
+          "delta": 30
+        },
+        "confidence": {
+          "current": 92.3,
+          "previous": 50,
+          "delta": 42.3
+        },
+        "consistency": {
+          "current": 75,
+          "previous": 75,
+          "delta": 0
+        },
+        "connectivity": {
+          "current": 40,
+          "previous": 50,
+          "delta": -10
+        },
+        "usefulness": {
+          "current": 100,
+          "previous": 55,
+          "delta": 45
+        },
+        "explainability": {
+          "current": 40,
+          "previous": 50,
+          "delta": -10
+        }
+      },
+      "overallDelta": null,
+      "isImprovement": null,
+      "vsBaseline": 23.2,
+      "ts": "2026-06-28T23:47:41.981Z"
+    },
+    {
+      "id": "kbm_1782690461981_2edg",
+      "context": "stats_bm_know",
+      "type": "version_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "previous": {
+        "overall": null,
+        "dimensions": null
+      },
+      "deltas": {
+        "completeness": {
+          "current": 100,
+          "previous": 55,
+          "delta": 45
+        },
+        "freshness": {
+          "current": 100,
+          "previous": 70,
+          "delta": 30
+        },
+        "confidence": {
+          "current": 92.3,
+          "previous": 50,
+          "delta": 42.3
+        },
+        "consistency": {
+          "current": 75,
+          "previous": 75,
+          "delta": 0
+        },
+        "connectivity": {
+          "current": 40,
+          "previous": 50,
+          "delta": -10
+        },
+        "usefulness": {
+          "current": 100,
+          "previous": 55,
+          "delta": 45
+        },
+        "explainability": {
+          "current": 40,
+          "previous": 50,
+          "delta": -10
+        }
+      },
+      "overallDelta": null,
+      "isImprovement": null,
+      "vsBaseline": 23.2,
+      "ts": "2026-06-28T23:47:41.981Z"
+    },
+    {
+      "id": "kbm_1782690462057_281t",
+      "context": "bm_know_test",
+      "type": "version_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "previous": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "deltas": {
+        "completeness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "freshness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "confidence": {
+          "current": 92.3,
+          "previous": 92.3,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 75,
+          "previous": 75,
+          "delta": 0
+        },
+        "connectivity": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "usefulness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "explainability": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": 23.2,
+      "ts": "2026-06-28T23:47:42.057Z"
+    },
+    {
+      "id": "kbm_1782690462061_b55m",
+      "context": "chain_know",
+      "type": "version_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "previous": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "deltas": {
+        "completeness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "freshness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "confidence": {
+          "current": 92.3,
+          "previous": 92.3,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 75,
+          "previous": 75,
+          "delta": 0
+        },
+        "connectivity": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "usefulness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "explainability": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": 23.2,
+      "ts": "2026-06-28T23:47:42.061Z"
+    },
+    {
+      "id": "kbm_1782690462075_9jlz",
+      "context": "chain_know",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 92.3,
+          "baseline": 50,
+          "gap": 42.3,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-28T23:47:42.075Z"
+    },
+    {
+      "id": "kbm_1782690462078_vp3f",
+      "context": "multi_know_ctx",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 92.3,
+          "baseline": 50,
+          "gap": 42.3,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-28T23:47:42.078Z"
+    },
+    {
+      "id": "kbm_1782773078185_cq7a",
+      "context": "current_knowledge",
+      "type": "eng_memory_compare",
+      "engineeringItems": 0,
+      "growthRate": 0,
+      "assessment": "early",
+      "recommendation": "Build engineering memory by running more missions with capture",
+      "ts": "2026-06-29T22:44:38.185Z"
+    },
+    {
+      "id": "kbm_1782773078197_a2hw",
+      "context": "current_knowledge",
+      "type": "research_compare",
+      "findings": 211,
+      "publications": 119,
+      "coverage": "comprehensive",
+      "recommendation": "Research coverage acceptable",
+      "ts": "2026-06-29T22:44:38.197Z"
+    },
+    {
+      "id": "kbm_1782773078540_t84z",
+      "context": "current_knowledge",
+      "type": "eng_memory_compare",
+      "engineeringItems": 0,
+      "growthRate": 0,
+      "assessment": "early",
+      "recommendation": "Build engineering memory by running more missions with capture",
+      "ts": "2026-06-29T22:44:38.540Z"
+    },
+    {
+      "id": "kbm_1782773078584_rc7j",
+      "context": "current_knowledge",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 92.3,
+          "baseline": 50,
+          "gap": 42.3,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-29T22:44:38.584Z"
+    },
+    {
+      "id": "kbm_1782773078584_fpx1",
+      "context": "get_cycle_know_direct",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 92.3,
+          "baseline": 50,
+          "gap": 42.3,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-29T22:44:38.584Z"
+    },
+    {
+      "id": "kbm_1782773078585_sxmr",
+      "context": "list_know_1782773078294",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 58,
+        "dimensions": {}
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 58,
+          "baseline": 70,
+          "gap": -12,
+          "meetsBaseline": false
+        },
+        "confidence": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "usefulness": {
+          "current": 58,
+          "baseline": 55,
+          "gap": 3,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 58,
+          "baseline": 50,
+          "gap": 8,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "5/7",
+      "productionReady": true,
+      "ts": "2026-06-29T22:44:38.585Z"
+    },
+    {
+      "id": "kbm_1782773078585_u2ql",
+      "context": "status_seed_know",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 92.3,
+          "baseline": 50,
+          "gap": 42.3,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-29T22:44:38.585Z"
+    },
+    {
+      "id": "kbm_1782773078592_3w94",
+      "context": "multi_know_ctx",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 92.3,
+          "baseline": 50,
+          "gap": 42.3,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-29T22:44:38.592Z"
+    },
+    {
+      "id": "kbm_1782773078595_o196",
+      "context": "dashboard_evo_seed_know",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 92.3,
+          "baseline": 50,
+          "gap": 42.3,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-29T22:44:38.595Z"
+    },
+    {
+      "id": "kbm_1782773078607_qzuz",
+      "context": "current_knowledge",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 92.3,
+          "baseline": 50,
+          "gap": 42.3,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-29T22:44:38.607Z"
+    },
+    {
+      "id": "kbm_1782773078607_6gk5",
+      "context": "founder_time_know",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 92.3,
+          "baseline": 50,
+          "gap": 42.3,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-29T22:44:38.607Z"
+    },
+    {
+      "id": "kbm_1782773078611_qf2o",
+      "context": "current_knowledge",
+      "type": "research_compare",
+      "findings": 211,
+      "publications": 119,
+      "coverage": "comprehensive",
+      "recommendation": "Research coverage acceptable",
+      "ts": "2026-06-29T22:44:38.611Z"
+    },
+    {
+      "id": "kbm_1782773078634_dfin",
+      "context": "baseline_know_test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.3,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 93,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 93,
+          "baseline": 50,
+          "gap": 43,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-29T22:44:38.634Z"
+    },
+    {
+      "id": "kbm_1782773078635_ebt3",
+      "context": "get_bm_know",
+      "type": "version_compare",
+      "current": {
+        "overall": 81.3,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 93,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "previous": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "deltas": {
+        "completeness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "freshness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "confidence": {
+          "current": 93,
+          "previous": 92.3,
+          "delta": 0.7
+        },
+        "consistency": {
+          "current": 75,
+          "previous": 75,
+          "delta": 0
+        },
+        "connectivity": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "usefulness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "explainability": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0.1,
+      "isImprovement": true,
+      "vsBaseline": 23.3,
+      "ts": "2026-06-29T22:44:38.635Z"
+    },
+    {
+      "id": "kbm_1782773078635_r1gb",
+      "context": "stats_bm_know",
+      "type": "version_compare",
+      "current": {
+        "overall": 81.3,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 93,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "previous": {
+        "overall": 81.2,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 92.3,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "deltas": {
+        "completeness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "freshness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "confidence": {
+          "current": 93,
+          "previous": 92.3,
+          "delta": 0.7
+        },
+        "consistency": {
+          "current": 75,
+          "previous": 75,
+          "delta": 0
+        },
+        "connectivity": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "usefulness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "explainability": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0.1,
+      "isImprovement": true,
+      "vsBaseline": 23.3,
+      "ts": "2026-06-29T22:44:38.635Z"
+    },
+    {
+      "id": "kbm_1782773078728_yygs",
+      "context": "bm_know_test",
+      "type": "version_compare",
+      "current": {
+        "overall": 81.3,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 93,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "previous": {
+        "overall": 81.3,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 93,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "deltas": {
+        "completeness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "freshness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "confidence": {
+          "current": 93,
+          "previous": 93,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 75,
+          "previous": 75,
+          "delta": 0
+        },
+        "connectivity": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "usefulness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "explainability": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": 23.3,
+      "ts": "2026-06-29T22:44:38.728Z"
+    },
+    {
+      "id": "kbm_1782773078730_ctiw",
+      "context": "chain_know",
+      "type": "version_compare",
+      "current": {
+        "overall": 81.3,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 93,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "previous": {
+        "overall": 81.3,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 93,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "deltas": {
+        "completeness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "freshness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "confidence": {
+          "current": 93,
+          "previous": 93,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 75,
+          "previous": 75,
+          "delta": 0
+        },
+        "connectivity": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "usefulness": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "explainability": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": 23.3,
+      "ts": "2026-06-29T22:44:38.730Z"
+    },
+    {
+      "id": "kbm_1782773078753_4cg0",
+      "context": "chain_know",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.3,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 93,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 93,
+          "baseline": 50,
+          "gap": 43,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-29T22:44:38.753Z"
+    },
+    {
+      "id": "kbm_1782773078759_79c9",
+      "context": "multi_know_ctx",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 81.3,
+        "dimensions": {
+          "completeness": 100,
+          "freshness": 100,
+          "confidence": 93,
+          "consistency": null,
+          "connectivity": 40,
+          "usefulness": 100,
+          "explainability": 40
+        }
+      },
+      "baseline": {
+        "completeness": 55,
+        "freshness": 70,
+        "confidence": 50,
+        "consistency": 75,
+        "connectivity": 50,
+        "usefulness": 55,
+        "explainability": 50,
+        "overall": 58
+      },
+      "gaps": {
+        "completeness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "freshness": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "confidence": {
+          "current": 93,
+          "baseline": 50,
+          "gap": 43,
+          "meetsBaseline": true
+        },
+        "consistency": {
+          "current": 58,
+          "baseline": 75,
+          "gap": -17,
+          "meetsBaseline": false
+        },
+        "connectivity": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "usefulness": {
+          "current": 100,
+          "baseline": 55,
+          "gap": 45,
+          "meetsBaseline": true
+        },
+        "explainability": {
+          "current": 40,
+          "baseline": 50,
+          "gap": -10,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "4/7",
+      "productionReady": true,
+      "ts": "2026-06-29T22:44:38.759Z"
+    }
+  ],
+  "baseline": {
+    "completeness": 55,
+    "freshness": 70,
+    "confidence": 50,
+    "consistency": 75,
+    "connectivity": 50,
+    "usefulness": 55,
+    "explainability": 50,
+    "overall": 58
+  },
+  "improvHistory": [
+    {
+      "improvId": "imp001",
+      "context": "know_test",
+      "beforeScore": 55,
+      "afterScore": 70,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-06-28T23:47:41.687Z"
+    },
+    {
+      "improvId": "imp002",
+      "context": "know_test",
+      "beforeScore": 70,
+      "afterScore": 55,
+      "improvement": -15,
+      "applied": true,
+      "success": false,
+      "ts": "2026-06-28T23:47:41.688Z"
+    },
+    {
+      "improvId": "rate_know_0",
+      "context": "rate_know",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-06-28T23:47:41.876Z"
+    },
+    {
+      "improvId": "rate_know_1",
+      "context": "rate_know",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-06-28T23:47:41.877Z"
+    },
+    {
+      "improvId": "rate_know_2",
+      "context": "rate_know",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-06-28T23:47:41.877Z"
+    },
+    {
+      "improvId": "rate_know_3",
+      "context": "rate_know",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-06-28T23:47:41.877Z"
+    },
+    {
+      "improvId": "rate_know_4",
+      "context": "rate_know",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-06-28T23:47:41.877Z"
+    },
+    {
+      "improvId": "imp001",
+      "context": "know_test",
+      "beforeScore": 55,
+      "afterScore": 70,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-06-29T22:44:38.198Z"
+    },
+    {
+      "improvId": "imp002",
+      "context": "know_test",
+      "beforeScore": 70,
+      "afterScore": 55,
+      "improvement": -15,
+      "applied": true,
+      "success": false,
+      "ts": "2026-06-29T22:44:38.198Z"
+    },
+    {
+      "improvId": "rate_know_0",
+      "context": "rate_know",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-06-29T22:44:38.505Z"
+    },
+    {
+      "improvId": "rate_know_1",
+      "context": "rate_know",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-06-29T22:44:38.506Z"
+    },
+    {
+      "improvId": "rate_know_2",
+      "context": "rate_know",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-06-29T22:44:38.506Z"
+    },
+    {
+      "improvId": "rate_know_3",
+      "context": "rate_know",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-06-29T22:44:38.506Z"
+    },
+    {
+      "improvId": "rate_know_4",
+      "context": "rate_know",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-06-29T22:44:38.506Z"
+    }
+  ],
+  "stats": {
+    "total": 38,
+    "improvementsDetected": 2,
+    "regressionsDetected": 4,
+    "improvSuccessRate": 85.7
+  },
+  "updatedAt": "2026-06-29T22:44:38.759Z"
+}

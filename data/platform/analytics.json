@@ -2040,6 +2040,260 @@
         "packageId": "pkg_1782629758640_6ch1"
       },
       "at": "2026-06-28T06:55:58.640Z"
+    },
+    {
+      "id": "evt_1782719951362_hkah",
+      "type": "org:exported",
+      "data": {
+        "orgId": "org_1782627037729_dgem",
+        "packageId": "pkg_1782719951361_maej"
+      },
+      "at": "2026-06-29T07:59:11.362Z"
+    },
+    {
+      "id": "evt_1782719951363_7dd3",
+      "type": "org:exported",
+      "data": {
+        "orgId": "org_1782627037686_425l",
+        "packageId": "pkg_1782719951362_8d5z"
+      },
+      "at": "2026-06-29T07:59:11.363Z"
+    },
+    {
+      "id": "evt_1782773168217_7gqb",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168210_r84k",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.217Z"
+    },
+    {
+      "id": "evt_1782773168219_qxtj",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168219_1p9s",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive",
+          "odi"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.219Z"
+    },
+    {
+      "id": "evt_1782773168220_7ftw",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168219_k7w5",
+        "type": "startup",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.220Z"
+    },
+    {
+      "id": "evt_1782773168221_rwyo",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168220_sm67",
+        "type": "enterprise",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive",
+          "enterprise",
+          "ecosystem"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.221Z"
+    },
+    {
+      "id": "evt_1782773168222_z7jq",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168221_xxfe",
+        "type": "department",
+        "capabilities": [
+          "business",
+          "knowledge"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.222Z"
+    },
+    {
+      "id": "evt_1782773168223_ir8g",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168222_nw7b",
+        "type": "team",
+        "capabilities": [
+          "engineering",
+          "knowledge"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.223Z"
+    },
+    {
+      "id": "evt_1782773168223_isyz",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168223_hv45",
+        "type": "solo",
+        "capabilities": [
+          "engineering"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.223Z"
+    },
+    {
+      "id": "evt_1782773168224_4kov",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168224_9010",
+        "type": "marketplace",
+        "capabilities": [
+          "ecosystem",
+          "business"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.224Z"
+    },
+    {
+      "id": "evt_1782773168225_bf3x",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168224_n2la",
+        "type": "research",
+        "capabilities": [
+          "knowledge",
+          "evolution"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.225Z"
+    },
+    {
+      "id": "evt_1782773168226_ss8n",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168225_3xkx",
+        "type": "service",
+        "capabilities": [
+          "business",
+          "engineering"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.226Z"
+    },
+    {
+      "id": "evt_1782773168227_ykwo",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168226_d4bz",
+        "type": "custom",
+        "capabilities": []
+      },
+      "at": "2026-06-29T22:46:08.227Z"
+    },
+    {
+      "id": "evt_1782773168228_dnax",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168227_mf7s",
+        "type": "enterprise",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive",
+          "enterprise",
+          "ecosystem"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.228Z"
+    },
+    {
+      "id": "evt_1782773168567_6tzz",
+      "type": "blueprint:created",
+      "data": {
+        "id": "bp_1782773168558_mljx",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.567Z"
+    },
+    {
+      "id": "evt_1782773168567_tyaq",
+      "type": "blueprint:created",
+      "data": {
+        "id": "bp_1782773168567_ipwr",
+        "type": "team",
+        "capabilities": [
+          "engineering",
+          "knowledge"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.567Z"
+    },
+    {
+      "id": "evt_1782773168570_92pb",
+      "type": "template:published",
+      "data": {
+        "id": "tmpl_1782773168568_t0rk",
+        "name": "Template-1782773168206",
+        "category": "agency",
+        "price": 0
+      },
+      "at": "2026-06-29T22:46:08.570Z"
+    },
+    {
+      "id": "evt_1782773168571_amtd",
+      "type": "template:installed",
+      "data": {
+        "templateId": "tmpl_1782773168568_t0rk",
+        "tenantId": "buyer-1782773168206",
+        "orgName": "My Agency"
+      },
+      "at": "2026-06-29T22:46:08.571Z"
+    },
+    {
+      "id": "evt_1782773168572_pia7",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782773168571_w17a",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-06-29T22:46:08.572Z"
     }
   ],
   "kpis": {}

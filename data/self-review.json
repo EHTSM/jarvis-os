@@ -1,2670 +1,6 @@
 {
   "reviews": [
     {
-      "id": "review_1782675396012",
-      "createdAt": "2026-06-28T19:36:36.012Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "16_autonomous_cycles",
-          "63_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676271932",
-      "createdAt": "2026-06-28T19:51:11.932Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272002",
-      "createdAt": "2026-06-28T19:51:12.002Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272065",
-      "createdAt": "2026-06-28T19:51:12.065Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272127",
-      "createdAt": "2026-06-28T19:51:12.127Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272194",
-      "createdAt": "2026-06-28T19:51:12.194Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272273",
-      "createdAt": "2026-06-28T19:51:12.273Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272338",
-      "createdAt": "2026-06-28T19:51:12.338Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272404",
-      "createdAt": "2026-06-28T19:51:12.404Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272474",
-      "createdAt": "2026-06-28T19:51:12.474Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272542",
-      "createdAt": "2026-06-28T19:51:12.542Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272607",
-      "createdAt": "2026-06-28T19:51:12.607Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272668",
-      "createdAt": "2026-06-28T19:51:12.668Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272733",
-      "createdAt": "2026-06-28T19:51:12.733Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272793",
-      "createdAt": "2026-06-28T19:51:12.793Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782676272859",
-      "createdAt": "2026-06-28T19:51:12.859Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677838363",
-      "createdAt": "2026-06-28T20:17:18.363Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677838434",
-      "createdAt": "2026-06-28T20:17:18.434Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677838499",
-      "createdAt": "2026-06-28T20:17:18.499Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677838562",
-      "createdAt": "2026-06-28T20:17:18.562Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677838630",
-      "createdAt": "2026-06-28T20:17:18.630Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677838689",
-      "createdAt": "2026-06-28T20:17:18.689Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677838749",
-      "createdAt": "2026-06-28T20:17:18.749Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677838816",
-      "createdAt": "2026-06-28T20:17:18.816Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677838882",
-      "createdAt": "2026-06-28T20:17:18.882Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677838951",
-      "createdAt": "2026-06-28T20:17:18.951Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677839017",
-      "createdAt": "2026-06-28T20:17:19.017Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677839080",
-      "createdAt": "2026-06-28T20:17:19.080Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677839143",
-      "createdAt": "2026-06-28T20:17:19.143Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677839204",
-      "createdAt": "2026-06-28T20:17:19.204Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677839266",
-      "createdAt": "2026-06-28T20:17:19.266Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677843255",
-      "createdAt": "2026-06-28T20:17:23.255Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677843684",
-      "createdAt": "2026-06-28T20:17:23.684Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677843748",
-      "createdAt": "2026-06-28T20:17:23.748Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "19_autonomous_cycles",
-          "69_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677847090",
-      "createdAt": "2026-06-28T20:17:27.090Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "20_autonomous_cycles",
-          "70_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
-      "id": "review_1782677847162",
-      "createdAt": "2026-06-28T20:17:27.162Z",
-      "period": "weekly",
-      "overall": 79,
-      "scores": {
-        "architecture": 100,
-        "autonomy": 75,
-        "technicalDebt": 67,
-        "reliability": 80,
-        "performance": 85,
-        "founderTimeSaved": 20,
-        "customerImpact": 94,
-        "consolidation": 80,
-        "security": 60
-      },
-      "signals": {
-        "architecture": [
-          "org_registry_populated",
-          "blueprints_defined",
-          "deployments_executed",
-          "intelligence_layer_active"
-        ],
-        "autonomy": [
-          "20_autonomous_cycles",
-          "70_decisions_recorded",
-          "5_experiments_concluded"
-        ],
-        "technicalDebt": [
-          "intelligence_layer_healthy",
-          "50_unactioned_lessons",
-          "18_known_placeholders"
-        ],
-        "reliability": [
-          "2000_healing_events"
-        ],
-        "performance": [
-          "metrics_recording_active",
-          "avg_cycle_5000ms"
-        ],
-        "founderTimeSaved": [
-          "20_auto_reports_generated"
-        ],
-        "customerImpact": [
-          "53_orgs_registered",
-          "4_templates_published",
-          "6_orgs_deployed",
-          "12_orgs_certified"
-        ],
-        "consolidation": [
-          "debt_stable",
-          "P1_intelligence_fix_applied"
-        ],
-        "security": [
-          "security_hardening_unavailable"
-        ]
-      },
-      "minutesSaved": 200,
-      "debtPoints": 33,
-      "recommendations": [
-        {
-          "priority": "high",
-          "area": "technical_debt",
-          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
-          "impact": "maintainability"
-        },
-        {
-          "priority": "ongoing",
-          "area": "self_improvement",
-          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
-          "impact": "autonomy"
-        }
-      ]
-    },
-    {
       "id": "review_1782677847224",
       "createdAt": "2026-06-28T20:17:27.224Z",
       "period": "weekly",
@@ -3847,8 +1183,2672 @@
           "impact": "autonomy"
         }
       ]
+    },
+    {
+      "id": "review_1782778305618",
+      "createdAt": "2026-06-30T00:11:45.618Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778305718",
+      "createdAt": "2026-06-30T00:11:45.718Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778305804",
+      "createdAt": "2026-06-30T00:11:45.804Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778305924",
+      "createdAt": "2026-06-30T00:11:45.924Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778306015",
+      "createdAt": "2026-06-30T00:11:46.015Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778306134",
+      "createdAt": "2026-06-30T00:11:46.134Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778306234",
+      "createdAt": "2026-06-30T00:11:46.234Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778306321",
+      "createdAt": "2026-06-30T00:11:46.321Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778306441",
+      "createdAt": "2026-06-30T00:11:46.441Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778306533",
+      "createdAt": "2026-06-30T00:11:46.533Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778306626",
+      "createdAt": "2026-06-30T00:11:46.626Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778306722",
+      "createdAt": "2026-06-30T00:11:46.722Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778306809",
+      "createdAt": "2026-06-30T00:11:46.809Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778306913",
+      "createdAt": "2026-06-30T00:11:46.913Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778307022",
+      "createdAt": "2026-06-30T00:11:47.022Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778312393",
+      "createdAt": "2026-06-30T00:11:52.393Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778313138",
+      "createdAt": "2026-06-30T00:11:53.138Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778313218",
+      "createdAt": "2026-06-30T00:11:53.218Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778317440",
+      "createdAt": "2026-06-30T00:11:57.440Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778317537",
+      "createdAt": "2026-06-30T00:11:57.537Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778317619",
+      "createdAt": "2026-06-30T00:11:57.619Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778317704",
+      "createdAt": "2026-06-30T00:11:57.704Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778317788",
+      "createdAt": "2026-06-30T00:11:57.788Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778317874",
+      "createdAt": "2026-06-30T00:11:57.874Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778317968",
+      "createdAt": "2026-06-30T00:11:57.968Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778318048",
+      "createdAt": "2026-06-30T00:11:58.048Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778318136",
+      "createdAt": "2026-06-30T00:11:58.136Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778318217",
+      "createdAt": "2026-06-30T00:11:58.217Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778318302",
+      "createdAt": "2026-06-30T00:11:58.302Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778318386",
+      "createdAt": "2026-06-30T00:11:58.386Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778318475",
+      "createdAt": "2026-06-30T00:11:58.475Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778318560",
+      "createdAt": "2026-06-30T00:11:58.560Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778318642",
+      "createdAt": "2026-06-30T00:11:58.642Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778323365",
+      "createdAt": "2026-06-30T00:12:03.365Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778324083",
+      "createdAt": "2026-06-30T00:12:04.083Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
+    },
+    {
+      "id": "review_1782778324158",
+      "createdAt": "2026-06-30T00:12:04.158Z",
+      "period": "weekly",
+      "overall": 79,
+      "scores": {
+        "architecture": 100,
+        "autonomy": 75,
+        "technicalDebt": 67,
+        "reliability": 80,
+        "performance": 85,
+        "founderTimeSaved": 20,
+        "customerImpact": 97,
+        "consolidation": 80,
+        "security": 60
+      },
+      "signals": {
+        "architecture": [
+          "org_registry_populated",
+          "blueprints_defined",
+          "deployments_executed",
+          "intelligence_layer_active"
+        ],
+        "autonomy": [
+          "67_autonomous_cycles",
+          "193_decisions_recorded",
+          "17_experiments_concluded"
+        ],
+        "technicalDebt": [
+          "intelligence_layer_healthy",
+          "50_unactioned_lessons",
+          "18_known_placeholders"
+        ],
+        "reliability": [
+          "2000_healing_events"
+        ],
+        "performance": [
+          "metrics_recording_active",
+          "avg_cycle_5000ms"
+        ],
+        "founderTimeSaved": [
+          "20_auto_reports_generated"
+        ],
+        "customerImpact": [
+          "66_orgs_registered",
+          "5_templates_published",
+          "6_orgs_deployed",
+          "12_orgs_certified"
+        ],
+        "consolidation": [
+          "debt_stable",
+          "P1_intelligence_fix_applied"
+        ],
+        "security": [
+          "security_hardening_unavailable"
+        ]
+      },
+      "minutesSaved": 200,
+      "debtPoints": 33,
+      "recommendations": [
+        {
+          "priority": "high",
+          "area": "technical_debt",
+          "action": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons",
+          "impact": "maintainability"
+        },
+        {
+          "priority": "ongoing",
+          "area": "self_improvement",
+          "action": "Continue POST-Ω program — next sprint: architecture consolidation",
+          "impact": "autonomy"
+        }
+      ]
     }
   ],
   "sprints": [],
-  "lastReviewAt": "2026-06-28T20:17:31.265Z"
+  "lastReviewAt": "2026-06-30T00:12:04.158Z"
 }

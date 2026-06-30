@@ -1,13 +1,13 @@
 {
-  "ts": "2026-06-05T09:11:04.639Z",
-  "score": 49,
-  "grade": "BLOCKED",
+  "ts": "2026-06-29T22:44:51.299Z",
+  "score": 52,
+  "grade": "NEEDS_WORK",
   "categories": {
     "environment": {
       "score": 38
     },
     "build_artifacts": {
-      "score": 86
+      "score": 100
     },
     "process_management": {
       "score": 60
@@ -71,7 +71,7 @@
     },
     "build_artifacts": {
       "category": "build_artifacts",
-      "score": 86,
+      "score": 100,
       "checks": [
         {
           "name": "frontend_index",
@@ -86,12 +86,12 @@
         {
           "name": "js_bundle",
           "status": "pass",
-          "detail": "1 JS bundle(s) found"
+          "detail": "162 JS bundle(s) found"
         },
         {
           "name": "css_bundle",
           "status": "pass",
-          "detail": "1 CSS bundle(s) found"
+          "detail": "150 CSS bundle(s) found"
         },
         {
           "name": "package_json",
@@ -105,8 +105,8 @@
         },
         {
           "name": "no_sourcemaps_exposed",
-          "status": "warn",
-          "detail": "Source maps present in build — consider removing in production"
+          "status": "pass",
+          "detail": "Source maps not in prod bundle root"
         }
       ]
     },
@@ -132,12 +132,12 @@
         {
           "name": "process_stable",
           "status": "warn",
-          "detail": "Uptime 0s — may be in restart loop"
+          "detail": "Uptime 6s — may be in restart loop"
         },
         {
           "name": "memory_usage",
           "status": "pass",
-          "detail": "RSS 78MB — within limits"
+          "detail": "RSS 232MB — within limits"
         }
       ]
     },
@@ -234,12 +234,6 @@
       "detail": "APP_URL/BASE_URL not set — OAuth redirects may break"
     },
     {
-      "category": "build_artifacts",
-      "name": "no_sourcemaps_exposed",
-      "status": "warn",
-      "detail": "Source maps present in build — consider removing in production"
-    },
-    {
       "category": "process_management",
       "name": "pm2_running",
       "status": "warn",
@@ -249,7 +243,7 @@
       "category": "process_management",
       "name": "process_stable",
       "status": "warn",
-      "detail": "Uptime 0s — may be in restart loop"
+      "detail": "Uptime 6s — may be in restart loop"
     },
     {
       "category": "nginx",
@@ -277,5 +271,5 @@
     }
   ],
   "totalChecks": 28,
-  "passing": 16
+  "passing": 17
 }

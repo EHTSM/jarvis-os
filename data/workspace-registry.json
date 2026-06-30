@@ -17,9 +17,9 @@
       "status": "active",
       "health": 100,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.733Z",
+      "lastSeen": "2026-06-28T22:49:32.639Z",
       "registeredAt": "2026-06-28T19:51:00.732Z",
-      "updatedAt": "2026-06-28T19:51:00.733Z"
+      "updatedAt": "2026-06-28T22:49:32.639Z"
     },
     {
       "id": "ws_1782676260732_ccrh",
@@ -35,14 +35,14 @@
       ],
       "config": {},
       "metadata": {},
-      "status": "active",
-      "health": 100,
+      "status": "degraded",
+      "health": 40,
       "missions": [
         "mission_test_p9"
       ],
-      "lastSeen": "2026-06-28T19:51:00.747Z",
+      "lastSeen": "2026-06-28T22:49:32.673Z",
       "registeredAt": "2026-06-28T19:51:00.732Z",
-      "updatedAt": "2026-06-28T19:51:00.747Z"
+      "updatedAt": "2026-06-28T22:49:32.673Z"
     },
     {
       "id": "ws_1782676260732_cv5o",
@@ -58,12 +58,12 @@
       ],
       "config": {},
       "metadata": {},
-      "status": "active",
-      "health": 53,
+      "status": "degraded",
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.748Z",
+      "lastSeen": "2026-06-28T22:49:32.673Z",
       "registeredAt": "2026-06-28T19:51:00.732Z",
-      "updatedAt": "2026-06-28T19:51:00.748Z"
+      "updatedAt": "2026-06-28T22:49:32.673Z"
     },
     {
       "id": "ws_1782676260733_0ty7",
@@ -84,7 +84,7 @@
       "missions": [],
       "lastSeen": "2026-06-28T19:51:00.733Z",
       "registeredAt": "2026-06-28T19:51:00.733Z",
-      "updatedAt": "2026-06-28T19:51:00.734Z"
+      "updatedAt": "2026-06-28T22:49:32.642Z"
     },
     {
       "id": "ws_1782676260780_c661",
@@ -103,11 +103,11 @@
       },
       "metadata": {},
       "status": "active",
-      "health": 100,
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "lastSeen": "2026-06-28T22:49:32.674Z",
       "registeredAt": "2026-06-28T19:51:00.780Z",
-      "updatedAt": "2026-06-28T19:51:00.780Z"
+      "updatedAt": "2026-06-28T22:49:32.759Z"
     },
     {
       "id": "ws_1782676260780_0fzu",
@@ -126,11 +126,11 @@
       },
       "metadata": {},
       "status": "active",
-      "health": 100,
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "lastSeen": "2026-06-28T22:49:32.674Z",
       "registeredAt": "2026-06-28T19:51:00.780Z",
-      "updatedAt": "2026-06-28T19:51:00.780Z"
+      "updatedAt": "2026-06-28T22:49:32.759Z"
     },
     {
       "id": "ws_1782676260780_dke3",
@@ -149,11 +149,11 @@
       },
       "metadata": {},
       "status": "active",
-      "health": 100,
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "lastSeen": "2026-06-28T22:49:32.674Z",
       "registeredAt": "2026-06-28T19:51:00.780Z",
-      "updatedAt": "2026-06-28T19:51:00.780Z"
+      "updatedAt": "2026-06-28T22:49:32.760Z"
     },
     {
       "id": "ws_1782676260780_v564",
@@ -172,11 +172,11 @@
       },
       "metadata": {},
       "status": "active",
-      "health": 100,
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "lastSeen": "2026-06-28T22:49:32.675Z",
       "registeredAt": "2026-06-28T19:51:00.780Z",
-      "updatedAt": "2026-06-28T19:51:00.780Z"
+      "updatedAt": "2026-06-28T22:49:32.760Z"
     },
     {
       "id": "ws_1782676260780_6nxd",
@@ -195,11 +195,11 @@
       },
       "metadata": {},
       "status": "active",
-      "health": 100,
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "lastSeen": "2026-06-28T22:49:32.676Z",
       "registeredAt": "2026-06-28T19:51:00.780Z",
-      "updatedAt": "2026-06-28T19:51:00.780Z"
+      "updatedAt": "2026-06-28T22:49:32.763Z"
     },
     {
       "id": "ws_1782676260780_0drm",
@@ -218,11 +218,11 @@
       },
       "metadata": {},
       "status": "active",
-      "health": 100,
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "lastSeen": "2026-06-28T22:49:32.676Z",
       "registeredAt": "2026-06-28T19:51:00.780Z",
-      "updatedAt": "2026-06-28T19:51:00.780Z"
+      "updatedAt": "2026-06-28T22:49:32.764Z"
     },
     {
       "id": "ws_1782676260780_bur4",
@@ -241,11 +241,11 @@
       },
       "metadata": {},
       "status": "active",
-      "health": 100,
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.780Z",
+      "lastSeen": "2026-06-28T22:49:32.676Z",
       "registeredAt": "2026-06-28T19:51:00.780Z",
-      "updatedAt": "2026-06-28T19:51:00.780Z"
+      "updatedAt": "2026-06-28T22:49:32.764Z"
     },
     {
       "id": "ws_1782676260781_ct43",
@@ -264,11 +264,11 @@
       },
       "metadata": {},
       "status": "active",
-      "health": 100,
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.781Z",
+      "lastSeen": "2026-06-28T22:49:32.677Z",
       "registeredAt": "2026-06-28T19:51:00.781Z",
-      "updatedAt": "2026-06-28T19:51:00.781Z"
+      "updatedAt": "2026-06-28T22:49:32.767Z"
     },
     {
       "id": "ws_1782676260781_iu9g",
@@ -287,11 +287,11 @@
       },
       "metadata": {},
       "status": "active",
-      "health": 100,
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.781Z",
+      "lastSeen": "2026-06-28T22:49:32.677Z",
       "registeredAt": "2026-06-28T19:51:00.781Z",
-      "updatedAt": "2026-06-28T19:51:00.781Z"
+      "updatedAt": "2026-06-28T22:49:32.768Z"
     },
     {
       "id": "ws_1782676260781_39wf",
@@ -310,11 +310,11 @@
       },
       "metadata": {},
       "status": "active",
-      "health": 100,
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.781Z",
+      "lastSeen": "2026-06-28T22:49:32.677Z",
       "registeredAt": "2026-06-28T19:51:00.781Z",
-      "updatedAt": "2026-06-28T19:51:00.781Z"
+      "updatedAt": "2026-06-28T22:49:32.768Z"
     },
     {
       "id": "ws_1782676260781_0lj1",
@@ -333,11 +333,11 @@
       },
       "metadata": {},
       "status": "active",
-      "health": 100,
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.781Z",
+      "lastSeen": "2026-06-28T22:49:32.678Z",
       "registeredAt": "2026-06-28T19:51:00.781Z",
-      "updatedAt": "2026-06-28T19:51:00.781Z"
+      "updatedAt": "2026-06-28T22:49:32.769Z"
     },
     {
       "id": "ws_1782676260781_mmy1",
@@ -356,11 +356,11 @@
       },
       "metadata": {},
       "status": "active",
-      "health": 100,
+      "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.781Z",
+      "lastSeen": "2026-06-28T22:49:32.678Z",
       "registeredAt": "2026-06-28T19:51:00.781Z",
-      "updatedAt": "2026-06-28T19:51:00.781Z"
+      "updatedAt": "2026-06-28T22:49:32.769Z"
     },
     {
       "id": "ws_1782676260821_ru06",
@@ -379,15 +379,15 @@
       "status": "active",
       "health": 0,
       "missions": [],
-      "lastSeen": "2026-06-28T19:51:00.822Z",
+      "lastSeen": "2026-06-28T22:49:32.808Z",
       "registeredAt": "2026-06-28T19:51:00.821Z",
-      "updatedAt": "2026-06-28T19:51:00.822Z"
+      "updatedAt": "2026-06-28T22:49:32.809Z"
     }
   ],
   "stats": {
     "registered": 17,
-    "active": 15,
+    "active": 13,
     "failed": 1
   },
-  "updatedAt": "2026-06-28T19:51:00.822Z"
+  "updatedAt": "2026-06-28T22:49:32.809Z"
 }

@@ -1,0 +1,2314 @@
+{
+  "scores": [
+    {
+      "id": "kq_1782690461906_ww22",
+      "context": "quality_test_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.906Z"
+    },
+    {
+      "id": "kq_1782690461909_yu8d",
+      "context": "history_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.909Z"
+    },
+    {
+      "id": "kq_1782690461912_j2p1",
+      "context": "filter_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.912Z"
+    },
+    {
+      "id": "kq_1782690461915_cw2t",
+      "context": "id_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.915Z"
+    },
+    {
+      "id": "kq_1782690461918_3xt1",
+      "context": "trend_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.918Z"
+    },
+    {
+      "id": "kq_1782690461921_ujfj",
+      "context": "impr_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.921Z"
+    },
+    {
+      "id": "kq_1782690461924_9baa",
+      "context": "stats_know_ctx",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.924Z"
+    },
+    {
+      "id": "kq_1782690461927_fqzm",
+      "context": "chain_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.927Z"
+    },
+    {
+      "id": "kq_1782690461932_j8dw",
+      "context": "bm_know_test",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.932Z"
+    },
+    {
+      "id": "kq_1782690461935_7alb",
+      "context": "baseline_know_test",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.935Z"
+    },
+    {
+      "id": "kq_1782690461938_09f2",
+      "context": "get_bm_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.938Z"
+    },
+    {
+      "id": "kq_1782690461941_dcwg",
+      "context": "stats_bm_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.941Z"
+    },
+    {
+      "id": "kq_1782690461946_d78c",
+      "context": "debt_know_ctx",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.946Z"
+    },
+    {
+      "id": "kq_1782690461949_mcq0",
+      "context": "trend_evo_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.949Z"
+    },
+    {
+      "id": "kq_1782690461952_2jmz",
+      "context": "summary_seed_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.952Z"
+    },
+    {
+      "id": "kq_1782690461955_bfwj",
+      "context": "pipeline_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.955Z"
+    },
+    {
+      "id": "kq_1782690461958_eli2",
+      "context": "chain_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.958Z"
+    },
+    {
+      "id": "kq_1782690461961_d3bx",
+      "context": "view_pipeline_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.961Z"
+    },
+    {
+      "id": "kq_1782690461965_5nnp",
+      "context": "debt_pipeline_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:41.965Z"
+    },
+    {
+      "id": "kq_1782690462020_ca7r",
+      "context": "trend_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.020Z"
+    },
+    {
+      "id": "kq_1782690462023_6spe",
+      "context": "bm_know_test",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.023Z"
+    },
+    {
+      "id": "kq_1782690462026_yc7d",
+      "context": "current_knowledge",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.026Z"
+    },
+    {
+      "id": "kq_1782690462029_eiuh",
+      "context": "get_cycle_know_direct",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.029Z"
+    },
+    {
+      "id": "kq_1782690462031_vuad",
+      "context": "list_know_1782690461764",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.031Z"
+    },
+    {
+      "id": "kq_1782690462034_ubjp",
+      "context": "status_seed_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.034Z"
+    },
+    {
+      "id": "kq_1782690462039_a7dx",
+      "context": "trend_evo_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.039Z"
+    },
+    {
+      "id": "kq_1782690462042_57u0",
+      "context": "multi_know_ctx",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.042Z"
+    },
+    {
+      "id": "kq_1782690462045_frjb",
+      "context": "dashboard_evo_seed_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.045Z"
+    },
+    {
+      "id": "kq_1782690462049_a5ez",
+      "context": "chain_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.049Z"
+    },
+    {
+      "id": "kq_1782690462053_t6t7",
+      "context": "current_knowledge",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.053Z"
+    },
+    {
+      "id": "kq_1782690462056_j7n8",
+      "context": "founder_time_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.056Z"
+    },
+    {
+      "id": "kq_1782690462083_5kx7",
+      "context": "multi_know_ctx",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 92.3,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.2,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 92.3,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 92.3 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-28T23:47:42.083Z"
+    },
+    {
+      "id": "kq_1782773078548_o2eb",
+      "context": "quality_test_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.548Z"
+    },
+    {
+      "id": "kq_1782773078551_ieel",
+      "context": "history_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.551Z"
+    },
+    {
+      "id": "kq_1782773078554_vbdq",
+      "context": "filter_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.554Z"
+    },
+    {
+      "id": "kq_1782773078557_3bom",
+      "context": "id_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.557Z"
+    },
+    {
+      "id": "kq_1782773078560_fqqe",
+      "context": "trend_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.560Z"
+    },
+    {
+      "id": "kq_1782773078563_my66",
+      "context": "impr_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.563Z"
+    },
+    {
+      "id": "kq_1782773078566_pq6e",
+      "context": "stats_know_ctx",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.566Z"
+    },
+    {
+      "id": "kq_1782773078570_4jz7",
+      "context": "chain_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.570Z"
+    },
+    {
+      "id": "kq_1782773078573_e0o0",
+      "context": "bm_know_test",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.573Z"
+    },
+    {
+      "id": "kq_1782773078577_aw96",
+      "context": "baseline_know_test",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.577Z"
+    },
+    {
+      "id": "kq_1782773078580_sqxa",
+      "context": "get_bm_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.580Z"
+    },
+    {
+      "id": "kq_1782773078583_etwf",
+      "context": "stats_bm_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.583Z"
+    },
+    {
+      "id": "kq_1782773078588_e2qf",
+      "context": "debt_know_ctx",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.588Z"
+    },
+    {
+      "id": "kq_1782773078591_znai",
+      "context": "trend_evo_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.591Z"
+    },
+    {
+      "id": "kq_1782773078594_pcb6",
+      "context": "summary_seed_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.594Z"
+    },
+    {
+      "id": "kq_1782773078598_t4d3",
+      "context": "pipeline_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.598Z"
+    },
+    {
+      "id": "kq_1782773078601_9d1h",
+      "context": "chain_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.601Z"
+    },
+    {
+      "id": "kq_1782773078606_6rto",
+      "context": "view_pipeline_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.606Z"
+    },
+    {
+      "id": "kq_1782773078610_m301",
+      "context": "debt_pipeline_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.610Z"
+    },
+    {
+      "id": "kq_1782773078688_t1ts",
+      "context": "trend_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.688Z"
+    },
+    {
+      "id": "kq_1782773078692_ebev",
+      "context": "bm_know_test",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.692Z"
+    },
+    {
+      "id": "kq_1782773078696_89tz",
+      "context": "current_knowledge",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.696Z"
+    },
+    {
+      "id": "kq_1782773078699_0ffm",
+      "context": "get_cycle_know_direct",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.699Z"
+    },
+    {
+      "id": "kq_1782773078702_kcaj",
+      "context": "list_know_1782773078294",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.702Z"
+    },
+    {
+      "id": "kq_1782773078706_damr",
+      "context": "status_seed_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.706Z"
+    },
+    {
+      "id": "kq_1782773078709_gjjc",
+      "context": "trend_evo_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.709Z"
+    },
+    {
+      "id": "kq_1782773078712_thn5",
+      "context": "multi_know_ctx",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.712Z"
+    },
+    {
+      "id": "kq_1782773078715_hq7m",
+      "context": "dashboard_evo_seed_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.715Z"
+    },
+    {
+      "id": "kq_1782773078718_asho",
+      "context": "chain_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.718Z"
+    },
+    {
+      "id": "kq_1782773078723_c1cg",
+      "context": "current_knowledge",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.723Z"
+    },
+    {
+      "id": "kq_1782773078727_j6q8",
+      "context": "founder_time_know",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.727Z"
+    },
+    {
+      "id": "kq_1782773078765_qwd3",
+      "context": "multi_know_ctx",
+      "dimensions": {
+        "completeness": 100,
+        "freshness": 100,
+        "confidence": 93,
+        "consistency": null,
+        "connectivity": 40,
+        "usefulness": 100,
+        "explainability": 40
+      },
+      "overall": 81.3,
+      "improvements": [
+        {
+          "dimension": "connectivity",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve connectivity from 40 to at least 55"
+        },
+        {
+          "dimension": "explainability",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve explainability from 40 to at least 55"
+        },
+        {
+          "dimension": "confidence",
+          "currentScore": 93,
+          "priority": "medium",
+          "suggestion": "Improve confidence from 93 to at least 100"
+        }
+      ],
+      "reasoningOverall": 57.3,
+      "scoredAt": "2026-06-29T22:44:38.765Z"
+    }
+  ],
+  "stats": {
+    "total": 64,
+    "contexts": 26,
+    "avgOverall": 81.3
+  },
+  "updatedAt": "2026-06-29T22:44:38.765Z"
+}

@@ -1,0 +1,109 @@
+{
+  "optimizations": [
+    {
+      "id": "ropt_1782773098039_xgop",
+      "dimension": "conversion_rate",
+      "title": "Improve Trial → Paid Conversion",
+      "current": {
+        "rate": 0.02,
+        "trials": 48,
+        "mrrGenerated": 959
+      },
+      "target": {
+        "rate": 0.06,
+        "mrrGenerated": 2877
+      },
+      "mrrImpact": 1918,
+      "actions": [
+        "Send in-app onboarding checklist at day 3",
+        "Trigger personalized upsell email when 80% of credits consumed",
+        "Offer 1:1 demo call at day 7 for high-engagement trials",
+        "Apply early-adopter discount at day 12 if no conversion"
+      ],
+      "priority": "medium",
+      "confidence": 82,
+      "optimizedAt": "2026-06-29T22:44:58.039Z"
+    },
+    {
+      "id": "ropt_1782773098089_j50l",
+      "dimension": "renewal_rate",
+      "title": "Increase Renewal Rate",
+      "current": {
+        "monthlyChurnRate": 0,
+        "annualChurnRate": 0,
+        "mrrAtRisk": 0
+      },
+      "target": {
+        "monthlyChurnRate": 0
+      },
+      "mrrImpact": 10,
+      "actions": [
+        "Send renewal reminder 45 days before subscription anniversary",
+        "Assign CSM to accounts with health score < 50",
+        "Run win-back campaign for lapsed accounts within 30 days",
+        "Trigger SUCCESS_PLAYBOOKS at health score < 60"
+      ],
+      "priority": "medium",
+      "confidence": 90,
+      "optimizedAt": "2026-06-29T22:44:58.089Z"
+    },
+    {
+      "id": "ropt_1782773098138_a4hp",
+      "dimension": "expansion_mrr",
+      "title": "Drive Expansion Revenue",
+      "current": {
+        "expansionMRR": 0,
+        "eligibleAccounts": 5
+      },
+      "target": {
+        "expansionMRR": 150
+      },
+      "mrrImpact": 150,
+      "actions": [
+        "Identify healthy accounts for upgrade campaigns",
+        "Launch usage-based upsell when 75% of plan limits reached",
+        "Offer team seat expansion for solo accounts with high activity",
+        "Present Growth → Team upgrade path at 90-day health check"
+      ],
+      "priority": "medium",
+      "confidence": 75,
+      "optimizedAt": "2026-06-29T22:44:58.138Z"
+    },
+    {
+      "id": "ropt_1782773098138_6eji",
+      "dimension": "deal_velocity",
+      "title": "Accelerate Deal Velocity",
+      "current": {
+        "openOpportunities": 3,
+        "estimatedAvgDays": 21
+      },
+      "target": {
+        "avgDays": 14
+      },
+      "mrrImpact": 300,
+      "actions": [
+        "Auto-generate proposal within 24h of discovery signal",
+        "Trigger follow-up sequence if no response within 48h",
+        "Escalate to founder twin decision if deal stalls >7 days",
+        "Apply early-adopter discount at day 10 for high-value prospects"
+      ],
+      "priority": "medium",
+      "confidence": 70,
+      "optimizedAt": "2026-06-29T22:44:58.138Z"
+    }
+  ],
+  "activePlaybooks": [],
+  "stats": {
+    "total": 4,
+    "byDimension": {
+      "conversion_rate": 1,
+      "deal_velocity": 1,
+      "renewal_rate": 1,
+      "expansion_mrr": 1,
+      "churn_reduction": 0,
+      "ltv_improvement": 0
+    },
+    "totalMRRImpact": 2378
+  },
+  "updatedAt": "2026-06-29T22:44:58.138Z"
+}

@@ -15,35 +15,74 @@
       "score": 53,
       "latencyMs": 8000,
       "ts": "2026-06-28T19:51:00.748Z"
+    },
+    {
+      "id": "health_1782686972673_go6l",
+      "workspaceId": "ws_1782676260732_ccrh",
+      "workspaceType": "browser",
+      "score": 40,
+      "latencyMs": 120,
+      "ts": "2026-06-28T22:49:32.673Z"
+    },
+    {
+      "id": "health_1782686972673_jkib",
+      "workspaceId": "ws_1782676260732_cv5o",
+      "workspaceType": "terminal",
+      "score": 0,
+      "latencyMs": 8000,
+      "ts": "2026-06-28T22:49:32.673Z"
     }
   ],
-  "alerts": [],
+  "alerts": [
+    {
+      "id": "health_1782686972673_hcdn",
+      "workspaceId": "ws_1782676260732_ccrh",
+      "workspaceType": "browser",
+      "severity": "warning",
+      "message": "Workspace Chrome Browser P9 (browser) health dropped to 40",
+      "score": 40,
+      "ts": "2026-06-28T22:49:32.673Z",
+      "acknowledged": false
+    },
+    {
+      "id": "health_1782686972674_ueeq",
+      "workspaceId": "ws_1782676260732_cv5o",
+      "workspaceType": "terminal",
+      "severity": "critical",
+      "message": "Workspace Zsh Terminal P9 (terminal) health dropped to 0",
+      "score": 0,
+      "ts": "2026-06-28T22:49:32.674Z",
+      "acknowledged": false
+    }
+  ],
   "metrics": {
     "ws_1782676260732_ccrh": {
       "latencies": [
+        120,
         120
       ],
       "errors": 0,
-      "pings": 1,
+      "pings": 2,
       "avgLatencyMs": 120,
       "errorRate": 0,
-      "lastPing": "2026-06-28T19:51:00.747Z"
+      "lastPing": "2026-06-28T22:49:32.673Z"
     },
     "ws_1782676260732_cv5o": {
       "latencies": [
+        8000,
         8000
       ],
       "errors": 0,
-      "pings": 1,
+      "pings": 2,
       "avgLatencyMs": 8000,
       "errorRate": 0.9,
-      "lastPing": "2026-06-28T19:51:00.748Z"
+      "lastPing": "2026-06-28T22:49:32.673Z"
     }
   },
   "stats": {
-    "checksRun": 2,
-    "alertsGenerated": 0,
+    "checksRun": 4,
+    "alertsGenerated": 2,
     "recoveryTriggered": 0
   },
-  "updatedAt": "2026-06-28T19:51:00.748Z"
+  "updatedAt": "2026-06-28T22:49:32.674Z"
 }

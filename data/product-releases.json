@@ -1,0 +1,2909 @@
+{
+  "releases": [
+    {
+      "id": "pr_1782720376882_lxr4",
+      "planId": "pp_1782720372505_wmmm",
+      "version": "1.0.376",
+      "status": "ready",
+      "twinDecision": "approved",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.376",
+        "title": "Release: Build a SaaS customer feedback portal with AI analysis",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 0/100",
+          "Security: 0/100",
+          "Performance: 0/100",
+          "Accessibility: 0 (WCAG AA)",
+          "Production Bible compliance: 0/0 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:06:16.882Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 130,
+      "createdAt": "2026-06-29T08:06:16.899Z",
+      "updatedAt": "2026-06-29T08:06:16.899Z"
+    },
+    {
+      "id": "pr_1782720379486_hq1o",
+      "planId": "pp_1782720377261_etfq",
+      "version": "1.0.379",
+      "status": "ready",
+      "twinDecision": "approved",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.379",
+        "title": "Release: Build an autonomous sales CRM with AI lead scoring",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 87/100",
+          "Security: 90/100",
+          "Performance: 80/100",
+          "Accessibility: 85 (WCAG AA)",
+          "Production Bible compliance: 55/57 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:06:19.486Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 150,
+      "createdAt": "2026-06-29T08:06:19.490Z",
+      "updatedAt": "2026-06-29T08:06:19.490Z"
+    },
+    {
+      "id": "pr_1782720389303_espj",
+      "planId": "pp_1782720387858_hdr2",
+      "version": "1.0.389",
+      "status": "ready",
+      "twinDecision": "approved",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.389",
+        "title": "Release: Build a SaaS customer feedback portal with AI analysis",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 0/100",
+          "Security: 0/100",
+          "Performance: 0/100",
+          "Accessibility: 0 (WCAG AA)",
+          "Production Bible compliance: 0/0 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:06:29.303Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 130,
+      "createdAt": "2026-06-29T08:06:29.313Z",
+      "updatedAt": "2026-06-29T08:06:29.313Z"
+    },
+    {
+      "id": "pr_1782720392193_kw1g",
+      "planId": "pp_1782720389634_nfsh",
+      "version": "1.0.392",
+      "status": "ready",
+      "twinDecision": "approved",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.392",
+        "title": "Release: Build an autonomous sales CRM with AI lead scoring",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 87/100",
+          "Security: 90/100",
+          "Performance: 80/100",
+          "Accessibility: 85 (WCAG AA)",
+          "Production Bible compliance: 55/57 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:06:32.193Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 150,
+      "createdAt": "2026-06-29T08:06:32.198Z",
+      "updatedAt": "2026-06-29T08:06:32.198Z"
+    },
+    {
+      "id": "pr_1782720555720_twiz",
+      "planId": "pp_1782720554399_mkqk",
+      "version": "1.0.555",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.555",
+        "title": "Release: Build a SaaS customer feedback portal with AI analysis",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 0/100",
+          "Security: 0/100",
+          "Performance: 0/100",
+          "Accessibility: 0 (WCAG AA)",
+          "Production Bible compliance: 0/0 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:09:15.720Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 130,
+      "createdAt": "2026-06-29T08:09:15.726Z",
+      "updatedAt": "2026-06-29T08:09:15.726Z"
+    },
+    {
+      "id": "pr_1782720558148_p0au",
+      "planId": "pp_1782720556011_9a0s",
+      "version": "1.0.558",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.558",
+        "title": "Release: Build an autonomous sales CRM with AI lead scoring",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 87/100",
+          "Security: 90/100",
+          "Performance: 80/100",
+          "Accessibility: 85 (WCAG AA)",
+          "Production Bible compliance: 55/57 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:09:18.148Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 150,
+      "createdAt": "2026-06-29T08:09:18.152Z",
+      "updatedAt": "2026-06-29T08:09:18.152Z"
+    },
+    {
+      "id": "pr_1782720603526_pcgy",
+      "planId": "pp_1782720602181_fyu9",
+      "version": "1.0.603",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.603",
+        "title": "Release: Build a SaaS customer feedback portal with AI analysis",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 0/100",
+          "Security: 0/100",
+          "Performance: 0/100",
+          "Accessibility: 0 (WCAG AA)",
+          "Production Bible compliance: 0/0 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:10:03.526Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 130,
+      "createdAt": "2026-06-29T08:10:03.533Z",
+      "updatedAt": "2026-06-29T08:10:03.533Z"
+    },
+    {
+      "id": "pr_1782720606003_zdef",
+      "planId": "pp_1782720603781_4b81",
+      "version": "1.0.606",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.606",
+        "title": "Release: Build an autonomous sales CRM with AI lead scoring",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 87/100",
+          "Security: 90/100",
+          "Performance: 80/100",
+          "Accessibility: 85 (WCAG AA)",
+          "Production Bible compliance: 55/57 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:10:06.003Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 150,
+      "createdAt": "2026-06-29T08:10:06.010Z",
+      "updatedAt": "2026-06-29T08:10:06.010Z"
+    },
+    {
+      "id": "pr_1782720639405_f90f",
+      "planId": "pp_1782720638097_pquu",
+      "version": "1.0.639",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.639",
+        "title": "Release: Build a SaaS customer feedback portal with AI analysis",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 0/100",
+          "Security: 0/100",
+          "Performance: 0/100",
+          "Accessibility: 0 (WCAG AA)",
+          "Production Bible compliance: 0/0 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:10:39.405Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 130,
+      "createdAt": "2026-06-29T08:10:39.412Z",
+      "updatedAt": "2026-06-29T08:10:39.412Z"
+    },
+    {
+      "id": "pr_1782720641778_o4aj",
+      "planId": "pp_1782720639668_lp1w",
+      "version": "1.0.641",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.641",
+        "title": "Release: Build an autonomous sales CRM with AI lead scoring",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 87/100",
+          "Security: 90/100",
+          "Performance: 80/100",
+          "Accessibility: 85 (WCAG AA)",
+          "Production Bible compliance: 55/57 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:10:41.778Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 150,
+      "createdAt": "2026-06-29T08:10:41.782Z",
+      "updatedAt": "2026-06-29T08:10:41.782Z"
+    },
+    {
+      "id": "pr_1782720647986_hdf2",
+      "planId": "pp_1782720646707_ns6d",
+      "version": "1.0.647",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.647",
+        "title": "Release: Build a SaaS customer feedback portal with AI analysis",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 0/100",
+          "Security: 0/100",
+          "Performance: 0/100",
+          "Accessibility: 0 (WCAG AA)",
+          "Production Bible compliance: 0/0 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:10:47.986Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 130,
+      "createdAt": "2026-06-29T08:10:47.991Z",
+      "updatedAt": "2026-06-29T08:10:47.991Z"
+    },
+    {
+      "id": "pr_1782720650387_txc4",
+      "planId": "pp_1782720648253_qhca",
+      "version": "1.0.650",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.650",
+        "title": "Release: Build an autonomous sales CRM with AI lead scoring",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 87/100",
+          "Security: 90/100",
+          "Performance: 80/100",
+          "Accessibility: 85 (WCAG AA)",
+          "Production Bible compliance: 55/57 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:10:50.387Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 150,
+      "createdAt": "2026-06-29T08:10:50.391Z",
+      "updatedAt": "2026-06-29T08:10:50.391Z"
+    },
+    {
+      "id": "pr_1782720667170_9x9u",
+      "planId": "pp_1782720665833_ffmy",
+      "version": "1.0.667",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.667",
+        "title": "Release: Build a SaaS customer feedback portal with AI analysis",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 0/100",
+          "Security: 0/100",
+          "Performance: 0/100",
+          "Accessibility: 0 (WCAG AA)",
+          "Production Bible compliance: 0/0 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:11:07.170Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 130,
+      "createdAt": "2026-06-29T08:11:07.176Z",
+      "updatedAt": "2026-06-29T08:11:07.176Z"
+    },
+    {
+      "id": "pr_1782720669624_ou5p",
+      "planId": "pp_1782720667436_u0vx",
+      "version": "1.0.669",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.669",
+        "title": "Release: Build an autonomous sales CRM with AI lead scoring",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 87/100",
+          "Security: 90/100",
+          "Performance: 80/100",
+          "Accessibility: 85 (WCAG AA)",
+          "Production Bible compliance: 55/57 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:11:09.624Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 150,
+      "createdAt": "2026-06-29T08:11:09.628Z",
+      "updatedAt": "2026-06-29T08:11:09.628Z"
+    },
+    {
+      "id": "pr_1782720689075_8l1z",
+      "planId": "pp_1782720687649_p1hg",
+      "version": "1.0.689",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.689",
+        "title": "Release: Build a SaaS customer feedback portal with AI analysis",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 0/100",
+          "Security: 0/100",
+          "Performance: 0/100",
+          "Accessibility: 0 (WCAG AA)",
+          "Production Bible compliance: 0/0 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:11:29.075Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 130,
+      "createdAt": "2026-06-29T08:11:29.080Z",
+      "updatedAt": "2026-06-29T08:11:29.080Z"
+    },
+    {
+      "id": "pr_1782720691600_xvjl",
+      "planId": "pp_1782720689355_bwtk",
+      "version": "1.0.691",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.691",
+        "title": "Release: Build an autonomous sales CRM with AI lead scoring",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 87/100",
+          "Security: 90/100",
+          "Performance: 80/100",
+          "Accessibility: 85 (WCAG AA)",
+          "Production Bible compliance: 55/57 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T08:11:31.600Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 150,
+      "createdAt": "2026-06-29T08:11:31.604Z",
+      "updatedAt": "2026-06-29T08:11:31.604Z"
+    },
+    {
+      "id": "pr_1782773088638_zvh8",
+      "planId": "pp_1782773084237_e4mg",
+      "version": "1.0.88",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.88",
+        "title": "Release: Build a SaaS customer feedback portal with AI analysis",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 0/100",
+          "Security: 0/100",
+          "Performance: 0/100",
+          "Accessibility: 0 (WCAG AA)",
+          "Production Bible compliance: 0/0 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T22:44:48.638Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 130,
+      "createdAt": "2026-06-29T22:44:48.650Z",
+      "updatedAt": "2026-06-29T22:44:48.650Z"
+    },
+    {
+      "id": "pr_1782773091327_6mz2",
+      "planId": "pp_1782773088988_fio3",
+      "version": "1.0.91",
+      "status": "ready",
+      "twinDecision": "approve_release",
+      "approvalId": null,
+      "releaseNotes": {
+        "version": "1.0.91",
+        "title": "Release: Build an autonomous sales CRM with AI lead scoring",
+        "summary": "Autonomous product release — high complexity, 7 platform capabilities reused.",
+        "highlights": [
+          "Validation score: 87/100",
+          "Security: 90/100",
+          "Performance: 80/100",
+          "Accessibility: 85 (WCAG AA)",
+          "Production Bible compliance: 55/57 workflows"
+        ],
+        "requirements": 6,
+        "roadmapPhases": 4,
+        "generatedAt": "2026-06-29T22:44:51.327Z"
+      },
+      "deploymentPlan": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Environment pre-flight check",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          },
+          {
+            "step": 2,
+            "action": "Database migration dry-run",
+            "owner": "autonomousExecution",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 3,
+            "action": "Staging environment deploy",
+            "owner": "workspaceMesh",
+            "automated": true,
+            "minutesSaved": 30
+          },
+          {
+            "step": 4,
+            "action": "Smoke test suite",
+            "owner": "productValidationEngine",
+            "automated": true,
+            "minutesSaved": 25
+          },
+          {
+            "step": 5,
+            "action": "Founder digital twin sign-off",
+            "owner": "digitalTwinEngine",
+            "automated": true,
+            "minutesSaved": 15
+          },
+          {
+            "step": 6,
+            "action": "Blue/green production switch",
+            "owner": "productionBibleEngine",
+            "automated": true,
+            "minutesSaved": 20
+          },
+          {
+            "step": 7,
+            "action": "Post-deploy health verify",
+            "owner": "deploymentValidator",
+            "automated": true,
+            "minutesSaved": 10
+          }
+        ],
+        "estimatedMinutes": 130,
+        "automatedSteps": 7
+      },
+      "rollbackPlan": {
+        "trigger": "Validation score drops below 60 OR health check fails",
+        "steps": [
+          "Halt production traffic via nginx upstream switch",
+          "Restore previous deployment via bible rollback workflow",
+          "Run post-rollback smoke test",
+          "Alert via ops-alerts system",
+          "Create incident mission in missionOrchestrator"
+        ],
+        "automatedRollback": true,
+        "estimatedRollbackMinutes": 5
+      },
+      "monitoringPlan": {
+        "checks": [
+          {
+            "metric": "API response time (p95)",
+            "threshold": "< 500ms",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Error rate",
+            "threshold": "< 1%",
+            "interval": "1m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Memory usage",
+            "threshold": "< 80%",
+            "interval": "5m",
+            "source": "processMetrics"
+          },
+          {
+            "metric": "Database query time",
+            "threshold": "< 100ms",
+            "interval": "2m",
+            "source": "metricsService"
+          },
+          {
+            "metric": "Authentication success",
+            "threshold": "> 99%",
+            "interval": "5m",
+            "source": "authMiddleware"
+          }
+        ],
+        "alertChannels": [
+          "ops-alerts.json",
+          "missionOrchestrator",
+          "digitalTwinEngine"
+        ],
+        "selfHealingEnabled": true
+      },
+      "bibleWorkflows": [
+        {
+          "id": "pbw_deploy_vps_provisioned",
+          "title": "VPS provisioned (Ubuntu 22.04+)"
+        },
+        {
+          "id": "pbw_deploy_node_installed",
+          "title": "Node.js 20 LTS installed"
+        },
+        {
+          "id": "pbw_deploy_repo_cloned",
+          "title": "Repository cloned to /opt/jarvis-os"
+        },
+        {
+          "id": "pbw_deploy_deps_installed",
+          "title": "npm install --omit=dev completed"
+        },
+        {
+          "id": "pbw_deploy_env_configured",
+          "title": ".env file configured (all required vars)"
+        }
+      ],
+      "preCheck": {
+        "ok": true,
+        "score": 80,
+        "source": "mock"
+      },
+      "productionReady": true,
+      "minutesSaved": 150,
+      "createdAt": "2026-06-29T22:44:51.332Z",
+      "updatedAt": "2026-06-29T22:44:51.332Z"
+    }
+  ],
+  "stats": {
+    "total": 18,
+    "released": 18,
+    "pendingApproval": 0,
+    "minutesSaved": 2520
+  },
+  "updatedAt": "2026-06-29T22:44:51.332Z"
+}

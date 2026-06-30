@@ -2197,7 +2197,3211 @@
       "decidedAt": "2026-06-28T20:59:56.637Z",
       "executedAt": "2026-06-28T21:00:19.703Z",
       "measuredAt": "2026-06-28T21:00:21.355Z"
+    },
+    {
+      "id": "adec_1782680812080_7sjb",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782680808412_0wsm"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T21:06:52.080Z",
+      "executedAt": "2026-06-28T21:07:12.606Z",
+      "measuredAt": "2026-06-28T21:07:21.733Z"
+    },
+    {
+      "id": "adec_1782680813795_jf5c",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782680806651_m6ei"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T21:06:53.795Z",
+      "executedAt": "2026-06-28T21:07:19.887Z",
+      "measuredAt": "2026-06-28T21:07:21.733Z"
+    },
+    {
+      "id": "adec_1782681174126_sbii",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782681170537_diji"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T21:12:54.126Z",
+      "executedAt": "2026-06-28T21:13:13.845Z",
+      "measuredAt": "2026-06-28T21:13:22.752Z"
+    },
+    {
+      "id": "adec_1782681175880_xsvm",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782681168632_s8rq"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T21:12:55.880Z",
+      "executedAt": "2026-06-28T21:13:20.911Z",
+      "measuredAt": "2026-06-28T21:13:22.752Z"
+    },
+    {
+      "id": "adec_1782686147135_7k0e",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782686143095_afxa"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T22:35:47.135Z",
+      "executedAt": "2026-06-28T22:36:08.220Z",
+      "measuredAt": "2026-06-28T22:36:17.608Z"
+    },
+    {
+      "id": "adec_1782686149087_isxe",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782686141199_u860"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T22:35:49.087Z",
+      "executedAt": "2026-06-28T22:36:15.710Z",
+      "measuredAt": "2026-06-28T22:36:17.608Z"
+    },
+    {
+      "id": "adec_1782686637489_gele",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782686633496_f6fy"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T22:43:57.489Z",
+      "executedAt": "2026-06-28T22:44:19.536Z",
+      "measuredAt": "2026-06-28T22:44:30.517Z"
+    },
+    {
+      "id": "adec_1782686639464_6whv",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782686631445_17hm"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T22:43:59.464Z",
+      "executedAt": "2026-06-28T22:44:28.219Z",
+      "measuredAt": "2026-06-28T22:44:30.518Z"
+    },
+    {
+      "id": "adec_1782687047619_2iui",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782687043205_ho1x"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T22:50:47.619Z",
+      "executedAt": "2026-06-28T22:51:12.018Z",
+      "measuredAt": "2026-06-28T22:51:22.873Z"
+    },
+    {
+      "id": "adec_1782687049752_u5du",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782687040972_1ym3"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T22:50:49.752Z",
+      "executedAt": "2026-06-28T22:51:20.646Z",
+      "measuredAt": "2026-06-28T22:51:22.874Z"
+    },
+    {
+      "id": "adec_1782687520942_ixlt",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782687516332_8ig3"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T22:58:40.942Z",
+      "executedAt": "2026-06-28T22:59:05.770Z",
+      "measuredAt": "2026-06-28T22:59:17.012Z"
+    },
+    {
+      "id": "adec_1782687523198_potx",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782687514029_81h9"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T22:58:43.198Z",
+      "executedAt": "2026-06-28T22:59:14.760Z",
+      "measuredAt": "2026-06-28T22:59:17.012Z"
+    },
+    {
+      "id": "adec_1782687988512_794i",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782687983722_d7v9"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:06:28.512Z",
+      "executedAt": "2026-06-28T23:06:55.585Z",
+      "measuredAt": "2026-06-28T23:07:07.670Z"
+    },
+    {
+      "id": "adec_1782687990884_zv78",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782687981256_k4mk"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:06:30.884Z",
+      "executedAt": "2026-06-28T23:07:05.344Z",
+      "measuredAt": "2026-06-28T23:07:07.671Z"
+    },
+    {
+      "id": "adec_1782688371987_bdxz",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782688367195_pk6e"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:12:51.987Z",
+      "executedAt": "2026-06-28T23:13:18.821Z",
+      "measuredAt": "2026-06-28T23:13:31.202Z"
+    },
+    {
+      "id": "adec_1782688374338_hypc",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782688364577_lysb"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:12:54.338Z",
+      "executedAt": "2026-06-28T23:13:28.718Z",
+      "measuredAt": "2026-06-28T23:13:31.202Z"
+    },
+    {
+      "id": "adec_1782688856398_1x1u",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782688832326_e4n6"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:20:56.398Z",
+      "executedAt": "2026-06-28T23:21:26.816Z",
+      "measuredAt": "2026-06-28T23:21:40.031Z"
+    },
+    {
+      "id": "adec_1782688859025_9rcn",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782688829679_ut4o"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:20:59.025Z",
+      "executedAt": "2026-06-28T23:21:37.400Z",
+      "measuredAt": "2026-06-28T23:21:40.031Z"
+    },
+    {
+      "id": "adec_1782689251933_cmsk",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782689246611_mrb7"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:27:31.933Z",
+      "executedAt": "2026-06-28T23:28:02.149Z",
+      "measuredAt": "2026-06-28T23:28:15.846Z"
+    },
+    {
+      "id": "adec_1782689254571_69pw",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782689244017_r0w8"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:27:34.571Z",
+      "executedAt": "2026-06-28T23:28:13.160Z",
+      "measuredAt": "2026-06-28T23:28:15.850Z"
+    },
+    {
+      "id": "adec_1782689656941_kipi",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782689651437_x3er"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:34:16.941Z",
+      "executedAt": "2026-06-28T23:34:46.669Z",
+      "measuredAt": "2026-06-28T23:35:01.076Z"
+    },
+    {
+      "id": "adec_1782689659650_phfk",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782689648727_76zx"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:34:19.650Z",
+      "executedAt": "2026-06-28T23:34:58.169Z",
+      "measuredAt": "2026-06-28T23:35:01.077Z"
+    },
+    {
+      "id": "adec_1782690059776_dpcl",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782690054269_yp19"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:40:59.776Z",
+      "executedAt": "2026-06-28T23:41:29.648Z",
+      "measuredAt": "2026-06-28T23:41:43.705Z"
+    },
+    {
+      "id": "adec_1782690062477_56jr",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782690051502_9dd5"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:41:02.477Z",
+      "executedAt": "2026-06-28T23:41:40.908Z",
+      "measuredAt": "2026-06-28T23:41:43.706Z"
+    },
+    {
+      "id": "adec_1782690480498_63a7",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782690474857_lec0"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:48:00.498Z",
+      "executedAt": "2026-06-28T23:48:31.638Z",
+      "measuredAt": "2026-06-28T23:48:45.747Z"
+    },
+    {
+      "id": "adec_1782690483249_jsso",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782690471972_cari"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:48:03.249Z",
+      "executedAt": "2026-06-28T23:48:42.891Z",
+      "measuredAt": "2026-06-28T23:48:45.748Z"
+    },
+    {
+      "id": "adec_1782690930276_3f0r",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782690924076_mb3b"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:55:30.276Z",
+      "executedAt": "2026-06-28T23:56:03.996Z",
+      "measuredAt": "2026-06-28T23:56:18.987Z"
+    },
+    {
+      "id": "adec_1782690933285_0kn7",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782690920791_55pu"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-28T23:55:33.285Z",
+      "executedAt": "2026-06-28T23:56:15.959Z",
+      "measuredAt": "2026-06-28T23:56:18.987Z"
+    },
+    {
+      "id": "adec_1782691376951_8khh",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782691370468_z5u5"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T00:02:56.951Z",
+      "executedAt": "2026-06-29T00:03:31.615Z",
+      "measuredAt": "2026-06-29T00:03:47.449Z"
+    },
+    {
+      "id": "adec_1782691380048_cawv",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782691367247_fhyu"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T00:03:00.048Z",
+      "executedAt": "2026-06-29T00:03:44.313Z",
+      "measuredAt": "2026-06-29T00:03:47.450Z"
+    },
+    {
+      "id": "adec_1782691878860_e7gc",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782691872324_oema"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T00:11:18.860Z",
+      "executedAt": "2026-06-29T00:11:55.079Z",
+      "measuredAt": "2026-06-29T00:12:10.962Z"
+    },
+    {
+      "id": "adec_1782691882482_j9pn",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782691868908_rz02"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T00:11:22.482Z",
+      "executedAt": "2026-06-29T00:12:07.752Z",
+      "measuredAt": "2026-06-29T00:12:10.962Z"
+    },
+    {
+      "id": "adec_1782692361372_p6kv",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782692354230_pii6"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T00:19:21.372Z",
+      "executedAt": "2026-06-29T00:19:58.233Z",
+      "measuredAt": "2026-06-29T00:20:14.748Z"
+    },
+    {
+      "id": "adec_1782692364705_jmg8",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782692350384_28tz"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T00:19:24.705Z",
+      "executedAt": "2026-06-29T00:20:11.440Z",
+      "measuredAt": "2026-06-29T00:20:14.749Z"
+    },
+    {
+      "id": "adec_1782692856074_r56y",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782692849367_s0d4"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T00:27:36.074Z",
+      "executedAt": "2026-06-29T02:07:12.583Z",
+      "measuredAt": "2026-06-29T02:45:10.910Z"
+    },
+    {
+      "id": "adec_1782692859375_h1sm",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782692846032_8421"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T00:27:39.375Z",
+      "executedAt": "2026-06-29T02:28:47.624Z",
+      "measuredAt": "2026-06-29T02:45:10.910Z"
+    },
+    {
+      "id": "adec_1782719842463_f022",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782719835524_v7p7"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T07:57:22.463Z",
+      "executedAt": "2026-06-29T07:58:01.193Z",
+      "measuredAt": "2026-06-29T07:58:18.954Z"
+    },
+    {
+      "id": "adec_1782719845995_428x",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782719831642_iupy"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T07:57:25.995Z",
+      "executedAt": "2026-06-29T07:58:15.510Z",
+      "measuredAt": "2026-06-29T07:58:18.955Z"
+    },
+    {
+      "id": "adec_1782720327192_19vw",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782720320068_dt0q"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T08:05:27.192Z",
+      "executedAt": "2026-06-29T08:06:06.481Z",
+      "measuredAt": "2026-06-29T08:06:25.983Z"
+    },
+    {
+      "id": "adec_1782720330664_27mm",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782720316612_ft2c"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T08:05:30.664Z",
+      "executedAt": "2026-06-29T08:06:22.166Z",
+      "measuredAt": "2026-06-29T08:06:25.984Z"
+    },
+    {
+      "id": "adec_1782720989568_4gub",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782720981997_mfzu"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T08:16:29.568Z",
+      "executedAt": "2026-06-29T08:17:10.713Z",
+      "measuredAt": "2026-06-29T08:17:29.407Z"
+    },
+    {
+      "id": "adec_1782720993237_8099",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782720978227_2po0"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T08:16:33.237Z",
+      "executedAt": "2026-06-29T08:17:25.561Z",
+      "measuredAt": "2026-06-29T08:17:29.413Z"
+    },
+    {
+      "id": "adec_1782721623203_hbda",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782721615603_5kb7"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T08:27:03.203Z",
+      "executedAt": "2026-06-29T08:27:46.493Z",
+      "measuredAt": "2026-06-29T08:28:06.983Z"
+    },
+    {
+      "id": "adec_1782721627024_226n",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782721611840_3fq5"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T08:27:07.024Z",
+      "executedAt": "2026-06-29T08:28:02.996Z",
+      "measuredAt": "2026-06-29T08:28:06.985Z"
+    },
+    {
+      "id": "adec_1782722176318_b79a",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782722168477_k4lb"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T08:36:16.318Z",
+      "executedAt": "2026-06-29T08:36:59.066Z",
+      "measuredAt": "2026-06-29T08:37:18.684Z"
+    },
+    {
+      "id": "adec_1782722180142_0s6w",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782722164428_vya2"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T08:36:20.142Z",
+      "executedAt": "2026-06-29T08:37:14.841Z",
+      "measuredAt": "2026-06-29T08:37:18.685Z"
+    },
+    {
+      "id": "adec_1782723576805_clqu",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782723568921_xawc"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T08:59:36.805Z",
+      "executedAt": "2026-06-29T09:00:20.554Z",
+      "measuredAt": "2026-06-29T09:00:40.912Z"
+    },
+    {
+      "id": "adec_1782723580941_7mpz",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782723564990_hyge"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T08:59:40.941Z",
+      "executedAt": "2026-06-29T09:00:36.743Z",
+      "measuredAt": "2026-06-29T09:00:40.913Z"
+    },
+    {
+      "id": "adec_1782724159146_tjc7",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782724151267_xfol"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T09:09:19.146Z",
+      "executedAt": "2026-06-29T09:10:03.288Z",
+      "measuredAt": "2026-06-29T09:10:23.663Z"
+    },
+    {
+      "id": "adec_1782724163131_2v9k",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782724147216_yqml"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T09:09:23.131Z",
+      "executedAt": "2026-06-29T09:10:19.595Z",
+      "measuredAt": "2026-06-29T09:10:23.664Z"
+    },
+    {
+      "id": "adec_1782724766798_f542",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782724758386_txn5"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T09:19:26.798Z",
+      "executedAt": "2026-06-29T09:20:15.634Z",
+      "measuredAt": "2026-06-29T09:20:36.554Z"
+    },
+    {
+      "id": "adec_1782724771623_3peu",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782724754251_kh5a"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T09:19:31.623Z",
+      "executedAt": "2026-06-29T09:20:32.512Z",
+      "measuredAt": "2026-06-29T09:20:36.555Z"
+    },
+    {
+      "id": "adec_1782725613054_zqrs",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782725604501_qq1y"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T09:33:33.054Z",
+      "executedAt": "2026-06-29T09:34:21.482Z",
+      "measuredAt": "2026-06-29T09:34:44.683Z"
+    },
+    {
+      "id": "adec_1782725617532_kk8a",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782725600267_71yr"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T09:33:37.532Z",
+      "executedAt": "2026-06-29T09:34:39.820Z",
+      "measuredAt": "2026-06-29T09:34:44.684Z"
+    },
+    {
+      "id": "adec_1782726226502_ofiv",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782726217819_xu1e"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T09:43:46.502Z",
+      "executedAt": "2026-06-29T09:44:34.066Z",
+      "measuredAt": "2026-06-29T09:44:56.129Z"
+    },
+    {
+      "id": "adec_1782726230791_iq2i",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782726213516_ujrp"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T09:43:50.791Z",
+      "executedAt": "2026-06-29T09:44:51.817Z",
+      "measuredAt": "2026-06-29T09:44:56.130Z"
+    },
+    {
+      "id": "adec_1782729751094_x4rj",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782729742340_kcrj"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T10:42:31.094Z",
+      "executedAt": "2026-06-29T10:43:19.482Z",
+      "measuredAt": "2026-06-29T10:43:41.938Z"
+    },
+    {
+      "id": "adec_1782729755535_88e9",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782729737985_wtmb"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T10:42:35.535Z",
+      "executedAt": "2026-06-29T10:43:37.572Z",
+      "measuredAt": "2026-06-29T10:43:41.939Z"
+    },
+    {
+      "id": "adec_1782739795278_cyou",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782739786583_256g"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T13:29:55.278Z",
+      "executedAt": "2026-06-29T13:35:31.593Z",
+      "measuredAt": "2026-06-29T13:35:54.644Z"
+    },
+    {
+      "id": "adec_1782739799684_v5z9",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782739782272_cyav"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T13:29:59.684Z",
+      "executedAt": "2026-06-29T13:35:50.056Z",
+      "measuredAt": "2026-06-29T13:35:54.650Z"
+    },
+    {
+      "id": "adec_1782744641415_crfp",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782744631164_x4b3"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T14:50:41.415Z",
+      "executedAt": "2026-06-29T16:04:40.981Z",
+      "measuredAt": "2026-06-29T16:16:47.567Z"
+    },
+    {
+      "id": "adec_1782744645753_vjwu",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782744626498_gyhx"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T14:50:45.753Z",
+      "executedAt": "2026-06-29T16:16:42.729Z",
+      "measuredAt": "2026-06-29T16:16:47.574Z"
+    },
+    {
+      "id": "adec_1782752101557_judm",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782752092646_wbzk"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T16:55:01.557Z",
+      "executedAt": "2026-06-29T16:57:18.484Z",
+      "measuredAt": "2026-06-29T16:57:42.616Z"
+    },
+    {
+      "id": "adec_1782752106145_tfp8",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782752088339_rvw5"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T16:55:06.145Z",
+      "executedAt": "2026-06-29T16:57:37.430Z",
+      "measuredAt": "2026-06-29T16:57:42.618Z"
+    },
+    {
+      "id": "adec_1782754272988_lcej",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782754263356_i9i3"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T17:31:12.988Z",
+      "executedAt": "2026-06-29T17:32:10.408Z",
+      "measuredAt": "2026-06-29T17:32:33.816Z"
+    },
+    {
+      "id": "adec_1782754278132_t2jf",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782754258911_nhqr"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T17:31:18.132Z",
+      "executedAt": "2026-06-29T17:32:29.290Z",
+      "measuredAt": "2026-06-29T17:32:33.817Z"
+    },
+    {
+      "id": "adec_1782772700621_rftw",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772691377_fw5z"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:38:20.621Z",
+      "executedAt": "2026-06-29T22:39:11.479Z",
+      "measuredAt": "2026-06-29T22:39:34.747Z"
+    },
+    {
+      "id": "adec_1782772705315_f7op",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772686802_2t4j"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:38:25.315Z",
+      "executedAt": "2026-06-29T22:39:29.879Z",
+      "measuredAt": "2026-06-29T22:39:34.748Z"
+    },
+    {
+      "id": "adec_1782772792943_7rud",
+      "type": "observe",
+      "title": "Observe-1782772792938",
+      "rationale": "Baseline health check",
+      "confidence": 0.8,
+      "expectedImpact": {},
+      "actualImpact": {
+        "healthGain": 5
+      },
+      "layer": "civilization",
+      "domain": "health",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "Baseline established successfully"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:52.943Z",
+      "executedAt": null,
+      "measuredAt": "2026-06-29T22:39:52.952Z"
+    },
+    {
+      "id": "adec_1782772792947_76wm",
+      "type": "observe",
+      "title": "observe-1782772792938",
+      "rationale": "Testing observe",
+      "confidence": 0.7,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.947Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792947_2vel",
+      "type": "detect",
+      "title": "detect-1782772792938",
+      "rationale": "Testing detect",
+      "confidence": 0.7,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.947Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792948_oi8h",
+      "type": "plan",
+      "title": "plan-1782772792938",
+      "rationale": "Testing plan",
+      "confidence": 0.7,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.948Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792948_on7m",
+      "type": "simulate",
+      "title": "simulate-1782772792938",
+      "rationale": "Testing simulate",
+      "confidence": 0.7,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.948Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792949_6hcd",
+      "type": "validate",
+      "title": "validate-1782772792938",
+      "rationale": "Testing validate",
+      "confidence": 0.7,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.949Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792949_js8v",
+      "type": "execute",
+      "title": "execute-1782772792938",
+      "rationale": "Testing execute",
+      "confidence": 0.7,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.949Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792950_2k9r",
+      "type": "measure",
+      "title": "measure-1782772792938",
+      "rationale": "Testing measure",
+      "confidence": 0.7,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.950Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792950_08qc",
+      "type": "learn",
+      "title": "learn-1782772792938",
+      "rationale": "Testing learn",
+      "confidence": 0.7,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.951Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792951_9uw7",
+      "type": "evolve",
+      "title": "evolve-1782772792938",
+      "rationale": "Testing evolve",
+      "confidence": 0.7,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.951Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792951_cwpq",
+      "type": "recover",
+      "title": "recover-1782772792938",
+      "rationale": "Testing recover",
+      "confidence": 0.7,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.951Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792952_gyxi",
+      "type": "audit",
+      "title": "audit-1782772792938",
+      "rationale": "Testing audit",
+      "confidence": 0.7,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.952Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792956_nut4",
+      "type": "execute",
+      "title": "Fail-1782772792938",
+      "rationale": "Will fail",
+      "confidence": 0.5,
+      "expectedImpact": {},
+      "actualImpact": {
+        "error": "network_timeout"
+      },
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "failed",
+      "lessons": [],
+      "outcome": "failed",
+      "decidedAt": "2026-06-29T22:39:52.956Z",
+      "executedAt": null,
+      "measuredAt": "2026-06-29T22:39:52.956Z"
+    },
+    {
+      "id": "adec_1782772792959_inar",
+      "type": "execute",
+      "title": "Start experiment: Exp-1782772792938",
+      "rationale": "Reducing tick interval increases responsiveness",
+      "confidence": 0.65,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "autonomous",
+      "domain": "autonomous",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.959Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792960_nyh7",
+      "type": "execute",
+      "title": "Start experiment: Rollback-1782772792938",
+      "rationale": "Rollback test",
+      "confidence": 0.6,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "test",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.960Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772792967_7pj4",
+      "type": "execute",
+      "title": "Act on opp 1782772792938",
+      "rationale": "High value opportunity",
+      "confidence": 0.85,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:52.967Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772793494_o121",
+      "type": "plan",
+      "title": "Explain-1782772792938",
+      "rationale": "Strategic planning decision",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "healthGain": 10
+      },
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:53.494Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772793597_1ci9",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": null,
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772793597_0w11"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:53.597Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772793598_wkuc",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772793596_u4e0"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:53.598Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772793624_e5ji",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": null,
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772793623_h7qr"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:53.624Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772793624_mx7q",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772793623_rs3a"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:53.624Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772793701_zcr0",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": null,
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772793700_jil3"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "validated",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:53.701Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772793701_mx2j",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772793700_71sv"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "validated",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:53.701Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772793758_qcyz",
+      "type": "audit",
+      "title": "Self-audit cycle 60: score 100",
+      "rationale": "Autonomous self-audit found 0 issues",
+      "confidence": 0.95,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "autonomous",
+      "domain": "audit",
+      "data": {
+        "id": "audit_1782772793758",
+        "cycle": 60,
+        "findings": [],
+        "score": 100,
+        "at": "2026-06-29T22:39:53.758Z"
+      },
+      "reversible": false,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:53.758Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772793759_6jwm",
+      "type": "execute",
+      "title": "Start experiment: AutoExp-1782772792938",
+      "rationale": "Testing loop efficiency",
+      "confidence": 0.65,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "autonomous",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:53.759Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772793814_pw6r",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772793814_oy19"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:53.814Z",
+      "executedAt": "2026-06-29T22:39:53.878Z",
+      "measuredAt": "2026-06-29T22:39:53.910Z"
+    },
+    {
+      "id": "adec_1782772793815_miko",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772793814_dkcd"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:53.815Z",
+      "executedAt": "2026-06-29T22:39:53.881Z",
+      "measuredAt": "2026-06-29T22:39:53.911Z"
+    },
+    {
+      "id": "adec_1782772793940_e9jp",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772793940_4556"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:53.940Z",
+      "executedAt": "2026-06-29T22:39:53.997Z",
+      "measuredAt": "2026-06-29T22:39:54.026Z"
+    },
+    {
+      "id": "adec_1782772793941_g4ph",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772793940_bnsa"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:53.941Z",
+      "executedAt": "2026-06-29T22:39:54.000Z",
+      "measuredAt": "2026-06-29T22:39:54.026Z"
+    },
+    {
+      "id": "adec_1782772794058_tlxd",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772794057_yk63"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:54.058Z",
+      "executedAt": "2026-06-29T22:39:54.111Z",
+      "measuredAt": "2026-06-29T22:39:54.140Z"
+    },
+    {
+      "id": "adec_1782772794059_iz2k",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772794057_diw6"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:54.059Z",
+      "executedAt": "2026-06-29T22:39:54.114Z",
+      "measuredAt": "2026-06-29T22:39:54.140Z"
+    },
+    {
+      "id": "adec_1782772794168_5lh9",
+      "type": "recover",
+      "title": "Autonomous recovery triggered: test_recovery",
+      "rationale": "test_recovery",
+      "confidence": 0.9,
+      "expectedImpact": {
+        "targetHealthScore": 70
+      },
+      "actualImpact": {
+        "actions": [
+          "executive_recovery",
+          "risks_resolved",
+          "civ_report"
+        ]
+      },
+      "layer": "autonomous",
+      "domain": "recovery",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "Recovery triggered: test_recovery. Actions: executive_recovery, risks_resolved, civ_report"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:54.168Z",
+      "executedAt": null,
+      "measuredAt": "2026-06-29T22:39:54.210Z"
+    },
+    {
+      "id": "adec_1782772794509_qjry",
+      "type": "observe",
+      "title": "Org lifecycle check",
+      "rationale": "All organizations healthy — no retirement needed this tick",
+      "confidence": 0.8,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "autonomous",
+      "domain": "org_lifecycle",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:54.509Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772794510_pc21",
+      "type": "execute",
+      "title": "Start experiment: Auto experiment 1782772794510",
+      "rationale": "Autonomous tick frequency optimization",
+      "confidence": 0.6,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "civilization",
+      "domain": "autonomous",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:54.510Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772794569_if86",
+      "type": "audit",
+      "title": "Self-audit cycle 63: score 100",
+      "rationale": "Autonomous self-audit found 0 issues",
+      "confidence": 0.95,
+      "expectedImpact": {},
+      "actualImpact": null,
+      "layer": "autonomous",
+      "domain": "audit",
+      "data": {
+        "id": "audit_1782772794569",
+        "cycle": 63,
+        "findings": [],
+        "score": 100,
+        "at": "2026-06-29T22:39:54.569Z"
+      },
+      "reversible": false,
+      "approved": true,
+      "status": "pending",
+      "lessons": [],
+      "outcome": null,
+      "decidedAt": "2026-06-29T22:39:54.569Z",
+      "executedAt": null,
+      "measuredAt": null
+    },
+    {
+      "id": "adec_1782772794626_cr99",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772794625_2ouy"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:54.626Z",
+      "executedAt": "2026-06-29T22:39:54.684Z",
+      "measuredAt": "2026-06-29T22:39:54.982Z"
+    },
+    {
+      "id": "adec_1782772794626_nutw",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772794625_pq7o"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:54.626Z",
+      "executedAt": "2026-06-29T22:39:54.687Z",
+      "measuredAt": "2026-06-29T22:39:54.983Z"
+    },
+    {
+      "id": "adec_1782772794857_evn7",
+      "type": "learn",
+      "title": "Learn-1782772792938",
+      "rationale": "Cross-layer feedback",
+      "confidence": 0.75,
+      "expectedImpact": {},
+      "actualImpact": {},
+      "layer": "civilization",
+      "domain": "general",
+      "data": {},
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "Cross-layer integration verified"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:54.857Z",
+      "executedAt": null,
+      "measuredAt": "2026-06-29T22:39:54.858Z"
+    },
+    {
+      "id": "adec_1782772794896_p9hk",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772794895_l01m"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:54.896Z",
+      "executedAt": "2026-06-29T22:39:54.955Z",
+      "measuredAt": "2026-06-29T22:39:55.010Z"
+    },
+    {
+      "id": "adec_1782772794896_usiu",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772794895_xrey"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:54.896Z",
+      "executedAt": "2026-06-29T22:39:54.957Z",
+      "measuredAt": "2026-06-29T22:39:55.011Z"
+    },
+    {
+      "id": "adec_1782772795046_5ayr",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772795046_q3i0"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:55.046Z",
+      "executedAt": "2026-06-29T22:39:55.099Z",
+      "measuredAt": "2026-06-29T22:39:55.127Z"
+    },
+    {
+      "id": "adec_1782772795047_y6fo",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772795046_myna"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:55.047Z",
+      "executedAt": "2026-06-29T22:39:55.102Z",
+      "measuredAt": "2026-06-29T22:39:55.128Z"
+    },
+    {
+      "id": "adec_1782772795160_wd1i",
+      "type": "plan",
+      "title": "Act on: Route 50 open ecosystem missions",
+      "rationale": "Route 50 open ecosystem missions",
+      "confidence": 0.75,
+      "expectedImpact": {
+        "value": 2500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "ecosystem",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772795160_pey3"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.75"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:55.160Z",
+      "executedAt": "2026-06-29T22:39:55.215Z",
+      "measuredAt": "2026-06-29T22:39:55.243Z"
+    },
+    {
+      "id": "adec_1782772795161_0qbo",
+      "type": "plan",
+      "title": "Act on: Assign 5 pending civilization missions",
+      "rationale": "Assign 5 pending civilization missions",
+      "confidence": 0.8,
+      "expectedImpact": {
+        "value": 500,
+        "domain": "missions"
+      },
+      "actualImpact": {
+        "healthScore": 93,
+        "outcome": "success",
+        "error": null
+      },
+      "layer": "civilization",
+      "domain": "missions",
+      "data": {
+        "opportunityId": "aopp_1782772795159_fozp"
+      },
+      "reversible": true,
+      "approved": true,
+      "status": "succeeded",
+      "lessons": [
+        "plan action succeeded in missions with confidence 0.8"
+      ],
+      "outcome": "success",
+      "decidedAt": "2026-06-29T22:39:55.161Z",
+      "executedAt": "2026-06-29T22:39:55.218Z",
+      "measuredAt": "2026-06-29T22:39:55.243Z"
     }
   ],
-  "totalDecisions": 81
+  "totalDecisions": 193
 }

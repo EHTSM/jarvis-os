@@ -1,0 +1,1085 @@
+{
+  "capabilities": {
+    "code": [
+      "org_engineering"
+    ],
+    "architecture": [
+      "org_engineering",
+      "org_product"
+    ],
+    "review": [
+      "org_engineering"
+    ],
+    "testing": [
+      "org_engineering"
+    ],
+    "deployment": [
+      "org_engineering"
+    ],
+    "crm": [
+      "org_business"
+    ],
+    "sales": [
+      "org_business"
+    ],
+    "marketing": [
+      "org_business"
+    ],
+    "operations": [
+      "org_business"
+    ],
+    "revenue": [
+      "org_business"
+    ],
+    "research": [
+      "org_knowledge"
+    ],
+    "indexing": [
+      "org_knowledge"
+    ],
+    "recall": [
+      "org_knowledge"
+    ],
+    "federation": [
+      "org_knowledge",
+      "org_civilization"
+    ],
+    "learning": [
+      "org_knowledge"
+    ],
+    "pattern_discovery": [
+      "org_evolution"
+    ],
+    "self_improvement": [
+      "org_evolution"
+    ],
+    "optimization": [
+      "org_evolution",
+      "org_infrastructure"
+    ],
+    "evolution": [
+      "org_evolution"
+    ],
+    "strategy": [
+      "org_executive"
+    ],
+    "planning": [
+      "org_executive",
+      "org_product",
+      "org_infrastructure"
+    ],
+    "coordination": [
+      "org_executive"
+    ],
+    "reporting": [
+      "org_executive"
+    ],
+    "decisions": [
+      "org_executive"
+    ],
+    "governance": [
+      "org_enterprise"
+    ],
+    "compliance": [
+      "org_enterprise"
+    ],
+    "audit": [
+      "org_enterprise"
+    ],
+    "companies": [
+      "org_enterprise"
+    ],
+    "products": [
+      "org_enterprise"
+    ],
+    "customers": [
+      "org_enterprise"
+    ],
+    "marketplace": [
+      "org_ecosystem"
+    ],
+    "multi_tenant": [
+      "org_ecosystem"
+    ],
+    "developer_platform": [
+      "org_ecosystem"
+    ],
+    "trust": [
+      "org_ecosystem"
+    ],
+    "council": [
+      "org_civilization"
+    ],
+    "diplomacy": [
+      "org_civilization"
+    ],
+    "economy": [
+      "org_civilization",
+      "org_marketplace"
+    ],
+    "innovation": [
+      "org_civilization"
+    ],
+    "ooda": [
+      "org_autonomous"
+    ],
+    "control_surfaces": [
+      "org_autonomous"
+    ],
+    "decision_ledger": [
+      "org_autonomous"
+    ],
+    "experiment": [
+      "org_autonomous"
+    ],
+    "org_registry": [
+      "org_platform_omega"
+    ],
+    "blueprint": [
+      "org_platform_omega",
+      "org_company"
+    ],
+    "deploy": [
+      "org_platform_omega"
+    ],
+    "clone": [
+      "org_platform_omega"
+    ],
+    "SDK": [
+      "org_platform_omega"
+    ],
+    "simulate": [
+      "org_platform_omega"
+    ],
+    "journey": [
+      "org_customer"
+    ],
+    "health": [
+      "org_customer",
+      "org_infrastructure"
+    ],
+    "success": [
+      "org_customer"
+    ],
+    "support": [
+      "org_customer"
+    ],
+    "automation": [
+      "org_customer"
+    ],
+    "assembly": [
+      "org_product"
+    ],
+    "validation": [
+      "org_product"
+    ],
+    "release": [
+      "org_product"
+    ],
+    "company_creation": [
+      "org_company"
+    ],
+    "workspace": [
+      "org_company"
+    ],
+    "lifecycle": [
+      "org_company"
+    ],
+    "catalog": [
+      "org_marketplace"
+    ],
+    "recommendation": [
+      "org_marketplace"
+    ],
+    "certification": [
+      "org_marketplace"
+    ],
+    "experiments": [
+      "org_research"
+    ],
+    "publications": [
+      "org_research"
+    ],
+    "benchmarks": [
+      "org_research"
+    ],
+    "knowledge": [
+      "org_research"
+    ],
+    "registry": [
+      "org_infrastructure"
+    ],
+    "recovery": [
+      "org_infrastructure"
+    ],
+    "quantum_research": [
+      "org_1782754785880_trfz",
+      "org_1782773167928_722t"
+    ],
+    "hypothesis_generation": [
+      "org_1782754785880_trfz",
+      "org_1782773167928_722t"
+    ],
+    "ai_experimentation": [
+      "org_1782754785880_trfz",
+      "org_1782773167928_722t"
+    ]
+  },
+  "events": [
+    {
+      "id": "cap_1782754785193_vhqq",
+      "type": "capability_discovered",
+      "cap": "code",
+      "orgs": [
+        "org_engineering"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_35o6",
+      "type": "capability_discovered",
+      "cap": "architecture",
+      "orgs": [
+        "org_engineering",
+        "org_product"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_qrro",
+      "type": "capability_discovered",
+      "cap": "review",
+      "orgs": [
+        "org_engineering"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_3z4e",
+      "type": "capability_discovered",
+      "cap": "testing",
+      "orgs": [
+        "org_engineering"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_iwqz",
+      "type": "capability_discovered",
+      "cap": "deployment",
+      "orgs": [
+        "org_engineering"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_4ihu",
+      "type": "capability_discovered",
+      "cap": "crm",
+      "orgs": [
+        "org_business"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_4ppt",
+      "type": "capability_discovered",
+      "cap": "sales",
+      "orgs": [
+        "org_business"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_2d3z",
+      "type": "capability_discovered",
+      "cap": "marketing",
+      "orgs": [
+        "org_business"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_f2ke",
+      "type": "capability_discovered",
+      "cap": "operations",
+      "orgs": [
+        "org_business"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_2b4z",
+      "type": "capability_discovered",
+      "cap": "revenue",
+      "orgs": [
+        "org_business"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_9ioi",
+      "type": "capability_discovered",
+      "cap": "research",
+      "orgs": [
+        "org_knowledge"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_husz",
+      "type": "capability_discovered",
+      "cap": "indexing",
+      "orgs": [
+        "org_knowledge"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_354k",
+      "type": "capability_discovered",
+      "cap": "recall",
+      "orgs": [
+        "org_knowledge"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_w14x",
+      "type": "capability_discovered",
+      "cap": "federation",
+      "orgs": [
+        "org_knowledge",
+        "org_civilization"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_6f3x",
+      "type": "capability_discovered",
+      "cap": "learning",
+      "orgs": [
+        "org_knowledge"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_bong",
+      "type": "capability_discovered",
+      "cap": "pattern_discovery",
+      "orgs": [
+        "org_evolution"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_jeyo",
+      "type": "capability_discovered",
+      "cap": "self_improvement",
+      "orgs": [
+        "org_evolution"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_4dmb",
+      "type": "capability_discovered",
+      "cap": "optimization",
+      "orgs": [
+        "org_evolution",
+        "org_infrastructure"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_hpbg",
+      "type": "capability_discovered",
+      "cap": "evolution",
+      "orgs": [
+        "org_evolution"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_01nc",
+      "type": "capability_discovered",
+      "cap": "strategy",
+      "orgs": [
+        "org_executive"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_npux",
+      "type": "capability_discovered",
+      "cap": "planning",
+      "orgs": [
+        "org_executive",
+        "org_product",
+        "org_infrastructure"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_0m8c",
+      "type": "capability_discovered",
+      "cap": "coordination",
+      "orgs": [
+        "org_executive"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_aclm",
+      "type": "capability_discovered",
+      "cap": "reporting",
+      "orgs": [
+        "org_executive"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_ubzt",
+      "type": "capability_discovered",
+      "cap": "decisions",
+      "orgs": [
+        "org_executive"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_tclw",
+      "type": "capability_discovered",
+      "cap": "governance",
+      "orgs": [
+        "org_enterprise"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_jv8a",
+      "type": "capability_discovered",
+      "cap": "compliance",
+      "orgs": [
+        "org_enterprise"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_vx2y",
+      "type": "capability_discovered",
+      "cap": "audit",
+      "orgs": [
+        "org_enterprise"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_3rrg",
+      "type": "capability_discovered",
+      "cap": "companies",
+      "orgs": [
+        "org_enterprise"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_mpyj",
+      "type": "capability_discovered",
+      "cap": "products",
+      "orgs": [
+        "org_enterprise"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_liyy",
+      "type": "capability_discovered",
+      "cap": "customers",
+      "orgs": [
+        "org_enterprise"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_3s1b",
+      "type": "capability_discovered",
+      "cap": "marketplace",
+      "orgs": [
+        "org_ecosystem"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_8pdj",
+      "type": "capability_discovered",
+      "cap": "multi_tenant",
+      "orgs": [
+        "org_ecosystem"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_6n8m",
+      "type": "capability_discovered",
+      "cap": "developer_platform",
+      "orgs": [
+        "org_ecosystem"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_5c3q",
+      "type": "capability_discovered",
+      "cap": "trust",
+      "orgs": [
+        "org_ecosystem"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_l511",
+      "type": "capability_discovered",
+      "cap": "council",
+      "orgs": [
+        "org_civilization"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_fu14",
+      "type": "capability_discovered",
+      "cap": "diplomacy",
+      "orgs": [
+        "org_civilization"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_3y88",
+      "type": "capability_discovered",
+      "cap": "economy",
+      "orgs": [
+        "org_civilization",
+        "org_marketplace"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_apgc",
+      "type": "capability_discovered",
+      "cap": "innovation",
+      "orgs": [
+        "org_civilization"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_fmnm",
+      "type": "capability_discovered",
+      "cap": "ooda",
+      "orgs": [
+        "org_autonomous"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_0opb",
+      "type": "capability_discovered",
+      "cap": "control_surfaces",
+      "orgs": [
+        "org_autonomous"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_v0mw",
+      "type": "capability_discovered",
+      "cap": "decision_ledger",
+      "orgs": [
+        "org_autonomous"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_6yc0",
+      "type": "capability_discovered",
+      "cap": "experiment",
+      "orgs": [
+        "org_autonomous"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_lstr",
+      "type": "capability_discovered",
+      "cap": "org_registry",
+      "orgs": [
+        "org_platform_omega"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_e3h5",
+      "type": "capability_discovered",
+      "cap": "blueprint",
+      "orgs": [
+        "org_platform_omega",
+        "org_company"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_khtd",
+      "type": "capability_discovered",
+      "cap": "deploy",
+      "orgs": [
+        "org_platform_omega"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_36vi",
+      "type": "capability_discovered",
+      "cap": "clone",
+      "orgs": [
+        "org_platform_omega"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_q2q4",
+      "type": "capability_discovered",
+      "cap": "SDK",
+      "orgs": [
+        "org_platform_omega"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_ojig",
+      "type": "capability_discovered",
+      "cap": "simulate",
+      "orgs": [
+        "org_platform_omega"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_vtze",
+      "type": "capability_discovered",
+      "cap": "journey",
+      "orgs": [
+        "org_customer"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_tjfx",
+      "type": "capability_discovered",
+      "cap": "health",
+      "orgs": [
+        "org_customer",
+        "org_infrastructure"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_ghc5",
+      "type": "capability_discovered",
+      "cap": "success",
+      "orgs": [
+        "org_customer"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_jejg",
+      "type": "capability_discovered",
+      "cap": "support",
+      "orgs": [
+        "org_customer"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_vu72",
+      "type": "capability_discovered",
+      "cap": "automation",
+      "orgs": [
+        "org_customer"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_v1w8",
+      "type": "capability_discovered",
+      "cap": "assembly",
+      "orgs": [
+        "org_product"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_yuj9",
+      "type": "capability_discovered",
+      "cap": "validation",
+      "orgs": [
+        "org_product"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_elh2",
+      "type": "capability_discovered",
+      "cap": "release",
+      "orgs": [
+        "org_product"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_f9r6",
+      "type": "capability_discovered",
+      "cap": "company_creation",
+      "orgs": [
+        "org_company"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_nukr",
+      "type": "capability_discovered",
+      "cap": "workspace",
+      "orgs": [
+        "org_company"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_mzk3",
+      "type": "capability_discovered",
+      "cap": "lifecycle",
+      "orgs": [
+        "org_company"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_ek8l",
+      "type": "capability_discovered",
+      "cap": "catalog",
+      "orgs": [
+        "org_marketplace"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_mjcj",
+      "type": "capability_discovered",
+      "cap": "recommendation",
+      "orgs": [
+        "org_marketplace"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_ph79",
+      "type": "capability_discovered",
+      "cap": "certification",
+      "orgs": [
+        "org_marketplace"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_y3oa",
+      "type": "capability_discovered",
+      "cap": "experiments",
+      "orgs": [
+        "org_research"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_t43y",
+      "type": "capability_discovered",
+      "cap": "publications",
+      "orgs": [
+        "org_research"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_icmp",
+      "type": "capability_discovered",
+      "cap": "benchmarks",
+      "orgs": [
+        "org_research"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_iv3s",
+      "type": "capability_discovered",
+      "cap": "knowledge",
+      "orgs": [
+        "org_research"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_s9u1",
+      "type": "capability_discovered",
+      "cap": "registry",
+      "orgs": [
+        "org_infrastructure"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785193_l0vv",
+      "type": "capability_discovered",
+      "cap": "recovery",
+      "orgs": [
+        "org_infrastructure"
+      ],
+      "ts": "2026-06-29T17:39:45.193Z"
+    },
+    {
+      "id": "cap_1782754785194_qmf1",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "write code and deploy",
+      "score": 130,
+      "ts": "2026-06-29T17:39:45.194Z"
+    },
+    {
+      "id": "cap_1782754785195_97pc",
+      "type": "best_org_matched",
+      "orgId": "org_knowledge",
+      "score": 130,
+      "ts": "2026-06-29T17:39:45.195Z"
+    },
+    {
+      "id": "cap_1782754785195_2cn6",
+      "type": "best_org_matched",
+      "orgId": "org_executive",
+      "goal": "strategic planning",
+      "score": 120,
+      "ts": "2026-06-29T17:39:45.195Z"
+    },
+    {
+      "id": "cap_1782754785195_leh6",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "code review",
+      "score": 130,
+      "ts": "2026-06-29T17:39:45.195Z"
+    },
+    {
+      "id": "cap_1782754785879_7i1d",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "deploy software to production",
+      "score": 120,
+      "ts": "2026-06-29T17:39:45.879Z"
+    },
+    {
+      "id": "cap_1782754785880_2bwd",
+      "type": "best_org_matched",
+      "orgId": "org_business",
+      "goal": "grow revenue and manage sales pipeline",
+      "score": 130,
+      "ts": "2026-06-29T17:39:45.880Z"
+    },
+    {
+      "id": "cap_1782754785881_zqcg",
+      "type": "capability_discovered",
+      "cap": "quantum_research",
+      "orgs": [
+        "org_1782754785880_trfz"
+      ],
+      "ts": "2026-06-29T17:39:45.881Z"
+    },
+    {
+      "id": "cap_1782754785881_cllq",
+      "type": "capability_discovered",
+      "cap": "hypothesis_generation",
+      "orgs": [
+        "org_1782754785880_trfz"
+      ],
+      "ts": "2026-06-29T17:39:45.881Z"
+    },
+    {
+      "id": "cap_1782754785881_zuwg",
+      "type": "capability_discovered",
+      "cap": "ai_experimentation",
+      "orgs": [
+        "org_1782754785880_trfz"
+      ],
+      "ts": "2026-06-29T17:39:45.881Z"
+    },
+    {
+      "id": "cap_1782754785881_di9h",
+      "type": "best_org_matched",
+      "orgId": "org_1782754785880_trfz",
+      "score": 125,
+      "ts": "2026-06-29T17:39:45.881Z"
+    },
+    {
+      "id": "cap_1782773167328_e8sg",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "write code and deploy",
+      "score": 130,
+      "ts": "2026-06-29T22:46:07.328Z"
+    },
+    {
+      "id": "cap_1782773167328_1jkz",
+      "type": "best_org_matched",
+      "orgId": "org_knowledge",
+      "score": 130,
+      "ts": "2026-06-29T22:46:07.328Z"
+    },
+    {
+      "id": "cap_1782773167328_gera",
+      "type": "best_org_matched",
+      "orgId": "org_executive",
+      "goal": "strategic planning",
+      "score": 120,
+      "ts": "2026-06-29T22:46:07.328Z"
+    },
+    {
+      "id": "cap_1782773167329_m7qh",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "code review",
+      "score": 130,
+      "ts": "2026-06-29T22:46:07.329Z"
+    },
+    {
+      "id": "cap_1782773167927_a1y2",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "deploy software to production",
+      "score": 120,
+      "ts": "2026-06-29T22:46:07.927Z"
+    },
+    {
+      "id": "cap_1782773167927_bx3t",
+      "type": "best_org_matched",
+      "orgId": "org_business",
+      "goal": "grow revenue and manage sales pipeline",
+      "score": 130,
+      "ts": "2026-06-29T22:46:07.927Z"
+    },
+    {
+      "id": "cap_1782773167929_ocea",
+      "type": "best_org_matched",
+      "orgId": "org_1782754785880_trfz",
+      "score": 125,
+      "ts": "2026-06-29T22:46:07.929Z"
+    }
+  ],
+  "gapDetections": [
+    {
+      "id": "cap_1782754785557_40fi",
+      "category": "code_quality",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T17:39:45.557Z"
+    },
+    {
+      "id": "cap_1782754785557_q4jv",
+      "category": "maintainability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T17:39:45.557Z"
+    },
+    {
+      "id": "cap_1782754785557_c1iw",
+      "category": "reliability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T17:39:45.557Z"
+    },
+    {
+      "id": "cap_1782754785557_2341",
+      "category": "security",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T17:39:45.557Z"
+    },
+    {
+      "id": "cap_1782754785557_5g5u",
+      "category": "scalability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T17:39:45.557Z"
+    },
+    {
+      "id": "cap_1782754785557_9bmr",
+      "category": "performance",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T17:39:45.557Z"
+    },
+    {
+      "id": "cap_1782754785557_dxrp",
+      "category": "overall",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T17:39:45.557Z"
+    },
+    {
+      "id": "cap_1782773167584_dz3h",
+      "category": "code_quality",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T22:46:07.584Z"
+    },
+    {
+      "id": "cap_1782773167584_8pp0",
+      "category": "maintainability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T22:46:07.584Z"
+    },
+    {
+      "id": "cap_1782773167584_mv47",
+      "category": "reliability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T22:46:07.584Z"
+    },
+    {
+      "id": "cap_1782773167584_t7u5",
+      "category": "security",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T22:46:07.584Z"
+    },
+    {
+      "id": "cap_1782773167584_xjw4",
+      "category": "scalability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T22:46:07.584Z"
+    },
+    {
+      "id": "cap_1782773167584_7vdg",
+      "category": "performance",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T22:46:07.584Z"
+    },
+    {
+      "id": "cap_1782773167584_66v4",
+      "category": "overall",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-29T22:46:07.584Z"
+    }
+  ]
+}

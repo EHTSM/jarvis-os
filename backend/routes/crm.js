@@ -77,6 +77,136 @@ router.post("/crm/lead", requireAuth, operatorAudit, (req, res) => {
         return res.status(400).json({ error: "name too long — max 200 characters" });
     if (name !== undefined && typeof name === "string" && name.trim().length > 200)
         return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
+    if (name !== undefined && typeof name === "string" && name.trim().length > 200)
+        return res.status(400).json({ error: "name too long — max 200 characters" });
     const cleanPhone = String(phone).replace(/\D/g, "");
     if (!cleanPhone || cleanPhone.length < 7)
         return res.status(400).json({ error: "Invalid phone number — include country code (e.g. 919876543210)" });

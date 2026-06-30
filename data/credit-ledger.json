@@ -4,7 +4,7 @@
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.719Z"
+      "refreshedAt": "2026-06-29T22:44:40.775Z"
     },
     "premium": {
       "balance": 0,
@@ -17,14 +17,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740898-x4unw",
+        "ts": "2026-06-29T00:09:00.898Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080775-4ocwh",
+        "ts": "2026-06-29T22:44:40.775Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "bench-ui-001": {
     "accountId": "bench-ui-001",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.720Z"
+      "refreshedAt": "2026-06-29T22:44:40.786Z"
     },
     "premium": {
       "balance": 0,
@@ -37,14 +58,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740899-fclg2",
+        "ts": "2026-06-29T00:09:00.899Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080786-24qwf",
+        "ts": "2026-06-29T22:44:40.786Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "bench-cs-001": {
     "accountId": "bench-cs-001",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.722Z"
+      "refreshedAt": "2026-06-29T22:44:40.797Z"
     },
     "premium": {
       "balance": 0,
@@ -57,14 +99,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740901-ar8ie",
+        "ts": "2026-06-29T00:09:00.901Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080797-6dw38",
+        "ts": "2026-06-29T22:44:40.797Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "0f6261c6d5f1be70851f51b3": {
     "accountId": "0f6261c6d5f1be70851f51b3",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.723Z"
+      "refreshedAt": "2026-06-29T22:44:40.587Z"
     },
     "premium": {
       "balance": 0,
@@ -77,14 +140,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740886-zjugd",
+        "ts": "2026-06-29T00:09:00.886Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080588-xtx1p",
+        "ts": "2026-06-29T22:44:40.588Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "4f388cd491bb6ad10d487785": {
     "accountId": "4f388cd491bb6ad10d487785",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.724Z"
+      "refreshedAt": "2026-06-29T22:44:40.600Z"
     },
     "premium": {
       "balance": 0,
@@ -97,14 +181,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740887-9t87q",
+        "ts": "2026-06-29T00:09:00.887Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080600-qn2g8",
+        "ts": "2026-06-29T22:44:40.600Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "cfb5371d05089656446a51f1": {
     "accountId": "cfb5371d05089656446a51f1",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.724Z"
+      "refreshedAt": "2026-06-29T22:44:40.612Z"
     },
     "premium": {
       "balance": 0,
@@ -117,14 +222,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740888-n9fgp",
+        "ts": "2026-06-29T00:09:00.888Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080612-hxpev",
+        "ts": "2026-06-29T22:44:40.612Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "3be3eacb69aae016c87149e7": {
     "accountId": "3be3eacb69aae016c87149e7",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.724Z"
+      "refreshedAt": "2026-06-29T22:44:40.624Z"
     },
     "premium": {
       "balance": 0,
@@ -137,14 +263,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740889-334bt",
+        "ts": "2026-06-29T00:09:00.889Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080624-ms3gf",
+        "ts": "2026-06-29T22:44:40.624Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "7a217c74881271d4f47ec0fe": {
     "accountId": "7a217c74881271d4f47ec0fe",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.724Z"
+      "refreshedAt": "2026-06-29T22:44:40.639Z"
     },
     "premium": {
       "balance": 0,
@@ -157,14 +304,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740889-n8t9l",
+        "ts": "2026-06-29T00:09:00.889Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080639-gre0x",
+        "ts": "2026-06-29T22:44:40.639Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "e663aec55ab9e90978aa95ac": {
     "accountId": "e663aec55ab9e90978aa95ac",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.725Z"
+      "refreshedAt": "2026-06-29T22:44:40.651Z"
     },
     "premium": {
       "balance": 0,
@@ -177,14 +345,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740890-wgh1g",
+        "ts": "2026-06-29T00:09:00.890Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080651-2cbbs",
+        "ts": "2026-06-29T22:44:40.651Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "8e9bef3af00e4f7c0bafb4cb": {
     "accountId": "8e9bef3af00e4f7c0bafb4cb",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.725Z"
+      "refreshedAt": "2026-06-29T22:44:40.662Z"
     },
     "premium": {
       "balance": 0,
@@ -197,14 +386,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740890-trqii",
+        "ts": "2026-06-29T00:09:00.890Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080662-r67fs",
+        "ts": "2026-06-29T22:44:40.662Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "e5d97b2d12d49672c324ccb0": {
     "accountId": "e5d97b2d12d49672c324ccb0",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.725Z"
+      "refreshedAt": "2026-06-29T22:44:40.677Z"
     },
     "premium": {
       "balance": 0,
@@ -217,14 +427,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740891-olspx",
+        "ts": "2026-06-29T00:09:00.891Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080677-8yvnc",
+        "ts": "2026-06-29T22:44:40.677Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "c717d112b120f37018f5bfec": {
     "accountId": "c717d112b120f37018f5bfec",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.726Z"
+      "refreshedAt": "2026-06-29T22:44:40.688Z"
     },
     "premium": {
       "balance": 0,
@@ -237,14 +468,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740892-tylv5",
+        "ts": "2026-06-29T00:09:00.892Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080688-vk6v8",
+        "ts": "2026-06-29T22:44:40.688Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "7b0ec48b627f93096a25fb4e": {
     "accountId": "7b0ec48b627f93096a25fb4e",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.726Z"
+      "refreshedAt": "2026-06-29T22:44:40.704Z"
     },
     "premium": {
       "balance": 0,
@@ -257,14 +509,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740893-zorga",
+        "ts": "2026-06-29T00:09:00.893Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080704-x4mlj",
+        "ts": "2026-06-29T22:44:40.704Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "5b10a57a22dbf3ef057aaa8b": {
     "accountId": "5b10a57a22dbf3ef057aaa8b",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.726Z"
+      "refreshedAt": "2026-06-29T22:44:40.715Z"
     },
     "premium": {
       "balance": 0,
@@ -277,14 +550,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740893-jhupu",
+        "ts": "2026-06-29T00:09:00.893Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080715-ntbri",
+        "ts": "2026-06-29T22:44:40.715Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "3de4f158b5eecb25d125efbd": {
     "accountId": "3de4f158b5eecb25d125efbd",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.727Z"
+      "refreshedAt": "2026-06-29T22:44:40.726Z"
     },
     "premium": {
       "balance": 0,
@@ -297,14 +591,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740894-kvomc",
+        "ts": "2026-06-29T00:09:00.894Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080726-ew9w4",
+        "ts": "2026-06-29T22:44:40.726Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "b27c822abfecb157094a5229": {
     "accountId": "b27c822abfecb157094a5229",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.727Z"
+      "refreshedAt": "2026-06-29T22:44:40.737Z"
     },
     "premium": {
       "balance": 0,
@@ -317,14 +632,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740895-2yna3",
+        "ts": "2026-06-29T00:09:00.895Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080737-vtalx",
+        "ts": "2026-06-29T22:44:40.737Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "c15c7dd28f2d8600d1c566d6": {
     "accountId": "c15c7dd28f2d8600d1c566d6",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.728Z"
+      "refreshedAt": "2026-06-29T22:44:40.748Z"
     },
     "premium": {
       "balance": 0,
@@ -337,14 +673,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740895-lb25n",
+        "ts": "2026-06-29T00:09:00.895Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080748-ptlmg",
+        "ts": "2026-06-29T22:44:40.748Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "acc-test": {
     "accountId": "acc-test",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.728Z"
+      "refreshedAt": "2026-06-29T22:44:40.759Z"
     },
     "premium": {
       "balance": 0,
@@ -357,14 +714,35 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740897-2wvi7",
+        "ts": "2026-06-29T00:09:00.897Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080759-eh66n",
+        "ts": "2026-06-29T22:44:40.759Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "bench-cp-001": {
     "accountId": "bench-cp-001",
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:22.730Z"
+      "refreshedAt": "2026-06-29T22:44:40.808Z"
     },
     "premium": {
       "balance": 0,
@@ -377,7 +755,28 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740902-9shqq",
+        "ts": "2026-06-29T00:09:00.902Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080808-6lu1n",
+        "ts": "2026-06-29T22:44:40.808Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   },
   "bench-cv-001": {
     "accountId": "bench-cv-001",
@@ -424,7 +823,7 @@
     "free": {
       "balance": 20,
       "dailyLimit": 20,
-      "refreshedAt": "2026-06-20T19:51:32.654Z"
+      "refreshedAt": "2026-06-29T22:44:40.819Z"
     },
     "premium": {
       "balance": 0,
@@ -437,6 +836,647 @@
     "local": {
       "enabled": false
     },
-    "transactions": []
+    "transactions": [
+      {
+        "id": "cr-1782691740903-ft2tx",
+        "ts": "2026-06-29T00:09:00.903Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      },
+      {
+        "id": "cr-1782773080819-h44yx",
+        "ts": "2026-06-29T22:44:40.819Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "919999999999": {
+    "accountId": "919999999999",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:41.843Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773081843-4x21e",
+        "ts": "2026-06-29T22:44:41.843Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "919582010431": {
+    "accountId": "919582010431",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:41.854Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773081854-1d8p6",
+        "ts": "2026-06-29T22:44:41.854Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "91XXXXXXXXXX": {
+    "accountId": "91XXXXXXXXXX",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:41.865Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773081865-48ao8",
+        "ts": "2026-06-29T22:44:41.865Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "919000000001": {
+    "accountId": "919000000001",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:41.876Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773081876-086is",
+        "ts": "2026-06-29T22:44:41.876Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "919999000001": {
+    "accountId": "919999000001",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:41.887Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773081887-m46ce",
+        "ts": "2026-06-29T22:44:41.887Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "911234567890": {
+    "accountId": "911234567890",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:41.899Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773081899-6fbzm",
+        "ts": "2026-06-29T22:44:41.899Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "919000000002": {
+    "accountId": "919000000002",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:41.911Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773081911-tc1t6",
+        "ts": "2026-06-29T22:44:41.911Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "919988776655": {
+    "accountId": "919988776655",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:41.927Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773081927-3ppx7",
+        "ts": "2026-06-29T22:44:41.927Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "predict_test": {
+    "accountId": "predict_test",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:42.018Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773082018-5qrhe",
+        "ts": "2026-06-29T22:44:42.018Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "test_plan_cid": {
+    "accountId": "test_plan_cid",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:42.033Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773082033-lkrrt",
+        "ts": "2026-06-29T22:44:42.033Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "support_test_1": {
+    "accountId": "support_test_1",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:42.064Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773082064-1dria",
+        "ts": "2026-06-29T22:44:42.064Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "support_test_2": {
+    "accountId": "support_test_2",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:42.087Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773082087-x47df",
+        "ts": "2026-06-29T22:44:42.087Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "support_test_3": {
+    "accountId": "support_test_3",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:42.102Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773082102-rbma0",
+        "ts": "2026-06-29T22:44:42.102Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "escalation_test": {
+    "accountId": "escalation_test",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:42.119Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773082119-op11v",
+        "ts": "2026-06-29T22:44:42.119Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "resolve_test": {
+    "accountId": "resolve_test",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:42.132Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773082132-epbqd",
+        "ts": "2026-06-29T22:44:42.132Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "get_test": {
+    "accountId": "get_test",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:42.144Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773082144-2iaqh",
+        "ts": "2026-06-29T22:44:42.144Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "list_tickets_test": {
+    "accountId": "list_tickets_test",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:42.159Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773082159-i3bhj",
+        "ts": "2026-06-29T22:44:42.159Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "renewal_pipeline_test": {
+    "accountId": "renewal_pipeline_test",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:43.761Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773083761-86thr",
+        "ts": "2026-06-29T22:44:43.761Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "expansion_pipeline_test": {
+    "accountId": "expansion_pipeline_test",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:43.773Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773083773-sw9mg",
+        "ts": "2026-06-29T22:44:43.773Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
+  },
+  "ms_support_test": {
+    "accountId": "ms_support_test",
+    "free": {
+      "balance": 20,
+      "dailyLimit": 20,
+      "refreshedAt": "2026-06-29T22:44:43.784Z"
+    },
+    "premium": {
+      "balance": 0,
+      "expiresAt": null
+    },
+    "byok": {
+      "enabled": false,
+      "key_hash": null
+    },
+    "local": {
+      "enabled": false
+    },
+    "transactions": [
+      {
+        "id": "cr-1782773083784-vxmcu",
+        "ts": "2026-06-29T22:44:43.784Z",
+        "type": "refresh",
+        "creditType": "free",
+        "amount": 20,
+        "reason": "daily_refresh",
+        "missionId": null,
+        "provider": null
+      }
+    ]
   }
 }

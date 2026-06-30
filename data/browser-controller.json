@@ -604,6 +604,39 @@
       "openedAt": "2026-06-28T20:18:02.367Z",
       "closedAt": null,
       "title": null
+    },
+    "bc_1782778331001_lwi": {
+      "tabId": "bc_1782778331001_lwi",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "browserName": "Google Chrome",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-06-30T00:12:11.001Z",
+      "closedAt": null,
+      "title": null
+    },
+    "bc_1782778331005_yno": {
+      "tabId": "bc_1782778331005_yno",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "closed",
+      "openedAt": "2026-06-30T00:12:11.005Z",
+      "closedAt": "2026-06-30T00:12:11.006Z",
+      "title": null
+    },
+    "bc_1782778350310_owz": {
+      "tabId": "bc_1782778350310_owz",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-06-30T00:12:30.310Z",
+      "closedAt": null,
+      "title": null
     }
   },
   "history": [
@@ -1555,13 +1588,122 @@
       "url": "https://facade.example.com",
       "browserId": "playwright_chromium",
       "ts": "2026-06-28T20:18:02.367Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "screenshot homepage"
+          }
+        ],
+        "context": "mesh_1782686972741"
+      },
+      "ts": "2026-06-28T22:49:32.746Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "take screenshot of homepage"
+          }
+        ],
+        "context": "mesh_1782686972786_ksta"
+      },
+      "ts": "2026-06-28T22:49:32.788Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "check for errors"
+          }
+        ],
+        "context": "mesh_1782686972786_ksta"
+      },
+      "ts": "2026-06-28T22:49:32.792Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "open browser"
+          }
+        ],
+        "context": "mesh_1782686972829_jkop"
+      },
+      "ts": "2026-06-28T22:49:32.831Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "screenshot"
+          }
+        ],
+        "context": "mesh_1782686972829_jkop"
+      },
+      "ts": "2026-06-28T22:49:32.835Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782778331001_lwi",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "ts": "2026-06-30T00:12:11.002Z"
+    },
+    {
+      "event": "switch_tab",
+      "tabId": "bc_1782778331001_lwi",
+      "url": "https://example.com",
+      "ts": "2026-06-30T00:12:11.004Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782778331005_yno",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-06-30T00:12:11.005Z"
+    },
+    {
+      "event": "close_tab",
+      "tabId": "bc_1782778331005_yno",
+      "ts": "2026-06-30T00:12:11.006Z"
+    },
+    {
+      "event": "inspect_page",
+      "tabId": "bc_1782778331001_lwi",
+      "query": "test query",
+      "ts": "2026-06-30T00:12:11.008Z"
+    },
+    {
+      "event": "authenticate",
+      "service": "github",
+      "profileId": "default",
+      "ts": "2026-06-30T00:12:11.999Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": "Click Pay now and confirm payment",
+      "ts": "2026-06-30T00:12:12.002Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782778350310_owz",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-06-30T00:12:30.310Z"
     }
   ],
   "stats": {
-    "openTabs": 55,
-    "closedTabs": 18,
+    "openTabs": 58,
+    "closedTabs": 19,
     "screenshots": 108,
-    "workflows": 23,
-    "authentications": 18
+    "workflows": 29,
+    "authentications": 19
   }
 }

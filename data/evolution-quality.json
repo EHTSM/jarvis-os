@@ -1,0 +1,2856 @@
+{
+  "scores": [
+    {
+      "id": "eq_1782691283225_0316",
+      "context": "quality_test_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.225Z"
+    },
+    {
+      "id": "eq_1782691283239_x22m",
+      "context": "current_evolution",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.239Z"
+    },
+    {
+      "id": "eq_1782691283286_8umu",
+      "context": "impr_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.286Z"
+    },
+    {
+      "id": "eq_1782691283299_f9yh",
+      "context": "top3_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.299Z"
+    },
+    {
+      "id": "eq_1782691283312_n50u",
+      "context": "id_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.312Z"
+    },
+    {
+      "id": "eq_1782691283326_l5bz",
+      "context": "hist_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.326Z"
+    },
+    {
+      "id": "eq_1782691283337_fsol",
+      "context": "filter_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.337Z"
+    },
+    {
+      "id": "eq_1782691283349_ry3r",
+      "context": "trend_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.349Z"
+    },
+    {
+      "id": "eq_1782691283375_0rmy",
+      "context": "stats_evo_ctx",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.375Z"
+    },
+    {
+      "id": "eq_1782691283388_gkq8",
+      "context": "bm_evo_test",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.388Z"
+    },
+    {
+      "id": "eq_1782691283400_he0o",
+      "context": "bl_evo_test",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.400Z"
+    },
+    {
+      "id": "eq_1782691283428_5ey8",
+      "context": "get_bm_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.428Z"
+    },
+    {
+      "id": "eq_1782691283654_n4y6",
+      "context": "debt_evo_ctx",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.654Z"
+    },
+    {
+      "id": "eq_1782691283669_wdfv",
+      "context": "trend_evo_cycle",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.670Z"
+    },
+    {
+      "id": "eq_1782691283864_ndwg",
+      "context": "chain_evo_bm",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.864Z"
+    },
+    {
+      "id": "eq_1782691283876_ehbc",
+      "context": "view_pipeline_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.876Z"
+    },
+    {
+      "id": "eq_1782691283951_kqbe",
+      "context": "debt_pipeline_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.951Z"
+    },
+    {
+      "id": "eq_1782691283999_qohw",
+      "context": "summary_seed_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:23.999Z"
+    },
+    {
+      "id": "eq_1782691284011_w0c1",
+      "context": "trend_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:24.011Z"
+    },
+    {
+      "id": "eq_1782691284022_dob2",
+      "context": "chain_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T00:01:24.022Z"
+    },
+    {
+      "id": "eq_1782691284035_jraq",
+      "context": "bm_evo_test",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:24.035Z"
+    },
+    {
+      "id": "eq_1782691284049_0bjl",
+      "context": "trend_evo_cycle",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:24.049Z"
+    },
+    {
+      "id": "eq_1782691284061_ujwc",
+      "context": "pipeline_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T00:01:24.061Z"
+    },
+    {
+      "id": "eq_1782691284075_57ek",
+      "context": "chain_evo_bm",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T00:01:24.075Z"
+    },
+    {
+      "id": "eq_1782691284117_2jv8",
+      "context": "current_evolution",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T00:01:24.117Z"
+    },
+    {
+      "id": "eq_1782691284129_9af1",
+      "context": "get_cycle_evo_direct",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T00:01:24.129Z"
+    },
+    {
+      "id": "eq_1782691284140_67eg",
+      "context": "list_evo_1782691283584",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T00:01:24.140Z"
+    },
+    {
+      "id": "eq_1782691284151_aiz4",
+      "context": "status_seed_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T00:01:24.151Z"
+    },
+    {
+      "id": "eq_1782691284162_9paz",
+      "context": "multi_evo_ctx",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T00:01:24.162Z"
+    },
+    {
+      "id": "eq_1782691284176_e3vj",
+      "context": "debt_cycle_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T00:01:24.176Z"
+    },
+    {
+      "id": "eq_1782691284189_zwch",
+      "context": "current_evolution",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T00:01:24.189Z"
+    },
+    {
+      "id": "eq_1782691284207_mtnz",
+      "context": "founder_time_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T00:01:24.207Z"
+    },
+    {
+      "id": "eq_1782691284219_2pjz",
+      "context": "dashboard_seed_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T00:01:24.219Z"
+    },
+    {
+      "id": "eq_1782691284403_8jtp",
+      "context": "multi_evo_ctx",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 87,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 87,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T00:01:24.403Z"
+    },
+    {
+      "id": "eq_1782773079247_gey6",
+      "context": "quality_test_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.247Z"
+    },
+    {
+      "id": "eq_1782773079261_4vnf",
+      "context": "current_evolution",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.261Z"
+    },
+    {
+      "id": "eq_1782773079274_22s1",
+      "context": "impr_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.274Z"
+    },
+    {
+      "id": "eq_1782773079286_l7u4",
+      "context": "top3_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.286Z"
+    },
+    {
+      "id": "eq_1782773079297_i4lv",
+      "context": "id_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.297Z"
+    },
+    {
+      "id": "eq_1782773079308_pdlj",
+      "context": "hist_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.308Z"
+    },
+    {
+      "id": "eq_1782773079320_svmu",
+      "context": "filter_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.320Z"
+    },
+    {
+      "id": "eq_1782773079333_r77v",
+      "context": "trend_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.333Z"
+    },
+    {
+      "id": "eq_1782773079359_pyvr",
+      "context": "stats_evo_ctx",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.359Z"
+    },
+    {
+      "id": "eq_1782773079371_liih",
+      "context": "bm_evo_test",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.371Z"
+    },
+    {
+      "id": "eq_1782773079384_8de9",
+      "context": "bl_evo_test",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.384Z"
+    },
+    {
+      "id": "eq_1782773079419_yv0j",
+      "context": "get_bm_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.419Z"
+    },
+    {
+      "id": "eq_1782773079634_vpjv",
+      "context": "debt_evo_ctx",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.634Z"
+    },
+    {
+      "id": "eq_1782773079647_niex",
+      "context": "trend_evo_cycle",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.647Z"
+    },
+    {
+      "id": "eq_1782773079847_b0uh",
+      "context": "chain_evo_bm",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.847Z"
+    },
+    {
+      "id": "eq_1782773079861_rmvm",
+      "context": "view_pipeline_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.861Z"
+    },
+    {
+      "id": "eq_1782773079935_8bxf",
+      "context": "debt_pipeline_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.935Z"
+    },
+    {
+      "id": "eq_1782773079993_v3mp",
+      "context": "summary_seed_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:39.993Z"
+    },
+    {
+      "id": "eq_1782773080008_9hvw",
+      "context": "trend_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:40.008Z"
+    },
+    {
+      "id": "eq_1782773080020_bb0m",
+      "context": "chain_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T22:44:40.020Z"
+    },
+    {
+      "id": "eq_1782773080032_5mo9",
+      "context": "bm_evo_test",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:40.032Z"
+    },
+    {
+      "id": "eq_1782773080048_4k9u",
+      "context": "trend_evo_cycle",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:40.048Z"
+    },
+    {
+      "id": "eq_1782773080062_s0tq",
+      "context": "pipeline_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T22:44:40.062Z"
+    },
+    {
+      "id": "eq_1782773080075_rx6n",
+      "context": "chain_evo_bm",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": null,
+      "createdAt": "2026-06-29T22:44:40.075Z"
+    },
+    {
+      "id": "eq_1782773080122_1lxo",
+      "context": "current_evolution",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T22:44:40.122Z"
+    },
+    {
+      "id": "eq_1782773080133_0sn7",
+      "context": "get_cycle_evo_direct",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T22:44:40.133Z"
+    },
+    {
+      "id": "eq_1782773080145_xikk",
+      "context": "list_evo_1782773079574",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T22:44:40.145Z"
+    },
+    {
+      "id": "eq_1782773080156_hq0d",
+      "context": "status_seed_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T22:44:40.156Z"
+    },
+    {
+      "id": "eq_1782773080168_j8n4",
+      "context": "multi_evo_ctx",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T22:44:40.168Z"
+    },
+    {
+      "id": "eq_1782773080181_eixr",
+      "context": "debt_cycle_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T22:44:40.181Z"
+    },
+    {
+      "id": "eq_1782773080195_jv8h",
+      "context": "current_evolution",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T22:44:40.195Z"
+    },
+    {
+      "id": "eq_1782773080209_ilbj",
+      "context": "founder_time_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T22:44:40.209Z"
+    },
+    {
+      "id": "eq_1782773080220_xeyf",
+      "context": "dashboard_seed_evo",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T22:44:40.220Z"
+    },
+    {
+      "id": "eq_1782773080407_v9c7",
+      "context": "multi_evo_ctx",
+      "overall": 85,
+      "dimensions": {
+        "adaptability": 100,
+        "improvement_velocity": 100,
+        "architectural_stability": 90,
+        "execution_quality": 39,
+        "learning_effectiveness": 100,
+        "optimization_efficiency": 86,
+        "autonomy_maturity": 38
+      },
+      "improvements": [
+        {
+          "dimension": "autonomy_maturity",
+          "score": 38,
+          "priority": "critical",
+          "action": "Enable more autonomous execution paths in POST-Ω execution engine"
+        },
+        {
+          "dimension": "execution_quality",
+          "score": 39,
+          "priority": "critical",
+          "action": "Validate more experiments via experimentManager"
+        },
+        {
+          "dimension": "optimization_efficiency",
+          "score": 86,
+          "priority": "medium",
+          "action": "Improve pre-validation before applying evolutions"
+        }
+      ],
+      "reasoningOverall": 60,
+      "createdAt": "2026-06-29T22:44:40.407Z"
+    }
+  ],
+  "stats": {
+    "total": 68,
+    "avgOverall": 85,
+    "contexts": 28
+  },
+  "updatedAt": "2026-06-29T22:44:40.407Z",
+  "history": {
+    "quality_test_evo": [
+      {
+        "id": "eq_1782691283225_0316",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.225Z"
+      },
+      {
+        "id": "eq_1782773079247_gey6",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.247Z"
+      }
+    ],
+    "current_evolution": [
+      {
+        "id": "eq_1782691283239_x22m",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.239Z"
+      },
+      {
+        "id": "eq_1782691284117_2jv8",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.117Z"
+      },
+      {
+        "id": "eq_1782691284189_zwch",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.189Z"
+      },
+      {
+        "id": "eq_1782773079261_4vnf",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.261Z"
+      },
+      {
+        "id": "eq_1782773080122_1lxo",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.122Z"
+      },
+      {
+        "id": "eq_1782773080195_jv8h",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.195Z"
+      }
+    ],
+    "impr_evo": [
+      {
+        "id": "eq_1782691283286_8umu",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.286Z"
+      },
+      {
+        "id": "eq_1782773079274_22s1",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.274Z"
+      }
+    ],
+    "top3_evo": [
+      {
+        "id": "eq_1782691283299_f9yh",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.299Z"
+      },
+      {
+        "id": "eq_1782773079286_l7u4",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.286Z"
+      }
+    ],
+    "id_evo": [
+      {
+        "id": "eq_1782691283312_n50u",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.312Z"
+      },
+      {
+        "id": "eq_1782773079297_i4lv",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.297Z"
+      }
+    ],
+    "hist_evo": [
+      {
+        "id": "eq_1782691283326_l5bz",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.326Z"
+      },
+      {
+        "id": "eq_1782773079308_pdlj",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.308Z"
+      }
+    ],
+    "filter_evo": [
+      {
+        "id": "eq_1782691283337_fsol",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.337Z"
+      },
+      {
+        "id": "eq_1782773079320_svmu",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.320Z"
+      }
+    ],
+    "trend_evo": [
+      {
+        "id": "eq_1782691283349_ry3r",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.349Z"
+      },
+      {
+        "id": "eq_1782691284011_w0c1",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.011Z"
+      },
+      {
+        "id": "eq_1782773079333_r77v",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.333Z"
+      },
+      {
+        "id": "eq_1782773080008_9hvw",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.008Z"
+      }
+    ],
+    "stats_evo_ctx": [
+      {
+        "id": "eq_1782691283375_0rmy",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.375Z"
+      },
+      {
+        "id": "eq_1782773079359_pyvr",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.359Z"
+      }
+    ],
+    "bm_evo_test": [
+      {
+        "id": "eq_1782691283388_gkq8",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.388Z"
+      },
+      {
+        "id": "eq_1782691284035_jraq",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.035Z"
+      },
+      {
+        "id": "eq_1782773079371_liih",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.371Z"
+      },
+      {
+        "id": "eq_1782773080032_5mo9",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.032Z"
+      }
+    ],
+    "bl_evo_test": [
+      {
+        "id": "eq_1782691283400_he0o",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.400Z"
+      },
+      {
+        "id": "eq_1782773079384_8de9",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.384Z"
+      }
+    ],
+    "get_bm_evo": [
+      {
+        "id": "eq_1782691283428_5ey8",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.428Z"
+      },
+      {
+        "id": "eq_1782773079419_yv0j",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.419Z"
+      }
+    ],
+    "debt_evo_ctx": [
+      {
+        "id": "eq_1782691283654_n4y6",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.654Z"
+      },
+      {
+        "id": "eq_1782773079634_vpjv",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.634Z"
+      }
+    ],
+    "trend_evo_cycle": [
+      {
+        "id": "eq_1782691283669_wdfv",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.670Z"
+      },
+      {
+        "id": "eq_1782691284049_0bjl",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.049Z"
+      },
+      {
+        "id": "eq_1782773079647_niex",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.647Z"
+      },
+      {
+        "id": "eq_1782773080048_4k9u",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.048Z"
+      }
+    ],
+    "chain_evo_bm": [
+      {
+        "id": "eq_1782691283864_ndwg",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.864Z"
+      },
+      {
+        "id": "eq_1782691284075_57ek",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.075Z"
+      },
+      {
+        "id": "eq_1782773079847_b0uh",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.847Z"
+      },
+      {
+        "id": "eq_1782773080075_rx6n",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.075Z"
+      }
+    ],
+    "view_pipeline_evo": [
+      {
+        "id": "eq_1782691283876_ehbc",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.876Z"
+      },
+      {
+        "id": "eq_1782773079861_rmvm",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.861Z"
+      }
+    ],
+    "debt_pipeline_evo": [
+      {
+        "id": "eq_1782691283951_kqbe",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.951Z"
+      },
+      {
+        "id": "eq_1782773079935_8bxf",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.935Z"
+      }
+    ],
+    "summary_seed_evo": [
+      {
+        "id": "eq_1782691283999_qohw",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:23.999Z"
+      },
+      {
+        "id": "eq_1782773079993_v3mp",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:39.993Z"
+      }
+    ],
+    "chain_evo": [
+      {
+        "id": "eq_1782691284022_dob2",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.022Z"
+      },
+      {
+        "id": "eq_1782773080020_bb0m",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.020Z"
+      }
+    ],
+    "pipeline_evo": [
+      {
+        "id": "eq_1782691284061_ujwc",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.061Z"
+      },
+      {
+        "id": "eq_1782773080062_s0tq",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.062Z"
+      }
+    ],
+    "get_cycle_evo_direct": [
+      {
+        "id": "eq_1782691284129_9af1",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.129Z"
+      },
+      {
+        "id": "eq_1782773080133_0sn7",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.133Z"
+      }
+    ],
+    "list_evo_1782691283584": [
+      {
+        "id": "eq_1782691284140_67eg",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.140Z"
+      }
+    ],
+    "status_seed_evo": [
+      {
+        "id": "eq_1782691284151_aiz4",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.151Z"
+      },
+      {
+        "id": "eq_1782773080156_hq0d",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.156Z"
+      }
+    ],
+    "multi_evo_ctx": [
+      {
+        "id": "eq_1782691284162_9paz",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.162Z"
+      },
+      {
+        "id": "eq_1782691284403_8jtp",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.403Z"
+      },
+      {
+        "id": "eq_1782773080168_j8n4",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.168Z"
+      },
+      {
+        "id": "eq_1782773080407_v9c7",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.407Z"
+      }
+    ],
+    "debt_cycle_evo": [
+      {
+        "id": "eq_1782691284176_e3vj",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.176Z"
+      },
+      {
+        "id": "eq_1782773080181_eixr",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.181Z"
+      }
+    ],
+    "founder_time_evo": [
+      {
+        "id": "eq_1782691284207_mtnz",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.207Z"
+      },
+      {
+        "id": "eq_1782773080209_ilbj",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.209Z"
+      }
+    ],
+    "dashboard_seed_evo": [
+      {
+        "id": "eq_1782691284219_2pjz",
+        "overall": 85,
+        "createdAt": "2026-06-29T00:01:24.219Z"
+      },
+      {
+        "id": "eq_1782773080220_xeyf",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.220Z"
+      }
+    ],
+    "list_evo_1782773079574": [
+      {
+        "id": "eq_1782773080145_xikk",
+        "overall": 85,
+        "createdAt": "2026-06-29T22:44:40.145Z"
+      }
+    ]
+  }
+}

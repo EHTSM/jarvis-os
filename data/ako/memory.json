@@ -450,5 +450,140 @@
     ],
     "meta": {},
     "createdAt": "2026-06-27T20:34:02.376Z"
+  },
+  {
+    "id": "akmem_1782686398591_nnpk",
+    "deptId": "ako_cko",
+    "type": "decision",
+    "title": "Focus on engineering knowledge first",
+    "tags": [
+      "strategy"
+    ],
+    "meta": {},
+    "createdAt": "2026-06-28T22:39:58.591Z"
+  },
+  {
+    "id": "akmem_1782686401940_hvp9",
+    "deptId": "ako_memory",
+    "type": "stored",
+    "title": "Mem storage test 1782686401889",
+    "detail": "type=engineering confidence=85",
+    "tags": [],
+    "meta": {},
+    "createdAt": "2026-06-28T22:40:01.940Z"
+  },
+  {
+    "id": "akmem_1782686402056_x4w0",
+    "deptId": "ako_coordinator",
+    "type": "auto_validate",
+    "title": "Auto-validated 1, rejected 0 items",
+    "detail": "Pending was: 1",
+    "tags": [],
+    "meta": {},
+    "createdAt": "2026-06-28T22:40:02.056Z"
+  },
+  {
+    "id": "akmem_1782686402106_8d6e",
+    "deptId": "ako_memory",
+    "type": "stored",
+    "title": "Pipeline test: AKO event-driven architecture 1782686402061",
+    "detail": "type=engineering confidence=88",
+    "tags": [
+      "ako",
+      "architecture",
+      "events"
+    ],
+    "meta": {},
+    "createdAt": "2026-06-28T22:40:02.106Z"
+  },
+  {
+    "id": "akmem_1782686466144_zzwo",
+    "deptId": "ako_cko",
+    "type": "decision",
+    "title": "Focus on engineering knowledge first",
+    "tags": [
+      "strategy"
+    ],
+    "meta": {},
+    "createdAt": "2026-06-28T22:41:06.144Z"
+  },
+  {
+    "id": "akmem_1782686470593_hmls",
+    "deptId": "ako_memory",
+    "type": "stored",
+    "title": "Mem storage test 1782686470535",
+    "detail": "type=engineering confidence=85",
+    "tags": [],
+    "meta": {},
+    "createdAt": "2026-06-28T22:41:10.593Z"
+  },
+  {
+    "id": "akmem_1782686470903_shx9",
+    "deptId": "ako_coordinator",
+    "type": "auto_validate",
+    "title": "Auto-validated 1, rejected 0 items",
+    "detail": "Pending was: 1",
+    "tags": [],
+    "meta": {},
+    "createdAt": "2026-06-28T22:41:10.903Z"
+  },
+  {
+    "id": "akmem_1782686470961_s2mi",
+    "deptId": "ako_memory",
+    "type": "stored",
+    "title": "Pipeline test: AKO event-driven architecture 1782686470911",
+    "detail": "type=engineering confidence=88",
+    "tags": [
+      "ako",
+      "architecture",
+      "events"
+    ],
+    "meta": {},
+    "createdAt": "2026-06-28T22:41:10.961Z"
+  },
+  {
+    "id": "akmem_1782772789040_hgcb",
+    "deptId": "ako_cko",
+    "type": "decision",
+    "title": "Focus on engineering knowledge first",
+    "tags": [
+      "strategy"
+    ],
+    "meta": {},
+    "createdAt": "2026-06-29T22:39:49.040Z"
+  },
+  {
+    "id": "akmem_1782772792640_8rj3",
+    "deptId": "ako_memory",
+    "type": "stored",
+    "title": "Mem storage test 1782772792592",
+    "detail": "type=engineering confidence=85",
+    "tags": [],
+    "meta": {},
+    "createdAt": "2026-06-29T22:39:52.640Z"
+  },
+  {
+    "id": "akmem_1782772792750_dbye",
+    "deptId": "ako_coordinator",
+    "type": "auto_validate",
+    "title": "Auto-validated 1, rejected 0 items",
+    "detail": "Pending was: 1",
+    "tags": [],
+    "meta": {},
+    "createdAt": "2026-06-29T22:39:52.750Z"
+  },
+  {
+    "id": "akmem_1782772792811_wr7a",
+    "deptId": "ako_memory",
+    "type": "stored",
+    "title": "Pipeline test: AKO event-driven architecture 1782772792757",
+    "detail": "type=engineering confidence=88",
+    "tags": [
+      "ako",
+      "architecture",
+      "events"
+    ],
+    "meta": {},
+    "createdAt": "2026-06-29T22:39:52.811Z"
   }
 ]

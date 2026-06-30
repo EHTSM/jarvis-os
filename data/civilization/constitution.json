@@ -1,15 +1,6 @@
 {
   "articles": [
     {
-      "id": "cart_1782601786128_xyxt",
-      "articleNumber": 100,
-      "title": "Article-1782601786114",
-      "content": "All members must cooperate.",
-      "category": "obligations",
-      "status": "active",
-      "adoptedAt": "2026-06-27T23:09:46.128Z"
-    },
-    {
       "id": "cart_1782601786594_n5sg",
       "articleNumber": 1,
       "title": "Right to Participate",
@@ -62,6 +53,15 @@
       "category": "governance",
       "status": "active",
       "adoptedAt": "2026-06-27T23:09:46.595Z"
+    },
+    {
+      "id": "cart_1782601786128_xyxt",
+      "articleNumber": 100,
+      "title": "Article-1782601786114",
+      "content": "All members must cooperate.",
+      "category": "obligations",
+      "status": "active",
+      "adoptedAt": "2026-06-27T23:09:46.128Z"
     }
   ],
   "amendments": [
@@ -73,6 +73,33 @@
       "rationale": "AI entities need representation",
       "status": "proposed",
       "proposedAt": "2026-06-27T23:09:46.128Z"
+    },
+    {
+      "id": "camend_1782686406841_w2ar",
+      "articleId": "cart_1782601786594_n5sg",
+      "proposerId": "cmem_1782686406835_5lif",
+      "change": "Add clause for AI rights",
+      "rationale": "AI entities need representation",
+      "status": "proposed",
+      "proposedAt": "2026-06-28T22:40:06.841Z"
+    },
+    {
+      "id": "camend_1782686477511_s3k3",
+      "articleId": "cart_1782601786594_n5sg",
+      "proposerId": "cmem_1782686477497_ccn0",
+      "change": "Add clause for AI rights",
+      "rationale": "AI entities need representation",
+      "status": "proposed",
+      "proposedAt": "2026-06-28T22:41:17.511Z"
+    },
+    {
+      "id": "camend_1782772797723_p9ot",
+      "articleId": "cart_1782601786594_n5sg",
+      "proposerId": "cmem_1782772797717_3fgt",
+      "change": "Add clause for AI rights",
+      "rationale": "AI entities need representation",
+      "status": "proposed",
+      "proposedAt": "2026-06-29T22:39:57.723Z"
     }
   ],
   "precedents": [
@@ -93,6 +120,60 @@
       "caseRef": "carb_1782601786171_vuv3",
       "domainId": "civ_arbitration",
       "recordedAt": "2026-06-27T23:09:46.171Z"
+    },
+    {
+      "id": "cprec_1782686406841_vxq3",
+      "title": "Precedent-1782686406830",
+      "ruling": "Members must share knowledge freely",
+      "context": "Knowledge dispute resolution",
+      "caseRef": "CASE-001",
+      "domainId": "civ_arbitration",
+      "recordedAt": "2026-06-28T22:40:06.841Z"
+    },
+    {
+      "id": "cprec_1782686406882_osov",
+      "title": "Precedent-1782686406830",
+      "ruling": "Parties share resources equally",
+      "context": "",
+      "caseRef": "carb_1782686406882_rn89",
+      "domainId": "civ_arbitration",
+      "recordedAt": "2026-06-28T22:40:06.882Z"
+    },
+    {
+      "id": "cprec_1782686477511_h1dt",
+      "title": "Precedent-1782686477479",
+      "ruling": "Members must share knowledge freely",
+      "context": "Knowledge dispute resolution",
+      "caseRef": "CASE-001",
+      "domainId": "civ_arbitration",
+      "recordedAt": "2026-06-28T22:41:17.511Z"
+    },
+    {
+      "id": "cprec_1782686477574_9a0b",
+      "title": "Precedent-1782686477479",
+      "ruling": "Parties share resources equally",
+      "context": "",
+      "caseRef": "carb_1782686477574_ppfq",
+      "domainId": "civ_arbitration",
+      "recordedAt": "2026-06-28T22:41:17.574Z"
+    },
+    {
+      "id": "cprec_1782772797723_38un",
+      "title": "Precedent-1782772797713",
+      "ruling": "Members must share knowledge freely",
+      "context": "Knowledge dispute resolution",
+      "caseRef": "CASE-001",
+      "domainId": "civ_arbitration",
+      "recordedAt": "2026-06-29T22:39:57.723Z"
+    },
+    {
+      "id": "cprec_1782772797759_jntq",
+      "title": "Precedent-1782772797713",
+      "ruling": "Parties share resources equally",
+      "context": "",
+      "caseRef": "carb_1782772797759_oe3k",
+      "domainId": "civ_arbitration",
+      "recordedAt": "2026-06-29T22:39:57.759Z"
     }
   ]
 }

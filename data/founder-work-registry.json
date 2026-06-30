@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-06-28T20:17:32.042Z",
+  "generatedAt": "2026-06-30T00:12:04.836Z",
   "summary": {
     "total": 56,
     "classA": 21,
@@ -35,7 +35,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Use DigitalOcean API to provision Droplet on approval; record IP to .env",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -59,7 +59,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "productionInfra audit → flag missing vars → founder approves values → scp .env to server",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -84,11 +84,11 @@
       "targetLevel": "full-auto",
       "implementationPlan": "Deploy bash script: apt install → copy template nginx.conf → certbot → systemctl reload",
       "automatedBy": "founderAutomationEngine",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated",
-      "automatedAt": "2026-06-28T20:17:32.043Z",
-      "evidence": "Executed runId=fae_1782677852043_q0s5 at 2026-06-28T20:17:32.043Z"
+      "automatedAt": "2026-06-30T00:12:04.838Z",
+      "evidence": "Executed runId=fae_1782778324837_oqmy at 2026-06-30T00:12:04.837Z"
     },
     {
       "id": "wf_deploy_pm2",
@@ -108,7 +108,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "Included in deploy.sh script — already partially automated",
       "automatedBy": "deploy.sh",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -129,7 +129,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "Add crontab line in deploy.sh: 0 2 * * * /opt/jarvis-os/backup.sh",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -152,7 +152,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "harden.sh script: ufw rules + fail2ban config + sshd_config patch + service restart",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -175,83 +175,9 @@
       "targetLevel": "full-auto",
       "implementationPlan": "continuousRuntimeObserver already runs health checks — expose daily digest to Slack/email",
       "automatedBy": "continuousRuntimeObserver.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
-      "executionHistory": [
-        {
-          "ts": "2026-06-28T20:19:10.915Z",
-          "outcome": "completed",
-          "durationMs": 4206,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:19:53.928Z",
-          "outcome": "completed",
-          "durationMs": 4067,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:20:06.089Z",
-          "outcome": "completed",
-          "durationMs": 4174,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:20:17.336Z",
-          "outcome": "completed",
-          "durationMs": 3790,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        }
-      ],
-      "status": "automated",
-      "lastExecutedAt": "2026-06-28T20:20:17.336Z"
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
+      "executionHistory": [],
+      "status": "automated"
     },
     {
       "id": "wf_ops_error_triage",
@@ -273,7 +199,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "errorAnalyticsEngine detects → rootCauseAnalysis classifies → autoHeal or queue for founder",
       "automatedBy": "selfHealingEngine.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -295,7 +221,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "backup.sh writes manifest → productionInfra reads manifest → alert if stale",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -319,7 +245,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "co3UserSuccess.sendBetaInvite() already implemented — trigger from /co3/invites endpoint",
       "automatedBy": "co3UserSuccess.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -345,7 +271,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "onboardingEngine auto-generates onboarding flow; founder joins only for first 3 users",
       "automatedBy": "onboardingEngine.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -367,7 +293,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "co3 feedback inbox → AI classify → business intelligence routes → decision engine",
       "automatedBy": "co3UserSuccess.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -392,7 +318,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "co3 crash reporting + rootCauseAnalysis → auto-reply with ETA → founder approves criticals",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -416,7 +342,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "Razorpay webhook → billingService.upgrade() → accountService.setPlan() — already wired",
       "automatedBy": "billingService.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -439,7 +365,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "Razorpay handles invoice generation and email — zero founder action needed",
       "automatedBy": "razorpay",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -463,7 +389,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "businessIntelligenceEngine detects churn signals → draft outreach → founder approves → auto-send",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -485,7 +411,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "revenueOS executive dashboard already generates this — trigger weekly via autonomous scheduler",
       "automatedBy": "revenueOS.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -511,7 +437,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "contentSEOEngine drafts post → founder approves → distributionEngine publishes",
       "automatedBy": "contentSEOEngine.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -536,7 +462,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "contentSEOEngine generates draft from keyword research → founder reviews → auto-publish",
       "automatedBy": "contentSEOEngine.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -563,7 +489,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "growthOS email engine drafts → founder approves → auto-send to segment",
       "automatedBy": "growthOS.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -587,83 +513,9 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "engineeringOrg code_review agent pre-reviews → scores risk → founder approves if risk > threshold",
       "automatedBy": "engineeringOrg.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
-      "executionHistory": [
-        {
-          "ts": "2026-06-28T20:19:11.006Z",
-          "outcome": "completed",
-          "durationMs": 3896,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:19:54.027Z",
-          "outcome": "completed",
-          "durationMs": 3703,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:20:06.170Z",
-          "outcome": "completed",
-          "durationMs": 3844,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:20:17.430Z",
-          "outcome": "completed",
-          "durationMs": 3514,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        }
-      ],
-      "status": "automated",
-      "lastExecutedAt": "2026-06-28T20:20:17.430Z"
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
+      "executionHistory": [],
+      "status": "automated"
     },
     {
       "id": "wf_eng_deploy_release",
@@ -687,227 +539,9 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "autonomousDeployment pipeline: test → build → deploy → health check → rollback on failure",
       "automatedBy": "autonomousDeployment.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
-      "executionHistory": [
-        {
-          "ts": "2026-06-28T20:19:11.106Z",
-          "outcome": "completed",
-          "durationMs": 3681,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:19:11.198Z",
-          "outcome": "completed",
-          "durationMs": 3385,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:19:11.286Z",
-          "outcome": "completed",
-          "durationMs": 3016,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:19:54.132Z",
-          "outcome": "completed",
-          "durationMs": 3488,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:19:54.221Z",
-          "outcome": "completed",
-          "durationMs": 3251,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:19:54.308Z",
-          "outcome": "completed",
-          "durationMs": 3017,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:20:06.252Z",
-          "outcome": "completed",
-          "durationMs": 3546,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:20:06.335Z",
-          "outcome": "completed",
-          "durationMs": 3265,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:20:06.422Z",
-          "outcome": "completed",
-          "durationMs": 2982,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:20:17.520Z",
-          "outcome": "completed",
-          "durationMs": 3264,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:20:17.618Z",
-          "outcome": "completed",
-          "durationMs": 3036,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        },
-        {
-          "ts": "2026-06-28T20:20:17.718Z",
-          "outcome": "completed",
-          "durationMs": 2804,
-          "stepsExecuted": [
-            "intake",
-            "requirements",
-            "twin_prediction",
-            "agents_located",
-            "team_built",
-            "assigned",
-            "execution",
-            "monitored",
-            "capacity_checked",
-            "disbanded"
-          ],
-          "approvalRequired": false
-        }
-      ],
-      "status": "automated",
-      "lastExecutedAt": "2026-06-28T20:20:17.718Z"
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
+      "executionHistory": [],
+      "status": "automated"
     },
     {
       "id": "wf_eng_dependency_update",
@@ -930,7 +564,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "engineeringOrg dep_manager agent runs npm-check-updates → founder approves majors → auto-patch minors",
       "automatedBy": "engineeringOrg.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -956,7 +590,7 @@
       "targetLevel": "manual",
       "implementationPlan": "Platform can draft and notify; final approval always manual",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "manual_permanent"
     },
@@ -981,7 +615,7 @@
       "targetLevel": "manual",
       "implementationPlan": "Platform can prepare revenue reports; filing remains human",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "manual_permanent"
     },
@@ -1006,7 +640,7 @@
       "targetLevel": "manual",
       "implementationPlan": "Cannot be automated. Track reconciliation reports via revenueOS.",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "manual_permanent"
     },
@@ -1028,7 +662,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "ODI continuousDesignObserver + UX optimizer runs automatically — generates weekly UX report",
       "automatedBy": "continuousDesignObserver.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -1050,7 +684,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "ODI accessibilityAuditor runs WCAG checks automatically on every deployment",
       "automatedBy": "accessibilityAuditor.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -1072,7 +706,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "releaseEngine.cjs already generates changelog from commits — trigger on release tag",
       "automatedBy": "releaseEngine.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -1093,7 +727,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "engineeringOrg docs agent generates from route definitions — runs on every commit",
       "automatedBy": "engineeringOrg.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -1115,7 +749,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "productionBibleEngine converts checklist items to executable workflows automatically",
       "automatedBy": "productionBibleEngine.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -1137,7 +771,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "selfReviewEngine.runReview() — already implemented in Sprint P1",
       "automatedBy": "selfReviewEngine.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -1159,7 +793,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "consolidationAudit.runAudit() — already implemented in Sprint P1",
       "automatedBy": "consolidationAudit.cjs",
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.835Z",
       "executionHistory": [],
       "status": "automated"
     },
@@ -1180,7 +814,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: VPS provisioned (Ubuntu 22.04+)",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1201,7 +835,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: Node.js 20 LTS installed",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1222,7 +856,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: Repository cloned to /opt/jarvis-os",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1243,7 +877,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: npm install --omit=dev completed",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1264,7 +898,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: .env file configured (all required vars)",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1285,7 +919,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: PM2 started with ecosystem.config.cjs",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1306,7 +940,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: PM2 startup on reboot configured",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1327,7 +961,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: /health returns 200",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1348,7 +982,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: Frontend built (npm run build:frontend)",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1369,7 +1003,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: Frontend served via Express or nginx",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1390,7 +1024,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: Nginx installed and active",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1411,7 +1045,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: nginx.conf deployed with rate limits",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1432,7 +1066,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: Nginx proxying to backend port 5050",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1453,7 +1087,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: SSL certificate issued (certbot/Let's Encrypt)",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1472,7 +1106,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "Auto-execute: Certbot auto-renewal configured",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1493,7 +1127,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: HTTP → HTTPS redirect active",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1514,7 +1148,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: A record: app.ooplix.com → VPS IP",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1533,7 +1167,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "Auto-execute: www.ooplix.com redirects to app",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1552,7 +1186,7 @@
       "targetLevel": "full-auto",
       "implementationPlan": "Auto-execute: api.ooplix.com configured (optional)",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1573,7 +1207,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: Domain resolves and app loads in browser",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1594,7 +1228,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: UFW firewall (22/80/443 only)",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1615,7 +1249,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: Fail2Ban active",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     },
@@ -1636,7 +1270,7 @@
       "targetLevel": "semi-auto",
       "implementationPlan": "Auto-execute: SSH key auth only (password disabled)",
       "automatedBy": null,
-      "lastUpdated": "2026-06-28T20:17:32.042Z",
+      "lastUpdated": "2026-06-30T00:12:04.836Z",
       "executionHistory": [],
       "status": "pending_automation"
     }

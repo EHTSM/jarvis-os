@@ -952,5 +952,2327 @@
     "detail": "",
     "tags": [],
     "at": "2026-06-28T06:55:57.656Z"
+  },
+  {
+    "id": "cmem2_1782686407250_uha3",
+    "domainId": "civ_director",
+    "type": "observation",
+    "title": "Test memory 1782686406830",
+    "detail": "detail",
+    "tags": [],
+    "at": "2026-06-28T22:40:07.250Z"
+  },
+  {
+    "id": "cmem2_1782686407252_nvl1",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Deploy civilization platform 1782686406830",
+    "detail": "{\"eosGoalId\":\"egoal_1782686407251_jb1a\",\"memberId\":\"cmem_1782686406835_5lif\",\"domain\":\"general\"}",
+    "tags": [],
+    "at": "2026-06-28T22:40:07.252Z"
+  },
+  {
+    "id": "cmem2_1782686407296_9cyh",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Build civilization feature 1782686406830",
+    "detail": "{\"eosGoalId\":\"egoal_1782686407295_iimd\",\"memberId\":\"cmem_1782686406835_5lif\",\"domain\":\"engineering\"}",
+    "tags": [],
+    "at": "2026-06-28T22:40:07.296Z"
+  },
+  {
+    "id": "cmem2_1782686407510_rymu",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Health test 1782686406830",
+    "detail": "{\"eosGoalId\":\"egoal_1782686407508_q1lu\",\"domain\":\"general\"}",
+    "tags": [],
+    "at": "2026-06-28T22:40:07.510Z"
+  },
+  {
+    "id": "cmem2_1782686407761_jreh",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Resource-backed initiative 1782686406830",
+    "detail": "{\"eosGoalId\":\"egoal_1782686407760_j147\",\"memberId\":\"cmem_1782686406837_bzs9\",\"domain\":\"business\"}",
+    "tags": [],
+    "at": "2026-06-28T22:40:07.761Z"
+  },
+  {
+    "id": "cmem2_1782686408177_26yq",
+    "domainId": "civ_registry",
+    "type": "tick",
+    "title": "Registry: 60 active members, 2 alliances",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.177Z"
+  },
+  {
+    "id": "cmem2_1782686408178_mu62",
+    "domainId": "civ_council",
+    "type": "tick",
+    "title": "Council: 4 open proposals, 0 expired",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.178Z"
+  },
+  {
+    "id": "cmem2_1782686408178_6ntt",
+    "domainId": "civ_governance",
+    "type": "tick",
+    "title": "Governance: 7 active articles, 0 open disputes",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.178Z"
+  },
+  {
+    "id": "cmem2_1782686408179_kg0z",
+    "domainId": "civ_constitution",
+    "type": "tick",
+    "title": "Constitution: 7 articles, 2 pending amendments, 4 precedents",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.179Z"
+  },
+  {
+    "id": "cmem2_1782686408179_4cge",
+    "domainId": "civ_policy",
+    "type": "tick",
+    "title": "Policy: 2 civ articles, 0 enterprise policies",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.179Z"
+  },
+  {
+    "id": "cmem2_1782686408179_ttxf",
+    "domainId": "civ_economy",
+    "type": "tick",
+    "title": "Economy: 6 total trades, 2 completed, pool: {\"capital\":100}",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.179Z"
+  },
+  {
+    "id": "cmem2_1782686408180_tgk1",
+    "domainId": "civ_resource_exchange",
+    "type": "tick",
+    "title": "Resource Exchange: 4 pending trades",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.180Z"
+  },
+  {
+    "id": "cmem2_1782686408180_6ota",
+    "domainId": "civ_knowledge_network",
+    "type": "tick",
+    "title": "Knowledge Network: 11 routes, 0 AKO knowledge items",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.180Z"
+  },
+  {
+    "id": "cmem2_1782686408181_jmf5",
+    "domainId": "civ_mission_network",
+    "type": "tick",
+    "title": "Mission Network: 9 open, 50 assigned",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.181Z"
+  },
+  {
+    "id": "cmem2_1782686408182_cepe",
+    "domainId": "civ_reputation",
+    "type": "tick",
+    "title": "Reputation: 6 members, avg=64, low=2, high=4",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.182Z"
+  },
+  {
+    "id": "cmem2_1782686408182_c4hi",
+    "domainId": "civ_trust",
+    "type": "tick",
+    "title": "Trust Engine: 6 civ reputations, 14 eco trust entries",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.182Z"
+  },
+  {
+    "id": "cmem2_1782686408183_na5y",
+    "domainId": "civ_diplomacy",
+    "type": "tick",
+    "title": "Diplomacy: 7 treaties (2 ratified), 4 open negotiations, 0 open disputes",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.183Z"
+  },
+  {
+    "id": "cmem2_1782686408183_k8hg",
+    "domainId": "civ_collaboration",
+    "type": "tick",
+    "title": "Collaboration: 2 active collaborations, 9 channels",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.183Z"
+  },
+  {
+    "id": "cmem2_1782686408183_udn0",
+    "domainId": "civ_arbitration",
+    "type": "tick",
+    "title": "Arbitration: 0 open cases, 4 precedents established",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.183Z"
+  },
+  {
+    "id": "cmem2_1782686408183_n1l7",
+    "domainId": "civ_innovation",
+    "type": "tick",
+    "title": "Innovation: 2 published, 2 adopted standards",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.183Z"
+  },
+  {
+    "id": "cmem2_1782686408186_nhap",
+    "domainId": "civ_research",
+    "type": "tick",
+    "title": "Research Network: 2 active projects, 0 AEO insights",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.186Z"
+  },
+  {
+    "id": "cmem2_1782686408186_8mol",
+    "domainId": "civ_evolution",
+    "type": "tick",
+    "title": "Evolution Board: 14 proposed, 2 approved",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.186Z"
+  },
+  {
+    "id": "cmem2_1782686408200_m5pw",
+    "domainId": "civ_analytics",
+    "type": "tick",
+    "title": "Analytics: civilization health=87, 20 domain KPIs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.200Z"
+  },
+  {
+    "id": "cmem2_1782686408213_42b9",
+    "domainId": "civ_health",
+    "type": "tick",
+    "title": "Health Monitor: score=87, alerts=0",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.213Z"
+  },
+  {
+    "id": "cmem2_1782686408227_1nf3",
+    "domainId": "civ_director",
+    "type": "tick",
+    "title": "Director: health=87, openMissions=9, openDisputes=0, pendingProposals=4",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.227Z"
+  },
+  {
+    "id": "cmem2_1782686408227_tz58",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.227Z"
+  },
+  {
+    "id": "cmem2_1782686408227_xzrm",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.227Z"
+  },
+  {
+    "id": "cmem2_1782686408284_1iw7",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Cross-layer smoke 1782686406830",
+    "detail": "{\"eosGoalId\":\"egoal_1782686408282_mmdc\",\"memberId\":\"cmem_1782686406835_5lif\",\"domain\":\"general\"}",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.284Z"
+  },
+  {
+    "id": "cmem2_1782686408284_6pab",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.284Z"
+  },
+  {
+    "id": "cmem2_1782686408284_9wu3",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.284Z"
+  },
+  {
+    "id": "cmem2_1782686408284_ag1c",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.284Z"
+  },
+  {
+    "id": "cmem2_1782686408284_jyyx",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.284Z"
+  },
+  {
+    "id": "cmem2_1782686408284_gi3x",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.284Z"
+  },
+  {
+    "id": "cmem2_1782686408284_3nve",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.284Z"
+  },
+  {
+    "id": "cmem2_1782686408285_0ba4",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.285Z"
+  },
+  {
+    "id": "cmem2_1782686408285_f49e",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.285Z"
+  },
+  {
+    "id": "cmem2_1782686408290_ipnl",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.290Z"
+  },
+  {
+    "id": "cmem2_1782686408290_rmam",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.290Z"
+  },
+  {
+    "id": "cmem2_1782686408294_twrx",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.294Z"
+  },
+  {
+    "id": "cmem2_1782686408295_2hqn",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.295Z"
+  },
+  {
+    "id": "cmem2_1782686408309_si95",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.309Z"
+  },
+  {
+    "id": "cmem2_1782686408309_dc6v",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.309Z"
+  },
+  {
+    "id": "cmem2_1782686408320_da8g",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.320Z"
+  },
+  {
+    "id": "cmem2_1782686408321_kv7i",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.321Z"
+  },
+  {
+    "id": "cmem2_1782686408323_hc0j",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.323Z"
+  },
+  {
+    "id": "cmem2_1782686408323_p9ec",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.323Z"
+  },
+  {
+    "id": "cmem2_1782686408333_jx4m",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.333Z"
+  },
+  {
+    "id": "cmem2_1782686408333_23k5",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.333Z"
+  },
+  {
+    "id": "cmem2_1782686408335_nalb",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.335Z"
+  },
+  {
+    "id": "cmem2_1782686408335_zvkj",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.335Z"
+  },
+  {
+    "id": "cmem2_1782686408342_bnk4",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.342Z"
+  },
+  {
+    "id": "cmem2_1782686408342_bqgb",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.342Z"
+  },
+  {
+    "id": "cmem2_1782686408349_8qzf",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.349Z"
+  },
+  {
+    "id": "cmem2_1782686408349_syoq",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.349Z"
+  },
+  {
+    "id": "cmem2_1782686408351_jdpp",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.351Z"
+  },
+  {
+    "id": "cmem2_1782686408351_en89",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.351Z"
+  },
+  {
+    "id": "cmem2_1782686408355_17m8",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.355Z"
+  },
+  {
+    "id": "cmem2_1782686408355_ujia",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.355Z"
+  },
+  {
+    "id": "cmem2_1782686408357_vgnw",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.357Z"
+  },
+  {
+    "id": "cmem2_1782686408357_l8kg",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.357Z"
+  },
+  {
+    "id": "cmem2_1782686408358_8u91",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.358Z"
+  },
+  {
+    "id": "cmem2_1782686408359_uhuz",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.359Z"
+  },
+  {
+    "id": "cmem2_1782686408366_eil3",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.366Z"
+  },
+  {
+    "id": "cmem2_1782686408368_7o6e",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.368Z"
+  },
+  {
+    "id": "cmem2_1782686408381_9zca",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.381Z"
+  },
+  {
+    "id": "cmem2_1782686408382_mzwm",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.382Z"
+  },
+  {
+    "id": "cmem2_1782686408388_481h",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.388Z"
+  },
+  {
+    "id": "cmem2_1782686408388_dcbt",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.388Z"
+  },
+  {
+    "id": "cmem2_1782686408389_zbi6",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.389Z"
+  },
+  {
+    "id": "cmem2_1782686408389_z98c",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.389Z"
+  },
+  {
+    "id": "cmem2_1782686408389_1kxa",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.389Z"
+  },
+  {
+    "id": "cmem2_1782686408389_kvjd",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.389Z"
+  },
+  {
+    "id": "cmem2_1782686408389_3sij",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.389Z"
+  },
+  {
+    "id": "cmem2_1782686408389_17pm",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.389Z"
+  },
+  {
+    "id": "cmem2_1782686408389_5y5i",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.389Z"
+  },
+  {
+    "id": "cmem2_1782686408389_r1u5",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.389Z"
+  },
+  {
+    "id": "cmem2_1782686408390_s55q",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.390Z"
+  },
+  {
+    "id": "cmem2_1782686408390_c6gb",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.390Z"
+  },
+  {
+    "id": "cmem2_1782686408390_8e0b",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.390Z"
+  },
+  {
+    "id": "cmem2_1782686408390_qwft",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.390Z"
+  },
+  {
+    "id": "cmem2_1782686408390_s6wn",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.390Z"
+  },
+  {
+    "id": "cmem2_1782686408390_p7u4",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.390Z"
+  },
+  {
+    "id": "cmem2_1782686408390_av9t",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.390Z"
+  },
+  {
+    "id": "cmem2_1782686408391_gwne",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.391Z"
+  },
+  {
+    "id": "cmem2_1782686408391_980w",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.391Z"
+  },
+  {
+    "id": "cmem2_1782686408392_ercl",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:40:08.392Z"
+  },
+  {
+    "id": "cmem2_1782686478868_a1jc",
+    "domainId": "civ_director",
+    "type": "observation",
+    "title": "Test memory 1782686477479",
+    "detail": "detail",
+    "tags": [],
+    "at": "2026-06-28T22:41:18.868Z"
+  },
+  {
+    "id": "cmem2_1782686478877_azg4",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Deploy civilization platform 1782686477479",
+    "detail": "{\"eosGoalId\":\"egoal_1782686478876_4ss4\",\"memberId\":\"cmem_1782686477497_ccn0\",\"domain\":\"general\"}",
+    "tags": [],
+    "at": "2026-06-28T22:41:18.877Z"
+  },
+  {
+    "id": "cmem2_1782686478939_x38t",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Build civilization feature 1782686477479",
+    "detail": "{\"eosGoalId\":\"egoal_1782686478938_enpu\",\"memberId\":\"cmem_1782686477497_ccn0\",\"domain\":\"engineering\"}",
+    "tags": [],
+    "at": "2026-06-28T22:41:18.939Z"
+  },
+  {
+    "id": "cmem2_1782686479206_8l0b",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Health test 1782686477479",
+    "detail": "{\"eosGoalId\":\"egoal_1782686479205_998v\",\"domain\":\"general\"}",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.206Z"
+  },
+  {
+    "id": "cmem2_1782686479425_jgpi",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Resource-backed initiative 1782686477479",
+    "detail": "{\"eosGoalId\":\"egoal_1782686479424_fvy7\",\"memberId\":\"cmem_1782686477502_2pr0\",\"domain\":\"business\"}",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.425Z"
+  },
+  {
+    "id": "cmem2_1782686479915_c1b9",
+    "domainId": "civ_registry",
+    "type": "tick",
+    "title": "Registry: 64 active members, 3 alliances",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.915Z"
+  },
+  {
+    "id": "cmem2_1782686479915_l4ie",
+    "domainId": "civ_council",
+    "type": "tick",
+    "title": "Council: 6 open proposals, 0 expired",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.915Z"
+  },
+  {
+    "id": "cmem2_1782686479915_mo14",
+    "domainId": "civ_governance",
+    "type": "tick",
+    "title": "Governance: 7 active articles, 0 open disputes",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.915Z"
+  },
+  {
+    "id": "cmem2_1782686479916_9w2p",
+    "domainId": "civ_constitution",
+    "type": "tick",
+    "title": "Constitution: 7 articles, 3 pending amendments, 6 precedents",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.916Z"
+  },
+  {
+    "id": "cmem2_1782686479920_av6f",
+    "domainId": "civ_policy",
+    "type": "tick",
+    "title": "Policy: 2 civ articles, 0 enterprise policies",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.920Z"
+  },
+  {
+    "id": "cmem2_1782686479920_t1pb",
+    "domainId": "civ_economy",
+    "type": "tick",
+    "title": "Economy: 9 total trades, 3 completed, pool: {\"capital\":150}",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.920Z"
+  },
+  {
+    "id": "cmem2_1782686479920_3sb7",
+    "domainId": "civ_resource_exchange",
+    "type": "tick",
+    "title": "Resource Exchange: 6 pending trades",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.920Z"
+  },
+  {
+    "id": "cmem2_1782686479922_6ikh",
+    "domainId": "civ_knowledge_network",
+    "type": "tick",
+    "title": "Knowledge Network: 17 routes, 0 AKO knowledge items",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.922Z"
+  },
+  {
+    "id": "cmem2_1782686479923_i7j9",
+    "domainId": "civ_mission_network",
+    "type": "tick",
+    "title": "Mission Network: 14 open, 50 assigned",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.923Z"
+  },
+  {
+    "id": "cmem2_1782686479923_twoy",
+    "domainId": "civ_reputation",
+    "type": "tick",
+    "title": "Reputation: 9 members, avg=64, low=3, high=6",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.923Z"
+  },
+  {
+    "id": "cmem2_1782686479923_spcj",
+    "domainId": "civ_trust",
+    "type": "tick",
+    "title": "Trust Engine: 9 civ reputations, 21 eco trust entries",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.923Z"
+  },
+  {
+    "id": "cmem2_1782686479924_qwfd",
+    "domainId": "civ_diplomacy",
+    "type": "tick",
+    "title": "Diplomacy: 11 treaties (3 ratified), 6 open negotiations, 0 open disputes",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.924Z"
+  },
+  {
+    "id": "cmem2_1782686479924_lc27",
+    "domainId": "civ_collaboration",
+    "type": "tick",
+    "title": "Collaboration: 3 active collaborations, 11 channels",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.924Z"
+  },
+  {
+    "id": "cmem2_1782686479930_nskl",
+    "domainId": "civ_arbitration",
+    "type": "tick",
+    "title": "Arbitration: 0 open cases, 6 precedents established",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.930Z"
+  },
+  {
+    "id": "cmem2_1782686479930_xnhz",
+    "domainId": "civ_innovation",
+    "type": "tick",
+    "title": "Innovation: 3 published, 3 adopted standards",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.930Z"
+  },
+  {
+    "id": "cmem2_1782686479936_11kz",
+    "domainId": "civ_research",
+    "type": "tick",
+    "title": "Research Network: 3 active projects, 0 AEO insights",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.936Z"
+  },
+  {
+    "id": "cmem2_1782686479936_wg6u",
+    "domainId": "civ_evolution",
+    "type": "tick",
+    "title": "Evolution Board: 16 proposed, 3 approved",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.936Z"
+  },
+  {
+    "id": "cmem2_1782686479952_gq32",
+    "domainId": "civ_analytics",
+    "type": "tick",
+    "title": "Analytics: civilization health=87, 20 domain KPIs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.952Z"
+  },
+  {
+    "id": "cmem2_1782686479968_xulm",
+    "domainId": "civ_health",
+    "type": "tick",
+    "title": "Health Monitor: score=87, alerts=0",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.968Z"
+  },
+  {
+    "id": "cmem2_1782686479983_tf6s",
+    "domainId": "civ_director",
+    "type": "tick",
+    "title": "Director: health=87, openMissions=14, openDisputes=0, pendingProposals=6",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.983Z"
+  },
+  {
+    "id": "cmem2_1782686479983_j68z",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.983Z"
+  },
+  {
+    "id": "cmem2_1782686479984_reho",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:19.984Z"
+  },
+  {
+    "id": "cmem2_1782686480043_lvfn",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Cross-layer smoke 1782686477479",
+    "detail": "{\"eosGoalId\":\"egoal_1782686480042_eyyk\",\"memberId\":\"cmem_1782686477497_ccn0\",\"domain\":\"general\"}",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.043Z"
+  },
+  {
+    "id": "cmem2_1782686480043_fie5",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.043Z"
+  },
+  {
+    "id": "cmem2_1782686480047_1h0h",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.047Z"
+  },
+  {
+    "id": "cmem2_1782686480047_o57b",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.047Z"
+  },
+  {
+    "id": "cmem2_1782686480047_ow7w",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.047Z"
+  },
+  {
+    "id": "cmem2_1782686480048_h305",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.048Z"
+  },
+  {
+    "id": "cmem2_1782686480048_i50s",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.048Z"
+  },
+  {
+    "id": "cmem2_1782686480048_xapl",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.048Z"
+  },
+  {
+    "id": "cmem2_1782686480048_sah9",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.048Z"
+  },
+  {
+    "id": "cmem2_1782686480053_l4mj",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.053Z"
+  },
+  {
+    "id": "cmem2_1782686480053_6sb3",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.053Z"
+  },
+  {
+    "id": "cmem2_1782686480058_z372",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.058Z"
+  },
+  {
+    "id": "cmem2_1782686480058_xgiu",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.058Z"
+  },
+  {
+    "id": "cmem2_1782686480072_udbl",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.072Z"
+  },
+  {
+    "id": "cmem2_1782686480072_fjk8",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.072Z"
+  },
+  {
+    "id": "cmem2_1782686480084_fe0t",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.084Z"
+  },
+  {
+    "id": "cmem2_1782686480084_hjk3",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.084Z"
+  },
+  {
+    "id": "cmem2_1782686480086_qgta",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.086Z"
+  },
+  {
+    "id": "cmem2_1782686480086_cdqj",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.086Z"
+  },
+  {
+    "id": "cmem2_1782686480096_xrot",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.096Z"
+  },
+  {
+    "id": "cmem2_1782686480096_pd5z",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.096Z"
+  },
+  {
+    "id": "cmem2_1782686480098_3s91",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.098Z"
+  },
+  {
+    "id": "cmem2_1782686480098_sfdb",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.098Z"
+  },
+  {
+    "id": "cmem2_1782686480105_37cs",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.105Z"
+  },
+  {
+    "id": "cmem2_1782686480106_ndcg",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.106Z"
+  },
+  {
+    "id": "cmem2_1782686480319_s8ej",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.319Z"
+  },
+  {
+    "id": "cmem2_1782686480320_oqko",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.320Z"
+  },
+  {
+    "id": "cmem2_1782686480323_x3f4",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.323Z"
+  },
+  {
+    "id": "cmem2_1782686480323_ye5i",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.323Z"
+  },
+  {
+    "id": "cmem2_1782686480328_cbv3",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.328Z"
+  },
+  {
+    "id": "cmem2_1782686480328_km80",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.328Z"
+  },
+  {
+    "id": "cmem2_1782686480340_65pk",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.340Z"
+  },
+  {
+    "id": "cmem2_1782686480340_6fkh",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.340Z"
+  },
+  {
+    "id": "cmem2_1782686480342_hbih",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.342Z"
+  },
+  {
+    "id": "cmem2_1782686480342_uedv",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.342Z"
+  },
+  {
+    "id": "cmem2_1782686480351_iiz6",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.351Z"
+  },
+  {
+    "id": "cmem2_1782686480351_nzo4",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.351Z"
+  },
+  {
+    "id": "cmem2_1782686480363_rl56",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.363Z"
+  },
+  {
+    "id": "cmem2_1782686480363_td7n",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.363Z"
+  },
+  {
+    "id": "cmem2_1782686480371_tfen",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.371Z"
+  },
+  {
+    "id": "cmem2_1782686480371_jv50",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.371Z"
+  },
+  {
+    "id": "cmem2_1782686480372_4kpn",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.372Z"
+  },
+  {
+    "id": "cmem2_1782686480372_j2y5",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.372Z"
+  },
+  {
+    "id": "cmem2_1782686480372_dchc",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.372Z"
+  },
+  {
+    "id": "cmem2_1782686480372_hvum",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.372Z"
+  },
+  {
+    "id": "cmem2_1782686480372_xw94",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.372Z"
+  },
+  {
+    "id": "cmem2_1782686480372_po52",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.372Z"
+  },
+  {
+    "id": "cmem2_1782686480373_hvqt",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.373Z"
+  },
+  {
+    "id": "cmem2_1782686480373_yy91",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.373Z"
+  },
+  {
+    "id": "cmem2_1782686480373_bojb",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.373Z"
+  },
+  {
+    "id": "cmem2_1782686480373_7ek9",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.373Z"
+  },
+  {
+    "id": "cmem2_1782686480373_6o1j",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.373Z"
+  },
+  {
+    "id": "cmem2_1782686480373_96dd",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.373Z"
+  },
+  {
+    "id": "cmem2_1782686480374_66be",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.374Z"
+  },
+  {
+    "id": "cmem2_1782686480374_k2wg",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.374Z"
+  },
+  {
+    "id": "cmem2_1782686480374_v20c",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.374Z"
+  },
+  {
+    "id": "cmem2_1782686480374_sjvr",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.374Z"
+  },
+  {
+    "id": "cmem2_1782686480374_e3ij",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.374Z"
+  },
+  {
+    "id": "cmem2_1782686480374_bvgf",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-28T22:41:20.374Z"
+  },
+  {
+    "id": "cmem2_1782772798126_1ttf",
+    "domainId": "civ_director",
+    "type": "observation",
+    "title": "Test memory 1782772797713",
+    "detail": "detail",
+    "tags": [],
+    "at": "2026-06-29T22:39:58.126Z"
+  },
+  {
+    "id": "cmem2_1782772798131_xsvk",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Deploy civilization platform 1782772797713",
+    "detail": "{\"eosGoalId\":\"egoal_1782772798130_7fe8\",\"memberId\":\"cmem_1782772797717_3fgt\",\"domain\":\"general\"}",
+    "tags": [],
+    "at": "2026-06-29T22:39:58.131Z"
+  },
+  {
+    "id": "cmem2_1782772798180_1djd",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Build civilization feature 1782772797713",
+    "detail": "{\"eosGoalId\":\"egoal_1782772798179_ij8y\",\"memberId\":\"cmem_1782772797717_3fgt\",\"domain\":\"engineering\"}",
+    "tags": [],
+    "at": "2026-06-29T22:39:58.180Z"
+  },
+  {
+    "id": "cmem2_1782772798440_26pt",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Health test 1782772797713",
+    "detail": "{\"eosGoalId\":\"egoal_1782772798440_36rx\",\"domain\":\"general\"}",
+    "tags": [],
+    "at": "2026-06-29T22:39:58.440Z"
+  },
+  {
+    "id": "cmem2_1782772798675_77q6",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Resource-backed initiative 1782772797713",
+    "detail": "{\"eosGoalId\":\"egoal_1782772798674_ikd8\",\"memberId\":\"cmem_1782772797719_upab\",\"domain\":\"business\"}",
+    "tags": [],
+    "at": "2026-06-29T22:39:58.675Z"
+  },
+  {
+    "id": "cmem2_1782772799113_zgs0",
+    "domainId": "civ_registry",
+    "type": "tick",
+    "title": "Registry: 68 active members, 4 alliances",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.113Z"
+  },
+  {
+    "id": "cmem2_1782772799114_yf8k",
+    "domainId": "civ_council",
+    "type": "tick",
+    "title": "Council: 8 open proposals, 0 expired",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.114Z"
+  },
+  {
+    "id": "cmem2_1782772799114_nnq4",
+    "domainId": "civ_governance",
+    "type": "tick",
+    "title": "Governance: 7 active articles, 0 open disputes",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.114Z"
+  },
+  {
+    "id": "cmem2_1782772799114_6iet",
+    "domainId": "civ_constitution",
+    "type": "tick",
+    "title": "Constitution: 7 articles, 4 pending amendments, 8 precedents",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.114Z"
+  },
+  {
+    "id": "cmem2_1782772799114_38s1",
+    "domainId": "civ_policy",
+    "type": "tick",
+    "title": "Policy: 2 civ articles, 0 enterprise policies",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.114Z"
+  },
+  {
+    "id": "cmem2_1782772799115_abri",
+    "domainId": "civ_economy",
+    "type": "tick",
+    "title": "Economy: 12 total trades, 4 completed, pool: {\"capital\":200}",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.115Z"
+  },
+  {
+    "id": "cmem2_1782772799115_i4kq",
+    "domainId": "civ_resource_exchange",
+    "type": "tick",
+    "title": "Resource Exchange: 8 pending trades",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.115Z"
+  },
+  {
+    "id": "cmem2_1782772799116_1c0h",
+    "domainId": "civ_knowledge_network",
+    "type": "tick",
+    "title": "Knowledge Network: 11 routes, 0 AKO knowledge items",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.116Z"
+  },
+  {
+    "id": "cmem2_1782772799116_939p",
+    "domainId": "civ_mission_network",
+    "type": "tick",
+    "title": "Mission Network: 9 open, 50 assigned",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.116Z"
+  },
+  {
+    "id": "cmem2_1782772799117_gbn0",
+    "domainId": "civ_reputation",
+    "type": "tick",
+    "title": "Reputation: 12 members, avg=64, low=4, high=8",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.117Z"
+  },
+  {
+    "id": "cmem2_1782772799117_x8hc",
+    "domainId": "civ_trust",
+    "type": "tick",
+    "title": "Trust Engine: 12 civ reputations, 28 eco trust entries",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.117Z"
+  },
+  {
+    "id": "cmem2_1782772799117_06hu",
+    "domainId": "civ_diplomacy",
+    "type": "tick",
+    "title": "Diplomacy: 15 treaties (4 ratified), 8 open negotiations, 0 open disputes",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.117Z"
+  },
+  {
+    "id": "cmem2_1782772799117_b8vi",
+    "domainId": "civ_collaboration",
+    "type": "tick",
+    "title": "Collaboration: 2 active collaborations, 9 channels",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.117Z"
+  },
+  {
+    "id": "cmem2_1782772799118_eyoa",
+    "domainId": "civ_arbitration",
+    "type": "tick",
+    "title": "Arbitration: 0 open cases, 8 precedents established",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.118Z"
+  },
+  {
+    "id": "cmem2_1782772799118_svns",
+    "domainId": "civ_innovation",
+    "type": "tick",
+    "title": "Innovation: 2 published, 2 adopted standards",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.118Z"
+  },
+  {
+    "id": "cmem2_1782772799120_gz89",
+    "domainId": "civ_research",
+    "type": "tick",
+    "title": "Research Network: 2 active projects, 0 AEO insights",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.120Z"
+  },
+  {
+    "id": "cmem2_1782772799120_05ob",
+    "domainId": "civ_evolution",
+    "type": "tick",
+    "title": "Evolution Board: 19 proposed, 2 approved",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.120Z"
+  },
+  {
+    "id": "cmem2_1782772799133_fms2",
+    "domainId": "civ_analytics",
+    "type": "tick",
+    "title": "Analytics: civilization health=88, 20 domain KPIs",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.133Z"
+  },
+  {
+    "id": "cmem2_1782772799148_oik2",
+    "domainId": "civ_health",
+    "type": "tick",
+    "title": "Health Monitor: score=88, alerts=0",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.148Z"
+  },
+  {
+    "id": "cmem2_1782772799162_oele",
+    "domainId": "civ_director",
+    "type": "tick",
+    "title": "Director: health=88, openMissions=9, openDisputes=0, pendingProposals=8",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.162Z"
+  },
+  {
+    "id": "cmem2_1782772799163_hvo2",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.163Z"
+  },
+  {
+    "id": "cmem2_1782772799163_fq37",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.163Z"
+  },
+  {
+    "id": "cmem2_1782772799218_t4ck",
+    "domainId": "civ_director",
+    "type": "goal",
+    "title": "Goal: Cross-layer smoke 1782772797713",
+    "detail": "{\"eosGoalId\":\"egoal_1782772799217_6gsv\",\"memberId\":\"cmem_1782772797717_3fgt\",\"domain\":\"general\"}",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.218Z"
+  },
+  {
+    "id": "cmem2_1782772799218_htql",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.218Z"
+  },
+  {
+    "id": "cmem2_1782772799218_5tx4",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.218Z"
+  },
+  {
+    "id": "cmem2_1782772799219_qajc",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.219Z"
+  },
+  {
+    "id": "cmem2_1782772799219_yu0k",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.219Z"
+  },
+  {
+    "id": "cmem2_1782772799219_o4tv",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.219Z"
+  },
+  {
+    "id": "cmem2_1782772799219_fbrf",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.219Z"
+  },
+  {
+    "id": "cmem2_1782772799219_kdug",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.219Z"
+  },
+  {
+    "id": "cmem2_1782772799219_lkh9",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.219Z"
+  },
+  {
+    "id": "cmem2_1782772799224_mbav",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.224Z"
+  },
+  {
+    "id": "cmem2_1782772799224_m3z3",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.224Z"
+  },
+  {
+    "id": "cmem2_1782772799229_e3ov",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.229Z"
+  },
+  {
+    "id": "cmem2_1782772799229_papq",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.229Z"
+  },
+  {
+    "id": "cmem2_1782772799240_s7kj",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.240Z"
+  },
+  {
+    "id": "cmem2_1782772799240_ql9m",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.240Z"
+  },
+  {
+    "id": "cmem2_1782772799251_74ii",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.251Z"
+  },
+  {
+    "id": "cmem2_1782772799251_8wek",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.251Z"
+  },
+  {
+    "id": "cmem2_1782772799253_av3z",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.253Z"
+  },
+  {
+    "id": "cmem2_1782772799253_kn6h",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.253Z"
+  },
+  {
+    "id": "cmem2_1782772799262_37j7",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.262Z"
+  },
+  {
+    "id": "cmem2_1782772799263_frl2",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.263Z"
+  },
+  {
+    "id": "cmem2_1782772799265_eei5",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.265Z"
+  },
+  {
+    "id": "cmem2_1782772799265_tdqs",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.265Z"
+  },
+  {
+    "id": "cmem2_1782772799274_mpd9",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.274Z"
+  },
+  {
+    "id": "cmem2_1782772799274_ssjp",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.274Z"
+  },
+  {
+    "id": "cmem2_1782772799283_xsdg",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.283Z"
+  },
+  {
+    "id": "cmem2_1782772799284_4jwt",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.284Z"
+  },
+  {
+    "id": "cmem2_1782772799286_alza",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.286Z"
+  },
+  {
+    "id": "cmem2_1782772799286_0fn1",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.286Z"
+  },
+  {
+    "id": "cmem2_1782772799289_ocy0",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.289Z"
+  },
+  {
+    "id": "cmem2_1782772799289_vw8e",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.289Z"
+  },
+  {
+    "id": "cmem2_1782772799291_gfz0",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.291Z"
+  },
+  {
+    "id": "cmem2_1782772799292_znsl",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.292Z"
+  },
+  {
+    "id": "cmem2_1782772799293_qw1f",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.293Z"
+  },
+  {
+    "id": "cmem2_1782772799293_uxk3",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.293Z"
+  },
+  {
+    "id": "cmem2_1782772799303_ih8m",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.303Z"
+  },
+  {
+    "id": "cmem2_1782772799303_2hl2",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.303Z"
+  },
+  {
+    "id": "cmem2_1782772799314_zlgv",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.314Z"
+  },
+  {
+    "id": "cmem2_1782772799314_z8vi",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.314Z"
+  },
+  {
+    "id": "cmem2_1782772799324_l2tk",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.324Z"
+  },
+  {
+    "id": "cmem2_1782772799325_cqoo",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.325Z"
+  },
+  {
+    "id": "cmem2_1782772799325_zek2",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.325Z"
+  },
+  {
+    "id": "cmem2_1782772799325_rmdn",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.325Z"
+  },
+  {
+    "id": "cmem2_1782772799325_wojy",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.325Z"
+  },
+  {
+    "id": "cmem2_1782772799326_ferk",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.326Z"
+  },
+  {
+    "id": "cmem2_1782772799326_wd19",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.326Z"
+  },
+  {
+    "id": "cmem2_1782772799326_z4cu",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.326Z"
+  },
+  {
+    "id": "cmem2_1782772799326_ojgx",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.326Z"
+  },
+  {
+    "id": "cmem2_1782772799326_4hyw",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.326Z"
+  },
+  {
+    "id": "cmem2_1782772799326_1v4e",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.326Z"
+  },
+  {
+    "id": "cmem2_1782772799327_edwo",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.327Z"
+  },
+  {
+    "id": "cmem2_1782772799327_srj2",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.327Z"
+  },
+  {
+    "id": "cmem2_1782772799327_cedw",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.327Z"
+  },
+  {
+    "id": "cmem2_1782772799327_f8xm",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.327Z"
+  },
+  {
+    "id": "cmem2_1782772799327_olub",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.327Z"
+  },
+  {
+    "id": "cmem2_1782772799327_tbnw",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.327Z"
+  },
+  {
+    "id": "cmem2_1782772799328_6ne0",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.328Z"
+  },
+  {
+    "id": "cmem2_1782772799328_21jh",
+    "domainId": "civ_mission_network",
+    "type": "mission_assigned",
+    "title": "Mission assigned to undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.328Z"
+  },
+  {
+    "id": "cmem2_1782772799328_e68y",
+    "domainId": "civ_diplomacy",
+    "type": "treaty_ratified",
+    "title": "Treaty ratified: undefined",
+    "detail": "",
+    "tags": [],
+    "at": "2026-06-29T22:39:59.328Z"
   }
 ]

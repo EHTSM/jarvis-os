@@ -1,0 +1,5679 @@
+{
+  "analyses": [
+    {
+      "id": "er_1782691283123_fu5o",
+      "context": "test_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.124Z"
+    },
+    {
+      "id": "er_1782691283138_j32x",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.138Z"
+    },
+    {
+      "id": "er_1782691283150_dxja",
+      "context": "range_check_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.150Z"
+    },
+    {
+      "id": "er_1782691283163_qdf8",
+      "context": "issue_sort_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.163Z"
+    },
+    {
+      "id": "er_1782691283176_hp78",
+      "context": "dim_field_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.176Z"
+    },
+    {
+      "id": "er_1782691283189_4zbw",
+      "context": "list_test_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.189Z"
+    },
+    {
+      "id": "er_1782691283201_fhwl",
+      "context": "get_test_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.201Z"
+    },
+    {
+      "id": "er_1782691283361_wuv7",
+      "context": "chain_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.361Z"
+    },
+    {
+      "id": "er_1782691283556_2die",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.556Z"
+    },
+    {
+      "id": "er_1782691283584_iq2j",
+      "context": "get_cycle_evo_direct",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.584Z"
+    },
+    {
+      "id": "er_1782691283613_1w1l",
+      "context": "list_evo_1782691283584",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.613Z"
+    },
+    {
+      "id": "er_1782691283640_o15i",
+      "context": "status_seed_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.640Z"
+    },
+    {
+      "id": "er_1782691283700_rnke",
+      "context": "multi_evo_ctx",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.700Z"
+    },
+    {
+      "id": "er_1782691283724_1b9e",
+      "context": "debt_cycle_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.724Z"
+    },
+    {
+      "id": "er_1782691283853_zzx3",
+      "context": "pipeline_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.853Z"
+    },
+    {
+      "id": "er_1782691283900_gap0",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.900Z"
+    },
+    {
+      "id": "er_1782691283939_qn40",
+      "context": "founder_time_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.939Z"
+    },
+    {
+      "id": "er_1782691283987_8eek",
+      "context": "dashboard_seed_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:23.987Z"
+    },
+    {
+      "id": "er_1782691284361_usrg",
+      "context": "multi_evo_ctx",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T00:01:24.361Z"
+    },
+    {
+      "id": "er_1782741774021_8b5y",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T14:02:54.021Z"
+    },
+    {
+      "id": "er_1782741774044_2mfe",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T14:02:54.044Z"
+    },
+    {
+      "id": "er_1782741774068_83mu",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T14:02:54.068Z"
+    },
+    {
+      "id": "er_1782741774092_p618",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T14:02:54.092Z"
+    },
+    {
+      "id": "er_1782741775448_vnvj",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T14:02:55.448Z"
+    },
+    {
+      "id": "er_1782744624803_zh2q",
+      "context": "current_evolution",
+      "overallScore": 61,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 60
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T14:50:24.803Z"
+    },
+    {
+      "id": "er_1782749853281_80t1",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:17:33.281Z"
+    },
+    {
+      "id": "er_1782749853315_4qh6",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:17:33.315Z"
+    },
+    {
+      "id": "er_1782749853339_80ni",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:17:33.339Z"
+    },
+    {
+      "id": "er_1782749853366_ae0a",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:17:33.366Z"
+    },
+    {
+      "id": "er_1782749854794_n981",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:17:34.794Z"
+    },
+    {
+      "id": "er_1782751806775_14gz",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:50:06.775Z"
+    },
+    {
+      "id": "er_1782751806813_itxv",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:50:06.813Z"
+    },
+    {
+      "id": "er_1782751807063_stkx",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:50:07.063Z"
+    },
+    {
+      "id": "er_1782751807122_40z4",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:50:07.122Z"
+    },
+    {
+      "id": "er_1782751808910_kror",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:50:08.910Z"
+    },
+    {
+      "id": "er_1782751836248_ufg2",
+      "context": "current_evolution",
+      "overallScore": 61,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 60
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:50:36.248Z"
+    },
+    {
+      "id": "er_1782751839824_t43d",
+      "context": "current_evolution",
+      "overallScore": 61,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 60
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:50:39.824Z"
+    },
+    {
+      "id": "er_1782751843458_v9cy",
+      "context": "current_evolution",
+      "overallScore": 61,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 60
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:50:43.458Z"
+    },
+    {
+      "id": "er_1782751847255_cc3j",
+      "context": "current_evolution",
+      "overallScore": 61,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 60
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:50:47.255Z"
+    },
+    {
+      "id": "er_1782751866308_m4v8",
+      "context": "current_evolution",
+      "overallScore": 61,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 60
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:51:06.308Z"
+    },
+    {
+      "id": "er_1782751870438_av9o",
+      "context": "current_evolution",
+      "overallScore": 61,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 60
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:51:10.438Z"
+    },
+    {
+      "id": "er_1782751870489_fo9z",
+      "context": "current_evolution",
+      "overallScore": 61,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 60
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T16:51:10.489Z"
+    },
+    {
+      "id": "er_1782754206661_sz31",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T17:30:06.661Z"
+    },
+    {
+      "id": "er_1782754206855_xxe2",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T17:30:06.855Z"
+    },
+    {
+      "id": "er_1782754207036_41qo",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T17:30:07.036Z"
+    },
+    {
+      "id": "er_1782754207218_id6z",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T17:30:07.218Z"
+    },
+    {
+      "id": "er_1782754207407_c7hy",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T17:30:07.407Z"
+    },
+    {
+      "id": "er_1782754207581_nyez",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T17:30:07.581Z"
+    },
+    {
+      "id": "er_1782754207765_5ftk",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T17:30:07.765Z"
+    },
+    {
+      "id": "er_1782754208230_dryv",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T17:30:08.230Z"
+    },
+    {
+      "id": "er_1782754208562_5upa",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T17:30:08.562Z"
+    },
+    {
+      "id": "er_1782754208755_jtsy",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 46
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 56
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 90
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T17:30:08.755Z"
+    },
+    {
+      "id": "er_1782773079145_6rag",
+      "context": "test_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.145Z"
+    },
+    {
+      "id": "er_1782773079166_i3c3",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.166Z"
+    },
+    {
+      "id": "er_1782773079179_gpsx",
+      "context": "range_check_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.179Z"
+    },
+    {
+      "id": "er_1782773079191_b6ah",
+      "context": "issue_sort_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.191Z"
+    },
+    {
+      "id": "er_1782773079203_i5je",
+      "context": "dim_field_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.203Z"
+    },
+    {
+      "id": "er_1782773079217_s9dz",
+      "context": "list_test_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.217Z"
+    },
+    {
+      "id": "er_1782773079229_vm29",
+      "context": "get_test_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.229Z"
+    },
+    {
+      "id": "er_1782773079346_7ec9",
+      "context": "chain_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.346Z"
+    },
+    {
+      "id": "er_1782773079547_mxyo",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.547Z"
+    },
+    {
+      "id": "er_1782773079573_4z9a",
+      "context": "get_cycle_evo_direct",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.573Z"
+    },
+    {
+      "id": "er_1782773079599_0add",
+      "context": "list_evo_1782773079574",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.599Z"
+    },
+    {
+      "id": "er_1782773079622_1uig",
+      "context": "status_seed_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.622Z"
+    },
+    {
+      "id": "er_1782773079674_uj09",
+      "context": "multi_evo_ctx",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.674Z"
+    },
+    {
+      "id": "er_1782773079701_hm2k",
+      "context": "debt_cycle_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.701Z"
+    },
+    {
+      "id": "er_1782773079835_up6c",
+      "context": "pipeline_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.835Z"
+    },
+    {
+      "id": "er_1782773079884_ajwi",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.884Z"
+    },
+    {
+      "id": "er_1782773079923_s66v",
+      "context": "founder_time_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.923Z"
+    },
+    {
+      "id": "er_1782773079980_7htd",
+      "context": "dashboard_seed_evo",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:39.980Z"
+    },
+    {
+      "id": "er_1782773080357_fiji",
+      "context": "multi_evo_ctx",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:44:40.357Z"
+    },
+    {
+      "id": "er_1782773122704_j1l7",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:45:22.704Z"
+    },
+    {
+      "id": "er_1782773122729_cuyb",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:45:22.729Z"
+    },
+    {
+      "id": "er_1782773122758_4i6c",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:45:22.758Z"
+    },
+    {
+      "id": "er_1782773122783_7kyd",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:45:22.783Z"
+    },
+    {
+      "id": "er_1782773124169_lxm1",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:45:24.169Z"
+    },
+    {
+      "id": "er_1782773150396_u93c",
+      "context": "current_evolution",
+      "overallScore": 61,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 60
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:45:50.396Z"
+    },
+    {
+      "id": "er_1782773153798_qyi1",
+      "context": "current_evolution",
+      "overallScore": 61,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 60
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:45:53.798Z"
+    },
+    {
+      "id": "er_1782773157595_0kja",
+      "context": "current_evolution",
+      "overallScore": 61,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 60
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:45:57.595Z"
+    },
+    {
+      "id": "er_1782773161595_r7q3",
+      "context": "current_evolution",
+      "overallScore": 61,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 60
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:46:01.595Z"
+    },
+    {
+      "id": "er_1782773164488_xikr",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:46:04.488Z"
+    },
+    {
+      "id": "er_1782773164727_dd7p",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:46:04.727Z"
+    },
+    {
+      "id": "er_1782773164959_8yc8",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:46:04.960Z"
+    },
+    {
+      "id": "er_1782773165224_5sv1",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:46:05.224Z"
+    },
+    {
+      "id": "er_1782773165459_z25p",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:46:05.459Z"
+    },
+    {
+      "id": "er_1782773165704_wu67",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:46:05.704Z"
+    },
+    {
+      "id": "er_1782773165944_igot",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:46:05.944Z"
+    },
+    {
+      "id": "er_1782773166520_37ml",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:46:06.520Z"
+    },
+    {
+      "id": "er_1782773166946_r3yq",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:46:06.946Z"
+    },
+    {
+      "id": "er_1782773167202_88yc",
+      "context": "current_evolution",
+      "overallScore": 60,
+      "dimensions": {
+        "architectural": {
+          "score": 45
+        },
+        "capability": {
+          "score": 57
+        },
+        "workflow": {
+          "score": 58
+        },
+        "agent": {
+          "score": 40
+        },
+        "runtime": {
+          "score": 100
+        },
+        "quality": {
+          "score": 57
+        },
+        "organizational": {
+          "score": 91
+        }
+      },
+      "issues": [
+        {
+          "severity": "high",
+          "code": "low_prediction_accuracy",
+          "msg": "Prediction accuracy below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "low_autonomous_success",
+          "msg": "Autonomous success rate below 30%",
+          "dimension": "capability"
+        },
+        {
+          "severity": "high",
+          "code": "high_debt",
+          "msg": "33 debt points outstanding",
+          "dimension": "quality"
+        },
+        {
+          "severity": "medium",
+          "code": "no_evolution_cycles",
+          "msg": "Self improvement has not run a cycle yet",
+          "dimension": "agent"
+        },
+        {
+          "severity": "info",
+          "code": "high_learning_velocity",
+          "msg": "High learning velocity — ensure quality over quantity",
+          "dimension": "capability"
+        }
+      ],
+      "reviewOverall": 79,
+      "pendingPatterns": 14,
+      "createdAt": "2026-06-29T22:46:07.202Z"
+    }
+  ],
+  "stats": {
+    "total": 90,
+    "avgScore": 60.1
+  },
+  "updatedAt": "2026-06-29T22:46:07.203Z"
+}

@@ -1,0 +1,124 @@
+{
+  "tokens": {
+    "colors": [
+      {
+        "value": "#000000",
+        "css": "rgb(0, 0, 0)",
+        "count": 5,
+        "role": "text",
+        "token": "color.text.1"
+      },
+      {
+        "value": "#334488",
+        "css": "rgb(51, 68, 136)",
+        "count": 1,
+        "role": "text",
+        "token": "color.text.2"
+      },
+      {
+        "value": "#eeeeee",
+        "css": "rgb(238, 238, 238)",
+        "count": 1,
+        "role": "background",
+        "token": "color.bg.3"
+      }
+    ],
+    "spacing": [
+      {
+        "token": "spacing.1",
+        "value": "16px",
+        "px": 16
+      },
+      {
+        "token": "spacing.2",
+        "value": "16.08px",
+        "px": 16.08
+      },
+      {
+        "token": "spacing.3",
+        "value": "135px",
+        "px": 135
+      }
+    ],
+    "typography": {
+      "families": [
+        {
+          "token": "typography.fontFamily.1",
+          "value": "system-ui, sans-serif"
+        }
+      ],
+      "sizes": [
+        {
+          "token": "typography.fontSize.1",
+          "value": "16px",
+          "px": 16
+        },
+        {
+          "token": "typography.fontSize.2",
+          "value": "24px",
+          "px": 24
+        }
+      ],
+      "weights": [
+        {
+          "token": "typography.fontWeight.1",
+          "value": "400"
+        },
+        {
+          "token": "typography.fontWeight.2",
+          "value": "700"
+        }
+      ],
+      "lineHeights": []
+    },
+    "radius": [],
+    "iconSizes": []
+  },
+  "w3c": {
+    "color": {
+      "text": {
+        "1": {
+          "$value": "#000000",
+          "$type": "color"
+        },
+        "2": {
+          "$value": "#334488",
+          "$type": "color"
+        }
+      },
+      "bg": {
+        "3": {
+          "$value": "#eeeeee",
+          "$type": "color"
+        }
+      }
+    },
+    "spacing": {
+      "1": {
+        "$value": "16px",
+        "$type": "dimension"
+      },
+      "2": {
+        "$value": "16.08px",
+        "$type": "dimension"
+      },
+      "3": {
+        "$value": "135px",
+        "$type": "dimension"
+      }
+    }
+  },
+  "stats": {
+    "colorCount": 3,
+    "spacingSteps": 3,
+    "fontFamilies": 1,
+    "fontSizes": 2,
+    "fontWeights": 2,
+    "radiusValues": 0,
+    "iconSizes": 0
+  },
+  "url": "https://example.com/evo-status-seed",
+  "title": "Example Domain",
+  "timestamp": "2026-06-29T22:43:43.190Z",
+  "domFilename": "dom-2026-06-29T22-43-42-816Z.json"
+}

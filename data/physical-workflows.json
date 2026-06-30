@@ -1,0 +1,1400 @@
+{
+  "workflows": [
+    {
+      "id": "pwf_1782725337498_zzgz",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 27,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        }
+      ],
+      "stagesCompleted": 2,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T09:28:57.498Z"
+    },
+    {
+      "id": "pwf_1782725337502_eamv",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 27,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 31,
+          "avgHealthScore": 40,
+          "critical": 18,
+          "degraded": 0,
+          "healthy": 13,
+          "alerts": 18
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 12,
+          "succeeded": 12,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T09:28:57.502Z"
+    },
+    {
+      "id": "pwf_1782725337503_pmgn",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 27,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 31,
+          "avgHealthScore": 40,
+          "critical": 18,
+          "degraded": 0,
+          "healthy": 13,
+          "alerts": 18
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 12,
+          "succeeded": 12,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T09:28:57.503Z"
+    },
+    {
+      "id": "pwf_1782725337503_0too",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 27,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 31,
+          "avgHealthScore": 40,
+          "critical": 18,
+          "degraded": 0,
+          "healthy": 13,
+          "alerts": 18
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 12,
+          "succeeded": 12,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T09:28:57.503Z"
+    },
+    {
+      "id": "pwf_1782725337503_uiu5",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 27,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 31,
+          "avgHealthScore": 40,
+          "critical": 18,
+          "degraded": 0,
+          "healthy": 13,
+          "alerts": 18
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 12,
+          "succeeded": 12,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T09:28:57.503Z"
+    },
+    {
+      "id": "pwf_1782725337503_q5oa",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 27,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 31,
+          "avgHealthScore": 40,
+          "critical": 18,
+          "degraded": 0,
+          "healthy": 13,
+          "alerts": 18
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 12,
+          "succeeded": 12,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T09:28:57.503Z"
+    },
+    {
+      "id": "pwf_1782725337503_n1jh",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 28,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 31,
+          "avgHealthScore": 40,
+          "critical": 18,
+          "degraded": 0,
+          "healthy": 13,
+          "alerts": 18
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 12,
+          "succeeded": 12,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T09:28:57.503Z"
+    },
+    {
+      "id": "pwf_1782773103850_p8hj",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 58,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        }
+      ],
+      "stagesCompleted": 2,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T22:45:03.850Z"
+    },
+    {
+      "id": "pwf_1782773103867_ysdm",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 58,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 62,
+          "avgHealthScore": 40,
+          "critical": 36,
+          "degraded": 0,
+          "healthy": 26,
+          "alerts": 36
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 24,
+          "succeeded": 24,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T22:45:03.867Z"
+    },
+    {
+      "id": "pwf_1782773103867_zpi2",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 58,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 62,
+          "avgHealthScore": 40,
+          "critical": 36,
+          "degraded": 0,
+          "healthy": 26,
+          "alerts": 36
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 24,
+          "succeeded": 24,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T22:45:03.867Z"
+    },
+    {
+      "id": "pwf_1782773103868_4ho4",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 58,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 62,
+          "avgHealthScore": 40,
+          "critical": 36,
+          "degraded": 0,
+          "healthy": 26,
+          "alerts": 36
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 24,
+          "succeeded": 24,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T22:45:03.868Z"
+    },
+    {
+      "id": "pwf_1782773103868_jo77",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 58,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 62,
+          "avgHealthScore": 40,
+          "critical": 36,
+          "degraded": 0,
+          "healthy": 26,
+          "alerts": 36
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 24,
+          "succeeded": 24,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T22:45:03.868Z"
+    },
+    {
+      "id": "pwf_1782773103868_nc2g",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 58,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 62,
+          "avgHealthScore": 40,
+          "critical": 36,
+          "degraded": 0,
+          "healthy": 26,
+          "alerts": 36
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 24,
+          "succeeded": 24,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T22:45:03.868Z"
+    },
+    {
+      "id": "pwf_1782773103868_v1yo",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 59,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 62,
+          "avgHealthScore": 40,
+          "critical": 36,
+          "degraded": 0,
+          "healthy": 26,
+          "alerts": 36
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 24,
+          "succeeded": 24,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-29T22:45:03.868Z"
+    },
+    {
+      "id": "pwf_1782778347170_6iyj",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 89,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        }
+      ],
+      "stagesCompleted": 2,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-30T00:12:27.170Z"
+    },
+    {
+      "id": "pwf_1782778347197_xriz",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 89,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 93,
+          "avgHealthScore": 40,
+          "critical": 54,
+          "degraded": 0,
+          "healthy": 39,
+          "alerts": 54
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 36,
+          "succeeded": 36,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-30T00:12:27.197Z"
+    },
+    {
+      "id": "pwf_1782778347197_0hwu",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 89,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 93,
+          "avgHealthScore": 40,
+          "critical": 54,
+          "degraded": 0,
+          "healthy": 39,
+          "alerts": 54
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 36,
+          "succeeded": 36,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-30T00:12:27.197Z"
+    },
+    {
+      "id": "pwf_1782778347197_j4od",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 89,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 93,
+          "avgHealthScore": 40,
+          "critical": 54,
+          "degraded": 0,
+          "healthy": 39,
+          "alerts": 54
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 36,
+          "succeeded": 36,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-30T00:12:27.197Z"
+    },
+    {
+      "id": "pwf_1782778347197_aee1",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 89,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 93,
+          "avgHealthScore": 40,
+          "critical": 54,
+          "degraded": 0,
+          "healthy": 39,
+          "alerts": 54
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 36,
+          "succeeded": 36,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-30T00:12:27.197Z"
+    },
+    {
+      "id": "pwf_1782778347198_89tq",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 89,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 93,
+          "avgHealthScore": 40,
+          "critical": 54,
+          "degraded": 0,
+          "healthy": 39,
+          "alerts": 54
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 36,
+          "succeeded": 36,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-30T00:12:27.198Z"
+    },
+    {
+      "id": "pwf_1782778347198_p9nv",
+      "stages": [
+        {
+          "stage": "discover",
+          "found": 90,
+          "adapterTypes": [
+            "iot",
+            "sensor",
+            "camera",
+            "smart_display",
+            "generic_robotics",
+            "smart_office",
+            "raspberry_pi",
+            "plc",
+            "mqtt",
+            "rest_device",
+            "webhook"
+          ]
+        },
+        {
+          "stage": "register",
+          "registered": 0,
+          "note": "no new devices to register"
+        },
+        {
+          "stage": "verify",
+          "verified": 0,
+          "total": 0
+        },
+        {
+          "stage": "assign",
+          "missionId": null,
+          "agentsAssigned": 1
+        },
+        {
+          "stage": "execute",
+          "ok": true,
+          "note": "no devices to execute on"
+        },
+        {
+          "stage": "monitor",
+          "ok": true,
+          "scanned": 93,
+          "avgHealthScore": 40,
+          "critical": 54,
+          "degraded": 0,
+          "healthy": 39,
+          "alerts": 54
+        },
+        {
+          "stage": "recover",
+          "strategy": "retry",
+          "note": "auto-recovery via retry on next cycle"
+        },
+        {
+          "stage": "measure",
+          "totalOrchestrations": 36,
+          "succeeded": 36,
+          "avgDevicesPerOrch": 2
+        },
+        {
+          "stage": "learn",
+          "ok": true,
+          "delegated": "selfImprovementEngine"
+        }
+      ],
+      "stagesCompleted": 9,
+      "status": "success",
+      "context": {},
+      "completedAt": "2026-06-30T00:12:27.198Z"
+    }
+  ],
+  "stats": {
+    "total": 21,
+    "succeeded": 21,
+    "failed": 0,
+    "avgStagesCompleted": 8
+  },
+  "updatedAt": "2026-06-30T00:12:27.198Z"
+}

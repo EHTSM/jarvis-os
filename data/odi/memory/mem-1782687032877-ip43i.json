@@ -1,0 +1,23 @@
+{
+  "id": "mem-1782687032877-ip43i",
+  "finding": {
+    "type": "test_finding",
+    "severity": "warning",
+    "message": "test"
+  },
+  "patchSpec": [
+    {
+      "patchTarget": "foo",
+      "patchReplacement": "bar"
+    }
+  ],
+  "targetFile": null,
+  "strategy": "test",
+  "scoreBefore": null,
+  "scoreAfter": null,
+  "improvement": null,
+  "outcome": "applied",
+  "usageCount": 2,
+  "createdAt": "2026-06-28T22:50:32.877Z",
+  "lastUsedAt": "2026-06-29T22:44:37.179Z"
+}

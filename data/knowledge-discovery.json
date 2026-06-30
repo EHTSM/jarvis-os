@@ -1,0 +1,547 @@
+{
+  "discoveries": [
+    {
+      "id": "kdsc_1782773093090_76rr",
+      "category": "high_value_lesson",
+      "title": "High-frequency lesson: founder_action",
+      "source": "continuous_learning",
+      "value": 100,
+      "meta": {
+        "lessonType": "founder_action",
+        "count": 521
+      },
+      "discoveredAt": "2026-06-29T22:44:53.090Z"
+    },
+    {
+      "id": "kdsc_1782773093090_phy7",
+      "category": "high_value_lesson",
+      "title": "High-frequency lesson: agent_success",
+      "source": "continuous_learning",
+      "value": 100,
+      "meta": {
+        "lessonType": "agent_success",
+        "count": 212
+      },
+      "discoveredAt": "2026-06-29T22:44:53.090Z"
+    },
+    {
+      "id": "kdsc_1782773093090_yxxx",
+      "category": "high_value_lesson",
+      "title": "High-frequency lesson: team_built",
+      "source": "continuous_learning",
+      "value": 100,
+      "meta": {
+        "lessonType": "team_built",
+        "count": 165
+      },
+      "discoveredAt": "2026-06-29T22:44:53.090Z"
+    },
+    {
+      "id": "kdsc_1782773093090_z4kn",
+      "category": "high_value_lesson",
+      "title": "High-frequency lesson: approval_evidence",
+      "source": "continuous_learning",
+      "value": 100,
+      "meta": {
+        "lessonType": "approval_evidence",
+        "count": 156
+      },
+      "discoveredAt": "2026-06-29T22:44:53.090Z"
+    },
+    {
+      "id": "kdsc_1782773093090_bvv8",
+      "category": "high_value_lesson",
+      "title": "High-frequency lesson: self_review",
+      "source": "continuous_learning",
+      "value": 100,
+      "meta": {
+        "lessonType": "self_review",
+        "count": 108
+      },
+      "discoveredAt": "2026-06-29T22:44:53.090Z"
+    },
+    {
+      "id": "kdsc_1782773093090_nd7f",
+      "category": "reusable_rule",
+      "title": "Reusable rule: deterministic_filesystem_error",
+      "source": "engineering_rule_registry",
+      "value": 70,
+      "meta": {
+        "errorClass": "deterministic_filesystem_error",
+        "autoApply": 8
+      },
+      "discoveredAt": "2026-06-29T22:44:53.090Z"
+    },
+    {
+      "id": "kdsc_1782773093090_kmm0",
+      "category": "reusable_rule",
+      "title": "Reusable rule: security_validation_failure",
+      "source": "engineering_rule_registry",
+      "value": 70,
+      "meta": {
+        "errorClass": "security_validation_failure",
+        "autoApply": 8
+      },
+      "discoveredAt": "2026-06-29T22:44:53.090Z"
+    },
+    {
+      "id": "kdsc_1782773093090_hf8j",
+      "category": "reusable_rule",
+      "title": "Reusable rule: git_state_error",
+      "source": "engineering_rule_registry",
+      "value": 70,
+      "meta": {
+        "errorClass": "git_state_error",
+        "autoApply": 8
+      },
+      "discoveredAt": "2026-06-29T22:44:53.090Z"
+    },
+    {
+      "id": "kdsc_1782773093090_j6yj",
+      "category": "reusable_rule",
+      "title": "Reusable rule: unknown_capability_dispatch",
+      "source": "engineering_rule_registry",
+      "value": 70,
+      "meta": {
+        "errorClass": "unknown_capability_dispatch",
+        "autoApply": 8
+      },
+      "discoveredAt": "2026-06-29T22:44:53.090Z"
+    },
+    {
+      "id": "kdsc_1782773093090_6k8s",
+      "category": "reusable_rule",
+      "title": "Reusable rule: transient_network_error",
+      "source": "engineering_rule_registry",
+      "value": 70,
+      "meta": {
+        "errorClass": "transient_network_error",
+        "autoApply": 8
+      },
+      "discoveredAt": "2026-06-29T22:44:53.090Z"
+    },
+    {
+      "id": "kdsc_1782773093092_kulh",
+      "category": "bible_workflow",
+      "title": "Automatable workflow: pbw_deploy_vps_provisioned",
+      "source": "production_bible",
+      "value": 50,
+      "meta": {
+        "workflowId": "pbw_deploy_vps_provisioned",
+        "category": "deployment"
+      },
+      "discoveredAt": "2026-06-29T22:44:53.092Z"
+    },
+    {
+      "id": "kdsc_1782773093092_s8vl",
+      "category": "bible_workflow",
+      "title": "Automatable workflow: pbw_deploy_node_installed",
+      "source": "production_bible",
+      "value": 50,
+      "meta": {
+        "workflowId": "pbw_deploy_node_installed",
+        "category": "deployment"
+      },
+      "discoveredAt": "2026-06-29T22:44:53.092Z"
+    },
+    {
+      "id": "kdsc_1782773093092_v0k8",
+      "category": "bible_workflow",
+      "title": "Automatable workflow: pbw_deploy_repo_cloned",
+      "source": "production_bible",
+      "value": 50,
+      "meta": {
+        "workflowId": "pbw_deploy_repo_cloned",
+        "category": "deployment"
+      },
+      "discoveredAt": "2026-06-29T22:44:53.092Z"
+    },
+    {
+      "id": "kdsc_1782773093092_1jmf",
+      "category": "bible_workflow",
+      "title": "Automatable workflow: pbw_deploy_deps_installed",
+      "source": "production_bible",
+      "value": 50,
+      "meta": {
+        "workflowId": "pbw_deploy_deps_installed",
+        "category": "deployment"
+      },
+      "discoveredAt": "2026-06-29T22:44:53.092Z"
+    },
+    {
+      "id": "kdsc_1782773093092_8a9y",
+      "category": "bible_workflow",
+      "title": "Automatable workflow: pbw_deploy_env_configured",
+      "source": "production_bible",
+      "value": 50,
+      "meta": {
+        "workflowId": "pbw_deploy_env_configured",
+        "category": "deployment"
+      },
+      "discoveredAt": "2026-06-29T22:44:53.092Z"
+    },
+    {
+      "id": "kdsc_1782773093102_c2bl",
+      "category": "improvement_pattern",
+      "title": "14 self-improvement patterns pending promotion",
+      "source": "self_improvement",
+      "value": 100,
+      "meta": {
+        "pendingPatterns": 14,
+        "cycles": 0
+      },
+      "discoveredAt": "2026-06-29T22:44:53.102Z"
+    },
+    {
+      "id": "kdsc_1782773093102_xyjq",
+      "category": "improvement_pattern",
+      "title": "Repair success rate: 100%",
+      "source": "self_improvement",
+      "value": 100,
+      "meta": {
+        "repairSuccess": 100
+      },
+      "discoveredAt": "2026-06-29T22:44:53.102Z"
+    },
+    {
+      "id": "kdsc_1782722169899_mxrd",
+      "category": "marketplace_asset",
+      "title": "High-availability asset type: blueprint (200 assets)",
+      "source": "marketplace_catalog",
+      "value": 100,
+      "meta": {
+        "assetType": "blueprint",
+        "count": 200
+      },
+      "discoveredAt": "2026-06-29T08:36:09.899Z"
+    },
+    {
+      "id": "kdsc_1782773093104_tdtk",
+      "category": "marketplace_asset",
+      "title": "High-availability asset type: deployment_recipe (83 assets)",
+      "source": "marketplace_catalog",
+      "value": 100,
+      "meta": {
+        "assetType": "deployment_recipe",
+        "count": 83
+      },
+      "discoveredAt": "2026-06-29T22:44:53.104Z"
+    },
+    {
+      "id": "kdsc_1782773093104_ttob",
+      "category": "marketplace_asset",
+      "title": "High-availability asset type: automation_pack (58 assets)",
+      "source": "marketplace_catalog",
+      "value": 100,
+      "meta": {
+        "assetType": "automation_pack",
+        "count": 58
+      },
+      "discoveredAt": "2026-06-29T22:44:53.104Z"
+    },
+    {
+      "id": "kdsc_1782773093104_chvv",
+      "category": "knowledge_gap",
+      "title": "Knowledge gap in domain: knowledge",
+      "source": "knowledge_federation",
+      "value": 90,
+      "meta": {
+        "domain": "knowledge",
+        "sources": 1
+      },
+      "discoveredAt": "2026-06-29T22:44:53.104Z"
+    },
+    {
+      "id": "kdsc_1782773093104_1fdr",
+      "category": "knowledge_gap",
+      "title": "Knowledge gap in domain: workforce",
+      "source": "knowledge_federation",
+      "value": 90,
+      "meta": {
+        "domain": "workforce",
+        "sources": 1
+      },
+      "discoveredAt": "2026-06-29T22:44:53.104Z"
+    },
+    {
+      "id": "kdsc_1782773093104_4sqk",
+      "category": "knowledge_gap",
+      "title": "Knowledge gap in domain: founder",
+      "source": "knowledge_federation",
+      "value": 90,
+      "meta": {
+        "domain": "founder",
+        "sources": 1
+      },
+      "discoveredAt": "2026-06-29T22:44:53.104Z"
+    },
+    {
+      "id": "kdsc_1782722169900_sbnq",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782690461857_008b",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782690461857_008b",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T08:36:09.900Z"
+    },
+    {
+      "id": "kdsc_1782722169900_xm79",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782690461864_uw8x",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782690461864_uw8x",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T08:36:09.900Z"
+    },
+    {
+      "id": "kdsc_1782722169900_8uzf",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782690461874_z9v4",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782690461874_z9v4",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T08:36:09.900Z"
+    },
+    {
+      "id": "kdsc_1782722169900_4x89",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782690461889_lnk6",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782690461889_lnk6",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T08:36:09.900Z"
+    },
+    {
+      "id": "kdsc_1782722169900_16k9",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782690461896_0447",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782690461896_0447",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T08:36:09.900Z"
+    },
+    {
+      "id": "kdsc_1782722169900_d537",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782690461972_8rwe",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782690461972_8rwe",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T08:36:09.900Z"
+    },
+    {
+      "id": "kdsc_1782722169900_0w9v",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782690461980_i85u",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782690461980_i85u",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T08:36:09.900Z"
+    },
+    {
+      "id": "kdsc_1782722169900_d4ea",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782690461996_hrfw",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782690461996_hrfw",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T08:36:09.900Z"
+    },
+    {
+      "id": "kdsc_1782722169900_2yua",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782690462010_a3rv",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782690462010_a3rv",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T08:36:09.900Z"
+    },
+    {
+      "id": "kdsc_1782722169900_yysz",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782690462072_4e4k",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782690462072_4e4k",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T08:36:09.900Z"
+    },
+    {
+      "id": "kdsc_1782773093104_echj",
+      "category": "marketplace_asset",
+      "title": "High-availability asset type: blueprint (204 assets)",
+      "source": "marketplace_catalog",
+      "value": 100,
+      "meta": {
+        "assetType": "blueprint",
+        "count": 204
+      },
+      "discoveredAt": "2026-06-29T22:44:53.104Z"
+    },
+    {
+      "id": "kdsc_1782773093112_esmt",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782773078475_4dfp",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782773078475_4dfp",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T22:44:53.112Z"
+    },
+    {
+      "id": "kdsc_1782773093112_8tdf",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782773078486_ffrq",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782773078486_ffrq",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T22:44:53.112Z"
+    },
+    {
+      "id": "kdsc_1782773093112_66ft",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782773078501_beja",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782773078501_beja",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T22:44:53.112Z"
+    },
+    {
+      "id": "kdsc_1782773093112_nbjy",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782773078522_mb7k",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782773078522_mb7k",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T22:44:53.112Z"
+    },
+    {
+      "id": "kdsc_1782773093112_tzwp",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782773078532_gxze",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782773078532_gxze",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T22:44:53.112Z"
+    },
+    {
+      "id": "kdsc_1782773093112_zw1q",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782773078619_valh",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782773078619_valh",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T22:44:53.112Z"
+    },
+    {
+      "id": "kdsc_1782773093112_v1o3",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782773078630_meyt",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782773078630_meyt",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T22:44:53.112Z"
+    },
+    {
+      "id": "kdsc_1782773093112_3p7p",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782773078652_a21x",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782773078652_a21x",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T22:44:53.112Z"
+    },
+    {
+      "id": "kdsc_1782773093112_3jp8",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782773078673_snb9",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782773078673_snb9",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T22:44:53.112Z"
+    },
+    {
+      "id": "kdsc_1782773093112_vk9m",
+      "category": "cross_domain_gem",
+      "title": "High-value knowledge analysis: kr_1782773078740_kwqk",
+      "source": "knowledge_reasoning",
+      "value": 57.3,
+      "meta": {
+        "analysisId": "kr_1782773078740_kwqk",
+        "score": 57.3
+      },
+      "discoveredAt": "2026-06-29T22:44:53.112Z"
+    }
+  ],
+  "stats": {
+    "total": 44,
+    "byCategory": {
+      "high_value_lesson": 5,
+      "reusable_rule": 5,
+      "research_signal": 0,
+      "bible_workflow": 5,
+      "improvement_pattern": 2,
+      "marketplace_asset": 4,
+      "knowledge_gap": 3,
+      "cross_domain_gem": 20
+    },
+    "newSinceLastRun": 0
+  },
+  "lastRun": "2026-06-29T22:44:53.112Z",
+  "updatedAt": "2026-06-29T22:44:53.112Z"
+}

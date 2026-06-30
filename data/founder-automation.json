@@ -5389,10 +5389,230 @@
         "success": true,
         "service": "co2FounderOps"
       }
+    },
+    {
+      "id": "fae_1782778314255_jhy3",
+      "workflowId": "wf_deploy_nginx",
+      "workflow": "Install and configure Nginx with SSL",
+      "class": "A",
+      "triggeredBy": "test",
+      "startedAt": "2026-06-30T00:11:54.255Z",
+      "status": "completed",
+      "steps": [
+        {
+          "order": 1,
+          "step": "apt install nginx",
+          "executed": true,
+          "executedAt": "2026-06-30T00:11:54.255Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 2,
+          "step": "Copy nginx.conf",
+          "executed": true,
+          "executedAt": "2026-06-30T00:11:54.255Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 3,
+          "step": "certbot --nginx",
+          "executed": true,
+          "executedAt": "2026-06-30T00:11:54.255Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 4,
+          "step": "Test HTTPS",
+          "executed": true,
+          "executedAt": "2026-06-30T00:11:54.255Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 5,
+          "step": "Enable rate limits",
+          "executed": true,
+          "executedAt": "2026-06-30T00:11:54.255Z",
+          "note": "Automated via platform"
+        }
+      ],
+      "outcome": "success",
+      "minutesSaved": 30,
+      "approvalId": null,
+      "notes": "",
+      "completedAt": "2026-06-30T00:11:54.256Z",
+      "execDetail": {
+        "success": true,
+        "service": "co2FounderOps"
+      }
+    },
+    {
+      "id": "fae_1782778314903_rua0",
+      "workflowId": "wf_deploy_nginx",
+      "workflow": "Install and configure Nginx with SSL",
+      "class": "A",
+      "triggeredBy": "integration_test",
+      "startedAt": "2026-06-30T00:11:54.903Z",
+      "status": "completed",
+      "steps": [
+        {
+          "order": 1,
+          "step": "apt install nginx",
+          "executed": true,
+          "executedAt": "2026-06-30T00:11:54.903Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 2,
+          "step": "Copy nginx.conf",
+          "executed": true,
+          "executedAt": "2026-06-30T00:11:54.903Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 3,
+          "step": "certbot --nginx",
+          "executed": true,
+          "executedAt": "2026-06-30T00:11:54.903Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 4,
+          "step": "Test HTTPS",
+          "executed": true,
+          "executedAt": "2026-06-30T00:11:54.903Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 5,
+          "step": "Enable rate limits",
+          "executed": true,
+          "executedAt": "2026-06-30T00:11:54.903Z",
+          "note": "Automated via platform"
+        }
+      ],
+      "outcome": "success",
+      "minutesSaved": 30,
+      "approvalId": null,
+      "notes": "",
+      "completedAt": "2026-06-30T00:11:54.903Z",
+      "execDetail": {
+        "success": true,
+        "service": "co2FounderOps"
+      }
+    },
+    {
+      "id": "fae_1782778324233_pszk",
+      "workflowId": "wf_deploy_nginx",
+      "workflow": "Install and configure Nginx with SSL",
+      "class": "A",
+      "triggeredBy": "test",
+      "startedAt": "2026-06-30T00:12:04.233Z",
+      "status": "completed",
+      "steps": [
+        {
+          "order": 1,
+          "step": "apt install nginx",
+          "executed": true,
+          "executedAt": "2026-06-30T00:12:04.233Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 2,
+          "step": "Copy nginx.conf",
+          "executed": true,
+          "executedAt": "2026-06-30T00:12:04.233Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 3,
+          "step": "certbot --nginx",
+          "executed": true,
+          "executedAt": "2026-06-30T00:12:04.233Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 4,
+          "step": "Test HTTPS",
+          "executed": true,
+          "executedAt": "2026-06-30T00:12:04.233Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 5,
+          "step": "Enable rate limits",
+          "executed": true,
+          "executedAt": "2026-06-30T00:12:04.233Z",
+          "note": "Automated via platform"
+        }
+      ],
+      "outcome": "success",
+      "minutesSaved": 30,
+      "approvalId": null,
+      "notes": "",
+      "completedAt": "2026-06-30T00:12:04.233Z",
+      "execDetail": {
+        "success": true,
+        "service": "co2FounderOps"
+      }
+    },
+    {
+      "id": "fae_1782778324837_oqmy",
+      "workflowId": "wf_deploy_nginx",
+      "workflow": "Install and configure Nginx with SSL",
+      "class": "A",
+      "triggeredBy": "integration_test",
+      "startedAt": "2026-06-30T00:12:04.837Z",
+      "status": "completed",
+      "steps": [
+        {
+          "order": 1,
+          "step": "apt install nginx",
+          "executed": true,
+          "executedAt": "2026-06-30T00:12:04.837Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 2,
+          "step": "Copy nginx.conf",
+          "executed": true,
+          "executedAt": "2026-06-30T00:12:04.837Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 3,
+          "step": "certbot --nginx",
+          "executed": true,
+          "executedAt": "2026-06-30T00:12:04.837Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 4,
+          "step": "Test HTTPS",
+          "executed": true,
+          "executedAt": "2026-06-30T00:12:04.837Z",
+          "note": "Automated via platform"
+        },
+        {
+          "order": 5,
+          "step": "Enable rate limits",
+          "executed": true,
+          "executedAt": "2026-06-30T00:12:04.837Z",
+          "note": "Automated via platform"
+        }
+      ],
+      "outcome": "success",
+      "minutesSaved": 30,
+      "approvalId": null,
+      "notes": "",
+      "completedAt": "2026-06-30T00:12:04.837Z",
+      "execDetail": {
+        "success": true,
+        "service": "co2FounderOps"
+      }
     }
   ],
   "approvalQueue": [],
   "lessons": [],
-  "minutesSaved": 2940,
-  "executionCount": 98
+  "minutesSaved": 3060,
+  "executionCount": 102
 }

@@ -1,0 +1,340 @@
+{
+  "certifications": [
+    {
+      "id": "cert_1782721566452_3gfg",
+      "assetId": "mca_1782721566198_1a3s",
+      "assetName": "AICo",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 65,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 3
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T08:26:06.452Z",
+      "certifiedAt": "2026-06-29T08:26:06.452Z",
+      "updatedAt": "2026-06-29T08:26:06.452Z"
+    },
+    {
+      "id": "cert_1782721566459_k46p",
+      "assetId": "mca_1782721566198_1a3s",
+      "assetName": "AICo",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 65,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 3
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T08:26:06.459Z",
+      "certifiedAt": "2026-06-29T08:26:06.459Z",
+      "updatedAt": "2026-06-29T08:26:06.459Z"
+    },
+    {
+      "id": "cert_1782721566464_428s",
+      "assetId": "mca_1782721566201_scyl",
+      "assetName": "SaaSCo Alpha",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 65,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 0
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T08:26:06.464Z",
+      "certifiedAt": "2026-06-29T08:26:06.464Z",
+      "updatedAt": "2026-06-29T08:26:06.464Z"
+    },
+    {
+      "id": "cert_1782721566470_ub2n",
+      "assetId": "mca_1782721566201_lay8",
+      "assetName": "MarketplaceCo",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 65,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 0
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T08:26:06.470Z",
+      "certifiedAt": "2026-06-29T08:26:06.470Z",
+      "updatedAt": "2026-06-29T08:26:06.470Z"
+    },
+    {
+      "id": "cert_1782721566478_5be8",
+      "assetId": "mca_1782721566402_trxb",
+      "assetName": "Test Knowledge Pack v1",
+      "assetType": "knowledge_pack",
+      "level": "bronze",
+      "overallScore": 63,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 71,
+        "adoption": 0
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T08:26:06.478Z",
+      "certifiedAt": "2026-06-29T08:26:06.478Z",
+      "updatedAt": "2026-06-29T08:26:06.478Z"
+    },
+    {
+      "id": "cert_1782721566653_9eup",
+      "assetId": "mca_1782721566198_1a3s",
+      "assetName": "AICo",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 65,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 6
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T08:26:06.653Z",
+      "certifiedAt": "2026-06-29T08:26:06.653Z",
+      "updatedAt": "2026-06-29T08:26:06.653Z"
+    },
+    {
+      "id": "cert_1782721566688_k1ac",
+      "assetId": "mca_1782721566198_1a3s",
+      "assetName": "AICo",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 65,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 6
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T08:26:06.688Z",
+      "certifiedAt": "2026-06-29T08:26:06.688Z",
+      "updatedAt": "2026-06-29T08:26:06.688Z"
+    },
+    {
+      "id": "cert_1782721566695_sqwv",
+      "assetId": "mca_1782721566201_scyl",
+      "assetName": "SaaSCo Alpha",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 65,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 0
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T08:26:06.695Z",
+      "certifiedAt": "2026-06-29T08:26:06.695Z",
+      "updatedAt": "2026-06-29T08:26:06.695Z"
+    },
+    {
+      "id": "cert_1782721566701_utre",
+      "assetId": "mca_1782721566201_lay8",
+      "assetName": "MarketplaceCo",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 65,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 0
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T08:26:06.701Z",
+      "certifiedAt": "2026-06-29T08:26:06.701Z",
+      "updatedAt": "2026-06-29T08:26:06.701Z"
+    },
+    {
+      "id": "cert_1782773091601_jd0i",
+      "assetId": "mca_1782721566198_1a3s",
+      "assetName": "AICo",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 66,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 9
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T22:44:51.601Z",
+      "certifiedAt": "2026-06-29T22:44:51.601Z",
+      "updatedAt": "2026-06-29T22:44:51.601Z"
+    },
+    {
+      "id": "cert_1782773091609_vxof",
+      "assetId": "mca_1782721566198_1a3s",
+      "assetName": "AICo",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 66,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 9
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T22:44:51.609Z",
+      "certifiedAt": "2026-06-29T22:44:51.609Z",
+      "updatedAt": "2026-06-29T22:44:51.609Z"
+    },
+    {
+      "id": "cert_1782773091615_7a1y",
+      "assetId": "mca_1782721566201_scyl",
+      "assetName": "SaaSCo Alpha",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 65,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 0
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T22:44:51.615Z",
+      "certifiedAt": "2026-06-29T22:44:51.615Z",
+      "updatedAt": "2026-06-29T22:44:51.615Z"
+    },
+    {
+      "id": "cert_1782773091621_uepu",
+      "assetId": "mca_1782721566201_lay8",
+      "assetName": "MarketplaceCo",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 65,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 0
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T22:44:51.621Z",
+      "certifiedAt": "2026-06-29T22:44:51.621Z",
+      "updatedAt": "2026-06-29T22:44:51.621Z"
+    },
+    {
+      "id": "cert_1782773091627_09nl",
+      "assetId": "mca_1782773091538_urc2",
+      "assetName": "Test Knowledge Pack v1",
+      "assetType": "knowledge_pack",
+      "level": "bronze",
+      "overallScore": 63,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 71,
+        "adoption": 0
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T22:44:51.627Z",
+      "certifiedAt": "2026-06-29T22:44:51.627Z",
+      "updatedAt": "2026-06-29T22:44:51.627Z"
+    },
+    {
+      "id": "cert_1782773091739_ziws",
+      "assetId": "mca_1782721566198_1a3s",
+      "assetName": "AICo",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 66,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 12
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T22:44:51.739Z",
+      "certifiedAt": "2026-06-29T22:44:51.739Z",
+      "updatedAt": "2026-06-29T22:44:51.739Z"
+    },
+    {
+      "id": "cert_1782773091769_elgu",
+      "assetId": "mca_1782721566198_1a3s",
+      "assetName": "AICo",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 66,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 12
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T22:44:51.769Z",
+      "certifiedAt": "2026-06-29T22:44:51.769Z",
+      "updatedAt": "2026-06-29T22:44:51.769Z"
+    },
+    {
+      "id": "cert_1782773091775_wrki",
+      "assetId": "mca_1782721566201_scyl",
+      "assetName": "SaaSCo Alpha",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 65,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 0
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T22:44:51.775Z",
+      "certifiedAt": "2026-06-29T22:44:51.775Z",
+      "updatedAt": "2026-06-29T22:44:51.775Z"
+    },
+    {
+      "id": "cert_1782773091781_goxn",
+      "assetId": "mca_1782721566201_lay8",
+      "assetName": "MarketplaceCo",
+      "assetType": "blueprint",
+      "level": "bronze",
+      "overallScore": 65,
+      "dimensions": {
+        "quality": 79,
+        "security": 60,
+        "production_readiness": 76,
+        "adoption": 0
+      },
+      "passed": true,
+      "expiresAt": "2026-09-27T22:44:51.781Z",
+      "certifiedAt": "2026-06-29T22:44:51.781Z",
+      "updatedAt": "2026-06-29T22:44:51.781Z"
+    }
+  ],
+  "stats": {
+    "total": 18,
+    "byLevel": {
+      "platinum": 0,
+      "gold": 0,
+      "silver": 0,
+      "bronze": 18,
+      "none": 0
+    },
+    "avgScore": 65
+  },
+  "updatedAt": "2026-06-29T22:44:51.781Z"
+}

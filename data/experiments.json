@@ -483,14 +483,566 @@
       "createdAt": "2026-06-28T21:05:07.665Z",
       "updatedAt": "2026-06-28T21:05:07.748Z",
       "completedAt": "2026-06-28T21:05:07.748Z"
+    },
+    {
+      "id": "exp_1782686973204_x5fc",
+      "planId": "rp_1782686972636_3fia",
+      "type": "a_b_test",
+      "name": "Deployment Strategy A/B Test",
+      "hypothesis": "Blue/green deployment reduces rollback rate vs rolling deploy",
+      "control": "rolling_deployment",
+      "treatment": "blue_green_deployment",
+      "metrics": [
+        "deploy_success_rate",
+        "rollback_rate",
+        "time_to_deploy_ms"
+      ],
+      "duration": "5_iterations",
+      "status": "completed",
+      "results": {
+        "control": {
+          "target": "deployment_strategy",
+          "metrics": {
+            "deploy_success_rate": 0.85,
+            "rollback_rate": 0.873,
+            "time_to_deploy_ms": 0.837
+          }
+        },
+        "treatment": {
+          "target": "deployment_strategy",
+          "metrics": {
+            "deploy_success_rate": 0.883,
+            "rollback_rate": 0.883,
+            "time_to_deploy_ms": 0.913
+          }
+        },
+        "deltas": {
+          "deploy_success_rate": {
+            "control": 0.85,
+            "treatment": 0.883,
+            "delta": 3.9
+          },
+          "rollback_rate": {
+            "control": 0.873,
+            "treatment": 0.883,
+            "delta": 1.1
+          },
+          "time_to_deploy_ms": {
+            "control": 0.837,
+            "treatment": 0.913,
+            "delta": 9.1
+          }
+        },
+        "improvements": 2,
+        "regressions": 0,
+        "overallImprovement": true,
+        "confidence": 0.95
+      },
+      "validation": {
+        "validated": true,
+        "confidence": 0.95,
+        "threshold": 0.5,
+        "reason": "Confidence 0.95 >= 0.5 and treatment improved over control",
+        "validatedAt": "2026-06-28T22:49:33.472Z"
+      },
+      "iterations": 3,
+      "createdAt": "2026-06-28T22:49:33.204Z",
+      "updatedAt": "2026-06-28T22:49:33.472Z",
+      "completedAt": "2026-06-28T22:49:33.472Z"
+    },
+    {
+      "id": "exp_1782686973205_bisg",
+      "planId": "rp_1782686972639_7qt1",
+      "type": "benchmark_compare",
+      "name": "Workspace Mesh Reliability Test",
+      "hypothesis": null,
+      "control": "current_workspace_mesh",
+      "treatment": "optimized_workspace_mesh",
+      "metrics": [
+        "latency_ms",
+        "success_rate",
+        "error_rate"
+      ],
+      "duration": "5_iterations",
+      "status": "designed",
+      "results": null,
+      "validation": null,
+      "iterations": 0,
+      "createdAt": "2026-06-28T22:49:33.205Z",
+      "updatedAt": "2026-06-28T22:49:33.205Z",
+      "completedAt": null
+    },
+    {
+      "id": "exp_1782686973207_wzgs",
+      "planId": null,
+      "type": "a_b_test",
+      "name": "Duplicate run test",
+      "hypothesis": null,
+      "control": "x",
+      "treatment": "y",
+      "metrics": [
+        "latency_ms",
+        "success_rate",
+        "error_rate"
+      ],
+      "duration": "5_iterations",
+      "status": "completed",
+      "results": {
+        "control": {
+          "target": "execution_pipeline",
+          "metrics": {
+            "throughput": 0,
+            "latency_ms": 149,
+            "success_rate": 0.85,
+            "error_rate": 0.15
+          }
+        },
+        "treatment": {
+          "target": "execution_pipeline",
+          "metrics": {
+            "throughput": 0,
+            "latency_ms": 363.333,
+            "success_rate": 0.85,
+            "error_rate": 0.15
+          }
+        },
+        "deltas": {
+          "latency_ms": {
+            "control": 149,
+            "treatment": 363.333,
+            "delta": 143.8
+          },
+          "success_rate": {
+            "control": 0.85,
+            "treatment": 0.85,
+            "delta": 0
+          },
+          "error_rate": {
+            "control": 0.15,
+            "treatment": 0.15,
+            "delta": 0
+          }
+        },
+        "improvements": 0,
+        "regressions": 1,
+        "overallImprovement": false,
+        "confidence": 0.84
+      },
+      "validation": null,
+      "iterations": 3,
+      "createdAt": "2026-06-28T22:49:33.207Z",
+      "updatedAt": "2026-06-28T22:49:33.470Z",
+      "completedAt": "2026-06-28T22:49:33.470Z"
+    },
+    {
+      "id": "exp_1782686973209_oiat",
+      "planId": "rp_1782686972636_3fia",
+      "type": "a_b_test",
+      "name": "Deployment Strategy A/B Test (replay)",
+      "hypothesis": "Blue/green deployment reduces rollback rate vs rolling deploy",
+      "control": "rolling_deployment",
+      "treatment": "blue_green_deployment",
+      "metrics": [
+        "deploy_success_rate",
+        "rollback_rate",
+        "time_to_deploy_ms"
+      ],
+      "duration": "5_iterations",
+      "status": "completed",
+      "results": {
+        "control": {
+          "target": "deployment_strategy",
+          "metrics": {
+            "deploy_success_rate": 0.893,
+            "rollback_rate": 0.853,
+            "time_to_deploy_ms": 0.857
+          }
+        },
+        "treatment": {
+          "target": "deployment_strategy",
+          "metrics": {
+            "deploy_success_rate": 0.897,
+            "rollback_rate": 0.86,
+            "time_to_deploy_ms": 0.88
+          }
+        },
+        "deltas": {
+          "deploy_success_rate": {
+            "control": 0.893,
+            "treatment": 0.897,
+            "delta": 0.4
+          },
+          "rollback_rate": {
+            "control": 0.853,
+            "treatment": 0.86,
+            "delta": 0.8
+          },
+          "time_to_deploy_ms": {
+            "control": 0.857,
+            "treatment": 0.88,
+            "delta": 2.7
+          }
+        },
+        "improvements": 1,
+        "regressions": 0,
+        "overallImprovement": true,
+        "confidence": 0.87
+      },
+      "validation": null,
+      "iterations": 3,
+      "createdAt": "2026-06-28T22:49:33.209Z",
+      "updatedAt": "2026-06-28T22:49:33.477Z",
+      "completedAt": "2026-06-28T22:49:33.477Z"
+    },
+    {
+      "id": "exp_1782686973413_uc55",
+      "planId": "rp_1782686973313_a2gr",
+      "type": "strategy_compare",
+      "name": "Blue/Green vs Rolling Comparison",
+      "hypothesis": null,
+      "control": "rolling_deployment",
+      "treatment": "blue_green_deployment",
+      "metrics": [
+        "deploy_success_rate",
+        "rollback_rate",
+        "time_to_deploy_ms"
+      ],
+      "duration": "5_iterations",
+      "status": "completed",
+      "results": {
+        "control": {
+          "target": "deployment_strategy",
+          "metrics": {
+            "deploy_success_rate": 0.81,
+            "rollback_rate": 0.87,
+            "time_to_deploy_ms": 0.883
+          }
+        },
+        "treatment": {
+          "target": "deployment_strategy",
+          "metrics": {
+            "deploy_success_rate": 0.803,
+            "rollback_rate": 0.853,
+            "time_to_deploy_ms": 0.9
+          }
+        },
+        "deltas": {
+          "deploy_success_rate": {
+            "control": 0.81,
+            "treatment": 0.803,
+            "delta": -0.9
+          },
+          "rollback_rate": {
+            "control": 0.87,
+            "treatment": 0.853,
+            "delta": -2
+          },
+          "time_to_deploy_ms": {
+            "control": 0.883,
+            "treatment": 0.9,
+            "delta": 1.9
+          }
+        },
+        "improvements": 0,
+        "regressions": 0,
+        "overallImprovement": false,
+        "confidence": 0.83
+      },
+      "validation": {
+        "validated": false,
+        "confidence": 0.83,
+        "threshold": 0.5,
+        "reason": "Confidence 0.83 < 0.5 or no improvement",
+        "validatedAt": "2026-06-28T22:49:33.501Z"
+      },
+      "iterations": 3,
+      "createdAt": "2026-06-28T22:49:33.413Z",
+      "updatedAt": "2026-06-28T22:49:33.500Z",
+      "completedAt": "2026-06-28T22:49:33.500Z"
+    },
+    {
+      "id": "exp_1782778313718_1jvl",
+      "planId": "rp_1782778313285_v1vi",
+      "type": "a_b_test",
+      "name": "Deployment Strategy A/B Test",
+      "hypothesis": "Blue/green deployment reduces rollback rate vs rolling deploy",
+      "control": "rolling_deployment",
+      "treatment": "blue_green_deployment",
+      "metrics": [
+        "deploy_success_rate",
+        "rollback_rate",
+        "time_to_deploy_ms"
+      ],
+      "duration": "5_iterations",
+      "status": "completed",
+      "results": {
+        "control": {
+          "target": "deployment_strategy",
+          "metrics": {
+            "deploy_success_rate": 0.837,
+            "rollback_rate": 0.797,
+            "time_to_deploy_ms": 0.81
+          }
+        },
+        "treatment": {
+          "target": "deployment_strategy",
+          "metrics": {
+            "deploy_success_rate": 0.85,
+            "rollback_rate": 0.83,
+            "time_to_deploy_ms": 0.9
+          }
+        },
+        "deltas": {
+          "deploy_success_rate": {
+            "control": 0.837,
+            "treatment": 0.85,
+            "delta": 1.6
+          },
+          "rollback_rate": {
+            "control": 0.797,
+            "treatment": 0.83,
+            "delta": 4.1
+          },
+          "time_to_deploy_ms": {
+            "control": 0.81,
+            "treatment": 0.9,
+            "delta": 11.1
+          }
+        },
+        "improvements": 2,
+        "regressions": 0,
+        "overallImprovement": true,
+        "confidence": 0.8
+      },
+      "validation": {
+        "validated": true,
+        "confidence": 0.8,
+        "threshold": 0.5,
+        "reason": "Confidence 0.8 >= 0.5 and treatment improved over control",
+        "validatedAt": "2026-06-30T00:11:54.093Z"
+      },
+      "iterations": 3,
+      "createdAt": "2026-06-30T00:11:53.718Z",
+      "updatedAt": "2026-06-30T00:11:54.092Z",
+      "completedAt": "2026-06-30T00:11:54.092Z"
+    },
+    {
+      "id": "exp_1782778313719_2f49",
+      "planId": "rp_1782778313288_m63k",
+      "type": "benchmark_compare",
+      "name": "Workspace Mesh Reliability Test",
+      "hypothesis": null,
+      "control": "current_workspace_mesh",
+      "treatment": "optimized_workspace_mesh",
+      "metrics": [
+        "latency_ms",
+        "success_rate",
+        "error_rate"
+      ],
+      "duration": "5_iterations",
+      "status": "designed",
+      "results": null,
+      "validation": null,
+      "iterations": 0,
+      "createdAt": "2026-06-30T00:11:53.719Z",
+      "updatedAt": "2026-06-30T00:11:53.719Z",
+      "completedAt": null
+    },
+    {
+      "id": "exp_1782778313719_anoa",
+      "planId": null,
+      "type": "a_b_test",
+      "name": "Duplicate run test",
+      "hypothesis": null,
+      "control": "x",
+      "treatment": "y",
+      "metrics": [
+        "latency_ms",
+        "success_rate",
+        "error_rate"
+      ],
+      "duration": "5_iterations",
+      "status": "completed",
+      "results": {
+        "control": {
+          "target": "execution_pipeline",
+          "metrics": {
+            "throughput": 0,
+            "latency_ms": 273.667,
+            "success_rate": 0.85,
+            "error_rate": 0.15
+          }
+        },
+        "treatment": {
+          "target": "execution_pipeline",
+          "metrics": {
+            "throughput": 0,
+            "latency_ms": 283.667,
+            "success_rate": 0.85,
+            "error_rate": 0.15
+          }
+        },
+        "deltas": {
+          "latency_ms": {
+            "control": 273.667,
+            "treatment": 283.667,
+            "delta": 3.7
+          },
+          "success_rate": {
+            "control": 0.85,
+            "treatment": 0.85,
+            "delta": 0
+          },
+          "error_rate": {
+            "control": 0.15,
+            "treatment": 0.15,
+            "delta": 0
+          }
+        },
+        "improvements": 0,
+        "regressions": 1,
+        "overallImprovement": false,
+        "confidence": 0.76
+      },
+      "validation": null,
+      "iterations": 3,
+      "createdAt": "2026-06-30T00:11:53.719Z",
+      "updatedAt": "2026-06-30T00:11:54.089Z",
+      "completedAt": "2026-06-30T00:11:54.089Z"
+    },
+    {
+      "id": "exp_1782778313721_ksx0",
+      "planId": "rp_1782778313285_v1vi",
+      "type": "a_b_test",
+      "name": "Deployment Strategy A/B Test (replay)",
+      "hypothesis": "Blue/green deployment reduces rollback rate vs rolling deploy",
+      "control": "rolling_deployment",
+      "treatment": "blue_green_deployment",
+      "metrics": [
+        "deploy_success_rate",
+        "rollback_rate",
+        "time_to_deploy_ms"
+      ],
+      "duration": "5_iterations",
+      "status": "completed",
+      "results": {
+        "control": {
+          "target": "deployment_strategy",
+          "metrics": {
+            "deploy_success_rate": 0.87,
+            "rollback_rate": 0.807,
+            "time_to_deploy_ms": 0.773
+          }
+        },
+        "treatment": {
+          "target": "deployment_strategy",
+          "metrics": {
+            "deploy_success_rate": 0.883,
+            "rollback_rate": 0.88,
+            "time_to_deploy_ms": 0.807
+          }
+        },
+        "deltas": {
+          "deploy_success_rate": {
+            "control": 0.87,
+            "treatment": 0.883,
+            "delta": 1.5
+          },
+          "rollback_rate": {
+            "control": 0.807,
+            "treatment": 0.88,
+            "delta": 9
+          },
+          "time_to_deploy_ms": {
+            "control": 0.773,
+            "treatment": 0.807,
+            "delta": 4.4
+          }
+        },
+        "improvements": 2,
+        "regressions": 0,
+        "overallImprovement": true,
+        "confidence": 0.88
+      },
+      "validation": null,
+      "iterations": 3,
+      "createdAt": "2026-06-30T00:11:53.721Z",
+      "updatedAt": "2026-06-30T00:11:54.100Z",
+      "completedAt": "2026-06-30T00:11:54.100Z"
+    },
+    {
+      "id": "exp_1782778314018_vi3k",
+      "planId": "rp_1782778313870_uytd",
+      "type": "strategy_compare",
+      "name": "Blue/Green vs Rolling Comparison",
+      "hypothesis": null,
+      "control": "rolling_deployment",
+      "treatment": "blue_green_deployment",
+      "metrics": [
+        "deploy_success_rate",
+        "rollback_rate",
+        "time_to_deploy_ms"
+      ],
+      "duration": "5_iterations",
+      "status": "completed",
+      "results": {
+        "control": {
+          "target": "deployment_strategy",
+          "metrics": {
+            "deploy_success_rate": 0.82,
+            "rollback_rate": 0.78,
+            "time_to_deploy_ms": 0.877
+          }
+        },
+        "treatment": {
+          "target": "deployment_strategy",
+          "metrics": {
+            "deploy_success_rate": 0.813,
+            "rollback_rate": 0.87,
+            "time_to_deploy_ms": 0.82
+          }
+        },
+        "deltas": {
+          "deploy_success_rate": {
+            "control": 0.82,
+            "treatment": 0.813,
+            "delta": -0.9
+          },
+          "rollback_rate": {
+            "control": 0.78,
+            "treatment": 0.87,
+            "delta": 11.5
+          },
+          "time_to_deploy_ms": {
+            "control": 0.877,
+            "treatment": 0.82,
+            "delta": -6.5
+          }
+        },
+        "improvements": 1,
+        "regressions": 1,
+        "overallImprovement": false,
+        "confidence": 0.76
+      },
+      "validation": {
+        "validated": false,
+        "confidence": 0.76,
+        "threshold": 0.5,
+        "reason": "Confidence 0.76 < 0.5 or no improvement",
+        "validatedAt": "2026-06-30T00:11:54.126Z"
+      },
+      "iterations": 3,
+      "createdAt": "2026-06-30T00:11:54.018Z",
+      "updatedAt": "2026-06-30T00:11:54.125Z",
+      "completedAt": "2026-06-30T00:11:54.125Z"
     }
   ],
   "stats": {
-    "total": 9,
+    "total": 19,
     "running": 0,
-    "completed": 9,
-    "validated": 2,
-    "rejected": 1
+    "completed": 19,
+    "validated": 4,
+    "rejected": 3
   },
-  "updatedAt": "2026-06-28T21:05:07.752Z"
+  "updatedAt": "2026-06-30T00:11:54.126Z"
 }

@@ -48,14 +48,63 @@
       "minutesSaved": 12,
       "startedAt": "2026-06-28T19:51:00.858Z",
       "completedAt": "2026-06-28T19:51:03.289Z"
+    },
+    {
+      "id": "coord_1782686972845_hr71",
+      "missionId": "e2e_sync_test",
+      "title": "deploy to VPS",
+      "domain": "deployment",
+      "subTasks": [
+        {
+          "id": "coord_1782686972845_y8kg",
+          "action": "deploy to VPS",
+          "workspaceType": "terminal",
+          "workspaceId": null,
+          "status": "done",
+          "result": {
+            "ok": true,
+            "simulated": true,
+            "action": "deploy to VPS",
+            "via": "terminal"
+          },
+          "startedAt": "2026-06-28T22:49:32.846Z",
+          "completedAt": "2026-06-28T22:49:36.953Z"
+        }
+      ],
+      "status": "completed",
+      "evidence": [
+        {
+          "type": "recovery",
+          "from": "vps",
+          "to": "terminal",
+          "task": "deploy to VPS",
+          "ts": "2026-06-28T22:49:36.953Z"
+        },
+        {
+          "type": "execution_complete",
+          "results": [
+            {
+              "taskId": "coord_1782686972845_y8kg",
+              "ok": true,
+              "workspaceType": "terminal",
+              "action": "deploy to VPS"
+            }
+          ],
+          "ts": "2026-06-28T22:49:36.957Z"
+        }
+      ],
+      "recoveries": 1,
+      "minutesSaved": 12,
+      "startedAt": "2026-06-28T22:49:32.846Z",
+      "completedAt": "2026-06-28T22:49:36.959Z"
     }
   ],
   "stats": {
-    "totalRuns": 1,
-    "successfulRuns": 1,
+    "totalRuns": 2,
+    "successfulRuns": 2,
     "failedRuns": 0,
-    "recoveries": 1,
-    "minutesSaved": 12
+    "recoveries": 2,
+    "minutesSaved": 24
   },
-  "updatedAt": "2026-06-28T19:51:03.289Z"
+  "updatedAt": "2026-06-28T22:49:36.959Z"
 }

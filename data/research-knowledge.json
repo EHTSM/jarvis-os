@@ -1176,279 +1176,5052 @@
         "research"
       ],
       "publishedAt": "2026-06-28T21:05:07.821Z"
+    },
+    {
+      "id": "rk_1782686973138_jmxr",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_latency",
+      "domain": "workspace_mesh",
+      "finding": "Workspace mesh P90 latency reduced by 18% after coordinator optimization.",
+      "confidence": 0.87,
+      "tags": [
+        "performance",
+        "mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.138Z"
+    },
+    {
+      "id": "rk_1782686973321_jgnm",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_perf",
+      "domain": "execution_pipeline",
+      "finding": "Performance analysis of execution_pipeline shows consistent behavior within expected bounds.",
+      "confidence": 0.82,
+      "tags": [
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.321Z"
+    },
+    {
+      "id": "rk_1782686973322_5s9i",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_perf",
+      "domain": "workspace_mesh",
+      "finding": "Performance analysis of workspace_mesh shows consistent behavior within expected bounds.",
+      "confidence": 0.82,
+      "tags": [
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.322Z"
+    },
+    {
+      "id": "rk_1782686973322_hzh0",
+      "planId": null,
+      "experimentId": null,
+      "topic": "approval_engine_perf",
+      "domain": "approval_engine",
+      "finding": "Performance analysis of approval_engine shows consistent behavior within expected bounds.",
+      "confidence": 0.82,
+      "tags": [
+        "approval_engine",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.322Z"
+    },
+    {
+      "id": "rk_1782686973364_evyq",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":261,\"success_rate\":0.85,\"error_rate\":0.15}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.364Z"
+    },
+    {
+      "id": "rk_1782686973366_wiza",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":171,\"success_rate\":0.85,\"error_rate\":0.15}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.366Z"
+    },
+    {
+      "id": "rk_1782686973367_ue7u",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":329,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.367Z"
+    },
+    {
+      "id": "rk_1782686973407_q0y1",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":297,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.407Z"
+    },
+    {
+      "id": "rk_1782686973408_f9db",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_benchmark",
+      "domain": "workspace_mesh",
+      "finding": "Benchmark Workspace Mesh: {\"dispatch_latency\":201,\"sync_accuracy\":0.97,\"recovery_rate\":0.86,\"workspace_coverage\":12}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workspace_mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.408Z"
+    },
+    {
+      "id": "rk_1782686973408_wuod",
+      "planId": null,
+      "experimentId": null,
+      "topic": "approval_engine_benchmark",
+      "domain": "approval_engine",
+      "finding": "Benchmark Approval Engine: {\"auto_approval_rate\":0.73,\"approval_latency\":278.5,\"false_positive_rate\":0.013}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "approval_engine",
+        "approval_engine",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.408Z"
+    },
+    {
+      "id": "rk_1782686973409_1bfj",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workforce_allocation_benchmark",
+      "domain": "workforce_allocation",
+      "finding": "Benchmark Workforce Allocation: {\"agent_utilization\":0.685,\"mission_success_rate\":0.87,\"avg_mission_duration_ms\":714}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workforce_allocation",
+        "workforce_allocation",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.409Z"
+    },
+    {
+      "id": "rk_1782686973409_7kuv",
+      "planId": null,
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.8,\"rollback_rate\":0.845,\"time_to_deploy_ms\":0.85}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.409Z"
+    },
+    {
+      "id": "rk_1782686973410_lawy",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":318.5,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.410Z"
+    },
+    {
+      "id": "rk_1782686973411_461l",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_benchmark",
+      "domain": "workspace_mesh",
+      "finding": "Benchmark Workspace Mesh: {\"dispatch_latency\":132.5,\"sync_accuracy\":0.905,\"recovery_rate\":0.87,\"workspace_coverage\":12}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workspace_mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.411Z"
+    },
+    {
+      "id": "rk_1782686973412_hcc3",
+      "planId": "rp_1782686973313_a2gr",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.87,\"rollback_rate\":0.92,\"time_to_deploy_ms\":0.775}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.412Z"
+    },
+    {
+      "id": "rk_1782686973414_xxyy",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workforce_allocation_benchmark",
+      "domain": "workforce_allocation",
+      "finding": "Benchmark Workforce Allocation: {\"agent_utilization\":0.85,\"mission_success_rate\":0.815,\"avg_mission_duration_ms\":2176}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workforce_allocation",
+        "workforce_allocation",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.414Z"
+    },
+    {
+      "id": "rk_1782686973414_xg6y",
+      "planId": null,
+      "experimentId": null,
+      "topic": "autonomous_systems_benchmark",
+      "domain": "autonomous_systems",
+      "finding": "Benchmark Autonomous Systems: {\"autonomy_rate\":0.79,\"human_interventions\":0.855,\"tasks_per_hour\":0.805}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "autonomous_systems",
+        "autonomous_systems",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.414Z"
+    },
+    {
+      "id": "rk_1782686973422_z8i2",
+      "planId": "rp_1782686972636_3fia",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.877,\"rollback_rate\":0.823,\"time_to_deploy_ms\":0.783}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.422Z"
+    },
+    {
+      "id": "rk_1782686973422_rsds",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":149,\"success_rate\":0.85,\"error_rate\":0.15}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.422Z"
+    },
+    {
+      "id": "rk_1782686973423_8bag",
+      "planId": "rp_1782686972636_3fia",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.85,\"rollback_rate\":0.873,\"time_to_deploy_ms\":0.837}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.423Z"
+    },
+    {
+      "id": "rk_1782686973424_7plt",
+      "planId": "rp_1782686972636_3fia",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.893,\"rollback_rate\":0.853,\"time_to_deploy_ms\":0.857}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.424Z"
+    },
+    {
+      "id": "rk_1782686973425_19mz",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":327.333,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.425Z"
+    },
+    {
+      "id": "rk_1782686973433_g006",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_benchmark",
+      "domain": "workspace_mesh",
+      "finding": "Benchmark Workspace Mesh: {\"dispatch_latency\":141,\"sync_accuracy\":0.9,\"recovery_rate\":0.97,\"workspace_coverage\":12}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workspace_mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.433Z"
+    },
+    {
+      "id": "rk_1782686973458_4dmg",
+      "planId": "rp_1782686973313_a2gr",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.81,\"rollback_rate\":0.87,\"time_to_deploy_ms\":0.883}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.458Z"
+    },
+    {
+      "id": "rk_1782686973467_nigq",
+      "planId": null,
+      "experimentId": null,
+      "topic": "approval_engine_benchmark",
+      "domain": "approval_engine",
+      "finding": "Benchmark Approval Engine: {\"auto_approval_rate\":0.75,\"approval_latency\":205.5,\"false_positive_rate\":0.042}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "approval_engine",
+        "approval_engine",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.467Z"
+    },
+    {
+      "id": "rk_1782686973468_gzlg",
+      "planId": "rp_1782686972636_3fia",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.903,\"rollback_rate\":0.84,\"time_to_deploy_ms\":0.827}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.468Z"
+    },
+    {
+      "id": "rk_1782686973469_q49q",
+      "planId": "rp_1782686972636_3fia",
+      "experimentId": null,
+      "topic": "Deployment Strategy A/B Test",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Deployment Strategy A/B Test\": treatment improved over control (confidence=0.78).",
+      "confidence": 0.78,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        "rp_1782686972636_3fia",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.469Z"
+    },
+    {
+      "id": "rk_1782686973470_4pa8",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":363.333,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.470Z"
+    },
+    {
+      "id": "rk_1782686973470_pad0",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Duplicate run test",
+      "domain": "execution_pipeline",
+      "finding": "Experiment \"Duplicate run test\": treatment did not improve over control (confidence=0.84).",
+      "confidence": 0.84,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        null,
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.470Z"
+    },
+    {
+      "id": "rk_1782686973471_argn",
+      "planId": "rp_1782686972636_3fia",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.883,\"rollback_rate\":0.883,\"time_to_deploy_ms\":0.913}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.471Z"
+    },
+    {
+      "id": "rk_1782686973472_8nzh",
+      "planId": "rp_1782686972636_3fia",
+      "experimentId": null,
+      "topic": "Deployment Strategy A/B Test",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Deployment Strategy A/B Test\": treatment improved over control (confidence=0.95).",
+      "confidence": 0.95,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        "rp_1782686972636_3fia",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.472Z"
+    },
+    {
+      "id": "rk_1782686973476_ld4j",
+      "planId": "rp_1782686972636_3fia",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.897,\"rollback_rate\":0.86,\"time_to_deploy_ms\":0.88}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.476Z"
+    },
+    {
+      "id": "rk_1782686973477_rugx",
+      "planId": "rp_1782686972636_3fia",
+      "experimentId": null,
+      "topic": "Deployment Strategy A/B Test (replay)",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Deployment Strategy A/B Test (replay)\": treatment improved over control (confidence=0.87).",
+      "confidence": 0.87,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        "rp_1782686972636_3fia",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.477Z"
+    },
+    {
+      "id": "rk_1782686973489_inlt",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workforce_allocation_benchmark",
+      "domain": "workforce_allocation",
+      "finding": "Benchmark Workforce Allocation: {\"agent_utilization\":0.7,\"mission_success_rate\":0.89,\"avg_mission_duration_ms\":1572}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workforce_allocation",
+        "workforce_allocation",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.489Z"
+    },
+    {
+      "id": "rk_1782686973500_rmq5",
+      "planId": "rp_1782686973313_a2gr",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.803,\"rollback_rate\":0.853,\"time_to_deploy_ms\":0.9}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.500Z"
+    },
+    {
+      "id": "rk_1782686973501_rhqq",
+      "planId": "rp_1782686973313_a2gr",
+      "experimentId": null,
+      "topic": "Blue/Green vs Rolling Comparison",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Blue/Green vs Rolling Comparison\": treatment did not improve over control (confidence=0.83).",
+      "confidence": 0.83,
+      "tags": [
+        "experiment",
+        "strategy_compare",
+        "rp_1782686973313_a2gr",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.501Z"
+    },
+    {
+      "id": "rk_1782686973502_voif",
+      "planId": "rp_1782686973313_a2gr",
+      "experimentId": null,
+      "topic": "deployment_strategy_comparison",
+      "domain": "deployment_strategy",
+      "finding": "Blue/green did not outperform rolling deployment.",
+      "confidence": 0.83,
+      "tags": [
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.502Z"
+    },
+    {
+      "id": "rk_1782686973519_vb7f",
+      "planId": null,
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.92,\"rollback_rate\":0.905,\"time_to_deploy_ms\":0.89}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.519Z"
+    },
+    {
+      "id": "rk_1782686973546_rm4r",
+      "planId": null,
+      "experimentId": null,
+      "topic": "knowledge_recall_benchmark",
+      "domain": "knowledge_recall",
+      "finding": "Benchmark Knowledge Recall: {\"recall_precision\":0.81,\"recall_latency_ms\":32.5,\"knowledge_coverage\":0}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "knowledge_recall",
+        "knowledge_recall",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.546Z"
+    },
+    {
+      "id": "rk_1782686973568_llot",
+      "planId": null,
+      "experimentId": null,
+      "topic": "autonomous_systems_benchmark",
+      "domain": "autonomous_systems",
+      "finding": "Benchmark Autonomous Systems: {\"autonomy_rate\":0.875,\"human_interventions\":0.895,\"tasks_per_hour\":0.8}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "autonomous_systems",
+        "autonomous_systems",
+        "research"
+      ],
+      "publishedAt": "2026-06-28T22:49:33.568Z"
+    },
+    {
+      "id": "rk_1782741779475_c1yr",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:02:59.475Z"
+    },
+    {
+      "id": "rk_1782741781271_dgjm",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:01.271Z"
+    },
+    {
+      "id": "rk_1782741782959_nvuw",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:02.959Z"
+    },
+    {
+      "id": "rk_1782741784643_e89y",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:04.643Z"
+    },
+    {
+      "id": "rk_1782741786343_ah34",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:06.343Z"
+    },
+    {
+      "id": "rk_1782741788123_wpni",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:08.123Z"
+    },
+    {
+      "id": "rk_1782741789815_mz82",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:09.815Z"
+    },
+    {
+      "id": "rk_1782741791516_u23q",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:11.516Z"
+    },
+    {
+      "id": "rk_1782741793211_2aki",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:13.211Z"
+    },
+    {
+      "id": "rk_1782741794922_lvyb",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:14.922Z"
+    },
+    {
+      "id": "rk_1782741796624_fq5r",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:16.624Z"
+    },
+    {
+      "id": "rk_1782741798588_9jwp",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:18.588Z"
+    },
+    {
+      "id": "rk_1782741800232_hafz",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:20.232Z"
+    },
+    {
+      "id": "rk_1782741801846_wqyo",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:21.846Z"
+    },
+    {
+      "id": "rk_1782741803501_320r",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:23.501Z"
+    },
+    {
+      "id": "rk_1782741805180_8h66",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:25.180Z"
+    },
+    {
+      "id": "rk_1782741806810_x7q1",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:26.810Z"
+    },
+    {
+      "id": "rk_1782741808449_8hzo",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:28.449Z"
+    },
+    {
+      "id": "rk_1782741810319_dozb",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:30.319Z"
+    },
+    {
+      "id": "rk_1782741812038_kjxs",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:03:32.038Z"
+    },
+    {
+      "id": "rk_1782744552608_eh8p",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:49:12.608Z"
+    },
+    {
+      "id": "rk_1782744620006_04fr",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:50:20.006Z"
+    },
+    {
+      "id": "rk_1782744622991_356a",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:50:22.991Z"
+    },
+    {
+      "id": "rk_1782744624751_0vwd",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T14:50:24.751Z"
+    },
+    {
+      "id": "rk_1782749858212_orpi",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:38.212Z"
+    },
+    {
+      "id": "rk_1782749859878_t93q",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:39.878Z"
+    },
+    {
+      "id": "rk_1782749861578_wjrl",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:41.578Z"
+    },
+    {
+      "id": "rk_1782749863342_2jnf",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:43.342Z"
+    },
+    {
+      "id": "rk_1782749865328_bsf3",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:45.328Z"
+    },
+    {
+      "id": "rk_1782749866957_u4v4",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:46.957Z"
+    },
+    {
+      "id": "rk_1782749868571_8h6e",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:48.571Z"
+    },
+    {
+      "id": "rk_1782749870179_shle",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:50.179Z"
+    },
+    {
+      "id": "rk_1782749871797_gghp",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:51.797Z"
+    },
+    {
+      "id": "rk_1782749873422_519m",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:53.422Z"
+    },
+    {
+      "id": "rk_1782749875224_ucoz",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:55.224Z"
+    },
+    {
+      "id": "rk_1782749876868_porn",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:56.868Z"
+    },
+    {
+      "id": "rk_1782749878523_n28k",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:17:58.523Z"
+    },
+    {
+      "id": "rk_1782749880173_9eip",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:18:00.173Z"
+    },
+    {
+      "id": "rk_1782749881807_bdkz",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:18:01.807Z"
+    },
+    {
+      "id": "rk_1782749883444_4q20",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:18:03.444Z"
+    },
+    {
+      "id": "rk_1782749885266_6od2",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:18:05.266Z"
+    },
+    {
+      "id": "rk_1782749887115_g9g1",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:18:07.115Z"
+    },
+    {
+      "id": "rk_1782749889201_anb5",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:18:09.201Z"
+    },
+    {
+      "id": "rk_1782749891990_cbwp",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:18:11.990Z"
+    },
+    {
+      "id": "rk_1782751812797_jvu6",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:12.797Z"
+    },
+    {
+      "id": "rk_1782751814744_0svf",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:14.744Z"
+    },
+    {
+      "id": "rk_1782751817124_nm77",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:17.124Z"
+    },
+    {
+      "id": "rk_1782751819218_bcyu",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:19.218Z"
+    },
+    {
+      "id": "rk_1782751821709_l281",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:21.709Z"
+    },
+    {
+      "id": "rk_1782751824048_osd6",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:24.048Z"
+    },
+    {
+      "id": "rk_1782751826742_ma37",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:26.742Z"
+    },
+    {
+      "id": "rk_1782751829517_ofji",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:29.517Z"
+    },
+    {
+      "id": "rk_1782751833015_dw8x",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:33.015Z"
+    },
+    {
+      "id": "rk_1782751836193_xwss",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:36.193Z"
+    },
+    {
+      "id": "rk_1782751839764_a77x",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:39.764Z"
+    },
+    {
+      "id": "rk_1782751843397_0fs5",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:43.397Z"
+    },
+    {
+      "id": "rk_1782751847194_mlvg",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:47.194Z"
+    },
+    {
+      "id": "rk_1782751851335_f39n",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:51.335Z"
+    },
+    {
+      "id": "rk_1782751855113_qmwk",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:55.113Z"
+    },
+    {
+      "id": "rk_1782751858725_rw1h",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:50:58.725Z"
+    },
+    {
+      "id": "rk_1782751862454_uf1q",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:51:02.454Z"
+    },
+    {
+      "id": "rk_1782751866244_9ho1",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:51:06.244Z"
+    },
+    {
+      "id": "rk_1782751870375_qnma",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:51:10.375Z"
+    },
+    {
+      "id": "rk_1782751874440_876v",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T16:51:14.440Z"
+    },
+    {
+      "id": "rk_1782754208339_c9by",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: restart",
+      "domain": "infrastructure",
+      "finding": "restart applied to vps 'rec-restart-vps'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.339Z"
+    },
+    {
+      "id": "rk_1782754208342_7h36",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to nginx 'rec-nginx'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.342Z"
+    },
+    {
+      "id": "rk_1782754208343_4ejx",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: restart",
+      "domain": "infrastructure",
+      "finding": "restart applied to pm2 'pm2-rec'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.343Z"
+    },
+    {
+      "id": "rk_1782754208348_spcd",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: isolate",
+      "domain": "infrastructure",
+      "finding": "isolate applied to database 'db-isolate'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.348Z"
+    },
+    {
+      "id": "rk_1782754208351_wseq",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to vps 'test-vps'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.351Z"
+    },
+    {
+      "id": "rk_1782754208356_3oz4",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to vps 'test-vps'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.356Z"
+    },
+    {
+      "id": "rk_1782754208357_0xsl",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to docker 'test-docker'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.357Z"
+    },
+    {
+      "id": "rk_1782754208359_bep6",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to kubernetes 'test-kubernetes'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.359Z"
+    },
+    {
+      "id": "rk_1782754208360_0wrz",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to cloudflare 'test-cloudflare'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.360Z"
+    },
+    {
+      "id": "rk_1782754208361_waco",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to aws 'test-aws'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.361Z"
+    },
+    {
+      "id": "rk_1782754208364_hufz",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to azure 'test-azure'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.364Z"
+    },
+    {
+      "id": "rk_1782754208365_yvq4",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to gcp 'test-gcp'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.366Z"
+    },
+    {
+      "id": "rk_1782754208367_0zs3",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to firebase 'test-firebase'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.367Z"
+    },
+    {
+      "id": "rk_1782754208368_kc6u",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to supabase 'test-supabase'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.368Z"
+    },
+    {
+      "id": "rk_1782754208369_cmn3",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to nginx 'test-nginx'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.369Z"
+    },
+    {
+      "id": "rk_1782754208370_lcgk",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to pm2 'test-pm2'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.370Z"
+    },
+    {
+      "id": "rk_1782754208371_4uv6",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to domain 'test-domain'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.371Z"
+    },
+    {
+      "id": "rk_1782754208372_o7nu",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to dns 'test-dns'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.372Z"
+    },
+    {
+      "id": "rk_1782754208373_lhfi",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to ssl 'test-ssl'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.373Z"
+    },
+    {
+      "id": "rk_1782754208375_ng7o",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to cdn 'test-cdn'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.375Z"
+    },
+    {
+      "id": "rk_1782754208376_ey0b",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to storage 'test-storage'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.376Z"
+    },
+    {
+      "id": "rk_1782754208378_osev",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to database 'test-database'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.378Z"
+    },
+    {
+      "id": "rk_1782754208379_t47g",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to nginx 'nginx-1-updated'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.379Z"
+    },
+    {
+      "id": "rk_1782754208381_g2er",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to docker 'docker-test'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.381Z"
+    },
+    {
+      "id": "rk_1782754208382_5jdm",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: restart",
+      "domain": "infrastructure",
+      "finding": "restart applied to cloudflare 'cf-rec'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.382Z"
+    },
+    {
+      "id": "rk_1782754208384_yoim",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: restart",
+      "domain": "infrastructure",
+      "finding": "restart applied to firebase 'fb-rec'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.384Z"
+    },
+    {
+      "id": "rk_1782754208566_efv9",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: restart",
+      "domain": "infrastructure",
+      "finding": "restart applied to vps 'e2e-vps-full'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.566Z"
+    },
+    {
+      "id": "rk_1782754208576_agg5",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to vps 'rec-test-vps'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.576Z"
+    },
+    {
+      "id": "rk_1782754208814_rsbg",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: restart",
+      "domain": "infrastructure",
+      "finding": "restart applied to docker 'docker-all-actions'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.814Z"
+    },
+    {
+      "id": "rk_1782754208819_mant",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: rollback",
+      "domain": "infrastructure",
+      "finding": "rollback applied to docker 'docker-all-actions'. Duration: 1ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.819Z"
+    },
+    {
+      "id": "rk_1782754208822_4cs9",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to docker 'docker-all-actions'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.822Z"
+    },
+    {
+      "id": "rk_1782754208823_6812",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: isolate",
+      "domain": "infrastructure",
+      "finding": "isolate applied to docker 'docker-all-actions'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.823Z"
+    },
+    {
+      "id": "rk_1782754208824_q0w5",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: escalate",
+      "domain": "infrastructure",
+      "finding": "escalate applied to docker 'docker-all-actions'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T17:30:08.824Z"
+    },
+    {
+      "id": "rk_1782773127476_uh4d",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:45:27.476Z"
+    },
+    {
+      "id": "rk_1782773129277_d2d7",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:45:29.277Z"
+    },
+    {
+      "id": "rk_1782773131540_5gv3",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:45:31.540Z"
+    },
+    {
+      "id": "rk_1782773133616_6kvi",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:45:33.616Z"
+    },
+    {
+      "id": "rk_1782773136157_38a7",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:45:36.157Z"
+    },
+    {
+      "id": "rk_1782773138594_ogeq",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:45:38.594Z"
+    },
+    {
+      "id": "rk_1782773141467_66y0",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:45:41.467Z"
+    },
+    {
+      "id": "rk_1782773144198_5kvh",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:45:44.198Z"
+    },
+    {
+      "id": "rk_1782773147263_ggyw",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:45:47.263Z"
+    },
+    {
+      "id": "rk_1782773150337_aghv",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:45:50.337Z"
+    },
+    {
+      "id": "rk_1782773153740_e90w",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:45:53.740Z"
+    },
+    {
+      "id": "rk_1782773157532_sek2",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:45:57.532Z"
+    },
+    {
+      "id": "rk_1782773161532_pf0l",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Scientific Experiment: engineering",
+      "domain": "engineering",
+      "finding": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up.",
+      "confidence": 60,
+      "tags": [
+        "engineering",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:01.532Z"
+    },
+    {
+      "id": "rk_1782773166662_4jzu",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: restart",
+      "domain": "infrastructure",
+      "finding": "restart applied to vps 'rec-restart-vps'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.662Z"
+    },
+    {
+      "id": "rk_1782773166664_nzxk",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to nginx 'rec-nginx'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.664Z"
+    },
+    {
+      "id": "rk_1782773166666_6al6",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: restart",
+      "domain": "infrastructure",
+      "finding": "restart applied to pm2 'pm2-rec'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.666Z"
+    },
+    {
+      "id": "rk_1782773166667_q8n8",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: isolate",
+      "domain": "infrastructure",
+      "finding": "isolate applied to database 'db-isolate'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.667Z"
+    },
+    {
+      "id": "rk_1782773166673_hzxj",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to vps 'test-vps'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.673Z"
+    },
+    {
+      "id": "rk_1782773166675_2by5",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to vps 'test-vps'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.675Z"
+    },
+    {
+      "id": "rk_1782773166677_0h3y",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to docker 'test-docker'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.677Z"
+    },
+    {
+      "id": "rk_1782773166678_fptl",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to kubernetes 'test-kubernetes'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.678Z"
+    },
+    {
+      "id": "rk_1782773166680_lx83",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to cloudflare 'test-cloudflare'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.680Z"
+    },
+    {
+      "id": "rk_1782773166682_m8rr",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to aws 'test-aws'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.682Z"
+    },
+    {
+      "id": "rk_1782773166684_81ch",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to azure 'test-azure'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.684Z"
+    },
+    {
+      "id": "rk_1782773166685_mrdh",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to gcp 'test-gcp'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.685Z"
+    },
+    {
+      "id": "rk_1782773166686_wq6d",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to firebase 'test-firebase'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.686Z"
+    },
+    {
+      "id": "rk_1782773166688_ne8o",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to supabase 'test-supabase'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.688Z"
+    },
+    {
+      "id": "rk_1782773166689_1tmh",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to nginx 'test-nginx'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.689Z"
+    },
+    {
+      "id": "rk_1782773166691_qpcj",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to pm2 'test-pm2'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.691Z"
+    },
+    {
+      "id": "rk_1782773166692_2uab",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to domain 'test-domain'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.692Z"
+    },
+    {
+      "id": "rk_1782773166694_wot4",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to dns 'test-dns'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.694Z"
+    },
+    {
+      "id": "rk_1782773166695_7057",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to ssl 'test-ssl'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.695Z"
+    },
+    {
+      "id": "rk_1782773166697_cz94",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to cdn 'test-cdn'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.697Z"
+    },
+    {
+      "id": "rk_1782773166698_uclg",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to storage 'test-storage'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.698Z"
+    },
+    {
+      "id": "rk_1782773166700_ebuj",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to database 'test-database'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.700Z"
+    },
+    {
+      "id": "rk_1782773166702_1l0n",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to nginx 'nginx-1-updated'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.702Z"
+    },
+    {
+      "id": "rk_1782773166703_uuy0",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to docker 'docker-test'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.703Z"
+    },
+    {
+      "id": "rk_1782773166705_lhmi",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: restart",
+      "domain": "infrastructure",
+      "finding": "restart applied to cloudflare 'cf-rec'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.705Z"
+    },
+    {
+      "id": "rk_1782773166706_adft",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: restart",
+      "domain": "infrastructure",
+      "finding": "restart applied to firebase 'fb-rec'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.706Z"
+    },
+    {
+      "id": "rk_1782773166951_2p0q",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: restart",
+      "domain": "infrastructure",
+      "finding": "restart applied to vps 'e2e-vps-full'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.951Z"
+    },
+    {
+      "id": "rk_1782773166959_mrdq",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to vps 'rec-test-vps'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:06.959Z"
+    },
+    {
+      "id": "rk_1782773167276_hfvc",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: restart",
+      "domain": "infrastructure",
+      "finding": "restart applied to docker 'docker-all-actions'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:07.276Z"
+    },
+    {
+      "id": "rk_1782773167277_ezt1",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: rollback",
+      "domain": "infrastructure",
+      "finding": "rollback applied to docker 'docker-all-actions'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:07.277Z"
+    },
+    {
+      "id": "rk_1782773167279_dhmj",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: reroute",
+      "domain": "infrastructure",
+      "finding": "reroute applied to docker 'docker-all-actions'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:07.279Z"
+    },
+    {
+      "id": "rk_1782773167280_o4su",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: isolate",
+      "domain": "infrastructure",
+      "finding": "isolate applied to docker 'docker-all-actions'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:07.280Z"
+    },
+    {
+      "id": "rk_1782773167281_4c3m",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Infrastructure Recovery: escalate",
+      "domain": "infrastructure",
+      "finding": "escalate applied to docker 'docker-all-actions'. Duration: 0ms. Status: success.",
+      "confidence": 85,
+      "tags": [
+        "infrastructure",
+        "research"
+      ],
+      "publishedAt": "2026-06-29T22:46:07.281Z"
+    },
+    {
+      "id": "rk_1782778313682_qmjx",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_latency",
+      "domain": "workspace_mesh",
+      "finding": "Workspace mesh P90 latency reduced by 18% after coordinator optimization.",
+      "confidence": 0.87,
+      "tags": [
+        "performance",
+        "mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:53.682Z"
+    },
+    {
+      "id": "rk_1782778313886_t0l0",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_perf",
+      "domain": "execution_pipeline",
+      "finding": "Performance analysis of execution_pipeline shows consistent behavior within expected bounds.",
+      "confidence": 0.82,
+      "tags": [
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:53.886Z"
+    },
+    {
+      "id": "rk_1782778313887_9lcj",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_perf",
+      "domain": "workspace_mesh",
+      "finding": "Performance analysis of workspace_mesh shows consistent behavior within expected bounds.",
+      "confidence": 0.82,
+      "tags": [
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:53.887Z"
+    },
+    {
+      "id": "rk_1782778313888_l5qd",
+      "planId": null,
+      "experimentId": null,
+      "topic": "approval_engine_perf",
+      "domain": "approval_engine",
+      "finding": "Performance analysis of approval_engine shows consistent behavior within expected bounds.",
+      "confidence": 0.82,
+      "tags": [
+        "approval_engine",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:53.888Z"
+    },
+    {
+      "id": "rk_1782778313953_mz4n",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":385,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:53.953Z"
+    },
+    {
+      "id": "rk_1782778313954_4ww2",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":295,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:53.954Z"
+    },
+    {
+      "id": "rk_1782778313957_pxny",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":113,\"success_rate\":0.85,\"error_rate\":0.15}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:53.957Z"
+    },
+    {
+      "id": "rk_1782778314007_f9od",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":340,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.007Z"
+    },
+    {
+      "id": "rk_1782778314009_0ldj",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_benchmark",
+      "domain": "workspace_mesh",
+      "finding": "Benchmark Workspace Mesh: {\"dispatch_latency\":125,\"sync_accuracy\":0.965,\"recovery_rate\":0.895,\"workspace_coverage\":12}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workspace_mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.009Z"
+    },
+    {
+      "id": "rk_1782778314010_9xu6",
+      "planId": null,
+      "experimentId": null,
+      "topic": "approval_engine_benchmark",
+      "domain": "approval_engine",
+      "finding": "Benchmark Approval Engine: {\"auto_approval_rate\":0.74,\"approval_latency\":143.5,\"false_positive_rate\":0.03}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "approval_engine",
+        "approval_engine",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.010Z"
+    },
+    {
+      "id": "rk_1782778314011_2yqu",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workforce_allocation_benchmark",
+      "domain": "workforce_allocation",
+      "finding": "Benchmark Workforce Allocation: {\"agent_utilization\":0.765,\"mission_success_rate\":0.825,\"avg_mission_duration_ms\":1864}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workforce_allocation",
+        "workforce_allocation",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.011Z"
+    },
+    {
+      "id": "rk_1782778314013_icik",
+      "planId": null,
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.89,\"rollback_rate\":0.93,\"time_to_deploy_ms\":0.77}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.013Z"
+    },
+    {
+      "id": "rk_1782778314014_osgf",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":365,\"success_rate\":0.85,\"error_rate\":0.15}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.014Z"
+    },
+    {
+      "id": "rk_1782778314015_vav2",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_benchmark",
+      "domain": "workspace_mesh",
+      "finding": "Benchmark Workspace Mesh: {\"dispatch_latency\":151,\"sync_accuracy\":0.925,\"recovery_rate\":0.93,\"workspace_coverage\":12}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workspace_mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.015Z"
+    },
+    {
+      "id": "rk_1782778314017_9cpz",
+      "planId": "rp_1782778313870_uytd",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.84,\"rollback_rate\":0.925,\"time_to_deploy_ms\":0.81}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.017Z"
+    },
+    {
+      "id": "rk_1782778314020_20lt",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workforce_allocation_benchmark",
+      "domain": "workforce_allocation",
+      "finding": "Benchmark Workforce Allocation: {\"agent_utilization\":0.78,\"mission_success_rate\":0.885,\"avg_mission_duration_ms\":2237}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workforce_allocation",
+        "workforce_allocation",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.020Z"
+    },
+    {
+      "id": "rk_1782778314021_g16w",
+      "planId": null,
+      "experimentId": null,
+      "topic": "autonomous_systems_benchmark",
+      "domain": "autonomous_systems",
+      "finding": "Benchmark Autonomous Systems: {\"autonomy_rate\":0.855,\"human_interventions\":0.895,\"tasks_per_hour\":0.9}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "autonomous_systems",
+        "autonomous_systems",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.021Z"
+    },
+    {
+      "id": "rk_1782778314027_nwce",
+      "planId": "rp_1782778313285_v1vi",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.83,\"rollback_rate\":0.927,\"time_to_deploy_ms\":0.853}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.027Z"
+    },
+    {
+      "id": "rk_1782778314029_44ez",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":273.667,\"success_rate\":0.85,\"error_rate\":0.15}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.029Z"
+    },
+    {
+      "id": "rk_1782778314031_986q",
+      "planId": "rp_1782778313285_v1vi",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.837,\"rollback_rate\":0.797,\"time_to_deploy_ms\":0.81}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.031Z"
+    },
+    {
+      "id": "rk_1782778314033_tsok",
+      "planId": "rp_1782778313285_v1vi",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.87,\"rollback_rate\":0.807,\"time_to_deploy_ms\":0.773}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.033Z"
+    },
+    {
+      "id": "rk_1782778314035_hoh8",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":170,\"success_rate\":0.85,\"error_rate\":0.15}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.035Z"
+    },
+    {
+      "id": "rk_1782778314041_rwts",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workspace_mesh_benchmark",
+      "domain": "workspace_mesh",
+      "finding": "Benchmark Workspace Mesh: {\"dispatch_latency\":136.5,\"sync_accuracy\":0.96,\"recovery_rate\":0.905,\"workspace_coverage\":12}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workspace_mesh",
+        "workspace_mesh",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.041Z"
+    },
+    {
+      "id": "rk_1782778314073_23m9",
+      "planId": "rp_1782778313870_uytd",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.82,\"rollback_rate\":0.78,\"time_to_deploy_ms\":0.877}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.073Z"
+    },
+    {
+      "id": "rk_1782778314082_c8or",
+      "planId": null,
+      "experimentId": null,
+      "topic": "approval_engine_benchmark",
+      "domain": "approval_engine",
+      "finding": "Benchmark Approval Engine: {\"auto_approval_rate\":0.735,\"approval_latency\":272,\"false_positive_rate\":0.033}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "approval_engine",
+        "approval_engine",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.082Z"
+    },
+    {
+      "id": "rk_1782778314086_efs4",
+      "planId": "rp_1782778313285_v1vi",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.8,\"rollback_rate\":0.94,\"time_to_deploy_ms\":0.953}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.086Z"
+    },
+    {
+      "id": "rk_1782778314087_mpk1",
+      "planId": "rp_1782778313285_v1vi",
+      "experimentId": null,
+      "topic": "Deployment Strategy A/B Test",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Deployment Strategy A/B Test\": treatment did not improve over control (confidence=0.9).",
+      "confidence": 0.9,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        "rp_1782778313285_v1vi",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.087Z"
+    },
+    {
+      "id": "rk_1782778314089_munb",
+      "planId": null,
+      "experimentId": null,
+      "topic": "execution_pipeline_benchmark",
+      "domain": "execution_pipeline",
+      "finding": "Benchmark Execution Pipeline: {\"throughput\":0,\"latency_ms\":283.667,\"success_rate\":0.85,\"error_rate\":0.15}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "execution_pipeline",
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.089Z"
+    },
+    {
+      "id": "rk_1782778314090_ljke",
+      "planId": null,
+      "experimentId": null,
+      "topic": "Duplicate run test",
+      "domain": "execution_pipeline",
+      "finding": "Experiment \"Duplicate run test\": treatment did not improve over control (confidence=0.76).",
+      "confidence": 0.76,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        null,
+        "execution_pipeline",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.090Z"
+    },
+    {
+      "id": "rk_1782778314091_frqg",
+      "planId": "rp_1782778313285_v1vi",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.85,\"rollback_rate\":0.83,\"time_to_deploy_ms\":0.9}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.091Z"
+    },
+    {
+      "id": "rk_1782778314093_n61q",
+      "planId": "rp_1782778313285_v1vi",
+      "experimentId": null,
+      "topic": "Deployment Strategy A/B Test",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Deployment Strategy A/B Test\": treatment improved over control (confidence=0.8).",
+      "confidence": 0.8,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        "rp_1782778313285_v1vi",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.093Z"
+    },
+    {
+      "id": "rk_1782778314099_7tlt",
+      "planId": "rp_1782778313285_v1vi",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.883,\"rollback_rate\":0.88,\"time_to_deploy_ms\":0.807}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.099Z"
+    },
+    {
+      "id": "rk_1782778314101_pk41",
+      "planId": "rp_1782778313285_v1vi",
+      "experimentId": null,
+      "topic": "Deployment Strategy A/B Test (replay)",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Deployment Strategy A/B Test (replay)\": treatment improved over control (confidence=0.88).",
+      "confidence": 0.88,
+      "tags": [
+        "experiment",
+        "a_b_test",
+        "rp_1782778313285_v1vi",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.101Z"
+    },
+    {
+      "id": "rk_1782778314113_4kme",
+      "planId": null,
+      "experimentId": null,
+      "topic": "workforce_allocation_benchmark",
+      "domain": "workforce_allocation",
+      "finding": "Benchmark Workforce Allocation: {\"agent_utilization\":0.87,\"mission_success_rate\":0.81,\"avg_mission_duration_ms\":1942}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "workforce_allocation",
+        "workforce_allocation",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.113Z"
+    },
+    {
+      "id": "rk_1782778314124_4vpn",
+      "planId": "rp_1782778313870_uytd",
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.813,\"rollback_rate\":0.87,\"time_to_deploy_ms\":0.82}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.124Z"
+    },
+    {
+      "id": "rk_1782778314125_u58z",
+      "planId": "rp_1782778313870_uytd",
+      "experimentId": null,
+      "topic": "Blue/Green vs Rolling Comparison",
+      "domain": "deployment_strategy",
+      "finding": "Experiment \"Blue/Green vs Rolling Comparison\": treatment did not improve over control (confidence=0.76).",
+      "confidence": 0.76,
+      "tags": [
+        "experiment",
+        "strategy_compare",
+        "rp_1782778313870_uytd",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.125Z"
+    },
+    {
+      "id": "rk_1782778314127_f1tl",
+      "planId": "rp_1782778313870_uytd",
+      "experimentId": null,
+      "topic": "deployment_strategy_comparison",
+      "domain": "deployment_strategy",
+      "finding": "Blue/green did not outperform rolling deployment.",
+      "confidence": 0.76,
+      "tags": [
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.127Z"
+    },
+    {
+      "id": "rk_1782778314146_gpyw",
+      "planId": null,
+      "experimentId": null,
+      "topic": "deployment_strategy_benchmark",
+      "domain": "deployment_strategy",
+      "finding": "Benchmark Deployment Strategy: {\"deploy_success_rate\":0.795,\"rollback_rate\":0.81,\"time_to_deploy_ms\":0.85}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "deployment_strategy",
+        "deployment_strategy",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.146Z"
+    },
+    {
+      "id": "rk_1782778314178_whep",
+      "planId": null,
+      "experimentId": null,
+      "topic": "knowledge_recall_benchmark",
+      "domain": "knowledge_recall",
+      "finding": "Benchmark Knowledge Recall: {\"recall_precision\":0.795,\"recall_latency_ms\":33.5,\"knowledge_coverage\":0}. No significant improvement.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "knowledge_recall",
+        "knowledge_recall",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.178Z"
+    },
+    {
+      "id": "rk_1782778314201_y7wl",
+      "planId": null,
+      "experimentId": null,
+      "topic": "autonomous_systems_benchmark",
+      "domain": "autonomous_systems",
+      "finding": "Benchmark Autonomous Systems: {\"autonomy_rate\":0.84,\"human_interventions\":0.99,\"tasks_per_hour\":0.94}. Improvement detected.",
+      "confidence": 0.9,
+      "tags": [
+        "benchmark",
+        "autonomous_systems",
+        "autonomous_systems",
+        "research"
+      ],
+      "publishedAt": "2026-06-30T00:11:54.201Z"
     }
   ],
   "recommendations": [
     {
-      "id": "rk_1782680707459_ubbt",
-      "domain": "workspace_mesh",
-      "recommendation": "Based on 6 findings in workspace_mesh: consider targeted improvements to increase reliability and reduce latency.",
-      "confidence": 0.88,
-      "findingCount": 6,
-      "ts": "2026-06-28T21:05:07.459Z"
-    },
-    {
-      "id": "rk_1782680707459_fjf9",
-      "domain": "execution_pipeline",
-      "recommendation": "Based on 4 findings in execution_pipeline: consider targeted improvements to increase reliability and reduce latency.",
-      "confidence": 0.88,
-      "findingCount": 4,
-      "ts": "2026-06-28T21:05:07.459Z"
-    },
-    {
-      "id": "rk_1782680707459_4lly",
-      "domain": "approval_engine",
-      "recommendation": "Based on 3 findings in approval_engine: consider targeted improvements to increase reliability and reduce latency.",
-      "confidence": 0.87,
-      "findingCount": 3,
-      "ts": "2026-06-28T21:05:07.459Z"
-    },
-    {
-      "id": "rk_1782680707459_7tyk",
-      "domain": "workforce_allocation",
-      "recommendation": "Based on 3 findings in workforce_allocation: consider targeted improvements to increase reliability and reduce latency.",
-      "confidence": 0.9,
-      "findingCount": 3,
-      "ts": "2026-06-28T21:05:07.459Z"
-    },
-    {
-      "id": "rk_1782680707459_8aa5",
-      "domain": "deployment_strategy",
-      "recommendation": "Based on 16 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
-      "confidence": 0.89,
-      "findingCount": 16,
-      "ts": "2026-06-28T21:05:07.459Z"
-    },
-    {
-      "id": "rk_1782680707459_hg24",
-      "domain": "autonomous_systems",
-      "recommendation": "Based on 2 findings in autonomous_systems: consider targeted improvements to increase reliability and reduce latency.",
+      "id": "rk_1782686973139_sh4k",
+      "domain": "knowledge_recall",
+      "recommendation": "Based on 2 findings in knowledge_recall: consider targeted improvements to increase reliability and reduce latency.",
       "confidence": 0.9,
       "findingCount": 2,
-      "ts": "2026-06-28T21:05:07.459Z"
+      "ts": "2026-06-28T22:49:33.139Z"
     },
     {
-      "id": "rk_1782680707459_ke6s",
-      "domain": "knowledge_recall",
-      "recommendation": "Based on 1 findings in knowledge_recall: consider targeted improvements to increase reliability and reduce latency.",
-      "confidence": 0.9,
-      "findingCount": 1,
-      "ts": "2026-06-28T21:05:07.459Z"
-    },
-    {
-      "id": "rk_1782680707459_yht2",
+      "id": "rk_1782686973139_llbc",
       "domain": "fix",
       "recommendation": "Investigate further",
       "confidence": 0.75,
       "findingCount": 0,
       "source": "cle",
-      "ts": "2026-06-28T21:05:07.459Z"
+      "ts": "2026-06-28T22:49:33.139Z"
     },
     {
-      "id": "rk_1782680707459_5r3k",
+      "id": "rk_1782686973139_mywg",
       "domain": "fix",
       "recommendation": "Investigate further",
       "confidence": 0.75,
       "findingCount": 0,
       "source": "cle",
-      "ts": "2026-06-28T21:05:07.459Z"
+      "ts": "2026-06-28T22:49:33.139Z"
     },
     {
-      "id": "rk_1782680707459_nas4",
+      "id": "rk_1782686973139_rxcx",
       "domain": "fix",
       "recommendation": "Investigate further",
       "confidence": 0.75,
       "findingCount": 0,
       "source": "cle",
-      "ts": "2026-06-28T21:05:07.459Z"
+      "ts": "2026-06-28T22:49:33.139Z"
     },
     {
-      "id": "rk_1782680707486_z92b",
+      "id": "rk_1782686973211_a4sy",
       "domain": "deployment_strategy",
-      "recommendation": "Based on 16 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
-      "confidence": 0.89,
-      "findingCount": 16,
-      "ts": "2026-06-28T21:05:07.486Z"
-    },
-    {
-      "id": "rk_1782680707486_2kec",
-      "domain": "fix",
-      "recommendation": "Investigate further",
-      "confidence": 0.75,
-      "findingCount": 0,
-      "source": "cle",
-      "ts": "2026-06-28T21:05:07.486Z"
-    },
-    {
-      "id": "rk_1782680707486_9vmb",
-      "domain": "fix",
-      "recommendation": "Investigate further",
-      "confidence": 0.75,
-      "findingCount": 0,
-      "source": "cle",
-      "ts": "2026-06-28T21:05:07.486Z"
-    },
-    {
-      "id": "rk_1782680707486_l97c",
-      "domain": "fix",
-      "recommendation": "Investigate further",
-      "confidence": 0.75,
-      "findingCount": 0,
-      "source": "cle",
-      "ts": "2026-06-28T21:05:07.486Z"
-    },
-    {
-      "id": "rk_1782680707490_4bzk",
-      "domain": "workspace_mesh",
-      "recommendation": "Based on 6 findings in workspace_mesh: consider targeted improvements to increase reliability and reduce latency.",
+      "recommendation": "Based on 32 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
       "confidence": 0.88,
-      "findingCount": 6,
-      "ts": "2026-06-28T21:05:07.490Z"
+      "findingCount": 32,
+      "ts": "2026-06-28T22:49:33.211Z"
     },
     {
-      "id": "rk_1782680707490_3s0s",
+      "id": "rk_1782686973211_sa4u",
       "domain": "fix",
       "recommendation": "Investigate further",
       "confidence": 0.75,
       "findingCount": 0,
       "source": "cle",
-      "ts": "2026-06-28T21:05:07.490Z"
+      "ts": "2026-06-28T22:49:33.211Z"
     },
     {
-      "id": "rk_1782680707490_dfre",
+      "id": "rk_1782686973211_4wnb",
       "domain": "fix",
       "recommendation": "Investigate further",
       "confidence": 0.75,
       "findingCount": 0,
       "source": "cle",
-      "ts": "2026-06-28T21:05:07.490Z"
+      "ts": "2026-06-28T22:49:33.211Z"
     },
     {
-      "id": "rk_1782680707490_nkd4",
+      "id": "rk_1782686973211_44y9",
       "domain": "fix",
       "recommendation": "Investigate further",
       "confidence": 0.75,
       "findingCount": 0,
       "source": "cle",
-      "ts": "2026-06-28T21:05:07.490Z"
+      "ts": "2026-06-28T22:49:33.211Z"
     },
     {
-      "id": "rk_1782680707559_2h22",
+      "id": "rk_1782686973222_lkgf",
       "domain": "workspace_mesh",
-      "recommendation": "Based on 7 findings in workspace_mesh: consider targeted improvements to increase reliability and reduce latency.",
+      "recommendation": "Based on 11 findings in workspace_mesh: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 11,
+      "ts": "2026-06-28T22:49:33.222Z"
+    },
+    {
+      "id": "rk_1782686973222_4p1o",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T22:49:33.222Z"
+    },
+    {
+      "id": "rk_1782686973222_fgoo",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T22:49:33.222Z"
+    },
+    {
+      "id": "rk_1782686973222_e9vd",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T22:49:33.222Z"
+    },
+    {
+      "id": "rk_1782686973322_853c",
+      "domain": "workspace_mesh",
+      "recommendation": "Based on 12 findings in workspace_mesh: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.87,
+      "findingCount": 12,
+      "ts": "2026-06-28T22:49:33.322Z"
+    },
+    {
+      "id": "rk_1782686973322_5ry0",
+      "domain": "execution_pipeline",
+      "recommendation": "Based on 15 findings in execution_pipeline: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 15,
+      "ts": "2026-06-28T22:49:33.322Z"
+    },
+    {
+      "id": "rk_1782686973322_jn4i",
+      "domain": "approval_engine",
+      "recommendation": "Based on 7 findings in approval_engine: consider targeted improvements to increase reliability and reduce latency.",
       "confidence": 0.87,
       "findingCount": 7,
-      "ts": "2026-06-28T21:05:07.559Z"
+      "ts": "2026-06-28T22:49:33.322Z"
     },
     {
-      "id": "rk_1782680707559_o46m",
-      "domain": "execution_pipeline",
-      "recommendation": "Based on 5 findings in execution_pipeline: consider targeted improvements to increase reliability and reduce latency.",
-      "confidence": 0.87,
-      "findingCount": 5,
-      "ts": "2026-06-28T21:05:07.559Z"
-    },
-    {
-      "id": "rk_1782680707559_4pkk",
-      "domain": "approval_engine",
-      "recommendation": "Based on 4 findings in approval_engine: consider targeted improvements to increase reliability and reduce latency.",
-      "confidence": 0.86,
-      "findingCount": 4,
-      "ts": "2026-06-28T21:05:07.559Z"
-    },
-    {
-      "id": "rk_1782680707559_wyak",
+      "id": "rk_1782686973322_r878",
       "domain": "workforce_allocation",
-      "recommendation": "Based on 3 findings in workforce_allocation: consider targeted improvements to increase reliability and reduce latency.",
+      "recommendation": "Based on 6 findings in workforce_allocation: consider targeted improvements to increase reliability and reduce latency.",
       "confidence": 0.9,
-      "findingCount": 3,
-      "ts": "2026-06-28T21:05:07.559Z"
+      "findingCount": 6,
+      "ts": "2026-06-28T22:49:33.322Z"
     },
     {
-      "id": "rk_1782680707559_6hvn",
+      "id": "rk_1782686973322_ng2b",
       "domain": "deployment_strategy",
-      "recommendation": "Based on 16 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
-      "confidence": 0.89,
-      "findingCount": 16,
-      "ts": "2026-06-28T21:05:07.559Z"
+      "recommendation": "Based on 32 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 32,
+      "ts": "2026-06-28T22:49:33.322Z"
     },
     {
-      "id": "rk_1782680707559_g4g4",
+      "id": "rk_1782686973322_4gu8",
       "domain": "autonomous_systems",
-      "recommendation": "Based on 2 findings in autonomous_systems: consider targeted improvements to increase reliability and reduce latency.",
+      "recommendation": "Based on 4 findings in autonomous_systems: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 4,
+      "ts": "2026-06-28T22:49:33.322Z"
+    },
+    {
+      "id": "rk_1782686973322_nsdm",
+      "domain": "knowledge_recall",
+      "recommendation": "Based on 2 findings in knowledge_recall: consider targeted improvements to increase reliability and reduce latency.",
       "confidence": 0.9,
       "findingCount": 2,
-      "ts": "2026-06-28T21:05:07.559Z"
+      "ts": "2026-06-28T22:49:33.322Z"
     },
     {
-      "id": "rk_1782680707559_q42t",
-      "domain": "knowledge_recall",
-      "recommendation": "Based on 1 findings in knowledge_recall: consider targeted improvements to increase reliability and reduce latency.",
-      "confidence": 0.9,
-      "findingCount": 1,
-      "ts": "2026-06-28T21:05:07.559Z"
-    },
-    {
-      "id": "rk_1782680707559_1hvt",
+      "id": "rk_1782686973322_02ps",
       "domain": "fix",
       "recommendation": "Investigate further",
       "confidence": 0.75,
       "findingCount": 0,
       "source": "cle",
-      "ts": "2026-06-28T21:05:07.559Z"
+      "ts": "2026-06-28T22:49:33.322Z"
     },
     {
-      "id": "rk_1782680707559_trjx",
+      "id": "rk_1782686973322_yl8q",
       "domain": "fix",
       "recommendation": "Investigate further",
       "confidence": 0.75,
       "findingCount": 0,
       "source": "cle",
-      "ts": "2026-06-28T21:05:07.559Z"
+      "ts": "2026-06-28T22:49:33.322Z"
     },
     {
-      "id": "rk_1782680707559_lrlc",
+      "id": "rk_1782686973322_bnzg",
       "domain": "fix",
       "recommendation": "Investigate further",
       "confidence": 0.75,
       "findingCount": 0,
       "source": "cle",
-      "ts": "2026-06-28T21:05:07.559Z"
+      "ts": "2026-06-28T22:49:33.322Z"
     },
     {
-      "id": "rk_1782680707753_nf1p",
+      "id": "rk_1782686973503_j79n",
       "domain": "deployment_strategy",
-      "recommendation": "Based on 31 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
+      "recommendation": "Based on 47 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
       "confidence": 0.88,
-      "findingCount": 31,
-      "ts": "2026-06-28T21:05:07.753Z"
+      "findingCount": 47,
+      "ts": "2026-06-28T22:49:33.503Z"
     },
     {
-      "id": "rk_1782680707753_bf4f",
+      "id": "rk_1782686973503_67cm",
       "domain": "fix",
       "recommendation": "Investigate further",
       "confidence": 0.75,
       "findingCount": 0,
       "source": "cle",
-      "ts": "2026-06-28T21:05:07.753Z"
+      "ts": "2026-06-28T22:49:33.503Z"
     },
     {
-      "id": "rk_1782680707753_udzp",
+      "id": "rk_1782686973503_c2f1",
       "domain": "fix",
       "recommendation": "Investigate further",
       "confidence": 0.75,
       "findingCount": 0,
       "source": "cle",
-      "ts": "2026-06-28T21:05:07.753Z"
+      "ts": "2026-06-28T22:49:33.503Z"
     },
     {
-      "id": "rk_1782680707753_p8yl",
+      "id": "rk_1782686973503_o9oj",
       "domain": "fix",
       "recommendation": "Investigate further",
       "confidence": 0.75,
       "findingCount": 0,
       "source": "cle",
-      "ts": "2026-06-28T21:05:07.753Z"
+      "ts": "2026-06-28T22:49:33.503Z"
+    },
+    {
+      "id": "rk_1782687874812_0ugt",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.812Z"
+    },
+    {
+      "id": "rk_1782687874812_8vv9",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.812Z"
+    },
+    {
+      "id": "rk_1782687874812_i75q",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.812Z"
+    },
+    {
+      "id": "rk_1782687874846_b3lt",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.846Z"
+    },
+    {
+      "id": "rk_1782687874846_in9m",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.846Z"
+    },
+    {
+      "id": "rk_1782687874846_9rul",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.846Z"
+    },
+    {
+      "id": "rk_1782687874876_84qe",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.876Z"
+    },
+    {
+      "id": "rk_1782687874876_ig69",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.876Z"
+    },
+    {
+      "id": "rk_1782687874876_7oa1",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.876Z"
+    },
+    {
+      "id": "rk_1782687874908_6e85",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.908Z"
+    },
+    {
+      "id": "rk_1782687874908_r7bx",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.908Z"
+    },
+    {
+      "id": "rk_1782687874908_2iai",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.908Z"
+    },
+    {
+      "id": "rk_1782687874942_vsza",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.942Z"
+    },
+    {
+      "id": "rk_1782687874942_lw2w",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.942Z"
+    },
+    {
+      "id": "rk_1782687874942_bqff",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.942Z"
+    },
+    {
+      "id": "rk_1782687874972_ehvr",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.972Z"
+    },
+    {
+      "id": "rk_1782687874972_fqkz",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.972Z"
+    },
+    {
+      "id": "rk_1782687874972_4hj5",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:34.972Z"
+    },
+    {
+      "id": "rk_1782687875003_mlv4",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:35.003Z"
+    },
+    {
+      "id": "rk_1782687875003_wtmp",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:35.003Z"
+    },
+    {
+      "id": "rk_1782687875003_6scg",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:35.003Z"
+    },
+    {
+      "id": "rk_1782687875035_ab3a",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:35.035Z"
+    },
+    {
+      "id": "rk_1782687875035_tz18",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:35.035Z"
+    },
+    {
+      "id": "rk_1782687875035_91uf",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:35.035Z"
+    },
+    {
+      "id": "rk_1782687879207_7dby",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:39.207Z"
+    },
+    {
+      "id": "rk_1782687879207_vuyc",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:39.207Z"
+    },
+    {
+      "id": "rk_1782687879207_0a0m",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:04:39.207Z"
+    },
+    {
+      "id": "rk_1782687971344_qu0t",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.344Z"
+    },
+    {
+      "id": "rk_1782687971344_9if6",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.344Z"
+    },
+    {
+      "id": "rk_1782687971344_ifpz",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.344Z"
+    },
+    {
+      "id": "rk_1782687971390_hfee",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.390Z"
+    },
+    {
+      "id": "rk_1782687971390_4gmo",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.390Z"
+    },
+    {
+      "id": "rk_1782687971390_lndb",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.390Z"
+    },
+    {
+      "id": "rk_1782687971421_kju1",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.421Z"
+    },
+    {
+      "id": "rk_1782687971421_jqka",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.421Z"
+    },
+    {
+      "id": "rk_1782687971421_lzof",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.421Z"
+    },
+    {
+      "id": "rk_1782687971452_axrd",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.452Z"
+    },
+    {
+      "id": "rk_1782687971452_q10l",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.452Z"
+    },
+    {
+      "id": "rk_1782687971452_u7ku",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.452Z"
+    },
+    {
+      "id": "rk_1782687971499_u28m",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.499Z"
+    },
+    {
+      "id": "rk_1782687971499_68sk",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.499Z"
+    },
+    {
+      "id": "rk_1782687971499_celr",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.499Z"
+    },
+    {
+      "id": "rk_1782687971535_ddbv",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.535Z"
+    },
+    {
+      "id": "rk_1782687971535_57id",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.535Z"
+    },
+    {
+      "id": "rk_1782687971535_hp2t",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.535Z"
+    },
+    {
+      "id": "rk_1782687971571_891r",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.571Z"
+    },
+    {
+      "id": "rk_1782687971571_o6s6",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.571Z"
+    },
+    {
+      "id": "rk_1782687971571_560m",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:11.571Z"
+    },
+    {
+      "id": "rk_1782687975441_zfm5",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:15.441Z"
+    },
+    {
+      "id": "rk_1782687975441_nyaj",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:15.441Z"
+    },
+    {
+      "id": "rk_1782687975441_npga",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:15.441Z"
+    },
+    {
+      "id": "rk_1782688010172_2crn",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:50.172Z"
+    },
+    {
+      "id": "rk_1782688010172_va7s",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:50.172Z"
+    },
+    {
+      "id": "rk_1782688010172_c3lp",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:06:50.172Z"
+    },
+    {
+      "id": "rk_1782688070051_gnea",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.051Z"
+    },
+    {
+      "id": "rk_1782688070051_gb22",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.051Z"
+    },
+    {
+      "id": "rk_1782688070051_xhws",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.051Z"
+    },
+    {
+      "id": "rk_1782688070080_f3v2",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.080Z"
+    },
+    {
+      "id": "rk_1782688070080_c8hp",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.080Z"
+    },
+    {
+      "id": "rk_1782688070080_vl3t",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.080Z"
+    },
+    {
+      "id": "rk_1782688070111_3s3u",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.111Z"
+    },
+    {
+      "id": "rk_1782688070111_k7et",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.111Z"
+    },
+    {
+      "id": "rk_1782688070111_2e0n",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.111Z"
+    },
+    {
+      "id": "rk_1782688070147_mxfr",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.147Z"
+    },
+    {
+      "id": "rk_1782688070147_ios4",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.147Z"
+    },
+    {
+      "id": "rk_1782688070147_2ebp",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.147Z"
+    },
+    {
+      "id": "rk_1782688070176_8y9k",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.176Z"
+    },
+    {
+      "id": "rk_1782688070176_fv7m",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.176Z"
+    },
+    {
+      "id": "rk_1782688070176_zvie",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.176Z"
+    },
+    {
+      "id": "rk_1782688070204_5w9f",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.204Z"
+    },
+    {
+      "id": "rk_1782688070204_ch5w",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.204Z"
+    },
+    {
+      "id": "rk_1782688070204_34m2",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.204Z"
+    },
+    {
+      "id": "rk_1782688070233_bx59",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.233Z"
+    },
+    {
+      "id": "rk_1782688070233_x1dv",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.233Z"
+    },
+    {
+      "id": "rk_1782688070233_x7qs",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:50.233Z"
+    },
+    {
+      "id": "rk_1782688078136_j1lb",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:58.136Z"
+    },
+    {
+      "id": "rk_1782688078136_pr2j",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:58.136Z"
+    },
+    {
+      "id": "rk_1782688078136_vfgz",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:58.136Z"
+    },
+    {
+      "id": "rk_1782688078171_qi0x",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:58.171Z"
+    },
+    {
+      "id": "rk_1782688078171_veh1",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:58.171Z"
+    },
+    {
+      "id": "rk_1782688078171_pbyl",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:07:58.171Z"
+    },
+    {
+      "id": "rk_1782688148616_qby5",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.616Z"
+    },
+    {
+      "id": "rk_1782688148616_7ni0",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.616Z"
+    },
+    {
+      "id": "rk_1782688148616_9bw1",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.616Z"
+    },
+    {
+      "id": "rk_1782688148647_529t",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.647Z"
+    },
+    {
+      "id": "rk_1782688148647_4maf",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.647Z"
+    },
+    {
+      "id": "rk_1782688148647_d8z4",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.647Z"
+    },
+    {
+      "id": "rk_1782688148676_giii",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.676Z"
+    },
+    {
+      "id": "rk_1782688148676_ytuj",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.676Z"
+    },
+    {
+      "id": "rk_1782688148676_otao",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.676Z"
+    },
+    {
+      "id": "rk_1782688148710_1yso",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.710Z"
+    },
+    {
+      "id": "rk_1782688148710_01zi",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.710Z"
+    },
+    {
+      "id": "rk_1782688148710_ul1h",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.710Z"
+    },
+    {
+      "id": "rk_1782688148740_f5es",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.740Z"
+    },
+    {
+      "id": "rk_1782688148740_i44w",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.740Z"
+    },
+    {
+      "id": "rk_1782688148740_3498",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.740Z"
+    },
+    {
+      "id": "rk_1782688148768_7bzt",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.769Z"
+    },
+    {
+      "id": "rk_1782688148769_euvp",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.769Z"
+    },
+    {
+      "id": "rk_1782688148769_vqck",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.769Z"
+    },
+    {
+      "id": "rk_1782688148799_wr93",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.799Z"
+    },
+    {
+      "id": "rk_1782688148799_ftoe",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.799Z"
+    },
+    {
+      "id": "rk_1782688148799_1o7s",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:08.799Z"
+    },
+    {
+      "id": "rk_1782688156674_lajs",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:16.674Z"
+    },
+    {
+      "id": "rk_1782688156674_ph2y",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:16.674Z"
+    },
+    {
+      "id": "rk_1782688156674_zjb1",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:16.674Z"
+    },
+    {
+      "id": "rk_1782688156709_j7vt",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:16.709Z"
+    },
+    {
+      "id": "rk_1782688156709_5c2e",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:16.709Z"
+    },
+    {
+      "id": "rk_1782688156709_t45l",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:16.709Z"
+    },
+    {
+      "id": "rk_1782688160649_7c29",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:20.649Z"
+    },
+    {
+      "id": "rk_1782688160649_sw6p",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:20.649Z"
+    },
+    {
+      "id": "rk_1782688160649_becv",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-28T23:09:20.649Z"
+    },
+    {
+      "id": "rk_1782773023048_0ihl",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:43.048Z"
+    },
+    {
+      "id": "rk_1782773023048_81zq",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:43.048Z"
+    },
+    {
+      "id": "rk_1782773023048_9zgq",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:43.048Z"
+    },
+    {
+      "id": "rk_1782773023141_0dd4",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:43.141Z"
+    },
+    {
+      "id": "rk_1782773023141_lnfi",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:43.141Z"
+    },
+    {
+      "id": "rk_1782773023141_yyu2",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:43.141Z"
+    },
+    {
+      "id": "rk_1782773023198_bdeg",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:43.198Z"
+    },
+    {
+      "id": "rk_1782773023198_0f3d",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:43.198Z"
+    },
+    {
+      "id": "rk_1782773023198_xrni",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:43.198Z"
+    },
+    {
+      "id": "rk_1782773023915_qgrg",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:43.915Z"
+    },
+    {
+      "id": "rk_1782773023915_0n91",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:43.915Z"
+    },
+    {
+      "id": "rk_1782773023915_csu2",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:43.915Z"
+    },
+    {
+      "id": "rk_1782773024066_hycu",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:44.066Z"
+    },
+    {
+      "id": "rk_1782773024066_v8u9",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:44.066Z"
+    },
+    {
+      "id": "rk_1782773024066_2n4n",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:44.066Z"
+    },
+    {
+      "id": "rk_1782773024768_k1qj",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:44.768Z"
+    },
+    {
+      "id": "rk_1782773024768_ycxz",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:44.768Z"
+    },
+    {
+      "id": "rk_1782773024768_j1ii",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:44.768Z"
+    },
+    {
+      "id": "rk_1782773025039_g0pj",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:45.039Z"
+    },
+    {
+      "id": "rk_1782773025039_r3re",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:45.039Z"
+    },
+    {
+      "id": "rk_1782773025039_4uhb",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:45.039Z"
+    },
+    {
+      "id": "rk_1782773025854_z02k",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:45.854Z"
+    },
+    {
+      "id": "rk_1782773025854_9w3q",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:45.854Z"
+    },
+    {
+      "id": "rk_1782773025854_m94v",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:45.854Z"
+    },
+    {
+      "id": "rk_1782773027132_ptc6",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:47.132Z"
+    },
+    {
+      "id": "rk_1782773027132_162p",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:47.132Z"
+    },
+    {
+      "id": "rk_1782773027132_6edt",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-29T22:43:47.132Z"
+    },
+    {
+      "id": "rk_1782778313684_l9kk",
+      "domain": "workspace_mesh",
+      "recommendation": "Based on 16 findings in workspace_mesh: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 16,
+      "ts": "2026-06-30T00:11:53.684Z"
+    },
+    {
+      "id": "rk_1782778313684_9imb",
+      "domain": "execution_pipeline",
+      "recommendation": "Based on 24 findings in execution_pipeline: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.89,
+      "findingCount": 24,
+      "ts": "2026-06-30T00:11:53.684Z"
+    },
+    {
+      "id": "rk_1782778313684_xz0l",
+      "domain": "approval_engine",
+      "recommendation": "Based on 9 findings in approval_engine: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.87,
+      "findingCount": 9,
+      "ts": "2026-06-30T00:11:53.684Z"
+    },
+    {
+      "id": "rk_1782778313684_6skx",
+      "domain": "workforce_allocation",
+      "recommendation": "Based on 9 findings in workforce_allocation: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 9,
+      "ts": "2026-06-30T00:11:53.684Z"
+    },
+    {
+      "id": "rk_1782778313684_0eyi",
+      "domain": "deployment_strategy",
+      "recommendation": "Based on 48 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 48,
+      "ts": "2026-06-30T00:11:53.684Z"
+    },
+    {
+      "id": "rk_1782778313684_gtg3",
+      "domain": "autonomous_systems",
+      "recommendation": "Based on 6 findings in autonomous_systems: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 6,
+      "ts": "2026-06-30T00:11:53.684Z"
+    },
+    {
+      "id": "rk_1782778313684_wnks",
+      "domain": "knowledge_recall",
+      "recommendation": "Based on 3 findings in knowledge_recall: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 3,
+      "ts": "2026-06-30T00:11:53.684Z"
+    },
+    {
+      "id": "rk_1782778313684_3kg2",
+      "domain": "engineering",
+      "recommendation": "Based on 77 findings in engineering: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 60,
+      "findingCount": 77,
+      "ts": "2026-06-30T00:11:53.684Z"
+    },
+    {
+      "id": "rk_1782778313684_35mo",
+      "domain": "infrastructure",
+      "recommendation": "Based on 66 findings in infrastructure: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 85,
+      "findingCount": 66,
+      "ts": "2026-06-30T00:11:53.684Z"
+    },
+    {
+      "id": "rk_1782778313684_xagf",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:53.684Z"
+    },
+    {
+      "id": "rk_1782778313684_tvnb",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:53.684Z"
+    },
+    {
+      "id": "rk_1782778313684_v37y",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:53.684Z"
+    },
+    {
+      "id": "rk_1782778313724_o5q7",
+      "domain": "deployment_strategy",
+      "recommendation": "Based on 48 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 48,
+      "ts": "2026-06-30T00:11:53.724Z"
+    },
+    {
+      "id": "rk_1782778313724_wre1",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:53.724Z"
+    },
+    {
+      "id": "rk_1782778313724_qgh2",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:53.724Z"
+    },
+    {
+      "id": "rk_1782778313724_p17v",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:53.724Z"
+    },
+    {
+      "id": "rk_1782778313732_f0db",
+      "domain": "workspace_mesh",
+      "recommendation": "Based on 16 findings in workspace_mesh: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 16,
+      "ts": "2026-06-30T00:11:53.732Z"
+    },
+    {
+      "id": "rk_1782778313732_4a6z",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:53.732Z"
+    },
+    {
+      "id": "rk_1782778313732_i42j",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:53.732Z"
+    },
+    {
+      "id": "rk_1782778313732_b63f",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:53.732Z"
+    },
+    {
+      "id": "rk_1782778313890_ub0r",
+      "domain": "workspace_mesh",
+      "recommendation": "Based on 17 findings in workspace_mesh: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.87,
+      "findingCount": 17,
+      "ts": "2026-06-30T00:11:53.890Z"
+    },
+    {
+      "id": "rk_1782778313890_fsmq",
+      "domain": "execution_pipeline",
+      "recommendation": "Based on 25 findings in execution_pipeline: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 25,
+      "ts": "2026-06-30T00:11:53.890Z"
+    },
+    {
+      "id": "rk_1782778313890_bq2a",
+      "domain": "approval_engine",
+      "recommendation": "Based on 10 findings in approval_engine: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.87,
+      "findingCount": 10,
+      "ts": "2026-06-30T00:11:53.890Z"
+    },
+    {
+      "id": "rk_1782778313890_qx4r",
+      "domain": "workforce_allocation",
+      "recommendation": "Based on 9 findings in workforce_allocation: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 9,
+      "ts": "2026-06-30T00:11:53.890Z"
+    },
+    {
+      "id": "rk_1782778313890_9gaw",
+      "domain": "deployment_strategy",
+      "recommendation": "Based on 48 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 48,
+      "ts": "2026-06-30T00:11:53.890Z"
+    },
+    {
+      "id": "rk_1782778313890_nf3x",
+      "domain": "autonomous_systems",
+      "recommendation": "Based on 6 findings in autonomous_systems: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 6,
+      "ts": "2026-06-30T00:11:53.890Z"
+    },
+    {
+      "id": "rk_1782778313890_xoop",
+      "domain": "knowledge_recall",
+      "recommendation": "Based on 3 findings in knowledge_recall: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.9,
+      "findingCount": 3,
+      "ts": "2026-06-30T00:11:53.890Z"
+    },
+    {
+      "id": "rk_1782778313890_rter",
+      "domain": "engineering",
+      "recommendation": "Based on 77 findings in engineering: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 60,
+      "findingCount": 77,
+      "ts": "2026-06-30T00:11:53.890Z"
+    },
+    {
+      "id": "rk_1782778313890_vz8z",
+      "domain": "infrastructure",
+      "recommendation": "Based on 66 findings in infrastructure: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 85,
+      "findingCount": 66,
+      "ts": "2026-06-30T00:11:53.890Z"
+    },
+    {
+      "id": "rk_1782778313890_44c6",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:53.890Z"
+    },
+    {
+      "id": "rk_1782778313890_wdu4",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:53.890Z"
+    },
+    {
+      "id": "rk_1782778313890_l0ig",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:53.890Z"
+    },
+    {
+      "id": "rk_1782778314128_b1o4",
+      "domain": "deployment_strategy",
+      "recommendation": "Based on 63 findings in deployment_strategy: consider targeted improvements to increase reliability and reduce latency.",
+      "confidence": 0.88,
+      "findingCount": 63,
+      "ts": "2026-06-30T00:11:54.128Z"
+    },
+    {
+      "id": "rk_1782778314128_eac8",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:54.128Z"
+    },
+    {
+      "id": "rk_1782778314128_5zcm",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:54.128Z"
+    },
+    {
+      "id": "rk_1782778314128_a2uk",
+      "domain": "fix",
+      "recommendation": "Investigate further",
+      "confidence": 0.75,
+      "findingCount": 0,
+      "source": "cle",
+      "ts": "2026-06-30T00:11:54.128Z"
     }
   ],
   "radar": [
@@ -1481,7 +6254,7 @@
       "quadrant": "tools",
       "ring": "adopt",
       "blip": "TF-IDF knowledge recall and failure prediction",
-      "updatedAt": "2026-06-28T21:05:07.560Z"
+      "updatedAt": "2026-06-30T00:11:53.891Z"
     },
     {
       "name": "Knowledge Graph",
@@ -1555,7 +6328,7 @@
       "ring": "trial",
       "blip": "Autonomous research pipeline",
       "addedAt": "2026-06-28T21:03:20.822Z",
-      "updatedAt": "2026-06-28T21:05:07.459Z"
+      "updatedAt": "2026-06-30T00:11:53.686Z"
     },
     {
       "name": "TestTech P10",
@@ -1563,13 +6336,13 @@
       "ring": "trial",
       "blip": "Updated",
       "addedAt": "2026-06-28T21:03:20.822Z",
-      "updatedAt": "2026-06-28T21:05:07.459Z"
+      "updatedAt": "2026-06-30T00:11:53.688Z"
     }
   ],
   "stats": {
-    "findingsIndexed": 74,
-    "recommendationsGenerated": 32,
-    "knowledgePublished": 2
+    "findingsIndexed": 297,
+    "recommendationsGenerated": 394,
+    "knowledgePublished": 4
   },
-  "updatedAt": "2026-06-28T21:05:07.821Z"
+  "updatedAt": "2026-06-30T00:11:54.201Z"
 }

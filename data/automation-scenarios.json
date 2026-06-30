@@ -1,0 +1,287 @@
+{
+  "scenarios": [
+    {
+      "id": "scenario_office_morning",
+      "name": "Smart Office Morning Startup",
+      "trigger": "schedule",
+      "steps": [
+        {
+          "order": 1,
+          "adapterType": "smart_display",
+          "command": "write",
+          "payload": {
+            "text": "Good morning — Ooplix OS"
+          }
+        },
+        {
+          "order": 2,
+          "adapterType": "sensor",
+          "command": "read",
+          "payload": {
+            "metric": "temperature"
+          }
+        },
+        {
+          "order": 3,
+          "adapterType": "smart_office",
+          "command": "execute",
+          "payload": {
+            "action": "lights_on"
+          }
+        }
+      ],
+      "minutesSaved": 15,
+      "description": "Turn on office devices at start of day",
+      "builtin": true,
+      "execCount": 1,
+      "lastRunAt": "2026-06-30T00:12:27.196Z"
+    },
+    {
+      "id": "scenario_security_sweep",
+      "name": "Security Camera Sweep",
+      "trigger": "schedule",
+      "steps": [
+        {
+          "order": 1,
+          "adapterType": "camera",
+          "command": "stream",
+          "payload": {
+            "duration": 30
+          }
+        },
+        {
+          "order": 2,
+          "adapterType": "sensor",
+          "command": "read",
+          "payload": {
+            "metric": "motion"
+          }
+        }
+      ],
+      "minutesSaved": 20,
+      "description": "Automated security check across all cameras and motion sensors",
+      "builtin": true,
+      "execCount": 0,
+      "lastRunAt": null
+    },
+    {
+      "id": "scenario_data_harvest",
+      "name": "IoT Data Harvest",
+      "trigger": "schedule",
+      "steps": [
+        {
+          "order": 1,
+          "adapterType": "iot",
+          "command": "query",
+          "payload": {
+            "metrics": [
+              "temperature",
+              "humidity",
+              "power"
+            ]
+          }
+        },
+        {
+          "order": 2,
+          "adapterType": "sensor",
+          "command": "read",
+          "payload": {
+            "all": true
+          }
+        }
+      ],
+      "minutesSaved": 30,
+      "description": "Collect telemetry from all IoT and sensor devices",
+      "builtin": true,
+      "execCount": 2,
+      "lastRunAt": "2026-06-29T22:45:03.867Z"
+    },
+    {
+      "id": "scenario_maintenance_mode",
+      "name": "Device Maintenance Mode",
+      "trigger": "ai_decision",
+      "steps": [
+        {
+          "order": 1,
+          "adapterType": "plc",
+          "command": "configure",
+          "payload": {
+            "mode": "maintenance"
+          }
+        },
+        {
+          "order": 2,
+          "adapterType": "mqtt",
+          "command": "write",
+          "payload": {
+            "topic": "maintenance/start"
+          }
+        },
+        {
+          "order": 3,
+          "adapterType": "smart_display",
+          "command": "write",
+          "payload": {
+            "text": "Maintenance in progress"
+          }
+        }
+      ],
+      "minutesSaved": 45,
+      "description": "Put industrial devices into safe maintenance mode",
+      "builtin": true,
+      "execCount": 0,
+      "lastRunAt": null
+    },
+    {
+      "id": "scenario_webhook_fanout",
+      "name": "Webhook Event Fanout",
+      "trigger": "event",
+      "steps": [
+        {
+          "order": 1,
+          "adapterType": "webhook",
+          "command": "execute",
+          "payload": {
+            "action": "notify_all"
+          }
+        },
+        {
+          "order": 2,
+          "adapterType": "rest_device",
+          "command": "write",
+          "payload": {
+            "endpoint": "/status"
+          }
+        },
+        {
+          "order": 3,
+          "adapterType": "smart_display",
+          "command": "write",
+          "payload": {
+            "text": "Event received"
+          }
+        }
+      ],
+      "minutesSaved": 10,
+      "description": "Fan out webhook events to all relevant devices",
+      "builtin": true,
+      "execCount": 0,
+      "lastRunAt": null
+    },
+    {
+      "id": "scn_1782725337465_5jxd",
+      "name": "Test Manual Scenario",
+      "trigger": "manual",
+      "steps": [
+        {
+          "order": 1,
+          "adapterType": "iot",
+          "command": "query",
+          "payload": {}
+        }
+      ],
+      "minutesSaved": 20,
+      "description": "",
+      "builtin": false,
+      "execCount": 0,
+      "lastRunAt": null,
+      "createdAt": "2026-06-29T09:28:57.465Z"
+    },
+    {
+      "id": "scn_1782773103792_859j",
+      "name": "Test Manual Scenario",
+      "trigger": "manual",
+      "steps": [
+        {
+          "order": 1,
+          "adapterType": "iot",
+          "command": "query",
+          "payload": {}
+        }
+      ],
+      "minutesSaved": 20,
+      "description": "",
+      "builtin": false,
+      "execCount": 0,
+      "lastRunAt": null,
+      "createdAt": "2026-06-29T22:45:03.792Z"
+    },
+    {
+      "id": "scn_1782778347077_xdx2",
+      "name": "Test Manual Scenario",
+      "trigger": "manual",
+      "steps": [
+        {
+          "order": 1,
+          "adapterType": "iot",
+          "command": "query",
+          "payload": {}
+        }
+      ],
+      "minutesSaved": 20,
+      "description": "",
+      "builtin": false,
+      "execCount": 0,
+      "lastRunAt": null,
+      "createdAt": "2026-06-30T00:12:27.077Z"
+    }
+  ],
+  "executions": [
+    {
+      "id": "scn_1782725337499_zxz5",
+      "scenarioId": "scenario_data_harvest",
+      "scenarioName": "IoT Data Harvest",
+      "steps": 2,
+      "succeeded": 2,
+      "failed": 0,
+      "status": "success",
+      "minutesSaved": 30,
+      "context": {
+        "skipExecute": true
+      },
+      "executedAt": "2026-06-29T09:28:57.499Z"
+    },
+    {
+      "id": "scn_1782773103867_8eb7",
+      "scenarioId": "scenario_data_harvest",
+      "scenarioName": "IoT Data Harvest",
+      "steps": 2,
+      "succeeded": 2,
+      "failed": 0,
+      "status": "success",
+      "minutesSaved": 30,
+      "context": {
+        "skipExecute": true
+      },
+      "executedAt": "2026-06-29T22:45:03.867Z"
+    },
+    {
+      "id": "scn_1782778347196_5y27",
+      "scenarioId": "scenario_office_morning",
+      "scenarioName": "Smart Office Morning Startup",
+      "steps": 3,
+      "succeeded": 3,
+      "failed": 0,
+      "status": "success",
+      "minutesSaved": 15,
+      "context": {
+        "skipExecute": true
+      },
+      "executedAt": "2026-06-30T00:12:27.196Z"
+    }
+  ],
+  "stats": {
+    "total": 8,
+    "builtins": 5,
+    "executions": 3,
+    "byTrigger": {
+      "manual": 3,
+      "event": 1,
+      "schedule": 3,
+      "threshold": 0,
+      "ai_decision": 1
+    },
+    "minutesSaved": 75
+  },
+  "updatedAt": "2026-06-30T00:12:27.196Z"
+}

@@ -1,0 +1,6229 @@
+{
+  "assessments": [
+    {
+      "id": "rsk_1782724219285_s6mu",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:19.218Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:19.256Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:19.227Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:19.192Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:19.285Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:19.285Z"
+    },
+    {
+      "id": "rsk_1782724219403_tacr",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:19.350Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:19.377Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:19.351Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:19.322Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:19.403Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:19.403Z"
+    },
+    {
+      "id": "rsk_1782724219524_k0ho",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:19.467Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:19.496Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:19.469Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:19.440Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:19.524Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:19.524Z"
+    },
+    {
+      "id": "rsk_1782724219644_4ll2",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:19.589Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:19.617Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:19.590Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:19.559Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:19.644Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:19.644Z"
+    },
+    {
+      "id": "rsk_1782724219763_r4qd",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:19.706Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:19.735Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:19.707Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:19.678Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:19.763Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:19.763Z"
+    },
+    {
+      "id": "rsk_1782724219883_2u1t",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:19.825Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:19.856Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:19.827Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:19.797Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:19.883Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:19.883Z"
+    },
+    {
+      "id": "rsk_1782724220010_a31a",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:19.949Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:19.982Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:19.950Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:19.922Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:20.010Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:20.010Z"
+    },
+    {
+      "id": "rsk_1782724220395_zp9g",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:20.314Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:20.366Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:20.315Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:20.284Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:20.395Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:20.395Z"
+    },
+    {
+      "id": "rsk_1782724220720_rpbw",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:20.655Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:20.685Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:20.657Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:20.625Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:20.720Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:20.720Z"
+    },
+    {
+      "id": "rsk_1782724220926_fcxb",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:20.864Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:20.897Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:20.865Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:20.833Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:20.926Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:20.926Z"
+    },
+    {
+      "id": "rsk_1782724242569_z2mt",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:42.501Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:42.536Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:42.505Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:42.468Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:42.569Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:42.569Z"
+    },
+    {
+      "id": "rsk_1782724242709_ilup",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:42.641Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:42.677Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:42.642Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:42.608Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:42.709Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:42.709Z"
+    },
+    {
+      "id": "rsk_1782724242869_bdvl",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:42.804Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:42.837Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:42.805Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:42.750Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:42.869Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:42.869Z"
+    },
+    {
+      "id": "rsk_1782724243007_11v4",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:42.938Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:42.972Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:42.939Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:42.905Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:43.007Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:43.007Z"
+    },
+    {
+      "id": "rsk_1782724243140_hq5z",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:43.075Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:43.108Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:43.076Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:43.042Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:43.140Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:43.140Z"
+    },
+    {
+      "id": "rsk_1782724243275_laea",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:43.208Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:43.242Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:43.209Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:43.175Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:43.275Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:43.275Z"
+    },
+    {
+      "id": "rsk_1782724243413_pk00",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:43.345Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:43.379Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:43.347Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:43.310Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:43.413Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:43.413Z"
+    },
+    {
+      "id": "rsk_1782724243844_7b20",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:43.774Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:43.810Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:43.775Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:43.740Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:43.844Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:43.844Z"
+    },
+    {
+      "id": "rsk_1782724244211_x3sq",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:44.139Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:44.177Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:44.140Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:44.104Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:44.211Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:44.211Z"
+    },
+    {
+      "id": "rsk_1782724244432_10sc",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T09:10:44.358Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T09:10:44.396Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T09:10:44.359Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T09:10:44.323Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T09:10:44.432Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T09:10:44.432Z"
+    },
+    {
+      "id": "rsk_1782754206190_5b0q",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:30:06.039Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:30:06.149Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:30:06.046Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:30:05.986Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:30:06.190Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:30:06.190Z"
+    },
+    {
+      "id": "rsk_1782754206840_wr79",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:30:06.745Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:30:06.798Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:30:06.749Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:30:06.701Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:30:06.840Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:30:06.840Z"
+    },
+    {
+      "id": "rsk_1782754207015_guch",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:30:06.936Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:30:06.978Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:30:06.940Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:30:06.894Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:30:07.015Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:30:07.015Z"
+    },
+    {
+      "id": "rsk_1782754207201_qn1v",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:30:07.118Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:30:07.164Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:30:07.121Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:30:07.073Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:30:07.201Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:30:07.201Z"
+    },
+    {
+      "id": "rsk_1782754207393_8n0v",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:30:07.308Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:30:07.348Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:30:07.312Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:30:07.265Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:30:07.393Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:30:07.393Z"
+    },
+    {
+      "id": "rsk_1782754207568_db8i",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:30:07.487Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:30:07.531Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:30:07.491Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:30:07.445Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:30:07.568Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:30:07.568Z"
+    },
+    {
+      "id": "rsk_1782754207752_hzgv",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:30:07.673Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:30:07.715Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:30:07.677Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:30:07.633Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:30:07.752Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:30:07.752Z"
+    },
+    {
+      "id": "rsk_1782754208218_al06",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:30:08.132Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:30:08.179Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:30:08.136Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:30:08.092Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:30:08.218Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:30:08.218Z"
+    },
+    {
+      "id": "rsk_1782754208548_2j12",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:30:08.462Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:30:08.508Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:30:08.465Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:30:08.420Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:30:08.548Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:30:08.548Z"
+    },
+    {
+      "id": "rsk_1782754208742_hmxr",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:30:08.657Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:30:08.703Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:30:08.661Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:30:08.616Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:30:08.742Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:30:08.742Z"
+    },
+    {
+      "id": "rsk_1782754785544_n8ka",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:39:45.425Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:39:45.497Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:39:45.441Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:39:45.317Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:39:45.544Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:39:45.544Z"
+    },
+    {
+      "id": "rsk_1782754785725_usvt",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:39:45.637Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:39:45.682Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:39:45.640Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:39:45.598Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:39:45.725Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:39:45.725Z"
+    },
+    {
+      "id": "rsk_1782754786049_n16n",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T17:39:45.961Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T17:39:46.007Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T17:39:45.965Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T17:39:45.920Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T17:39:46.049Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T17:39:46.049Z"
+    },
+    {
+      "id": "rsk_1782773100337_eaol",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:45:00.222Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:45:00.283Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:45:00.230Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:45:00.165Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:45:00.337Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:45:00.337Z"
+    },
+    {
+      "id": "rsk_1782773100545_53pk",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:45:00.434Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:45:00.492Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:45:00.438Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:45:00.378Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:45:00.545Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:45:00.545Z"
+    },
+    {
+      "id": "rsk_1782773100747_gld9",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:45:00.637Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:45:00.694Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:45:00.641Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:45:00.582Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:45:00.747Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:45:00.747Z"
+    },
+    {
+      "id": "rsk_1782773100952_wj3n",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:45:00.840Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:45:00.898Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:45:00.844Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:45:00.785Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:45:00.952Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:45:00.952Z"
+    },
+    {
+      "id": "rsk_1782773101161_yu4r",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:45:01.045Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:45:01.104Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:45:01.050Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:45:00.989Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:45:01.161Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:45:01.161Z"
+    },
+    {
+      "id": "rsk_1782773101398_yywc",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:45:01.280Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:45:01.344Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:45:01.285Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:45:01.199Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:45:01.398Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:45:01.398Z"
+    },
+    {
+      "id": "rsk_1782773101612_7x5u",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-98%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:45:01.496Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:45:01.555Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:45:01.501Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:45:01.441Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:45:01.612Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:45:01.612Z"
+    },
+    {
+      "id": "rsk_1782773102329_6p6f",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:45:02.215Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:45:02.275Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:45:02.219Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:45:02.155Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:45:02.329Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:45:02.329Z"
+    },
+    {
+      "id": "rsk_1782773102894_lpzn",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:45:02.775Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:45:02.835Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:45:02.780Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:45:02.718Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:45:02.894Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:45:02.894Z"
+    },
+    {
+      "id": "rsk_1782773103213_1p50",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:45:03.094Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:45:03.156Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:45:03.098Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:45:03.036Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:45:03.213Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:45:03.213Z"
+    },
+    {
+      "id": "rsk_1782773164229_0wbk",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:04.099Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:04.168Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:04.106Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:04.030Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:04.229Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:04.229Z"
+    },
+    {
+      "id": "rsk_1782773164712_ctko",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:04.585Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:04.650Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:04.590Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:04.526Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:04.712Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:04.712Z"
+    },
+    {
+      "id": "rsk_1782773164947_z585",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:04.823Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:04.889Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:04.828Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:04.764Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:04.947Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:04.947Z"
+    },
+    {
+      "id": "rsk_1782773165210_zdao",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:05.058Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:05.122Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:05.063Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:04.995Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:05.210Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:05.210Z"
+    },
+    {
+      "id": "rsk_1782773165446_g3kr",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:05.323Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:05.388Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:05.328Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:05.261Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:05.446Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:05.446Z"
+    },
+    {
+      "id": "rsk_1782773165689_b8oe",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:05.565Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:05.631Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:05.570Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:05.506Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:05.689Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:05.689Z"
+    },
+    {
+      "id": "rsk_1782773165931_7we9",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:05.803Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:05.869Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:05.809Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:05.744Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:05.931Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:05.931Z"
+    },
+    {
+      "id": "rsk_1782773166506_giou",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:06.380Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:06.447Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:06.386Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:06.284Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:06.506Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:06.506Z"
+    },
+    {
+      "id": "rsk_1782773166933_0wfb",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:06.804Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:06.872Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:06.809Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:06.742Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:06.933Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:06.933Z"
+    },
+    {
+      "id": "rsk_1782773167187_v70q",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:07.059Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:07.126Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:07.064Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:06.999Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:07.187Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:07.187Z"
+    },
+    {
+      "id": "rsk_1782773167582_7tpg",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:07.436Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:07.504Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:07.442Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:07.370Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:07.582Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:07.582Z"
+    },
+    {
+      "id": "rsk_1782773167822_tf3w",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:07.693Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:07.760Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:07.698Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:07.631Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:07.822Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:07.822Z"
+    },
+    {
+      "id": "rsk_1782773168162_htvm",
+      "overallScore": 70,
+      "overallLevel": "critical",
+      "dimensions": [
+        {
+          "dimension": "financial",
+          "score": 110,
+          "level": "critical",
+          "factors": [
+            {
+              "factor": "mrr",
+              "value": "₹999",
+              "risk": "high"
+            },
+            {
+              "factor": "churn_rate",
+              "value": "0%/mo",
+              "risk": "low"
+            },
+            {
+              "factor": "roi",
+              "value": "-99%",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Execute top 3 revenue opportunities immediately",
+          "assessedAt": "2026-06-29T22:46:08.031Z"
+        },
+        {
+          "dimension": "operational",
+          "score": 80,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "at_risk_customers",
+              "value": "82%",
+              "risk": "high"
+            },
+            {
+              "factor": "mrr_stability",
+              "value": "₹999/mo",
+              "risk": "medium"
+            }
+          ],
+          "mitigation": "Deploy customer success playbooks for at-risk segment",
+          "assessedAt": "2026-06-29T22:46:08.099Z"
+        },
+        {
+          "dimension": "technical",
+          "score": 65,
+          "level": "high",
+          "factors": [
+            {
+              "factor": "knowledge_coverage",
+              "value": "500 items",
+              "risk": "low"
+            },
+            {
+              "factor": "evolution_confidence",
+              "value": "70%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain knowledge hygiene",
+          "assessedAt": "2026-06-29T22:46:08.037Z"
+        },
+        {
+          "dimension": "execution",
+          "score": 60,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "agent_capacity",
+              "value": "74% busy",
+              "risk": "low"
+            },
+            {
+              "factor": "success_rate",
+              "value": "98%",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Maintain current workforce",
+          "assessedAt": "2026-06-29T22:46:07.968Z"
+        },
+        {
+          "dimension": "strategic",
+          "score": 35,
+          "level": "medium",
+          "factors": [
+            {
+              "factor": "opportunity_cost",
+              "value": "100% of ARR unrealized",
+              "risk": "low"
+            },
+            {
+              "factor": "portfolio_health",
+              "value": "score:40",
+              "risk": "low"
+            }
+          ],
+          "mitigation": "Portfolio on track",
+          "assessedAt": "2026-06-29T22:46:08.162Z"
+        }
+      ],
+      "topRisk": "financial",
+      "assessedAt": "2026-06-29T22:46:08.162Z"
+    }
+  ],
+  "current": {
+    "id": "rsk_1782773168162_htvm",
+    "overallScore": 70,
+    "overallLevel": "critical",
+    "dimensions": [
+      {
+        "dimension": "financial",
+        "score": 110,
+        "level": "critical",
+        "factors": [
+          {
+            "factor": "mrr",
+            "value": "₹999",
+            "risk": "high"
+          },
+          {
+            "factor": "churn_rate",
+            "value": "0%/mo",
+            "risk": "low"
+          },
+          {
+            "factor": "roi",
+            "value": "-99%",
+            "risk": "medium"
+          }
+        ],
+        "mitigation": "Execute top 3 revenue opportunities immediately",
+        "assessedAt": "2026-06-29T22:46:08.031Z"
+      },
+      {
+        "dimension": "operational",
+        "score": 80,
+        "level": "high",
+        "factors": [
+          {
+            "factor": "at_risk_customers",
+            "value": "82%",
+            "risk": "high"
+          },
+          {
+            "factor": "mrr_stability",
+            "value": "₹999/mo",
+            "risk": "medium"
+          }
+        ],
+        "mitigation": "Deploy customer success playbooks for at-risk segment",
+        "assessedAt": "2026-06-29T22:46:08.099Z"
+      },
+      {
+        "dimension": "technical",
+        "score": 65,
+        "level": "high",
+        "factors": [
+          {
+            "factor": "knowledge_coverage",
+            "value": "500 items",
+            "risk": "low"
+          },
+          {
+            "factor": "evolution_confidence",
+            "value": "70%",
+            "risk": "low"
+          }
+        ],
+        "mitigation": "Maintain knowledge hygiene",
+        "assessedAt": "2026-06-29T22:46:08.037Z"
+      },
+      {
+        "dimension": "execution",
+        "score": 60,
+        "level": "medium",
+        "factors": [
+          {
+            "factor": "agent_capacity",
+            "value": "74% busy",
+            "risk": "low"
+          },
+          {
+            "factor": "success_rate",
+            "value": "98%",
+            "risk": "low"
+          }
+        ],
+        "mitigation": "Maintain current workforce",
+        "assessedAt": "2026-06-29T22:46:07.968Z"
+      },
+      {
+        "dimension": "strategic",
+        "score": 35,
+        "level": "medium",
+        "factors": [
+          {
+            "factor": "opportunity_cost",
+            "value": "100% of ARR unrealized",
+            "risk": "low"
+          },
+          {
+            "factor": "portfolio_health",
+            "value": "score:40",
+            "risk": "low"
+          }
+        ],
+        "mitigation": "Portfolio on track",
+        "assessedAt": "2026-06-29T22:46:08.162Z"
+      }
+    ],
+    "topRisk": "financial",
+    "assessedAt": "2026-06-29T22:46:08.162Z"
+  },
+  "stats": {
+    "total": 56,
+    "byDimension": {
+      "execution": 60,
+      "financial": 110,
+      "technical": 65,
+      "operational": 80,
+      "strategic": 35
+    },
+    "avgRiskScore": 70
+  },
+  "updatedAt": "2026-06-29T22:46:08.163Z"
+}

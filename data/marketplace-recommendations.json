@@ -1,0 +1,939 @@
+{
+  "recommendations": [
+    {
+      "id": "mre_1782721566414_lsk9",
+      "objective": "Build a SaaS automation platform",
+      "tags": [],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566201_m2mt",
+          "type": "blueprint",
+          "name": "BillFlow",
+          "score": 57
+        },
+        {
+          "id": "mca_1782721566201_ix6h",
+          "type": "blueprint",
+          "name": "TestSaaS",
+          "score": 57
+        },
+        {
+          "id": "mca_1782721566201_44nh",
+          "type": "blueprint",
+          "name": "BillFlow",
+          "score": 57
+        },
+        {
+          "id": "mca_1782721566201_pjpu",
+          "type": "blueprint",
+          "name": "TestSaaS",
+          "score": 57
+        },
+        {
+          "id": "mca_1782721566201_mwyp",
+          "type": "blueprint",
+          "name": "BillFlow",
+          "score": 57
+        }
+      ],
+      "total": 437,
+      "createdAt": "2026-06-29T08:26:06.414Z"
+    },
+    {
+      "id": "mre_1782721566418_eebb",
+      "objective": "product deployment pipeline",
+      "tags": [],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566232_7yi0",
+          "type": "product_template",
+          "name": "AI-powered product recommendation engine with ML predictions",
+          "score": 55
+        },
+        {
+          "id": "mca_1782721566232_lpvo",
+          "type": "product_template",
+          "name": "AI-powered product recommendation engine with ML predictions",
+          "score": 55
+        },
+        {
+          "id": "mca_1782721566232_4bem",
+          "type": "product_template",
+          "name": "AI-powered product recommendation engine with ML predictions",
+          "score": 55
+        },
+        {
+          "id": "mca_1782721566232_f8bz",
+          "type": "product_template",
+          "name": "AI-powered product recommendation engine with ML predictions",
+          "score": 55
+        },
+        {
+          "id": "mca_1782721566232_3yff",
+          "type": "product_template",
+          "name": "AI-powered product recommendation engine with ML predictions",
+          "score": 55
+        }
+      ],
+      "total": 437,
+      "createdAt": "2026-06-29T08:26:06.418Z"
+    },
+    {
+      "id": "mre_1782721566422_72yg",
+      "objective": "knowledge management",
+      "tags": [],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566336_jn46",
+          "type": "knowledge_pack",
+          "name": "OKB X Knowledge Intelligence Pack",
+          "score": 55
+        },
+        {
+          "id": "mca_1782721566402_trxb",
+          "type": "knowledge_pack",
+          "name": "Test Knowledge Pack v1",
+          "score": 55
+        },
+        {
+          "id": "mca_1782721566257_m1s1",
+          "type": "automation_pack",
+          "score": 50
+        }
+      ],
+      "total": 437,
+      "createdAt": "2026-06-29T08:26:06.422Z"
+    },
+    {
+      "id": "mre_1782721566426_qd7p",
+      "objective": "automation",
+      "tags": [],
+      "typeFilter": "workflow",
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566248_atej",
+          "type": "workflow",
+          "name": "No secrets committed to git",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_uhbx",
+          "type": "workflow",
+          "name": ".env in .gitignore",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_o0ns",
+          "type": "workflow",
+          "name": "Rate limiting configured",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_9v98",
+          "type": "workflow",
+          "name": "Security headers in nginx.conf",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_lga1",
+          "type": "workflow",
+          "name": "JWT secret ≥32 chars",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_0tbv",
+          "type": "workflow",
+          "name": "CORS origin restriction",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_s16m",
+          "type": "workflow",
+          "name": "requireAuth middleware exists",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_5dq0",
+          "type": "workflow",
+          "name": "Session expiry configured",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_hl2t",
+          "type": "workflow",
+          "name": "HSTS header in nginx.conf",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_8bcf",
+          "type": "workflow",
+          "name": "Input sanitization present",
+          "score": 45
+        }
+      ],
+      "total": 33,
+      "createdAt": "2026-06-29T08:26:06.426Z"
+    },
+    {
+      "id": "mre_1782721566429_387s",
+      "objective": "build ai agents for my team",
+      "tags": [],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566375_vom1",
+          "type": "agent",
+          "name": "qa Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_vn2g",
+          "type": "agent",
+          "name": "frontend Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_4zs1",
+          "type": "agent",
+          "name": "backend Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_gu3d",
+          "type": "agent",
+          "name": "ops Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_qblc",
+          "type": "agent",
+          "name": "devops Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566232_zilt",
+          "type": "product_template",
+          "name": "Build an autonomous sales CRM with AI lead scoring",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_8k70",
+          "type": "product_template",
+          "name": "Build a SaaS customer feedback portal with AI analysis",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_yvbn",
+          "type": "product_template",
+          "name": "Build an autonomous sales CRM with AI lead scoring",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_f506",
+          "type": "product_template",
+          "name": "Build a SaaS customer feedback portal with AI analysis",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_hxwx",
+          "type": "product_template",
+          "name": "Build an autonomous sales CRM with AI lead scoring",
+          "score": 50
+        }
+      ],
+      "total": 437,
+      "createdAt": "2026-06-29T08:26:06.429Z"
+    },
+    {
+      "id": "mre_1782721566432_fffj",
+      "objective": "test session",
+      "tags": [],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566402_trxb",
+          "type": "knowledge_pack",
+          "name": "Test Knowledge Pack v1",
+          "score": 53
+        },
+        {
+          "id": "mca_1782721566248_5dq0",
+          "type": "workflow",
+          "name": "Session expiry configured",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566257_m1s1",
+          "type": "automation_pack",
+          "score": 50
+        }
+      ],
+      "total": 437,
+      "createdAt": "2026-06-29T08:26:06.432Z"
+    },
+    {
+      "id": "mre_1782721566658_mna7",
+      "tags": [
+        "ai_product",
+        "ai_product",
+        "blueprint"
+      ],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566198_1a3s",
+          "type": "blueprint",
+          "name": "AICo",
+          "score": 63
+        },
+        {
+          "id": "mca_1782721566201_osvo",
+          "type": "blueprint",
+          "name": "DevAI",
+          "score": 62
+        },
+        {
+          "id": "mca_1782721566201_wc5g",
+          "type": "blueprint",
+          "name": "AICo",
+          "score": 62
+        },
+        {
+          "id": "mca_1782721566201_kinc",
+          "type": "blueprint",
+          "name": "DevAI",
+          "score": 62
+        },
+        {
+          "id": "mca_1782721566201_6ek6",
+          "type": "blueprint",
+          "name": "AICo",
+          "score": 62
+        }
+      ],
+      "total": 437,
+      "createdAt": "2026-06-29T08:26:06.658Z"
+    },
+    {
+      "id": "mre_1782721566705_lk5k",
+      "objective": "autonomous business intelligence analytics dashboard",
+      "tags": [
+        "business",
+        "analytics",
+        "ai"
+      ],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566375_vom1",
+          "type": "agent",
+          "name": "qa Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_vn2g",
+          "type": "agent",
+          "name": "frontend Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_4zs1",
+          "type": "agent",
+          "name": "backend Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_gu3d",
+          "type": "agent",
+          "name": "ops Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_qblc",
+          "type": "agent",
+          "name": "devops Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566336_jn46",
+          "type": "knowledge_pack",
+          "name": "OKB X Knowledge Intelligence Pack",
+          "score": 59
+        },
+        {
+          "id": "mca_1782721566232_bpu0",
+          "type": "product_template",
+          "name": "Analytics dashboard for startup metrics",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_zilt",
+          "type": "product_template",
+          "name": "Build an autonomous sales CRM with AI lead scoring",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_yg6m",
+          "type": "product_template",
+          "name": "Analytics dashboard for startup metrics",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_yvbn",
+          "type": "product_template",
+          "name": "Build an autonomous sales CRM with AI lead scoring",
+          "score": 50
+        }
+      ],
+      "total": 437,
+      "createdAt": "2026-06-29T08:26:06.705Z"
+    },
+    {
+      "id": "mre_1782773091554_jz1g",
+      "objective": "Build a SaaS automation platform",
+      "tags": [],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566201_m2mt",
+          "type": "blueprint",
+          "name": "BillFlow",
+          "score": 57
+        },
+        {
+          "id": "mca_1782721566201_ix6h",
+          "type": "blueprint",
+          "name": "TestSaaS",
+          "score": 57
+        },
+        {
+          "id": "mca_1782721566201_44nh",
+          "type": "blueprint",
+          "name": "BillFlow",
+          "score": 57
+        },
+        {
+          "id": "mca_1782721566201_pjpu",
+          "type": "blueprint",
+          "name": "TestSaaS",
+          "score": 57
+        },
+        {
+          "id": "mca_1782721566201_mwyp",
+          "type": "blueprint",
+          "name": "BillFlow",
+          "score": 57
+        }
+      ],
+      "total": 447,
+      "createdAt": "2026-06-29T22:44:51.554Z"
+    },
+    {
+      "id": "mre_1782773091563_4ith",
+      "objective": "product deployment pipeline",
+      "tags": [],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566232_7yi0",
+          "type": "product_template",
+          "name": "AI-powered product recommendation engine with ML predictions",
+          "score": 55
+        },
+        {
+          "id": "mca_1782721566232_lpvo",
+          "type": "product_template",
+          "name": "AI-powered product recommendation engine with ML predictions",
+          "score": 55
+        },
+        {
+          "id": "mca_1782721566232_4bem",
+          "type": "product_template",
+          "name": "AI-powered product recommendation engine with ML predictions",
+          "score": 55
+        },
+        {
+          "id": "mca_1782721566232_f8bz",
+          "type": "product_template",
+          "name": "AI-powered product recommendation engine with ML predictions",
+          "score": 55
+        },
+        {
+          "id": "mca_1782721566232_3yff",
+          "type": "product_template",
+          "name": "AI-powered product recommendation engine with ML predictions",
+          "score": 55
+        }
+      ],
+      "total": 447,
+      "createdAt": "2026-06-29T22:44:51.563Z"
+    },
+    {
+      "id": "mre_1782773091570_m19f",
+      "objective": "knowledge management",
+      "tags": [],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566336_jn46",
+          "type": "knowledge_pack",
+          "name": "OKB X Knowledge Intelligence Pack",
+          "score": 55
+        },
+        {
+          "id": "mca_1782721566402_trxb",
+          "type": "knowledge_pack",
+          "name": "Test Knowledge Pack v1",
+          "score": 55
+        },
+        {
+          "id": "mca_1782773091538_urc2",
+          "type": "knowledge_pack",
+          "name": "Test Knowledge Pack v1",
+          "score": 55
+        }
+      ],
+      "total": 447,
+      "createdAt": "2026-06-29T22:44:51.570Z"
+    },
+    {
+      "id": "mre_1782773091576_00yy",
+      "objective": "automation",
+      "tags": [],
+      "typeFilter": "workflow",
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566248_atej",
+          "type": "workflow",
+          "name": "No secrets committed to git",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_uhbx",
+          "type": "workflow",
+          "name": ".env in .gitignore",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_o0ns",
+          "type": "workflow",
+          "name": "Rate limiting configured",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_9v98",
+          "type": "workflow",
+          "name": "Security headers in nginx.conf",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_lga1",
+          "type": "workflow",
+          "name": "JWT secret ≥32 chars",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_0tbv",
+          "type": "workflow",
+          "name": "CORS origin restriction",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_s16m",
+          "type": "workflow",
+          "name": "requireAuth middleware exists",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_5dq0",
+          "type": "workflow",
+          "name": "Session expiry configured",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_hl2t",
+          "type": "workflow",
+          "name": "HSTS header in nginx.conf",
+          "score": 45
+        },
+        {
+          "id": "mca_1782721566248_8bcf",
+          "type": "workflow",
+          "name": "Input sanitization present",
+          "score": 45
+        }
+      ],
+      "total": 33,
+      "createdAt": "2026-06-29T22:44:51.576Z"
+    },
+    {
+      "id": "mre_1782773091582_xmu5",
+      "objective": "build ai agents for my team",
+      "tags": [],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566375_vom1",
+          "type": "agent",
+          "name": "qa Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_vn2g",
+          "type": "agent",
+          "name": "frontend Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_4zs1",
+          "type": "agent",
+          "name": "backend Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_gu3d",
+          "type": "agent",
+          "name": "ops Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_qblc",
+          "type": "agent",
+          "name": "devops Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566232_zilt",
+          "type": "product_template",
+          "name": "Build an autonomous sales CRM with AI lead scoring",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_8k70",
+          "type": "product_template",
+          "name": "Build a SaaS customer feedback portal with AI analysis",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_yvbn",
+          "type": "product_template",
+          "name": "Build an autonomous sales CRM with AI lead scoring",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_f506",
+          "type": "product_template",
+          "name": "Build a SaaS customer feedback portal with AI analysis",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_hxwx",
+          "type": "product_template",
+          "name": "Build an autonomous sales CRM with AI lead scoring",
+          "score": 50
+        }
+      ],
+      "total": 447,
+      "createdAt": "2026-06-29T22:44:51.582Z"
+    },
+    {
+      "id": "mre_1782773091589_bkji",
+      "objective": "test session",
+      "tags": [],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566402_trxb",
+          "type": "knowledge_pack",
+          "name": "Test Knowledge Pack v1",
+          "score": 53
+        },
+        {
+          "id": "mca_1782773091538_urc2",
+          "type": "knowledge_pack",
+          "name": "Test Knowledge Pack v1",
+          "score": 53
+        },
+        {
+          "id": "mca_1782721566248_5dq0",
+          "type": "workflow",
+          "name": "Session expiry configured",
+          "score": 50
+        }
+      ],
+      "total": 447,
+      "createdAt": "2026-06-29T22:44:51.589Z"
+    },
+    {
+      "id": "mre_1782773091745_lmvk",
+      "tags": [
+        "ai_product",
+        "ai_product",
+        "blueprint"
+      ],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566198_1a3s",
+          "type": "blueprint",
+          "name": "AICo",
+          "score": 63
+        },
+        {
+          "id": "mca_1782721566201_osvo",
+          "type": "blueprint",
+          "name": "DevAI",
+          "score": 62
+        },
+        {
+          "id": "mca_1782721566201_wc5g",
+          "type": "blueprint",
+          "name": "AICo",
+          "score": 62
+        },
+        {
+          "id": "mca_1782721566201_kinc",
+          "type": "blueprint",
+          "name": "DevAI",
+          "score": 62
+        },
+        {
+          "id": "mca_1782721566201_6ek6",
+          "type": "blueprint",
+          "name": "AICo",
+          "score": 62
+        }
+      ],
+      "total": 447,
+      "createdAt": "2026-06-29T22:44:51.745Z"
+    },
+    {
+      "id": "mre_1782773091789_ls5t",
+      "objective": "autonomous business intelligence analytics dashboard",
+      "tags": [
+        "business",
+        "analytics",
+        "ai"
+      ],
+      "context": {
+        "workforceDomains": [
+          "frontend",
+          "devops",
+          "backend",
+          "qa",
+          "ops"
+        ],
+        "knowledgeTags": []
+      },
+      "results": [
+        {
+          "id": "mca_1782721566375_vom1",
+          "type": "agent",
+          "name": "qa Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_vn2g",
+          "type": "agent",
+          "name": "frontend Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_4zs1",
+          "type": "agent",
+          "name": "backend Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_gu3d",
+          "type": "agent",
+          "name": "ops Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566375_qblc",
+          "type": "agent",
+          "name": "devops Autonomous Agent",
+          "score": 60
+        },
+        {
+          "id": "mca_1782721566336_jn46",
+          "type": "knowledge_pack",
+          "name": "OKB X Knowledge Intelligence Pack",
+          "score": 59
+        },
+        {
+          "id": "mca_1782721566232_bpu0",
+          "type": "product_template",
+          "name": "Analytics dashboard for startup metrics",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_zilt",
+          "type": "product_template",
+          "name": "Build an autonomous sales CRM with AI lead scoring",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_yg6m",
+          "type": "product_template",
+          "name": "Analytics dashboard for startup metrics",
+          "score": 50
+        },
+        {
+          "id": "mca_1782721566232_yvbn",
+          "type": "product_template",
+          "name": "Build an autonomous sales CRM with AI lead scoring",
+          "score": 50
+        }
+      ],
+      "total": 447,
+      "createdAt": "2026-06-29T22:44:51.789Z"
+    }
+  ],
+  "stats": {
+    "total": 16,
+    "avgRelevance": 56
+  },
+  "updatedAt": "2026-06-29T22:44:51.789Z"
+}

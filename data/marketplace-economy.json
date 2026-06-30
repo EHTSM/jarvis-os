@@ -1,0 +1,214 @@
+{
+  "events": [
+    {
+      "id": "eco_1782721566491_g79l",
+      "assetId": "mca_1782721566198_1a3s",
+      "assetName": "AICo",
+      "assetType": "blueprint",
+      "eventType": "download",
+      "context": {},
+      "minutesSaved": 45,
+      "recordedAt": "2026-06-29T08:26:06.491Z"
+    },
+    {
+      "id": "eco_1782773091639_u7yv",
+      "assetId": "mca_1782721566198_1a3s",
+      "assetName": "AICo",
+      "assetType": "blueprint",
+      "eventType": "download",
+      "context": {},
+      "minutesSaved": 45,
+      "recordedAt": "2026-06-29T22:44:51.639Z"
+    }
+  ],
+  "ratings": {
+    "mca_1782721566198_1a3s": [
+      {
+        "rating": 4,
+        "comment": "Great blueprint!",
+        "userId": "user_test",
+        "ratedAt": "2026-06-29T08:26:06.496Z"
+      },
+      {
+        "rating": 5,
+        "comment": "production-ready!",
+        "ratedAt": "2026-06-29T08:26:06.660Z"
+      },
+      {
+        "rating": 4,
+        "comment": "Great blueprint!",
+        "userId": "user_test",
+        "ratedAt": "2026-06-29T22:44:51.644Z"
+      },
+      {
+        "rating": 5,
+        "comment": "production-ready!",
+        "ratedAt": "2026-06-29T22:44:51.746Z"
+      }
+    ]
+  },
+  "topAssets": [
+    {
+      "id": "mca_1782721566198_1a3s",
+      "name": "AICo",
+      "type": "blueprint",
+      "downloads": 4,
+      "rating": 0
+    },
+    {
+      "id": "mca_1782721566201_scyl",
+      "name": "SaaSCo Alpha",
+      "type": "blueprint",
+      "downloads": 0,
+      "rating": 0
+    },
+    {
+      "id": "mca_1782721566201_lay8",
+      "name": "MarketplaceCo",
+      "type": "blueprint",
+      "downloads": 0,
+      "rating": 0
+    },
+    {
+      "id": "mca_1782721566201_phco",
+      "name": "HealthVenture",
+      "type": "blueprint",
+      "downloads": 0,
+      "rating": 0
+    },
+    {
+      "id": "mca_1782721566201_wkl9",
+      "name": "AIAgency",
+      "type": "blueprint",
+      "downloads": 0,
+      "rating": 0
+    },
+    {
+      "id": "mca_1782721566201_n7xu",
+      "name": "ShopNow",
+      "type": "blueprint",
+      "downloads": 0,
+      "rating": 0
+    },
+    {
+      "id": "mca_1782721566201_36id",
+      "name": "ERPCo",
+      "type": "blueprint",
+      "downloads": 0,
+      "rating": 0
+    },
+    {
+      "id": "mca_1782721566201_ogv0",
+      "name": "HRTool",
+      "type": "blueprint",
+      "downloads": 0,
+      "rating": 0
+    },
+    {
+      "id": "mca_1782721566201_m2mt",
+      "name": "BillFlow",
+      "type": "blueprint",
+      "downloads": 0,
+      "rating": 0
+    },
+    {
+      "id": "mca_1782721566201_w9tu",
+      "name": "LearnCo",
+      "type": "blueprint",
+      "downloads": 0,
+      "rating": 0
+    }
+  ],
+  "summary": {
+    "totalUsageEvents": 2,
+    "totalDownloads": 4,
+    "totalRatings": 4,
+    "avgRating": 4.5,
+    "totalROIMinutes": 180,
+    "adoptionRate": 0,
+    "successRate": 37,
+    "totalAssets": 447,
+    "publishedAssets": 447,
+    "adoptedAssets": 1,
+    "totalROIHours": 3,
+    "topDownloads": [
+      {
+        "id": "mca_1782721566198_1a3s",
+        "name": "AICo",
+        "type": "blueprint",
+        "downloads": 4,
+        "rating": 0
+      },
+      {
+        "id": "mca_1782721566201_scyl",
+        "name": "SaaSCo Alpha",
+        "type": "blueprint",
+        "downloads": 0,
+        "rating": 0
+      },
+      {
+        "id": "mca_1782721566201_lay8",
+        "name": "MarketplaceCo",
+        "type": "blueprint",
+        "downloads": 0,
+        "rating": 0
+      },
+      {
+        "id": "mca_1782721566201_phco",
+        "name": "HealthVenture",
+        "type": "blueprint",
+        "downloads": 0,
+        "rating": 0
+      },
+      {
+        "id": "mca_1782721566201_wkl9",
+        "name": "AIAgency",
+        "type": "blueprint",
+        "downloads": 0,
+        "rating": 0
+      },
+      {
+        "id": "mca_1782721566201_n7xu",
+        "name": "ShopNow",
+        "type": "blueprint",
+        "downloads": 0,
+        "rating": 0
+      },
+      {
+        "id": "mca_1782721566201_36id",
+        "name": "ERPCo",
+        "type": "blueprint",
+        "downloads": 0,
+        "rating": 0
+      },
+      {
+        "id": "mca_1782721566201_ogv0",
+        "name": "HRTool",
+        "type": "blueprint",
+        "downloads": 0,
+        "rating": 0
+      },
+      {
+        "id": "mca_1782721566201_m2mt",
+        "name": "BillFlow",
+        "type": "blueprint",
+        "downloads": 0,
+        "rating": 0
+      },
+      {
+        "id": "mca_1782721566201_w9tu",
+        "name": "LearnCo",
+        "type": "blueprint",
+        "downloads": 0,
+        "rating": 0
+      }
+    ],
+    "revenueIntelligence": {
+      "source": "OBI X",
+      "analyses": 330
+    },
+    "usageEvents": 2,
+    "snapshotAt": "2026-06-29T22:44:51.798Z"
+  },
+  "updatedAt": "2026-06-29T22:44:51.798Z"
+}

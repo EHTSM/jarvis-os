@@ -1,0 +1,2616 @@
+{
+  "predictions": [
+    {
+      "id": "dp_1782686194942_vd19",
+      "pageUrl": "https://example.com/predict-test",
+      "uxProblems": [
+        {
+          "type": "poor_usability",
+          "likelihood": 0.85,
+          "description": "Low usability score predicts user confusion and task failure rates above 25%",
+          "severity": "high"
+        },
+        {
+          "type": "cognitive_overload",
+          "likelihood": 0.8,
+          "description": "High cognitive load will cause users to abandon complex tasks",
+          "severity": "high"
+        },
+        {
+          "type": "attention_fragmentation",
+          "likelihood": 0.7,
+          "description": "Too many competing attention hotspots will reduce CTA conversion rate",
+          "severity": "medium"
+        },
+        {
+          "type": "unclear_reading_flow",
+          "likelihood": 0.65,
+          "description": "Unclear visual hierarchy will cause users to miss key content",
+          "severity": "medium"
+        },
+        {
+          "type": "layout_confusion",
+          "likelihood": 0.75,
+          "description": "4 confusion signals will cause users to struggle with navigation",
+          "severity": "high"
+        }
+      ],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        },
+        {
+          "type": "mobile_overflow",
+          "likelihood": 0.85,
+          "description": "Mobile viewport has layout issues that will cause horizontal scroll or clipped content",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [
+        {
+          "type": "visual_inconsistency",
+          "likelihood": 0.8,
+          "description": "Low consistency score predicts users will be confused by varying visual language",
+          "severity": "medium"
+        },
+        {
+          "type": "hierarchy_confusion",
+          "likelihood": 0.75,
+          "description": "Weak visual hierarchy means users will not know where to focus first",
+          "severity": "medium"
+        },
+        {
+          "type": "low_trust_aesthetics",
+          "likelihood": 0.65,
+          "description": "Poor aesthetics score correlates with reduced user trust and bounce rate increase",
+          "severity": "low"
+        }
+      ],
+      "total": 13,
+      "criticalCount": 2,
+      "riskScore": 73,
+      "qualityOverall": 43,
+      "predictedAt": "2026-06-28T22:36:34.942Z"
+    },
+    {
+      "id": "dp_1782686194942_misk",
+      "pageUrl": "https://example.com/good-page",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 90,
+      "predictedAt": "2026-06-28T22:36:34.942Z"
+    },
+    {
+      "id": "dp_1782686194942_p11x",
+      "pageUrl": "https://example.com/pred-id-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 60,
+      "predictedAt": "2026-06-28T22:36:34.942Z"
+    },
+    {
+      "id": "dp_1782686194943_x50p",
+      "pageUrl": "https://example.com/list-pred-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 65,
+      "predictedAt": "2026-06-28T22:36:34.943Z"
+    },
+    {
+      "id": "dp_1782686194943_nhvy",
+      "pageUrl": "https://example.com/risk-test",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 2,
+      "criticalCount": 2,
+      "riskScore": 139,
+      "qualityOverall": 30,
+      "predictedAt": "2026-06-28T22:36:34.943Z"
+    },
+    {
+      "id": "dp_1782686194943_wsyj",
+      "pageUrl": "https://example.com/crit-count",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 3,
+      "criticalCount": 2,
+      "riskScore": 122,
+      "qualityOverall": 40,
+      "predictedAt": "2026-06-28T22:36:34.943Z"
+    },
+    {
+      "id": "dp_1782686195004_j527",
+      "pageUrl": "https://example.com/evolution-main",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:36:35.004Z"
+    },
+    {
+      "id": "dp_1782686195004_dhn4",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:36:35.004Z"
+    },
+    {
+      "id": "dp_1782686195004_euyo",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:36:35.004Z"
+    },
+    {
+      "id": "dp_1782686195005_cbza",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:36:35.005Z"
+    },
+    {
+      "id": "dp_1782686195005_k77d",
+      "pageUrl": "https://example.com/pipeline-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 75,
+      "predictedAt": "2026-06-28T22:36:35.005Z"
+    },
+    {
+      "id": "dp_1782686195005_rtp3",
+      "pageUrl": "https://example.com/full-evolution-1782686194992",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:36:35.005Z"
+    },
+    {
+      "id": "dp_1782686195006_blzl",
+      "pageUrl": "https://example.com/time-save-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:36:35.006Z"
+    },
+    {
+      "id": "dp_1782686199087_8ggb",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 75,
+      "predictedAt": "2026-06-28T22:36:39.087Z"
+    },
+    {
+      "id": "dp_1782686242777_4vaw",
+      "pageUrl": "https://example.com/predict-test",
+      "uxProblems": [
+        {
+          "type": "poor_usability",
+          "likelihood": 0.85,
+          "description": "Low usability score predicts user confusion and task failure rates above 25%",
+          "severity": "high"
+        },
+        {
+          "type": "cognitive_overload",
+          "likelihood": 0.8,
+          "description": "High cognitive load will cause users to abandon complex tasks",
+          "severity": "high"
+        },
+        {
+          "type": "attention_fragmentation",
+          "likelihood": 0.7,
+          "description": "Too many competing attention hotspots will reduce CTA conversion rate",
+          "severity": "medium"
+        },
+        {
+          "type": "unclear_reading_flow",
+          "likelihood": 0.65,
+          "description": "Unclear visual hierarchy will cause users to miss key content",
+          "severity": "medium"
+        },
+        {
+          "type": "layout_confusion",
+          "likelihood": 0.75,
+          "description": "4 confusion signals will cause users to struggle with navigation",
+          "severity": "high"
+        }
+      ],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        },
+        {
+          "type": "mobile_overflow",
+          "likelihood": 0.85,
+          "description": "Mobile viewport has layout issues that will cause horizontal scroll or clipped content",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [
+        {
+          "type": "visual_inconsistency",
+          "likelihood": 0.8,
+          "description": "Low consistency score predicts users will be confused by varying visual language",
+          "severity": "medium"
+        },
+        {
+          "type": "hierarchy_confusion",
+          "likelihood": 0.75,
+          "description": "Weak visual hierarchy means users will not know where to focus first",
+          "severity": "medium"
+        },
+        {
+          "type": "low_trust_aesthetics",
+          "likelihood": 0.65,
+          "description": "Poor aesthetics score correlates with reduced user trust and bounce rate increase",
+          "severity": "low"
+        }
+      ],
+      "total": 13,
+      "criticalCount": 2,
+      "riskScore": 73,
+      "qualityOverall": 43,
+      "predictedAt": "2026-06-28T22:37:22.777Z"
+    },
+    {
+      "id": "dp_1782686242778_sfob",
+      "pageUrl": "https://example.com/good-page",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 90,
+      "predictedAt": "2026-06-28T22:37:22.778Z"
+    },
+    {
+      "id": "dp_1782686242778_t01v",
+      "pageUrl": "https://example.com/pred-id-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 60,
+      "predictedAt": "2026-06-28T22:37:22.778Z"
+    },
+    {
+      "id": "dp_1782686242778_hk8s",
+      "pageUrl": "https://example.com/list-pred-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 65,
+      "predictedAt": "2026-06-28T22:37:22.778Z"
+    },
+    {
+      "id": "dp_1782686242778_roft",
+      "pageUrl": "https://example.com/risk-test",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 2,
+      "criticalCount": 2,
+      "riskScore": 139,
+      "qualityOverall": 30,
+      "predictedAt": "2026-06-28T22:37:22.778Z"
+    },
+    {
+      "id": "dp_1782686242779_f2ys",
+      "pageUrl": "https://example.com/crit-count",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 3,
+      "criticalCount": 2,
+      "riskScore": 122,
+      "qualityOverall": 40,
+      "predictedAt": "2026-06-28T22:37:22.779Z"
+    },
+    {
+      "id": "dp_1782686242886_4t24",
+      "pageUrl": "https://example.com/evolution-main",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:37:22.886Z"
+    },
+    {
+      "id": "dp_1782686242886_k12c",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:37:22.886Z"
+    },
+    {
+      "id": "dp_1782686242887_tv06",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:37:22.887Z"
+    },
+    {
+      "id": "dp_1782686242887_qlz5",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:37:22.887Z"
+    },
+    {
+      "id": "dp_1782686242888_51ve",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:37:22.888Z"
+    },
+    {
+      "id": "dp_1782686242892_jujb",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:37:22.892Z"
+    },
+    {
+      "id": "dp_1782686242892_3kjz",
+      "pageUrl": "https://example.com/pipeline-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 74,
+      "predictedAt": "2026-06-28T22:37:22.892Z"
+    },
+    {
+      "id": "dp_1782686242893_5fwg",
+      "pageUrl": "https://example.com/full-evolution-1782686242870",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:37:22.893Z"
+    },
+    {
+      "id": "dp_1782686242893_3s8l",
+      "pageUrl": "https://example.com/time-save-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:37:22.893Z"
+    },
+    {
+      "id": "dp_1782686247286_6z4r",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:37:27.286Z"
+    },
+    {
+      "id": "dp_1782686540074_c6pc",
+      "pageUrl": "https://example.com/predict-test",
+      "uxProblems": [
+        {
+          "type": "poor_usability",
+          "likelihood": 0.85,
+          "description": "Low usability score predicts user confusion and task failure rates above 25%",
+          "severity": "high"
+        },
+        {
+          "type": "cognitive_overload",
+          "likelihood": 0.8,
+          "description": "High cognitive load will cause users to abandon complex tasks",
+          "severity": "high"
+        },
+        {
+          "type": "attention_fragmentation",
+          "likelihood": 0.7,
+          "description": "Too many competing attention hotspots will reduce CTA conversion rate",
+          "severity": "medium"
+        },
+        {
+          "type": "unclear_reading_flow",
+          "likelihood": 0.65,
+          "description": "Unclear visual hierarchy will cause users to miss key content",
+          "severity": "medium"
+        },
+        {
+          "type": "layout_confusion",
+          "likelihood": 0.75,
+          "description": "4 confusion signals will cause users to struggle with navigation",
+          "severity": "high"
+        }
+      ],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        },
+        {
+          "type": "mobile_overflow",
+          "likelihood": 0.85,
+          "description": "Mobile viewport has layout issues that will cause horizontal scroll or clipped content",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [
+        {
+          "type": "visual_inconsistency",
+          "likelihood": 0.8,
+          "description": "Low consistency score predicts users will be confused by varying visual language",
+          "severity": "medium"
+        },
+        {
+          "type": "hierarchy_confusion",
+          "likelihood": 0.75,
+          "description": "Weak visual hierarchy means users will not know where to focus first",
+          "severity": "medium"
+        },
+        {
+          "type": "low_trust_aesthetics",
+          "likelihood": 0.65,
+          "description": "Poor aesthetics score correlates with reduced user trust and bounce rate increase",
+          "severity": "low"
+        }
+      ],
+      "total": 13,
+      "criticalCount": 2,
+      "riskScore": 73,
+      "qualityOverall": 43,
+      "predictedAt": "2026-06-28T22:42:20.074Z"
+    },
+    {
+      "id": "dp_1782686540077_r1w4",
+      "pageUrl": "https://example.com/good-page",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 90,
+      "predictedAt": "2026-06-28T22:42:20.077Z"
+    },
+    {
+      "id": "dp_1782686540077_43k8",
+      "pageUrl": "https://example.com/pred-id-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 60,
+      "predictedAt": "2026-06-28T22:42:20.077Z"
+    },
+    {
+      "id": "dp_1782686540078_sjun",
+      "pageUrl": "https://example.com/list-pred-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 65,
+      "predictedAt": "2026-06-28T22:42:20.078Z"
+    },
+    {
+      "id": "dp_1782686540078_0goo",
+      "pageUrl": "https://example.com/risk-test",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 2,
+      "criticalCount": 2,
+      "riskScore": 139,
+      "qualityOverall": 30,
+      "predictedAt": "2026-06-28T22:42:20.078Z"
+    },
+    {
+      "id": "dp_1782686540078_44hy",
+      "pageUrl": "https://example.com/crit-count",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 3,
+      "criticalCount": 2,
+      "riskScore": 122,
+      "qualityOverall": 40,
+      "predictedAt": "2026-06-28T22:42:20.078Z"
+    },
+    {
+      "id": "dp_1782686540373_mmjg",
+      "pageUrl": "https://example.com/evolution-main",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:42:20.373Z"
+    },
+    {
+      "id": "dp_1782686540374_2ei6",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 77,
+      "predictedAt": "2026-06-28T22:42:20.374Z"
+    },
+    {
+      "id": "dp_1782686540374_tt1e",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:42:20.374Z"
+    },
+    {
+      "id": "dp_1782686540374_8k9n",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:42:20.374Z"
+    },
+    {
+      "id": "dp_1782686540375_x6jh",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:42:20.375Z"
+    },
+    {
+      "id": "dp_1782686540383_dhkm",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 77,
+      "predictedAt": "2026-06-28T22:42:20.383Z"
+    },
+    {
+      "id": "dp_1782686540383_m6j6",
+      "pageUrl": "https://example.com/pipeline-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 75,
+      "predictedAt": "2026-06-28T22:42:20.383Z"
+    },
+    {
+      "id": "dp_1782686540384_v3du",
+      "pageUrl": "https://example.com/full-evolution-1782686540338",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:42:20.384Z"
+    },
+    {
+      "id": "dp_1782686540384_g1sk",
+      "pageUrl": "https://example.com/time-save-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:42:20.384Z"
+    },
+    {
+      "id": "dp_1782686547247_414c",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 77,
+      "predictedAt": "2026-06-28T22:42:27.247Z"
+    },
+    {
+      "id": "dp_1782686621061_i3w0",
+      "pageUrl": "https://example.com/predict-test",
+      "uxProblems": [
+        {
+          "type": "poor_usability",
+          "likelihood": 0.85,
+          "description": "Low usability score predicts user confusion and task failure rates above 25%",
+          "severity": "high"
+        },
+        {
+          "type": "cognitive_overload",
+          "likelihood": 0.8,
+          "description": "High cognitive load will cause users to abandon complex tasks",
+          "severity": "high"
+        },
+        {
+          "type": "attention_fragmentation",
+          "likelihood": 0.7,
+          "description": "Too many competing attention hotspots will reduce CTA conversion rate",
+          "severity": "medium"
+        },
+        {
+          "type": "unclear_reading_flow",
+          "likelihood": 0.65,
+          "description": "Unclear visual hierarchy will cause users to miss key content",
+          "severity": "medium"
+        },
+        {
+          "type": "layout_confusion",
+          "likelihood": 0.75,
+          "description": "4 confusion signals will cause users to struggle with navigation",
+          "severity": "high"
+        }
+      ],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        },
+        {
+          "type": "mobile_overflow",
+          "likelihood": 0.85,
+          "description": "Mobile viewport has layout issues that will cause horizontal scroll or clipped content",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [
+        {
+          "type": "visual_inconsistency",
+          "likelihood": 0.8,
+          "description": "Low consistency score predicts users will be confused by varying visual language",
+          "severity": "medium"
+        },
+        {
+          "type": "hierarchy_confusion",
+          "likelihood": 0.75,
+          "description": "Weak visual hierarchy means users will not know where to focus first",
+          "severity": "medium"
+        },
+        {
+          "type": "low_trust_aesthetics",
+          "likelihood": 0.65,
+          "description": "Poor aesthetics score correlates with reduced user trust and bounce rate increase",
+          "severity": "low"
+        }
+      ],
+      "total": 13,
+      "criticalCount": 2,
+      "riskScore": 73,
+      "qualityOverall": 43,
+      "predictedAt": "2026-06-28T22:43:41.061Z"
+    },
+    {
+      "id": "dp_1782686621061_pqd6",
+      "pageUrl": "https://example.com/good-page",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 90,
+      "predictedAt": "2026-06-28T22:43:41.061Z"
+    },
+    {
+      "id": "dp_1782686621061_13pz",
+      "pageUrl": "https://example.com/pred-id-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 60,
+      "predictedAt": "2026-06-28T22:43:41.061Z"
+    },
+    {
+      "id": "dp_1782686621062_wiu6",
+      "pageUrl": "https://example.com/list-pred-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 65,
+      "predictedAt": "2026-06-28T22:43:41.062Z"
+    },
+    {
+      "id": "dp_1782686621062_nbnc",
+      "pageUrl": "https://example.com/risk-test",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 2,
+      "criticalCount": 2,
+      "riskScore": 139,
+      "qualityOverall": 30,
+      "predictedAt": "2026-06-28T22:43:41.062Z"
+    },
+    {
+      "id": "dp_1782686621062_z1am",
+      "pageUrl": "https://example.com/crit-count",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 3,
+      "criticalCount": 2,
+      "riskScore": 122,
+      "qualityOverall": 40,
+      "predictedAt": "2026-06-28T22:43:41.062Z"
+    },
+    {
+      "id": "dp_1782686621179_rgty",
+      "pageUrl": "https://example.com/evolution-main",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:43:41.179Z"
+    },
+    {
+      "id": "dp_1782686621179_99wd",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 77,
+      "predictedAt": "2026-06-28T22:43:41.179Z"
+    },
+    {
+      "id": "dp_1782686621180_dwln",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 77,
+      "predictedAt": "2026-06-28T22:43:41.180Z"
+    },
+    {
+      "id": "dp_1782686621181_m1ve",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:43:41.181Z"
+    },
+    {
+      "id": "dp_1782686621182_t996",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:43:41.182Z"
+    },
+    {
+      "id": "dp_1782686621192_ka60",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:43:41.192Z"
+    },
+    {
+      "id": "dp_1782686621192_2ppc",
+      "pageUrl": "https://example.com/pipeline-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 75,
+      "predictedAt": "2026-06-28T22:43:41.192Z"
+    },
+    {
+      "id": "dp_1782686621193_qcv3",
+      "pageUrl": "https://example.com/full-evolution-1782686621142",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:43:41.193Z"
+    },
+    {
+      "id": "dp_1782686621194_8v0g",
+      "pageUrl": "https://example.com/time-save-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 77,
+      "predictedAt": "2026-06-28T22:43:41.194Z"
+    },
+    {
+      "id": "dp_1782686624826_0qoj",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:43:44.826Z"
+    },
+    {
+      "id": "dp_1782686769699_52sa",
+      "pageUrl": "https://example.com/predict-test",
+      "uxProblems": [
+        {
+          "type": "poor_usability",
+          "likelihood": 0.85,
+          "description": "Low usability score predicts user confusion and task failure rates above 25%",
+          "severity": "high"
+        },
+        {
+          "type": "cognitive_overload",
+          "likelihood": 0.8,
+          "description": "High cognitive load will cause users to abandon complex tasks",
+          "severity": "high"
+        },
+        {
+          "type": "attention_fragmentation",
+          "likelihood": 0.7,
+          "description": "Too many competing attention hotspots will reduce CTA conversion rate",
+          "severity": "medium"
+        },
+        {
+          "type": "unclear_reading_flow",
+          "likelihood": 0.65,
+          "description": "Unclear visual hierarchy will cause users to miss key content",
+          "severity": "medium"
+        },
+        {
+          "type": "layout_confusion",
+          "likelihood": 0.75,
+          "description": "4 confusion signals will cause users to struggle with navigation",
+          "severity": "high"
+        }
+      ],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        },
+        {
+          "type": "mobile_overflow",
+          "likelihood": 0.85,
+          "description": "Mobile viewport has layout issues that will cause horizontal scroll or clipped content",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [
+        {
+          "type": "visual_inconsistency",
+          "likelihood": 0.8,
+          "description": "Low consistency score predicts users will be confused by varying visual language",
+          "severity": "medium"
+        },
+        {
+          "type": "hierarchy_confusion",
+          "likelihood": 0.75,
+          "description": "Weak visual hierarchy means users will not know where to focus first",
+          "severity": "medium"
+        },
+        {
+          "type": "low_trust_aesthetics",
+          "likelihood": 0.65,
+          "description": "Poor aesthetics score correlates with reduced user trust and bounce rate increase",
+          "severity": "low"
+        }
+      ],
+      "total": 13,
+      "criticalCount": 2,
+      "riskScore": 73,
+      "qualityOverall": 43,
+      "predictedAt": "2026-06-28T22:46:09.699Z"
+    },
+    {
+      "id": "dp_1782686769700_1j4j",
+      "pageUrl": "https://example.com/good-page",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 90,
+      "predictedAt": "2026-06-28T22:46:09.700Z"
+    },
+    {
+      "id": "dp_1782686769700_r48j",
+      "pageUrl": "https://example.com/pred-id-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 60,
+      "predictedAt": "2026-06-28T22:46:09.700Z"
+    },
+    {
+      "id": "dp_1782686769701_d8zz",
+      "pageUrl": "https://example.com/list-pred-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 65,
+      "predictedAt": "2026-06-28T22:46:09.701Z"
+    },
+    {
+      "id": "dp_1782686769701_zjf4",
+      "pageUrl": "https://example.com/risk-test",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 2,
+      "criticalCount": 2,
+      "riskScore": 139,
+      "qualityOverall": 30,
+      "predictedAt": "2026-06-28T22:46:09.701Z"
+    },
+    {
+      "id": "dp_1782686769701_nese",
+      "pageUrl": "https://example.com/crit-count",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 3,
+      "criticalCount": 2,
+      "riskScore": 122,
+      "qualityOverall": 40,
+      "predictedAt": "2026-06-28T22:46:09.701Z"
+    },
+    {
+      "id": "dp_1782686769853_7jzp",
+      "pageUrl": "https://example.com/evolution-main",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 77,
+      "predictedAt": "2026-06-28T22:46:09.853Z"
+    },
+    {
+      "id": "dp_1782686769854_zp49",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:46:09.854Z"
+    },
+    {
+      "id": "dp_1782686769855_6w61",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:46:09.855Z"
+    },
+    {
+      "id": "dp_1782686769855_1z57",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:46:09.855Z"
+    },
+    {
+      "id": "dp_1782686769857_qpf5",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 77,
+      "predictedAt": "2026-06-28T22:46:09.857Z"
+    },
+    {
+      "id": "dp_1782686769871_v8qj",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:46:09.871Z"
+    },
+    {
+      "id": "dp_1782686769871_2fzl",
+      "pageUrl": "https://example.com/pipeline-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:46:09.871Z"
+    },
+    {
+      "id": "dp_1782686769872_xwox",
+      "pageUrl": "https://example.com/full-evolution-1782686769795",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:46:09.872Z"
+    },
+    {
+      "id": "dp_1782686769873_865r",
+      "pageUrl": "https://example.com/time-save-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 77,
+      "predictedAt": "2026-06-28T22:46:09.873Z"
+    },
+    {
+      "id": "dp_1782686773567_i69u",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:46:13.567Z"
+    },
+    {
+      "id": "dp_1782686901196_0a75",
+      "pageUrl": "https://example.com/predict-test",
+      "uxProblems": [
+        {
+          "type": "poor_usability",
+          "likelihood": 0.85,
+          "description": "Low usability score predicts user confusion and task failure rates above 25%",
+          "severity": "high"
+        },
+        {
+          "type": "cognitive_overload",
+          "likelihood": 0.8,
+          "description": "High cognitive load will cause users to abandon complex tasks",
+          "severity": "high"
+        },
+        {
+          "type": "attention_fragmentation",
+          "likelihood": 0.7,
+          "description": "Too many competing attention hotspots will reduce CTA conversion rate",
+          "severity": "medium"
+        },
+        {
+          "type": "unclear_reading_flow",
+          "likelihood": 0.65,
+          "description": "Unclear visual hierarchy will cause users to miss key content",
+          "severity": "medium"
+        },
+        {
+          "type": "layout_confusion",
+          "likelihood": 0.75,
+          "description": "4 confusion signals will cause users to struggle with navigation",
+          "severity": "high"
+        }
+      ],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        },
+        {
+          "type": "mobile_overflow",
+          "likelihood": 0.85,
+          "description": "Mobile viewport has layout issues that will cause horizontal scroll or clipped content",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [
+        {
+          "type": "visual_inconsistency",
+          "likelihood": 0.8,
+          "description": "Low consistency score predicts users will be confused by varying visual language",
+          "severity": "medium"
+        },
+        {
+          "type": "hierarchy_confusion",
+          "likelihood": 0.75,
+          "description": "Weak visual hierarchy means users will not know where to focus first",
+          "severity": "medium"
+        },
+        {
+          "type": "low_trust_aesthetics",
+          "likelihood": 0.65,
+          "description": "Poor aesthetics score correlates with reduced user trust and bounce rate increase",
+          "severity": "low"
+        }
+      ],
+      "total": 13,
+      "criticalCount": 2,
+      "riskScore": 73,
+      "qualityOverall": 43,
+      "predictedAt": "2026-06-28T22:48:21.196Z"
+    },
+    {
+      "id": "dp_1782686901199_4f32",
+      "pageUrl": "https://example.com/good-page",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 90,
+      "predictedAt": "2026-06-28T22:48:21.199Z"
+    },
+    {
+      "id": "dp_1782686901199_ahjk",
+      "pageUrl": "https://example.com/pred-id-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 60,
+      "predictedAt": "2026-06-28T22:48:21.199Z"
+    },
+    {
+      "id": "dp_1782686901200_1lu4",
+      "pageUrl": "https://example.com/list-pred-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 65,
+      "predictedAt": "2026-06-28T22:48:21.200Z"
+    },
+    {
+      "id": "dp_1782686901200_quz7",
+      "pageUrl": "https://example.com/risk-test",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 2,
+      "criticalCount": 2,
+      "riskScore": 139,
+      "qualityOverall": 30,
+      "predictedAt": "2026-06-28T22:48:21.200Z"
+    },
+    {
+      "id": "dp_1782686901200_0wlw",
+      "pageUrl": "https://example.com/crit-count",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 3,
+      "criticalCount": 2,
+      "riskScore": 122,
+      "qualityOverall": 40,
+      "predictedAt": "2026-06-28T22:48:21.200Z"
+    },
+    {
+      "id": "dp_1782686901540_zcff",
+      "pageUrl": "https://example.com/evolution-main",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:48:21.540Z"
+    },
+    {
+      "id": "dp_1782686901540_21rx",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:48:21.540Z"
+    },
+    {
+      "id": "dp_1782686901541_p1f5",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 75,
+      "predictedAt": "2026-06-28T22:48:21.541Z"
+    },
+    {
+      "id": "dp_1782686901542_x0wr",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:48:21.542Z"
+    },
+    {
+      "id": "dp_1782686901544_62pr",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 77,
+      "predictedAt": "2026-06-28T22:48:21.544Z"
+    },
+    {
+      "id": "dp_1782686901562_0y38",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:48:21.562Z"
+    },
+    {
+      "id": "dp_1782686901563_r2nl",
+      "pageUrl": "https://example.com/pipeline-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 75,
+      "predictedAt": "2026-06-28T22:48:21.563Z"
+    },
+    {
+      "id": "dp_1782686901564_ark9",
+      "pageUrl": "https://example.com/full-evolution-1782686901478",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-28T22:48:21.564Z"
+    },
+    {
+      "id": "dp_1782686901565_9o24",
+      "pageUrl": "https://example.com/time-save-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:48:21.565Z"
+    },
+    {
+      "id": "dp_1782686908625_8rki",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-28T22:48:28.625Z"
+    },
+    {
+      "id": "dp_1782773017065_v5fg",
+      "pageUrl": "https://example.com/predict-test",
+      "uxProblems": [
+        {
+          "type": "poor_usability",
+          "likelihood": 0.85,
+          "description": "Low usability score predicts user confusion and task failure rates above 25%",
+          "severity": "high"
+        },
+        {
+          "type": "cognitive_overload",
+          "likelihood": 0.8,
+          "description": "High cognitive load will cause users to abandon complex tasks",
+          "severity": "high"
+        },
+        {
+          "type": "attention_fragmentation",
+          "likelihood": 0.7,
+          "description": "Too many competing attention hotspots will reduce CTA conversion rate",
+          "severity": "medium"
+        },
+        {
+          "type": "unclear_reading_flow",
+          "likelihood": 0.65,
+          "description": "Unclear visual hierarchy will cause users to miss key content",
+          "severity": "medium"
+        },
+        {
+          "type": "layout_confusion",
+          "likelihood": 0.75,
+          "description": "4 confusion signals will cause users to struggle with navigation",
+          "severity": "high"
+        }
+      ],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        },
+        {
+          "type": "mobile_overflow",
+          "likelihood": 0.85,
+          "description": "Mobile viewport has layout issues that will cause horizontal scroll or clipped content",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [
+        {
+          "type": "visual_inconsistency",
+          "likelihood": 0.8,
+          "description": "Low consistency score predicts users will be confused by varying visual language",
+          "severity": "medium"
+        },
+        {
+          "type": "hierarchy_confusion",
+          "likelihood": 0.75,
+          "description": "Weak visual hierarchy means users will not know where to focus first",
+          "severity": "medium"
+        },
+        {
+          "type": "low_trust_aesthetics",
+          "likelihood": 0.65,
+          "description": "Poor aesthetics score correlates with reduced user trust and bounce rate increase",
+          "severity": "low"
+        }
+      ],
+      "total": 13,
+      "criticalCount": 2,
+      "riskScore": 73,
+      "qualityOverall": 43,
+      "predictedAt": "2026-06-29T22:43:37.065Z"
+    },
+    {
+      "id": "dp_1782773017066_0cp8",
+      "pageUrl": "https://example.com/good-page",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 90,
+      "predictedAt": "2026-06-29T22:43:37.066Z"
+    },
+    {
+      "id": "dp_1782773017066_diof",
+      "pageUrl": "https://example.com/pred-id-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 60,
+      "predictedAt": "2026-06-29T22:43:37.066Z"
+    },
+    {
+      "id": "dp_1782773017066_ecjd",
+      "pageUrl": "https://example.com/list-pred-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 65,
+      "predictedAt": "2026-06-29T22:43:37.066Z"
+    },
+    {
+      "id": "dp_1782773017067_gk58",
+      "pageUrl": "https://example.com/risk-test",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 2,
+      "criticalCount": 2,
+      "riskScore": 139,
+      "qualityOverall": 30,
+      "predictedAt": "2026-06-29T22:43:37.067Z"
+    },
+    {
+      "id": "dp_1782773017068_tx83",
+      "pageUrl": "https://example.com/crit-count",
+      "uxProblems": [],
+      "accessibilityFailures": [
+        {
+          "type": "wcag_failure",
+          "likelihood": 0.9,
+          "description": "Current accessibility score predicts WCAG 2.1 AA non-compliance",
+          "severity": "critical"
+        },
+        {
+          "type": "contrast_failure",
+          "likelihood": 0.95,
+          "description": "Color contrast violations will fail WCAG 1.4.3 (Contrast Minimum)",
+          "severity": "critical"
+        },
+        {
+          "type": "missing_labels",
+          "likelihood": 0.9,
+          "description": "Missing ARIA labels will prevent screen reader navigation",
+          "severity": "high"
+        }
+      ],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 3,
+      "criticalCount": 2,
+      "riskScore": 122,
+      "qualityOverall": 40,
+      "predictedAt": "2026-06-29T22:43:37.068Z"
+    },
+    {
+      "id": "dp_1782773017533_dxbd",
+      "pageUrl": "https://example.com/evolution-main",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 77,
+      "predictedAt": "2026-06-29T22:43:37.533Z"
+    },
+    {
+      "id": "dp_1782773017534_ar5m",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-29T22:43:37.534Z"
+    },
+    {
+      "id": "dp_1782773017535_jxk7",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 75,
+      "predictedAt": "2026-06-29T22:43:37.535Z"
+    },
+    {
+      "id": "dp_1782773017536_syqw",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 77,
+      "predictedAt": "2026-06-29T22:43:37.536Z"
+    },
+    {
+      "id": "dp_1782773017539_nyno",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-29T22:43:37.539Z"
+    },
+    {
+      "id": "dp_1782773017557_6g6l",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-29T22:43:37.557Z"
+    },
+    {
+      "id": "dp_1782773017557_ujew",
+      "pageUrl": "https://example.com/pipeline-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 75,
+      "predictedAt": "2026-06-29T22:43:37.557Z"
+    },
+    {
+      "id": "dp_1782773017559_enf0",
+      "pageUrl": "https://example.com/full-evolution-1782773017389",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [],
+      "confusionIssues": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 10,
+      "qualityOverall": 70,
+      "predictedAt": "2026-06-29T22:43:37.559Z"
+    },
+    {
+      "id": "dp_1782773017560_gfke",
+      "pageUrl": "https://example.com/time-save-test",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-29T22:43:37.560Z"
+    },
+    {
+      "id": "dp_1782773025876_oxgd",
+      "pageUrl": "https://example.com/multi-cycle",
+      "uxProblems": [],
+      "accessibilityFailures": [],
+      "responsiveFailures": [
+        {
+          "type": "responsive_degradation",
+          "likelihood": 0.8,
+          "description": "Low responsiveness score predicts layout breakage on mobile devices",
+          "severity": "high"
+        }
+      ],
+      "confusionIssues": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 80,
+      "qualityOverall": 76,
+      "predictedAt": "2026-06-29T22:43:45.876Z"
+    }
+  ],
+  "stats": {
+    "total": 110,
+    "criticalPredictions": 42,
+    "avgRisk": 67.2
+  },
+  "updatedAt": "2026-06-29T22:43:45.876Z"
+}

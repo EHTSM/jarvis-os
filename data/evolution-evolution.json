@@ -1,0 +1,1731 @@
+{
+  "cycles": [
+    {
+      "id": "ee_1782691283514_mfh1",
+      "context": "current_evolution",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T00:01:23.525Z",
+          "evolutionsProposed": 135,
+          "evolutionsApplied": 67,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T00:01:23.543Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T00:01:24.036Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T00:01:24.105Z",
+          "productionReady": true,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T00:01:24.335Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T00:01:24.335Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T00:01:24.335Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T00:01:24.335Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T00:01:24.335Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T00:01:24.335Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T00:01:24.335Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T00:01:24.335Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T00:01:24.335Z"
+    },
+    {
+      "id": "ee_1782691283556_vfud",
+      "context": "get_cycle_evo_direct",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T00:01:23.571Z",
+          "evolutionsProposed": 135,
+          "evolutionsApplied": 67,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T00:01:23.572Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T00:01:24.037Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T00:01:24.117Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T00:01:24.336Z"
+    },
+    {
+      "id": "ee_1782691283584_3tdq",
+      "context": "list_evo_1782691283584",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T00:01:23.595Z",
+          "evolutionsProposed": 135,
+          "evolutionsApplied": 67,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T00:01:23.596Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T00:01:24.037Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T00:01:24.129Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T00:01:24.336Z"
+    },
+    {
+      "id": "ee_1782691283613_xw10",
+      "context": "status_seed_evo",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T00:01:23.626Z",
+          "evolutionsProposed": 135,
+          "evolutionsApplied": 67,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T00:01:23.627Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T00:01:24.037Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T00:01:24.140Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T00:01:24.336Z"
+    },
+    {
+      "id": "ee_1782691283670_6t8q",
+      "context": "multi_evo_ctx",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T00:01:23.683Z",
+          "evolutionsProposed": 135,
+          "evolutionsApplied": 67,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T00:01:23.684Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T00:01:24.049Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T00:01:24.151Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T00:01:24.336Z"
+    },
+    {
+      "id": "ee_1782691283700_gr4a",
+      "context": "debt_cycle_evo",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T00:01:23.712Z",
+          "evolutionsProposed": 135,
+          "evolutionsApplied": 67,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T00:01:23.713Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T00:01:24.049Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T00:01:24.163Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T00:01:24.336Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T00:01:24.336Z"
+    },
+    {
+      "id": "ee_1782691283876_pfix",
+      "context": "current_evolution",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T00:01:23.887Z",
+          "evolutionsProposed": 135,
+          "evolutionsApplied": 67,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T00:01:23.888Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T00:01:24.087Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T00:01:24.177Z",
+          "productionReady": true,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T00:01:24.337Z"
+    },
+    {
+      "id": "ee_1782691283913_a2xz",
+      "context": "founder_time_evo",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T00:01:23.926Z",
+          "evolutionsProposed": 135,
+          "evolutionsApplied": 67,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T00:01:23.926Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T00:01:24.088Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T00:01:24.189Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T00:01:24.337Z"
+    },
+    {
+      "id": "ee_1782691283964_0g66",
+      "context": "dashboard_seed_evo",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T00:01:23.975Z",
+          "evolutionsProposed": 135,
+          "evolutionsApplied": 67,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T00:01:23.976Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T00:01:24.089Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T00:01:24.207Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T00:01:24.337Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T00:01:24.337Z"
+    },
+    {
+      "id": "ee_1782691284337_dhgz",
+      "context": "multi_evo_ctx",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T00:01:24.348Z",
+          "evolutionsProposed": 135,
+          "evolutionsApplied": 67,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T00:01:24.349Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T00:01:24.390Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T00:01:24.390Z",
+          "productionReady": true,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T00:01:24.415Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T00:01:24.415Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T00:01:24.415Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T00:01:24.415Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T00:01:24.415Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T00:01:24.415Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T00:01:24.415Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T00:01:24.415Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T00:01:24.415Z"
+    },
+    {
+      "id": "ee_1782773079504_yh4b",
+      "context": "current_evolution",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T22:44:39.514Z",
+          "evolutionsProposed": 164,
+          "evolutionsApplied": 77,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T22:44:39.537Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T22:44:40.034Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T22:44:40.110Z",
+          "productionReady": true,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T22:44:40.333Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T22:44:40.333Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T22:44:40.333Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T22:44:40.333Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T22:44:40.333Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T22:44:40.333Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T22:44:40.333Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T22:44:40.333Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T22:44:40.333Z"
+    },
+    {
+      "id": "ee_1782773079548_yjue",
+      "context": "get_cycle_evo_direct",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T22:44:39.560Z",
+          "evolutionsProposed": 164,
+          "evolutionsApplied": 77,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T22:44:39.561Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T22:44:40.035Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T22:44:40.122Z",
+          "productionReady": true,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T22:44:40.334Z"
+    },
+    {
+      "id": "ee_1782773079574_huqg",
+      "context": "list_evo_1782773079574",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T22:44:39.588Z",
+          "evolutionsProposed": 164,
+          "evolutionsApplied": 77,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T22:44:39.588Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T22:44:40.036Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T22:44:40.134Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T22:44:40.334Z"
+    },
+    {
+      "id": "ee_1782773079600_hwsv",
+      "context": "status_seed_evo",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T22:44:39.611Z",
+          "evolutionsProposed": 164,
+          "evolutionsApplied": 77,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T22:44:39.611Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T22:44:40.036Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T22:44:40.145Z",
+          "productionReady": true,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T22:44:40.334Z"
+    },
+    {
+      "id": "ee_1782773079652_n8ni",
+      "context": "multi_evo_ctx",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T22:44:39.663Z",
+          "evolutionsProposed": 164,
+          "evolutionsApplied": 77,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T22:44:39.663Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T22:44:40.049Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T22:44:40.157Z",
+          "productionReady": true,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T22:44:40.334Z"
+    },
+    {
+      "id": "ee_1782773079676_cye9",
+      "context": "debt_cycle_evo",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T22:44:39.687Z",
+          "evolutionsProposed": 164,
+          "evolutionsApplied": 77,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T22:44:39.688Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T22:44:40.050Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T22:44:40.169Z",
+          "productionReady": true,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T22:44:40.334Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T22:44:40.334Z"
+    },
+    {
+      "id": "ee_1782773079861_azor",
+      "context": "current_evolution",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T22:44:39.872Z",
+          "evolutionsProposed": 164,
+          "evolutionsApplied": 77,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T22:44:39.873Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T22:44:40.092Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T22:44:40.183Z",
+          "productionReady": true,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T22:44:40.335Z"
+    },
+    {
+      "id": "ee_1782773079901_xqdm",
+      "context": "founder_time_evo",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T22:44:39.911Z",
+          "evolutionsProposed": 164,
+          "evolutionsApplied": 77,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T22:44:39.912Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T22:44:40.093Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T22:44:40.195Z",
+          "productionReady": true,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T22:44:40.335Z"
+    },
+    {
+      "id": "ee_1782773079953_yjnw",
+      "context": "dashboard_seed_evo",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T22:44:39.964Z",
+          "evolutionsProposed": 164,
+          "evolutionsApplied": 77,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T22:44:39.965Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T22:44:40.094Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T22:44:40.209Z",
+          "productionReady": true,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T22:44:40.335Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T22:44:40.335Z"
+    },
+    {
+      "id": "ee_1782773080336_369o",
+      "context": "multi_evo_ctx",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-06-29T22:44:40.346Z",
+          "evolutionsProposed": 164,
+          "evolutionsApplied": 77,
+          "pendingPatterns": 14
+        },
+        {
+          "name": "detect_weakness",
+          "completedAt": "2026-06-29T22:44:40.347Z",
+          "aeoWeaknesses": 0,
+          "debtPoints": 33
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-06-29T22:44:40.390Z",
+          "overallScore": 60,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-06-29T22:44:40.391Z",
+          "productionReady": true,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-06-29T22:44:40.423Z",
+          "total": 7,
+          "critical": 1,
+          "riskScore": 55
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-06-29T22:44:40.423Z",
+          "count": 4
+        },
+        {
+          "name": "prioritize",
+          "completedAt": "2026-06-29T22:44:40.423Z",
+          "selected": 4
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-06-29T22:44:40.423Z",
+          "skipped": true
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-06-29T22:44:40.423Z",
+          "valid": 1,
+          "rejected": 3
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-06-29T22:44:40.423Z",
+          "skipped": true,
+          "improvements": 1
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-06-29T22:44:40.423Z",
+          "scoreBefore": 85,
+          "scoreAfter": 85,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-06-29T22:44:40.423Z",
+          "lessonsIntegrated": 8
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "delta": 0,
+      "improvements": 1,
+      "riskScore": 55,
+      "debtPoints": 33,
+      "minutesSaved": 35,
+      "completedAt": "2026-06-29T22:44:40.423Z"
+    }
+  ],
+  "stats": {
+    "totalCycles": 20,
+    "minutesSaved": 700,
+    "improvementsGenerated": 20,
+    "platformEvolutionScore": 85
+  },
+  "updatedAt": "2026-06-29T22:44:40.423Z"
+}

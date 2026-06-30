@@ -2159,5 +2159,1362 @@
     },
     "summary": "62 evolutions, 29 kept, avg impact -3%",
     "createdAt": "2026-06-28T06:55:57.390Z"
+  },
+  {
+    "id": "aerpt_1782686396931_zv5a",
+    "title": "RptA 1782686396817",
+    "deptId": "aeo_coordinator",
+    "type": "sync",
+    "data": {},
+    "summary": "test",
+    "createdAt": "2026-06-28T22:39:56.931Z"
+  },
+  {
+    "id": "aerpt_1782686397405_cx5a",
+    "title": "AEO Coordinator Sync — 2026-06-28",
+    "deptId": "aeo_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 19,
+          "active": 19
+        },
+        "evolutions": {
+          "total": 77,
+          "proposed": 1,
+          "validated": 0,
+          "applied": 6,
+          "kept": 32,
+          "reverted": 5,
+          "avgImpact": -3
+        },
+        "experiments": {
+          "total": 9,
+          "running": 9
+        },
+        "tasks": {
+          "total": 399,
+          "inProgress": 9,
+          "done": 6
+        },
+        "history": {
+          "total": 29
+        },
+        "reports": {
+          "total": 19
+        },
+        "platform": {
+          "ileTrials": 0,
+          "ileKept": 0,
+          "shrHealed": 0
+        },
+        "kpiCount": 15
+      },
+      "kpiSummary": {
+        "total": 77,
+        "kept": 29
+      },
+      "weeklyReport": {
+        "reportId": "rpt_600b3200-16b5-4de5-8b36-8c503ec87e3a",
+        "period": {
+          "start": "2026-06-21T06:55:57.324Z",
+          "end": "2026-06-28T06:55:57.324Z"
+        },
+        "metrics": {
+          "current": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 24,
+            "rollbackFrequency": 76,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 24,
+            "errorRate": 0.3,
+            "selfImprovementScore": 34,
+            "collectedAt": "2026-06-28T06:55:57.324Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 7,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "previous": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 24,
+            "rollbackFrequency": 76,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 24,
+            "errorRate": 0.3,
+            "selfImprovementScore": 34,
+            "collectedAt": "2026-06-28T06:10:36.856Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 7,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "delta": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 0,
+            "deploymentSuccessRate": 0,
+            "rollbackFrequency": 0,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0,
+            "selfImprovementScore": 0
+          }
+        },
+        "improvements": [
+          {
+            "area": "Deployment Success Rate",
+            "currentScore": 24,
+            "targetScore": 90,
+            "recommendation": "Increase pre-deployment validation coverage and add automated smoke tests.",
+            "priority": 1
+          },
+          {
+            "area": "Rollback Frequency",
+            "currentScore": 76,
+            "targetScore": 10,
+            "recommendation": "Implement canary deployment gates before full rollout.",
+            "priority": 1
+          },
+          {
+            "area": "Prediction Accuracy",
+            "currentScore": 0,
+            "targetScore": 80,
+            "recommendation": "Review reasoning engine confidence thresholds — increase minimum confidence before acting.",
+            "priority": 1
+          },
+          {
+            "area": "Mission Completion Rate",
+            "currentScore": 0,
+            "targetScore": 70,
+            "recommendation": "Mission planning needs better scope decomposition — subtasks are too large or ambiguous.",
+            "priority": 1
+          },
+          {
+            "area": "Agent Success Rate",
+            "currentScore": 24,
+            "targetScore": 95,
+            "recommendation": "Agent execution reliability is below threshold — review tool execution layer for failures.",
+            "priority": 1
+          }
+        ],
+        "wins": [],
+        "concerns": [],
+        "generatedAt": "2026-06-28T06:55:57.324Z",
+        "dataQuality": "high"
+      }
+    },
+    "summary": "77 evolutions, 32 kept, avg impact -3%",
+    "createdAt": "2026-06-28T22:39:57.405Z"
+  },
+  {
+    "id": "aerpt_1782686398173_e1kt",
+    "title": "AEO Coordinator Sync — 2026-06-28",
+    "deptId": "aeo_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 19,
+          "active": 19
+        },
+        "evolutions": {
+          "total": 77,
+          "proposed": 0,
+          "validated": 1,
+          "applied": 6,
+          "kept": 35,
+          "reverted": 5,
+          "avgImpact": -2
+        },
+        "experiments": {
+          "total": 9,
+          "running": 9
+        },
+        "tasks": {
+          "total": 399,
+          "inProgress": 9,
+          "done": 6
+        },
+        "history": {
+          "total": 32
+        },
+        "reports": {
+          "total": 20
+        },
+        "platform": {
+          "ileTrials": 0,
+          "ileKept": 0,
+          "shrHealed": 0
+        },
+        "kpiCount": 15
+      },
+      "kpiSummary": {
+        "total": 77,
+        "kept": 32
+      },
+      "weeklyReport": {
+        "reportId": "rpt_d6c3da84-0eea-418f-99c5-3d0c9d9bbbdd",
+        "period": {
+          "start": "2026-06-21T22:39:58.128Z",
+          "end": "2026-06-28T22:39:58.128Z"
+        },
+        "metrics": {
+          "current": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 23,
+            "rollbackFrequency": 75,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0.3,
+            "selfImprovementScore": 31,
+            "collectedAt": "2026-06-28T22:39:58.128Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 8,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "previous": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 24,
+            "rollbackFrequency": 76,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 24,
+            "errorRate": 0.3,
+            "selfImprovementScore": 34,
+            "collectedAt": "2026-06-28T06:55:57.324Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 7,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "delta": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 0,
+            "deploymentSuccessRate": -1,
+            "rollbackFrequency": -1,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": -24,
+            "errorRate": 0,
+            "selfImprovementScore": -3
+          }
+        },
+        "improvements": [
+          {
+            "area": "Deployment Success Rate",
+            "currentScore": 23,
+            "targetScore": 90,
+            "recommendation": "Increase pre-deployment validation coverage and add automated smoke tests.",
+            "priority": 1
+          },
+          {
+            "area": "Rollback Frequency",
+            "currentScore": 75,
+            "targetScore": 10,
+            "recommendation": "Implement canary deployment gates before full rollout.",
+            "priority": 1
+          },
+          {
+            "area": "Prediction Accuracy",
+            "currentScore": 0,
+            "targetScore": 80,
+            "recommendation": "Review reasoning engine confidence thresholds — increase minimum confidence before acting.",
+            "priority": 1
+          },
+          {
+            "area": "Mission Completion Rate",
+            "currentScore": 0,
+            "targetScore": 70,
+            "recommendation": "Mission planning needs better scope decomposition — subtasks are too large or ambiguous.",
+            "priority": 1
+          },
+          {
+            "area": "Agent Success Rate",
+            "currentScore": 0,
+            "targetScore": 95,
+            "recommendation": "Agent execution reliability is below threshold — review tool execution layer for failures.",
+            "priority": 1
+          }
+        ],
+        "wins": [],
+        "concerns": [
+          {
+            "area": "Agent Success Rate",
+            "trend": "declining (24.0% drop)",
+            "description": "Agent Success Rate dropped from 24% to 0%.",
+            "urgency": "high"
+          }
+        ],
+        "generatedAt": "2026-06-28T22:39:58.128Z",
+        "dataQuality": "high"
+      }
+    },
+    "summary": "77 evolutions, 35 kept, avg impact -2%",
+    "createdAt": "2026-06-28T22:39:58.173Z"
+  },
+  {
+    "id": "aerpt_1782686439747_a5di",
+    "title": "RptA 1782686439604",
+    "deptId": "aeo_coordinator",
+    "type": "sync",
+    "data": {},
+    "summary": "test",
+    "createdAt": "2026-06-28T22:40:39.747Z"
+  },
+  {
+    "id": "aerpt_1782686440376_v7cn",
+    "title": "AEO Coordinator Sync — 2026-06-28",
+    "deptId": "aeo_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 22,
+          "active": 22
+        },
+        "evolutions": {
+          "total": 105,
+          "proposed": 1,
+          "validated": 0,
+          "applied": 8,
+          "kept": 39,
+          "reverted": 6,
+          "avgImpact": -2
+        },
+        "experiments": {
+          "total": 11,
+          "running": 11
+        },
+        "tasks": {
+          "total": 438,
+          "inProgress": 10,
+          "done": 7
+        },
+        "history": {
+          "total": 35
+        },
+        "reports": {
+          "total": 22
+        },
+        "platform": {
+          "ileTrials": 0,
+          "ileKept": 0,
+          "shrHealed": 0
+        },
+        "kpiCount": 15
+      },
+      "kpiSummary": {
+        "total": 105,
+        "kept": 35
+      },
+      "weeklyReport": {
+        "reportId": "rpt_d6c3da84-0eea-418f-99c5-3d0c9d9bbbdd",
+        "period": {
+          "start": "2026-06-21T22:39:58.128Z",
+          "end": "2026-06-28T22:39:58.128Z"
+        },
+        "metrics": {
+          "current": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 23,
+            "rollbackFrequency": 75,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0.3,
+            "selfImprovementScore": 31,
+            "collectedAt": "2026-06-28T22:39:58.128Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 8,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "previous": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 24,
+            "rollbackFrequency": 76,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 24,
+            "errorRate": 0.3,
+            "selfImprovementScore": 34,
+            "collectedAt": "2026-06-28T06:55:57.324Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 7,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "delta": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 0,
+            "deploymentSuccessRate": -1,
+            "rollbackFrequency": -1,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": -24,
+            "errorRate": 0,
+            "selfImprovementScore": -3
+          }
+        },
+        "improvements": [
+          {
+            "area": "Deployment Success Rate",
+            "currentScore": 23,
+            "targetScore": 90,
+            "recommendation": "Increase pre-deployment validation coverage and add automated smoke tests.",
+            "priority": 1
+          },
+          {
+            "area": "Rollback Frequency",
+            "currentScore": 75,
+            "targetScore": 10,
+            "recommendation": "Implement canary deployment gates before full rollout.",
+            "priority": 1
+          },
+          {
+            "area": "Prediction Accuracy",
+            "currentScore": 0,
+            "targetScore": 80,
+            "recommendation": "Review reasoning engine confidence thresholds — increase minimum confidence before acting.",
+            "priority": 1
+          },
+          {
+            "area": "Mission Completion Rate",
+            "currentScore": 0,
+            "targetScore": 70,
+            "recommendation": "Mission planning needs better scope decomposition — subtasks are too large or ambiguous.",
+            "priority": 1
+          },
+          {
+            "area": "Agent Success Rate",
+            "currentScore": 0,
+            "targetScore": 95,
+            "recommendation": "Agent execution reliability is below threshold — review tool execution layer for failures.",
+            "priority": 1
+          }
+        ],
+        "wins": [],
+        "concerns": [
+          {
+            "area": "Agent Success Rate",
+            "trend": "declining (24.0% drop)",
+            "description": "Agent Success Rate dropped from 24% to 0%.",
+            "urgency": "high"
+          }
+        ],
+        "generatedAt": "2026-06-28T22:39:58.128Z",
+        "dataQuality": "high"
+      }
+    },
+    "summary": "105 evolutions, 39 kept, avg impact -2%",
+    "createdAt": "2026-06-28T22:40:40.376Z"
+  },
+  {
+    "id": "aerpt_1782686441680_6jbe",
+    "title": "AEO Coordinator Sync — 2026-06-28",
+    "deptId": "aeo_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 22,
+          "active": 22
+        },
+        "evolutions": {
+          "total": 105,
+          "proposed": 0,
+          "validated": 1,
+          "applied": 8,
+          "kept": 42,
+          "reverted": 6,
+          "avgImpact": -2
+        },
+        "experiments": {
+          "total": 11,
+          "running": 11
+        },
+        "tasks": {
+          "total": 438,
+          "inProgress": 10,
+          "done": 7
+        },
+        "history": {
+          "total": 38
+        },
+        "reports": {
+          "total": 23
+        },
+        "platform": {
+          "ileTrials": 0,
+          "ileKept": 0,
+          "shrHealed": 0
+        },
+        "kpiCount": 15
+      },
+      "kpiSummary": {
+        "total": 105,
+        "kept": 38
+      },
+      "weeklyReport": {
+        "reportId": "rpt_a6b7d26f-d1a8-48d4-b4f0-8f4fe8532187",
+        "period": {
+          "start": "2026-06-21T22:40:41.619Z",
+          "end": "2026-06-28T22:40:41.619Z"
+        },
+        "metrics": {
+          "current": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 23,
+            "rollbackFrequency": 76,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0.3,
+            "selfImprovementScore": 31,
+            "collectedAt": "2026-06-28T22:40:41.619Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 8,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "previous": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 23,
+            "rollbackFrequency": 75,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0.3,
+            "selfImprovementScore": 31,
+            "collectedAt": "2026-06-28T22:39:58.128Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 8,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "delta": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 0,
+            "deploymentSuccessRate": 0,
+            "rollbackFrequency": 1,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0,
+            "selfImprovementScore": 0
+          }
+        },
+        "improvements": [
+          {
+            "area": "Deployment Success Rate",
+            "currentScore": 23,
+            "targetScore": 90,
+            "recommendation": "Increase pre-deployment validation coverage and add automated smoke tests.",
+            "priority": 1
+          },
+          {
+            "area": "Rollback Frequency",
+            "currentScore": 76,
+            "targetScore": 10,
+            "recommendation": "Implement canary deployment gates before full rollout.",
+            "priority": 1
+          },
+          {
+            "area": "Prediction Accuracy",
+            "currentScore": 0,
+            "targetScore": 80,
+            "recommendation": "Review reasoning engine confidence thresholds — increase minimum confidence before acting.",
+            "priority": 1
+          },
+          {
+            "area": "Mission Completion Rate",
+            "currentScore": 0,
+            "targetScore": 70,
+            "recommendation": "Mission planning needs better scope decomposition — subtasks are too large or ambiguous.",
+            "priority": 1
+          },
+          {
+            "area": "Agent Success Rate",
+            "currentScore": 0,
+            "targetScore": 95,
+            "recommendation": "Agent execution reliability is below threshold — review tool execution layer for failures.",
+            "priority": 1
+          }
+        ],
+        "wins": [],
+        "concerns": [],
+        "generatedAt": "2026-06-28T22:40:41.619Z",
+        "dataQuality": "high"
+      }
+    },
+    "summary": "105 evolutions, 42 kept, avg impact -2%",
+    "createdAt": "2026-06-28T22:40:41.680Z"
+  },
+  {
+    "id": "aerpt_1782686463650_6zco",
+    "title": "RptA 1782686463247",
+    "deptId": "aeo_coordinator",
+    "type": "sync",
+    "data": {},
+    "summary": "test",
+    "createdAt": "2026-06-28T22:41:03.650Z"
+  },
+  {
+    "id": "aerpt_1782686464218_8ey8",
+    "title": "AEO Coordinator Sync — 2026-06-28",
+    "deptId": "aeo_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 25,
+          "active": 25
+        },
+        "evolutions": {
+          "total": 121,
+          "proposed": 1,
+          "validated": 0,
+          "applied": 10,
+          "kept": 46,
+          "reverted": 7,
+          "avgImpact": -1
+        },
+        "experiments": {
+          "total": 13,
+          "running": 13
+        },
+        "tasks": {
+          "total": 477,
+          "inProgress": 11,
+          "done": 8
+        },
+        "history": {
+          "total": 41
+        },
+        "reports": {
+          "total": 25
+        },
+        "platform": {
+          "ileTrials": 0,
+          "ileKept": 0,
+          "shrHealed": 260
+        },
+        "kpiCount": 15
+      },
+      "kpiSummary": {
+        "total": 121,
+        "kept": 41
+      },
+      "weeklyReport": {
+        "reportId": "rpt_a6b7d26f-d1a8-48d4-b4f0-8f4fe8532187",
+        "period": {
+          "start": "2026-06-21T22:40:41.619Z",
+          "end": "2026-06-28T22:40:41.619Z"
+        },
+        "metrics": {
+          "current": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 23,
+            "rollbackFrequency": 76,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0.3,
+            "selfImprovementScore": 31,
+            "collectedAt": "2026-06-28T22:40:41.619Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 8,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "previous": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 23,
+            "rollbackFrequency": 75,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0.3,
+            "selfImprovementScore": 31,
+            "collectedAt": "2026-06-28T22:39:58.128Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 8,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "delta": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 0,
+            "deploymentSuccessRate": 0,
+            "rollbackFrequency": 1,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0,
+            "selfImprovementScore": 0
+          }
+        },
+        "improvements": [
+          {
+            "area": "Deployment Success Rate",
+            "currentScore": 23,
+            "targetScore": 90,
+            "recommendation": "Increase pre-deployment validation coverage and add automated smoke tests.",
+            "priority": 1
+          },
+          {
+            "area": "Rollback Frequency",
+            "currentScore": 76,
+            "targetScore": 10,
+            "recommendation": "Implement canary deployment gates before full rollout.",
+            "priority": 1
+          },
+          {
+            "area": "Prediction Accuracy",
+            "currentScore": 0,
+            "targetScore": 80,
+            "recommendation": "Review reasoning engine confidence thresholds — increase minimum confidence before acting.",
+            "priority": 1
+          },
+          {
+            "area": "Mission Completion Rate",
+            "currentScore": 0,
+            "targetScore": 70,
+            "recommendation": "Mission planning needs better scope decomposition — subtasks are too large or ambiguous.",
+            "priority": 1
+          },
+          {
+            "area": "Agent Success Rate",
+            "currentScore": 0,
+            "targetScore": 95,
+            "recommendation": "Agent execution reliability is below threshold — review tool execution layer for failures.",
+            "priority": 1
+          }
+        ],
+        "wins": [],
+        "concerns": [],
+        "generatedAt": "2026-06-28T22:40:41.619Z",
+        "dataQuality": "high"
+      }
+    },
+    "summary": "121 evolutions, 46 kept, avg impact -1%",
+    "createdAt": "2026-06-28T22:41:04.218Z"
+  },
+  {
+    "id": "aerpt_1782686465653_jy37",
+    "title": "AEO Coordinator Sync — 2026-06-28",
+    "deptId": "aeo_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 25,
+          "active": 25
+        },
+        "evolutions": {
+          "total": 121,
+          "proposed": 0,
+          "validated": 1,
+          "applied": 10,
+          "kept": 49,
+          "reverted": 7,
+          "avgImpact": -1
+        },
+        "experiments": {
+          "total": 13,
+          "running": 13
+        },
+        "tasks": {
+          "total": 477,
+          "inProgress": 11,
+          "done": 8
+        },
+        "history": {
+          "total": 44
+        },
+        "reports": {
+          "total": 26
+        },
+        "platform": {
+          "ileTrials": 0,
+          "ileKept": 0,
+          "shrHealed": 260
+        },
+        "kpiCount": 15
+      },
+      "kpiSummary": {
+        "total": 121,
+        "kept": 44
+      },
+      "weeklyReport": {
+        "reportId": "rpt_464f4e7e-1d52-42d6-822e-064fb35d955f",
+        "period": {
+          "start": "2026-06-21T22:41:05.602Z",
+          "end": "2026-06-28T22:41:05.602Z"
+        },
+        "metrics": {
+          "current": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 22,
+            "rollbackFrequency": 76,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0.3,
+            "selfImprovementScore": 31,
+            "collectedAt": "2026-06-28T22:41:05.602Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 8,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "previous": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 23,
+            "rollbackFrequency": 76,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0.3,
+            "selfImprovementScore": 31,
+            "collectedAt": "2026-06-28T22:40:41.619Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 8,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "delta": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 0,
+            "deploymentSuccessRate": -1,
+            "rollbackFrequency": 0,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0,
+            "selfImprovementScore": 0
+          }
+        },
+        "improvements": [
+          {
+            "area": "Deployment Success Rate",
+            "currentScore": 22,
+            "targetScore": 90,
+            "recommendation": "Increase pre-deployment validation coverage and add automated smoke tests.",
+            "priority": 1
+          },
+          {
+            "area": "Rollback Frequency",
+            "currentScore": 76,
+            "targetScore": 10,
+            "recommendation": "Implement canary deployment gates before full rollout.",
+            "priority": 1
+          },
+          {
+            "area": "Prediction Accuracy",
+            "currentScore": 0,
+            "targetScore": 80,
+            "recommendation": "Review reasoning engine confidence thresholds — increase minimum confidence before acting.",
+            "priority": 1
+          },
+          {
+            "area": "Mission Completion Rate",
+            "currentScore": 0,
+            "targetScore": 70,
+            "recommendation": "Mission planning needs better scope decomposition — subtasks are too large or ambiguous.",
+            "priority": 1
+          },
+          {
+            "area": "Agent Success Rate",
+            "currentScore": 0,
+            "targetScore": 95,
+            "recommendation": "Agent execution reliability is below threshold — review tool execution layer for failures.",
+            "priority": 1
+          }
+        ],
+        "wins": [],
+        "concerns": [],
+        "generatedAt": "2026-06-28T22:41:05.602Z",
+        "dataQuality": "high"
+      }
+    },
+    "summary": "121 evolutions, 49 kept, avg impact -1%",
+    "createdAt": "2026-06-28T22:41:05.653Z"
+  },
+  {
+    "id": "aerpt_1782772787072_k1j2",
+    "title": "RptA 1782772786917",
+    "deptId": "aeo_coordinator",
+    "type": "sync",
+    "data": {},
+    "summary": "test",
+    "createdAt": "2026-06-29T22:39:47.072Z"
+  },
+  {
+    "id": "aerpt_1782772787538_3fh4",
+    "title": "AEO Coordinator Sync — 2026-06-29",
+    "deptId": "aeo_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 28,
+          "active": 28
+        },
+        "evolutions": {
+          "total": 150,
+          "proposed": 1,
+          "validated": 0,
+          "applied": 12,
+          "kept": 53,
+          "reverted": 8,
+          "avgImpact": -1
+        },
+        "experiments": {
+          "total": 15,
+          "running": 15
+        },
+        "tasks": {
+          "total": 516,
+          "inProgress": 12,
+          "done": 9
+        },
+        "history": {
+          "total": 47
+        },
+        "reports": {
+          "total": 28
+        },
+        "platform": {
+          "ileTrials": 0,
+          "ileKept": 0,
+          "shrHealed": 0
+        },
+        "kpiCount": 15
+      },
+      "kpiSummary": {
+        "total": 150,
+        "kept": 47
+      },
+      "weeklyReport": {
+        "reportId": "rpt_464f4e7e-1d52-42d6-822e-064fb35d955f",
+        "period": {
+          "start": "2026-06-21T22:41:05.602Z",
+          "end": "2026-06-28T22:41:05.602Z"
+        },
+        "metrics": {
+          "current": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 22,
+            "rollbackFrequency": 76,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0.3,
+            "selfImprovementScore": 31,
+            "collectedAt": "2026-06-28T22:41:05.602Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 8,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "previous": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 23,
+            "rollbackFrequency": 76,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0.3,
+            "selfImprovementScore": 31,
+            "collectedAt": "2026-06-28T22:40:41.619Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 8,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "delta": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 0,
+            "deploymentSuccessRate": -1,
+            "rollbackFrequency": 0,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0,
+            "selfImprovementScore": 0
+          }
+        },
+        "improvements": [
+          {
+            "area": "Deployment Success Rate",
+            "currentScore": 22,
+            "targetScore": 90,
+            "recommendation": "Increase pre-deployment validation coverage and add automated smoke tests.",
+            "priority": 1
+          },
+          {
+            "area": "Rollback Frequency",
+            "currentScore": 76,
+            "targetScore": 10,
+            "recommendation": "Implement canary deployment gates before full rollout.",
+            "priority": 1
+          },
+          {
+            "area": "Prediction Accuracy",
+            "currentScore": 0,
+            "targetScore": 80,
+            "recommendation": "Review reasoning engine confidence thresholds — increase minimum confidence before acting.",
+            "priority": 1
+          },
+          {
+            "area": "Mission Completion Rate",
+            "currentScore": 0,
+            "targetScore": 70,
+            "recommendation": "Mission planning needs better scope decomposition — subtasks are too large or ambiguous.",
+            "priority": 1
+          },
+          {
+            "area": "Agent Success Rate",
+            "currentScore": 0,
+            "targetScore": 95,
+            "recommendation": "Agent execution reliability is below threshold — review tool execution layer for failures.",
+            "priority": 1
+          }
+        ],
+        "wins": [],
+        "concerns": [],
+        "generatedAt": "2026-06-28T22:41:05.602Z",
+        "dataQuality": "high"
+      }
+    },
+    "summary": "150 evolutions, 53 kept, avg impact -1%",
+    "createdAt": "2026-06-29T22:39:47.538Z"
+  },
+  {
+    "id": "aerpt_1782772788557_d1n3",
+    "title": "AEO Coordinator Sync — 2026-06-29",
+    "deptId": "aeo_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 28,
+          "active": 28
+        },
+        "evolutions": {
+          "total": 150,
+          "proposed": 0,
+          "validated": 1,
+          "applied": 12,
+          "kept": 56,
+          "reverted": 8,
+          "avgImpact": -1
+        },
+        "experiments": {
+          "total": 15,
+          "running": 15
+        },
+        "tasks": {
+          "total": 516,
+          "inProgress": 12,
+          "done": 9
+        },
+        "history": {
+          "total": 50
+        },
+        "reports": {
+          "total": 29
+        },
+        "platform": {
+          "ileTrials": 0,
+          "ileKept": 0,
+          "shrHealed": 0
+        },
+        "kpiCount": 15
+      },
+      "kpiSummary": {
+        "total": 150,
+        "kept": 50
+      },
+      "weeklyReport": {
+        "reportId": "rpt_9f2e2b36-b9bc-40e2-8e7c-d7db11ff76a0",
+        "period": {
+          "start": "2026-06-22T22:39:48.506Z",
+          "end": "2026-06-29T22:39:48.506Z"
+        },
+        "metrics": {
+          "current": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 0,
+            "rollbackFrequency": 100,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0.3,
+            "selfImprovementScore": 26,
+            "collectedAt": "2026-06-29T22:39:48.506Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 8,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "previous": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 32,
+            "deploymentSuccessRate": 22,
+            "rollbackFrequency": 76,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0.3,
+            "selfImprovementScore": 31,
+            "collectedAt": "2026-06-28T22:41:05.602Z",
+            "dataQuality": "high",
+            "_raw": {
+              "reasonedRecsTotal": 7,
+              "healingEventsTotal": 0,
+              "cyclesTotal": 500,
+              "recsTotal": 8,
+              "tasksTotal": 1,
+              "agentRunsTotal": 2000,
+              "overrideEventsRecorded": 0,
+              "outcomeEventsRecorded": 0
+            }
+          },
+          "delta": {
+            "predictionAccuracy": 0,
+            "reasoningQuality": 0,
+            "deploymentSuccessRate": -22,
+            "rollbackFrequency": 24,
+            "operatorOverrideRate": 0,
+            "recommendationAcceptanceRate": 0,
+            "missionCompletionRate": 0,
+            "agentSuccessRate": 0,
+            "errorRate": 0,
+            "selfImprovementScore": -5
+          }
+        },
+        "improvements": [
+          {
+            "area": "Deployment Success Rate",
+            "currentScore": 0,
+            "targetScore": 90,
+            "recommendation": "Increase pre-deployment validation coverage and add automated smoke tests.",
+            "priority": 1
+          },
+          {
+            "area": "Rollback Frequency",
+            "currentScore": 100,
+            "targetScore": 10,
+            "recommendation": "Implement canary deployment gates before full rollout.",
+            "priority": 1
+          },
+          {
+            "area": "Prediction Accuracy",
+            "currentScore": 0,
+            "targetScore": 80,
+            "recommendation": "Review reasoning engine confidence thresholds — increase minimum confidence before acting.",
+            "priority": 1
+          },
+          {
+            "area": "Mission Completion Rate",
+            "currentScore": 0,
+            "targetScore": 70,
+            "recommendation": "Mission planning needs better scope decomposition — subtasks are too large or ambiguous.",
+            "priority": 1
+          },
+          {
+            "area": "Agent Success Rate",
+            "currentScore": 0,
+            "targetScore": 95,
+            "recommendation": "Agent execution reliability is below threshold — review tool execution layer for failures.",
+            "priority": 1
+          }
+        ],
+        "wins": [],
+        "concerns": [
+          {
+            "area": "Deployment Success Rate",
+            "trend": "declining (22.0% drop)",
+            "description": "Deployment Success Rate dropped from 22% to 0%.",
+            "urgency": "high"
+          },
+          {
+            "area": "Rollback Frequency",
+            "trend": "worsening (+24.0)",
+            "description": "Rollback Frequency increased from 76 to 100 (lower is better).",
+            "urgency": "high"
+          },
+          {
+            "area": "Self-Improvement Score",
+            "trend": "declining (5.0% drop)",
+            "description": "Self-Improvement Score dropped from 31% to 26%.",
+            "urgency": "low"
+          }
+        ],
+        "generatedAt": "2026-06-29T22:39:48.506Z",
+        "dataQuality": "high"
+      }
+    },
+    "summary": "150 evolutions, 56 kept, avg impact -1%",
+    "createdAt": "2026-06-29T22:39:48.557Z"
   }
 ]

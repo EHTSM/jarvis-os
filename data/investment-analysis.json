@@ -1,0 +1,130 @@
+{
+  "analyses": [
+    {
+      "id": "ian_1782773102680_34am",
+      "type": "roi",
+      "title": "Platform ROI",
+      "value": -99,
+      "unit": "%",
+      "current": {
+        "arr": 11988,
+        "estimatedAnnualCost": 17982
+      },
+      "target": {
+        "roi": 50
+      },
+      "interpretation": "negative",
+      "recommendation": "Reduce CAC or increase LTV via expansion revenue",
+      "analyzedAt": "2026-06-29T22:45:02.680Z"
+    },
+    {
+      "id": "ian_1782773102680_n6nf",
+      "type": "cac",
+      "title": "Customer Acquisition Cost",
+      "value": 30000,
+      "unit": "₹",
+      "current": {
+        "cac": 30000,
+        "newCustomersPerMonth": 1
+      },
+      "benchmark": {
+        "cacToLTVPct": 250,
+        "healthy": false
+      },
+      "target": {
+        "cac": 3996
+      },
+      "interpretation": "high",
+      "recommendation": "Improve trial→paid conversion or add referral channel",
+      "analyzedAt": "2026-06-29T22:45:02.680Z"
+    },
+    {
+      "id": "ian_1782773102680_dpk9",
+      "type": "ltv",
+      "title": "Customer Lifetime Value",
+      "value": 11988,
+      "unit": "₹",
+      "current": {
+        "avgLTV": 11988,
+        "ltvCACRatio": 0
+      },
+      "benchmark": {
+        "ltvCACGoodThreshold": 3
+      },
+      "interpretation": "weak",
+      "recommendation": "Invest in retention and upsell to improve LTV",
+      "analyzedAt": "2026-06-29T22:45:02.680Z"
+    },
+    {
+      "id": "ian_1782773102680_0n4r",
+      "type": "payback",
+      "title": "Payback Period",
+      "value": 30,
+      "unit": "months",
+      "current": {
+        "cac": 30000,
+        "avgMonthlyRevPerCustomer": 999
+      },
+      "benchmark": {
+        "healthyThresholdMonths": 12
+      },
+      "interpretation": "long",
+      "recommendation": "Shorten payback by improving conversion or increasing ARPU",
+      "analyzedAt": "2026-06-29T22:45:02.680Z"
+    },
+    {
+      "id": "ian_1782773102680_9oj1",
+      "type": "cash_efficiency",
+      "title": "Cash Efficiency Ratio",
+      "value": 0.01,
+      "unit": "x ARR/spend",
+      "current": {
+        "cashEfficiency": 0.01,
+        "arr": 11988
+      },
+      "interpretation": "inefficient",
+      "recommendation": "Cut infrastructure waste and automate manual workflows",
+      "analyzedAt": "2026-06-29T22:45:02.680Z"
+    },
+    {
+      "id": "ian_1782773102680_4s01",
+      "type": "opportunity_cost",
+      "title": "Revenue Pipeline Opportunity Cost",
+      "value": 11988,
+      "unit": "₹ per year (unrealized)",
+      "current": {
+        "uncapturedARR": 11988
+      },
+      "recommendation": "Invest in sales automation to capture pipeline",
+      "analyzedAt": "2026-06-29T22:45:02.680Z"
+    }
+  ],
+  "stats": {
+    "total": 6,
+    "avgROI": -99,
+    "byType": {
+      "roi": 1,
+      "cac": 1,
+      "ltv": 1,
+      "payback": 1,
+      "cash_efficiency": 1,
+      "opportunity_cost": 1
+    },
+    "liveMetrics": {
+      "mrr": 999,
+      "arr": 11988,
+      "paidCount": 1,
+      "trialCount": 48,
+      "convRate": 0.02,
+      "avgLTV": 11988,
+      "estimatedCAC": 30000,
+      "paybackMonths": 30,
+      "cashEfficiency": 0.01,
+      "roi": -99,
+      "oppCost": 11988,
+      "newCustomersPerMonth": 1,
+      "avgMonthlyRevPerCustomer": 999
+    }
+  },
+  "updatedAt": "2026-06-29T22:45:02.680Z"
+}

@@ -80,6 +80,249 @@
       "signatures": [],
       "ratifiedAt": null,
       "proposedAt": "2026-06-27T23:09:52.301Z"
+    },
+    {
+      "id": "ctrty_1782686406875_736e",
+      "title": "Treaty-1782686406830",
+      "type": "trade",
+      "parties": [
+        "cmem_1782686406835_5lif",
+        "cmem_1782686406837_bzs9"
+      ],
+      "terms": [
+        "Free trade of compute resources",
+        "Mutual knowledge sharing"
+      ],
+      "duration": "permanent",
+      "proposerId": "cmem_1782686406835_5lif",
+      "status": "ratified",
+      "signatures": [
+        "cmem_1782686406835_5lif",
+        "cmem_1782686406837_bzs9"
+      ],
+      "ratifiedAt": "2026-06-28T22:40:06.879Z",
+      "proposedAt": "2026-06-28T22:40:06.875Z"
+    },
+    {
+      "id": "ctrty_1782686406884_coqe",
+      "title": "Conclude-1782686406830",
+      "type": "collaboration",
+      "parties": [
+        "cmem_1782686406837_bzs9",
+        "cmem_1782686406838_mhi9"
+      ],
+      "terms": [
+        "projectName: JP-1782686406830",
+        "duration: 6m"
+      ],
+      "duration": "permanent",
+      "proposerId": "cmem_1782686406837_bzs9",
+      "status": "proposed",
+      "signatures": [],
+      "ratifiedAt": null,
+      "proposedAt": "2026-06-28T22:40:06.884Z"
+    },
+    {
+      "id": "ctrty_1782686407291_ktix",
+      "title": "Partnership 1782686406830",
+      "type": "collaboration",
+      "parties": [
+        "cmem_1782686406835_5lif",
+        "cmem_1782686406837_bzs9"
+      ],
+      "terms": [
+        "scope: engineering",
+        "agreed: true",
+        "resolvedAt: 2026-06-28T22:40:07.291Z"
+      ],
+      "duration": "permanent",
+      "proposerId": "cmem_1782686406835_5lif",
+      "status": "proposed",
+      "signatures": [],
+      "ratifiedAt": null,
+      "proposedAt": "2026-06-28T22:40:07.291Z"
+    },
+    {
+      "id": "ctrty_1782686408511_xfzh",
+      "title": "Full flow 1782686406830",
+      "type": "collaboration",
+      "parties": [
+        "cmem_1782686406835_5lif",
+        "cmem_1782686406838_mhi9"
+      ],
+      "terms": [
+        "resource: compute",
+        "agreed: true",
+        "resolvedAt: 2026-06-28T22:40:08.511Z"
+      ],
+      "duration": "permanent",
+      "proposerId": "cmem_1782686406835_5lif",
+      "status": "proposed",
+      "signatures": [],
+      "ratifiedAt": null,
+      "proposedAt": "2026-06-28T22:40:08.511Z"
+    },
+    {
+      "id": "ctrty_1782686477570_213e",
+      "title": "Treaty-1782686477479",
+      "type": "trade",
+      "parties": [
+        "cmem_1782686477497_ccn0",
+        "cmem_1782686477502_2pr0"
+      ],
+      "terms": [
+        "Free trade of compute resources",
+        "Mutual knowledge sharing"
+      ],
+      "duration": "permanent",
+      "proposerId": "cmem_1782686477497_ccn0",
+      "status": "ratified",
+      "signatures": [
+        "cmem_1782686477497_ccn0",
+        "cmem_1782686477502_2pr0"
+      ],
+      "ratifiedAt": "2026-06-28T22:41:17.574Z",
+      "proposedAt": "2026-06-28T22:41:17.570Z"
+    },
+    {
+      "id": "ctrty_1782686477576_ao3j",
+      "title": "Conclude-1782686477479",
+      "type": "collaboration",
+      "parties": [
+        "cmem_1782686477502_2pr0",
+        "cmem_1782686477503_akxy"
+      ],
+      "terms": [
+        "projectName: JP-1782686477479",
+        "duration: 6m"
+      ],
+      "duration": "permanent",
+      "proposerId": "cmem_1782686477502_2pr0",
+      "status": "proposed",
+      "signatures": [],
+      "ratifiedAt": null,
+      "proposedAt": "2026-06-28T22:41:17.576Z"
+    },
+    {
+      "id": "ctrty_1782686478935_3hke",
+      "title": "Partnership 1782686477479",
+      "type": "collaboration",
+      "parties": [
+        "cmem_1782686477497_ccn0",
+        "cmem_1782686477502_2pr0"
+      ],
+      "terms": [
+        "scope: engineering",
+        "agreed: true",
+        "resolvedAt: 2026-06-28T22:41:18.935Z"
+      ],
+      "duration": "permanent",
+      "proposerId": "cmem_1782686477497_ccn0",
+      "status": "proposed",
+      "signatures": [],
+      "ratifiedAt": null,
+      "proposedAt": "2026-06-28T22:41:18.935Z"
+    },
+    {
+      "id": "ctrty_1782686480500_2ng9",
+      "title": "Full flow 1782686477479",
+      "type": "collaboration",
+      "parties": [
+        "cmem_1782686477497_ccn0",
+        "cmem_1782686477503_akxy"
+      ],
+      "terms": [
+        "resource: compute",
+        "agreed: true",
+        "resolvedAt: 2026-06-28T22:41:20.500Z"
+      ],
+      "duration": "permanent",
+      "proposerId": "cmem_1782686477497_ccn0",
+      "status": "proposed",
+      "signatures": [],
+      "ratifiedAt": null,
+      "proposedAt": "2026-06-28T22:41:20.500Z"
+    },
+    {
+      "id": "ctrty_1782772797757_bpz2",
+      "title": "Treaty-1782772797713",
+      "type": "trade",
+      "parties": [
+        "cmem_1782772797717_3fgt",
+        "cmem_1782772797719_upab"
+      ],
+      "terms": [
+        "Free trade of compute resources",
+        "Mutual knowledge sharing"
+      ],
+      "duration": "permanent",
+      "proposerId": "cmem_1782772797717_3fgt",
+      "status": "ratified",
+      "signatures": [
+        "cmem_1782772797717_3fgt",
+        "cmem_1782772797719_upab"
+      ],
+      "ratifiedAt": "2026-06-29T22:39:57.758Z",
+      "proposedAt": "2026-06-29T22:39:57.757Z"
+    },
+    {
+      "id": "ctrty_1782772797759_y323",
+      "title": "Conclude-1782772797713",
+      "type": "collaboration",
+      "parties": [
+        "cmem_1782772797719_upab",
+        "cmem_1782772797720_wrst"
+      ],
+      "terms": [
+        "projectName: JP-1782772797713",
+        "duration: 6m"
+      ],
+      "duration": "permanent",
+      "proposerId": "cmem_1782772797719_upab",
+      "status": "proposed",
+      "signatures": [],
+      "ratifiedAt": null,
+      "proposedAt": "2026-06-29T22:39:57.759Z"
+    },
+    {
+      "id": "ctrty_1782772798176_1g4d",
+      "title": "Partnership 1782772797713",
+      "type": "collaboration",
+      "parties": [
+        "cmem_1782772797717_3fgt",
+        "cmem_1782772797719_upab"
+      ],
+      "terms": [
+        "scope: engineering",
+        "agreed: true",
+        "resolvedAt: 2026-06-29T22:39:58.176Z"
+      ],
+      "duration": "permanent",
+      "proposerId": "cmem_1782772797717_3fgt",
+      "status": "proposed",
+      "signatures": [],
+      "ratifiedAt": null,
+      "proposedAt": "2026-06-29T22:39:58.176Z"
+    },
+    {
+      "id": "ctrty_1782772799461_cb3w",
+      "title": "Full flow 1782772797713",
+      "type": "collaboration",
+      "parties": [
+        "cmem_1782772797717_3fgt",
+        "cmem_1782772797720_wrst"
+      ],
+      "terms": [
+        "resource: compute",
+        "agreed: true",
+        "resolvedAt: 2026-06-29T22:39:59.461Z"
+      ],
+      "duration": "permanent",
+      "proposerId": "cmem_1782772797717_3fgt",
+      "status": "proposed",
+      "signatures": [],
+      "ratifiedAt": null,
+      "proposedAt": "2026-06-29T22:39:59.461Z"
     }
   ],
   "disputes": [
@@ -96,6 +339,48 @@
       "arbitrationId": "carb_1782601786171_vuv3",
       "raisedAt": "2026-06-27T23:09:46.171Z",
       "resolvedAt": "2026-06-27T23:09:46.171Z"
+    },
+    {
+      "id": "cdisp_1782686406879_y43x",
+      "title": "Dispute-1782686406830",
+      "description": "Resource allocation disagreement",
+      "claimantId": "cmem_1782686406835_5lif",
+      "respondentId": "cmem_1782686406837_bzs9",
+      "evidence": [],
+      "category": "resource",
+      "status": "resolved",
+      "resolution": "Parties share resources equally",
+      "arbitrationId": "carb_1782686406882_rn89",
+      "raisedAt": "2026-06-28T22:40:06.879Z",
+      "resolvedAt": "2026-06-28T22:40:06.882Z"
+    },
+    {
+      "id": "cdisp_1782686477574_k8b9",
+      "title": "Dispute-1782686477479",
+      "description": "Resource allocation disagreement",
+      "claimantId": "cmem_1782686477497_ccn0",
+      "respondentId": "cmem_1782686477502_2pr0",
+      "evidence": [],
+      "category": "resource",
+      "status": "resolved",
+      "resolution": "Parties share resources equally",
+      "arbitrationId": "carb_1782686477574_ppfq",
+      "raisedAt": "2026-06-28T22:41:17.574Z",
+      "resolvedAt": "2026-06-28T22:41:17.574Z"
+    },
+    {
+      "id": "cdisp_1782772797758_oodm",
+      "title": "Dispute-1782772797713",
+      "description": "Resource allocation disagreement",
+      "claimantId": "cmem_1782772797717_3fgt",
+      "respondentId": "cmem_1782772797719_upab",
+      "evidence": [],
+      "category": "resource",
+      "status": "resolved",
+      "resolution": "Parties share resources equally",
+      "arbitrationId": "carb_1782772797759_oe3k",
+      "raisedAt": "2026-06-29T22:39:57.758Z",
+      "resolvedAt": "2026-06-29T22:39:57.759Z"
     }
   ],
   "arbitrations": [
@@ -109,6 +394,39 @@
       "precedentCreated": true,
       "openedAt": "2026-06-27T23:09:46.171Z",
       "closedAt": "2026-06-27T23:09:46.171Z"
+    },
+    {
+      "id": "carb_1782686406882_rn89",
+      "disputeId": "cdisp_1782686406879_y43x",
+      "arbitratorId": "cmem_1782686406838_mhi9",
+      "description": "Neutral arbitration",
+      "status": "closed",
+      "ruling": "Parties share resources equally",
+      "precedentCreated": true,
+      "openedAt": "2026-06-28T22:40:06.882Z",
+      "closedAt": "2026-06-28T22:40:06.882Z"
+    },
+    {
+      "id": "carb_1782686477574_ppfq",
+      "disputeId": "cdisp_1782686477574_k8b9",
+      "arbitratorId": "cmem_1782686477503_akxy",
+      "description": "Neutral arbitration",
+      "status": "closed",
+      "ruling": "Parties share resources equally",
+      "precedentCreated": true,
+      "openedAt": "2026-06-28T22:41:17.574Z",
+      "closedAt": "2026-06-28T22:41:17.574Z"
+    },
+    {
+      "id": "carb_1782772797759_oe3k",
+      "disputeId": "cdisp_1782772797758_oodm",
+      "arbitratorId": "cmem_1782772797720_wrst",
+      "description": "Neutral arbitration",
+      "status": "closed",
+      "ruling": "Parties share resources equally",
+      "precedentCreated": true,
+      "openedAt": "2026-06-29T22:39:57.759Z",
+      "closedAt": "2026-06-29T22:39:57.759Z"
     }
   ],
   "negotiations": [
@@ -241,6 +559,396 @@
       },
       "openedAt": "2026-06-27T23:09:52.300Z",
       "closedAt": "2026-06-27T23:09:52.301Z"
+    },
+    {
+      "id": "cneg_1782686406882_yh1o",
+      "title": "Negotiation-1782686406830",
+      "parties": [
+        "cmem_1782686406835_5lif",
+        "cmem_1782686406837_bzs9"
+      ],
+      "subject": "Partnership terms",
+      "proposerId": "cmem_1782686406835_5lif",
+      "initialTerms": {
+        "revShare": "50/50"
+      },
+      "status": "open",
+      "rounds": [],
+      "agreedTerms": null,
+      "openedAt": "2026-06-28T22:40:06.882Z",
+      "closedAt": null
+    },
+    {
+      "id": "cneg_1782686406883_e5zo",
+      "title": "NegRound-1782686406830",
+      "parties": [
+        "cmem_1782686406835_5lif",
+        "cmem_1782686406838_mhi9"
+      ],
+      "subject": "Data sharing",
+      "proposerId": "cmem_1782686406835_5lif",
+      "initialTerms": {},
+      "status": "open",
+      "rounds": [
+        {
+          "id": "cnrnd_1782686406883_c5ti",
+          "memberId": "cmem_1782686406835_5lif",
+          "terms": {
+            "dataAccess": "full"
+          },
+          "counterOffer": {},
+          "notes": "",
+          "at": "2026-06-28T22:40:06.883Z"
+        }
+      ],
+      "agreedTerms": null,
+      "openedAt": "2026-06-28T22:40:06.883Z",
+      "closedAt": null
+    },
+    {
+      "id": "cneg_1782686406884_fq0e",
+      "title": "Conclude-1782686406830",
+      "parties": [
+        "cmem_1782686406837_bzs9",
+        "cmem_1782686406838_mhi9"
+      ],
+      "subject": "Joint project",
+      "proposerId": "cmem_1782686406837_bzs9",
+      "initialTerms": {},
+      "status": "concluded",
+      "rounds": [],
+      "agreedTerms": {
+        "projectName": "JP-1782686406830",
+        "duration": "6m"
+      },
+      "openedAt": "2026-06-28T22:40:06.884Z",
+      "closedAt": "2026-06-28T22:40:06.884Z"
+    },
+    {
+      "id": "cneg_1782686407290_fnpu",
+      "title": "Partnership 1782686406830",
+      "parties": [
+        "cmem_1782686406835_5lif",
+        "cmem_1782686406837_bzs9"
+      ],
+      "subject": "Partnership 1782686406830",
+      "proposerId": "cmem_1782686406835_5lif",
+      "initialTerms": {
+        "scope": "engineering"
+      },
+      "status": "concluded",
+      "rounds": [
+        {
+          "id": "cnrnd_1782686407291_ojq6",
+          "memberId": "cmem_1782686406835_5lif",
+          "terms": {
+            "scope": "engineering"
+          },
+          "counterOffer": {},
+          "notes": "",
+          "at": "2026-06-28T22:40:07.291Z"
+        }
+      ],
+      "agreedTerms": {
+        "scope": "engineering",
+        "agreed": true,
+        "resolvedAt": "2026-06-28T22:40:07.291Z"
+      },
+      "openedAt": "2026-06-28T22:40:07.290Z",
+      "closedAt": "2026-06-28T22:40:07.291Z"
+    },
+    {
+      "id": "cneg_1782686408510_9m42",
+      "title": "Full flow 1782686406830",
+      "parties": [
+        "cmem_1782686406835_5lif",
+        "cmem_1782686406838_mhi9"
+      ],
+      "subject": "Full flow 1782686406830",
+      "proposerId": "cmem_1782686406835_5lif",
+      "initialTerms": {
+        "resource": "compute"
+      },
+      "status": "concluded",
+      "rounds": [
+        {
+          "id": "cnrnd_1782686408511_26q3",
+          "memberId": "cmem_1782686406835_5lif",
+          "terms": {
+            "resource": "compute"
+          },
+          "counterOffer": {},
+          "notes": "",
+          "at": "2026-06-28T22:40:08.511Z"
+        }
+      ],
+      "agreedTerms": {
+        "resource": "compute",
+        "agreed": true,
+        "resolvedAt": "2026-06-28T22:40:08.511Z"
+      },
+      "openedAt": "2026-06-28T22:40:08.510Z",
+      "closedAt": "2026-06-28T22:40:08.511Z"
+    },
+    {
+      "id": "cneg_1782686477575_c18y",
+      "title": "Negotiation-1782686477479",
+      "parties": [
+        "cmem_1782686477497_ccn0",
+        "cmem_1782686477502_2pr0"
+      ],
+      "subject": "Partnership terms",
+      "proposerId": "cmem_1782686477497_ccn0",
+      "initialTerms": {
+        "revShare": "50/50"
+      },
+      "status": "open",
+      "rounds": [],
+      "agreedTerms": null,
+      "openedAt": "2026-06-28T22:41:17.575Z",
+      "closedAt": null
+    },
+    {
+      "id": "cneg_1782686477575_grp1",
+      "title": "NegRound-1782686477479",
+      "parties": [
+        "cmem_1782686477497_ccn0",
+        "cmem_1782686477503_akxy"
+      ],
+      "subject": "Data sharing",
+      "proposerId": "cmem_1782686477497_ccn0",
+      "initialTerms": {},
+      "status": "open",
+      "rounds": [
+        {
+          "id": "cnrnd_1782686477575_p64s",
+          "memberId": "cmem_1782686477497_ccn0",
+          "terms": {
+            "dataAccess": "full"
+          },
+          "counterOffer": {},
+          "notes": "",
+          "at": "2026-06-28T22:41:17.575Z"
+        }
+      ],
+      "agreedTerms": null,
+      "openedAt": "2026-06-28T22:41:17.575Z",
+      "closedAt": null
+    },
+    {
+      "id": "cneg_1782686477575_iw65",
+      "title": "Conclude-1782686477479",
+      "parties": [
+        "cmem_1782686477502_2pr0",
+        "cmem_1782686477503_akxy"
+      ],
+      "subject": "Joint project",
+      "proposerId": "cmem_1782686477502_2pr0",
+      "initialTerms": {},
+      "status": "concluded",
+      "rounds": [],
+      "agreedTerms": {
+        "projectName": "JP-1782686477479",
+        "duration": "6m"
+      },
+      "openedAt": "2026-06-28T22:41:17.575Z",
+      "closedAt": "2026-06-28T22:41:17.576Z"
+    },
+    {
+      "id": "cneg_1782686478935_upjb",
+      "title": "Partnership 1782686477479",
+      "parties": [
+        "cmem_1782686477497_ccn0",
+        "cmem_1782686477502_2pr0"
+      ],
+      "subject": "Partnership 1782686477479",
+      "proposerId": "cmem_1782686477497_ccn0",
+      "initialTerms": {
+        "scope": "engineering"
+      },
+      "status": "concluded",
+      "rounds": [
+        {
+          "id": "cnrnd_1782686478935_j8e6",
+          "memberId": "cmem_1782686477497_ccn0",
+          "terms": {
+            "scope": "engineering"
+          },
+          "counterOffer": {},
+          "notes": "",
+          "at": "2026-06-28T22:41:18.935Z"
+        }
+      ],
+      "agreedTerms": {
+        "scope": "engineering",
+        "agreed": true,
+        "resolvedAt": "2026-06-28T22:41:18.935Z"
+      },
+      "openedAt": "2026-06-28T22:41:18.935Z",
+      "closedAt": "2026-06-28T22:41:18.935Z"
+    },
+    {
+      "id": "cneg_1782686480499_m3o7",
+      "title": "Full flow 1782686477479",
+      "parties": [
+        "cmem_1782686477497_ccn0",
+        "cmem_1782686477503_akxy"
+      ],
+      "subject": "Full flow 1782686477479",
+      "proposerId": "cmem_1782686477497_ccn0",
+      "initialTerms": {
+        "resource": "compute"
+      },
+      "status": "concluded",
+      "rounds": [
+        {
+          "id": "cnrnd_1782686480500_wgq3",
+          "memberId": "cmem_1782686477497_ccn0",
+          "terms": {
+            "resource": "compute"
+          },
+          "counterOffer": {},
+          "notes": "",
+          "at": "2026-06-28T22:41:20.500Z"
+        }
+      ],
+      "agreedTerms": {
+        "resource": "compute",
+        "agreed": true,
+        "resolvedAt": "2026-06-28T22:41:20.500Z"
+      },
+      "openedAt": "2026-06-28T22:41:20.499Z",
+      "closedAt": "2026-06-28T22:41:20.500Z"
+    },
+    {
+      "id": "cneg_1782772797759_gybh",
+      "title": "Negotiation-1782772797713",
+      "parties": [
+        "cmem_1782772797717_3fgt",
+        "cmem_1782772797719_upab"
+      ],
+      "subject": "Partnership terms",
+      "proposerId": "cmem_1782772797717_3fgt",
+      "initialTerms": {
+        "revShare": "50/50"
+      },
+      "status": "open",
+      "rounds": [],
+      "agreedTerms": null,
+      "openedAt": "2026-06-29T22:39:57.759Z",
+      "closedAt": null
+    },
+    {
+      "id": "cneg_1782772797759_jb4o",
+      "title": "NegRound-1782772797713",
+      "parties": [
+        "cmem_1782772797717_3fgt",
+        "cmem_1782772797720_wrst"
+      ],
+      "subject": "Data sharing",
+      "proposerId": "cmem_1782772797717_3fgt",
+      "initialTerms": {},
+      "status": "open",
+      "rounds": [
+        {
+          "id": "cnrnd_1782772797759_k7ho",
+          "memberId": "cmem_1782772797717_3fgt",
+          "terms": {
+            "dataAccess": "full"
+          },
+          "counterOffer": {},
+          "notes": "",
+          "at": "2026-06-29T22:39:57.759Z"
+        }
+      ],
+      "agreedTerms": null,
+      "openedAt": "2026-06-29T22:39:57.759Z",
+      "closedAt": null
+    },
+    {
+      "id": "cneg_1782772797759_14gb",
+      "title": "Conclude-1782772797713",
+      "parties": [
+        "cmem_1782772797719_upab",
+        "cmem_1782772797720_wrst"
+      ],
+      "subject": "Joint project",
+      "proposerId": "cmem_1782772797719_upab",
+      "initialTerms": {},
+      "status": "concluded",
+      "rounds": [],
+      "agreedTerms": {
+        "projectName": "JP-1782772797713",
+        "duration": "6m"
+      },
+      "openedAt": "2026-06-29T22:39:57.759Z",
+      "closedAt": "2026-06-29T22:39:57.759Z"
+    },
+    {
+      "id": "cneg_1782772798176_73dp",
+      "title": "Partnership 1782772797713",
+      "parties": [
+        "cmem_1782772797717_3fgt",
+        "cmem_1782772797719_upab"
+      ],
+      "subject": "Partnership 1782772797713",
+      "proposerId": "cmem_1782772797717_3fgt",
+      "initialTerms": {
+        "scope": "engineering"
+      },
+      "status": "concluded",
+      "rounds": [
+        {
+          "id": "cnrnd_1782772798176_7dfb",
+          "memberId": "cmem_1782772797717_3fgt",
+          "terms": {
+            "scope": "engineering"
+          },
+          "counterOffer": {},
+          "notes": "",
+          "at": "2026-06-29T22:39:58.176Z"
+        }
+      ],
+      "agreedTerms": {
+        "scope": "engineering",
+        "agreed": true,
+        "resolvedAt": "2026-06-29T22:39:58.176Z"
+      },
+      "openedAt": "2026-06-29T22:39:58.176Z",
+      "closedAt": "2026-06-29T22:39:58.176Z"
+    },
+    {
+      "id": "cneg_1782772799461_83mv",
+      "title": "Full flow 1782772797713",
+      "parties": [
+        "cmem_1782772797717_3fgt",
+        "cmem_1782772797720_wrst"
+      ],
+      "subject": "Full flow 1782772797713",
+      "proposerId": "cmem_1782772797717_3fgt",
+      "initialTerms": {
+        "resource": "compute"
+      },
+      "status": "concluded",
+      "rounds": [
+        {
+          "id": "cnrnd_1782772799461_qxhn",
+          "memberId": "cmem_1782772797717_3fgt",
+          "terms": {
+            "resource": "compute"
+          },
+          "counterOffer": {},
+          "notes": "",
+          "at": "2026-06-29T22:39:59.461Z"
+        }
+      ],
+      "agreedTerms": {
+        "resource": "compute",
+        "agreed": true,
+        "resolvedAt": "2026-06-29T22:39:59.461Z"
+      },
+      "openedAt": "2026-06-29T22:39:59.461Z",
+      "closedAt": "2026-06-29T22:39:59.461Z"
     }
   ]
 }

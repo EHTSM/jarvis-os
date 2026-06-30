@@ -4,11 +4,11 @@
   "confidenceThreshold": 0.6,
   "epoch": 1,
   "startedAt": "2026-06-28T05:36:00.555Z",
-  "lastHealthAt": "2026-06-28T21:03:45.469Z",
+  "lastHealthAt": "2026-06-30T00:12:04.153Z",
   "globalHealth": 93,
   "layerHealth": {
     "civilization": {
-      "score": 86,
+      "score": 88,
       "alerts": 0
     },
     "ecosystem": {
@@ -21,8 +21,8 @@
       "score": 100
     },
     "runtime": {
-      "total": 70,
-      "running": 70,
+      "total": 0,
+      "running": 0,
       "score": 100
     }
   }

@@ -2227,7 +2227,150 @@
       "deployCount": 0,
       "createdAt": "2026-06-28T06:10:37.687Z",
       "updatedAt": "2026-06-28T06:55:58.409Z"
+    },
+    {
+      "id": "bp_1782773168558_mljx",
+      "name": "BlueprintA-1782773168206",
+      "description": "Updated blueprint",
+      "type": "agency",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "agents": [
+        {
+          "role": "engineering",
+          "label": "engineering agent",
+          "enabled": true
+        },
+        {
+          "role": "business",
+          "label": "business agent",
+          "enabled": true
+        },
+        {
+          "role": "knowledge",
+          "label": "knowledge agent",
+          "enabled": true
+        },
+        {
+          "role": "evolution",
+          "label": "evolution agent",
+          "enabled": true
+        },
+        {
+          "role": "executive",
+          "label": "executive agent",
+          "enabled": true
+        }
+      ],
+      "workflows": [
+        {
+          "id": "wf_main",
+          "name": "Main workflow",
+          "steps": [
+            "plan",
+            "execute",
+            "measure",
+            "learn"
+          ]
+        }
+      ],
+      "policies": [
+        {
+          "id": "pol_default",
+          "rule": "All decisions must be explainable",
+          "enforcement": "required"
+        }
+      ],
+      "memorySpec": {
+        "layers": [
+          "mission",
+          "knowledge",
+          "learning"
+        ],
+        "ttl": "infinite"
+      },
+      "governanceSpec": {
+        "requireApproval": false,
+        "auditAll": true,
+        "explainAll": true
+      },
+      "authorId": "owner-1782773168206",
+      "tags": [
+        "v2",
+        "agency"
+      ],
+      "version": "1.0.0",
+      "status": "published",
+      "deployCount": 0,
+      "createdAt": "2026-06-29T22:46:08.558Z",
+      "updatedAt": "2026-06-29T22:46:08.568Z"
+    },
+    {
+      "id": "bp_1782773168567_ipwr",
+      "name": "AutoAgents-1782773168206",
+      "description": "",
+      "type": "team",
+      "capabilities": [
+        "engineering",
+        "knowledge"
+      ],
+      "agents": [
+        {
+          "role": "engineering",
+          "label": "engineering agent",
+          "enabled": true
+        },
+        {
+          "role": "knowledge",
+          "label": "knowledge agent",
+          "enabled": true
+        }
+      ],
+      "workflows": [
+        {
+          "id": "wf_main",
+          "name": "Main workflow",
+          "steps": [
+            "plan",
+            "execute",
+            "measure",
+            "learn"
+          ]
+        }
+      ],
+      "policies": [
+        {
+          "id": "pol_default",
+          "rule": "All decisions must be explainable",
+          "enforcement": "required"
+        }
+      ],
+      "memorySpec": {
+        "layers": [
+          "mission",
+          "knowledge",
+          "learning"
+        ],
+        "ttl": "infinite"
+      },
+      "governanceSpec": {
+        "requireApproval": false,
+        "auditAll": true,
+        "explainAll": true
+      },
+      "authorId": "test",
+      "tags": [],
+      "version": "1.0.0",
+      "status": "draft",
+      "deployCount": 0,
+      "createdAt": "2026-06-29T22:46:08.567Z",
+      "updatedAt": "2026-06-29T22:46:08.567Z"
     }
   ],
-  "total": 28
+  "total": 30
 }

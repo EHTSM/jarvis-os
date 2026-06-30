@@ -26,6 +26,33 @@
       "innovations": [],
       "startedAt": "2026-06-27T23:09:46.172Z",
       "updatedAt": "2026-06-27T23:09:46.172Z"
+    },
+    {
+      "id": "crsp_1782772797760_m2rf",
+      "title": "Research-1782772797713",
+      "description": "",
+      "leadMemberId": "cmem_1782772797717_3fgt",
+      "collaborators": [
+        "cmem_1782772797719_upab"
+      ],
+      "domain": "ai",
+      "hypothesis": "AI can self-organize",
+      "resources": {},
+      "timeline": "6m",
+      "status": "active",
+      "findings": [
+        {
+          "id": "cfnd_1782772797760_n726",
+          "finding": "Self-organization emerges after 100 cycles",
+          "confidence": 0.85,
+          "evidence": "Simulation data",
+          "memberId": "cmem_1782772797717_3fgt",
+          "at": "2026-06-29T22:39:57.760Z"
+        }
+      ],
+      "innovations": [],
+      "startedAt": "2026-06-29T22:39:57.760Z",
+      "updatedAt": "2026-06-29T22:39:57.760Z"
     }
   ],
   "innovations": [
@@ -44,6 +71,22 @@
       "rating": 0,
       "reviews": 0,
       "publishedAt": "2026-06-27T23:09:46.172Z"
+    },
+    {
+      "id": "cinv_1782772797760_yeix",
+      "title": "Innovation-1782772797713",
+      "description": "Novel consensus algorithm",
+      "authorMemberId": "cmem_1782772797717_3fgt",
+      "projectId": null,
+      "category": "process",
+      "impact": "high",
+      "implementation": "Use weighted voting with reputation",
+      "tags": [],
+      "status": "adopted",
+      "adoptions": 3,
+      "rating": 0,
+      "reviews": 0,
+      "publishedAt": "2026-06-29T22:39:57.760Z"
     }
   ],
   "proposals": [
@@ -257,6 +300,169 @@
       "votesAgainst": 0,
       "proposedAt": "2026-06-28T21:00:24.602Z",
       "implementedAt": null
+    },
+    {
+      "id": "cevo_1782687087306_rtnb",
+      "title": "Enhance autonomous decision quality — cycle 30",
+      "description": "Success rate 100% — propose confidence threshold reduction",
+      "proposerId": "autonomous_system",
+      "targetDomain": "autonomous",
+      "change": "Reduce confidence threshold from 0.6 to 0.58",
+      "rationale": "High success rate (100%) indicates system can act with slightly lower confidence",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-28T22:51:27.306Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782689301415_p37y",
+      "title": "Enhance autonomous decision quality — cycle 35",
+      "description": "Success rate 100% — propose confidence threshold reduction",
+      "proposerId": "autonomous_system",
+      "targetDomain": "autonomous",
+      "change": "Reduce confidence threshold from 0.6 to 0.58",
+      "rationale": "High success rate (100%) indicates system can act with slightly lower confidence",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-28T23:28:21.415Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782691433826_zr2n",
+      "title": "Enhance autonomous decision quality — cycle 40",
+      "description": "Success rate 100% — propose confidence threshold reduction",
+      "proposerId": "autonomous_system",
+      "targetDomain": "autonomous",
+      "change": "Reduce confidence threshold from 0.6 to 0.58",
+      "rationale": "High success rate (100%) indicates system can act with slightly lower confidence",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-29T00:03:53.826Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782720394116_kkxv",
+      "title": "Enhance autonomous decision quality — cycle 45",
+      "description": "Success rate 100% — propose confidence threshold reduction",
+      "proposerId": "autonomous_system",
+      "targetDomain": "autonomous",
+      "change": "Reduce confidence threshold from 0.6 to 0.58",
+      "rationale": "High success rate (100%) indicates system can act with slightly lower confidence",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-29T08:06:34.116Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782724232049_emqr",
+      "title": "Enhance autonomous decision quality — cycle 50",
+      "description": "Success rate 100% — propose confidence threshold reduction",
+      "proposerId": "autonomous_system",
+      "targetDomain": "autonomous",
+      "change": "Reduce confidence threshold from 0.6 to 0.58",
+      "rationale": "High success rate (100%) indicates system can act with slightly lower confidence",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-29T09:10:32.049Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782740163634_pd4k",
+      "title": "Enhance autonomous decision quality — cycle 55",
+      "description": "Success rate 100% — propose confidence threshold reduction",
+      "proposerId": "autonomous_system",
+      "targetDomain": "autonomous",
+      "change": "Reduce confidence threshold from 0.6 to 0.58",
+      "rationale": "High success rate (100%) indicates system can act with slightly lower confidence",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-29T13:36:03.634Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782772792964_azyo",
+      "title": "Evo-1782772792938",
+      "description": "",
+      "proposerId": "autonomous_system",
+      "targetDomain": "autonomous",
+      "change": "Add adaptive confidence scoring",
+      "rationale": "Static threshold misses context",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-29T22:39:52.964Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782772795012_1gax",
+      "title": "Enhance autonomous decision quality — cycle 65",
+      "description": "Success rate 100% — propose confidence threshold reduction",
+      "proposerId": "autonomous_system",
+      "targetDomain": "autonomous",
+      "change": "Reduce confidence threshold from 0.65 to 0.63",
+      "rationale": "High success rate (100%) indicates system can act with slightly lower confidence",
+      "priority": "medium",
+      "status": "proposed",
+      "votes": [],
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-29T22:39:55.012Z",
+      "implementedAt": null
+    },
+    {
+      "id": "cevo_1782772797762_r4jy",
+      "title": "Evo-1782772797713",
+      "description": "",
+      "proposerId": "cmem_1782772797717_3fgt",
+      "targetDomain": "engineering",
+      "change": "Add self-healing to all engineering orgs",
+      "rationale": "Reduces downtime",
+      "priority": "high",
+      "status": "approved",
+      "votes": [
+        {
+          "memberId": "cmem_1782772797717_3fgt",
+          "vote": "for",
+          "rationale": "Critical for resilience",
+          "at": "2026-06-29T22:39:57.765Z"
+        },
+        {
+          "memberId": "cmem_1782772797719_upab",
+          "vote": "for",
+          "rationale": "",
+          "at": "2026-06-29T22:39:57.766Z"
+        },
+        {
+          "memberId": "cmem_1782772797720_wrst",
+          "vote": "for",
+          "rationale": "",
+          "at": "2026-06-29T22:39:57.766Z"
+        }
+      ],
+      "votesFor": 3,
+      "votesAgainst": 0,
+      "proposedAt": "2026-06-29T22:39:57.762Z",
+      "implementedAt": null
     }
   ],
   "adoptions": [
@@ -280,6 +486,27 @@
       "memberId": "extra-1782601786114",
       "notes": "",
       "at": "2026-06-27T23:09:46.173Z"
+    },
+    {
+      "id": "cadp_1782772797760_euew",
+      "innovationId": "cinv_1782772797760_yeix",
+      "memberId": "cmem_1782772797719_upab",
+      "notes": "Implementing in our pipeline",
+      "at": "2026-06-29T22:39:57.760Z"
+    },
+    {
+      "id": "cadp_1782772797761_xn0j",
+      "innovationId": "cinv_1782772797760_yeix",
+      "memberId": "cmem_1782772797720_wrst",
+      "notes": "",
+      "at": "2026-06-29T22:39:57.761Z"
+    },
+    {
+      "id": "cadp_1782772797762_ge72",
+      "innovationId": "cinv_1782772797760_yeix",
+      "memberId": "extra-1782772797713",
+      "notes": "",
+      "at": "2026-06-29T22:39:57.762Z"
     }
   ]
 }

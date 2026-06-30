@@ -1,0 +1,30 @@
+{
+  "url": "about:blank",
+  "title": "",
+  "findings": [
+    {
+      "type": "missing_landmark",
+      "severity": "warning",
+      "landmark": "main",
+      "message": "No <main> landmark element"
+    }
+  ],
+  "stats": {
+    "totalFindings": 1,
+    "errors": 0,
+    "warnings": 1,
+    "info": 0,
+    "types": [
+      "missing_landmark"
+    ]
+  },
+  "landmarks": {
+    "main": false,
+    "nav": false,
+    "header": false,
+    "footer": false
+  },
+  "headingCount": 0,
+  "pageId": "page-14",
+  "timestamp": "2026-06-29T22:43:39.996Z"
+}

@@ -1,0 +1,1041 @@
+{
+  "orchestrations": [
+    {
+      "id": "orch_1782725337496_t7hv",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337488_ec93"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337488_ec93",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 7,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T09:28:57.496Z"
+    },
+    {
+      "id": "orch_1782725337496_xmig",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337490_agrr"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337490_agrr",
+          "command": "stream",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 6,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T09:28:57.496Z"
+    },
+    {
+      "id": "orch_1782725337497_74yn",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337490_g55u"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337490_g55u",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 6,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T09:28:57.497Z"
+    },
+    {
+      "id": "orch_1782725337497_pt41",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337491_6udw"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337491_6udw",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 6,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T09:28:57.497Z"
+    },
+    {
+      "id": "orch_1782725337497_jxl1",
+      "mode": "failover",
+      "deviceIds": [
+        "dev_1782725337491_y0dm"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337491_y0dm",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 5,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T09:28:57.497Z"
+    },
+    {
+      "id": "orch_1782725337497_h95p",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337493_ckqn"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337493_ckqn",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 3,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T09:28:57.497Z"
+    },
+    {
+      "id": "orch_1782725337497_zw7o",
+      "mode": "parallel",
+      "deviceIds": [
+        "dev_1782725337489_4dqh",
+        "dev_1782725337489_d5g5"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_4dqh",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_d5g5",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 2,
+      "failed": 0,
+      "durationMs": 8,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T09:28:57.497Z"
+    },
+    {
+      "id": "orch_1782725337497_g1gk",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337488_ec93",
+        "dev_1782725337490_g55u"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337488_ec93",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337490_g55u",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 2,
+      "failed": 0,
+      "durationMs": 4,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T09:28:57.497Z"
+    },
+    {
+      "id": "orch_1782725337498_bcjo",
+      "mode": "parallel",
+      "deviceIds": [
+        "dev_1782725337494_1ocs",
+        "dev_1782725337495_r2fe",
+        "dev_1782725337495_49h1"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337494_1ocs",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337495_r2fe",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337495_49h1",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 3,
+      "failed": 0,
+      "durationMs": 2,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T09:28:57.498Z"
+    },
+    {
+      "id": "orch_1782725337498_d1g6",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337467_djo0",
+        "dev_1782725337489_4dqh",
+        "dev_1782725337489_d5g5"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337467_djo0",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_4dqh",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_d5g5",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 3,
+      "failed": 0,
+      "durationMs": 5,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T09:28:57.498Z"
+    },
+    {
+      "id": "orch_1782725337499_3v52",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337493_ckqn"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337493_ckqn",
+          "command": "execute",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 0,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T09:28:57.499Z"
+    },
+    {
+      "id": "orch_1782725337499_mvb4",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337467_djo0",
+        "dev_1782725337489_4dqh",
+        "dev_1782725337489_d5g5"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337467_djo0",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_4dqh",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_d5g5",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 3,
+      "failed": 0,
+      "durationMs": 1,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T09:28:57.499Z"
+    },
+    {
+      "id": "orch_1782773103848_566h",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782773103842_sz6d"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103842_sz6d",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 6,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T22:45:03.848Z"
+    },
+    {
+      "id": "orch_1782773103848_s5st",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782773103843_wmqm"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103843_wmqm",
+          "command": "stream",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 5,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T22:45:03.848Z"
+    },
+    {
+      "id": "orch_1782773103848_c3dx",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782773103843_w0jw"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103843_w0jw",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 5,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T22:45:03.848Z"
+    },
+    {
+      "id": "orch_1782773103848_jngo",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782773103843_fja2"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103843_fja2",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 4,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T22:45:03.848Z"
+    },
+    {
+      "id": "orch_1782773103849_egxr",
+      "mode": "failover",
+      "deviceIds": [
+        "dev_1782773103844_s14a"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103844_s14a",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 5,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T22:45:03.849Z"
+    },
+    {
+      "id": "orch_1782773103849_ydo1",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782773103846_ho2e"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103846_ho2e",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 3,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T22:45:03.849Z"
+    },
+    {
+      "id": "orch_1782773103849_hcll",
+      "mode": "parallel",
+      "deviceIds": [
+        "dev_1782773103842_0ib1",
+        "dev_1782773103842_f7si"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103842_0ib1",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103842_f7si",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 2,
+      "failed": 0,
+      "durationMs": 6,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T22:45:03.849Z"
+    },
+    {
+      "id": "orch_1782773103853_68b2",
+      "mode": "parallel",
+      "deviceIds": [
+        "dev_1782773103847_ttbb",
+        "dev_1782773103847_f6tt",
+        "dev_1782773103847_penk"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103847_ttbb",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103847_f6tt",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103847_penk",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 3,
+      "failed": 0,
+      "durationMs": 5,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T22:45:03.853Z"
+    },
+    {
+      "id": "orch_1782773103853_pwlm",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337488_ec93",
+        "dev_1782725337490_g55u",
+        "dev_1782725337494_1ocs"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337488_ec93",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337490_g55u",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337494_1ocs",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 3,
+      "failed": 0,
+      "durationMs": 8,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T22:45:03.853Z"
+    },
+    {
+      "id": "orch_1782773103853_k4rn",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337467_djo0",
+        "dev_1782725337489_4dqh",
+        "dev_1782725337489_d5g5"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337467_djo0",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_4dqh",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_d5g5",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 3,
+      "failed": 0,
+      "durationMs": 8,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T22:45:03.853Z"
+    },
+    {
+      "id": "orch_1782773103854_1lv3",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337493_ckqn",
+        "dev_1782773103846_ho2e"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337493_ckqn",
+          "command": "execute",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103846_ho2e",
+          "command": "execute",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 2,
+      "failed": 0,
+      "durationMs": 0,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T22:45:03.854Z"
+    },
+    {
+      "id": "orch_1782773103855_d3jd",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337467_djo0",
+        "dev_1782725337489_4dqh",
+        "dev_1782725337489_d5g5"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337467_djo0",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_4dqh",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_d5g5",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 3,
+      "failed": 0,
+      "durationMs": 1,
+      "status": "success",
+      "orchestratedAt": "2026-06-29T22:45:03.855Z"
+    },
+    {
+      "id": "orch_1782778347168_ol16",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782778347157_i4ou"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782778347157_i4ou",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 10,
+      "status": "success",
+      "orchestratedAt": "2026-06-30T00:12:27.168Z"
+    },
+    {
+      "id": "orch_1782778347168_hyac",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782778347158_cemj"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782778347158_cemj",
+          "command": "stream",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 9,
+      "status": "success",
+      "orchestratedAt": "2026-06-30T00:12:27.168Z"
+    },
+    {
+      "id": "orch_1782778347168_ptbn",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782778347159_kl8r"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782778347159_kl8r",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 8,
+      "status": "success",
+      "orchestratedAt": "2026-06-30T00:12:27.168Z"
+    },
+    {
+      "id": "orch_1782778347169_cnqe",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782778347160_4oye"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782778347160_4oye",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 9,
+      "status": "success",
+      "orchestratedAt": "2026-06-30T00:12:27.169Z"
+    },
+    {
+      "id": "orch_1782778347169_jjoi",
+      "mode": "failover",
+      "deviceIds": [
+        "dev_1782778347160_m8oj"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782778347160_m8oj",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 8,
+      "status": "success",
+      "orchestratedAt": "2026-06-30T00:12:27.169Z"
+    },
+    {
+      "id": "orch_1782778347169_gi8a",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782778347164_yex7"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782778347164_yex7",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 1,
+      "failed": 0,
+      "durationMs": 4,
+      "status": "success",
+      "orchestratedAt": "2026-06-30T00:12:27.169Z"
+    },
+    {
+      "id": "orch_1782778347169_elxu",
+      "mode": "parallel",
+      "deviceIds": [
+        "dev_1782778347158_reur",
+        "dev_1782778347158_ujaz"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782778347158_reur",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782778347158_ujaz",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 2,
+      "failed": 0,
+      "durationMs": 11,
+      "status": "success",
+      "orchestratedAt": "2026-06-30T00:12:27.169Z"
+    },
+    {
+      "id": "orch_1782778347173_a730",
+      "mode": "parallel",
+      "deviceIds": [
+        "dev_1782778347166_cqyh",
+        "dev_1782778347166_af2a",
+        "dev_1782778347167_urfu"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782778347166_cqyh",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782778347166_af2a",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782778347167_urfu",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 3,
+      "failed": 0,
+      "durationMs": 5,
+      "status": "success",
+      "orchestratedAt": "2026-06-30T00:12:27.173Z"
+    },
+    {
+      "id": "orch_1782778347173_45jq",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337488_ec93",
+        "dev_1782725337490_g55u",
+        "dev_1782725337494_1ocs"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337488_ec93",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337490_g55u",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337494_1ocs",
+          "command": "query",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 3,
+      "failed": 0,
+      "durationMs": 10,
+      "status": "success",
+      "orchestratedAt": "2026-06-30T00:12:27.173Z"
+    },
+    {
+      "id": "orch_1782778347174_7zzj",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337467_djo0",
+        "dev_1782725337489_4dqh",
+        "dev_1782725337489_d5g5"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337467_djo0",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_4dqh",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_d5g5",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 3,
+      "failed": 0,
+      "durationMs": 11,
+      "status": "success",
+      "orchestratedAt": "2026-06-30T00:12:27.174Z"
+    },
+    {
+      "id": "orch_1782778347175_gbpt",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337467_djo0",
+        "dev_1782725337489_4dqh",
+        "dev_1782725337489_d5g5"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337467_djo0",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_4dqh",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337489_d5g5",
+          "command": "read",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 3,
+      "failed": 0,
+      "durationMs": 0,
+      "status": "success",
+      "orchestratedAt": "2026-06-30T00:12:27.175Z"
+    },
+    {
+      "id": "orch_1782778347176_mfqm",
+      "mode": "sequential",
+      "deviceIds": [
+        "dev_1782725337493_ckqn",
+        "dev_1782773103846_ho2e",
+        "dev_1782778347164_yex7"
+      ],
+      "commandCount": 1,
+      "results": [
+        {
+          "ok": true,
+          "deviceId": "dev_1782725337493_ckqn",
+          "command": "execute",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782773103846_ho2e",
+          "command": "execute",
+          "result": "mock_ok",
+          "latencyMs": 12
+        },
+        {
+          "ok": true,
+          "deviceId": "dev_1782778347164_yex7",
+          "command": "execute",
+          "result": "mock_ok",
+          "latencyMs": 12
+        }
+      ],
+      "succeeded": 3,
+      "failed": 0,
+      "durationMs": 1,
+      "status": "success",
+      "orchestratedAt": "2026-06-30T00:12:27.176Z"
+    }
+  ],
+  "stats": {
+    "total": 36,
+    "succeeded": 36,
+    "failed": 0,
+    "byMode": {
+      "sequential": 27,
+      "parallel": 6,
+      "conditional": 0,
+      "failover": 3
+    },
+    "avgDevicesPerOrch": 2
+  },
+  "updatedAt": "2026-06-30T00:12:27.176Z"
+}

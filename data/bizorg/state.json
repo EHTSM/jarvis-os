@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updatedAt": "2026-06-28T06:35:33.418Z",
+  "updatedAt": "2026-06-29T22:46:09.709Z",
   "objectives": [
     {
       "id": "bobj_1782533088571_1",
@@ -788,6 +788,864 @@
       "createdAt": "2026-06-28T05:36:00.500Z",
       "updatedAt": "2026-06-28T05:36:00.500Z",
       "completedAt": null
+    },
+    {
+      "id": "bobj_1782686404642_1",
+      "title": "Q3 Revenue Growth",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "leads"
+      ],
+      "status": "completed",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:04.643Z",
+      "updatedAt": "2026-06-28T22:40:04.646Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686404651_1",
+      "title": "Growth Obj",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [],
+      "status": "active",
+      "campaignIds": [
+        "bcmp_1782686404653_2"
+      ],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:04.651Z",
+      "updatedAt": "2026-06-28T22:40:04.651Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686404721_1",
+      "title": "Dash test obj",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [],
+      "status": "active",
+      "campaignIds": [
+        "bcmp_1782686404723_2"
+      ],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:04.721Z",
+      "updatedAt": "2026-06-28T22:40:04.721Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686404731_1",
+      "title": "Q3 Revenue Test 1782686404634",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "leads"
+      ],
+      "status": "active",
+      "campaignIds": [
+        "bcmp_1782686404768_9",
+        "bcmp_1782686404815_g"
+      ],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:04.731Z",
+      "updatedAt": "2026-06-28T22:40:04.731Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686407336_1",
+      "title": "[EOS] Build civilization feature 1782686406830",
+      "description": "Executive goal delegated to business org: Build civilization feature 1782686406830",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:07.336Z",
+      "updatedAt": "2026-06-28T22:40:07.336Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686407555_3",
+      "title": "[EOS] Health test 1782686406830",
+      "description": "Executive goal delegated to business org: Health test 1782686406830",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:07.555Z",
+      "updatedAt": "2026-06-28T22:40:07.555Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686407801_5",
+      "title": "[EOS] Resource-backed initiative 1782686406830",
+      "description": "Executive goal delegated to business org: Resource-backed initiative 1782686406830",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:07.801Z",
+      "updatedAt": "2026-06-28T22:40:07.801Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686408323_7",
+      "title": "[EOS] Cross-layer smoke 1782686406830",
+      "description": "Executive goal delegated to business org: Cross-layer smoke 1782686406830",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:08.323Z",
+      "updatedAt": "2026-06-28T22:40:08.323Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686408970_1",
+      "title": "[EOS] Ecosystem pipeline test 1782686408539",
+      "description": "Executive goal delegated to business org: Ecosystem pipeline test 1782686408539",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:08.970Z",
+      "updatedAt": "2026-06-28T22:40:08.970Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686409189_3",
+      "title": "[EOS] Build feature for tenant 1782686408539",
+      "description": "Executive goal delegated to business org: Build feature for tenant 1782686408539",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:09.189Z",
+      "updatedAt": "2026-06-28T22:40:09.189Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686409336_5",
+      "title": "[EOS] Health test 1782686408539",
+      "description": "Executive goal delegated to business org: Health test 1782686408539",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:09.336Z",
+      "updatedAt": "2026-06-28T22:40:09.336Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686409749_7",
+      "title": "[EOS] Integration smoke 1782686408539",
+      "description": "Executive goal delegated to business org: Integration smoke 1782686408539",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:09.749Z",
+      "updatedAt": "2026-06-28T22:40:09.749Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686413665_1",
+      "title": "[EOS] Enterprise Pipeline Test 1782686412826",
+      "description": "Executive goal delegated to business org: Enterprise Pipeline Test 1782686412826",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:13.665Z",
+      "updatedAt": "2026-06-28T22:40:13.665Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686414349_3",
+      "title": "[EOS] Launch SmokeProduct to GA 1782686412826",
+      "description": "Executive goal delegated to business org: Launch SmokeProduct to GA 1782686412826",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:14.349Z",
+      "updatedAt": "2026-06-28T22:40:14.349Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686415791_1",
+      "title": "[EOS] DispBiz 1782686415198",
+      "description": "Executive goal delegated to business org: DispBiz 1782686415198",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:15.791Z",
+      "updatedAt": "2026-06-28T22:40:15.791Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686415904_3",
+      "title": "[EOS] Full Pipeline 1782686415198",
+      "description": "Executive goal delegated to business org: Full Pipeline 1782686415198",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:15.904Z",
+      "updatedAt": "2026-06-28T22:40:15.904Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686428871_5",
+      "title": "[EOS] Smoke Test 1782686415198",
+      "description": "Executive goal delegated to business org: Smoke Test 1782686415198",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:28.871Z",
+      "updatedAt": "2026-06-28T22:40:28.871Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686474470_1",
+      "title": "Q3 Revenue Growth",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "leads"
+      ],
+      "status": "completed",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:14.471Z",
+      "updatedAt": "2026-06-28T22:41:14.479Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686474485_1",
+      "title": "Growth Obj",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [],
+      "status": "active",
+      "campaignIds": [
+        "bcmp_1782686474488_2"
+      ],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:14.485Z",
+      "updatedAt": "2026-06-28T22:41:14.485Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686474569_1",
+      "title": "Dash test obj",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [],
+      "status": "active",
+      "campaignIds": [
+        "bcmp_1782686474573_2"
+      ],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:14.569Z",
+      "updatedAt": "2026-06-28T22:41:14.569Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686474581_1",
+      "title": "Q3 Revenue Test 1782686474455",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "leads"
+      ],
+      "status": "active",
+      "campaignIds": [
+        "bcmp_1782686474627_9",
+        "bcmp_1782686474712_g"
+      ],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:14.581Z",
+      "updatedAt": "2026-06-28T22:41:14.581Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686479004_1",
+      "title": "[EOS] Build civilization feature 1782686477479",
+      "description": "Executive goal delegated to business org: Build civilization feature 1782686477479",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:19.004Z",
+      "updatedAt": "2026-06-28T22:41:19.004Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686479242_3",
+      "title": "[EOS] Health test 1782686477479",
+      "description": "Executive goal delegated to business org: Health test 1782686477479",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:19.242Z",
+      "updatedAt": "2026-06-28T22:41:19.242Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686479477_5",
+      "title": "[EOS] Resource-backed initiative 1782686477479",
+      "description": "Executive goal delegated to business org: Resource-backed initiative 1782686477479",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:19.477Z",
+      "updatedAt": "2026-06-28T22:41:19.477Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686480086_7",
+      "title": "[EOS] Cross-layer smoke 1782686477479",
+      "description": "Executive goal delegated to business org: Cross-layer smoke 1782686477479",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:20.086Z",
+      "updatedAt": "2026-06-28T22:41:20.086Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686481025_1",
+      "title": "[EOS] Ecosystem pipeline test 1782686480549",
+      "description": "Executive goal delegated to business org: Ecosystem pipeline test 1782686480549",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:21.025Z",
+      "updatedAt": "2026-06-28T22:41:21.025Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686481738_3",
+      "title": "[EOS] Build feature for tenant 1782686480549",
+      "description": "Executive goal delegated to business org: Build feature for tenant 1782686480549",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:21.738Z",
+      "updatedAt": "2026-06-28T22:41:21.738Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686481905_5",
+      "title": "[EOS] Health test 1782686480549",
+      "description": "Executive goal delegated to business org: Health test 1782686480549",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:21.905Z",
+      "updatedAt": "2026-06-28T22:41:21.905Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686482370_7",
+      "title": "[EOS] Integration smoke 1782686480549",
+      "description": "Executive goal delegated to business org: Integration smoke 1782686480549",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:22.370Z",
+      "updatedAt": "2026-06-28T22:41:22.370Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686486779_1",
+      "title": "[EOS] Enterprise Pipeline Test 1782686485913",
+      "description": "Executive goal delegated to business org: Enterprise Pipeline Test 1782686485913",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:26.779Z",
+      "updatedAt": "2026-06-28T22:41:26.779Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686487755_3",
+      "title": "[EOS] Launch SmokeProduct to GA 1782686485913",
+      "description": "Executive goal delegated to business org: Launch SmokeProduct to GA 1782686485913",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:27.755Z",
+      "updatedAt": "2026-06-28T22:41:27.755Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686489094_1",
+      "title": "[EOS] DispBiz 1782686488376",
+      "description": "Executive goal delegated to business org: DispBiz 1782686488376",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:29.094Z",
+      "updatedAt": "2026-06-28T22:41:29.094Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686489249_3",
+      "title": "[EOS] Full Pipeline 1782686488376",
+      "description": "Executive goal delegated to business org: Full Pipeline 1782686488376",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:29.249Z",
+      "updatedAt": "2026-06-28T22:41:29.249Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782686502118_5",
+      "title": "[EOS] Smoke Test 1782686488376",
+      "description": "Executive goal delegated to business org: Smoke Test 1782686488376",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:42.118Z",
+      "updatedAt": "2026-06-28T22:41:42.118Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772795365_1",
+      "title": "Q3 Revenue Growth",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "leads"
+      ],
+      "status": "completed",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:55.365Z",
+      "updatedAt": "2026-06-29T22:39:55.370Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772795377_1",
+      "title": "Growth Obj",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [],
+      "status": "active",
+      "campaignIds": [
+        "bcmp_1782772795381_2"
+      ],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:55.377Z",
+      "updatedAt": "2026-06-29T22:39:55.377Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772795461_1",
+      "title": "Dash test obj",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [],
+      "status": "active",
+      "campaignIds": [
+        "bcmp_1782772795464_2"
+      ],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:55.461Z",
+      "updatedAt": "2026-06-29T22:39:55.461Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772795474_1",
+      "title": "Q3 Revenue Test 1782772795357",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "leads"
+      ],
+      "status": "active",
+      "campaignIds": [
+        "bcmp_1782772795518_9",
+        "bcmp_1782772795573_i"
+      ],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:55.474Z",
+      "updatedAt": "2026-06-29T22:39:55.474Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772798222_1",
+      "title": "[EOS] Build civilization feature 1782772797713",
+      "description": "Executive goal delegated to business org: Build civilization feature 1782772797713",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:58.222Z",
+      "updatedAt": "2026-06-29T22:39:58.222Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772798482_3",
+      "title": "[EOS] Health test 1782772797713",
+      "description": "Executive goal delegated to business org: Health test 1782772797713",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:58.482Z",
+      "updatedAt": "2026-06-29T22:39:58.482Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772798708_5",
+      "title": "[EOS] Resource-backed initiative 1782772797713",
+      "description": "Executive goal delegated to business org: Resource-backed initiative 1782772797713",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:58.708Z",
+      "updatedAt": "2026-06-29T22:39:58.708Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772799253_7",
+      "title": "[EOS] Cross-layer smoke 1782772797713",
+      "description": "Executive goal delegated to business org: Cross-layer smoke 1782772797713",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:59.253Z",
+      "updatedAt": "2026-06-29T22:39:59.253Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772799920_1",
+      "title": "[EOS] Ecosystem pipeline test 1782772799499",
+      "description": "Executive goal delegated to business org: Ecosystem pipeline test 1782772799499",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:59.920Z",
+      "updatedAt": "2026-06-29T22:39:59.920Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772800129_3",
+      "title": "[EOS] Build feature for tenant 1782772799499",
+      "description": "Executive goal delegated to business org: Build feature for tenant 1782772799499",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:40:00.129Z",
+      "updatedAt": "2026-06-29T22:40:00.129Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772800302_5",
+      "title": "[EOS] Health test 1782772799499",
+      "description": "Executive goal delegated to business org: Health test 1782772799499",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:40:00.302Z",
+      "updatedAt": "2026-06-29T22:40:00.302Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772800764_7",
+      "title": "[EOS] Integration smoke 1782772799499",
+      "description": "Executive goal delegated to business org: Integration smoke 1782772799499",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:40:00.764Z",
+      "updatedAt": "2026-06-29T22:40:00.764Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772804469_1",
+      "title": "[EOS] Enterprise Pipeline Test 1782772803899",
+      "description": "Executive goal delegated to business org: Enterprise Pipeline Test 1782772803899",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:40:04.469Z",
+      "updatedAt": "2026-06-29T22:40:04.469Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772805093_3",
+      "title": "[EOS] Launch SmokeProduct to GA 1782772803899",
+      "description": "Executive goal delegated to business org: Launch SmokeProduct to GA 1782772803899",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:40:05.093Z",
+      "updatedAt": "2026-06-29T22:40:05.093Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772806366_1",
+      "title": "[EOS] DispBiz 1782772805546",
+      "description": "Executive goal delegated to business org: DispBiz 1782772805546",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:40:06.366Z",
+      "updatedAt": "2026-06-29T22:40:06.366Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772806509_3",
+      "title": "[EOS] Full Pipeline 1782772805546",
+      "description": "Executive goal delegated to business org: Full Pipeline 1782772805546",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:40:06.509Z",
+      "updatedAt": "2026-06-29T22:40:06.509Z",
+      "completedAt": null
+    },
+    {
+      "id": "bobj_1782772829317_5",
+      "title": "[EOS] Smoke Test 1782772805546",
+      "description": "Executive goal delegated to business org: Smoke Test 1782772805546",
+      "quarter": "Q2-2026",
+      "deptId": "bizorg_ceo",
+      "kpis": [
+        "mrr",
+        "dealsWon"
+      ],
+      "status": "active",
+      "campaignIds": [],
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:40:29.317Z",
+      "updatedAt": "2026-06-29T22:40:29.317Z",
+      "completedAt": null
     }
   ],
   "campaigns": [
@@ -798,12 +1656,12 @@
       "channel": "email",
       "budget": 0,
       "targetLeads": 20,
-      "actualLeads": 4,
+      "actualLeads": 5,
       "deptId": "bizorg_marketing",
       "status": "active",
       "taskIds": [],
       "createdAt": "2026-06-27T04:04:48.582Z",
-      "updatedAt": "2026-06-28T06:35:33.296Z",
+      "updatedAt": "2026-06-29T22:46:09.431Z",
       "launchedAt": "2026-06-27T04:04:48.583Z",
       "completedAt": null
     },
@@ -814,12 +1672,12 @@
       "channel": "social",
       "budget": 0,
       "targetLeads": 10,
-      "actualLeads": 4,
+      "actualLeads": 5,
       "deptId": "bizorg_marketing",
       "status": "active",
       "taskIds": [],
       "createdAt": "2026-06-27T04:04:48.593Z",
-      "updatedAt": "2026-06-28T06:35:33.304Z",
+      "updatedAt": "2026-06-29T22:46:09.447Z",
       "launchedAt": "2026-06-27T04:04:48.594Z",
       "completedAt": null
     },
@@ -1168,11 +2026,11 @@
       "targetLeads": 10,
       "actualLeads": 1,
       "deptId": "bizorg_marketing",
-      "status": "planned",
+      "status": "active",
       "taskIds": [],
       "createdAt": "2026-06-27T10:54:06.339Z",
-      "updatedAt": "2026-06-27T10:54:06.340Z",
-      "launchedAt": null,
+      "updatedAt": "2026-06-29T22:46:09.421Z",
+      "launchedAt": "2026-06-29T22:46:09.421Z",
       "completedAt": null
     },
     {
@@ -1184,11 +2042,11 @@
       "targetLeads": 5,
       "actualLeads": 1,
       "deptId": "bizorg_marketing",
-      "status": "planned",
+      "status": "active",
       "taskIds": [],
       "createdAt": "2026-06-27T10:54:06.367Z",
-      "updatedAt": "2026-06-27T10:54:06.368Z",
-      "launchedAt": null,
+      "updatedAt": "2026-06-29T22:46:09.425Z",
+      "launchedAt": "2026-06-29T22:46:09.425Z",
       "completedAt": null
     },
     {
@@ -1430,6 +2288,294 @@
       "updatedAt": "2026-06-27T20:34:03.032Z",
       "launchedAt": "2026-06-27T20:34:03.030Z",
       "completedAt": null
+    },
+    {
+      "id": "bcmp_1782686404653_2",
+      "title": "Q3 Email Campaign",
+      "objectiveId": "bobj_1782686404651_1",
+      "channel": "email",
+      "budget": 0,
+      "targetLeads": 20,
+      "actualLeads": 0,
+      "deptId": "bizorg_marketing",
+      "status": "active",
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:04.653Z",
+      "updatedAt": "2026-06-28T22:40:04.656Z",
+      "launchedAt": "2026-06-28T22:40:04.656Z",
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782686404661_1",
+      "title": "Test Camp",
+      "objectiveId": null,
+      "channel": "social",
+      "budget": 0,
+      "targetLeads": 10,
+      "actualLeads": 1,
+      "deptId": "bizorg_marketing",
+      "status": "planned",
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:04.661Z",
+      "updatedAt": "2026-06-28T22:40:04.663Z",
+      "launchedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782686404723_2",
+      "title": "Dash camp",
+      "objectiveId": "bobj_1782686404721_1",
+      "channel": "email",
+      "budget": 0,
+      "targetLeads": 5,
+      "actualLeads": 1,
+      "deptId": "bizorg_marketing",
+      "status": "planned",
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:04.723Z",
+      "updatedAt": "2026-06-28T22:40:04.726Z",
+      "launchedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782686404768_9",
+      "title": "Campaign: Q3 Revenue Test 1782686404634",
+      "objectiveId": "bobj_1782686404731_1",
+      "channel": "email",
+      "budget": 0,
+      "targetLeads": 20,
+      "actualLeads": 1,
+      "deptId": "bizorg_marketing",
+      "status": "active",
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:04.768Z",
+      "updatedAt": "2026-06-28T22:40:04.780Z",
+      "launchedAt": "2026-06-28T22:40:04.770Z",
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782686404815_g",
+      "title": "Social: Q3 Revenue Test 1782686404634",
+      "objectiveId": "bobj_1782686404731_1",
+      "channel": "social",
+      "budget": 0,
+      "targetLeads": 10,
+      "actualLeads": 1,
+      "deptId": "bizorg_marketing",
+      "status": "active",
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:04.815Z",
+      "updatedAt": "2026-06-28T22:40:04.826Z",
+      "launchedAt": "2026-06-28T22:40:04.817Z",
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782686405651_1",
+      "title": "Test Camp",
+      "objectiveId": null,
+      "channel": "email",
+      "budget": 0,
+      "targetLeads": 10,
+      "actualLeads": 1,
+      "deptId": "bizorg_marketing",
+      "status": "active",
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:40:05.651Z",
+      "updatedAt": "2026-06-28T22:40:05.657Z",
+      "launchedAt": "2026-06-28T22:40:05.654Z",
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782686474488_2",
+      "title": "Q3 Email Campaign",
+      "objectiveId": "bobj_1782686474485_1",
+      "channel": "email",
+      "budget": 0,
+      "targetLeads": 20,
+      "actualLeads": 0,
+      "deptId": "bizorg_marketing",
+      "status": "active",
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:14.488Z",
+      "updatedAt": "2026-06-28T22:41:14.491Z",
+      "launchedAt": "2026-06-28T22:41:14.491Z",
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782686474496_1",
+      "title": "Test Camp",
+      "objectiveId": null,
+      "channel": "social",
+      "budget": 0,
+      "targetLeads": 10,
+      "actualLeads": 1,
+      "deptId": "bizorg_marketing",
+      "status": "planned",
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:14.496Z",
+      "updatedAt": "2026-06-28T22:41:14.499Z",
+      "launchedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782686474573_2",
+      "title": "Dash camp",
+      "objectiveId": "bobj_1782686474569_1",
+      "channel": "email",
+      "budget": 0,
+      "targetLeads": 5,
+      "actualLeads": 1,
+      "deptId": "bizorg_marketing",
+      "status": "planned",
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:14.573Z",
+      "updatedAt": "2026-06-28T22:41:14.575Z",
+      "launchedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782686474627_9",
+      "title": "Campaign: Q3 Revenue Test 1782686474455",
+      "objectiveId": "bobj_1782686474581_1",
+      "channel": "email",
+      "budget": 0,
+      "targetLeads": 20,
+      "actualLeads": 1,
+      "deptId": "bizorg_marketing",
+      "status": "active",
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:14.627Z",
+      "updatedAt": "2026-06-28T22:41:14.658Z",
+      "launchedAt": "2026-06-28T22:41:14.629Z",
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782686474712_g",
+      "title": "Social: Q3 Revenue Test 1782686474455",
+      "objectiveId": "bobj_1782686474581_1",
+      "channel": "social",
+      "budget": 0,
+      "targetLeads": 10,
+      "actualLeads": 2,
+      "deptId": "bizorg_marketing",
+      "status": "active",
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:14.712Z",
+      "updatedAt": "2026-06-28T22:41:14.733Z",
+      "launchedAt": "2026-06-28T22:41:14.715Z",
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782686475562_1",
+      "title": "Test Camp",
+      "objectiveId": null,
+      "channel": "email",
+      "budget": 0,
+      "targetLeads": 10,
+      "actualLeads": 1,
+      "deptId": "bizorg_marketing",
+      "status": "active",
+      "taskIds": [],
+      "createdAt": "2026-06-28T22:41:15.562Z",
+      "updatedAt": "2026-06-28T22:41:15.570Z",
+      "launchedAt": "2026-06-28T22:41:15.565Z",
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782772795381_2",
+      "title": "Q3 Email Campaign",
+      "objectiveId": "bobj_1782772795377_1",
+      "channel": "email",
+      "budget": 0,
+      "targetLeads": 20,
+      "actualLeads": 0,
+      "deptId": "bizorg_marketing",
+      "status": "active",
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:55.381Z",
+      "updatedAt": "2026-06-29T22:39:55.385Z",
+      "launchedAt": "2026-06-29T22:39:55.385Z",
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782772795391_1",
+      "title": "Test Camp",
+      "objectiveId": null,
+      "channel": "social",
+      "budget": 0,
+      "targetLeads": 10,
+      "actualLeads": 1,
+      "deptId": "bizorg_marketing",
+      "status": "planned",
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:55.391Z",
+      "updatedAt": "2026-06-29T22:39:55.394Z",
+      "launchedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782772795464_2",
+      "title": "Dash camp",
+      "objectiveId": "bobj_1782772795461_1",
+      "channel": "email",
+      "budget": 0,
+      "targetLeads": 5,
+      "actualLeads": 1,
+      "deptId": "bizorg_marketing",
+      "status": "planned",
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:55.464Z",
+      "updatedAt": "2026-06-29T22:39:55.467Z",
+      "launchedAt": null,
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782772795518_9",
+      "title": "Campaign: Q3 Revenue Test 1782772795357",
+      "objectiveId": "bobj_1782772795474_1",
+      "channel": "email",
+      "budget": 0,
+      "targetLeads": 20,
+      "actualLeads": 2,
+      "deptId": "bizorg_marketing",
+      "status": "active",
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:55.518Z",
+      "updatedAt": "2026-06-29T22:39:55.546Z",
+      "launchedAt": "2026-06-29T22:39:55.521Z",
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782772795573_i",
+      "title": "Social: Q3 Revenue Test 1782772795357",
+      "objectiveId": "bobj_1782772795474_1",
+      "channel": "social",
+      "budget": 0,
+      "targetLeads": 10,
+      "actualLeads": 2,
+      "deptId": "bizorg_marketing",
+      "status": "active",
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:55.573Z",
+      "updatedAt": "2026-06-29T22:39:55.606Z",
+      "launchedAt": "2026-06-29T22:39:55.577Z",
+      "completedAt": null
+    },
+    {
+      "id": "bcmp_1782772796433_1",
+      "title": "Test Camp",
+      "objectiveId": null,
+      "channel": "email",
+      "budget": 0,
+      "targetLeads": 10,
+      "actualLeads": 1,
+      "deptId": "bizorg_marketing",
+      "status": "active",
+      "taskIds": [],
+      "createdAt": "2026-06-29T22:39:56.433Z",
+      "updatedAt": "2026-06-29T22:39:56.439Z",
+      "launchedAt": "2026-06-29T22:39:56.436Z",
+      "completedAt": null
     }
   ],
   "deals": [
@@ -1613,7 +2759,7 @@
       "company": "DashCo",
       "contactEmail": null,
       "value": 3000,
-      "stage": "proposal",
+      "stage": "closed_won",
       "deptId": "bizorg_crm",
       "campaignId": "bcmp_1782533378014_2",
       "leadSource": "organic",
@@ -1636,12 +2782,18 @@
           "stage": "proposal",
           "actor": "bizorg_sales",
           "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-29T22:46:09.406Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Closed by sales"
         }
       ],
-      "wonAt": null,
+      "wonAt": "2026-06-29T22:46:09.406Z",
       "lostAt": null,
       "createdAt": "2026-06-27T04:09:38.015Z",
-      "updatedAt": "2026-06-28T06:08:10.839Z"
+      "updatedAt": "2026-06-29T22:46:09.406Z"
     },
     {
       "id": "bdeal_1782533378045_b",
@@ -2117,7 +3269,7 @@
       "company": "DashCo",
       "contactEmail": null,
       "value": 3000,
-      "stage": "demo",
+      "stage": "proposal",
       "deptId": "bizorg_crm",
       "campaignId": "bcmp_1782533385694_2",
       "leadSource": "organic",
@@ -2134,12 +3286,18 @@
           "stage": "demo",
           "actor": "bizorg_sales",
           "note": "Scheduled by sales agent"
+        },
+        {
+          "ts": "2026-06-29T22:46:09.385Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
         }
       ],
       "wonAt": null,
       "lostAt": null,
       "createdAt": "2026-06-27T04:09:45.695Z",
-      "updatedAt": "2026-06-28T06:35:33.246Z"
+      "updatedAt": "2026-06-29T22:46:09.385Z"
     },
     {
       "id": "bdeal_1782533385715_b",
@@ -2363,7 +3521,7 @@
       "company": "Bad Lead Co",
       "contactEmail": "info@bad-lead-co.com",
       "value": 500,
-      "stage": "demo",
+      "stage": "proposal",
       "deptId": "bizorg_crm",
       "campaignId": null,
       "leadSource": "campaign",
@@ -2392,12 +3550,18 @@
           "stage": "demo",
           "actor": "bizorg_sales",
           "note": "Scheduled by sales agent"
+        },
+        {
+          "ts": "2026-06-29T22:46:09.394Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
         }
       ],
       "wonAt": null,
       "lostAt": "2026-06-27T04:09:46.587Z",
       "createdAt": "2026-06-27T04:09:46.583Z",
-      "updatedAt": "2026-06-28T06:35:33.253Z"
+      "updatedAt": "2026-06-29T22:46:09.394Z"
     },
     {
       "id": "bdeal_1782533386590_1",
@@ -2519,7 +3683,7 @@
       "company": "TestCo",
       "contactEmail": null,
       "value": 1000,
-      "stage": "qualified",
+      "stage": "demo",
       "deptId": "bizorg_sales",
       "campaignId": null,
       "leadSource": "organic",
@@ -2530,12 +3694,18 @@
           "stage": "qualified",
           "actor": "bizorg_crm",
           "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-29T22:46:09.362Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Scheduled by sales agent"
         }
       ],
       "wonAt": null,
       "lostAt": null,
       "createdAt": "2026-06-27T04:10:39.972Z",
-      "updatedAt": "2026-06-27T04:10:39.974Z"
+      "updatedAt": "2026-06-29T22:46:09.362Z"
     },
     {
       "id": "bdeal_1782533439987_3",
@@ -2543,7 +3713,7 @@
       "company": "DashCo",
       "contactEmail": null,
       "value": 3000,
-      "stage": "qualified",
+      "stage": "demo",
       "deptId": "bizorg_crm",
       "campaignId": "bcmp_1782533439984_2",
       "leadSource": "organic",
@@ -2554,12 +3724,18 @@
           "stage": "qualified",
           "actor": "bizorg_crm",
           "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-29T22:46:09.374Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Scheduled by sales agent"
         }
       ],
       "wonAt": null,
       "lostAt": null,
       "createdAt": "2026-06-27T04:10:39.987Z",
-      "updatedAt": "2026-06-27T04:10:39.987Z"
+      "updatedAt": "2026-06-29T22:46:09.374Z"
     },
     {
       "id": "bdeal_1782533440013_b",
@@ -4528,6 +5704,1290 @@
       "lostAt": null,
       "createdAt": "2026-06-28T06:35:33.304Z",
       "updatedAt": "2026-06-28T06:35:33.322Z"
+    },
+    {
+      "id": "bdeal_1782686404663_2",
+      "title": "Acme Corp Lead",
+      "company": "Acme Corp",
+      "contactEmail": null,
+      "value": 2400,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782686404661_1",
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:04.663Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-28T22:40:04.666Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:40:04.668Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": ""
+        }
+      ],
+      "wonAt": "2026-06-28T22:40:04.668Z",
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:40:04.663Z",
+      "updatedAt": "2026-06-28T22:40:04.668Z"
+    },
+    {
+      "id": "bdeal_1782686404688_1",
+      "title": "Handoff test deal",
+      "company": "TestCo",
+      "contactEmail": null,
+      "value": 1000,
+      "stage": "qualified",
+      "deptId": "bizorg_sales",
+      "campaignId": null,
+      "leadSource": "organic",
+      "assignedTo": "bizorg_sales",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:04.688Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:40:04.688Z",
+      "updatedAt": "2026-06-28T22:40:04.693Z"
+    },
+    {
+      "id": "bdeal_1782686404726_3",
+      "title": "Dash deal",
+      "company": "DashCo",
+      "contactEmail": null,
+      "value": 3000,
+      "stage": "qualified",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782686404723_2",
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:04.726Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:40:04.726Z",
+      "updatedAt": "2026-06-28T22:40:04.726Z"
+    },
+    {
+      "id": "bdeal_1782686404780_b",
+      "title": "Acme Corp — inbound lead",
+      "company": "Acme Corp",
+      "contactEmail": "info@acme-corp.com",
+      "value": 3190,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782686404768_9",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:04.780Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-28T22:40:04.997Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 98. "
+        },
+        {
+          "ts": "2026-06-28T22:40:05.309Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo booked"
+        },
+        {
+          "ts": "2026-06-28T22:40:05.618Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-28T22:40:06.127Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Deal closed"
+        }
+      ],
+      "wonAt": "2026-06-28T22:40:06.127Z",
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:40:04.780Z",
+      "updatedAt": "2026-06-28T22:40:06.127Z"
+    },
+    {
+      "id": "bdeal_1782686404826_i",
+      "title": "Acme Corp — inbound lead",
+      "company": "Acme Corp",
+      "contactEmail": "info@acme-corp.com",
+      "value": 2904,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782686404815_g",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:04.826Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-28T22:40:05.038Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 90. "
+        },
+        {
+          "ts": "2026-06-28T22:40:05.348Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo booked"
+        },
+        {
+          "ts": "2026-06-28T22:40:05.894Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-28T22:40:06.403Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Deal closed"
+        }
+      ],
+      "wonAt": "2026-06-28T22:40:06.403Z",
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:40:04.826Z",
+      "updatedAt": "2026-06-28T22:40:06.403Z"
+    },
+    {
+      "id": "bdeal_1782686405657_2",
+      "title": "TestCo Inc — inbound lead",
+      "company": "TestCo Inc",
+      "contactEmail": "info@testco-inc.com",
+      "value": 2400,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782686405651_1",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:05.657Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-28T22:40:05.666Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 80. "
+        },
+        {
+          "ts": "2026-06-28T22:40:05.678Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo scheduled"
+        },
+        {
+          "ts": "2026-06-28T22:40:05.684Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:40:05.691Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:40:05.921Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 91. "
+        },
+        {
+          "ts": "2026-06-28T22:40:05.975Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo booked"
+        },
+        {
+          "ts": "2026-06-28T22:40:06.283Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-28T22:40:06.791Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Deal closed"
+        }
+      ],
+      "wonAt": "2026-06-28T22:40:06.791Z",
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:40:05.657Z",
+      "updatedAt": "2026-06-28T22:40:06.791Z"
+    },
+    {
+      "id": "bdeal_1782686405698_9",
+      "title": "Bad Lead Co — inbound lead",
+      "company": "Bad Lead Co",
+      "contactEmail": "info@bad-lead-co.com",
+      "value": 500,
+      "stage": "qualified",
+      "deptId": "bizorg_crm",
+      "campaignId": null,
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:05.698Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-28T22:40:05.708Z",
+          "stage": "closed_lost",
+          "actor": "bizorg_crm",
+          "note": "Failed qualification"
+        },
+        {
+          "ts": "2026-06-28T22:40:05.928Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 83. "
+        }
+      ],
+      "wonAt": null,
+      "lostAt": "2026-06-28T22:40:05.708Z",
+      "createdAt": "2026-06-28T22:40:05.698Z",
+      "updatedAt": "2026-06-28T22:40:05.928Z"
+    },
+    {
+      "id": "bdeal_1782686405714_1",
+      "title": "Won deal",
+      "company": "BigCo",
+      "contactEmail": null,
+      "value": 4800,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": null,
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:05.714Z",
+          "stage": "closed_won",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:40:05.714Z",
+      "updatedAt": "2026-06-28T22:40:05.714Z"
+    },
+    {
+      "id": "bdeal_1782686405740_1",
+      "title": "Revenue deal",
+      "company": "RevCo",
+      "contactEmail": null,
+      "value": 6000,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": null,
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:05.740Z",
+          "stage": "closed_won",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:40:05.740Z",
+      "updatedAt": "2026-06-28T22:40:05.740Z"
+    },
+    {
+      "id": "bdeal_1782686405759_4",
+      "title": "Analytics deal",
+      "company": "AnalyticsCo",
+      "contactEmail": null,
+      "value": 2000,
+      "stage": "demo",
+      "deptId": "bizorg_crm",
+      "campaignId": null,
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:05.759Z",
+          "stage": "demo",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:40:05.759Z",
+      "updatedAt": "2026-06-28T22:40:05.759Z"
+    },
+    {
+      "id": "bdeal_1782686474499_2",
+      "title": "Acme Corp Lead",
+      "company": "Acme Corp",
+      "contactEmail": null,
+      "value": 2400,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782686474496_1",
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.499Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-28T22:41:14.502Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:41:14.504Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": ""
+        }
+      ],
+      "wonAt": "2026-06-28T22:41:14.504Z",
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:41:14.499Z",
+      "updatedAt": "2026-06-28T22:41:14.504Z"
+    },
+    {
+      "id": "bdeal_1782686474534_1",
+      "title": "Handoff test deal",
+      "company": "TestCo",
+      "contactEmail": null,
+      "value": 1000,
+      "stage": "qualified",
+      "deptId": "bizorg_sales",
+      "campaignId": null,
+      "leadSource": "organic",
+      "assignedTo": "bizorg_sales",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.534Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:41:14.534Z",
+      "updatedAt": "2026-06-28T22:41:14.541Z"
+    },
+    {
+      "id": "bdeal_1782686474575_3",
+      "title": "Dash deal",
+      "company": "DashCo",
+      "contactEmail": null,
+      "value": 3000,
+      "stage": "qualified",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782686474573_2",
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.575Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:41:14.575Z",
+      "updatedAt": "2026-06-28T22:41:14.575Z"
+    },
+    {
+      "id": "bdeal_1782686474658_b",
+      "title": "Acme Corp — inbound lead",
+      "company": "Acme Corp",
+      "contactEmail": "info@acme-corp.com",
+      "value": 1974,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782686474627_9",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.658Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-28T22:41:14.880Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 76. "
+        },
+        {
+          "ts": "2026-06-28T22:41:15.191Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo booked"
+        },
+        {
+          "ts": "2026-06-28T22:41:16.213Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-28T22:41:16.727Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Deal closed"
+        }
+      ],
+      "wonAt": "2026-06-28T22:41:16.727Z",
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:41:14.658Z",
+      "updatedAt": "2026-06-28T22:41:16.727Z"
+    },
+    {
+      "id": "bdeal_1782686474723_i",
+      "title": "Acme Corp — inbound lead",
+      "company": "Acme Corp",
+      "contactEmail": "info@acme-corp.com",
+      "value": 2140,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782686474712_g",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.723Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-28T22:41:14.935Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 91. "
+        },
+        {
+          "ts": "2026-06-28T22:41:15.347Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo booked"
+        },
+        {
+          "ts": "2026-06-28T22:41:16.225Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-28T22:41:16.742Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Deal closed"
+        }
+      ],
+      "wonAt": "2026-06-28T22:41:16.742Z",
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:41:14.723Z",
+      "updatedAt": "2026-06-28T22:41:16.742Z"
+    },
+    {
+      "id": "bdeal_1782686474733_k",
+      "title": "TechStart Inc — inbound lead",
+      "company": "TechStart Inc",
+      "contactEmail": "info@techstart-inc.com",
+      "value": 2327,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782686474712_g",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.733Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-28T22:41:14.956Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 94. "
+        },
+        {
+          "ts": "2026-06-28T22:41:15.362Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo booked"
+        },
+        {
+          "ts": "2026-06-28T22:41:16.242Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-28T22:41:16.765Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Deal closed"
+        }
+      ],
+      "wonAt": "2026-06-28T22:41:16.765Z",
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:41:14.733Z",
+      "updatedAt": "2026-06-28T22:41:16.765Z"
+    },
+    {
+      "id": "bdeal_1782686475570_2",
+      "title": "TestCo Inc — inbound lead",
+      "company": "TestCo Inc",
+      "contactEmail": "info@testco-inc.com",
+      "value": 2400,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782686475562_1",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:15.570Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-28T22:41:15.590Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 80. "
+        },
+        {
+          "ts": "2026-06-28T22:41:15.612Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo scheduled"
+        },
+        {
+          "ts": "2026-06-28T22:41:15.622Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:41:15.634Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:41:16.260Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo booked"
+        },
+        {
+          "ts": "2026-06-28T22:41:16.326Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 75. "
+        },
+        {
+          "ts": "2026-06-28T22:41:16.581Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-28T22:41:17.367Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Deal closed"
+        }
+      ],
+      "wonAt": "2026-06-28T22:41:17.367Z",
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:41:15.570Z",
+      "updatedAt": "2026-06-28T22:41:17.367Z"
+    },
+    {
+      "id": "bdeal_1782686475649_9",
+      "title": "Bad Lead Co — inbound lead",
+      "company": "Bad Lead Co",
+      "contactEmail": "info@bad-lead-co.com",
+      "value": 500,
+      "stage": "qualified",
+      "deptId": "bizorg_crm",
+      "campaignId": null,
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:15.649Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-28T22:41:15.678Z",
+          "stage": "closed_lost",
+          "actor": "bizorg_crm",
+          "note": "Failed qualification"
+        },
+        {
+          "ts": "2026-06-28T22:41:16.338Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 84. "
+        }
+      ],
+      "wonAt": null,
+      "lostAt": "2026-06-28T22:41:15.678Z",
+      "createdAt": "2026-06-28T22:41:15.649Z",
+      "updatedAt": "2026-06-28T22:41:16.338Z"
+    },
+    {
+      "id": "bdeal_1782686475692_1",
+      "title": "Won deal",
+      "company": "BigCo",
+      "contactEmail": null,
+      "value": 4800,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": null,
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:15.692Z",
+          "stage": "closed_won",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:41:15.692Z",
+      "updatedAt": "2026-06-28T22:41:15.692Z"
+    },
+    {
+      "id": "bdeal_1782686475731_1",
+      "title": "Revenue deal",
+      "company": "RevCo",
+      "contactEmail": null,
+      "value": 6000,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": null,
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:15.731Z",
+          "stage": "closed_won",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:41:15.731Z",
+      "updatedAt": "2026-06-28T22:41:15.731Z"
+    },
+    {
+      "id": "bdeal_1782686475771_4",
+      "title": "Analytics deal",
+      "company": "AnalyticsCo",
+      "contactEmail": null,
+      "value": 2000,
+      "stage": "demo",
+      "deptId": "bizorg_crm",
+      "campaignId": null,
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:15.771Z",
+          "stage": "demo",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-28T22:41:15.771Z",
+      "updatedAt": "2026-06-28T22:41:15.771Z"
+    },
+    {
+      "id": "bdeal_1782772795394_2",
+      "title": "Acme Corp Lead",
+      "company": "Acme Corp",
+      "contactEmail": null,
+      "value": 2400,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782772795391_1",
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.394Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-29T22:39:55.398Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-29T22:39:55.401Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": ""
+        }
+      ],
+      "wonAt": "2026-06-29T22:39:55.401Z",
+      "lostAt": null,
+      "createdAt": "2026-06-29T22:39:55.394Z",
+      "updatedAt": "2026-06-29T22:39:55.401Z"
+    },
+    {
+      "id": "bdeal_1782772795424_1",
+      "title": "Handoff test deal",
+      "company": "TestCo",
+      "contactEmail": null,
+      "value": 1000,
+      "stage": "qualified",
+      "deptId": "bizorg_sales",
+      "campaignId": null,
+      "leadSource": "organic",
+      "assignedTo": "bizorg_sales",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.424Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-29T22:39:55.424Z",
+      "updatedAt": "2026-06-29T22:39:55.429Z"
+    },
+    {
+      "id": "bdeal_1782772795467_3",
+      "title": "Dash deal",
+      "company": "DashCo",
+      "contactEmail": null,
+      "value": 3000,
+      "stage": "qualified",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782772795464_2",
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.467Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-29T22:39:55.467Z",
+      "updatedAt": "2026-06-29T22:39:55.467Z"
+    },
+    {
+      "id": "bdeal_1782772795533_b",
+      "title": "Acme Corp — inbound lead",
+      "company": "Acme Corp",
+      "contactEmail": "info@acme-corp.com",
+      "value": 2225,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782772795518_9",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.533Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-29T22:39:55.747Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 77. "
+        },
+        {
+          "ts": "2026-06-29T22:39:56.059Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo booked"
+        },
+        {
+          "ts": "2026-06-29T22:39:56.369Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-29T22:39:56.879Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Deal closed"
+        }
+      ],
+      "wonAt": "2026-06-29T22:39:56.879Z",
+      "lostAt": null,
+      "createdAt": "2026-06-29T22:39:55.533Z",
+      "updatedAt": "2026-06-29T22:39:56.879Z"
+    },
+    {
+      "id": "bdeal_1782772795546_d",
+      "title": "TechStart Inc — inbound lead",
+      "company": "TechStart Inc",
+      "contactEmail": "info@techstart-inc.com",
+      "value": 1583,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782772795518_9",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.546Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-29T22:39:55.764Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 95. "
+        },
+        {
+          "ts": "2026-06-29T22:39:56.072Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo booked"
+        },
+        {
+          "ts": "2026-06-29T22:39:56.381Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-29T22:39:56.891Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Deal closed"
+        }
+      ],
+      "wonAt": "2026-06-29T22:39:56.891Z",
+      "lostAt": null,
+      "createdAt": "2026-06-29T22:39:55.546Z",
+      "updatedAt": "2026-06-29T22:39:56.891Z"
+    },
+    {
+      "id": "bdeal_1782772795592_k",
+      "title": "Acme Corp — inbound lead",
+      "company": "Acme Corp",
+      "contactEmail": "info@acme-corp.com",
+      "value": 1417,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782772795573_i",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.592Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-29T22:39:55.806Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 79. "
+        },
+        {
+          "ts": "2026-06-29T22:39:56.124Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo booked"
+        },
+        {
+          "ts": "2026-06-29T22:39:56.736Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-29T22:39:57.245Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Deal closed"
+        }
+      ],
+      "wonAt": "2026-06-29T22:39:57.245Z",
+      "lostAt": null,
+      "createdAt": "2026-06-29T22:39:55.592Z",
+      "updatedAt": "2026-06-29T22:39:57.245Z"
+    },
+    {
+      "id": "bdeal_1782772795606_m",
+      "title": "TechStart Inc — inbound lead",
+      "company": "TechStart Inc",
+      "contactEmail": "info@techstart-inc.com",
+      "value": 2352,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782772795573_i",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.606Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-29T22:39:55.829Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 87. "
+        },
+        {
+          "ts": "2026-06-29T22:39:56.138Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo booked"
+        },
+        {
+          "ts": "2026-06-29T22:39:56.745Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-29T22:39:57.255Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Deal closed"
+        }
+      ],
+      "wonAt": "2026-06-29T22:39:57.255Z",
+      "lostAt": null,
+      "createdAt": "2026-06-29T22:39:55.606Z",
+      "updatedAt": "2026-06-29T22:39:57.255Z"
+    },
+    {
+      "id": "bdeal_1782772796439_2",
+      "title": "TestCo Inc — inbound lead",
+      "company": "TestCo Inc",
+      "contactEmail": "info@testco-inc.com",
+      "value": 2400,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782772796433_1",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:56.439Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-29T22:39:56.451Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 80. "
+        },
+        {
+          "ts": "2026-06-29T22:39:56.466Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo scheduled"
+        },
+        {
+          "ts": "2026-06-29T22:39:56.474Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-29T22:39:56.483Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-29T22:39:56.834Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 77. "
+        },
+        {
+          "ts": "2026-06-29T22:39:56.854Z",
+          "stage": "demo",
+          "actor": "bizorg_sales",
+          "note": "Demo booked"
+        },
+        {
+          "ts": "2026-06-29T22:39:57.163Z",
+          "stage": "proposal",
+          "actor": "bizorg_sales",
+          "note": "Proposal sent"
+        },
+        {
+          "ts": "2026-06-29T22:39:57.674Z",
+          "stage": "closed_won",
+          "actor": "bizorg_sales",
+          "note": "Deal closed"
+        }
+      ],
+      "wonAt": "2026-06-29T22:39:57.674Z",
+      "lostAt": null,
+      "createdAt": "2026-06-29T22:39:56.439Z",
+      "updatedAt": "2026-06-29T22:39:57.674Z"
+    },
+    {
+      "id": "bdeal_1782772796492_9",
+      "title": "Bad Lead Co — inbound lead",
+      "company": "Bad Lead Co",
+      "contactEmail": "info@bad-lead-co.com",
+      "value": 500,
+      "stage": "qualified",
+      "deptId": "bizorg_crm",
+      "campaignId": null,
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:56.492Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-29T22:39:56.504Z",
+          "stage": "closed_lost",
+          "actor": "bizorg_crm",
+          "note": "Failed qualification"
+        },
+        {
+          "ts": "2026-06-29T22:39:56.845Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 84. "
+        }
+      ],
+      "wonAt": null,
+      "lostAt": "2026-06-29T22:39:56.504Z",
+      "createdAt": "2026-06-29T22:39:56.492Z",
+      "updatedAt": "2026-06-29T22:39:56.845Z"
+    },
+    {
+      "id": "bdeal_1782772796512_1",
+      "title": "Won deal",
+      "company": "BigCo",
+      "contactEmail": null,
+      "value": 4800,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": null,
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:56.512Z",
+          "stage": "closed_won",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-29T22:39:56.512Z",
+      "updatedAt": "2026-06-29T22:39:56.512Z"
+    },
+    {
+      "id": "bdeal_1782772796539_1",
+      "title": "Revenue deal",
+      "company": "RevCo",
+      "contactEmail": null,
+      "value": 6000,
+      "stage": "closed_won",
+      "deptId": "bizorg_crm",
+      "campaignId": null,
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:56.539Z",
+          "stage": "closed_won",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-29T22:39:56.539Z",
+      "updatedAt": "2026-06-29T22:39:56.539Z"
+    },
+    {
+      "id": "bdeal_1782772796554_3",
+      "title": "Analytics deal",
+      "company": "AnalyticsCo",
+      "contactEmail": null,
+      "value": 2000,
+      "stage": "demo",
+      "deptId": "bizorg_crm",
+      "campaignId": null,
+      "leadSource": "organic",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:56.554Z",
+          "stage": "demo",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-29T22:39:56.554Z",
+      "updatedAt": "2026-06-29T22:39:56.554Z"
+    },
+    {
+      "id": "bdeal_1782773169431_7",
+      "title": "Prospect Alpha 45cn — inbound lead",
+      "company": "Prospect Alpha 45cn",
+      "contactEmail": "info@prospect-alpha-45cn.com",
+      "value": 3881,
+      "stage": "qualified",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782533088582_9",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:46:09.431Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-29T22:46:09.463Z",
+          "stage": "qualified",
+          "actor": "bizorg_crm",
+          "note": "Score: 93. "
+        }
+      ],
+      "wonAt": null,
+      "lostAt": null,
+      "createdAt": "2026-06-29T22:46:09.431Z",
+      "updatedAt": "2026-06-29T22:46:09.463Z"
+    },
+    {
+      "id": "bdeal_1782773169447_9",
+      "title": "Delta Systems 45d3 — inbound lead",
+      "company": "Delta Systems 45d3",
+      "contactEmail": "info@delta-systems-45d3.com",
+      "value": 2721,
+      "stage": "closed_lost",
+      "deptId": "bizorg_crm",
+      "campaignId": "bcmp_1782533088593_g",
+      "leadSource": "campaign",
+      "assignedTo": "bizorg_crm",
+      "history": [
+        {
+          "ts": "2026-06-29T22:46:09.447Z",
+          "stage": "prospect",
+          "actor": "bizorg_crm",
+          "note": "Deal created"
+        },
+        {
+          "ts": "2026-06-29T22:46:09.474Z",
+          "stage": "closed_lost",
+          "actor": "bizorg_crm",
+          "note": "Failed qualification"
+        }
+      ],
+      "wonAt": null,
+      "lostAt": "2026-06-29T22:46:09.474Z",
+      "createdAt": "2026-06-29T22:46:09.447Z",
+      "updatedAt": "2026-06-29T22:46:09.474Z"
     }
   ],
   "tasks": [
@@ -4905,7 +7365,7 @@
       "dealId": null,
       "estimatedHours": 2,
       "tags": [],
-      "status": "ready",
+      "status": "in_progress",
       "assignedTo": "bizorg_growth",
       "history": [
         {
@@ -4913,13 +7373,18 @@
           "actor": "bizorg_coo",
           "action": "planned→ready",
           "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:40:05.879Z",
+          "actor": "bizorg_growth",
+          "action": "claimed+started"
         }
       ],
-      "claimedAt": null,
-      "startedAt": null,
+      "claimedAt": "2026-06-28T22:40:05.879Z",
+      "startedAt": "2026-06-28T22:40:05.879Z",
       "completedAt": null,
       "createdAt": "2026-06-27T04:09:38.033Z",
-      "updatedAt": "2026-06-27T04:09:38.033Z"
+      "updatedAt": "2026-06-28T22:40:05.879Z"
     },
     {
       "id": "btask_1782533378034_6",
@@ -4932,7 +7397,7 @@
       "dealId": null,
       "estimatedHours": 2,
       "tags": [],
-      "status": "ready",
+      "status": "in_progress",
       "assignedTo": "bizorg_content",
       "history": [
         {
@@ -4940,13 +7405,18 @@
           "actor": "bizorg_coo",
           "action": "planned→ready",
           "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:40:05.881Z",
+          "actor": "bizorg_content",
+          "action": "claimed+started"
         }
       ],
-      "claimedAt": null,
-      "startedAt": null,
+      "claimedAt": "2026-06-28T22:40:05.881Z",
+      "startedAt": "2026-06-28T22:40:05.881Z",
       "completedAt": null,
       "createdAt": "2026-06-27T04:09:38.034Z",
-      "updatedAt": "2026-06-27T04:09:38.035Z"
+      "updatedAt": "2026-06-28T22:40:05.881Z"
     },
     {
       "id": "btask_1782533378036_7",
@@ -4959,7 +7429,7 @@
       "dealId": null,
       "estimatedHours": 2,
       "tags": [],
-      "status": "ready",
+      "status": "in_progress",
       "assignedTo": "bizorg_analytics",
       "history": [
         {
@@ -4967,13 +7437,18 @@
           "actor": "bizorg_coo",
           "action": "planned→ready",
           "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:40:05.884Z",
+          "actor": "bizorg_analytics",
+          "action": "claimed+started"
         }
       ],
-      "claimedAt": null,
-      "startedAt": null,
+      "claimedAt": "2026-06-28T22:40:05.884Z",
+      "startedAt": "2026-06-28T22:40:05.884Z",
       "completedAt": null,
       "createdAt": "2026-06-27T04:09:38.036Z",
-      "updatedAt": "2026-06-27T04:09:38.037Z"
+      "updatedAt": "2026-06-28T22:40:05.884Z"
     },
     {
       "id": "btask_1782533378921_3",
@@ -5013,7 +7488,7 @@
       "dealId": null,
       "estimatedHours": 2,
       "tags": [],
-      "status": "ready",
+      "status": "in_progress",
       "assignedTo": "bizorg_marketing",
       "history": [
         {
@@ -5021,13 +7496,18 @@
           "actor": "system",
           "action": "planned→ready",
           "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:40:05.886Z",
+          "actor": "bizorg_marketing",
+          "action": "claimed+started"
         }
       ],
-      "claimedAt": null,
-      "startedAt": null,
+      "claimedAt": "2026-06-28T22:40:05.886Z",
+      "startedAt": "2026-06-28T22:40:05.886Z",
       "completedAt": null,
       "createdAt": "2026-06-27T04:09:39.031Z",
-      "updatedAt": "2026-06-27T04:09:39.032Z"
+      "updatedAt": "2026-06-28T22:40:05.886Z"
     },
     {
       "id": "btask_1782533379031_2",
@@ -5040,7 +7520,7 @@
       "dealId": null,
       "estimatedHours": 2,
       "tags": [],
-      "status": "ready",
+      "status": "in_progress",
       "assignedTo": "bizorg_sales",
       "history": [
         {
@@ -5048,13 +7528,18 @@
           "actor": "system",
           "action": "planned→ready",
           "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:40:05.888Z",
+          "actor": "bizorg_sales",
+          "action": "claimed+started"
         }
       ],
-      "claimedAt": null,
-      "startedAt": null,
+      "claimedAt": "2026-06-28T22:40:05.888Z",
+      "startedAt": "2026-06-28T22:40:05.888Z",
       "completedAt": null,
       "createdAt": "2026-06-27T04:09:39.031Z",
-      "updatedAt": "2026-06-27T04:09:39.032Z"
+      "updatedAt": "2026-06-28T22:40:05.888Z"
     },
     {
       "id": "btask_1782533379041_4",
@@ -5179,7 +7664,7 @@
       "dealId": null,
       "estimatedHours": 2,
       "tags": [],
-      "status": "ready",
+      "status": "in_progress",
       "assignedTo": "bizorg_marketing",
       "history": [
         {
@@ -5187,13 +7672,18 @@
           "actor": "bizorg_coo",
           "action": "planned→ready",
           "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:41:16.199Z",
+          "actor": "bizorg_marketing",
+          "action": "claimed+started"
         }
       ],
-      "claimedAt": null,
-      "startedAt": null,
+      "claimedAt": "2026-06-28T22:41:16.199Z",
+      "startedAt": "2026-06-28T22:41:16.199Z",
       "completedAt": null,
       "createdAt": "2026-06-27T04:09:45.703Z",
-      "updatedAt": "2026-06-27T04:09:45.704Z"
+      "updatedAt": "2026-06-28T22:41:16.199Z"
     },
     {
       "id": "btask_1782533385704_4",
@@ -5206,7 +7696,7 @@
       "dealId": null,
       "estimatedHours": 2,
       "tags": [],
-      "status": "ready",
+      "status": "in_progress",
       "assignedTo": "bizorg_sales",
       "history": [
         {
@@ -5214,13 +7704,18 @@
           "actor": "bizorg_coo",
           "action": "planned→ready",
           "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:41:16.202Z",
+          "actor": "bizorg_sales",
+          "action": "claimed+started"
         }
       ],
-      "claimedAt": null,
-      "startedAt": null,
+      "claimedAt": "2026-06-28T22:41:16.202Z",
+      "startedAt": "2026-06-28T22:41:16.202Z",
       "completedAt": null,
       "createdAt": "2026-06-27T04:09:45.704Z",
-      "updatedAt": "2026-06-27T04:09:45.705Z"
+      "updatedAt": "2026-06-28T22:41:16.202Z"
     },
     {
       "id": "btask_1782533385706_5",
@@ -5233,7 +7728,7 @@
       "dealId": null,
       "estimatedHours": 2,
       "tags": [],
-      "status": "ready",
+      "status": "in_progress",
       "assignedTo": "bizorg_growth",
       "history": [
         {
@@ -5241,13 +7736,18 @@
           "actor": "bizorg_coo",
           "action": "planned→ready",
           "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:41:16.206Z",
+          "actor": "bizorg_growth",
+          "action": "claimed+started"
         }
       ],
-      "claimedAt": null,
-      "startedAt": null,
+      "claimedAt": "2026-06-28T22:41:16.206Z",
+      "startedAt": "2026-06-28T22:41:16.206Z",
       "completedAt": null,
       "createdAt": "2026-06-27T04:09:45.706Z",
-      "updatedAt": "2026-06-27T04:09:45.706Z"
+      "updatedAt": "2026-06-28T22:41:16.206Z"
     },
     {
       "id": "btask_1782533385707_6",
@@ -6884,6 +9384,990 @@
       "completedAt": "2026-06-27T20:36:21.958Z",
       "createdAt": "2026-06-27T20:36:21.943Z",
       "updatedAt": "2026-06-27T20:36:21.958Z"
+    },
+    {
+      "id": "btask_1782686404673_1",
+      "title": "Send proposal",
+      "deptId": "bizorg_sales",
+      "priority": "high",
+      "type": "outreach",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "done",
+      "assignedTo": "bizorg_sales",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:04.676Z",
+          "actor": "system",
+          "action": "planned→ready",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:40:04.679Z",
+          "actor": "bizorg_sales",
+          "action": "claimed+started"
+        },
+        {
+          "ts": "2026-06-28T22:40:04.681Z",
+          "actor": "bizorg_sales",
+          "action": "in_progress→done",
+          "note": ""
+        }
+      ],
+      "claimedAt": "2026-06-28T22:40:04.679Z",
+      "startedAt": "2026-06-28T22:40:04.679Z",
+      "completedAt": "2026-06-28T22:40:04.681Z",
+      "createdAt": "2026-06-28T22:40:04.673Z",
+      "updatedAt": "2026-06-28T22:40:04.681Z"
+    },
+    {
+      "id": "btask_1782686404683_2",
+      "title": "Follow up call",
+      "deptId": "bizorg_sales",
+      "priority": "medium",
+      "type": "outreach",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "planned",
+      "assignedTo": "bizorg_sales",
+      "history": [],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:40:04.683Z",
+      "updatedAt": "2026-06-28T22:40:04.683Z"
+    },
+    {
+      "id": "btask_1782686404697_1",
+      "title": "Blocked task",
+      "deptId": "bizorg_marketing",
+      "priority": "medium",
+      "type": "campaign",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "in_progress",
+      "assignedTo": "bizorg_marketing",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:04.699Z",
+          "actor": "system",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:40:04.697Z",
+      "updatedAt": "2026-06-28T22:40:04.706Z"
+    },
+    {
+      "id": "btask_1782686404743_3",
+      "title": "Launch marketing campaign — Q3 Revenue Test 1782686404634",
+      "deptId": "bizorg_marketing",
+      "priority": "high",
+      "type": "campaign",
+      "objectiveId": "bobj_1782686404731_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_marketing",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:04.745Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:40:04.743Z",
+      "updatedAt": "2026-06-28T22:40:04.745Z"
+    },
+    {
+      "id": "btask_1782686404747_4",
+      "title": "Prepare sales playbook — Q3 Revenue Test 1782686404634",
+      "deptId": "bizorg_sales",
+      "priority": "high",
+      "type": "outreach",
+      "objectiveId": "bobj_1782686404731_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_sales",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:04.749Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:40:04.747Z",
+      "updatedAt": "2026-06-28T22:40:04.749Z"
+    },
+    {
+      "id": "btask_1782686404752_5",
+      "title": "Design growth experiments — Q3 Revenue Test 1782686404634",
+      "deptId": "bizorg_growth",
+      "priority": "high",
+      "type": "growth",
+      "objectiveId": "bobj_1782686404731_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_growth",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:04.754Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:40:04.752Z",
+      "updatedAt": "2026-06-28T22:40:04.754Z"
+    },
+    {
+      "id": "btask_1782686404756_6",
+      "title": "Publish content assets — Q3 Revenue Test 1782686404634",
+      "deptId": "bizorg_content",
+      "priority": "high",
+      "type": "content",
+      "objectiveId": "bobj_1782686404731_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_content",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:04.759Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:40:04.756Z",
+      "updatedAt": "2026-06-28T22:40:04.759Z"
+    },
+    {
+      "id": "btask_1782686404761_7",
+      "title": "Set up KPI tracking — Q3 Revenue Test 1782686404634",
+      "deptId": "bizorg_analytics",
+      "priority": "high",
+      "type": "analytics",
+      "objectiveId": "bobj_1782686404731_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_analytics",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:04.764Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:40:04.761Z",
+      "updatedAt": "2026-06-28T22:40:04.764Z"
+    },
+    {
+      "id": "btask_1782686405727_3",
+      "title": "Onboard BigCo",
+      "deptId": "bizorg_cs",
+      "priority": "high",
+      "type": "onboarding",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": "bdeal_1782686405714_1",
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "done",
+      "assignedTo": "bizorg_cs",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:05.729Z",
+          "actor": "bizorg_cs",
+          "action": "planned→done",
+          "note": "Onboarding complete"
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": "2026-06-28T22:40:05.729Z",
+      "createdAt": "2026-06-28T22:40:05.727Z",
+      "updatedAt": "2026-06-28T22:40:05.729Z"
+    },
+    {
+      "id": "btask_1782686405868_1",
+      "title": "Ready task 1",
+      "deptId": "bizorg_marketing",
+      "priority": "medium",
+      "type": "campaign",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_marketing",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:05.873Z",
+          "actor": "system",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:40:05.868Z",
+      "updatedAt": "2026-06-28T22:40:05.873Z"
+    },
+    {
+      "id": "btask_1782686405871_2",
+      "title": "Ready task 2",
+      "deptId": "bizorg_sales",
+      "priority": "medium",
+      "type": "outreach",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_sales",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:05.876Z",
+          "actor": "system",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:40:05.871Z",
+      "updatedAt": "2026-06-28T22:40:05.876Z"
+    },
+    {
+      "id": "btask_1782686405907_3",
+      "title": "Onboard BigCo",
+      "deptId": "bizorg_cs",
+      "priority": "high",
+      "type": "onboarding",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": "bdeal_1782686405714_1",
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "done",
+      "assignedTo": "bizorg_cs",
+      "history": [
+        {
+          "ts": "2026-06-28T22:40:05.910Z",
+          "actor": "bizorg_cs",
+          "action": "planned→done",
+          "note": "Onboarding complete"
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": "2026-06-28T22:40:05.910Z",
+      "createdAt": "2026-06-28T22:40:05.907Z",
+      "updatedAt": "2026-06-28T22:40:05.910Z"
+    },
+    {
+      "id": "btask_1782686474514_1",
+      "title": "Send proposal",
+      "deptId": "bizorg_sales",
+      "priority": "high",
+      "type": "outreach",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "done",
+      "assignedTo": "bizorg_sales",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.517Z",
+          "actor": "system",
+          "action": "planned→ready",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-28T22:41:14.520Z",
+          "actor": "bizorg_sales",
+          "action": "claimed+started"
+        },
+        {
+          "ts": "2026-06-28T22:41:14.526Z",
+          "actor": "bizorg_sales",
+          "action": "in_progress→done",
+          "note": ""
+        }
+      ],
+      "claimedAt": "2026-06-28T22:41:14.520Z",
+      "startedAt": "2026-06-28T22:41:14.520Z",
+      "completedAt": "2026-06-28T22:41:14.526Z",
+      "createdAt": "2026-06-28T22:41:14.514Z",
+      "updatedAt": "2026-06-28T22:41:14.526Z"
+    },
+    {
+      "id": "btask_1782686474529_2",
+      "title": "Follow up call",
+      "deptId": "bizorg_sales",
+      "priority": "medium",
+      "type": "outreach",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "planned",
+      "assignedTo": "bizorg_sales",
+      "history": [],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:41:14.529Z",
+      "updatedAt": "2026-06-28T22:41:14.529Z"
+    },
+    {
+      "id": "btask_1782686474545_1",
+      "title": "Blocked task",
+      "deptId": "bizorg_marketing",
+      "priority": "medium",
+      "type": "campaign",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "in_progress",
+      "assignedTo": "bizorg_marketing",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.548Z",
+          "actor": "system",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:41:14.545Z",
+      "updatedAt": "2026-06-28T22:41:14.555Z"
+    },
+    {
+      "id": "btask_1782686474594_3",
+      "title": "Launch marketing campaign — Q3 Revenue Test 1782686474455",
+      "deptId": "bizorg_marketing",
+      "priority": "high",
+      "type": "campaign",
+      "objectiveId": "bobj_1782686474581_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_marketing",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.597Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:41:14.594Z",
+      "updatedAt": "2026-06-28T22:41:14.597Z"
+    },
+    {
+      "id": "btask_1782686474599_4",
+      "title": "Prepare sales playbook — Q3 Revenue Test 1782686474455",
+      "deptId": "bizorg_sales",
+      "priority": "high",
+      "type": "outreach",
+      "objectiveId": "bobj_1782686474581_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_sales",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.602Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:41:14.600Z",
+      "updatedAt": "2026-06-28T22:41:14.602Z"
+    },
+    {
+      "id": "btask_1782686474605_5",
+      "title": "Design growth experiments — Q3 Revenue Test 1782686474455",
+      "deptId": "bizorg_growth",
+      "priority": "high",
+      "type": "growth",
+      "objectiveId": "bobj_1782686474581_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_growth",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.607Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:41:14.605Z",
+      "updatedAt": "2026-06-28T22:41:14.607Z"
+    },
+    {
+      "id": "btask_1782686474610_6",
+      "title": "Publish content assets — Q3 Revenue Test 1782686474455",
+      "deptId": "bizorg_content",
+      "priority": "high",
+      "type": "content",
+      "objectiveId": "bobj_1782686474581_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_content",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.616Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:41:14.610Z",
+      "updatedAt": "2026-06-28T22:41:14.616Z"
+    },
+    {
+      "id": "btask_1782686474619_7",
+      "title": "Set up KPI tracking — Q3 Revenue Test 1782686474455",
+      "deptId": "bizorg_analytics",
+      "priority": "high",
+      "type": "analytics",
+      "objectiveId": "bobj_1782686474581_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_analytics",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:14.622Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:41:14.619Z",
+      "updatedAt": "2026-06-28T22:41:14.622Z"
+    },
+    {
+      "id": "btask_1782686475710_3",
+      "title": "Onboard BigCo",
+      "deptId": "bizorg_cs",
+      "priority": "high",
+      "type": "onboarding",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": "bdeal_1782686475692_1",
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "done",
+      "assignedTo": "bizorg_cs",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:15.717Z",
+          "actor": "bizorg_cs",
+          "action": "planned→done",
+          "note": "Onboarding complete"
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": "2026-06-28T22:41:15.717Z",
+      "createdAt": "2026-06-28T22:41:15.710Z",
+      "updatedAt": "2026-06-28T22:41:15.717Z"
+    },
+    {
+      "id": "btask_1782686476187_1",
+      "title": "Ready task 1",
+      "deptId": "bizorg_marketing",
+      "priority": "medium",
+      "type": "campaign",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_marketing",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:16.193Z",
+          "actor": "system",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:41:16.187Z",
+      "updatedAt": "2026-06-28T22:41:16.193Z"
+    },
+    {
+      "id": "btask_1782686476190_2",
+      "title": "Ready task 2",
+      "deptId": "bizorg_sales",
+      "priority": "medium",
+      "type": "outreach",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_sales",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:16.196Z",
+          "actor": "system",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-28T22:41:16.190Z",
+      "updatedAt": "2026-06-28T22:41:16.196Z"
+    },
+    {
+      "id": "btask_1782686476286_6",
+      "title": "Onboard BigCo",
+      "deptId": "bizorg_cs",
+      "priority": "high",
+      "type": "onboarding",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": "bdeal_1782686475692_1",
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "done",
+      "assignedTo": "bizorg_cs",
+      "history": [
+        {
+          "ts": "2026-06-28T22:41:16.289Z",
+          "actor": "bizorg_cs",
+          "action": "planned→done",
+          "note": "Onboarding complete"
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": "2026-06-28T22:41:16.289Z",
+      "createdAt": "2026-06-28T22:41:16.286Z",
+      "updatedAt": "2026-06-28T22:41:16.289Z"
+    },
+    {
+      "id": "btask_1782772795407_1",
+      "title": "Send proposal",
+      "deptId": "bizorg_sales",
+      "priority": "high",
+      "type": "outreach",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "done",
+      "assignedTo": "bizorg_sales",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.409Z",
+          "actor": "system",
+          "action": "planned→ready",
+          "note": ""
+        },
+        {
+          "ts": "2026-06-29T22:39:55.413Z",
+          "actor": "bizorg_sales",
+          "action": "claimed+started"
+        },
+        {
+          "ts": "2026-06-29T22:39:55.416Z",
+          "actor": "bizorg_sales",
+          "action": "in_progress→done",
+          "note": ""
+        }
+      ],
+      "claimedAt": "2026-06-29T22:39:55.413Z",
+      "startedAt": "2026-06-29T22:39:55.413Z",
+      "completedAt": "2026-06-29T22:39:55.416Z",
+      "createdAt": "2026-06-29T22:39:55.407Z",
+      "updatedAt": "2026-06-29T22:39:55.416Z"
+    },
+    {
+      "id": "btask_1782772795418_2",
+      "title": "Follow up call",
+      "deptId": "bizorg_sales",
+      "priority": "medium",
+      "type": "outreach",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "planned",
+      "assignedTo": "bizorg_sales",
+      "history": [],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-29T22:39:55.418Z",
+      "updatedAt": "2026-06-29T22:39:55.418Z"
+    },
+    {
+      "id": "btask_1782772795435_1",
+      "title": "Blocked task",
+      "deptId": "bizorg_marketing",
+      "priority": "medium",
+      "type": "campaign",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "in_progress",
+      "assignedTo": "bizorg_marketing",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.437Z",
+          "actor": "system",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-29T22:39:55.435Z",
+      "updatedAt": "2026-06-29T22:39:55.444Z"
+    },
+    {
+      "id": "btask_1782772795485_3",
+      "title": "Launch marketing campaign — Q3 Revenue Test 1782772795357",
+      "deptId": "bizorg_marketing",
+      "priority": "high",
+      "type": "campaign",
+      "objectiveId": "bobj_1782772795474_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_marketing",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.488Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-29T22:39:55.485Z",
+      "updatedAt": "2026-06-29T22:39:55.488Z"
+    },
+    {
+      "id": "btask_1782772795491_4",
+      "title": "Prepare sales playbook — Q3 Revenue Test 1782772795357",
+      "deptId": "bizorg_sales",
+      "priority": "high",
+      "type": "outreach",
+      "objectiveId": "bobj_1782772795474_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_sales",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.494Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-29T22:39:55.491Z",
+      "updatedAt": "2026-06-29T22:39:55.494Z"
+    },
+    {
+      "id": "btask_1782772795496_5",
+      "title": "Design growth experiments — Q3 Revenue Test 1782772795357",
+      "deptId": "bizorg_growth",
+      "priority": "high",
+      "type": "growth",
+      "objectiveId": "bobj_1782772795474_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_growth",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.499Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-29T22:39:55.496Z",
+      "updatedAt": "2026-06-29T22:39:55.499Z"
+    },
+    {
+      "id": "btask_1782772795502_6",
+      "title": "Publish content assets — Q3 Revenue Test 1782772795357",
+      "deptId": "bizorg_content",
+      "priority": "high",
+      "type": "content",
+      "objectiveId": "bobj_1782772795474_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_content",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.505Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-29T22:39:55.502Z",
+      "updatedAt": "2026-06-29T22:39:55.505Z"
+    },
+    {
+      "id": "btask_1782772795508_7",
+      "title": "Set up KPI tracking — Q3 Revenue Test 1782772795357",
+      "deptId": "bizorg_analytics",
+      "priority": "high",
+      "type": "analytics",
+      "objectiveId": "bobj_1782772795474_1",
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_analytics",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:55.512Z",
+          "actor": "bizorg_coo",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-29T22:39:55.508Z",
+      "updatedAt": "2026-06-29T22:39:55.512Z"
+    },
+    {
+      "id": "btask_1782772796522_3",
+      "title": "Onboard BigCo",
+      "deptId": "bizorg_cs",
+      "priority": "high",
+      "type": "onboarding",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": "bdeal_1782772796512_1",
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "done",
+      "assignedTo": "bizorg_cs",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:56.524Z",
+          "actor": "bizorg_cs",
+          "action": "planned→done",
+          "note": "Onboarding complete"
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": "2026-06-29T22:39:56.524Z",
+      "createdAt": "2026-06-29T22:39:56.522Z",
+      "updatedAt": "2026-06-29T22:39:56.524Z"
+    },
+    {
+      "id": "btask_1782772796719_1",
+      "title": "Ready task 1",
+      "deptId": "bizorg_marketing",
+      "priority": "medium",
+      "type": "campaign",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_marketing",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:56.727Z",
+          "actor": "system",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-29T22:39:56.719Z",
+      "updatedAt": "2026-06-29T22:39:56.727Z"
+    },
+    {
+      "id": "btask_1782772796723_2",
+      "title": "Ready task 2",
+      "deptId": "bizorg_sales",
+      "priority": "medium",
+      "type": "outreach",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": null,
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "ready",
+      "assignedTo": "bizorg_sales",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:56.729Z",
+          "actor": "system",
+          "action": "planned→ready",
+          "note": ""
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-06-29T22:39:56.723Z",
+      "updatedAt": "2026-06-29T22:39:56.729Z"
+    },
+    {
+      "id": "btask_1782772796761_4",
+      "title": "Onboard BigCo",
+      "deptId": "bizorg_cs",
+      "priority": "high",
+      "type": "onboarding",
+      "objectiveId": null,
+      "campaignId": null,
+      "dealId": "bdeal_1782772796512_1",
+      "estimatedHours": 2,
+      "tags": [],
+      "status": "done",
+      "assignedTo": "bizorg_cs",
+      "history": [
+        {
+          "ts": "2026-06-29T22:39:56.764Z",
+          "actor": "bizorg_cs",
+          "action": "planned→done",
+          "note": "Onboarding complete"
+        }
+      ],
+      "claimedAt": null,
+      "startedAt": null,
+      "completedAt": "2026-06-29T22:39:56.764Z",
+      "createdAt": "2026-06-29T22:39:56.761Z",
+      "updatedAt": "2026-06-29T22:39:56.764Z"
     }
   ],
   "backlogs": {
@@ -6907,7 +10391,16 @@
       "btask_1782592430462_1",
       "btask_1782592442110_1",
       "btask_1782592442145_3",
-      "btask_1782592443192_1"
+      "btask_1782592443192_1",
+      "btask_1782686404697_1",
+      "btask_1782686404743_3",
+      "btask_1782686405868_1",
+      "btask_1782686474545_1",
+      "btask_1782686474594_3",
+      "btask_1782686476187_1",
+      "btask_1782772795435_1",
+      "btask_1782772795485_3",
+      "btask_1782772796719_1"
     ],
     "bizorg_sales": [
       "btask_1782533088580_4",
@@ -6935,7 +10428,19 @@
       "btask_1782592442092_1",
       "btask_1782592442099_2",
       "btask_1782592442149_4",
-      "btask_1782592443194_2"
+      "btask_1782592443194_2",
+      "btask_1782686404673_1",
+      "btask_1782686404683_2",
+      "btask_1782686404747_4",
+      "btask_1782686405871_2",
+      "btask_1782686474514_1",
+      "btask_1782686474529_2",
+      "btask_1782686474599_4",
+      "btask_1782686476190_2",
+      "btask_1782772795407_1",
+      "btask_1782772795418_2",
+      "btask_1782772795491_4",
+      "btask_1782772796723_2"
     ],
     "bizorg_growth": [
       "btask_1782533088581_5",
@@ -6945,7 +10450,10 @@
       "btask_1782533511100_5",
       "btask_1782557646382_5",
       "btask_1782592429409_5",
-      "btask_1782592442154_5"
+      "btask_1782592442154_5",
+      "btask_1782686404752_5",
+      "btask_1782686474605_5",
+      "btask_1782772795496_5"
     ],
     "bizorg_content": [
       "btask_1782533088581_6",
@@ -6955,7 +10463,10 @@
       "btask_1782533511101_6",
       "btask_1782557646385_6",
       "btask_1782592429412_6",
-      "btask_1782592442157_6"
+      "btask_1782592442157_6",
+      "btask_1782686404756_6",
+      "btask_1782686474610_6",
+      "btask_1782772795502_6"
     ],
     "bizorg_analytics": [
       "btask_1782533088581_7",
@@ -6965,7 +10476,10 @@
       "btask_1782533511105_7",
       "btask_1782557646387_7",
       "btask_1782592429414_7",
-      "btask_1782592442161_7"
+      "btask_1782592442161_7",
+      "btask_1782686404761_7",
+      "btask_1782686474619_7",
+      "btask_1782772795508_7"
     ],
     "bizorg_cs": [
       "btask_1782533090119_z",
@@ -6982,7 +10496,13 @@
       "btask_1782592430490_4",
       "btask_1782592443084_3",
       "btask_1782592443219_3",
-      "btask_1782592581943_h"
+      "btask_1782592581943_h",
+      "btask_1782686405727_3",
+      "btask_1782686405907_3",
+      "btask_1782686475710_3",
+      "btask_1782686476286_6",
+      "btask_1782772796522_3",
+      "btask_1782772796761_4"
     ]
   },
   "handoffs": [
@@ -7057,6 +10577,42 @@
       "timestamp": "2026-06-27T20:34:02.105Z",
       "accepted": true,
       "acceptedAt": "2026-06-27T20:34:02.107Z"
+    },
+    {
+      "id": "bhoff_1782686404690_2",
+      "fromDept": "bizorg_crm",
+      "toDept": "bizorg_sales",
+      "taskId": null,
+      "dealId": "bdeal_1782686404688_1",
+      "message": "Qualified — ready for sales",
+      "context": {},
+      "timestamp": "2026-06-28T22:40:04.690Z",
+      "accepted": true,
+      "acceptedAt": "2026-06-28T22:40:04.693Z"
+    },
+    {
+      "id": "bhoff_1782686474537_2",
+      "fromDept": "bizorg_crm",
+      "toDept": "bizorg_sales",
+      "taskId": null,
+      "dealId": "bdeal_1782686474534_1",
+      "message": "Qualified — ready for sales",
+      "context": {},
+      "timestamp": "2026-06-28T22:41:14.537Z",
+      "accepted": true,
+      "acceptedAt": "2026-06-28T22:41:14.541Z"
+    },
+    {
+      "id": "bhoff_1782772795426_2",
+      "fromDept": "bizorg_crm",
+      "toDept": "bizorg_sales",
+      "taskId": null,
+      "dealId": "bdeal_1782772795424_1",
+      "message": "Qualified — ready for sales",
+      "context": {},
+      "timestamp": "2026-06-29T22:39:55.426Z",
+      "accepted": true,
+      "acceptedAt": "2026-06-29T22:39:55.429Z"
     }
   ],
   "blockers": [
@@ -7118,6 +10674,36 @@
       "raisedBy": "bizorg_marketing",
       "raisedAt": "2026-06-27T20:34:02.113Z",
       "resolvedAt": "2026-06-27T20:34:02.115Z",
+      "resolvedBy": "bizorg_coo"
+    },
+    {
+      "id": "bblk_1782686404703_2",
+      "taskId": "btask_1782686404697_1",
+      "dealId": null,
+      "description": "Budget approval pending",
+      "raisedBy": "bizorg_marketing",
+      "raisedAt": "2026-06-28T22:40:04.703Z",
+      "resolvedAt": "2026-06-28T22:40:04.706Z",
+      "resolvedBy": "bizorg_coo"
+    },
+    {
+      "id": "bblk_1782686474552_2",
+      "taskId": "btask_1782686474545_1",
+      "dealId": null,
+      "description": "Budget approval pending",
+      "raisedBy": "bizorg_marketing",
+      "raisedAt": "2026-06-28T22:41:14.552Z",
+      "resolvedAt": "2026-06-28T22:41:14.555Z",
+      "resolvedBy": "bizorg_coo"
+    },
+    {
+      "id": "bblk_1782772795440_2",
+      "taskId": "btask_1782772795435_1",
+      "dealId": null,
+      "description": "Budget approval pending",
+      "raisedBy": "bizorg_marketing",
+      "raisedAt": "2026-06-29T22:39:55.440Z",
+      "resolvedAt": "2026-06-29T22:39:55.444Z",
       "resolvedBy": "bizorg_coo"
     }
   ],
@@ -7287,7 +10873,78 @@
     "bdeal_1782626890863_7": "bizorg_crm",
     "bdeal_1782626890871_9": "bizorg_crm",
     "bdeal_1782628533295_7": "bizorg_crm",
-    "bdeal_1782628533304_9": "bizorg_crm"
+    "bdeal_1782628533304_9": "bizorg_crm",
+    "bdeal_1782686404663_2": "bizorg_crm",
+    "btask_1782686404673_1": "bizorg_sales",
+    "btask_1782686404683_2": "bizorg_sales",
+    "bdeal_1782686404688_1": "bizorg_sales",
+    "btask_1782686404697_1": "bizorg_marketing",
+    "bdeal_1782686404726_3": "bizorg_crm",
+    "btask_1782686404743_3": "bizorg_marketing",
+    "btask_1782686404747_4": "bizorg_sales",
+    "btask_1782686404752_5": "bizorg_growth",
+    "btask_1782686404756_6": "bizorg_content",
+    "btask_1782686404761_7": "bizorg_analytics",
+    "bdeal_1782686404780_b": "bizorg_crm",
+    "bdeal_1782686404826_i": "bizorg_crm",
+    "bdeal_1782686405657_2": "bizorg_crm",
+    "bdeal_1782686405698_9": "bizorg_crm",
+    "bdeal_1782686405714_1": "bizorg_crm",
+    "btask_1782686405727_3": "bizorg_cs",
+    "bdeal_1782686405740_1": "bizorg_crm",
+    "bdeal_1782686405759_4": "bizorg_crm",
+    "btask_1782686405868_1": "bizorg_marketing",
+    "btask_1782686405871_2": "bizorg_sales",
+    "btask_1782686405907_3": "bizorg_cs",
+    "bdeal_1782686474499_2": "bizorg_crm",
+    "btask_1782686474514_1": "bizorg_sales",
+    "btask_1782686474529_2": "bizorg_sales",
+    "bdeal_1782686474534_1": "bizorg_sales",
+    "btask_1782686474545_1": "bizorg_marketing",
+    "bdeal_1782686474575_3": "bizorg_crm",
+    "btask_1782686474594_3": "bizorg_marketing",
+    "btask_1782686474599_4": "bizorg_sales",
+    "btask_1782686474605_5": "bizorg_growth",
+    "btask_1782686474610_6": "bizorg_content",
+    "btask_1782686474619_7": "bizorg_analytics",
+    "bdeal_1782686474658_b": "bizorg_crm",
+    "bdeal_1782686474723_i": "bizorg_crm",
+    "bdeal_1782686474733_k": "bizorg_crm",
+    "bdeal_1782686475570_2": "bizorg_crm",
+    "bdeal_1782686475649_9": "bizorg_crm",
+    "bdeal_1782686475692_1": "bizorg_crm",
+    "btask_1782686475710_3": "bizorg_cs",
+    "bdeal_1782686475731_1": "bizorg_crm",
+    "bdeal_1782686475771_4": "bizorg_crm",
+    "btask_1782686476187_1": "bizorg_marketing",
+    "btask_1782686476190_2": "bizorg_sales",
+    "btask_1782686476286_6": "bizorg_cs",
+    "bdeal_1782772795394_2": "bizorg_crm",
+    "btask_1782772795407_1": "bizorg_sales",
+    "btask_1782772795418_2": "bizorg_sales",
+    "bdeal_1782772795424_1": "bizorg_sales",
+    "btask_1782772795435_1": "bizorg_marketing",
+    "bdeal_1782772795467_3": "bizorg_crm",
+    "btask_1782772795485_3": "bizorg_marketing",
+    "btask_1782772795491_4": "bizorg_sales",
+    "btask_1782772795496_5": "bizorg_growth",
+    "btask_1782772795502_6": "bizorg_content",
+    "btask_1782772795508_7": "bizorg_analytics",
+    "bdeal_1782772795533_b": "bizorg_crm",
+    "bdeal_1782772795546_d": "bizorg_crm",
+    "bdeal_1782772795592_k": "bizorg_crm",
+    "bdeal_1782772795606_m": "bizorg_crm",
+    "bdeal_1782772796439_2": "bizorg_crm",
+    "bdeal_1782772796492_9": "bizorg_crm",
+    "bdeal_1782772796512_1": "bizorg_crm",
+    "btask_1782772796522_3": "bizorg_cs",
+    "bdeal_1782772796539_1": "bizorg_crm",
+    "bdeal_1782772796554_3": "bizorg_crm",
+    "btask_1782772796719_1": "bizorg_marketing",
+    "btask_1782772796723_2": "bizorg_sales",
+    "btask_1782772796761_4": "bizorg_cs",
+    "bdeal_1782773169431_7": "bizorg_crm",
+    "bdeal_1782773169447_9": "bizorg_crm"
   },
   "reports": [
     {
@@ -7436,6 +11093,69 @@
       "deptId": "bizorg_analytics",
       "type": "executive",
       "createdAt": "2026-06-28T06:35:33.416Z"
+    },
+    {
+      "id": "brpt_1782686404717_1",
+      "title": "Q3 Business Summary",
+      "deptId": "bizorg_analytics",
+      "type": "executive",
+      "createdAt": "2026-06-28T22:40:04.717Z"
+    },
+    {
+      "id": "brpt_1782686405857_5",
+      "title": "Business Org Executive Report — 6/29/2026",
+      "deptId": "bizorg_analytics",
+      "type": "executive",
+      "createdAt": "2026-06-28T22:40:05.857Z"
+    },
+    {
+      "id": "brpt_1782686405957_8",
+      "title": "Business Org Executive Report — 6/29/2026",
+      "deptId": "bizorg_analytics",
+      "type": "executive",
+      "createdAt": "2026-06-28T22:40:05.957Z"
+    },
+    {
+      "id": "brpt_1782686474564_1",
+      "title": "Q3 Business Summary",
+      "deptId": "bizorg_analytics",
+      "type": "executive",
+      "createdAt": "2026-06-28T22:41:14.564Z"
+    },
+    {
+      "id": "brpt_1782686476173_5",
+      "title": "Business Org Executive Report — 6/29/2026",
+      "deptId": "bizorg_analytics",
+      "type": "executive",
+      "createdAt": "2026-06-28T22:41:16.173Z"
+    },
+    {
+      "id": "brpt_1782686476353_b",
+      "title": "Business Org Executive Report — 6/29/2026",
+      "deptId": "bizorg_analytics",
+      "type": "executive",
+      "createdAt": "2026-06-28T22:41:16.353Z"
+    },
+    {
+      "id": "brpt_1782772795456_1",
+      "title": "Q3 Business Summary",
+      "deptId": "bizorg_analytics",
+      "type": "executive",
+      "createdAt": "2026-06-29T22:39:55.456Z"
+    },
+    {
+      "id": "brpt_1782772796710_4",
+      "title": "Business Org Executive Report — 6/30/2026",
+      "deptId": "bizorg_analytics",
+      "type": "executive",
+      "createdAt": "2026-06-29T22:39:56.710Z"
+    },
+    {
+      "id": "brpt_1782773169705_m",
+      "title": "Business Org Executive Report — 6/30/2026",
+      "deptId": "bizorg_analytics",
+      "type": "executive",
+      "createdAt": "2026-06-29T22:46:09.705Z"
     }
   ]
 }

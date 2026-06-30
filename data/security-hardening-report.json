@@ -1,13 +1,13 @@
 {
-  "ts": "2026-06-28T06:35:33.197Z",
-  "score": 97,
-  "grade": "A",
+  "ts": "2026-06-29T22:46:09.305Z",
+  "score": 82,
+  "grade": "B",
   "categories": {
     "jwt": {
-      "score": 100
+      "score": 67
     },
     "cookies": {
-      "score": 80
+      "score": 60
     },
     "csp": {
       "score": 100
@@ -16,26 +16,21 @@
       "score": 100
     },
     "auth_protection": {
-      "score": 100
+      "score": 86
     },
     "security_headers": {
-      "score": 100
+      "score": 83
     }
   },
   "breakdown": {
     "jwt": {
       "category": "jwt",
-      "score": 100,
+      "score": 67,
       "checks": [
         {
           "name": "jwt_length",
-          "status": "pass",
-          "detail": "JWT_SECRET is 128 chars (strong)"
-        },
-        {
-          "name": "jwt_entropy",
-          "status": "pass",
-          "detail": "JWT_SECRET appears to be hex/random (good entropy)"
+          "status": "fail",
+          "detail": "JWT_SECRET not set"
         },
         {
           "name": "jwt_expiry",
@@ -51,12 +46,12 @@
     },
     "cookies": {
       "category": "cookies",
-      "score": 80,
+      "score": 60,
       "checks": [
         {
           "name": "cookie_secure",
-          "status": "pass",
-          "detail": "NODE_ENV=production → Secure cookie flag enabled"
+          "status": "warn",
+          "detail": "NODE_ENV≠production → Secure cookie flag disabled"
         },
         {
           "name": "cookie_httponly",
@@ -139,7 +134,7 @@
     },
     "auth_protection": {
       "category": "auth_protection",
-      "score": 100,
+      "score": 86,
       "checks": [
         {
           "name": "auth_middleware",
@@ -153,8 +148,8 @@
         },
         {
           "name": "operator_password",
-          "status": "pass",
-          "detail": "OPERATOR_PASSWORD_HASH set"
+          "status": "fail",
+          "detail": "OPERATOR_PASSWORD_HASH not set — any password accepted in dev mode"
         },
         {
           "name": "login_lockout",
@@ -180,7 +175,7 @@
     },
     "security_headers": {
       "category": "security_headers",
-      "score": 100,
+      "score": 83,
       "checks": [
         {
           "name": "helmet",
@@ -209,21 +204,46 @@
         },
         {
           "name": "x_powered_by",
-          "status": "pass",
-          "detail": "X-Powered-By header disabled"
+          "status": "warn",
+          "detail": "X-Powered-By may expose 'Express' — set DISABLE_X_POWERED_BY=1"
         }
       ]
     }
   },
-  "failures": [],
+  "failures": [
+    {
+      "category": "jwt",
+      "name": "jwt_length",
+      "status": "fail",
+      "detail": "JWT_SECRET not set"
+    },
+    {
+      "category": "auth_protection",
+      "name": "operator_password",
+      "status": "fail",
+      "detail": "OPERATOR_PASSWORD_HASH not set — any password accepted in dev mode"
+    }
+  ],
   "warnings": [
+    {
+      "category": "cookies",
+      "name": "cookie_secure",
+      "status": "warn",
+      "detail": "NODE_ENV≠production → Secure cookie flag disabled"
+    },
     {
       "category": "cookies",
       "name": "cookie_domain",
       "status": "warn",
       "detail": "COOKIE_DOMAIN not set — cookies will be scoped to request host (may cause issues in subdomain setups)"
+    },
+    {
+      "category": "security_headers",
+      "name": "x_powered_by",
+      "status": "warn",
+      "detail": "X-Powered-By may expose 'Express' — set DISABLE_X_POWERED_BY=1"
     }
   ],
-  "totalChecks": 31,
-  "passing": 30
+  "totalChecks": 30,
+  "passing": 25
 }

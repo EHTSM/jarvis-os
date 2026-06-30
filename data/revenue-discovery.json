@@ -1,0 +1,64 @@
+{
+  "opportunities": [
+    {
+      "id": "rdsc_1782773098620_qt1m",
+      "type": "lead_conversion",
+      "title": "Convert 48 trial users (1 expected)",
+      "signal": "trial_cohort",
+      "value": 11988,
+      "mrrDelta": 999,
+      "priority": "critical",
+      "context": {
+        "trialCount": 48,
+        "conversionRate": 0.02,
+        "expectedConversions": 1,
+        "expectedMRR": 999
+      },
+      "discoveredAt": "2026-06-29T22:44:58.620Z"
+    },
+    {
+      "id": "rdsc_1782773098621_oxr5",
+      "type": "cross_sell",
+      "title": "Cross-sell: 20 marketplace assets to active customers",
+      "signal": "marketplace_assets_available",
+      "value": 120000,
+      "mrrDelta": 10000,
+      "priority": "medium",
+      "context": {
+        "availableAssets": 20,
+        "productPlans": 5
+      },
+      "discoveredAt": "2026-06-29T22:44:58.621Z"
+    },
+    {
+      "id": "rdsc_1782773098628_cbg7",
+      "type": "win_back",
+      "title": "Win-back: 1 churned customers with exit surveys",
+      "signal": "exit_survey_available",
+      "value": 2397.6,
+      "mrrDelta": 200,
+      "priority": "medium",
+      "context": {
+        "churned": 1,
+        "winBackRate": 0.2
+      },
+      "discoveredAt": "2026-06-29T22:44:58.628Z"
+    }
+  ],
+  "stats": {
+    "total": 3,
+    "byType": {
+      "upsell": 0,
+      "cross_sell": 1,
+      "dormant_revival": 0,
+      "lead_conversion": 1,
+      "expansion": 0,
+      "partner": 0,
+      "win_back": 1
+    },
+    "totalValue": 134385.6,
+    "newCount": 3
+  },
+  "lastScan": "2026-06-29T22:44:58.628Z",
+  "updatedAt": "2026-06-29T22:44:58.628Z"
+}

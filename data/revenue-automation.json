@@ -1,0 +1,587 @@
+{
+  "automations": [
+    {
+      "id": "raut_1782723551896_6szu",
+      "action": "generate_proposal",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.896Z"
+    },
+    {
+      "id": "raut_1782723551897_xhcm",
+      "action": "generate_proposal",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.897Z"
+    },
+    {
+      "id": "raut_1782723551897_j7k0",
+      "action": "send_followup",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 30,
+      "description": "Send automated follow-up sequence",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.897Z"
+    },
+    {
+      "id": "raut_1782723551897_vukd",
+      "action": "trigger_renewal",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 90,
+      "description": "Trigger renewal reminder and offer",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.897Z"
+    },
+    {
+      "id": "raut_1782723551897_t086",
+      "action": "upsell_offer",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 45,
+      "description": "Send personalized upsell offer",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.897Z"
+    },
+    {
+      "id": "raut_1782723551897_0stc",
+      "action": "generate_proposal",
+      "params": {
+        "opportunityId": "rdsc_1782723551827_h787",
+        "value": 11988
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.897Z"
+    },
+    {
+      "id": "raut_1782723551897_9sne",
+      "action": "generate_proposal",
+      "params": {
+        "opportunityId": "rdsc_1782723551849_hpg3",
+        "value": 11988
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.897Z"
+    },
+    {
+      "id": "raut_1782723551897_zipb",
+      "action": "generate_proposal",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.897Z"
+    },
+    {
+      "id": "raut_1782723551897_jkq0",
+      "action": "generate_proposal",
+      "params": {
+        "opportunityId": "rdsc_1782723551893_shch",
+        "value": 11988
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.897Z"
+    },
+    {
+      "id": "raut_1782723551898_wqbe",
+      "action": "trigger_renewal",
+      "params": {
+        "segment": "at_risk",
+        "count": 23
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 90,
+      "description": "Trigger renewal reminder and offer",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.898Z"
+    },
+    {
+      "id": "raut_1782723551898_k7cr",
+      "action": "trigger_renewal",
+      "params": {
+        "segment": "at_risk",
+        "count": 23
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 90,
+      "description": "Trigger renewal reminder and offer",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.898Z"
+    },
+    {
+      "id": "raut_1782723551899_0wuf",
+      "action": "trigger_renewal",
+      "params": {
+        "segment": "at_risk",
+        "count": 23
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 90,
+      "description": "Trigger renewal reminder and offer",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.899Z"
+    },
+    {
+      "id": "raut_1782723551899_rc7f",
+      "action": "send_followup",
+      "params": {
+        "trigger": "pipeline_automation"
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 30,
+      "description": "Send automated follow-up sequence",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.899Z"
+    },
+    {
+      "id": "raut_1782723551899_p3ee",
+      "action": "send_followup",
+      "params": {
+        "trigger": "pipeline_automation"
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 30,
+      "description": "Send automated follow-up sequence",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.899Z"
+    },
+    {
+      "id": "raut_1782723551899_ilp8",
+      "action": "send_followup",
+      "params": {
+        "trigger": "pipeline_automation"
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 30,
+      "description": "Send automated follow-up sequence",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:11.899Z"
+    },
+    {
+      "id": "raut_1782723579561_xfby",
+      "action": "generate_proposal",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.561Z"
+    },
+    {
+      "id": "raut_1782723579561_x9g3",
+      "action": "generate_proposal",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.561Z"
+    },
+    {
+      "id": "raut_1782723579561_sr0f",
+      "action": "send_followup",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 30,
+      "description": "Send automated follow-up sequence",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.561Z"
+    },
+    {
+      "id": "raut_1782723579562_pr1t",
+      "action": "trigger_renewal",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 90,
+      "description": "Trigger renewal reminder and offer",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.562Z"
+    },
+    {
+      "id": "raut_1782723579562_1bh7",
+      "action": "upsell_offer",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 45,
+      "description": "Send personalized upsell offer",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.562Z"
+    },
+    {
+      "id": "raut_1782723579562_t2s2",
+      "action": "generate_proposal",
+      "params": {
+        "opportunityId": "rdsc_1782723579452_9kq3",
+        "value": 11988
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.562Z"
+    },
+    {
+      "id": "raut_1782723579562_bkoi",
+      "action": "generate_proposal",
+      "params": {
+        "opportunityId": "rdsc_1782723579485_j6n4",
+        "value": 11988
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.562Z"
+    },
+    {
+      "id": "raut_1782723579562_kbr3",
+      "action": "generate_proposal",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.562Z"
+    },
+    {
+      "id": "raut_1782723579563_vaij",
+      "action": "generate_proposal",
+      "params": {
+        "opportunityId": "rdsc_1782723579557_qtpy",
+        "value": 11988
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.563Z"
+    },
+    {
+      "id": "raut_1782723579564_6pqm",
+      "action": "trigger_renewal",
+      "params": {
+        "segment": "at_risk",
+        "count": 23
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 90,
+      "description": "Trigger renewal reminder and offer",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.564Z"
+    },
+    {
+      "id": "raut_1782723579564_q8jv",
+      "action": "trigger_renewal",
+      "params": {
+        "segment": "at_risk",
+        "count": 23
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 90,
+      "description": "Trigger renewal reminder and offer",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.564Z"
+    },
+    {
+      "id": "raut_1782723579564_f3pb",
+      "action": "trigger_renewal",
+      "params": {
+        "segment": "at_risk",
+        "count": 23
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 90,
+      "description": "Trigger renewal reminder and offer",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.564Z"
+    },
+    {
+      "id": "raut_1782723579565_0pl1",
+      "action": "send_followup",
+      "params": {
+        "trigger": "pipeline_automation"
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 30,
+      "description": "Send automated follow-up sequence",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.565Z"
+    },
+    {
+      "id": "raut_1782723579565_3dk2",
+      "action": "send_followup",
+      "params": {
+        "trigger": "pipeline_automation"
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 30,
+      "description": "Send automated follow-up sequence",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.565Z"
+    },
+    {
+      "id": "raut_1782723579565_tdmx",
+      "action": "send_followup",
+      "params": {
+        "trigger": "pipeline_automation"
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 30,
+      "description": "Send automated follow-up sequence",
+      "result": null,
+      "executedAt": "2026-06-29T08:59:39.565Z"
+    },
+    {
+      "id": "raut_1782773098628_mvtn",
+      "action": "generate_proposal",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.628Z"
+    },
+    {
+      "id": "raut_1782773098712_of9d",
+      "action": "generate_proposal",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.712Z"
+    },
+    {
+      "id": "raut_1782773098714_ihwr",
+      "action": "send_followup",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 30,
+      "description": "Send automated follow-up sequence",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.714Z"
+    },
+    {
+      "id": "raut_1782773098715_sso4",
+      "action": "trigger_renewal",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 90,
+      "description": "Trigger renewal reminder and offer",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.715Z"
+    },
+    {
+      "id": "raut_1782773098715_ls8l",
+      "action": "upsell_offer",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 45,
+      "description": "Send personalized upsell offer",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.715Z"
+    },
+    {
+      "id": "raut_1782773098715_6l48",
+      "action": "generate_proposal",
+      "params": {
+        "opportunityId": "rdsc_1782773098403_j9o5",
+        "value": 11988
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.715Z"
+    },
+    {
+      "id": "raut_1782773098716_0d1t",
+      "action": "generate_proposal",
+      "params": {
+        "opportunityId": "rdsc_1782773098477_g6vo",
+        "value": 11988
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.716Z"
+    },
+    {
+      "id": "raut_1782773098716_ty8s",
+      "action": "generate_proposal",
+      "params": {},
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.716Z"
+    },
+    {
+      "id": "raut_1782773098716_dzry",
+      "action": "generate_proposal",
+      "params": {
+        "opportunityId": "rdsc_1782773098620_qt1m",
+        "value": 11988
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 120,
+      "description": "Auto-generate sales proposal from opportunity data",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.716Z"
+    },
+    {
+      "id": "raut_1782773098718_18jk",
+      "action": "trigger_renewal",
+      "params": {
+        "segment": "at_risk",
+        "count": 23
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 90,
+      "description": "Trigger renewal reminder and offer",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.718Z"
+    },
+    {
+      "id": "raut_1782773098718_e41l",
+      "action": "trigger_renewal",
+      "params": {
+        "segment": "at_risk",
+        "count": 23
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 90,
+      "description": "Trigger renewal reminder and offer",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.718Z"
+    },
+    {
+      "id": "raut_1782773098719_wcta",
+      "action": "trigger_renewal",
+      "params": {
+        "segment": "at_risk",
+        "count": 23
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 90,
+      "description": "Trigger renewal reminder and offer",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.719Z"
+    },
+    {
+      "id": "raut_1782773098720_rn7h",
+      "action": "send_followup",
+      "params": {
+        "trigger": "pipeline_automation"
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 30,
+      "description": "Send automated follow-up sequence",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.720Z"
+    },
+    {
+      "id": "raut_1782773098720_a687",
+      "action": "send_followup",
+      "params": {
+        "trigger": "pipeline_automation"
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 30,
+      "description": "Send automated follow-up sequence",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.720Z"
+    },
+    {
+      "id": "raut_1782773098721_xapa",
+      "action": "send_followup",
+      "params": {
+        "trigger": "pipeline_automation"
+      },
+      "status": "executed",
+      "requiresApproval": false,
+      "minutesSaved": 30,
+      "description": "Send automated follow-up sequence",
+      "result": null,
+      "executedAt": "2026-06-29T22:44:58.721Z"
+    }
+  ],
+  "stats": {
+    "total": 45,
+    "executed": 45,
+    "minutesSaved": 3735,
+    "byAction": {
+      "generate_proposal": 18,
+      "send_followup": 12,
+      "schedule_meeting": 0,
+      "prepare_contract": 0,
+      "prepare_invoice": 0,
+      "trigger_renewal": 12,
+      "win_back_campaign": 0,
+      "upsell_offer": 3
+    }
+  },
+  "updatedAt": "2026-06-29T22:44:58.722Z"
+}

@@ -1,0 +1,133 @@
+{
+  "url": "https://example.com",
+  "suggestions": [
+    {
+      "type": "missing_press_feedback",
+      "element": {
+        "nodeId": "n2",
+        "tag": "button",
+        "classes": [
+          "btn",
+          "btn-primary"
+        ]
+      },
+      "animation": {
+        "tailwind": "active:scale-95 transition-transform duration-100",
+        "css": "",
+        "usage": "Button press feedback",
+        "reducedSafe": true,
+        "duration": "100ms"
+      },
+      "priority": "high",
+      "rationale": "Buttons need visual feedback on press for UX confidence"
+    },
+    {
+      "type": "missing_press_feedback",
+      "element": {
+        "nodeId": "n3",
+        "tag": "button",
+        "classes": [
+          "btn",
+          "btn-primary"
+        ]
+      },
+      "animation": {
+        "tailwind": "active:scale-95 transition-transform duration-100",
+        "css": "",
+        "usage": "Button press feedback",
+        "reducedSafe": true,
+        "duration": "100ms"
+      },
+      "priority": "high",
+      "rationale": "Buttons need visual feedback on press for UX confidence"
+    },
+    {
+      "type": "missing_hover_lift",
+      "element": {
+        "nodeId": "n2",
+        "tag": "button",
+        "classes": [
+          "btn",
+          "btn-primary"
+        ]
+      },
+      "animation": {
+        "tailwind": "hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200",
+        "css": "",
+        "usage": "Card hover lift effect",
+        "reducedSafe": false,
+        "duration": "200ms"
+      },
+      "priority": "medium",
+      "rationale": "Cards should respond to hover to indicate interactivity"
+    },
+    {
+      "type": "missing_hover_lift",
+      "element": {
+        "nodeId": "n3",
+        "tag": "button",
+        "classes": [
+          "btn",
+          "btn-primary"
+        ]
+      },
+      "animation": {
+        "tailwind": "hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200",
+        "css": "",
+        "usage": "Card hover lift effect",
+        "reducedSafe": false,
+        "duration": "200ms"
+      },
+      "priority": "medium",
+      "rationale": "Cards should respond to hover to indicate interactivity"
+    },
+    {
+      "type": "missing_focus_rings",
+      "count": 2,
+      "animation": {
+        "tailwind": "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus:outline-none",
+        "css": "",
+        "usage": "Keyboard focus indicator for all interactive elements",
+        "reducedSafe": true,
+        "duration": "instant"
+      },
+      "priority": "high",
+      "rationale": "Keyboard accessibility requires visible focus indicators on all interactive elements"
+    },
+    {
+      "type": "missing_loading_skeleton",
+      "animation": {
+        "tailwind": "animate-pulse",
+        "css": "/* Built-in Tailwind */",
+        "usage": "Skeleton loading placeholder",
+        "reducedSafe": true,
+        "duration": "2s"
+      },
+      "priority": "medium",
+      "rationale": "No skeleton loading detected — add animate-pulse placeholders for data fetch states"
+    }
+  ],
+  "css": {
+    "keyframes": "",
+    "reducedMotion": "\n@media (prefers-reduced-motion: reduce) {\n  *, ::before, ::after {\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n    transition-duration: 0.01ms !important;\n  }\n}",
+    "tailwindExtend": {
+      "animation": {
+        "fade-in": "fade-in 300ms ease-out both",
+        "slide-up": "slide-up 250ms ease-out both",
+        "scale-in": "scale-in 200ms ease-out both"
+      }
+    },
+    "utilityClasses": [
+      "active:scale-95 transition-transform duration-100",
+      "hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200",
+      "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus:outline-none",
+      "animate-pulse"
+    ]
+  },
+  "counts": {
+    "high": 3,
+    "medium": 3,
+    "low": 0
+  },
+  "timestamp": "2026-06-28T22:50:32.894Z"
+}

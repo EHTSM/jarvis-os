@@ -1494,5 +1494,443 @@
     },
     "summary": "365 items, 12 playbooks, 1464 eng items",
     "createdAt": "2026-06-28T06:55:56.940Z"
+  },
+  {
+    "id": "akrpt_1782686398593_tm0a",
+    "title": "Q3 Knowledge Summary",
+    "deptId": "ako_coordinator",
+    "type": "sync",
+    "data": {
+      "items": 100
+    },
+    "summary": "",
+    "createdAt": "2026-06-28T22:39:58.593Z"
+  },
+  {
+    "id": "akrpt_1782686398659_7adw",
+    "title": "Dash report",
+    "deptId": "ako_coordinator",
+    "type": "sync",
+    "data": {},
+    "summary": "",
+    "createdAt": "2026-06-28T22:39:58.659Z"
+  },
+  {
+    "id": "akrpt_1782686402056_wj0o",
+    "title": "AKO Coordinator Sync — 2026-06-28",
+    "deptId": "ako_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 60,
+          "active": 47
+        },
+        "knowledge": {
+          "total": 405,
+          "validated": 359,
+          "pending": 1,
+          "rejected": 45,
+          "byType": {
+            "engineering": 147,
+            "business": 7,
+            "product": 1,
+            "observation": 128,
+            "playbook": 13,
+            "decision": 68,
+            "lesson": 32,
+            "api": 1,
+            "customer": 3,
+            "market": 3,
+            "competitive": 2
+          },
+          "avgConfidence": 79
+        },
+        "playbooks": {
+          "total": 13,
+          "totalUses": 11
+        },
+        "contradictions": {
+          "open": 1
+        },
+        "tasks": {
+          "total": 3969,
+          "inProgress": 0,
+          "done": 13
+        },
+        "reports": {
+          "total": 46
+        },
+        "platformKnowledge": {
+          "engineeringItems": 2031,
+          "graphEdges": 3,
+          "openLessons": 0
+        },
+        "kpiCount": 8
+      },
+      "kpiSummary": {
+        "totalItems": 405,
+        "totalLessons": 433,
+        "playbooks": 13
+      }
+    },
+    "summary": "405 items, 13 playbooks, 2031 eng items",
+    "createdAt": "2026-06-28T22:40:02.056Z"
+  },
+  {
+    "id": "akrpt_1782686402061_70dx",
+    "title": "AKO Coordinator Sync — 2026-06-28",
+    "deptId": "ako_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 60,
+          "active": 47
+        },
+        "knowledge": {
+          "total": 405,
+          "validated": 360,
+          "pending": 0,
+          "rejected": 45,
+          "byType": {
+            "engineering": 147,
+            "business": 7,
+            "product": 1,
+            "observation": 128,
+            "playbook": 13,
+            "decision": 68,
+            "lesson": 32,
+            "api": 1,
+            "customer": 3,
+            "market": 3,
+            "competitive": 2
+          },
+          "avgConfidence": 79
+        },
+        "playbooks": {
+          "total": 13,
+          "totalUses": 11
+        },
+        "contradictions": {
+          "open": 1
+        },
+        "tasks": {
+          "total": 3969,
+          "inProgress": 0,
+          "done": 13
+        },
+        "reports": {
+          "total": 47
+        },
+        "platformKnowledge": {
+          "engineeringItems": 2032,
+          "graphEdges": 3,
+          "openLessons": 0
+        },
+        "kpiCount": 8
+      },
+      "kpiSummary": {
+        "totalItems": 405,
+        "totalLessons": 433,
+        "playbooks": 13
+      }
+    },
+    "summary": "405 items, 13 playbooks, 2032 eng items",
+    "createdAt": "2026-06-28T22:40:02.061Z"
+  },
+  {
+    "id": "akrpt_1782686466152_th77",
+    "title": "Q3 Knowledge Summary",
+    "deptId": "ako_coordinator",
+    "type": "sync",
+    "data": {
+      "items": 100
+    },
+    "summary": "",
+    "createdAt": "2026-06-28T22:41:06.152Z"
+  },
+  {
+    "id": "akrpt_1782686466445_amho",
+    "title": "Dash report",
+    "deptId": "ako_coordinator",
+    "type": "sync",
+    "data": {},
+    "summary": "",
+    "createdAt": "2026-06-28T22:41:06.445Z"
+  },
+  {
+    "id": "akrpt_1782686470904_2o6b",
+    "title": "AKO Coordinator Sync — 2026-06-28",
+    "deptId": "ako_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 76,
+          "active": 62
+        },
+        "knowledge": {
+          "total": 469,
+          "validated": 419,
+          "pending": 1,
+          "rejected": 49,
+          "byType": {
+            "engineering": 159,
+            "business": 8,
+            "product": 1,
+            "observation": 140,
+            "playbook": 14,
+            "decision": 91,
+            "lesson": 47,
+            "api": 1,
+            "customer": 3,
+            "market": 3,
+            "competitive": 2
+          },
+          "avgConfidence": 79
+        },
+        "playbooks": {
+          "total": 14,
+          "totalUses": 12
+        },
+        "contradictions": {
+          "open": 1
+        },
+        "tasks": {
+          "total": 4271,
+          "inProgress": 0,
+          "done": 14
+        },
+        "reports": {
+          "total": 50
+        },
+        "platformKnowledge": {
+          "engineeringItems": 2031,
+          "graphEdges": 3,
+          "openLessons": 0
+        },
+        "kpiCount": 8
+      },
+      "kpiSummary": {
+        "totalItems": 469,
+        "totalLessons": 502,
+        "playbooks": 14
+      }
+    },
+    "summary": "469 items, 14 playbooks, 2031 eng items",
+    "createdAt": "2026-06-28T22:41:10.904Z"
+  },
+  {
+    "id": "akrpt_1782686470909_jpbe",
+    "title": "AKO Coordinator Sync — 2026-06-28",
+    "deptId": "ako_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 76,
+          "active": 62
+        },
+        "knowledge": {
+          "total": 469,
+          "validated": 420,
+          "pending": 0,
+          "rejected": 49,
+          "byType": {
+            "engineering": 159,
+            "business": 8,
+            "product": 1,
+            "observation": 140,
+            "playbook": 14,
+            "decision": 91,
+            "lesson": 47,
+            "api": 1,
+            "customer": 3,
+            "market": 3,
+            "competitive": 2
+          },
+          "avgConfidence": 79
+        },
+        "playbooks": {
+          "total": 14,
+          "totalUses": 12
+        },
+        "contradictions": {
+          "open": 1
+        },
+        "tasks": {
+          "total": 4271,
+          "inProgress": 0,
+          "done": 14
+        },
+        "reports": {
+          "total": 51
+        },
+        "platformKnowledge": {
+          "engineeringItems": 2032,
+          "graphEdges": 3,
+          "openLessons": 0
+        },
+        "kpiCount": 8
+      },
+      "kpiSummary": {
+        "totalItems": 469,
+        "totalLessons": 502,
+        "playbooks": 14
+      }
+    },
+    "summary": "469 items, 14 playbooks, 2032 eng items",
+    "createdAt": "2026-06-28T22:41:10.909Z"
+  },
+  {
+    "id": "akrpt_1782772789042_0oua",
+    "title": "Q3 Knowledge Summary",
+    "deptId": "ako_coordinator",
+    "type": "sync",
+    "data": {
+      "items": 100
+    },
+    "summary": "",
+    "createdAt": "2026-06-29T22:39:49.042Z"
+  },
+  {
+    "id": "akrpt_1782772789114_lx5y",
+    "title": "Dash report",
+    "deptId": "ako_coordinator",
+    "type": "sync",
+    "data": {},
+    "summary": "",
+    "createdAt": "2026-06-29T22:39:49.114Z"
+  },
+  {
+    "id": "akrpt_1782772792751_ldlf",
+    "title": "AKO Coordinator Sync — 2026-06-29",
+    "deptId": "ako_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 92,
+          "active": 77
+        },
+        "knowledge": {
+          "total": 536,
+          "validated": 482,
+          "pending": 1,
+          "rejected": 53,
+          "byType": {
+            "engineering": 174,
+            "business": 9,
+            "product": 1,
+            "observation": 152,
+            "playbook": 15,
+            "decision": 114,
+            "lesson": 62,
+            "api": 1,
+            "customer": 3,
+            "market": 3,
+            "competitive": 2
+          },
+          "avgConfidence": 80
+        },
+        "playbooks": {
+          "total": 15,
+          "totalUses": 13
+        },
+        "contradictions": {
+          "open": 1
+        },
+        "tasks": {
+          "total": 4573,
+          "inProgress": 0,
+          "done": 15
+        },
+        "reports": {
+          "total": 54
+        },
+        "platformKnowledge": {
+          "engineeringItems": 2032,
+          "graphEdges": 3,
+          "openLessons": 0
+        },
+        "kpiCount": 8
+      },
+      "kpiSummary": {
+        "totalItems": 536,
+        "totalLessons": 574,
+        "playbooks": 15
+      }
+    },
+    "summary": "536 items, 15 playbooks, 2032 eng items",
+    "createdAt": "2026-06-29T22:39:52.751Z"
+  },
+  {
+    "id": "akrpt_1782772792755_ysxf",
+    "title": "AKO Coordinator Sync — 2026-06-29",
+    "deptId": "ako_coordinator",
+    "type": "sync",
+    "data": {
+      "dash": {
+        "quarter": "2026-Q2",
+        "objectives": {
+          "total": 92,
+          "active": 77
+        },
+        "knowledge": {
+          "total": 536,
+          "validated": 483,
+          "pending": 0,
+          "rejected": 53,
+          "byType": {
+            "engineering": 174,
+            "business": 9,
+            "product": 1,
+            "observation": 152,
+            "playbook": 15,
+            "decision": 114,
+            "lesson": 62,
+            "api": 1,
+            "customer": 3,
+            "market": 3,
+            "competitive": 2
+          },
+          "avgConfidence": 80
+        },
+        "playbooks": {
+          "total": 15,
+          "totalUses": 13
+        },
+        "contradictions": {
+          "open": 1
+        },
+        "tasks": {
+          "total": 4573,
+          "inProgress": 0,
+          "done": 15
+        },
+        "reports": {
+          "total": 55
+        },
+        "platformKnowledge": {
+          "engineeringItems": 2033,
+          "graphEdges": 3,
+          "openLessons": 0
+        },
+        "kpiCount": 8
+      },
+      "kpiSummary": {
+        "totalItems": 536,
+        "totalLessons": 574,
+        "playbooks": 15
+      }
+    },
+    "summary": "536 items, 15 playbooks, 2033 eng items",
+    "createdAt": "2026-06-29T22:39:52.755Z"
   }
 ]

@@ -1832,7 +1832,7 @@
       ],
       "version": "1.0.0",
       "createdAt": "2026-06-28T06:10:37.039Z",
-      "updatedAt": "2026-06-28T21:03:45.249Z"
+      "updatedAt": "2026-06-29T22:42:11.845Z"
     },
     {
       "id": "org_1782627037040_4051",
@@ -1885,7 +1885,7 @@
       ],
       "version": "1.0.0",
       "createdAt": "2026-06-28T06:10:37.040Z",
-      "updatedAt": "2026-06-28T21:03:45.209Z"
+      "updatedAt": "2026-06-29T22:42:11.804Z"
     },
     {
       "id": "org_1782627037683_5f9a",
@@ -1939,7 +1939,7 @@
       "certifications": [],
       "version": "1.0.0",
       "createdAt": "2026-06-28T06:10:37.683Z",
-      "updatedAt": "2026-06-28T21:03:45.167Z"
+      "updatedAt": "2026-06-29T22:42:11.754Z"
     },
     {
       "id": "org_1782627037686_425l",
@@ -2009,7 +2009,7 @@
       "certifications": [],
       "version": "1.1.0",
       "createdAt": "2026-06-28T06:10:37.686Z",
-      "updatedAt": "2026-06-28T21:03:45.128Z"
+      "updatedAt": "2026-06-29T22:42:11.711Z"
     },
     {
       "id": "org_1782627037729_dgem",
@@ -2056,8 +2056,408 @@
       "certifications": [],
       "version": "1.0.0",
       "createdAt": "2026-06-28T06:10:37.729Z",
-      "updatedAt": "2026-06-28T21:03:45.088Z"
+      "updatedAt": "2026-06-29T22:42:11.666Z"
+    },
+    {
+      "id": "org_1782773168210_r84k",
+      "name": "AgencyA-1782773168206",
+      "description": "Updated",
+      "type": "agency",
+      "tenantId": "tenant-1782773168206",
+      "ownerId": "owner-1782773168206",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge"
+      ],
+      "tags": [
+        "test"
+      ],
+      "visibility": "private",
+      "plan": "free",
+      "status": "active",
+      "health": 85,
+      "kpis": {},
+      "governance": {
+        "policies": [
+          {
+            "id": "pol_1782773168229_lk0l",
+            "policy": "All decisions must have rationale",
+            "addedBy": "admin",
+            "addedAt": "2026-06-29T22:46:08.229Z"
+          }
+        ],
+        "auditLog": [
+          {
+            "action": "policy_added",
+            "policy": "All decisions must have rationale",
+            "by": "admin",
+            "at": "2026-06-29T22:46:08.229Z"
+          }
+        ]
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.210Z",
+      "updatedAt": "2026-06-29T22:46:08.229Z"
+    },
+    {
+      "id": "org_1782773168219_1p9s",
+      "name": "agency-1782773168206",
+      "description": "",
+      "type": "agency",
+      "tenantId": "t-1782773168206-agency",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive",
+        "odi"
+      ],
+      "tags": [],
+      "visibility": "private",
+      "plan": "free",
+      "status": "provisioning",
+      "health": 100,
+      "kpis": {},
+      "governance": {
+        "policies": [],
+        "auditLog": []
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.219Z",
+      "updatedAt": "2026-06-29T22:46:08.219Z"
+    },
+    {
+      "id": "org_1782773168219_k7w5",
+      "name": "startup-1782773168206",
+      "description": "",
+      "type": "startup",
+      "tenantId": "t-1782773168206-startup",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "tags": [],
+      "visibility": "private",
+      "plan": "free",
+      "status": "provisioning",
+      "health": 100,
+      "kpis": {},
+      "governance": {
+        "policies": [],
+        "auditLog": []
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.219Z",
+      "updatedAt": "2026-06-29T22:46:08.219Z"
+    },
+    {
+      "id": "org_1782773168220_sm67",
+      "name": "enterprise-1782773168206",
+      "description": "",
+      "type": "enterprise",
+      "tenantId": "t-1782773168206-enterprise",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive",
+        "enterprise",
+        "ecosystem"
+      ],
+      "tags": [],
+      "visibility": "private",
+      "plan": "free",
+      "status": "provisioning",
+      "health": 100,
+      "kpis": {},
+      "governance": {
+        "policies": [],
+        "auditLog": []
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.220Z",
+      "updatedAt": "2026-06-29T22:46:08.220Z"
+    },
+    {
+      "id": "org_1782773168221_xxfe",
+      "name": "department-1782773168206",
+      "description": "",
+      "type": "department",
+      "tenantId": "t-1782773168206-department",
+      "capabilities": [
+        "business",
+        "knowledge"
+      ],
+      "tags": [],
+      "visibility": "private",
+      "plan": "free",
+      "status": "provisioning",
+      "health": 100,
+      "kpis": {},
+      "governance": {
+        "policies": [],
+        "auditLog": []
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.221Z",
+      "updatedAt": "2026-06-29T22:46:08.221Z"
+    },
+    {
+      "id": "org_1782773168222_nw7b",
+      "name": "team-1782773168206",
+      "description": "",
+      "type": "team",
+      "tenantId": "t-1782773168206-team",
+      "capabilities": [
+        "engineering",
+        "knowledge"
+      ],
+      "tags": [],
+      "visibility": "private",
+      "plan": "free",
+      "status": "provisioning",
+      "health": 100,
+      "kpis": {},
+      "governance": {
+        "policies": [],
+        "auditLog": []
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.222Z",
+      "updatedAt": "2026-06-29T22:46:08.222Z"
+    },
+    {
+      "id": "org_1782773168223_hv45",
+      "name": "solo-1782773168206",
+      "description": "",
+      "type": "solo",
+      "tenantId": "t-1782773168206-solo",
+      "capabilities": [
+        "engineering"
+      ],
+      "tags": [],
+      "visibility": "private",
+      "plan": "free",
+      "status": "provisioning",
+      "health": 100,
+      "kpis": {},
+      "governance": {
+        "policies": [],
+        "auditLog": []
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.223Z",
+      "updatedAt": "2026-06-29T22:46:08.223Z"
+    },
+    {
+      "id": "org_1782773168224_9010",
+      "name": "marketplace-1782773168206",
+      "description": "",
+      "type": "marketplace",
+      "tenantId": "t-1782773168206-marketplace",
+      "capabilities": [
+        "ecosystem",
+        "business"
+      ],
+      "tags": [],
+      "visibility": "private",
+      "plan": "free",
+      "status": "provisioning",
+      "health": 100,
+      "kpis": {},
+      "governance": {
+        "policies": [],
+        "auditLog": []
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.224Z",
+      "updatedAt": "2026-06-29T22:46:08.224Z"
+    },
+    {
+      "id": "org_1782773168224_n2la",
+      "name": "research-1782773168206",
+      "description": "",
+      "type": "research",
+      "tenantId": "t-1782773168206-research",
+      "capabilities": [
+        "knowledge",
+        "evolution"
+      ],
+      "tags": [],
+      "visibility": "private",
+      "plan": "free",
+      "status": "provisioning",
+      "health": 100,
+      "kpis": {},
+      "governance": {
+        "policies": [],
+        "auditLog": []
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.224Z",
+      "updatedAt": "2026-06-29T22:46:08.224Z"
+    },
+    {
+      "id": "org_1782773168225_3xkx",
+      "name": "service-1782773168206",
+      "description": "",
+      "type": "service",
+      "tenantId": "t-1782773168206-service",
+      "capabilities": [
+        "business",
+        "engineering"
+      ],
+      "tags": [],
+      "visibility": "private",
+      "plan": "free",
+      "status": "provisioning",
+      "health": 100,
+      "kpis": {},
+      "governance": {
+        "policies": [],
+        "auditLog": []
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.225Z",
+      "updatedAt": "2026-06-29T22:46:08.225Z"
+    },
+    {
+      "id": "org_1782773168226_d4bz",
+      "name": "custom-1782773168206",
+      "description": "",
+      "type": "custom",
+      "tenantId": "t-1782773168206-custom",
+      "capabilities": [],
+      "tags": [],
+      "visibility": "private",
+      "plan": "free",
+      "status": "provisioning",
+      "health": 100,
+      "kpis": {},
+      "governance": {
+        "policies": [],
+        "auditLog": []
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.226Z",
+      "updatedAt": "2026-06-29T22:46:08.226Z"
+    },
+    {
+      "id": "org_1782773168227_mf7s",
+      "name": "AutoCaps-1782773168206",
+      "description": "",
+      "type": "enterprise",
+      "tenantId": "ent-1782773168206",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive",
+        "enterprise",
+        "ecosystem"
+      ],
+      "tags": [],
+      "visibility": "private",
+      "plan": "free",
+      "status": "provisioning",
+      "health": 100,
+      "kpis": {},
+      "governance": {
+        "policies": [],
+        "auditLog": []
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.227Z",
+      "updatedAt": "2026-06-29T22:46:08.227Z"
+    },
+    {
+      "id": "org_1782773168571_w17a",
+      "name": "BlueprintA-1782773168206",
+      "description": "Updated blueprint",
+      "type": "agency",
+      "tenantId": "tenant-1782773168206",
+      "ownerId": "owner-1782773168206",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "tags": [],
+      "blueprintId": "bp_1782773168558_mljx",
+      "visibility": "private",
+      "plan": "free",
+      "status": "provisioning",
+      "health": 100,
+      "kpis": {},
+      "governance": {
+        "policies": [],
+        "auditLog": []
+      },
+      "memoryId": null,
+      "evolutionHistory": [],
+      "deploymentHistory": [],
+      "certifications": [],
+      "version": "1.0.0",
+      "createdAt": "2026-06-29T22:46:08.571Z",
+      "updatedAt": "2026-06-29T22:46:08.571Z"
     }
   ],
-  "total": 53
+  "total": 66
 }
